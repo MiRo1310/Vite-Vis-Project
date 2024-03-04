@@ -1,16 +1,21 @@
 import { defineStore } from "pinia";
+interface IobrokerValues {
+  [key: string]: string;
+}
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: () => ({
-    test: "false",
+    iobrokerValues: {},
   }),
   getters: {
-    getTest: (state) => {
-      return  state.test
+    getIobrokerValues: (state) => {
+      return state.iobrokerValues;
     },
   },
   actions: {
-    setTest(val: string) {
-      this.test = val;
+    setTest(key: string, val: string) {
+      const value: IobrokerValues = this.iobrokerValues;
+      value[key] = val;
+      this.iobrokerValues = value;
     },
   },
 });
