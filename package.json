@@ -10,8 +10,7 @@
     "lint": "eslint --ext .ts,.vue src --fix && stylelint src/**/*.css --fix"
   },
   "dependencies": {
-    "@iobroker/socket-client": "^2.3.13",
-    "@iobroker/ws-server": "^2.1.2",
+    "@iobroker/socket-client": "^2.3.13",   
     "@radix-icons/vue": "^1.0.0",
     "@tanstack/vue-table": "^8.12.0",
     "@vueuse/core": "^10.8.0",

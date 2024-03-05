@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NavLeft from './pages/NavLeft.vue';
 import { onMounted } from 'vue';
 import { loadScript, init, IOBROKER_ADMIN_PORT, IOBROKER_HOST } from '@/lib/iobroker-connecter';
 import { storeToRefs } from 'pinia';
@@ -7,8 +8,9 @@ const iobrokerStore = useIobrokerStore();
 const { iobrokerValues } = storeToRefs<any>(iobrokerStore);
 
 
+
 onMounted(async () => {
-  loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
+  // loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
 });
 
 
@@ -18,9 +20,10 @@ onMounted(async () => {
 
 
 <template>
+  <div class="w-[1280px] h-[800px] absolute border border-red-600 -z-10"></div>
   <div class="w-full h-[100vh] flex flex-row">
-    <div class="left w-48 bg-green-200">
-
+    <div class="nav--left ">
+      <NavLeft></NavLeft>
     </div>
     <div class="  w-full h-full">
       <div class="p-4">
@@ -35,7 +38,7 @@ onMounted(async () => {
   @apply flex flex-row
 }
 
-.left {
-  @apply w-[19rem] bg-violet-950
+.nav--left {
+  @apply w-[15rem]
 }
 </style>
