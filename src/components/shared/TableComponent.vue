@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps, computed, watch, defineEmits } from "vue";
-import { tableData } from "../helper/data";
+import { tableData } from "@/helper/data";
 const props = defineProps({
     tableData: {
         type: Array,
@@ -143,4 +143,4 @@ td {
 .table--pagination-item {
     @apply text-lg mx-4;
 }
-</style>
+</style>../../helper/data

@@ -1,7 +1,5 @@
-import Home from "@/pages/home.vue";
-import Rolladen from "@/pages/Rolladen.vue";
-
 export const routes = [
-  { path: "/", component: () => Home },
-  { path: "/Rolladen", component: () => Rolladen },
+  { path: "/", component: () => import("@/pages/Home.vue") },
+  { path: "/Rolladen", component: () => import("@/pages/Rolladen.vue") },
+  { path: "/:pathMatch(.*)", component: () => import("@/pages/error/ErrorPageNotFound.vue") },
 ];

@@ -6,40 +6,53 @@ import { Home, Blinds, LampCeiling, Plug, Sun, Heater, PlugZap, WashingMachine, 
 const buttons = [
     {
         icon: Home,
-        text: 'Home'
+        text: 'Home',
+        link: "/"
     }, {
         icon: Blinds,
-        text: 'Rolladen Fenster'
+        text: 'Rolladen Fenster',
+        link: "/rolladen"
+
     }, {
         icon: LampCeiling,
-        text: 'Licht'
+        text: 'Licht',
+        link: "/licht"
     }, {
         icon: Plug,
-        text: 'Steckdosen'
+        text: 'Steckdosen',
+        link: "/steckdosen"
+
     }, {
         icon: Sun,
-        text: 'Wetter'
+        text: 'Wetter',
+        link: "/wetter"
     }, {
         icon: Heater,
-        text: 'Heizung'
+        text: 'Heizung',
+        link: "/heizung"
     }, {
         icon: PlugZap,
-        text: 'PV'
+        text: 'PV',
+        link: "/pv"
     }, {
         icon: WashingMachine,
-        text: 'Geräte'
+        text: 'Geräte',
+        link: "/geraete"
     }, {
         icon: Cctv,
-        text: 'Sicherheit'
+        text: 'Sicherheit',
+        link: "/sicherheit"
     },
 ]
 </script>
 
 <template>
     <div class="p-2 w-full">
-        <Button v-for="(button, index) in buttons" variant="outline" class=" button--nav" :key="index">
-            <component :is="button.icon" class="w-4 h-4 " /><span class="ml-2">{{ button.text }}</span>
-        </Button>
+        <router-link v-for="(button, index) in buttons" :to="button.link" :key="index">
+            <Button variant="outline" class=" button--nav">
+                <component :is="button.icon" class="w-4 h-4 " /><span class="ml-2">{{ button.text }}</span>
+            </Button></router-link>
+
     </div>
 
 </template>

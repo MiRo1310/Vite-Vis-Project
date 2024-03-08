@@ -4,14 +4,9 @@ const animate = require("tailwindcss-animate")
 module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
-  
-  content: [
-    './pages/**/*.{ts,tsx,vue}',
-    './components/**/*.{ts,tsx,vue}',
-    './app/**/*.{ts,tsx,vue}',
-    './src/**/*.{ts,tsx,vue}',
-	],
-  
+
+  content: ["./pages/**/*.{ts,tsx,vue}", "./components/**/*.{ts,tsx,vue}", "./app/**/*.{ts,tsx,vue}", "./src/**/*.{ts,tsx,vue}"],
+
   theme: {
     container: {
       center: true,
@@ -22,6 +17,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        trashPapier: "#2e12cc",
+        trashBio: "#734d29",
+        trashGelb: "#eaed1c",
+        trashRest: "#000000",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -57,7 +56,7 @@ module.exports = {
         },
       },
       borderRadius: {
-      	xl: "calc(var(--radius) + 4px)",
+        xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
@@ -73,10 +72,10 @@ module.exports = {
         },
         "collapsible-down": {
           from: { height: 0 },
-          to: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: "var(--radix-collapsible-content-height)" },
         },
         "collapsible-up": {
-          from: { height: 'var(--radix-collapsible-content-height)' },
+          from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: 0 },
         },
       },
@@ -89,4 +88,4 @@ module.exports = {
     },
   },
   plugins: [animate],
-}
+};
