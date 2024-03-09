@@ -129,4 +129,4 @@ console.log(table.getAllColumns().forEach((column) => {
             </Table>
         </div>
     </div>
-</template>
+</template>@/components/ui/datatable

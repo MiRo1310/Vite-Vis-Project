@@ -40,8 +40,8 @@ export async function init() {
     idToSubscribe.forEach((entry) => {
       if (adminConnection.value) {
         adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
-          // console.log("State changed", id, state);
-          if (iobrokerStore) iobrokerStore.setTest(entry.name, entry.key || null, state.val);
+          console.log("State changed", id, state);
+          if (iobrokerStore) iobrokerStore.setValues(entry.name, entry.key || null, state.val);
         });
       }
     });
