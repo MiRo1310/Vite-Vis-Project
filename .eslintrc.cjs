@@ -22,9 +22,23 @@ module.exports = {
   },
   overrides: [
     {
+      files: ["src/*.d.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./tsconfig.json",
+        sourceType: "module",
+      },
+    },
+    {
       files: ["src/components/ui/**/*.vue"], // Pfade zu den Dateien, für die die Konfiguration angewendet werden soll
       rules: {
         "@typescript-eslint/no-unused-vars": "off", // Deaktiviert die Regel
+      },
+    },
+    {
+      files: ["*.vue"],
+      rules: {
+        "no-undef": "off",
       },
     },
   ],
