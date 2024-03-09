@@ -1,56 +1,79 @@
 <script setup lang='ts'>
+import { toLocaleTime } from '@/lib/time';
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table'
+import Button from '@/components/ui/button/Button.vue';
+import { X } from 'lucide-vue-next';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { onMounted, watch, ref } from 'vue';
+import { adminConnection } from '@/lib/iobroker-connecter.ts'
 const iobrokerStore = useIobrokerStore();
 const { shoppingList } = storeToRefs<any>(iobrokerStore);
+
 onMounted(() => {
-    shoppingList.value = iobrokerStore.getShoppinglist
-  
+  createShoppinglist()
 });
 
 const shoppingListData = ref<ShoppingList[]>([])
-watch(shoppingList, (newVal, oldVal) => {
-    console.log('shoppingList changed', newVal, oldVal);
-    shoppingListData.value = JSON.parse(newVal);
+watch(shoppingList, () => {
+  createShoppinglist()
 });
+const createShoppinglist = () => {
+  try {
+    if (shoppingList.value !== "" && typeof shoppingList.value === "string")
+      shoppingListData.value = JSON.parse(shoppingList.value);
+  } catch (error) {
+    console.log('error', error);
+  }
+}
+const removeItem = (id: string) => {
+  console.log('id', id);
+
+  if (adminConnection.value) adminConnection.value.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true)
+
+
+}
 </script>
 <template>
-    <Table v-if="shoppingListData.length !== 0">
-        <TableCaption>Einkaufsliste</TableCaption>
-        <TableHeader>
-            <TableRow>
-                <TableHead class="w-[100px]">
-                    Artikel
-                </TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead class="text-right">
-                    Amount
-                </TableHead>
-            </TableRow>
-        </TableHeader>
-        <TableBody>
-            <TableRow v-for="item in shoppingListData" :key="item.name">
-                <TableCell class="font-medium">
-                    {{ item.name }}
-                </TableCell>
-                <TableCell>{{item.time}}</TableCell>
-                <TableCell>{{item.buttondelete }}</TableCell>
-                <TableCell class="text-right">
-                    $250.00
-                </TableCell>
-            </TableRow>
-        </TableBody>
-    </Table>
+  <Table>
+    <TableCaption>Einkaufsliste</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead class="w-[100px]" />
+        <TableHead>Artikel</TableHead>
+        <TableHead>Hinzugefügt</TableHead>
+        <TableHead />
+        <TableHead class="text-right" />
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow
+        v-for="item in shoppingListData"
+        :key="item.name"
+      >
+        <TableCell class="font-medium">
+          {{ item.pos }}
+        </TableCell>
+        <TableCell>{{ item.name }}</TableCell>
+        <TableCell>{{ toLocaleTime(item.time) }} </TableCell>
+        <TableCell>
+          <Button
+            variant="outline"
+            class="w-8 h-8 p-0"
+            @click="removeItem(item.id)"
+          >
+            <X class="w-4 h-4" />
+          </Button>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 </template>
-<style lang='postcss' scoped></style>

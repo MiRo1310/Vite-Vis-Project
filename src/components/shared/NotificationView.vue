@@ -109,11 +109,11 @@ onBeforeUnmount(() => {
 
 
 const timeout = (val: string) => {
-    timeout1 = setTimeout(() => {
+    timeout1 = window.setTimeout(() => {
         floating.value = val
         if (element)
             (element as any).animate(keyframesOut, options);
-        timeout2 = setTimeout(() => {
+        timeout2 = window.setTimeout(() => {
             emit('update:show', false);
             clearTimeout(timeout2)
         }, 2000)
@@ -124,14 +124,18 @@ const timeout = (val: string) => {
 </script>
 
 <template>
-    <div id="notification--card" class="z-10 absolute  shadow-md" :class="floating">
-        <div class="px-4 py-2">
-            <slot></slot>
-        </div>
+  <div
+    id="notification--card"
+    class="z-10 absolute  shadow-md"
+    :class="floating"
+  >
+    <div class="px-4 py-2">
+      <slot />
     </div>
+  </div>
 </template>
 
-<style >
+<style>
 body {
     overflow: hidden;
 }

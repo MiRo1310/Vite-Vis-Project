@@ -18,7 +18,10 @@ const isLoading = ref(props.isLoading);
 
 </script>
 <template>
-    <div v-show="isLoading" class="spinner"></div>
+  <div
+    v-show="isLoading"
+    class="spinner"
+  />
 </template>
 
 

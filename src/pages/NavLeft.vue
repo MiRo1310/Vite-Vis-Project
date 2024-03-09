@@ -47,14 +47,23 @@ const buttons = [
 </script>
 
 <template>
-    <div class="p-2 w-full">
-        <router-link v-for="(button, index) in buttons" :to="button.link" :key="index">
-            <Button variant="outline" class=" button--nav">
-                <component :is="button.icon" class="w-4 h-4 " /><span class="ml-2">{{ button.text }}</span>
-            </Button></router-link>
-
-    </div>
-
+  <div class="p-2 w-full">
+    <router-link
+      v-for="(button, index) in buttons"
+      :key="index"
+      :to="button.link"
+    >
+      <Button
+        variant="outline"
+        class=" button--nav"
+      >
+        <component
+          :is="button.icon"
+          class="w-4 h-4 "
+        /><span class="ml-2">{{ button.text }}</span>
+      </Button>
+    </router-link>
+  </div>
 </template>
 
 <style lang="postcss">

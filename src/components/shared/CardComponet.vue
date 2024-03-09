@@ -16,27 +16,34 @@ const props = defineProps({
 });
 </script>
 <template>
-    <div class="h-full">
-        <div class="container--card-wrapper">
-            <div class="container--card">
-                <div class="container--card-head">
-                    <span v-if="props.icon" class="material-icons-outlined container--card-head-icon">{{ props.icon
-                    }}</span>
-                    <div class="w-full">
-                        <h1 class="container--card-head-title">{{ props.title }}</h1>
-                        <p class="container--card-head-label">{{ props.label }}</p>
-                    </div>
-                    <div class="text-right mr-4 height--center justify-end">
-                        <slot name="headRight"></slot>
-                    </div>
-                </div>
-                <div class="w-[98%] ml-auto mr-auto border-b"></div>
-                <div class="container--card-content">
-                    <slot name="content"></slot>
-                </div>
-            </div>
+  <div class="h-full">
+    <div class="container--card-wrapper">
+      <div class="container--card">
+        <div class="container--card-head">
+          <span
+            v-if="props.icon"
+            class="material-icons-outlined container--card-head-icon"
+          >{{ props.icon
+          }}</span>
+          <div class="w-full">
+            <h1 class="container--card-head-title">
+              {{ props.title }}
+            </h1>
+            <p class="container--card-head-label">
+              {{ props.label }}
+            </p>
+          </div>
+          <div class="text-right mr-4 height--center justify-end">
+            <slot name="headRight" />
+          </div>
         </div>
+        <div class="w-[98%] ml-auto mr-auto border-b" />
+        <div class="container--card-content">
+          <slot name="content" />
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <style scoped lang="postcss">
 * {

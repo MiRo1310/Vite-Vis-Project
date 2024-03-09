@@ -1,5 +1,5 @@
 export const routes = [
-  { path: "/", component: () => import("@/pages/Home.vue") },
-  { path: "/Rolladen", component: () => import("@/pages/Rolladen.vue") },
-  { path: "/:pathMatch(.*)", component: () => import("@/pages/error/ErrorPageNotFound.vue") },
-];
+  { path: '/', component: async () => await import('@/pages/Home.vue') },
+  { path: '/Rolladen', component: async () => await import('@/pages/Rolladen.vue') },
+  { path: '/:pathMatch(.*)', component: async () => await import('@/pages/error/ErrorPageNotFound.vue') }
+]
