@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Card } from './ui/card';
 import Button from '@/components/ui/button/Button.vue';
 import { X } from 'lucide-vue-next';
 import { useIobrokerStore } from '@/store/iobrokerStore';
@@ -35,45 +36,37 @@ const createShoppinglist = () => {
   }
 }
 const removeItem = (id: string) => {
-  console.log('id', id);
-
   if (adminConnection.value) adminConnection.value.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true)
-
-
 }
 </script>
 <template>
-  <Table>
-    <TableCaption>Einkaufsliste</TableCaption>
-    <TableHeader>
-      <TableRow>
-        <TableHead class="w-[100px]" />
-        <TableHead>Artikel</TableHead>
-        <TableHead>Hinzugefügt</TableHead>
-        <TableHead />
-        <TableHead class="text-right" />
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow
-        v-for="item in shoppingListData"
-        :key="item.name"
-      >
-        <TableCell class="font-medium">
-          {{ item.pos }}
-        </TableCell>
-        <TableCell>{{ item.name }}</TableCell>
-        <TableCell>{{ toLocaleTime(item.time) }} </TableCell>
-        <TableCell>
-          <Button
-            variant="outline"
-            class="w-8 h-8 p-0"
-            @click="removeItem(item.id)"
-          >
-            <X class="w-4 h-4" />
-          </Button>
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
+  <Card>
+
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead class="w-auto">Pos</TableHead>
+          <TableHead>Artikel</TableHead>
+          <TableHead>Hinzugefügt</TableHead>
+          <TableHead class="text-right"></TableHead>
+        </TableRow>
+      </TableHeader>
+
+      <TableBody>
+        <TableRow v-for="item in shoppingListData" :key="item.name">
+          <TableCell class="font-medium">
+            {{ item.pos }}
+          </TableCell>
+          <TableCell>{{ item.name }}</TableCell>
+          <TableCell>{{ toLocaleTime(item.time) }} </TableCell>
+          <TableCell>
+            <Button variant="outline" class="w-8 h-8 p-0" @click="removeItem(item.id)">
+              <X class="w-4 h-4" />
+            </Button>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+
+    </Table>
+  </Card>
 </template>

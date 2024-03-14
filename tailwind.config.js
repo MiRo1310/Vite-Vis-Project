@@ -1,4 +1,4 @@
-const animate = require("tailwindcss-animate")
+const animate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -16,11 +16,16 @@ module.exports = {
       },
     },
     extend: {
+      backgroundImage: {
+        smarthome1: "url('/public/smart-home-3395993_1280.jpg')",
+        smarthome2: "url('/public/smart-home-5575122_1280.jpg')",
+      },
       colors: {
         trashPapier: "#2e12cc",
         trashBio: "#734d29",
         trashGelb: "#eaed1c",
         trashRest: "#000000",
+        background: "#0a1a58",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

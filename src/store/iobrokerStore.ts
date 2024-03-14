@@ -1,11 +1,14 @@
-import { defineStore } from 'pinia'
-
+import { defineStore } from "pinia";
 
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: () => ({
     iobrokerValues: {},
     trash: {},
     shoppingList: {},
+    urlaubAktiv: false,
+    fensterOffen: false,
+    fensterStatus1: "",
+    fensterStatus2: "",
   }),
   getters: {
     getIobrokerValues(state) {
@@ -20,8 +23,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   },
   actions: {
     setValues(name: string, key: string, val: string | number | boolean | object) {
-      if (key === "trash" || key === "shoppingList") {
-        this[key] = val;
+      if (key) {
+        (this as any)[key] = val;
       } else {
         const value: IobrokerValues = this.iobrokerValues;
         value[name] = val;

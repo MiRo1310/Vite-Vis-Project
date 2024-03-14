@@ -12,16 +12,16 @@ onMounted(async () => {
 
 
 <template>
-  <div class="w-[1280px] h-[800px] absolute border border-red-600 -z-10">
+  <div class="w-full h-[100vh] absolute -z-10 background">
     <div class="h-12">
       <Header />
     </div>
     <div class="w-full h-[100vh] flex flex-row">
-      <div class="nav--left bg-yellow-50">
+      <div class="nav--left ">
         <NavLeft />
       </div>
-      <div class="  w-full h-full">
-        <div class="p-2">
+      <div class="p-1  w-full h-full">
+        <div>
           <router-view />
         </div>
       </div>
@@ -36,5 +36,9 @@ onMounted(async () => {
 
 .nav--left {
   @apply w-[12rem]
+}
+
+.background {
+  background-color: #0a1a58;
 }
 </style>
