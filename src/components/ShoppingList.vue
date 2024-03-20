@@ -3,7 +3,6 @@ import { toLocaleTime } from '@/lib/time';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -41,32 +40,39 @@ const removeItem = (id: string) => {
 </script>
 <template>
   <Card>
-
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="w-auto">Pos</TableHead>
+          <TableHead class="w-auto">
+            Pos
+          </TableHead>
           <TableHead>Artikel</TableHead>
           <TableHead>Hinzugefügt</TableHead>
-          <TableHead class="text-right"></TableHead>
+          <TableHead class="text-right" />
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        <TableRow v-for="item in shoppingListData" :key="item.name">
+        <TableRow
+          v-for="item in shoppingListData"
+          :key="item.name"
+        >
           <TableCell class="font-medium">
             {{ item.pos }}
           </TableCell>
           <TableCell>{{ item.name }}</TableCell>
           <TableCell>{{ toLocaleTime(item.time) }} </TableCell>
           <TableCell>
-            <Button variant="outline" class="w-8 h-8 p-0" @click="removeItem(item.id)">
+            <Button
+              variant="outline"
+              class="w-8 h-8 p-0"
+              @click="removeItem(item.id)"
+            >
               <X class="w-4 h-4" />
             </Button>
           </TableCell>
         </TableRow>
       </TableBody>
-
     </Table>
   </Card>
 </template>

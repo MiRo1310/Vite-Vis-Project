@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import ButtonCard from '@/components/shared/ButtonCard.vue';
-import { Blinds, UserRoundSearch } from 'lucide-vue-next';
+import { Blinds, UserRoundSearch, Hourglass, ListStart } from 'lucide-vue-next';
 import { computed } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { useRouter } from 'vue-router';
@@ -23,10 +23,37 @@ const getHoliday = computed(() => {
     return "Kein Urlaub"
 })
 
+const toggleTimer = () => {
+    iobrokerStore.setValues("", "showTimerCard", !iobrokerStore.showTimerCard)
+}
 
 </script>
 <template>
-    <ButtonCard :icon="Blinds" :title="'Fenster'" @click="handleWindowClick" :class="getWindowStyle" />
-    <ButtonCard :icon="UserRoundSearch" :title="getHoliday" @click="handleHolidayClick" />
+  <ButtonCard
+    :icon="Blinds"
+    :title="'Fenster'"
+    :class="getWindowStyle"
+    @click="handleWindowClick"
+  />
+  <ButtonCard
+    :icon="UserRoundSearch"
+    :title="getHoliday"
+    @click="handleHolidayClick"
+  />
+  <ButtonCard
+    :icon="Hourglass"
+    title="Timer"
+    @click="toggleTimer"
+  />
+  <a
+    href="http://192.168.1.81:8082/vis/index.html?FireHD10#1_Startseite"
+    target="_self"
+    rel="noopener noreferrer"
+  >
+    <ButtonCard
+      :icon="ListStart"
+      title="Alte VIS"
+    />
+  </a>
 </template>
 <style lang='postcss' scoped></style>

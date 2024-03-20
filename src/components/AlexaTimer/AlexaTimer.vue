@@ -1,0 +1,74 @@
+<script setup lang='ts'>
+import { Card, CardContent } from '@/components/ui/card';
+import CardHeader from '@/components/ui/card/CardHeader.vue';
+import { X, Hourglass } from 'lucide-vue-next';
+import Button from '@/components/ui/button/Button.vue';
+import { ref, watch } from 'vue';
+import { useIobrokerStore } from '@/store/iobrokerStore';
+const iobrokerStore = useIobrokerStore();
+// const emit = defineEmits(["stopTimer"]);
+
+
+const closeWindow = () => {
+  iobrokerStore.setValues("", "showTimerCard", false)
+}
+
+const showTimerCard = ref(false);
+
+watch(() => iobrokerStore.showTimerCard, (val: boolean) => {
+  showTimerCard.value = val;
+})
+</script>
+<template>
+  <Card
+    v-if="showTimerCard"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 z-10"
+  >
+    <Button
+      class="absolute w-8 h-8 p-0 top-4 right-4 z-20"
+      @click="closeWindow"
+    >
+      <X />
+    </Button>
+
+    <CardHeader class="text-center relative px-4">
+      <Hourglass class="w-10 h-10 absolute top-4 left-3" />
+      <p>Alexa Timer</p>
+    </CardHeader>
+    <CardContent class="flex  flex-wrap px-3 pt-0 pb-3">
+      <div
+        v-for="i in 4"
+        :key="i"
+        class=" bg-gray-100 rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative"
+      >
+        <Button class=" w-8 h-8 p-0 absolute right-2">
+          <X />
+        </Button>
+        <div class="w-full">
+          <h1 class="text-xl  text-gray-500 ">
+            Timer 1
+          </h1>
+          <div class="flex  w-full mt-4">
+            <p>Name:</p>
+            <p class=" flex-1 text-right">
+              Timer A
+            </p>
+          </div>
+          <div class="flex  w-full">
+            <p>Gerät:</p>
+            <p class=" flex-1 text-right">
+              Echo-Dot Keller
+            </p>
+          </div>
+          <div class="flex  w-full">
+            <p>Restdauer:</p>
+            <p class=" flex-1 text-right">
+              00:05:49
+            </p>
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</template>
+<style lang='postcss' scoped></style>../ui/card
