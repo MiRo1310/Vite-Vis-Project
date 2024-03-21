@@ -5,29 +5,31 @@ import { X, Hourglass } from 'lucide-vue-next';
 import Button from '@/components/ui/button/Button.vue';
 import { ref, watch } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
+import { adminConnection } from '@/lib/iobroker-connecter.ts'
 const iobrokerStore = useIobrokerStore();
-// const emit = defineEmits(["stopTimer"]);
+import { storeToRefs } from 'pinia';
 
+const { timer } = storeToRefs<any>(iobrokerStore);
 
 const closeWindow = () => {
   iobrokerStore.setValues("", "showTimerCard", false)
 }
-
 const showTimerCard = ref(false);
+const timersArray = ["timer1", "timer2", "timer3", "timer4"];
+
 
 watch(() => iobrokerStore.showTimerCard, (val: boolean) => {
   showTimerCard.value = val;
 })
+const stopTimer = (index: number) => {
+  if (adminConnection.value) adminConnection.value.setState(`alexa-timer-vis.0.${timersArray[index]}.Reset`, true)
+}
+
 </script>
 <template>
-  <Card
-    v-if="showTimerCard"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 z-10"
-  >
-    <Button
-      class="absolute w-8 h-8 p-0 top-4 right-4 z-20"
-      @click="closeWindow"
-    >
+  <Card v-if="iobrokerStore.showTimerCard"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 z-10">
+    <Button class="absolute w-8 h-8 p-0 top-4 right-4 z-20" @click="closeWindow">
       <X />
     </Button>
 
@@ -36,34 +38,45 @@ watch(() => iobrokerStore.showTimerCard, (val: boolean) => {
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="flex  flex-wrap px-3 pt-0 pb-3">
-      <div
-        v-for="i in 4"
-        :key="i"
-        class=" bg-gray-100 rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative"
-      >
-        <Button class=" w-8 h-8 p-0 absolute right-2">
+      <div v-for="(singleTimer, i) in timersArray" :key="i"
+        class=" bg-gray-100 rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative">
+        <Button class=" w-8 h-8 p-0 absolute right-2" @click="stopTimer(i)">
           <X />
         </Button>
         <div class="w-full">
-          <h1 class="text-xl  text-gray-500 ">
-            Timer 1
+          <h1 class="text-xl  text-gray-500 h-8">
+            Timer {{ i + 1 }}
           </h1>
-          <div class="flex  w-full mt-4">
+          <div class="flex  w-full mt-2 justify-between text-xs">
+            <div class="w-1/2 flex justify-between mr-6">
+              <p>Startzeit:</p>
+              <p class=" flex-1 text-right">
+                {{ timer[singleTimer]?.timeStart }}
+              </p>
+            </div>
+            <div class="w-1/2 flex justify-between">
+              <p>Endzeit:</p>
+              <p class=" flex-1 text-right">
+                {{ timer[singleTimer]?.timeEnd }}
+              </p>
+            </div>
+          </div>
+          <div class="flex  w-full mt-2">
             <p>Name:</p>
             <p class=" flex-1 text-right">
-              Timer A
+              {{ timer[singleTimer]?.name }}
             </p>
           </div>
           <div class="flex  w-full">
             <p>Gerät:</p>
             <p class=" flex-1 text-right">
-              Echo-Dot Keller
+              {{ timer[singleTimer]?.device }}
             </p>
           </div>
           <div class="flex  w-full">
             <p>Restdauer:</p>
             <p class=" flex-1 text-right">
-              00:05:49
+              {{ timer[singleTimer]?.string }}
             </p>
           </div>
         </div>

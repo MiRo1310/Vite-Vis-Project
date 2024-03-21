@@ -39,11 +39,13 @@ export async function init() {
     idToSubscribe.forEach((entry) => {
       if (adminConnection.value) {
         adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
-          console.log("State changed", id, state);
-          console.log(entry);
-          if (state.val) {
-            iobrokerStore.setValues(entry.name, entry.key || null, state.val, entry.subKey || null);
+          let value = state.val;
+
+          if (!value) {
+            value = null;
           }
+
+          iobrokerStore.setValues(entry.name, entry.key || null, value, entry.subKey || null);
         });
       }
     });
