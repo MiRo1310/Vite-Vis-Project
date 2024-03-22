@@ -6,7 +6,7 @@ const iobrokerStore = useIobrokerStore();
 const { iobrokerValues: io } = storeToRefs<any>(iobrokerStore);
 </script>
 <template>
-  <div class="flex w-full justify-between">
+  <div class="flex w-full justify-between ">
     <h1 class="text-4xl ml-2 mt-1 text-white">
       Aussentemperatur {{ io.Aussentemperatur }}°C
     </h1>

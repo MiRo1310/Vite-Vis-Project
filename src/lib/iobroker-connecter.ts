@@ -34,13 +34,13 @@ export async function init() {
   if (adminConnection.value) {
     await adminConnection.value.startSocket();
     await adminConnection.value.waitForFirstConnection();
-    console.log(await adminConnection.value.getEnums());
-    console.log(await adminConnection.value.getStates());
+    // console.log(await adminConnection.value.getEnums());
+    // console.log(await adminConnection.value.getStates());
     idToSubscribe.forEach((entry) => {
       if (adminConnection.value) {
         adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
+          console.log(id, state);
           let value = state.val;
-
           if (!value) {
             value = null;
           }

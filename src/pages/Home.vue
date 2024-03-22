@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import Trash from '@/components/Trash.vue';
 import ShoppingList from '@/components/ShoppingList.vue';
-
+import Header from '@/components/Header.vue';
 import ButtonListRight from '@/components/ButtonListRight.vue';
 import AlexaTimer from '@/components/AlexaTimer/AlexaTimer.vue';
 
 </script>
 
 <template>
+  <div class="h-12">
+    <Header />
+  </div>
   <div class="h-full w-full flex  ">
     <div class="flex-1">
       <AlexaTimer />

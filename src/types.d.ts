@@ -31,3 +31,8 @@ interface Timer {
   name: string;
 }
 type KeyOfTimer = keyof Timer;
+
+interface WindowsArray {
+  name: string;
+  shutter: boolean;
+}

@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card } from './ui/card';
+import { Card } from '@/components/ui/card';
 import Button from '@/components/ui/button/Button.vue';
 import { X } from 'lucide-vue-next';
 import { useIobrokerStore } from '@/store/iobrokerStore';
