@@ -39,9 +39,8 @@ export async function init() {
     idToSubscribe.forEach((entry) => {
       if (adminConnection.value) {
         adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
-          console.log(id, state);
           let value = state.val;
-          if (!value) {
+          if (!value && !value === false) {
             value = null;
           }
 

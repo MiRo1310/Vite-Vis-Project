@@ -10,7 +10,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     fensterStatus1: "",
     fensterStatus2: "",
     showTimerCard: false,
-    timer: {} as any,
+    timer: {} as TimerObject,
+    rolladen: {} as Rolladen,
   }),
   getters: {
     getIobrokerValues(state) {
@@ -23,7 +24,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       return state.shoppingList;
     },
     getTimer(state) {
-      return state.timer;
+      return state;
     },
   },
   actions: {
@@ -31,7 +32,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       console.log(key, val, subKey, name);
       if (key) {
         if (subKey) {
-          (this as any)[key] = getSubValue(this.getTimer, subKey, val);
+          (this as any)[key] = getSubValue(this.getTimer, subKey, val, key);
 
           return;
         }
@@ -45,7 +46,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   },
 });
 
-const getSubValue = (obj: any, subKey: string, val: string | number | boolean | object) => {
+const getSubValue = (obj: any, subKey: string, val: string | number | boolean | object, key: string) => {
+  obj = obj[key];
   const subKeyArray = subKey.split(",").map((key) => key.trim());
   if (subKeyArray.length === 1) {
     obj[subKeyArray[0]] = val;
