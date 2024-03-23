@@ -32,7 +32,59 @@ interface Timer {
 }
 type KeyOfTimer = keyof Timer;
 
-interface WindowsArray {
+interface WindowsObject {
   name: string;
   shutter: boolean;
+  id: string;
+  id2?: string;
+}
+interface Rolladen {
+  wohnzimmer: {
+    mittig: number;
+    ecke: number;
+    links: number;
+    rechts: number;
+  };
+  kueche: {
+    tuer: number;
+    fenster: number;
+  };
+  esszimmer: {
+    fenster: number;
+  };
+  kinderzimmer: {
+    fenster: number;
+  };
+  schlafen: {
+    tuer: number;
+  };
+}
+interface Fenster {
+  wohnzimmer: {
+    mittig: boolean;
+    ecke: boolean;
+    links: boolean;
+    rechts: boolean;
+  };
+  kueche: {
+    tuer: boolean;
+    fenster: boolean;
+  };
+  esszimmer: {
+    links: boolean;
+    rechts: boolean;
+  };
+  kinderzimmer: {
+    fenster: boolean;
+  };
+  schlafen: {
+    tuer: boolean;
+  };
+}
+
+interface IdToSubscribe {
+  id: string;
+  name?: string;
+  key?: string;
+  subKey?: string;
 }

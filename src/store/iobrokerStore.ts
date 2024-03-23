@@ -10,8 +10,10 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     fensterStatus1: "",
     fensterStatus2: "",
     showTimerCard: false,
+    sonnenuntergang: "",
     timer: {} as TimerObject,
     rolladen: {} as Rolladen,
+    fenster: {} as Fenster,
   }),
   getters: {
     getIobrokerValues(state) {

@@ -31,6 +31,7 @@ export async function init() {
     admin5only: false,
     autoSubscribes: [],
   });
+
   if (adminConnection.value) {
     await adminConnection.value.startSocket();
     await adminConnection.value.waitForFirstConnection();
@@ -39,6 +40,7 @@ export async function init() {
     idToSubscribe.forEach((entry) => {
       if (adminConnection.value) {
         adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
+          console.log(id);
           let value = state.val;
           if (!value && !value === false) {
             value = null;

@@ -71,7 +71,7 @@ const sidebarOpen = ref(false)
 
     <div class="lg:pl-52 background min-h-[100vh]">
 
-      <Button :size="'icon'" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
+      <Button :size="'icon'" class="m-2 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
         <MenuIcon class="h-6 w-6" aria-hidden="true" />
       </Button>
 
