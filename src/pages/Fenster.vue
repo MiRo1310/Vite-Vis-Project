@@ -44,7 +44,6 @@ const getOpenWindows = computed(() => {
                 countedOpenWindows++
             }
         })
-        console.log(countedOpenWindows)
 
     })
     return countedOpenWindows

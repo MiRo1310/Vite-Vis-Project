@@ -87,4 +87,7 @@ interface IdToSubscribe {
   name?: string;
   key?: string;
   subKey?: string;
+  saveId?: boolean;
 }
+
+type WindowEntryId = "Delay" | "Auto";

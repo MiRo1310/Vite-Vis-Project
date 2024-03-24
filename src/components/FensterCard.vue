@@ -7,8 +7,9 @@ import { Switch } from '@/components/ui/switch';
 import FensterOpenClose from '@/components/FensterOpenClose.vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
+import { adminConnection } from '@/lib/iobroker-connecter.ts'
 const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen } = storeToRefs<any>(iobrokerStore)
+const { fenster, rolladen, shutterAutoDownTime } = storeToRefs<any>(iobrokerStore)
 const props = defineProps({
     shutter: {
         type: Boolean,
@@ -54,6 +55,21 @@ const getShutterPosition = computed(() => {
     shutterPosition.value = value
     return value
 })
+const getAutoCloseDelay = computed(() => {
+    const arrayOfIds = props.id.split(',').map(id => id.trim())
+    return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Delay']
+})
+const getAutoClose = computed(() => {
+    const arrayOfIds = props.id.split(',').map(id => id.trim())
+    return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Auto']
+})
+
+const getID = (entry: WindowEntryId) => {
+    const arrayOfIds = props.id.split(',').map(id => id.trim())
+    console.log(arrayOfIds[1])
+    return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + entry + 'Id']
+}
+
 const getShutterImage = computed(() => {
 
     if (shutterPosition.value === 0) {
@@ -80,7 +96,18 @@ const getShutterImage = computed(() => {
     } else
         return "/blinds2_double_0.png"
 })
-
+const delay = ref(0)
+const updateHandler = (event: any) => {
+    delay.value = event
+    if (adminConnection.value) {
+        adminConnection.value.setState(getID("Delay"), delay.value)
+    }
+}
+const handleChangeChecked = (value: boolean) => {
+    if (adminConnection.value) {
+        adminConnection.value.setState(getID('Auto'), value)
+    }
+}
 </script>
 <template>
     <Card class="w-[20rem] m-1 relative">
@@ -117,14 +144,18 @@ const getShutterImage = computed(() => {
                         </p>
 
                         <div class="absolute top-2 right-2">
-                            <div class="flex items-center space-x-2 ">
+                            <div class="flex items-center justify-between ">
                                 <div class="w-11">
-                                    <Switch />
+                                    <Switch :checked="getAutoClose" @update:checked="handleChangeChecked" />
                                     <p class="text-[0.5rem]">
                                         Auto runter
                                     </p>
                                 </div>
-                                <p><Input type="time" /></p>
+                                <div class="relative">
+                                    <Input type="number" step="1" class="w-[5.8rem] pr-8"
+                                        :model-value="getAutoCloseDelay" @update:model-value="updateHandler($event)" />
+                                    <div class=" absolute text-sm top-2 right-2">min</div>
+                                </div>
                             </div>
                             <div class="flex items-center space-x-2 mt-2">
                                 <div class="w-11">

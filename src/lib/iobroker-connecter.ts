@@ -46,7 +46,7 @@ export async function init() {
             value = null;
           }
 
-          iobrokerStore.setValues(entry.name, entry.key || null, value, entry.subKey || null);
+          iobrokerStore.setValues(entry.name, entry.key || null, value, entry.subKey || null, entry.saveId || false, id);
         });
       }
     });

@@ -11,6 +11,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     fensterStatus2: "",
     showTimerCard: false,
     sonnenuntergang: "",
+    idsToControl: {},
+    shutterAutoDownTime: {},
     timer: {} as TimerObject,
     rolladen: {} as Rolladen,
     fenster: {} as Fenster,
@@ -30,11 +32,20 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     },
   },
   actions: {
-    setValues(name: string, key: string, val: string | number | boolean | object, subKey?: string) {
-      console.log(key, val, subKey, name);
+    setValues(
+      name: string,
+      key: string,
+      val: string | number | boolean | object,
+      subKey?: string,
+      saveId?: boolean,
+      id?: string
+    ) {
       if (key) {
         if (subKey) {
-          (this as any)[key] = getSubValue(this.getTimer, subKey, val, key);
+          if (!(this as any)[key]) {
+            console.log("Key not found, please put it to the store. ", key);
+          }
+          (this as any)[key] = getSubValue(this.getTimer, subKey, val, key, saveId, id);
 
           return;
         }
@@ -48,11 +59,21 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   },
 });
 
-const getSubValue = (obj: any, subKey: string, val: string | number | boolean | object, key: string) => {
+const getSubValue = (
+  obj: any,
+  subKey: string,
+  val: string | number | boolean | object,
+  key: string,
+  saveId?: boolean,
+  id?: string
+) => {
   obj = obj[key];
   const subKeyArray = subKey.split(",").map((key) => key.trim());
   if (subKeyArray.length === 1) {
     obj[subKeyArray[0]] = val;
+    if (saveId) {
+      obj[subKeyArray[0] + "Id"] = id;
+    }
     return obj;
   }
   if (subKeyArray.length === 2) {
@@ -63,6 +84,9 @@ const getSubValue = (obj: any, subKey: string, val: string | number | boolean | 
       obj[subKeyArray[0]][subKeyArray[1]] = {};
     }
     obj[subKeyArray[0]][subKeyArray[1]] = val;
+    if (saveId) {
+      obj[subKeyArray[0]][subKeyArray[1] + "Id"] = id;
+    }
     return obj;
   }
 };

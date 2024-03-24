@@ -1,5 +1,4 @@
 export const idToSubscribe: IdToSubscribe[] = [
-  { id: "telegram.0.communicate.request", name: "telegram" },
   { id: "javascript.0.Geraete.WetterCom.temp_value", name: "Aussentemperatur" },
   { id: "trashschedule.0.type.json", name: "trash", key: "trash" },
   { id: "alexa-shoppinglist.0.list_activ", name: "shoppingList", key: "shoppingList" },
@@ -203,7 +202,33 @@ export const idToSubscribe: IdToSubscribe[] = [
   { id: "s7.2.DBs.DB1.B073", name: "", key: "rolladen", subKey: "abstellraumog,links" },
   { id: "s7.2.DBs.DB1.B057", name: "", key: "rolladen", subKey: "abstellraumog,rechts" },
   { id: "s7.2.DBs.DB1.B078", name: "", key: "rolladen", subKey: "bad,fenster" },
-  { id: "s7.2.DBs.DB1.B150", name: "", key: "rolladen", subKey: "gaestezimmer,fenster" },
+  { id: "s7.2.DBs.DB1.B150", key: "rolladen", subKey: "gaestezimmer,fenster" },
   // Sonnenuntergang
   { id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter", key: "sonnenuntergang" },
+  // Zeitversatz Rolladen runter
+  {
+    id: "0_userdata.0.Rolladen.Esszimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "esszimmer, linksDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "kueche, fensterDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "schlafen, fensterDelay",
+    saveId: true,
+  },
+  // Autoherunterfahren Rolladen
+  {
+    id: "0_userdata.0.Rolladen.Schlafzimmer.Schlafzimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "schlafen, fensterAuto",
+    saveId: true,
+  },
 ];
