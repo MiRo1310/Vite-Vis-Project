@@ -1,15 +1,16 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import FensterButtons from '@/components/fenster/FensterButtons.vue';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import FensterOpenClose from '@/components/FensterOpenClose.vue';
+import FensterOpenClose from '@/components/fenster/FensterOpenClose.vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { adminConnection } from '@/lib/iobroker-connecter.ts'
+import { getID } from '@/lib/utilities'
 const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen, shutterAutoDownTime } = storeToRefs<any>(iobrokerStore)
+const { fenster, rolladen, shutterAutoDownTime, idsToControl } = storeToRefs<any>(iobrokerStore)
 const props = defineProps({
     shutter: {
         type: Boolean,
@@ -64,14 +65,7 @@ const getAutoClose = computed(() => {
     return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Auto']
 })
 
-const getID = (entry: WindowEntryId) => {
-    const arrayOfIds = props.id.split(',').map(id => id.trim())
-    console.log(arrayOfIds[1])
-    return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + entry + 'Id']
-}
-
 const getShutterImage = computed(() => {
-
     if (shutterPosition.value === 0) {
         return "/blinds2_double_100.png"
     }
@@ -100,12 +94,12 @@ const delay = ref(0)
 const updateHandler = (event: any) => {
     delay.value = event
     if (adminConnection.value) {
-        adminConnection.value.setState(getID("Delay"), delay.value)
+        adminConnection.value.setState(getID("Delay", props.id, idsToControl), delay.value)
     }
 }
 const handleChangeChecked = (value: boolean) => {
     if (adminConnection.value) {
-        adminConnection.value.setState(getID('Auto'), value)
+        adminConnection.value.setState(getID('Auto', props.id, idsToControl), value)
     }
 }
 </script>
@@ -169,35 +163,12 @@ const handleChangeChecked = (value: boolean) => {
                         </div>
                     </div>
                 </div>
-                <div class=" flex justify-between">
-                    <Button class="window--button" :size="'sm'">
-                        100%
-                    </Button>
-                    <Button class="window--button" :size="'sm'">
-                        80%
-                    </Button>
-                    <Button class="window--button" :size="'sm'">
-                        60%
-                    </Button>
-                    <Button class="window--button" :size="'sm'">
-                        40%
-                    </Button>
-                    <Button class="window--button" :size="'sm'">
-                        20%
-                    </Button>
-                    <Button class="window--button" :size="'sm'">
-                        0%
-                    </Button>
-                </div>
+                <FensterButtons :id="props.id"></FensterButtons>
             </div>
         </CardContent>
     </Card>
 </template>
 <style lang='postcss' scoped>
-.window--button {
-    @apply mx-1 w-10 h-6 text-xs;
-}
-
 .window--img {
     @apply w-8 h-12;
 }

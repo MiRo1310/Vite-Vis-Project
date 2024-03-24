@@ -90,4 +90,11 @@ interface IdToSubscribe {
   saveId?: boolean;
 }
 
-type WindowEntryId = "Delay" | "Auto";
+type WindowEntryId = "Delay" | "Auto" | "";
+interface IdsToControl {
+  value: {
+    [key: string]: {
+      [key: string]: string;
+    };
+  };
+}

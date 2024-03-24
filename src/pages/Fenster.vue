@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import FensterCard from '@/components/FensterCard.vue';
+import FensterCard from '@/components/fenster/FensterCard.vue';
 import { computed } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
@@ -60,11 +60,13 @@ const getOpenWindows = computed(() => {
                         <span :class="fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1 ">offen </span>
                     </p>
 
-                    <p v-show="getOpenWindows !== 1"> {{ getOpenWindows ? getOpenWindows : "Alle" }} Fenster sind
-                    <p :class="fensterOffen ? 'text-red-500' : ''">{{
+                    <p v-show="getOpenWindows !== 1"> {{ getOpenWindows ? getOpenWindows : "Alle" }}
+                        Fenster sind
+                        <span :class="fensterOffen ? 'text-red-500' : ''">{{
                         fensterOffen ?
-                            'offen' : 'geschlossen' }}</p>
+                            'offen' : 'geschlossen' }}</span>
                     </p>
+
                     <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
                 </CardTitle>
             </CardHeader>

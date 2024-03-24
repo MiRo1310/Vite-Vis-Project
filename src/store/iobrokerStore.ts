@@ -27,8 +27,11 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     getShoppinglist(state) {
       return state.shoppingList;
     },
-    getTimer(state) {
+    getState(state) {
       return state;
+    },
+    getIdsToControl(state) {
+      return state.idsToControl;
     },
   },
   actions: {
@@ -45,8 +48,10 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
           if (!(this as any)[key]) {
             console.log("Key not found, please put it to the store. ", key);
           }
-          (this as any)[key] = getSubValue(this.getTimer, subKey, val, key, saveId, id);
-
+          (this as any)[key] = getSubValue(this.getState, subKey, val, key);
+          if (saveId && id) {
+            (this as any)["idsToControl"] = saveIdToStore(this.getIdsToControl, id, subKey);
+          }
           return;
         }
         (this as any)[key] = val;
@@ -59,21 +64,30 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   },
 });
 
-const getSubValue = (
-  obj: any,
-  subKey: string,
-  val: string | number | boolean | object,
-  key: string,
-  saveId?: boolean,
-  id?: string
-) => {
-  obj = obj[key];
-  const subKeyArray = subKey.split(",").map((key) => key.trim());
-  if (subKeyArray.length === 1) {
-    obj[subKeyArray[0]] = val;
-    if (saveId) {
+const saveIdToStore = (obj: any, id: string, subKey: string) => {
+  try {
+    const subKeyArray = getSubKeyArray(subKey);
+
+    if (subKeyArray.length === 1) {
       obj[subKeyArray[0] + "Id"] = id;
     }
+    if (subKeyArray.length === 2) {
+      if (!obj[subKeyArray[0]]) {
+        obj[subKeyArray[0]] = {};
+      }
+      obj[subKeyArray[0]][subKeyArray[1] + "Id"] = id;
+    }
+    return obj;
+  } catch (e) {
+    console.log("Error in save ids to store " + e);
+  }
+};
+
+const getSubValue = (obj: any, subKey: string, val: string | number | boolean | object, key: string) => {
+  obj = obj[key];
+  const subKeyArray = getSubKeyArray(subKey);
+  if (subKeyArray.length === 1) {
+    obj[subKeyArray[0]] = val;
     return obj;
   }
   if (subKeyArray.length === 2) {
@@ -84,9 +98,9 @@ const getSubValue = (
       obj[subKeyArray[0]][subKeyArray[1]] = {};
     }
     obj[subKeyArray[0]][subKeyArray[1]] = val;
-    if (saveId) {
-      obj[subKeyArray[0]][subKeyArray[1] + "Id"] = id;
-    }
     return obj;
   }
+};
+const getSubKeyArray = (subKey: string) => {
+  return subKey.split(",").map((key) => key.trim());
 };
