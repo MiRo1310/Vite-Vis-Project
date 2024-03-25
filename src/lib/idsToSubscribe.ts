@@ -210,7 +210,7 @@ export const idToSubscribe: IdToSubscribe[] = [
   { id: "s7.2.DBs.DB1.B150", key: "rolladen", subKey: "gaestezimmer,fenster", saveId: true },
   // Sonnenuntergang
   { id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter", key: "sonnenuntergang" },
-  // Zeitversatz Rolladen runter
+  // Zeitversatz Rolladen Auto herunter fahren
   {
     id: "0_userdata.0.Rolladen.Esszimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
     key: "shutterAutoDownTime",
@@ -229,11 +229,143 @@ export const idToSubscribe: IdToSubscribe[] = [
     subKey: "schlafen, fensterDelay",
     saveId: true,
   },
+  {
+    id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "schlafen, tuerDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Kinderzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "kinderzimmer, fensterDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Bad.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "bad, fensterDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, eckeDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, linksDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, mittigDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, rechtsDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(Tür)",
+    key: "shutterAutoDownTime",
+    subKey: "kueche, tuerDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(links)",
+    key: "shutterAutoDownTime",
+    subKey: "abstellraumog, linksDelay",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(rechts)",
+    key: "shutterAutoDownTime",
+    subKey: "abstellraumog, rechtsDelay",
+    saveId: true,
+  },
   // Autoherunterfahren Rolladen
+  {
+    id: "0_userdata.0.Rolladen.Esszimmer.Esszimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "esszimmer, linksAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Esszimmer.Esszimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "esszimmer, linksAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Fenster_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "kueche, fensterAuto",
+    saveId: true,
+  },
   {
     id: "0_userdata.0.Rolladen.Schlafzimmer.Schlafzimmer_Rolladen_Zeitsteuerung",
     key: "shutterAutoDownTime",
-    subKey: "schlafen, fensterAuto",
+    subKey: "schlafen, tuerAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Kinderzimmer.Rollade_automisch_runter",
+    key: "shutterAutoDownTime",
+    subKey: "kinderzimmer, fensterAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Bad.Bad_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "bad, fensterAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, eckeAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, linksAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, mittigAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "wohnzimmer, rechtsAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Tür_Rolladen_Zeitsteuerung",
+    key: "shutterAutoDownTime",
+    subKey: "kueche, tuerAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Abstellraum_OG_links_Rolladen_Zeitsteuerung_aktiv",
+    key: "shutterAutoDownTime",
+    subKey: "abstellraumog, linksAuto",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Abstellraum_OG_rechts_Rolladen_Zeitsteuerung_aktiv",
+    key: "shutterAutoDownTime",
+    subKey: "abstellraumog, rechtsAuto",
     saveId: true,
   },
 ];

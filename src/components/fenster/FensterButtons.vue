@@ -1,11 +1,11 @@
 <script setup lang='ts'>
 import { Button } from '@/components/ui/button';
-import { useIobrokerStore } from '@/store/iobrokerStore';
-import { storeToRefs } from 'pinia';
-import { getID } from '@/lib/utilities';
+
+
 import { adminConnection } from '@/lib/iobroker-connecter';
-const iobrokerStore = useIobrokerStore();
-const { idsToControl } = storeToRefs<any>(iobrokerStore)
+import { notSubscribedIds } from '@/lib/idsNotSubscribed';
+
+
 const props = defineProps({
     id: {
         type: String,
@@ -14,7 +14,8 @@ const props = defineProps({
 })
 
 const handleClick = (i: number) => {
-    const id = getID("", props.id, idsToControl.value)
+    const arrayOfIds = props.id.split(",").map((id) => id.trim());
+    const id = notSubscribedIds[arrayOfIds[0]]["shutterPosition"]
     if (adminConnection.value)
         adminConnection.value.setState(id, 100 - (i - 1) * 20)
 }
