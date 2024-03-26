@@ -98,3 +98,57 @@ interface IdsToControl {
     };
   };
 }
+
+interface PositionChildrensRoom {
+  fenster: number;
+}
+type Rooms =
+  | "wohnzimmer"
+  | "kueche"
+  | "esszimmer"
+  | "kinderzimmer"
+  | "schlafen"
+  | "bad"
+  | "flur"
+  | "gaesteWC"
+  | "buero"
+  | "abstellraum"
+  | "abstellraumog"
+  | "keller"
+  | "gaestezimmer"
+  | "dachboden";
+
+type NotSubscribedIds = {
+  // wohnzimmer: { [key in TypeWohnzimmer]: Shutterpoition };
+  // kueche: Kueche;
+  esszimmer: { [key in Esszimmer]?: Shutterpoition };
+  kinderzimmer: { [key in Kinderzimmer]?: Shutterpoition };
+  // schlafen: Schlafen;
+  // bad: BaseAudioContext;
+  // flur: Flur;
+  // gaesteWC: GaesteWC;
+  // buero: Buero;
+  // abstellraum: Abstellraum;
+  // abstellraumog: Abstellraumog;
+  // keller: Keller;
+  // gaestezimmer: Gaestezimmer;
+  // dachboden: Dachboden;
+};
+
+interface Shutterpoition {
+  shutterPosition: string;
+}
+type Esszimmer = "links" | "rechts";
+type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
+type Kinderzimmer = "fenster";
+type Kueche = "tuer" | "fenster";
+type Schlafen = "tuer" | "fenster";
+type Bad = "fenster";
+type Flur = "links" | "rechts";
+type GaesteWC = "links" | "rechts";
+type Buero = "fenster";
+type Abstellraum = "fenster";
+type Abstellraumog = "links" | "rechts";
+type Keller = "fenster" | "tuer";
+type Gaestezimmer = "fenster";
+type Dachboden = "links" | "rechts";

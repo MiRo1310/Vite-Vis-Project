@@ -1,8 +1,5 @@
-interface NotSubscribedIds {
-  [key: string]: {
-    shutterPosition: string;
-  };
-}
 export const notSubscribedIds: NotSubscribedIds = {
-  esszimmer: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Esszimmer_Rollade" },
+  esszimmer: { links: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Esszimmer_Rollade" } },
+  // kinderzimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Kinderzimmer_Rollade" } },
+  kinderzimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Kinderzimmer_Rollade" } },
 };

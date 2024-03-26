@@ -51,7 +51,7 @@ const getOpenWindows = computed(() => {
 
 </script>
 <template>
-    <div class="pt-2 pb-1 pl-1 fixed right-2 left-52 z-10 background">
+    <div class="lg:pt-2 pb-1 pl-1 lg:fixed right-2 lg:left-52 z-10 background">
         <Card>
             <CardHeader class="p-2">
                 <CardTitle class=" flex justify-between">
@@ -72,7 +72,7 @@ const getOpenWindows = computed(() => {
             </CardHeader>
         </Card>
     </div>
-    <div class=" flex flex-wrap pt-12">
+    <div class=" flex flex-wrap lg:pt-12">
         <FensterCard v-for="card in windows" :shutter="card.shutter" :key="card.name" :title="card.name" :id="card.id"
             :id2="card.id2" />
     </div>

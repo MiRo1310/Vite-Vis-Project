@@ -1,10 +1,7 @@
 <script setup lang='ts'>
 import { Button } from '@/components/ui/button';
-
-
 import { adminConnection } from '@/lib/iobroker-connecter';
 import { notSubscribedIds } from '@/lib/idsNotSubscribed';
-
 
 const props = defineProps({
     id: {
@@ -13,9 +10,17 @@ const props = defineProps({
     }
 })
 
+
 const handleClick = (i: number) => {
     const arrayOfIds = props.id.split(",").map((id) => id.trim());
-    const id = notSubscribedIds[arrayOfIds[0]]["shutterPosition"]
+    const key = arrayOfIds[0] as keyof typeof notSubscribedIds;
+    if (!key) return
+    const subKey = arrayOfIds[1] as keyof typeof notSubscribedIds[typeof key]
+
+    if (!subKey && typeof subKey != "string") return
+    const id = (notSubscribedIds[key][subKey] as { shutterPosition: string }).shutterPosition;
+
+
     if (adminConnection.value)
         adminConnection.value.setState(id, 100 - (i - 1) * 20)
 }
