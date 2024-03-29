@@ -32,7 +32,7 @@ interface Timer {
 }
 type KeyOfTimer = keyof Timer;
 
-interface WindowsObject {
+interface FensterObject {
   name: string;
   shutter: boolean;
   id: string;
@@ -90,7 +90,7 @@ interface IdToSubscribe {
   saveId?: boolean;
 }
 
-type WindowEntryId = "Delay" | "Auto" | "";
+type WindowEntryId = "Delay" | "Auto" | "" | "AutoUp" | "AutoUpTime";
 interface IdsToControl {
   value: {
     [key: string]: {
@@ -119,20 +119,14 @@ type Rooms =
   | "dachboden";
 
 type NotSubscribedIds = {
-  // wohnzimmer: { [key in TypeWohnzimmer]: Shutterpoition };
-  // kueche: Kueche;
+  wohnzimmer: { [key in Wohnzimmer]: Shutterpoition };
+  kueche: { [key in Kueche]: Shutterpoition };
   esszimmer: { [key in Esszimmer]?: Shutterpoition };
-  kinderzimmer: { [key in Kinderzimmer]?: Shutterpoition };
-  // schlafen: Schlafen;
-  // bad: BaseAudioContext;
-  // flur: Flur;
-  // gaesteWC: GaesteWC;
-  // buero: Buero;
-  // abstellraum: Abstellraum;
-  // abstellraumog: Abstellraumog;
-  // keller: Keller;
-  // gaestezimmer: Gaestezimmer;
-  // dachboden: Dachboden;
+  kinderzimmer: { [key in Kinderzimmer]: Shutterpoition };
+  gaestezimmer: { [key in Gaestezimmer]: Shutterpoition };
+  schlafen: { [key in Schlafen]: Shutterpoition };
+  bad: { [key in Bad]: Shutterpoition };
+  abstellraumog: { [key in Abstellraumog]: Shutterpoition };
 };
 
 interface Shutterpoition {

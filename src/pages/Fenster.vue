@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 const iobrokerStore = useIobrokerStore();
 const { fensterOffen, fenster } = storeToRefs<any>(iobrokerStore)
 
-const windows: WindowsObject[] = [
+const windows: FensterObject[] = [
     { name: "Schlafzimmer Fenster", shutter: true, id: "schlafen,fenster" },
     { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer" },
     { name: "Kinderzimmer", shutter: true, id: "kinderzimmer,fenster" },

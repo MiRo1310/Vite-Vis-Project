@@ -289,7 +289,13 @@ export const idToSubscribe: IdToSubscribe[] = [
     subKey: "abstellraumog, rechtsDelay",
     saveId: true,
   },
-  // Autoherunterfahren Rolladen
+  {
+    id: "0_userdata.0.Rolladen.Gästezimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+    key: "shutterAutoDownTime",
+    subKey: "gaestezimmer, fensterDelay",
+    saveId: true,
+  },
+  // Auto herunterfahren Rolladen
   {
     id: "0_userdata.0.Rolladen.Esszimmer.Esszimmer_Rolladen_Zeitsteuerung",
     key: "shutterAutoDownTime",
@@ -366,6 +372,104 @@ export const idToSubscribe: IdToSubscribe[] = [
     id: "0_userdata.0.Rolladen.Abstellraum_OG.Abstellraum_OG_rechts_Rolladen_Zeitsteuerung_aktiv",
     key: "shutterAutoDownTime",
     subKey: "abstellraumog, rechtsAuto",
+    saveId: true,
+  },
+  // Zeit Auto hochfahren Rolladen
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "wohnzimmer, eckeAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "wohnzimmer, linksAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "wohnzimmer, mittigAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "wohnzimmer, rechtsAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "schlafen, tuerAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "schlafen, fensterAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Zeit_Rollade_hoch_Fenster",
+    key: "shutterAutoUpTime",
+    subKey: "kueche, fensterAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Küche.Zeit_Rollade_hoch_Tür",
+    key: "shutterAutoUpTime",
+    subKey: "kueche, tuerAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Kinderzimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "kinderzimmer, fensterAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Esszimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "esszimmer, linksAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Bad.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "bad, fensterAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeit_Rollade_hoch_rechts",
+    key: "shutterAutoUpTime",
+    subKey: "abstellraumog, rechtsAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeit_Rollade_hoch_links",
+    key: "shutterAutoUpTime",
+    subKey: "abstellraumog, linksAutoUpTime",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Gästezimmer.Zeit_Rollade_hoch",
+    key: "shutterAutoUpTime",
+    subKey: "gaestezimmer, fensterAutoUpTime",
+    saveId: true,
+  },
+  // Auto hoch aktiv
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_links",
+    key: "shutterAutoUp",
+    subKey: "abstellraumog, fensterAutoUp",
+    saveId: true,
+  },
+  {
+    id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_rechts",
+    key: "shutterAutoUp",
+    subKey: "abstellraumog, fensterAutoUp",
     saveId: true,
   },
 ];

@@ -12,6 +12,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     showTimerCard: false,
     sonnenuntergang: "",
     idsToControl: {},
+    shutterAutoUp: {},
     shutterAutoDownTime: {},
     timer: {} as TimerObject,
     rolladen: {} as Rolladen,
