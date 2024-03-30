@@ -98,7 +98,7 @@ const getShutterImage = computed(() => {
     } else
         return "/blinds2_double_0.png"
 })
-const updateHandler = (value: number | string | boolean, type: WindowEntryId) => {
+const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) => {
     if (adminConnection.value) {
         adminConnection.value.setState(getID(type, props.id, idsToControl), value)
     }

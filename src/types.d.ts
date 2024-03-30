@@ -86,15 +86,17 @@ interface IdToSubscribe {
   value: Ids[];
   objectNameInStore?: string;
 }
+
 interface Ids {
   id: string;
   firstKeyInObject?: string;
   room?: Rooms;
   subKey?: string;
+  subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
 }
+type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
-type WindowEntryId = "Delay" | "Auto" | "" | "AutoUp" | "AutoUpTime";
 interface IdsToControl {
   value: {
     [key: string]: {
@@ -103,9 +105,6 @@ interface IdsToControl {
   };
 }
 
-interface PositionChildrensRoom {
-  fenster: number;
-}
 type Rooms =
   | "wohnzimmer"
   | "kueche"
@@ -123,20 +122,6 @@ type Rooms =
   | "dachboden"
   | "gaesteWc";
 
-type NotSubscribedIds = {
-  wohnzimmer: { [key in Wohnzimmer]: Shutterpoition };
-  kueche: { [key in Kueche]: Shutterpoition };
-  esszimmer: { [key in Esszimmer]?: Shutterpoition };
-  kinderzimmer: { [key in Kinderzimmer]: Shutterpoition };
-  gaestezimmer: { [key in Gaestezimmer]: Shutterpoition };
-  schlafen: { [key in Schlafen]: Shutterpoition };
-  bad: { [key in Bad]: Shutterpoition };
-  abstellraumog: { [key in Abstellraumog]: Shutterpoition };
-};
-
-interface Shutterpoition {
-  shutterPosition: string;
-}
 type Esszimmer = "links" | "rechts";
 type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
 type Kinderzimmer = "fenster";
@@ -151,3 +136,18 @@ type Abstellraumog = "links" | "rechts";
 type Keller = "fenster" | "tuer";
 type Gaestezimmer = "fenster";
 type Dachboden = "links" | "rechts";
+
+type NotSubscribedIds = {
+  wohnzimmer: { [key in Wohnzimmer]: ShutterPosition };
+  kueche: { [key in Kueche]: ShutterPosition };
+  esszimmer: { [key in Esszimmer]?: ShutterPosition };
+  kinderzimmer: { [key in Kinderzimmer]: ShutterPosition };
+  gaestezimmer: { [key in Gaestezimmer]: ShutterPosition };
+  schlafen: { [key in Schlafen]: ShutterPosition };
+  bad: { [key in Bad]: ShutterPosition };
+  abstellraumog: { [key in Abstellraumog]: ShutterPosition };
+};
+
+interface ShutterPosition {
+  shutterPosition: string;
+}

@@ -45,12 +45,18 @@ export async function init() {
             if (!value && !value === false) {
               value = null;
             }
-
+            let subKey = null;
+            if (idObjectEntry.subKey) {
+              subKey = idObjectEntry.subKey;
+            }
+            if (idObjectEntry.subKeyAdditive) {
+              subKey += idObjectEntry.subKeyAdditive;
+            }
             iobrokerStore.setValues(
               listObjectOfIds.objectNameInStore || null,
               value,
               idObjectEntry.firstKeyInObject || idObjectEntry.room || null,
-              idObjectEntry.subKey || null,
+              subKey,
               idObjectEntry.saveId || false,
               id
             );
