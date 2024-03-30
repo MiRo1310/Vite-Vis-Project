@@ -23,7 +23,8 @@ const props = defineProps({
     id: {
         type: String,
         required: true
-    }, id2: {
+    },
+    id2: {
         type: String,
         required: false
     },
@@ -38,16 +39,16 @@ const getIsWindowOpen = computed(() => {
     const arrayOfIds = props.id.split(',').map(id => id.trim())
     const value = fenster.value?.[arrayOfIds[0]]?.[arrayOfIds[1]]
     if (!value && value != false) {
-        return undefined
+        return null
     }
     return value
 })
-const getSecondIsWindowOpen = computed(() => {
+const getIsSecondWindowOpen = computed(() => {
     if (!props.id2) return false
     const arrayOfIds = props.id2.split(',').map(id => id.trim())
     const value = fenster.value?.[arrayOfIds[0]]?.[arrayOfIds[1]]
     if (!value && value != false) {
-        return undefined
+        return null
     }
     return value
 })
@@ -121,14 +122,14 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
                         <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" src="/window_closed.png" alt="FensterAufZu">
                     </div>
                     <div v-if="props.id2">
-                        <img v-show="getSecondIsWindowOpen" class="w-8 h-6 mt-1" src="/window_open.png"
+                        <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" src="/window_open.png"
                             alt="FensterAufZu">
-                        <img v-show="!getSecondIsWindowOpen" class="w-8 h-6 mt-1" src="/window_closed.png"
+                        <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" src="/window_closed.png"
                             alt="FensterAufZu">
                     </div>
                 </div>
 
-                <FensterOpenClose v-if="!props.shutter" :window-open="getIsWindowOpen" />
+                <FensterOpenClose v-if="!props.shutter" :window-open="getIsWindowOpen && getIsSecondWindowOpen" />
             </div>
             <div v-if="props.shutter">
                 <div class="flex">
