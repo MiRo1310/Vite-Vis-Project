@@ -83,9 +83,13 @@ interface Fenster {
 }
 
 interface IdToSubscribe {
+  value: Ids[];
+  objectNameInStore?: string;
+}
+interface Ids {
   id: string;
-  name?: string;
-  key?: string;
+  firstKeyInObject?: string;
+  room?: Rooms;
   subKey?: string;
   saveId?: boolean;
 }
@@ -116,7 +120,8 @@ type Rooms =
   | "abstellraumog"
   | "keller"
   | "gaestezimmer"
-  | "dachboden";
+  | "dachboden"
+  | "gaesteWc";
 
 type NotSubscribedIds = {
   wohnzimmer: { [key in Wohnzimmer]: Shutterpoition };

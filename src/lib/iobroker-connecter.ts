@@ -37,18 +37,26 @@ export async function init() {
     await adminConnection.value.waitForFirstConnection();
     // console.log(await adminConnection.value.getEnums());
     // console.log(await adminConnection.value.getStates());
-    idToSubscribe.forEach((entry) => {
-      if (adminConnection.value) {
-        adminConnection.value.subscribeStateAsync(entry.id, (id: string, state: any) => {
-          console.log(id);
-          let value = state.val;
-          if (!value && !value === false) {
-            value = null;
-          }
+    idToSubscribe.forEach((listObjectOfIds) => {
+      listObjectOfIds.value.forEach((idObjectEntry) => {
+        if (adminConnection.value) {
+          adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: any) => {
+            let value = state.val;
+            if (!value && !value === false) {
+              value = null;
+            }
 
-          iobrokerStore.setValues(entry.name, entry.key || null, value, entry.subKey || null, entry.saveId || false, id);
-        });
-      }
+            iobrokerStore.setValues(
+              listObjectOfIds.objectNameInStore || null,
+              value,
+              idObjectEntry.firstKeyInObject || idObjectEntry.room || null,
+              idObjectEntry.subKey || null,
+              idObjectEntry.saveId || false,
+              id
+            );
+          });
+        }
+      });
     });
   }
 }
