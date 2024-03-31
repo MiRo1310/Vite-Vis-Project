@@ -1,14 +1,10 @@
-<script setup>
+<script lang="ts" setup>
 import NavLeft from './pages/NavLeft.vue';
 import { onMounted, ref } from 'vue';
 import { loadScript, init, IOBROKER_ADMIN_PORT, IOBROKER_HOST } from '@/lib/iobroker-connecter';
 import {
   Dialog,
-  DialogPanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
+  DialogPanel, 
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'

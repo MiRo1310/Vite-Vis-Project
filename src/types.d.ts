@@ -89,7 +89,7 @@ interface IdToSubscribe {
 
 interface Ids {
   id: string;
-  firstKeyInObject?: string;
+  firstKeyInObject?: boolean | string;
   room?: Rooms;
   subKey?: string;
   subKeyAdditive?: SubKeyAdditive;

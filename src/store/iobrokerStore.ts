@@ -39,13 +39,13 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     setValues(
       objectNameInStore: string,
       val: string | number | boolean | object,
-      firstKeyInObject?: string,
+      firstKeyInObject?: string | boolean,
       subKey?: string,
       saveId?: boolean,
       id?: string
     ) {
       if (objectNameInStore) {
-        if (firstKeyInObject) {
+        if (firstKeyInObject && firstKeyInObject !== true) {
           if (!(this as any)[objectNameInStore]) {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
