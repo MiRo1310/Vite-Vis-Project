@@ -115,7 +115,7 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
 </script>
 <template>
   <Card
-    class="w-[20rem] m-1 relative"
+    class="w-[32.5%] m-1 relative"
     :class="`${props.cl}`"
   >
     <CardHeader class="pb-0 pt-2 px-2">
