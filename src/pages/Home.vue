@@ -4,6 +4,7 @@ import ShoppingList from '@/components/ShoppingList.vue';
 import Header from '@/components/Header.vue';
 import ButtonListRight from '@/components/ButtonListRight.vue';
 import AlexaTimer from '@/components/AlexaTimer/AlexaTimer.vue';
+import PvCard from '@/components/PvCard.vue';
 
 </script>
 
@@ -11,11 +12,12 @@ import AlexaTimer from '@/components/AlexaTimer/AlexaTimer.vue';
   <div class="h-12">
     <Header />
   </div>
-  <div class="h-full w-full flex  ">
-    <div class="flex-1">
-      <AlexaTimer />
-      <ShoppingList class="w-auto max-w-[25rem] card m-1 " />
-      <Trash class="card m-1 mt-2" />
+  <AlexaTimer />
+  <div class="h-full w-full flex  items-start ">
+    <div class="flex flex-1  w-[calc(100%-25rem)] flex-wrap">
+      <PvCard class="m-1" />
+      <Trash class="card m-1" />
+      <ShoppingList class=" w-[25rem] card m-1 " />
     </div>
     <div class="w-52 flex-wrap  h-full mr-auto flex justify-end ">
       <ButtonListRight />

@@ -21,12 +21,12 @@ watch(() => props.windowOpen, (value) => {
 
 </script>
 <template>
-    <p v-if="noValue" class="text-[0.6rem] text-red-500 ml-3 animate-bounce">No Value</p>
+    <p v-if="noValue" class="text text-red-500 ml-3 animate-bounce">No Value</p>
     <div v-else>
-        <p v-show="isWindowOpen" class="text-[0.6rem] mt-1 ml-3 text-red-500">
+        <p v-show="isWindowOpen" class="text text-red-500">
             Fenster ist offen
         </p>
-        <p v-show="!isWindowOpen" class="text-[0.6rem] mt-1 ml-3 text-green-500">
+        <p v-show="!isWindowOpen" class="text text-green-500">
             Fenster ist geschlossen
         </p>
     </div>

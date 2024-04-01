@@ -9,51 +9,31 @@ import { adminConnection } from '@/lib/iobroker-connecter.ts'
 const router = useRouter();
 const iobrokerStore = useIobrokerStore();
 const handleWindowClick = () => {
-    router.push({ path: '/fenster' })
+  router.push({ path: '/fenster' })
 }
 const handleHolidayClick = () => {
-    adminConnection.value?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobrokerStore.urlaubAktiv)
+  adminConnection.value?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobrokerStore.urlaubAktiv)
 }
 const getWindowStyle = computed(() => {
-    if (iobrokerStore.fensterOffen) return "text-red-500"
-    return "text-green-500"
+  if (iobrokerStore.fensterOffen) return "text-red-500"
+  return "text-green-500"
 })
 const getHoliday = computed(() => {
-    if (iobrokerStore.urlaubAktiv) return "Urlaub"
-    return "Kein Urlaub"
+  if (iobrokerStore.urlaubAktiv) return "Urlaub"
+  return "Kein Urlaub"
 })
 
 const toggleTimer = () => {
-    iobrokerStore.setValues("", "showTimerCard", !iobrokerStore.showTimerCard)
+  iobrokerStore.setValues("showTimerCard", !iobrokerStore.showTimerCard)
 }
 
 </script>
 <template>
-  <ButtonCard
-    :icon="Blinds"
-    :title="'Fenster'"
-    :class="getWindowStyle"
-    @click="handleWindowClick"
-  />
-  <ButtonCard
-    :icon="UserRoundSearch"
-    :title="getHoliday"
-    @click="handleHolidayClick"
-  />
-  <ButtonCard
-    :icon="Hourglass"
-    title="Timer"
-    @click="toggleTimer"
-  />
-  <a
-    href="http://192.168.1.81:8082/vis/index.html?FireHD10#1_Startseite"
-    target="_self"
-    rel="noopener noreferrer"
-  >
-    <ButtonCard
-      :icon="ListStart"
-      title="Alte VIS"
-    />
+  <ButtonCard :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" @click="handleWindowClick" />
+  <ButtonCard :icon="UserRoundSearch" :title="getHoliday" @click="handleHolidayClick" />
+  <ButtonCard :icon="Hourglass" title="Timer" @click="toggleTimer" />
+  <a href="http://192.168.1.81:8082/vis/index.html?FireHD10#1_Startseite" target="_self" rel="noopener noreferrer">
+    <ButtonCard :icon="ListStart" title="Alte VIS" />
   </a>
 </template>
 <style lang='postcss' scoped></style>

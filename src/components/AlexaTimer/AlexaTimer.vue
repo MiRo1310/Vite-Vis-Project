@@ -12,7 +12,7 @@ import { storeToRefs } from 'pinia';
 const { timer } = storeToRefs<any>(iobrokerStore);
 
 const closeWindow = () => {
-  iobrokerStore.setValues("", "showTimerCard", false)
+  iobrokerStore.setValues("showTimerCard", false)
 }
 const showTimerCard = ref(false);
 const timersArray = ["timer1", "timer2", "timer3", "timer4"];
@@ -29,7 +29,7 @@ const stopTimer = (index: number) => {
 <template>
   <Card
     v-if="iobrokerStore.showTimerCard"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1/2 z-10"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 z-50"
   >
     <Button
       class="absolute w-8 h-8 p-0 top-4 right-4 z-20"

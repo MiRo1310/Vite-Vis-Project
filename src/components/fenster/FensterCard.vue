@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import FensterButtons from '@/components/fenster/FensterButtons.vue';
 import { Input } from '@/components/ui/input';
@@ -26,11 +26,14 @@ const props = defineProps({
     },
     id2: {
         type: String,
-        required: false
+        required: false,
+default:null
     },
     cl: {
         type: String,
-        required: false
+        required: false,
+        default: null
+
     }
 })
 const shutterPosition = ref(0)
@@ -57,10 +60,13 @@ const getShutterPosition = computed(() => {
     const value = rolladen.value?.[arrayOfIds[0]]?.[arrayOfIds[1]]
     if (!value && value != 0) {
         return "n/a "
-    }
-    shutterPosition.value = value
+    }   
     return value
 })
+watch(() => rolladen.value, () => {
+   shutterPosition.value = getShutterPosition.value
+}, { immediate: true })
+
 const getAutoCloseDelay = computed(() => {
     const arrayOfIds = props.id.split(',').map(id => id.trim())
     return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Delay']
@@ -74,7 +80,7 @@ const getAutoUpTime = computed(() => {
     return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'AutoUpTime']
 })
 
-const getShutterImage = computed(() => {
+const getShutterImage = computed(() => {    
     if (shutterPosition.value === 0) {
         return "/blinds2_double_100.png"
     }
@@ -108,73 +114,121 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
 
 </script>
 <template>
-    <Card class="w-[20rem] m-1 relative" :class="`${props.cl}`">
-        <CardHeader class="pb-0 pt-2 px-2">
-            <CardTitle class="flex ">
-                <p>{{ props.title }}</p>
-            </CardTitle>
-        </CardHeader>
-        <CardContent class="px-2 pb-2">
-            <div class="flex items-center justify-between">
-                <div class=" flex">
-                    <div>
-                        <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" src="/window_open.png" alt="FensterAufZu">
-                        <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" src="/window_closed.png" alt="FensterAufZu">
-                    </div>
-                    <div v-if="props.id2">
-                        <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" src="/window_open.png"
-                            alt="FensterAufZu">
-                        <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" src="/window_closed.png"
-                            alt="FensterAufZu">
-                    </div>
+  <Card
+    class="w-[20rem] m-1 relative"
+    :class="`${props.cl}`"
+  >
+    <CardHeader class="pb-0 pt-2 px-2">
+      <CardTitle class="flex ">
+        <p>{{ props.title }}</p>
+      </CardTitle>
+    </CardHeader>
+    <CardContent class="px-2 pb-2">
+      <div class="flex items-center justify-between">
+        <div class=" flex">
+          <div>
+            <img
+              v-show="getIsWindowOpen"
+              class="w-8 h-6 mt-1"
+              src="/window_open.png"
+              alt="FensterAufZu"
+            >
+            <img
+              v-show="!getIsWindowOpen"
+              class="w-8 h-6 mt-1"
+              src="/window_closed.png"
+              alt="FensterAufZu"
+            >
+          </div>
+          <div v-if="props.id2">
+            <img
+              v-show="getIsSecondWindowOpen"
+              class="w-8 h-6 mt-1"
+              src="/window_open.png"
+              alt="FensterAufZu"
+            >
+            <img
+              v-show="!getIsSecondWindowOpen"
+              class="w-8 h-6 mt-1"
+              src="/window_closed.png"
+              alt="FensterAufZu"
+            >
+          </div>
+        </div>
+
+        <FensterOpenClose
+          v-if="!props.shutter"
+          class="text"
+          :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
+        />
+      </div>
+      <div v-if="props.shutter">
+        <div class="flex">
+          <img
+            class="window--img"
+            :src="getShutterImage"
+            alt="FensterRollade"
+          >
+          <div class=" w-full">
+            <FensterOpenClose
+              :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
+              class="text"
+            />
+            <p
+              class="text"
+              :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''"
+            >
+              Rollade {{ getShutterPosition }}% offen
+            </p>
+
+            <div class="absolute top-2 right-2">
+              <div class="flex items-center justify-between ">
+                <div class="w-11">
+                  <Switch
+                    :checked="getAutoClose"
+                    @update:checked="updateHandler($event, 'Auto')"
+                  />
+                  <p class="text-[0.5rem]">
+                    Auto runter
+                  </p>
                 </div>
-
-                <FensterOpenClose v-if="!props.shutter" :window-open="getIsWindowOpen && getIsSecondWindowOpen" />
-            </div>
-            <div v-if="props.shutter">
-                <div class="flex">
-                    <img class="window--img" :src="getShutterImage" alt="FensterRollade">
-                    <div class=" w-full">
-                        <FensterOpenClose :window-open="getIsWindowOpen" />
-                        <p class="text-[0.6rem] mt-1 ml-3"
-                            :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
-                            Rollade {{ getShutterPosition }}% offen
-                        </p>
-
-                        <div class="absolute top-2 right-2">
-                            <div class="flex items-center justify-between ">
-                                <div class="w-11">
-                                    <Switch :checked="getAutoClose" @update:checked="updateHandler($event, 'Auto')" />
-                                    <p class="text-[0.5rem]">
-                                        Auto runter
-                                    </p>
-                                </div>
-                                <div class="relative">
-                                    <Input type="number" step="1" class="w-[5.8rem] pr-8"
-                                        :model-value="getAutoCloseDelay"
-                                        @update:model-value="updateHandler($event, 'Delay')" />
-                                    <div class=" absolute text-sm top-2 right-2">min</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2 mt-2">
-                                <div class="w-11">
-                                    <Switch />
-                                    <p class="text-[0.5rem]">
-                                        Auto hoch
-                                    </p>
-                                </div>
-                                <p><Input type="time" :model-value="getAutoUpTime"
-                                        @update:model-value="updateHandler($event, 'AutoUpTime')" /></p>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="relative">
+                  <Input
+                    type="number"
+                    step="1"
+                    class="w-[5.8rem] pr-8"
+                    :model-value="getAutoCloseDelay"
+                    @update:model-value="updateHandler($event, 'Delay')"
+                  />
+                  <div class=" absolute text-sm top-2 right-2">
+                    min
+                  </div>
                 </div>
-                <FensterButtons :id="props.id"></FensterButtons>
+              </div>
+              <div class="flex items-center space-x-2 mt-2">
+                <div class="w-11">
+                  <Switch />
+                  <p class="text-[0.5rem]">
+                    Auto hoch
+                  </p>
+                </div>
+                <p>
+                  <Input
+                    type="time"
+                    :model-value="getAutoUpTime"
+                    @update:model-value="updateHandler($event, 'AutoUpTime')"
+                  />
+                </p>
+              </div>
             </div>
-        </CardContent>
-    </Card>
+          </div>
+        </div>
+        <FensterButtons :id="props.id" />
+      </div>
+    </CardContent>
+  </Card>
 </template>
+
 <style lang='postcss' scoped>
 .window--img {
     @apply w-8 h-12;
@@ -184,7 +238,7 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
     @apply w-8 h-6 mt-1;
 }
 
-.half {
-    height: 40%;
+.text {
+    @apply text-[0.68rem] mt-1 ml-1 font-bold
 }
 </style>

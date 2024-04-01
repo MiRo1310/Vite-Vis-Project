@@ -5,6 +5,7 @@ import { shutterAutoDownTime } from "./ids/rolladen/shutterAutoDownTime";
 import { timer, timer1, timer2, timer3, timer4 } from "./ids/timer/timer";
 import { shutterIdsLogo } from "./ids/rolladen/shutterIdsLogo";
 import { windowOpenClose } from "./ids/window/window";
+import { pvIds } from "./ids/pv/pvIds";
 
 export const idToSubscribe: IdToSubscribe[] = [
   shutterAutoUp,
@@ -18,6 +19,7 @@ export const idToSubscribe: IdToSubscribe[] = [
   timer3,
   timer4,
   windowOpenClose,
+  pvIds,
   {
     objectNameInStore: "iobrokerValues",
     value: [{ id: "javascript.0.Geraete.WetterCom.temp_value", firstKeyInObject: "Aussentemperatur" }],

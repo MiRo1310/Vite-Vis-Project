@@ -38,7 +38,7 @@ interface FensterObject {
   id: string;
   id2?: string;
 }
-interface Rolladen {
+interface Shutter {
   wohnzimmer: {
     mittig: number;
     ecke: number;
@@ -59,7 +59,7 @@ interface Rolladen {
     tuer: number;
   };
 }
-interface Fenster {
+interface Window {
   wohnzimmer: {
     mittig: boolean;
     ecke: boolean;
@@ -80,6 +80,13 @@ interface Fenster {
   schlafen: {
     tuer: boolean;
   };
+}
+interface Pv {
+  feedIn: number;
+  batteryCharging: number;
+  shellyFeedOut: number;
+  smallPv: number;
+  activeCharging: number;
 }
 
 interface IdToSubscribe {

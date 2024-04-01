@@ -15,8 +15,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     shutterAutoUp: {},
     shutterAutoDownTime: {},
     timer: {} as TimerObject,
-    rolladen: {} as Rolladen,
-    fenster: {} as Fenster,
+    rolladen: {} as Shutter,
+    fenster: {} as Window,
+    pv: {} as Pv,
   }),
   getters: {
     getIobrokerValues(state) {
