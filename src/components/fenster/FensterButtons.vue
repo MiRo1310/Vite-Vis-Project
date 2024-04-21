@@ -26,9 +26,15 @@ const handleClick = (i: number) => {
 }
 </script>
 <template>
-    <div class=" flex justify-between">
-        <Button v-for="i in 6" class="mx-1 w-10 h-6 text-xs" :size="'sm'" @click="handleClick(i)" :key="i">
-            {{ 100 - (i - 1) * 20 }}%
-        </Button>
-    </div>
+  <div class=" flex justify-between">
+    <Button
+      v-for="i in 6"
+      :key="i"
+      class="mx-1 w-10 h-6 text-xs"
+      :size="'sm'"
+      @click="handleClick(i)"
+    >
+      {{ 100 - (i - 1) * 20 }}%
+    </Button>
+  </div>
 </template>

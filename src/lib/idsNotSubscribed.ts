@@ -1,26 +1,26 @@
 export const notSubscribedIds: NotSubscribedIds = {
-  esszimmer: { links: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Esszimmer_Rollade" } },
-  kinderzimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Kinderzimmer_Rollade" } },
+  esszimmer: { links: { shutterPosition: "0_userdata.0.Rolladen.Esszimmer.Position_anfahren" } },
+  kinderzimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Kinderzimmer.Position_anfahren" } },
   kueche: {
-    tuer: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Küche_Tür" },
-    fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Küche_Fenster" },
+    tuer: { shutterPosition: "0_userdata.0.Rolladen.Küche.Position_anfahren_Tür" },
+    fenster: { shutterPosition: "0_userdata.0.Rolladen.Küche.Position_anfahren_Fenster" },
   },
   wohnzimmer: {
-    ecke: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Wohnzimmer_klein_Rollade" },
-    links: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Wohnzimmer_links_Rollade" },
-    mittig: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Wohnzimmer_mitte_Rollade" },
+    ecke: { shutterPosition: "0_userdata.0.Rolladen.Wohnzimmer.Position_anfahren_Ecke" },
+    links: { shutterPosition: "0_userdata.0.Rolladen.Wohnzimmer.Position_anfahren_links" },
+    mittig: { shutterPosition: "0_userdata.0.Rolladen.Wohnzimmer.Position_anfahren_Mitte" },
     rechts: {
-      shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Wohnzimmer_rechts_Rollade",
+      shutterPosition: "0_userdata.0.Rolladen.Wohnzimmer.Position_anfahren_rechts",
     },
   },
-  gaestezimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Gästezimmer_Rollade" } },
+  gaestezimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Gästezimmer.Position_anfahren" } },
   schlafen: {
-    tuer: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Schlafen_Tür_Rollade" },
-    fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Schlafen_Fenster_Rollade" },
+    tuer: { shutterPosition: "0_userdata.0.Rolladen.Schlafzimmer.Position_anfahren_Tür" },
+    fenster: { shutterPosition: "0_userdata.0.Rolladen.Schlafzimmer.Position_anfahren_Fenster" },
   },
-  bad: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Bad_Rollade" } },
+  bad: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Bad.Position_anfahren" } },
   abstellraumog: {
-    links: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Abstellraum_og_Rollade" },
-    rechts: { shutterPosition: "0_userdata.0.Rolladen.Positionen_anfahren.Abstellraum_OG_rechts_Rollade" },
+    links: { shutterPosition: "0_userdata.0.Rolladen.Abstellraum_OG.Position_anfahren_links" },
+    rechts: { shutterPosition: "0_userdata.0.Rolladen.Abstellraum_OG.Position_anfahren_rechts" },
   },
 };
