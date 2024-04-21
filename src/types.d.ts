@@ -87,6 +87,7 @@ interface Pv {
   shellyFeedOut: number;
   smallPv: number;
   activeCharging: number;
+  profit: number;
 }
 
 interface IdToSubscribe {

@@ -6,5 +6,6 @@ export const pvIds: IdToSubscribe = {
     { id: "modbus.0.holdingRegisters.41079_grid_Power", firstKeyInObject: "feedIn" },
     { id: "shelly.0.shellypro3em#ec6260976f14#1.EM0.TotalActivePower", firstKeyInObject: "shellyFeedOut" },
     { id: "sonoff.0.Photovoltaik.ENERGY_Power", firstKeyInObject: "smallPv" },
+    { id: "0_userdata.0.Photovoltaik.Einnahme_Einspeisung", firstKeyInObject: "profit" },
   ],
 };

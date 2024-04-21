@@ -19,6 +19,7 @@ const { pv } = storeToRefs(iobrokerStore);
           <p>{{ pv.activeCharging > 0 ? "Batterie wird geladen" : "Batterie wird entladen:" }}</p>
           <p>{{ pv.feedIn > 0 ? "Einspeisung" : "Bezug" }}</p>
           <p>Erzeugnis kleine PV</p>
+          <p>Berechneter Gewinn</p>
         </div>
         <div class="text-right w-16">
           <p>{{ pv.batteryCharging }}%</p>
@@ -27,6 +28,7 @@ const { pv } = storeToRefs(iobrokerStore);
             {{ pv.feedIn }} W
           </p>
           <p>{{ pv.batteryCharging }} W</p>
+          <p>{{ pv.profit }} €</p>
         </div>
       </div>
       <iframe src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&refresh=5s&panelId=13" width="350"
