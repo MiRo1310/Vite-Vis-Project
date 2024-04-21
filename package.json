@@ -26,7 +26,6 @@
     "lucide-vue-next": "^0.322.0",
     "path": "^0.12.7",
     "pinia": "^2.1.7",
-    "prettier": "^3.2.5",
     "radix-vue": "^1.4.8",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

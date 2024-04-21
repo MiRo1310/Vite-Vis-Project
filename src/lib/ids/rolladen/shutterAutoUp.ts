@@ -5,14 +5,14 @@ export const shutterAutoUp: IdToSubscribe = {
     {
       id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_links",
       room: "abstellraumog",
-      subKey: "fenster",
+      subKey: "links",
       subKeyAdditive: "AutoUp",
       saveId: true,
     },
     {
       id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_rechts",
       room: "abstellraumog",
-      subKey: "fenster",
+      subKey: "rechts",
       subKeyAdditive: "AutoUp",
       saveId: true,
     },
@@ -45,7 +45,7 @@ export const shutterAutoUp: IdToSubscribe = {
       saveId: true,
     },
     {
-      id: "0_userdata.0.Rolladen.Küche.Rollade_auto_hoch_tuer",
+      id: "0_userdata.0.Rolladen.Küche.Rollade_auto_hoch_Tür",
       room: "kueche",
       subKey: "tuer",
       subKeyAdditive: "AutoUp",
@@ -64,14 +64,13 @@ export const shutterAutoUp: IdToSubscribe = {
       subKey: "fenster",
       subKeyAdditive: "AutoUp",
       saveId: true,
-    },
-    {
+    },    {
       id: "0_userdata.0.Rolladen.Schlafzimmer.Rollade_auto_hoch_tuer",
-      room: "kueche",
+      room: "schlafen",
       subKey: "tuer",
       subKeyAdditive: "AutoUp",
       saveId: true,
-    },
+    },   
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch",
       room: "wohnzimmer",

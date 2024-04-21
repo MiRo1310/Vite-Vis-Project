@@ -29,7 +29,7 @@ const buttons = [
   }, {
     icon: Heater,
     text: 'Heizung',
-    link: "/heizung"
+    link: "/heating"
   }, {
     icon: PlugZap,
     text: 'PV',

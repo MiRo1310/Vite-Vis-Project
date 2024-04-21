@@ -17,7 +17,16 @@ module.exports = {
   rules: {
     "@typescript-eslint/dot-notation": "error",
     "vue/multi-word-component-names": "off",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "off",    
+    // "vue/max-attributes-per-line": ["error", {
+    //   "singleline": {
+    //     "max": 4
+    //   },      
+    //   "multiline": {
+    //     "max": 4
+    //   }
+  // }]
+
     // "no-undef": "off",
   },
   overrides: [
