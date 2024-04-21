@@ -10,7 +10,10 @@ const { iobrokerValues: io } = storeToRefs<any>(iobrokerStore);
     <h1 class="text-4xl ml-2 mt-1 text-white">
       Aussentemperatur {{ io.Aussentemperatur }}°C
     </h1>
+
     <Time />
+
+
   </div>
 </template>
 <style lang='postcss' scoped></style>

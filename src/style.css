@@ -1,4 +1,26 @@
 @tailwind base;
+@layer base{
+  /* CSS für die Scrollleiste */
+::-webkit-scrollbar {
+  width: 0px; /* Breite der Scrollleiste */
+  
+}
+
+/* Hintergrundfarbe der Scrollleiste */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Farbe des Scrollbalkens */
+::-webkit-scrollbar-thumb {
+  background: #1731b2;
+}
+
+/* Hover-Effekt des Scrollbalkens */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+}
 @tailwind components;
 @tailwind utilities;
  

@@ -14,11 +14,16 @@ import PvCard from '@/components/PvCard.vue';
   </div>
   <AlexaTimer />
   <div class="h-full w-full flex  items-start ">
-    <div class="flex flex-1  w-[calc(100%-25rem)] flex-wrap">
-      <PvCard class="m-1" />
-      <Trash class="card m-1" />
+
+    <div class="flex flex-1  w-[calc(100%-25rem)] flex-wrap  ">
       <ShoppingList class=" w-[25rem] card m-1 " />
+      <div>
+        <Trash class="card m-1 self-start" />
+        <PvCard class="m-1 overflow-auto self-start" />
+
+      </div>
     </div>
+
     <div class="w-52 flex-wrap  h-full mr-auto flex justify-end ">
       <ButtonListRight />
     </div>
@@ -29,4 +34,3 @@ import PvCard from '@/components/PvCard.vue';
   @apply bg-white bg-opacity-90;
 }
 </style>
-```
