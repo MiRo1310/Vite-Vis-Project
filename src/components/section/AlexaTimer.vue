@@ -5,7 +5,7 @@ import { X, Hourglass } from 'lucide-vue-next';
 import Button from '@/components/ui/button/Button.vue';
 import { ref, watch } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
-import { adminConnection } from '@/lib/iobroker-connecter.ts'
+import { adminConnection } from '@/lib/iobroker/connecterToIobroker'
 const iobrokerStore = useIobrokerStore();
 import { storeToRefs } from 'pinia';
 

@@ -18,10 +18,12 @@ onUnmounted(() => {
 
 </script>
 <template>
-  <div class="mt-2 mr-2 text-white text-xs">
-    <p>{{ date }}</p>
-    <p class="text-right">
+  <p class="text-right">
+    <span>{{ date }}</span>
+    <br>
+    <span>
       {{ time }}
-    </p>
-  </div>
+    </span></br>
+  </p>
+
 </template>

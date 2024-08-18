@@ -3,7 +3,7 @@ import { useIobrokerStore } from '@/store/iobrokerStore';
 import { ref, watch, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Trash2 } from 'lucide-vue-next';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 const iobrokerStore = useIobrokerStore();
 const { trash } = storeToRefs<any>(iobrokerStore);
@@ -44,7 +44,7 @@ const getColor = (name: string) => {
 
 </script>
 <template>
-  <Card class="inline-block">
+  <Card>
     <CardContent class="flex py-2 px-1">
       <div v-for="event in trashEvents" :key="event.name" class="flex relative px-1 h-[6.9rem]">
         <div :class="getColor(event.name)" class="px-2 pt-2 pb-12 rounded  ">
@@ -64,5 +64,4 @@ const getColor = (name: string) => {
     </CardContent>
   </Card>
 </template>
-<style lang="postcss" scoped></style>
 ```

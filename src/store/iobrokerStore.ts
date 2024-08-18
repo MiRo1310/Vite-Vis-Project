@@ -1,7 +1,29 @@
+import { TimerObject, Shutter, Pv } from "@/types";
 import { defineStore } from "pinia";
 
+export interface IobrokerStoreState {
+  iobrokerValues: object;
+  trash: object;
+  shoppingList: object;
+  urlaubAktiv: boolean;
+  fensterOffen: boolean;
+  fensterStatus1: string;
+  fensterStatus2: string;
+  showTimerCard: boolean;
+  sonnenuntergang: string;
+  idsToControl: object;
+  shutterAutoUp: object;
+  shutterAutoDownTime: object;
+  timer: TimerObject;
+  rolladen: Shutter;
+  fenster: Window;
+  pv: Pv;
+  pool: object;
+}
+export type IobrokerStates = keyof IobrokerStoreState;
+
 export const useIobrokerStore = defineStore("iobrokerStore", {
-  state: () => ({
+  state: (): IobrokerStoreState => ({
     iobrokerValues: {},
     trash: {},
     shoppingList: {},
@@ -18,6 +40,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     rolladen: {} as Shutter,
     fenster: {} as Window,
     pv: {} as Pv,
+    pool: {}
   }),
   getters: {
     getIobrokerValues(state) {

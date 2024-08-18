@@ -1,17 +1,18 @@
 <script setup lang='ts'>
 import { computed } from 'vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import FensterButtons from '@/components/fenster/FensterButtons.vue';
+import FensterButtons from '@/components/section/FensterCardButtons.vue';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import FensterOpenClose from '@/components/fenster/FensterOpenClose.vue';
+import FensterOpenClose from '@/components/section/FensterCardOpenClose.vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
-import { adminConnection } from '@/lib/iobroker-connecter.ts'
+import { adminConnection } from '@/lib/iobroker/connecterToIobroker'
 import { getID } from '@/lib/utilities'
 import windowOpen from '@/assets/window_open.png'
 import windowClosed from '@/assets/window_closed.png'
 import { blinds100, blinds90, blinds80, blinds0, blinds10, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70 } from '@/assets/index.ts'
+import { SubKeyAdditive } from '@/types.ts';
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, idsToControl, shutterAutoUp } = storeToRefs<any>(iobrokerStore)
 const props = defineProps({
@@ -74,12 +75,10 @@ const getAutoCloseDelay = computed(() => {
 })
 const getAutoClose = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
-  console.log(shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Auto'])
   return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Auto']
 })
 const getAutoOpen = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
-  console.log(props.id,)
   return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'AutoUp']
 })
 const getAutoUpTime = computed(() => {

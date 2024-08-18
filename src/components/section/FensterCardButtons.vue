@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { Button } from '@/components/ui/button';
-import { adminConnection } from '@/lib/iobroker-connecter';
+import { adminConnection } from '@/lib/iobroker/connecterToIobroker';
 import { notSubscribedIds } from '@/lib/idsNotSubscribed';
 
 const props = defineProps({

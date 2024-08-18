@@ -1,3 +1,5 @@
+import { IdToSubscribe } from "@/types";
+
 export const pvIds: IdToSubscribe = {
   objectNameInStore: "pv",
   value: [

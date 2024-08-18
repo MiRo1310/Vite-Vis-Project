@@ -1,73 +1,68 @@
 <script setup lang='ts'>
-import FensterCard from '@/components/fenster/FensterCard.vue';
+import FensterCard from '@/components/section/FensterCard.vue';
 import { computed } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { FensterObject } from '@/types.ts';
 const iobrokerStore = useIobrokerStore();
 const { fensterOffen, fenster } = storeToRefs<any>(iobrokerStore)
 
 const windows: FensterObject[] = [
-    { name: "Küche Tür", shutter: true, id: "kueche,tuer" },
-    { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
-    { name: "Esszimmer", shutter: true, id: "esszimmer,links", id2: "esszimmer,rechts" },
-    { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmer,ecke" },
-    { name: "Wohnzimmer links", shutter: true, id: "wohnzimmer,links" },
-    { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmer,mittig" },
-    { name: "Wohnzimmer rechts", shutter: true, id: "wohnzimmer,rechts" },
-    { name: "Schlafzimmer Fenster", shutter: true, id: "schlafen,fenster" },
-    { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer" },
-    { name: "Kinderzimmer", shutter: true, id: "kinderzimmer,fenster" },
-    { name: "Bad", shutter: true, id: "bad,fenster" },
-    { name: "Gästezimmer", shutter: true, id: "gaestezimmer,fenster" },
-    { name: "Abstellraum OG links", shutter: true, id: "abstellraumog,links" },
-    { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumog,rechts" },
+  { name: "Küche Tür", shutter: true, id: "kueche,tuer" },
+  { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
+  { name: "Esszimmer", shutter: true, id: "esszimmer,links", id2: "esszimmer,rechts" },
+  { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmer,ecke" },
+  { name: "Wohnzimmer links", shutter: true, id: "wohnzimmer,links" },
+  { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmer,mittig" },
+  { name: "Wohnzimmer rechts", shutter: true, id: "wohnzimmer,rechts" },
+  { name: "Schlafzimmer Fenster", shutter: true, id: "schlafen,fenster" },
+  { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer" },
+  { name: "Kinderzimmer", shutter: true, id: "kinderzimmer,fenster" },
+  { name: "Bad", shutter: true, id: "bad,fenster" },
+  { name: "Gästezimmer", shutter: true, id: "gaestezimmer,fenster" },
+  { name: "Abstellraum OG links", shutter: true, id: "abstellraumog,links" },
+  { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumog,rechts" },
 
-    { name: "Kellertür", shutter: false, id: "keller,tuer" },
-    { name: "Keller Flur", shutter: false, id: "keller,flurFenster" },
-    { name: "Büro Keller", shutter: false, id: "buero,fenster" },
-    { name: "Gäste-WC links", shutter: false, id: "gaesteWc,links" },
-    { name: "Gäste-WC rechts", shutter: false, id: "gaesteWc,rechts" },
-    { name: "Flur links", shutter: false, id: "flur,links" },
-    { name: "Flur rechts", shutter: false, id: "flur,rechts" },
-    { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
+  { name: "Kellertür", shutter: false, id: "keller,tuer" },
+  { name: "Keller Flur", shutter: false, id: "keller,flurFenster" },
+  { name: "Büro Keller", shutter: false, id: "buero,fenster" },
+  { name: "Gäste-WC links", shutter: false, id: "gaesteWc,links" },
+  { name: "Gäste-WC rechts", shutter: false, id: "gaesteWc,rechts" },
+  { name: "Flur links", shutter: false, id: "flur,links" },
+  { name: "Flur rechts", shutter: false, id: "flur,rechts" },
+  { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
 
-    { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
-    { name: "Dachboden links", shutter: false, id: "dachboden,links" },
+  { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
+  { name: "Dachboden links", shutter: false, id: "dachboden,links" },
 
 
 ]
 const possibleWindows = ["fenster", "tuer", "ecke", "links", "mittig", "rechts", "flurFenster"]
 
 const getOpenWindows = computed(() => {
-    let countedOpenWindows = 0
-    Object.keys(fenster.value).forEach(key => {
-        possibleWindows.forEach(window => {
-            if (fenster.value[key][window] === true) {
-                countedOpenWindows++
-            }
-        })
-
+  let countedOpenWindows = 0
+  Object.keys(fenster.value).forEach(key => {
+    possibleWindows.forEach(window => {
+      if (fenster.value[key][window] === true) {
+        countedOpenWindows++
+      }
     })
-    return countedOpenWindows
+
+  })
+  return countedOpenWindows
 })
 
 </script>
 <template>
-  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 lg:fixed right-2 lg:left-52 z-10 background">
+  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 lg:fixed right-4 lg:left-52 z-10 background">
     <Card>
       <CardHeader class="p-2">
         <CardTitle class=" flex justify-between">
           <p>Fensterstatus</p>
-          <p
-            v-show="getOpenWindows === 1"
-            class="flex "
-          >
+          <p v-show="getOpenWindows === 1" class="flex ">
             Ein Fenster ist
-            <span
-              :class="fensterOffen ? 'text-red-500 animate-pulse' : ''"
-              class="ml-1 "
-            >offen </span>
+            <span :class="fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1 ">offen </span>
           </p>
 
           <p v-show="getOpenWindows !== 1">
@@ -84,18 +79,12 @@ const getOpenWindows = computed(() => {
     </Card>
   </div>
   <div class=" flex flex-wrap lg:pt-12 lg:pl-0 pl-1">
-    <FensterCard
-      v-for="card in windows"
-      :id="card.id"
-      :key="card.name"
-      :shutter="card.shutter"
-      :title="card.name"
-      :id2="card.id2"
-    />
+    <FensterCard v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter" :title="card.name"
+      :id2="card.id2" />
   </div>
 </template>
 <style scoped>
 .background {
-    background-color: #0a1a58;
+  background-color: #0a1a58;
 }
 </style>

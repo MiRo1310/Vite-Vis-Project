@@ -14,7 +14,7 @@ import { X } from 'lucide-vue-next';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { onMounted, watch, ref } from 'vue';
-import { adminConnection } from '@/lib/iobroker-connecter.ts'
+import { adminConnection } from '@/lib/iobroker/connecterToIobroker'
 const iobrokerStore = useIobrokerStore();
 const { shoppingList } = storeToRefs<any>(iobrokerStore);
 
@@ -39,7 +39,7 @@ const removeItem = (id: string) => {
 }
 </script>
 <template>
-  <Card class="h-[30rem] overflow-y-auto">
+  <Card class="h-[90%] overflow-y-auto">
     <Table>
       <TableHeader>
         <TableRow>

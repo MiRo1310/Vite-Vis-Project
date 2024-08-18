@@ -1,7 +1,7 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
-import { idToSubscribe } from "./idsToSubscribe";
+import { idToSubscribe } from "./idsToSubscribe/idsToSubscribe";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";

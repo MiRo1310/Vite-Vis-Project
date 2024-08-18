@@ -1,5 +1,6 @@
-type IobrokerValues = Record<string, string | number | boolean | object>;
-interface ShoppingList {
+import { IobrokerStates } from '@/store/iobrokerStore';
+export type IobrokerValues = Record<string, string | number | boolean | object>;
+export interface ShoppingList {
   name: string;
   time: string;
   id: string;
@@ -7,22 +8,22 @@ interface ShoppingList {
   buttonmove: string;
   buttondelete: string;
 }
-interface RowShoppinglist {
+export interface RowShoppinglist {
   user: string;
   amount: number;
   getValue: (key: string) => any;
 }
-interface GlobalObject {
+export interface GlobalObject {
   [key: string]: any;
 }
-interface TimerObject {
+export interface TimerObject {
   timer1: Timer;
   timer2: Timer;
   timer3: Timer;
   timer4: Timer;
 }
-type KeyOfTimerObject = keyof TimerObject;
-interface Timer {
+export type KeyOfTimerObject = keyof TimerObject;
+export interface Timer {
   string: string;
   device: string;
   timeEnd: string;
@@ -32,13 +33,13 @@ interface Timer {
 }
 type KeyOfTimer = keyof Timer;
 
-interface FensterObject {
+export interface FensterObject {
   name: string;
   shutter: boolean;
   id: string;
   id2?: string;
 }
-interface Shutter {
+export interface Shutter {
   wohnzimmer: {
     mittig: number;
     ecke: number;
@@ -59,7 +60,7 @@ interface Shutter {
     tuer: number;
   };
 }
-interface Window {
+export interface Window {
   wohnzimmer: {
     mittig: boolean;
     ecke: boolean;
@@ -81,7 +82,7 @@ interface Window {
     tuer: boolean;
   };
 }
-interface Pv {
+export interface Pv {
   feedIn: number;
   batteryCharging: number;
   shellyFeedOut: number;
@@ -90,12 +91,12 @@ interface Pv {
   profit: number;
 }
 
-interface IdToSubscribe {
+export interface IdToSubscribe {
   value: Ids[];
-  objectNameInStore?: string;
+  objectNameInStore?: IobrokerStates;
 }
 
-interface Ids {
+export interface Ids {
   id: string;
   firstKeyInObject?: boolean | string;
   room?: Rooms;
@@ -103,9 +104,9 @@ interface Ids {
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
 }
-type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
+export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
-interface IdsToControl {
+export interface IdsToControl {
   value: {
     [key: string]: {
       [key: string]: string;
@@ -113,7 +114,7 @@ interface IdsToControl {
   };
 }
 
-type Rooms =
+export type Rooms =
   | "wohnzimmer"
   | "kueche"
   | "esszimmer"
@@ -130,22 +131,22 @@ type Rooms =
   | "dachboden"
   | "gaesteWc";
 
-type Esszimmer = "links" | "rechts";
-type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
-type Kinderzimmer = "fenster";
-type Kueche = "tuer" | "fenster";
-type Schlafen = "tuer" | "fenster";
-type Bad = "fenster";
-type Flur = "links" | "rechts";
-type GaesteWC = "links" | "rechts";
-type Buero = "fenster";
-type Abstellraum = "fenster";
-type Abstellraumog = "links" | "rechts";
-type Keller = "fenster" | "tuer";
-type Gaestezimmer = "fenster";
-type Dachboden = "links" | "rechts";
+export type Esszimmer = "links" | "rechts";
+export type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
+export type Kinderzimmer = "fenster";
+export type Kueche = "tuer" | "fenster";
+export type Schlafen = "tuer" | "fenster";
+export type Bad = "fenster";
+export type Flur = "links" | "rechts";
+export type GaesteWC = "links" | "rechts";
+export type Buero = "fenster";
+export type Abstellraum = "fenster";
+export type Abstellraumog = "links" | "rechts";
+export type Keller = "fenster" | "tuer";
+export type Gaestezimmer = "fenster";
+export type Dachboden = "links" | "rechts";
 
-type NotSubscribedIds = {
+export type NotSubscribedIds = {
   wohnzimmer: { [key in Wohnzimmer]: ShutterPosition };
   kueche: { [key in Kueche]: ShutterPosition };
   esszimmer: { [key in Esszimmer]?: ShutterPosition };
@@ -156,6 +157,6 @@ type NotSubscribedIds = {
   abstellraumog: { [key in Abstellraumog]: ShutterPosition };
 };
 
-interface ShutterPosition {
+export interface ShutterPosition {
   shutterPosition: string;
 }

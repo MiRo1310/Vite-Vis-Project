@@ -1,13 +1,17 @@
-import { shutterAutoUp } from "./ids/rolladen/shutterAutoUp";
-import { shutterAutoUpTime } from "./ids/rolladen/shutterAutoUpTime";
-import { shutterAutoDown } from "./ids/rolladen/shutterAutoDown";
-import { shutterAutoDownTime } from "./ids/rolladen/shutterAutoDownTime";
-import { timer, timer1, timer2, timer3, timer4 } from "./ids/timer/timer";
-import { shutterIdsLogo } from "./ids/rolladen/shutterIdsLogo";
-import { windowOpenClose } from "./ids/window/window";
-import { pvIds } from "./ids/pv/pvIds";
+import { shutterAutoUp } from "./shutterAutoUp";
+import { shutterAutoUpTime } from "./shutterAutoUpTime";
+import { shutterAutoDown } from "./shutterAutoDown";
+import { shutterAutoDownTime } from "./shutterAutoDownTime";
+import { timer, timer1, timer2, timer3, timer4 } from "./timer";
+import { shutterIdsLogo } from "./shutterIdsLogo";
+import { windowOpenClose } from "./window";
+import { pvIds } from "./pvIds";
+import { IdToSubscribe } from "@/types";
+import { poolIds } from "./pool";
 
 export const idToSubscribe: IdToSubscribe[] = [
+  //Pool
+  poolIds,
   shutterAutoUp,
   shutterAutoDown,
   shutterAutoUpTime,
@@ -37,4 +41,9 @@ export const idToSubscribe: IdToSubscribe[] = [
     objectNameInStore: "sonnenuntergang",
     value: [{ id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter" }],
   },
+
 ];
+
+
+
+

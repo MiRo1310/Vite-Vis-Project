@@ -1,3 +1,5 @@
+import { IdToSubscribe } from "@/types";
+
 export const windowOpenClose: IdToSubscribe = {
   objectNameInStore: "fenster",
   value: [

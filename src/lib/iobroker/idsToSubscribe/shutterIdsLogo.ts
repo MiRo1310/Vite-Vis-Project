@@ -1,3 +1,5 @@
+import { IdToSubscribe } from "@/types";
+
 export const shutterIdsLogo: IdToSubscribe = {
   // Rolladen
   objectNameInStore: "rolladen",

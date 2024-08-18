@@ -1,3 +1,5 @@
+import { NotSubscribedIds } from "@/types";
+
 export const notSubscribedIds: NotSubscribedIds = {
   esszimmer: { links: { shutterPosition: "0_userdata.0.Rolladen.Esszimmer.Position_anfahren" } },
   kinderzimmer: { fenster: { shutterPosition: "0_userdata.0.Rolladen.Kinderzimmer.Position_anfahren" } },

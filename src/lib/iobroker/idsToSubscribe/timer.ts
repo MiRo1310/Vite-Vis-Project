@@ -1,3 +1,5 @@
+import { IdToSubscribe } from "@/types";
+
 export const timer: IdToSubscribe = {
   // Timer
   objectNameInStore: "showTimerCard",

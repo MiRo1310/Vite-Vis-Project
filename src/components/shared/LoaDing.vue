@@ -18,15 +18,12 @@ const isLoading = ref(props.isLoading);
 
 </script>
 <template>
-  <div
-    v-show="isLoading"
-    class="spinner"
-  />
+    <div v-show="isLoading" class="spinner" />
 </template>
 
 
 
-<style scoped>
+<style lang="postcss" scoped>
 .spinner {
     border: 3px solid #f3f3f3;
     border-top: 3px solid #3498db;

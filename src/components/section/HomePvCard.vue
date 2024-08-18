@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { useRouter } from 'vue-router';
@@ -9,10 +9,10 @@ const { pv } = storeToRefs(iobrokerStore);
 </script>
 <template>
   <Card class="w-auto cursor-pointer" @click="router.push('/pv')">
-    <CardHeader class="p-4">
+    <CardHeader>
       <CardTitle>PV Daten</CardTitle>
     </CardHeader>
-    <CardContent class="px-4 pb-4">
+    <CardContent>
       <div class="flex justify-between space-x-6">
         <div>
           <p>Batterieladung</p>
