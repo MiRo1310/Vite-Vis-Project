@@ -1,3 +1,4 @@
+import { RowShoppinglist } from '@/types';
 import { h } from 'vue'
 
 export const columns = [

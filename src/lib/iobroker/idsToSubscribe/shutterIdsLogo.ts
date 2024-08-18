@@ -1,6 +1,6 @@
-import { IdToSubscribe } from "@/types";
+import { IdToSubscribe, Shutter } from "@/types";
 
-export const shutterIdsLogo: IdToSubscribe = {
+export const shutterIdsLogo: IdToSubscribe<Shutter> = {
   // Rolladen
   objectNameInStore: "rolladen",
   value: [

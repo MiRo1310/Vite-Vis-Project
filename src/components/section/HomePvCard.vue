@@ -8,7 +8,10 @@ const iobrokerStore = useIobrokerStore();
 const { pv } = storeToRefs(iobrokerStore);
 </script>
 <template>
-  <Card class="w-auto cursor-pointer" @click="router.push('/pv')">
+  <Card
+    class="w-auto cursor-pointer"
+    @click="router.push('/pv')"
+  >
     <CardHeader>
       <CardTitle>PV Daten</CardTitle>
     </CardHeader>
@@ -31,8 +34,12 @@ const { pv } = storeToRefs(iobrokerStore);
           <p>{{ pv.profit }} €</p>
         </div>
       </div>
-      <iframe src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&refresh=5s&panelId=13" width="350"
-        height="120" frameborder="0"></iframe>
+      <iframe
+        src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&refresh=5s&panelId=13"
+        width="350"
+        height="120"
+        frameborder="0"
+      />
     </CardContent>
   </Card>
 </template>

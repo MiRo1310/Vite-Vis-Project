@@ -1,12 +1,12 @@
-import { IdToSubscribe } from "@/types";
+import { IdToSubscribe, Timer1, Timer2, Timer3, Timer4, TimerObject } from "@/types";
 
-export const timer: IdToSubscribe = {
+export const timer: IdToSubscribe<TimerObject> = {
   // Timer
   objectNameInStore: "showTimerCard",
   value: [{ id: "alexa-timer-vis.0.all_Timer.alive" }],
 };
 
-export const timer1: IdToSubscribe = {
+export const timer1: IdToSubscribe<Timer1> = {
   // Timer 1
   objectNameInStore: "timer",
   value: [
@@ -18,7 +18,7 @@ export const timer1: IdToSubscribe = {
   ],
 };
 
-export const timer2: IdToSubscribe = {
+export const timer2: IdToSubscribe<Timer2> = {
   // Timer 2
   objectNameInStore: "timer",
   value: [
@@ -29,7 +29,7 @@ export const timer2: IdToSubscribe = {
     { id: "alexa-timer-vis.0.timer2.name", firstKeyInObject: "timer2", subKey: "name" },
   ],
 };
-export const timer3: IdToSubscribe = {
+export const timer3: IdToSubscribe<Timer3> = {
   // Timer 3
   objectNameInStore: "timer",
   value: [
@@ -40,7 +40,7 @@ export const timer3: IdToSubscribe = {
     { id: "alexa-timer-vis.0.timer3.name", firstKeyInObject: "timer3", subKey: "name" },
   ],
 };
-export const timer4: IdToSubscribe = {
+export const timer4: IdToSubscribe<Timer4> = {
   // Timer 4
   objectNameInStore: "timer",
   value: [

@@ -38,7 +38,7 @@ export async function init() {
     // console.log(await adminConnection.value.getEnums());
     // console.log(await adminConnection.value.getStates());
     idToSubscribe.forEach((listObjectOfIds) => {
-      listObjectOfIds.value.forEach((idObjectEntry) => {
+      listObjectOfIds.value.forEach((idObjectEntry: any) => {
         if (adminConnection.value) {
           adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: any) => {
             let value = state.val;

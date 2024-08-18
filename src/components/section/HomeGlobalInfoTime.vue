@@ -19,11 +19,10 @@ onUnmounted(() => {
 </script>
 <template>
   <p class="text-right">
-    <span>{{ date }}</span>
-    <br>
+    <span class="block">{{ date }}
+    </span>
     <span>
       {{ time }}
-    </span></br>
+    </span>
   </p>
-
 </template>

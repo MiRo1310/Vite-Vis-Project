@@ -1,28 +1,28 @@
 <script setup lang='ts'>
 import { Button } from '@/components/ui/button';
 import { adminConnection } from '@/lib/iobroker/connecterToIobroker';
-import { notSubscribedIds } from '@/lib/idsNotSubscribed';
+import { notSubscribedIds } from '@/lib/iobroker/idsNotSubscribed';
 
 const props = defineProps({
-    id: {
-        type: String,
-        required: true
-    }
+  id: {
+    type: String,
+    required: true
+  }
 })
 
 
 const handleClick = (i: number) => {
-    const arrayOfIds = props.id.split(",").map((id) => id.trim());
-    const key = arrayOfIds[0] as keyof typeof notSubscribedIds;
-    if (!key) return
-    const subKey = arrayOfIds[1] as keyof typeof notSubscribedIds[typeof key]
+  const arrayOfIds = props.id.split(",").map((id) => id.trim());
+  const key = arrayOfIds[0] as keyof typeof notSubscribedIds;
+  if (!key) return
+  const subKey = arrayOfIds[1] as keyof typeof notSubscribedIds[typeof key]
 
-    if (!subKey && typeof subKey != "string") return
-    const id = (notSubscribedIds[key][subKey] as { shutterPosition: string }).shutterPosition;
+  if (!subKey && typeof subKey != "string") return
+  const id = (notSubscribedIds[key][subKey] as { shutterPosition: string }).shutterPosition;
 
 
-    if (adminConnection.value)
-        adminConnection.value.setState(id, 100 - (i - 1) * 20)
+  if (adminConnection.value)
+    adminConnection.value.setState(id, 100 - (i - 1) * 20)
 }
 </script>
 <template>

@@ -1,4 +1,6 @@
-export const shutterAutoDownTime: IdToSubscribe = {
+import { IdToSubscribe, Shutter } from "@/types";
+
+export const shutterAutoDownTime: IdToSubscribe<Shutter> = {
   // Zeitversatz Rolladen Auto herunter fahren
   objectNameInStore: "shutterAutoDownTime",
   value: [

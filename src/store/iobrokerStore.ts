@@ -1,4 +1,5 @@
-import { TimerObject, Shutter, Pv } from "@/types";
+import { Pool } from "@/lib/iobroker/idsToSubscribe/pool";
+import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
 import { defineStore } from "pinia";
 
 export interface IobrokerStoreState {
@@ -11,14 +12,14 @@ export interface IobrokerStoreState {
   fensterStatus2: string;
   showTimerCard: boolean;
   sonnenuntergang: string;
-  idsToControl: object;
+  idsToControl: IdsToControl;
   shutterAutoUp: object;
   shutterAutoDownTime: object;
   timer: TimerObject;
   rolladen: Shutter;
   fenster: Window;
   pv: Pv;
-  pool: object;
+  pool: Pool;
 }
 export type IobrokerStates = keyof IobrokerStoreState;
 
@@ -33,14 +34,14 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     fensterStatus2: "",
     showTimerCard: false,
     sonnenuntergang: "",
-    idsToControl: {},
+    idsToControl: {} as IdsToControl,
     shutterAutoUp: {},
     shutterAutoDownTime: {},
     timer: {} as TimerObject,
     rolladen: {} as Shutter,
     fenster: {} as Window,
     pv: {} as Pv,
-    pool: {}
+    pool: {} as Pool
   }),
   getters: {
     getIobrokerValues(state) {
@@ -75,7 +76,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
           }
           (this as any)[objectNameInStore] = getSubValue(this.getState, firstKeyInObject, subKey, val, objectNameInStore);
           if (saveId && id) {
-            (this as any)["idsToControl"] = saveIdToStore(this.getIdsToControl, id, firstKeyInObject, subKey);
+            (this as any).idsToControl = saveIdToStore(this.getIdsToControl, id, firstKeyInObject, subKey);
           }
           return;
         }
@@ -90,9 +91,11 @@ const saveIdToStore = (obj: any, id: string, key: string, subKey: string | undef
   try {
     if (!subKey) {
       obj[key + "Id"] = id;
+      return obj
     }
     if (!obj[key]) {
       obj[key] = {};
+      return obj;
     }
     obj[key][subKey + "Id"] = id;
 

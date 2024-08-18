@@ -16,10 +16,16 @@ export interface RowShoppinglist {
 export interface GlobalObject {
   [key: string]: any;
 }
-export interface TimerObject {
+export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {
+}
+export interface Timer1 {
   timer1: Timer;
+}
+export interface Timer2 {
   timer2: Timer;
+} export interface Timer3 {
   timer3: Timer;
+} export interface Timer4 {
   timer4: Timer;
 }
 export type KeyOfTimerObject = keyof TimerObject;
@@ -31,7 +37,7 @@ export interface Timer {
   percent: number;
   name: string;
 }
-type KeyOfTimer = keyof Timer;
+export type KeyOfTimer = keyof Timer;
 
 export interface FensterObject {
   name: string;
@@ -91,14 +97,14 @@ export interface Pv {
   profit: number;
 }
 
-export interface IdToSubscribe {
-  value: Ids[];
+export interface IdToSubscribe<TData> {
+  value: Ids<TData>[];
   objectNameInStore?: IobrokerStates;
 }
 
-export interface Ids {
+export interface Ids<TData> {
   id: string;
-  firstKeyInObject?: boolean | string;
+  firstKeyInObject?: keyof TData;
   room?: Rooms;
   subKey?: string;
   subKeyAdditive?: SubKeyAdditive;
@@ -107,11 +113,9 @@ export interface Ids {
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
 export interface IdsToControl {
-  value: {
-    [key: string]: {
-      [key: string]: string;
-    };
-  };
+  tempSetId: string;
+
+
 }
 
 export type Rooms =

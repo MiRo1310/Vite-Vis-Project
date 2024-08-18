@@ -1,6 +1,6 @@
-import { IdToSubscribe } from "@/types";
+import { IdToSubscribe, Pv } from "@/types";
 
-export const pvIds: IdToSubscribe = {
+export const pvIds: IdToSubscribe<Pv> = {
   objectNameInStore: "pv",
   value: [
     { id: "modbus.0.holdingRegisters.41069_soc", firstKeyInObject: "batteryCharging" },

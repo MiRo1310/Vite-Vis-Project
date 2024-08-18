@@ -14,27 +14,30 @@ import {
 </script>
 
 <template>
-    <Sheet>
-        <SheetTrigger as-child>
-            <slot name="trigger"></slot>
-        </SheetTrigger>
-        <SheetContent>
-            <SheetHeader>
-                <SheetTitle>
-                    <slot name="title"></slot>
-                </SheetTitle>
-                <SheetDescription>
-                    <slot name="description"></slot>
-                </SheetDescription>
-            </SheetHeader>
-            <slot name="content"></slot>
-            <SheetFooter>
-                <SheetClose as-child>
-                    <Button type="submit" class="mt-4">
-                        Close
-                    </Button>
-                </SheetClose>
-            </SheetFooter>
-        </SheetContent>
-    </Sheet>
+  <Sheet>
+    <SheetTrigger as-child>
+      <slot name="trigger" />
+    </SheetTrigger>
+    <SheetContent>
+      <SheetHeader>
+        <SheetTitle>
+          <slot name="title" />
+        </SheetTitle>
+        <SheetDescription>
+          <slot name="description" />
+        </SheetDescription>
+      </SheetHeader>
+      <slot name="content" />
+      <SheetFooter>
+        <SheetClose as-child>
+          <Button
+            type="submit"
+            class="mt-4"
+          >
+            Close
+          </Button>
+        </SheetClose>
+      </SheetFooter>
+    </SheetContent>
+  </Sheet>
 </template>

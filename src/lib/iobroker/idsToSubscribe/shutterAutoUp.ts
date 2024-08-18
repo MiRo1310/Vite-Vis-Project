@@ -1,4 +1,6 @@
-export const shutterAutoUp: IdToSubscribe = {
+import { IdToSubscribe, Shutter } from "@/types";
+
+export const shutterAutoUp: IdToSubscribe<Shutter> = {
   // Auto hoch aktiv
   objectNameInStore: "shutterAutoUp",
   value: [
@@ -64,13 +66,13 @@ export const shutterAutoUp: IdToSubscribe = {
       subKey: "fenster",
       subKeyAdditive: "AutoUp",
       saveId: true,
-    },    {
+    }, {
       id: "0_userdata.0.Rolladen.Schlafzimmer.Rollade_auto_hoch_tuer",
       room: "schlafen",
       subKey: "tuer",
       subKeyAdditive: "AutoUp",
       saveId: true,
-    },   
+    },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch",
       room: "wohnzimmer",

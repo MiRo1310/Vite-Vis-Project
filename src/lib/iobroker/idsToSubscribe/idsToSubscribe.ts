@@ -9,7 +9,7 @@ import { pvIds } from "./pvIds";
 import { IdToSubscribe } from "@/types";
 import { poolIds } from "./pool";
 
-export const idToSubscribe: IdToSubscribe[] = [
+export const idToSubscribe: IdToSubscribe<any>[] = [
   //Pool
   poolIds,
   shutterAutoUp,

@@ -46,13 +46,22 @@ const getColor = (name: string) => {
 <template>
   <Card>
     <CardContent class="flex py-2 px-1">
-      <div v-for="event in trashEvents" :key="event.name" class="flex relative px-1 h-[6.9rem]">
-        <div :class="getColor(event.name)" class="px-2 pt-2 pb-12 rounded  ">
+      <div
+        v-for="event in trashEvents"
+        :key="event.name"
+        class="flex relative px-1 h-[6.9rem]"
+      >
+        <div
+          :class="getColor(event.name)"
+          class="px-2 pt-2 pb-12 rounded  "
+        >
           <Trash2 class="h-10 w-12 text-white" />
         </div>
         <div class="top-[3.3rem] absolute text-center w-full pr-2">
-          <p class="border-2 rounded-full w-7 h-7 flex justify-center items-center  bg-white ml-auto mr-auto"
-            :class="getAnimationBorder(event.daysLeft)">
+          <p
+            class="border-2 rounded-full w-7 h-7 flex justify-center items-center  bg-white ml-auto mr-auto"
+            :class="getAnimationBorder(event.daysLeft)"
+          >
             {{ event.daysLeft
             }}
           </p>
