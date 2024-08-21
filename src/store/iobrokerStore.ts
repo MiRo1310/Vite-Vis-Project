@@ -1,4 +1,4 @@
-import { Pool } from "@/lib/iobroker/idsToSubscribe/pool";
+import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
 import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
 import { defineStore } from "pinia";
 
@@ -74,7 +74,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
           if (!(this as any)[objectNameInStore]) {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
+
           (this as any)[objectNameInStore] = getSubValue(this.getState, firstKeyInObject, subKey, val, objectNameInStore);
+
           if (saveId && id) {
             (this as any).idsToControl = saveIdToStore(this.getIdsToControl, id, firstKeyInObject, subKey);
           }

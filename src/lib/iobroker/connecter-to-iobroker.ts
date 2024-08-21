@@ -1,14 +1,15 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
-import { idToSubscribe } from "./idsToSubscribe/idsToSubscribe";
+import { idToSubscribe } from "./ids-to-subscribe/ids-to-subscribe";
+import { IobrokerState, NullableState } from "@/types";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";
 export const IOBROKER_ADMIN_PORT = "8081";
 const IOBROKER_WS_PORT = "8084";
 
-let iobrokerStore: any;
+let iobrokerStore: any
 document.addEventListener("DOMContentLoaded", () => {
   iobrokerStore = useIobrokerStore();
 });
@@ -42,16 +43,19 @@ export async function init() {
         if (adminConnection.value) {
           adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: any) => {
             let value = state.val;
-            if (!value && !value === false) {
+            if (!isPresentAndTruthy(value)) {
               value = null;
             }
+
             let subKey = null;
             if (idObjectEntry.subKey) {
               subKey = idObjectEntry.subKey;
             }
+
             if (idObjectEntry.subKeyAdditive) {
               subKey += idObjectEntry.subKeyAdditive;
             }
+
             iobrokerStore.setValues(
               listObjectOfIds.objectNameInStore || null,
               value,
@@ -65,4 +69,8 @@ export async function init() {
       });
     });
   }
+}
+
+const isPresentAndTruthy = (value: NullableState) => {
+  return value || value === false;
 }

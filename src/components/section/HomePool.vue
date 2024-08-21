@@ -2,10 +2,10 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
-import { adminConnection } from '@/lib/iobroker/connecterToIobroker'
+import { adminConnection } from '@/lib/iobroker/connecter-to-iobroker'
 import InputUnit from '@/components/shared/InputUnit.vue';
 import BoolIcon from '@/components/shared/BoolIcon.vue';
-import { BoolText } from '@/lib/iobroker/idsToSubscribe/pool';
+import { BoolText } from '@/lib/iobroker/ids-to-subscribe/pool';
 import { computed } from 'vue';
 
 const { pool, idsToControl } = storeToRefs(useIobrokerStore());
@@ -22,6 +22,7 @@ interface Items {
   unit?: string
   function?: (value: string | number) => void;
 }
+
 const items = computed(() => {
   const items: Items[] = [
     { title: "Pool Heizung durch Zeitplan aktiv", type: 'bool', value: pool.value.heaterState },
@@ -37,14 +38,13 @@ const items = computed(() => {
 })
 
 const getMode = (mode: string) => {
-  console.log(typeof mode)
   switch (mode) {
     case "-1":
       return "Aus"
     case "0":
       return "Kühlen"
     case "1":
-      return "eizen"
+      return "Heizen"
     case "2":
       return "Auto"
     default:

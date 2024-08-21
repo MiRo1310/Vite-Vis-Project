@@ -7,7 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import FensterOpenClose from '@/components/section/FensterCardOpenClose.vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
-import { adminConnection } from '@/lib/iobroker/connecterToIobroker'
+import { adminConnection } from '@/lib/iobroker/connecter-to-iobroker'
 import { getID } from '@/lib/utilities'
 import windowOpen from '@/assets/window_open.png'
 import windowClosed from '@/assets/window_closed.png'
@@ -121,10 +121,7 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
 
 </script>
 <template>
-  <Card
-    class="w-[32.5%] m-1 relative"
-    :class="`${props.cl}`"
-  >
+  <Card class="w-[32.5%] m-1 relative" :class="`${props.cl}`">
     <CardHeader class="pb-0 pt-2 px-2">
       <CardTitle class="flex ">
         <p>{{ props.title }}</p>
@@ -134,79 +131,39 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
       <div class="flex items-center justify-between">
         <div class=" flex">
           <div>
-            <img
-              v-show="getIsWindowOpen"
-              class="w-8 h-6 mt-1"
-              :src="windowOpen"
-              alt="FensterAufZu"
-            >
-            <img
-              v-show="!getIsWindowOpen"
-              class="w-8 h-6 mt-1"
-              :src="windowClosed"
-              alt="FensterAufZu"
-            >
+            <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
           <div v-if="props.id2">
-            <img
-              v-show="getIsSecondWindowOpen"
-              class="w-8 h-6 mt-1"
-              :src="windowOpen"
-              alt="FensterAufZu"
-            >
-            <img
-              v-show="!getIsSecondWindowOpen"
-              class="w-8 h-6 mt-1"
-              :src="windowClosed"
-              alt="FensterAufZu"
-            >
+            <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
         </div>
 
-        <FensterOpenClose
-          v-if="!props.shutter"
-          class="text"
-          :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
-        />
+        <FensterOpenClose v-if="!props.shutter" class="text"
+          :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen" />
       </div>
       <div v-if="props.shutter">
         <div class="flex">
-          <img
-            class="window--img"
-            :src="getShutterImage"
-            alt="FensterRollade"
-          >
+          <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class=" w-full">
-            <FensterOpenClose
-              :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
-              class="text"
-            />
-            <p
-              class="text"
-              :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''"
-            >
+            <FensterOpenClose :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
+              class="text" />
+            <p class="text" :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
               Rollade {{ getShutterPosition }}% offen
             </p>
 
             <div class="absolute top-2 right-2">
               <div class="flex items-center justify-between ">
                 <div class="w-11">
-                  <Switch
-                    :checked="getAutoClose"
-                    @update:checked="updateHandler($event, 'Auto')"
-                  />
+                  <Switch :checked="getAutoClose" @update:checked="updateHandler($event, 'Auto')" />
                   <p class="text-[0.5rem]">
                     Auto runter
                   </p>
                 </div>
                 <div class="relative">
-                  <Input
-                    type="number"
-                    step="1"
-                    class="w-[5.8rem] pr-8"
-                    :model-value="getAutoCloseDelay"
-                    @update:model-value="updateHandler($event, 'Delay')"
-                  />
+                  <Input type="number" step="1" class="w-[5.8rem] pr-8" :model-value="getAutoCloseDelay"
+                    @update:model-value="updateHandler($event, 'Delay')" />
                   <div class=" absolute text-sm top-2 right-2">
                     min
                   </div>
@@ -214,20 +171,14 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
-                  <Switch
-                    :checked="getAutoOpen"
-                    @update:checked="updateHandler($event, 'AutoUp')"
-                  />
+                  <Switch :checked="getAutoOpen" @update:checked="updateHandler($event, 'AutoUp')" />
                   <p class=" text-[0.5rem]">
                     Auto hoch
                   </p>
                 </div>
                 <p>
-                  <Input
-                    type="time"
-                    :model-value="getAutoUpTime"
-                    @update:model-value="updateHandler($event, 'AutoUpTime')"
-                  />
+                  <Input type="time" :model-value="getAutoUpTime"
+                    @update:model-value="updateHandler($event, 'AutoUpTime')" />
                 </p>
               </div>
             </div>

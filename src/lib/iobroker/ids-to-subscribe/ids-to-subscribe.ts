@@ -1,13 +1,13 @@
-import { shutterAutoUp } from "./shutterAutoUp";
-import { shutterAutoUpTime } from "./shutterAutoUpTime";
-import { shutterAutoDown } from "./shutterAutoDown";
-import { shutterAutoDownTime } from "./shutterAutoDownTime";
+import { shutterAutoUp } from "./shutter-auto-up";
+import { shutterAutoUpTime } from "./shutter-auto-up-time";
+import { shutterAutoDown } from "./shutter-auto-down";
+import { shutterAutoDownTime } from "./shutter-auto-down-time";
 import { timer, timer1, timer2, timer3, timer4 } from "./timer";
-import { shutterIdsLogo } from "./shutterIdsLogo";
+import { shutterIdsLogo } from "./shutter-ids-logo";
 import { windowOpenClose } from "./window";
-import { pvIds } from "./pvIds";
-import { IdToSubscribe } from "@/types";
-import { poolIds } from "./pool";
+import { pvIds } from "./pv-ids";
+import { IdToSubscribe, Timer1 } from "@/types";
+import { Pool, poolIds } from "./pool";
 
 export const idToSubscribe: IdToSubscribe<any>[] = [
   //Pool

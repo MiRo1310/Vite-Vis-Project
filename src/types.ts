@@ -164,3 +164,14 @@ export type NotSubscribedIds = {
 export interface ShutterPosition {
   shutterPosition: string;
 }
+
+export interface IobrokerState {
+  val: IobrokerStateValue;
+  ack: boolean;
+  ts: number;
+  lc: number;
+  from: string;
+  q: number;
+}
+type IobrokerStateValue = string | number | boolean;
+export type NullableState = null | IobrokerStateValue

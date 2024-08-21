@@ -48,26 +48,10 @@ const buttons = [
 
 <template>
   <div class="p-2 w-full">
-    <router-link
-      v-for="(button, index) in buttons"
-      :key="index"
-      :to="button.link"
-    >
-      <Button
-        variant="outline"
-        class="button--nav cursor-pointer h-12"
-      >
-        <component
-          :is="button.icon"
-          class="w-4 h-4 "
-        /><span class="ml-2">{{ button.text }}</span>
+    <router-link v-for="(button, index) in buttons" :key="index" :to="button.link">
+      <Button variant="outline" class="justify-start w-full mb-2 cursor-pointer h-12">
+        <component :is="button.icon" class="w-4 h-4 " /><span class="ml-2">{{ button.text }}</span>
       </Button>
     </router-link>
   </div>
 </template>
-
-<style lang="postcss">
-.button--nav {
-  @apply justify-start w-full mb-2
-}
-</style>

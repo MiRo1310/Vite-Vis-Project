@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { Button } from '@/components/ui/button';
-import { adminConnection } from '@/lib/iobroker/connecterToIobroker';
-import { notSubscribedIds } from '@/lib/iobroker/idsNotSubscribed';
+import { adminConnection } from '@/lib/iobroker/connecter-to-iobroker';
+import { notSubscribedIds } from '@/lib/iobroker/ids-not-subscribed';
 
 const props = defineProps({
   id: {
@@ -27,13 +27,7 @@ const handleClick = (i: number) => {
 </script>
 <template>
   <div class=" flex justify-between">
-    <Button
-      v-for="i in 6"
-      :key="i"
-      class="mx-1 w-10 h-6 text-xs"
-      :size="'sm'"
-      @click="handleClick(i)"
-    >
+    <Button v-for="i in 6" :key="i" class="mx-1 w-10 h-6 text-xs" :size="'sm'" @click="handleClick(i)">
       {{ 100 - (i - 1) * 20 }}%
     </Button>
   </div>

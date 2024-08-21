@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import NavLeft from './components/layout/NavLeft.vue';
 import { onMounted } from 'vue';
-import { loadScript, init, IOBROKER_ADMIN_PORT, IOBROKER_HOST } from '@/lib/iobroker/connecterToIobroker';
+import { loadScript, init, IOBROKER_ADMIN_PORT, IOBROKER_HOST } from '@/lib/iobroker/connecter-to-iobroker';
 
 onMounted(async () => {
   loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
@@ -18,9 +18,7 @@ onMounted(async () => {
 
     <div class="lg:pl-52 bg-accent min-h-[100vh]">
       <main>
-        <div class="pr-2">
-          <RouterView />
-        </div>
+        <RouterView />
       </main>
     </div>
   </div>
