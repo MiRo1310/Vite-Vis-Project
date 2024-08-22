@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { adminConnection } from '@/lib/iobroker/connecter-to-iobroker'
@@ -7,6 +7,7 @@ import InputUnit from '@/components/shared/InputUnit.vue';
 import BoolIcon from '@/components/shared/BoolIcon.vue';
 import { BoolText } from '@/lib/iobroker/ids-to-subscribe/pool';
 import { computed } from 'vue';
+import CardTitle from '@/components/shared/card/CardTitle.vue';
 
 const { pool, idsToControl } = storeToRefs(useIobrokerStore());
 const handleChangeTempSet = (value: string | number) => {
@@ -25,6 +26,7 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
+    { title: "Heizung ist aktiv", type: 'bool', value: pool.value.consumption > 100 },
     { title: "Pool Heizung durch Zeitplan aktiv", type: 'bool', value: pool.value.heaterState },
     { title: "Modus", type: 'text', value: getMode(pool.value.mode) },
     { title: "Pool Heizung Energie Verbrauch", type: 'number', value: pool.value.consumption, unit: "W" },
@@ -61,16 +63,19 @@ const getMode = (mode: string) => {
     </CardHeader>
     <CardContent>
       <p v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
-        <span class="mr-12">{{ item.title }}</span>
+        <span :class="{ 'mr-12 text-accent-foreground/50 font-bold text-xs': true, 'mt-2': index > 0 }">{{ item.title
+          }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
 
-        <InputUnit v-else-if="item.type === 'input'" class="w-16" type="number"
-          :model-value="item.value as number | string" :unit="item.unit"
+        <InputUnit v-else-if="item.type === 'input'"
+          class="w-16 text-accent-foreground/50 text-xs font-bold border-0 border-b shadow-none rounded-none "
+          type="number" :model-value="item.value as number | string" :unit="item.unit"
           @update:model-value="(value: string | number) => item && item.function && item.function(value)" />
-        <span v-else-if="item.type === 'number'">{{ parseFloat(item.value?.toString()).toFixed(2) }} {{
-          item.unit
-        }} </span>
-        <span v-else>{{ item.value }} {{ item.unit }} </span>
+        <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold">{{
+          parseFloat(item.value?.toString()).toFixed(2) }} {{
+            item.unit
+          }} </span>
+        <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }} </span>
       </p>
     </CardContent>
   </Card>

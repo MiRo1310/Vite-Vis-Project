@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import FensterCard from '@/components/section/FensterCard.vue';
+import FensterCard from '@/components/section/HomeFensterCard.vue';
 import { computed } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
@@ -60,15 +60,9 @@ const getOpenWindows = computed(() => {
       <CardHeader class="p-2">
         <CardTitle class=" flex justify-between">
           <p>Fensterstatus</p>
-          <p
-            v-show="getOpenWindows === 1"
-            class="flex "
-          >
+          <p v-show="getOpenWindows === 1" class="flex ">
             Ein Fenster ist
-            <span
-              :class="fensterOffen ? 'text-red-500 animate-pulse' : ''"
-              class="ml-1 "
-            >offen </span>
+            <span :class="fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1 ">offen </span>
           </p>
 
           <p v-show="getOpenWindows !== 1">
@@ -85,14 +79,8 @@ const getOpenWindows = computed(() => {
     </Card>
   </div>
   <div class=" flex flex-wrap lg:pt-12 lg:pl-0 pl-1">
-    <FensterCard
-      v-for="card in windows"
-      :id="card.id"
-      :key="card.name"
-      :shutter="card.shutter"
-      :title="card.name"
-      :id2="card.id2"
-    />
+    <FensterCard v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter" :title="card.name"
+      :id2="card.id2" />
   </div>
 </template>
 <style scoped>

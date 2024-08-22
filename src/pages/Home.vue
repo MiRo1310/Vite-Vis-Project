@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Trash from '@/components/section/HomeTrash.vue';
-import GlobalInfo from '@/components/section/HomeGlobalInfo.vue';
-import SectionButtons from '@/components/section/HomeSectionButtons.vue';
-import AlexaTimer from '@/components/section/AlexaTimer.vue';
-import PvCard from '@/components/section/HomePvCard.vue';
-import Pool from '@/components/section/HomePool.vue';
+import GlobalInfo from '@/components/section/HomeCardInfo.vue';
+import SectionButtons from '@/components/section/HomeActions.vue';
+import AlexaTimer from '@/components/section/HomeAlexaTimer.vue';
+import HomeCardPv from '@/components/section/HomeCardPv.vue';
+import HomeCardPool from '@/components/section/HomeCardPool.vue';
 </script>
 
 <template>
@@ -14,8 +14,8 @@ import Pool from '@/components/section/HomePool.vue';
       <GlobalInfo class="m-1" />
       <Trash class="bg-white bg-opacity-90 m-1 " />
 
-      <PvCard class="m-1 overflow-auto self-start" />
-      <Pool class="m-1 overflow-auto self-start" />
+      <HomeCardPv class="m-1 overflow-auto self-start" />
+      <HomeCardPool class="m-1 overflow-auto self-start" />
     </div>
 
     <div class="w-52 mt-1 flex-wrap h-full mr-auto flex justify-end ">

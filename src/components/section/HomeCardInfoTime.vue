@@ -18,7 +18,7 @@ onUnmounted(() => {
 
 </script>
 <template>
-  <p class="text-right">
+  <p class="text-right text-accent-foreground/50 font-bold">
     <span class="block">{{ date }}
     </span>
     <span>

@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 import { computed } from 'vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import FensterButtons from '@/components/section/FensterCardButtons.vue';
+import HomeFensterCardButtons from '@/components/section/HomeFensterCardButtons.vue';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import FensterOpenClose from '@/components/section/FensterCardOpenClose.vue';
+import HomeFensterCardOpenClose from '@/components/section/HomeFensterCardOpenClose.vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { adminConnection } from '@/lib/iobroker/connecter-to-iobroker'
@@ -13,8 +13,10 @@ import windowOpen from '@/assets/window_open.png'
 import windowClosed from '@/assets/window_closed.png'
 import { blinds100, blinds90, blinds80, blinds0, blinds10, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70 } from '@/assets/index.ts'
 import { SubKeyAdditive } from '@/types.ts';
+
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, idsToControl, shutterAutoUp } = storeToRefs<any>(iobrokerStore)
+
 const props = defineProps({
   shutter: {
     type: Boolean,
@@ -50,6 +52,7 @@ const getIsWindowOpen = computed(() => {
   }
   return value
 })
+
 const getIsSecondWindowOpen = computed(() => {
   if (!props.id2) return false
   const arrayOfIds = props.id2.split(',').map(id => id.trim())
@@ -73,14 +76,17 @@ const getAutoCloseDelay = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
   return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Delay']
 })
+
 const getAutoClose = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
   return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'Auto']
 })
+
 const getAutoOpen = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
   return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'AutoUp']
 })
+
 const getAutoUpTime = computed(() => {
   const arrayOfIds = props.id.split(',').map(id => id.trim())
   return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + 'AutoUpTime']
@@ -88,36 +94,39 @@ const getAutoUpTime = computed(() => {
 
 const getShutterImage = computed(() => {
   const position = getShutterPosition.value
-  if (position === 0) {
-    return blinds100
+  switch (position) {
+    case 0:
+      return blinds100
+    case 10:
+      return blinds90
+    case 20:
+      return blinds80
+    case 30:
+      return blinds70
+    case 40:
+      return blinds60
+    case 50:
+      return blinds50
+    case 60:
+      return blinds40
+    case 70:
+      return blinds30
+    case 80:
+      return blinds20
+    case 90:
+      return blinds10
+    case 100:
+      return blinds0
+    default:
+      return blinds0
   }
-  else if (position <= 10) {
-    return blinds90
-  } else if (position <= 20) {
-    return blinds80
-  } else if (position <= 30) {
-    return blinds70
-  } else if (position <= 40) {
-    return blinds60
-  } else if (position <= 50) {
-    return blinds50
-  } else if (position <= 60) {
-    return blinds40
-  } else if (position <= 70) {
-    return blinds30
-  } else if (position <= 80) {
-    return blinds20
-  } else if (position <= 90) {
-    return blinds10
-  } else
-    return blinds0
 })
+
 const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) => {
   if (adminConnection.value) {
     adminConnection.value.setState(getID(type, props.id, idsToControl), value)
   }
 }
-
 
 </script>
 <template>
@@ -140,15 +149,15 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
           </div>
         </div>
 
-        <FensterOpenClose v-if="!props.shutter" class="text"
+        <HomeFensterCardOpenClose v-if="!props.shutter" class="text"
           :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen" />
       </div>
       <div v-if="props.shutter">
         <div class="flex">
           <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class=" w-full">
-            <FensterOpenClose :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen"
-              class="text" />
+            <HomeFensterCardOpenClose
+              :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen" class="text" />
             <p class="text" :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
               Rollade {{ getShutterPosition }}% offen
             </p>
@@ -184,7 +193,7 @@ const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) =
             </div>
           </div>
         </div>
-        <FensterButtons :id="props.id" />
+        <HomeFensterCardButtons :id="props.id" />
       </div>
     </CardContent>
   </Card>
