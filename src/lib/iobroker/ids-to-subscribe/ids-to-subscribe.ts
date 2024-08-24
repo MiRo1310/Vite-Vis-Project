@@ -6,8 +6,8 @@ import { timer, timer1, timer2, timer3, timer4 } from "./timer";
 import { shutterIdsLogo } from "./shutter-ids-logo";
 import { windowOpenClose } from "./window";
 import { pvIds } from "./pv-ids";
-import { IdToSubscribe, Timer1 } from "@/types";
-import { Pool, poolIds } from "./pool";
+import { IdToSubscribe } from "@/types";
+import { poolIds } from "./pool";
 
 export const idToSubscribe: IdToSubscribe<any>[] = [
   //Pool

@@ -22,7 +22,7 @@ const values = [
       <CardTitle>PV Daten</CardTitle>
     </CardHeader>
     <CardContent>
-      <div v-for="(value, index) in values" class="flex justify-between" :key="index">
+      <div v-for="(value, index) in values" class="flex justify-between items-center" :key="index">
         <span :class="{ 'text-accent-foreground/50 text-xs font-bold': true, 'mt-2': index > 0 }">{{ value.title
           }}</span>
 

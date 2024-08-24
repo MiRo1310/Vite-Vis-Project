@@ -62,7 +62,7 @@ const getMode = (mode: string) => {
       <CardTitle>Pool</CardTitle>
     </CardHeader>
     <CardContent>
-      <p v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
+      <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
         <span :class="{ 'mr-12 text-accent-foreground/50 font-bold text-xs': true, 'mt-2': index > 0 }">{{ item.title
           }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
@@ -76,7 +76,7 @@ const getMode = (mode: string) => {
             item.unit
           }} </span>
         <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }} </span>
-      </p>
+      </div>
     </CardContent>
   </Card>
 </template>

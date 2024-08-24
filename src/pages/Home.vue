@@ -14,8 +14,8 @@ import HomeCardPool from '@/components/section/HomeCardPool.vue';
       <GlobalInfo class="m-1" />
       <Trash class="bg-white bg-opacity-90 m-1 " />
 
-      <HomeCardPv class="m-1 overflow-auto self-start" />
-      <HomeCardPool class="m-1 overflow-auto self-start" />
+      <HomeCardPv class="m-1" />
+      <HomeCardPool class="m-1" />
     </div>
 
     <div class="w-52 mt-1 flex-wrap h-full mr-auto flex justify-end ">

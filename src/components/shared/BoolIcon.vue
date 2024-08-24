@@ -9,6 +9,6 @@ defineProps({
 })
 </script>
 <template>
-  <Check v-if="value == 'true' || value === true" class="text-green-500 -mr-1" />
-  <X v-else class="text-destructive  -mr-1" />
+  <Check v-if="value == 'true' || value === true" class="text-green-500 -mr-1 h-4 w-4" />
+  <X v-else class="text-destructive -mr-1 h-4 w-4 p-0" />
 </template>
