@@ -72,5 +72,5 @@ export async function init() {
 }
 
 const isPresentAndTruthy = (value: NullableState) => {
-  return value || value === false;
+  return value || value === false || value === 0;
 }
