@@ -39,7 +39,7 @@ export interface Timer {
 }
 export type KeyOfTimer = keyof Timer;
 
-export interface FensterObject {
+export interface WindowObject {
   name: string;
   shutter: boolean;
   id: string;

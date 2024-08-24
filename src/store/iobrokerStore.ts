@@ -1,11 +1,12 @@
 import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
 import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
 import { defineStore } from "pinia";
+import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 
 export interface IobrokerStoreState {
-  iobrokerValues: object;
+  wetter: Wetter;
   trash: object;
-  shoppingList: object;
+  shoppingList: string;
   urlaubAktiv: boolean;
   fensterOffen: boolean;
   fensterStatus1: string;
@@ -25,9 +26,9 @@ export type IobrokerStates = keyof IobrokerStoreState;
 
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IobrokerStoreState => ({
-    iobrokerValues: {},
+    wetter: {} as Wetter,
     trash: {},
-    shoppingList: {},
+    shoppingList: "",
     urlaubAktiv: false,
     fensterOffen: false,
     fensterStatus1: "",
@@ -44,9 +45,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     pool: {} as Pool
   }),
   getters: {
-    getIobrokerValues(state) {
-      return state.iobrokerValues;
-    },
+
     getTrash(state) {
       return state.trash;
     },

@@ -8,6 +8,7 @@ import { windowOpenClose } from "./window";
 import { pvIds } from "./pv-ids";
 import { IdToSubscribe } from "@/types";
 import { poolIds } from "./pool";
+import { wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 
 export const idToSubscribe: IdToSubscribe<any>[] = [
   //Pool
@@ -24,10 +25,8 @@ export const idToSubscribe: IdToSubscribe<any>[] = [
   timer4,
   windowOpenClose,
   pvIds,
-  {
-    objectNameInStore: "iobrokerValues",
-    value: [{ id: "javascript.0.Geraete.WetterCom.temp_value", firstKeyInObject: "Aussentemperatur" }],
-  },
+  wetter,
+
   { objectNameInStore: "trash", value: [{ id: "trashschedule.0.type.json" }] },
   { objectNameInStore: "shoppingList", value: [{ id: "alexa-shoppinglist.0.list_activ" }] },
   { objectNameInStore: "urlaubAktiv", value: [{ id: "0_userdata.0.Urlaub.Urlaub_aktiv" }] },

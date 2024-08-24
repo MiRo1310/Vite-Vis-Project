@@ -1,14 +1,16 @@
 <script setup lang='ts'>
 import FensterCard from '@/components/section/HomeFensterCard.vue';
-import { computed } from 'vue';
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { FensterObject } from '@/types.ts';
+import { WindowObject } from '@/types.ts';
 const iobrokerStore = useIobrokerStore();
-const { fensterOffen, fenster } = storeToRefs<any>(iobrokerStore)
+const { fensterOffen } = storeToRefs<any>(iobrokerStore)
+import { getWindowInfos } from '@/composables/windows';
 
-const windows: FensterObject[] = [
+const { getOpenWindows } = getWindowInfos()
+
+const windows: WindowObject[] = [
   { name: "Küche Tür", shutter: true, id: "kueche,tuer" },
   { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
   { name: "Esszimmer", shutter: true, id: "esszimmer,links", id2: "esszimmer,rechts" },
@@ -38,20 +40,6 @@ const windows: FensterObject[] = [
 
 
 ]
-const possibleWindows = ["fenster", "tuer", "ecke", "links", "mittig", "rechts", "flurFenster"]
-
-const getOpenWindows = computed(() => {
-  let countedOpenWindows = 0
-  Object.keys(fenster.value).forEach(key => {
-    possibleWindows.forEach(window => {
-      if (fenster.value[key][window] === true) {
-        countedOpenWindows++
-      }
-    })
-
-  })
-  return countedOpenWindows
-})
 
 </script>
 <template>

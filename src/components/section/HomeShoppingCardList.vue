@@ -27,6 +27,7 @@ const shoppingListData = ref<ShoppingList[]>([])
 watch(shoppingList, () => {
   createShoppinglist()
 });
+
 const createShoppinglist = () => {
   try {
     if (shoppingList.value !== "" && typeof shoppingList.value === "string")
@@ -35,6 +36,7 @@ const createShoppinglist = () => {
     console.log('error', error);
   }
 }
+
 const removeItem = (id: string) => {
   if (adminConnection.value) adminConnection.value.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true)
 }
