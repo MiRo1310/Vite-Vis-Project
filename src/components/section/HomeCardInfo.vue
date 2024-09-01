@@ -44,7 +44,7 @@ const infos = computed(() => [
         :class="{ 'flex justify-between items-center text-accent-foreground/50 font-bold': true, 'animate-bounce': isTimeToWarn && (getOpenWindows > 0) && info.bounce, 'mt-2': index > 0 }"
         :key="index">
         <p>{{ info.title }}</p>
-        <p class="ml-6 mr-4"> {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span></p>
+        <p class="ml-3 mr-4"> {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span></p>
       </div>
 
     </CardContent>

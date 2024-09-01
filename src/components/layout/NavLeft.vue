@@ -49,10 +49,11 @@ const buttons = [
 
 <template>
 
-  <div class="p-2 w-full">
+  <div class="w-full">
     <HomeCardInfoTime />
     <router-link v-for="(button, index) in buttons" :key="index" :to="button.link">
-      <Button variant="outline" class="justify-start w-full mb-2 cursor-pointer h-12 text-accent-foreground/80">
+      <Button variant="outline"
+        class="justify-start w-full mb-2 cursor-pointer h-12 text-accent-foreground/80 rounded-xl">
         <component :is="button.icon" class="w-4 h-4 " /><span class="ml-2 ">{{ button.text
           }}</span>
       </Button>

@@ -9,6 +9,7 @@ export interface Pool {
     tempOut: number;
     rotor: number;
     mode: string;
+    status: boolean;
 }
 export const poolIds: IdToSubscribe<Pool> = {
     objectNameInStore: "pool",
@@ -20,6 +21,7 @@ export const poolIds: IdToSubscribe<Pool> = {
         { id: "midas-aquatemp.0.tempOut", firstKeyInObject: "tempOut", },
         { id: "midas-aquatemp.0.rotor", firstKeyInObject: "rotor", },
         { id: "midas-aquatemp.0.mode", firstKeyInObject: "mode", },
+        { id: "midas-aquatemp.0.info.connection", firstKeyInObject: "status", },
 
     ],
 

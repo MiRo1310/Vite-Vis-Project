@@ -59,7 +59,13 @@ const getMode = (mode: string) => {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Pool</CardTitle>
+      <CardTitle>
+        <div class="flex justify-between">
+          <span>Pool Wärmepumpe</span>
+          <span class="text-accent-foreground/50 text-xs font-bold text-right">{{ pool.status ? "Online" : "Offline"
+            }}</span>
+        </div>
+      </CardTitle>
     </CardHeader>
     <CardContent>
       <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">

@@ -10,13 +10,13 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-52 lg:flex-col">
-      <div class="flex grow flex-col gap-y-5 overflow-y-auto pb-4">
-        <NavLeft />
-      </div>
+    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col py-2 pl-2 pr-1">
+
+      <NavLeft />
+
     </div>
 
-    <div class="lg:pl-52 bg-accent min-h-[100vh]">
+    <div class="lg:pl-48 bg-accent min-h-[100vh]">
       <main>
         <RouterView />
       </main>

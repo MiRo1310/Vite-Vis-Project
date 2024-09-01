@@ -9,6 +9,7 @@ import { pvIds } from "./pv-ids";
 import { IdToSubscribe } from "@/types";
 import { poolIds } from "./pool";
 import { wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
+import { landroid } from "./landroid";
 
 export const idToSubscribe: IdToSubscribe<any>[] = [
   //Pool
@@ -26,6 +27,8 @@ export const idToSubscribe: IdToSubscribe<any>[] = [
   windowOpenClose,
   pvIds,
   wetter,
+  landroid,
+
 
   { objectNameInStore: "trash", value: [{ id: "trashschedule.0.type.json" }] },
   { objectNameInStore: "shoppingList", value: [{ id: "alexa-shoppinglist.0.list_activ" }] },

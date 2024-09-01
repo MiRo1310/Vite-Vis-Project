@@ -2,6 +2,7 @@ import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
 import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
 import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
+import { Landroid } from '../lib/iobroker/ids-to-subscribe/landroid';
 
 export interface IobrokerStoreState {
   wetter: Wetter;
@@ -21,6 +22,8 @@ export interface IobrokerStoreState {
   fenster: Window;
   pv: Pv;
   pool: Pool;
+  landroid: Landroid;
+
 }
 export type IobrokerStates = keyof IobrokerStoreState;
 
@@ -42,7 +45,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     rolladen: {} as Shutter,
     fenster: {} as Window,
     pv: {} as Pv,
-    pool: {} as Pool
+    pool: {} as Pool,
+    landroid: {} as Landroid,
   }),
   getters: {
 
