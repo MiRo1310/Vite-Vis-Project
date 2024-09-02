@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue';
 
-import { Home, Blinds, LampCeiling, Plug, Sun, Heater, PlugZap, WashingMachine, Cctv } from 'lucide-vue-next';
+import { Home, Blinds, LampCeiling, Plug, Sun, Heater, PlugZap, WashingMachine, Cctv, CalendarDays } from 'lucide-vue-next';
 import HomeCardInfoTime from '@/components/layout/NavLeftTime.vue';
 
 const buttons = [
@@ -9,21 +9,30 @@ const buttons = [
     icon: Home,
     text: 'Home',
     link: "/"
-  }, {
+  },
+  {
     icon: Blinds,
     text: 'Rolladen Fenster',
     link: "/fenster"
 
-  }, {
+  },
+  {
+    icon: CalendarDays,
+    text: 'Kalendar',
+    link: "/kalendar"
+
+  },
+  {
     icon: LampCeiling,
     text: 'Licht',
     link: "/licht"
-  }, {
+  },
+  {
     icon: Plug,
     text: 'Steckdosen',
     link: "/steckdosen"
-
-  }, {
+  },
+  {
     icon: Sun,
     text: 'Wetter',
     link: "/wetter"

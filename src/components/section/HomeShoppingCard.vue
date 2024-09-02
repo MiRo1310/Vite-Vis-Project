@@ -26,7 +26,7 @@ const createShoppinglist = computed(() => {
         <template #title>
 
           <p>Einkaufsliste</p>
-          <Badge :value="createShoppinglist.length" />
+          <Badge :value="createShoppinglist?.length" />
         </template>
       </ButtonCard>
     </template>

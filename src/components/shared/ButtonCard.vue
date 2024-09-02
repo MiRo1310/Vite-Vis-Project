@@ -26,11 +26,11 @@ const handleClick = () => {
 }
 </script>
 <template>
-  <Card class="w-24 h-24 m-1 cursor-pointer" @click="handleClick">
-    <CardTitle class="m-2 mb-3 h-8 text-center text-accent-foreground/70 text-sm">
+  <Card class="w-20 h-20 m-1 cursor-pointer" @click="handleClick">
+    <CardTitle class="m-2 mb-2 h-8 text-center text-accent-foreground/70 text-xs">
       <slot name="title" />
       {{ props.title }}
     </CardTitle>
-    <component :is="props.icon" class="w-8 h-8 mx-auto" :class="props.class" />
+    <component :is="props.icon" class="w-7 h-7 mx-auto" :class="props.class" />
   </Card>
 </template>

@@ -3,6 +3,7 @@ import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
 import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid } from '../lib/iobroker/ids-to-subscribe/landroid';
+import { Calendar } from "@/lib/iobroker/ids-to-subscribe/calendar";
 
 export interface IobrokerStoreState {
   wetter: Wetter;
@@ -23,6 +24,7 @@ export interface IobrokerStoreState {
   pv: Pv;
   pool: Pool;
   landroid: Landroid;
+  calendar: Calendar
 
 }
 export type IobrokerStates = keyof IobrokerStoreState;
@@ -47,6 +49,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     pv: {} as Pv,
     pool: {} as Pool,
     landroid: {} as Landroid,
+    calendar: {} as Calendar
   }),
   getters: {
 

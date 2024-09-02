@@ -175,3 +175,34 @@ export interface IobrokerState {
 }
 type IobrokerStateValue = string | number | boolean;
 export type NullableState = null | IobrokerStateValue
+export interface CalendarDay {
+  date: string;
+  event: string;
+  _class: string;
+  _date: string;
+  _end: string;
+  _section: string;
+  _IDID: string;
+  _allDay: string;
+  _private: string;
+  _rule: string;
+  _location: string;
+  _calName: string;
+  _object: CalendarObject
+}
+export interface CalendarObject {
+  type: string,
+  params: [],
+  created: string,
+  description: string,
+  end: string,
+  dtstamp: string,
+  start: string,
+  datetype: string,
+  lastmodified: string,
+  sequence: number,
+  summary: string,
+  uid: string,
+  "APPLE-CREATOR-IDENTITY": string,
+  "APPLE-CREATOR-TEAM-IDENTITY": string
+}

@@ -43,7 +43,7 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 lg:fixed right-4 lg:left-52 z-10 background">
+  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 lg:fixed right-4 lg:left-52 z-10 text-d bg-backgroundColor ">
     <Card>
       <CardHeader class="p-2">
         <CardTitle class=" flex justify-between">
@@ -71,8 +71,3 @@ const windows: WindowObject[] = [
       :id2="card.id2" />
   </div>
 </template>
-<style scoped>
-.background {
-  background-color: #0a1a58;
-}
-</style>

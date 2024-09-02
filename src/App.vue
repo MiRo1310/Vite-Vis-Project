@@ -16,7 +16,7 @@ onMounted(async () => {
 
     </div>
 
-    <div class="lg:pl-48 bg-accent min-h-[100vh]">
+    <div class="lg:pl-48  min-h-[100vh] bg-backgroundColor">
       <main>
         <RouterView />
       </main>

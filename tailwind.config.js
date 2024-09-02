@@ -25,11 +25,11 @@ module.exports = {
         trashBio: "#734d29",
         trashGelb: "#eaed1c",
         trashRest: "#000000",
-        background: "#0a1a58",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        backgroundColor: "hsl(var(--background-color))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
