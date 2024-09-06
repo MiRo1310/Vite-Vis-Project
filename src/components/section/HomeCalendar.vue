@@ -8,10 +8,7 @@ import { storeToRefs } from "pinia";
 import { computed, Ref, } from "vue";
 import { CalendarDay } from "@/types";
 
-
-
 const { calendar } = storeToRefs(useIobrokerStore());
-
 
 const data: Ref<CalendarDay[]> = computed(() => {
     if (calendar.value.table) {
@@ -23,17 +20,18 @@ const data: Ref<CalendarDay[]> = computed(() => {
 const today = computed(() => {
     if (data.value) {
         return data.value.filter((day) => {
-            console.log(new Date(day._date).getTime())
             return new Date(day._date).getTime() <= new Date().getTime() && new Date(day._end).getTime() >= new Date().getTime()
         })
     }
     return
 });
+
 function addDays(date: Date, days: number): Date {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
 }
+
 const tomorrow = computed(() => {
     if (data.value) {
         return data.value.filter((day) => {
@@ -65,7 +63,7 @@ function isNotAllDayEvent(event: CalendarDay) {
                 <span>{{ event._object.summary }}</span>
                 <span v-if="isNotAllDayEvent(event)" class="ml-2">{{ getLocalTimeString(event._object.start) }} bis {{
                     getLocalTimeString(event._object.end)
-                    }}</span>
+                }}</span>
             </p>
             <p class="text-accent-foreground/70 text-xs font-bold underline my-2 ">Morgen</p>
             <p v-for="(event, index ) in tomorrow"
@@ -73,7 +71,7 @@ function isNotAllDayEvent(event: CalendarDay) {
                 <span>{{ event._object.summary }}</span>
                 <span v-if="isNotAllDayEvent(event)">{{ getLocalTimeString(event._object.start) }} bis {{
                     getLocalTimeString(event._object.end)
-                }}</span>
+                    }}</span>
             </p>
         </CardContent>
     </Card>
