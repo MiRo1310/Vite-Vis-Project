@@ -95,6 +95,7 @@ export interface Pv {
   smallPv: number;
   activeCharging: number;
   profit: number;
+  pvGross: number;
 }
 
 export interface IdToSubscribe<TData> {

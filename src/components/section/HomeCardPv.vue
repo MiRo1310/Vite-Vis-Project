@@ -15,6 +15,7 @@ const values = computed(() => [
   { title: "Batterieladung", value: pv.value.batteryCharging, unit: "%" },
   { title: pv.value.activeCharging > 0 ? "Batterie wird geladen" : "Batterie wird entladen", value: pv.value.activeCharging, unit: "W" },
   { title: pv.value.feedIn > 0 ? "Einspeisung" : "Bezug", value: pv.value.feedIn, unit: "W", class: pv.value.feedIn < 0 ? 'text-red-500' : 'text-green-500' },
+  { title: "Erzeugnis grosse PV", value: pv.value.pvGross, unit: "W" },
   { title: "Erzeugnis kleine PV", value: pv.value.smallPv, unit: "W" },
   { title: "Berechneter Gewinn", value: pv.value.profit, unit: "€" },
 ]);
