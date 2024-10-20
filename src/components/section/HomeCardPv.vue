@@ -5,11 +5,10 @@ import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { useRouter } from 'vue-router';
 import { computed } from "vue";
+
 const router = useRouter();
 const iobrokerStore = useIobrokerStore();
 const { pv } = storeToRefs(iobrokerStore);
-
-
 
 const values = computed(() => [
   { title: "Batterieladung", value: pv.value.batteryCharging, unit: "%" },
