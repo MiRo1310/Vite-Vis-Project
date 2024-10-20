@@ -10,6 +10,8 @@ export const stringToObject = (str: string) => {
 export const getID = (entry: SubKeyAdditive, idEntry: string, idsToControl: Ref<any>) => {
 
   const arrayOfIds = idEntry.split(",").map((id) => id.trim());
-
+  console.log(arrayOfIds);
+  console.log(idsToControl.value?.[arrayOfIds[0] as keyof IdsToControl])
+  console.log(arrayOfIds[1] + entry + "Id")
   return idsToControl.value?.[arrayOfIds[0] as keyof IdsToControl]?.[arrayOfIds[1] + entry + "Id"];
 };

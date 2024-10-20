@@ -7,8 +7,10 @@ import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { computed, Ref, } from "vue";
 import { CalendarDay } from "@/types";
+import { useRouter } from 'vue-router';
 
 const { calendar } = storeToRefs(useIobrokerStore());
+const router = useRouter()
 
 const data: Ref<CalendarDay[]> = computed(() => {
     if (calendar.value.table) {
@@ -50,9 +52,10 @@ function getLocalTimeString(event: string) {
 function isNotAllDayEvent(event: CalendarDay) {
     return getLocalTimeString(event._object.start) !== "00:00:00" && getLocalTimeString(event._object.end) !== "00:00:00";
 }
+
 </script>
 <template>
-    <Card>
+    <Card @click="router.push({ name: 'calendar' })">
         <CardHeader>
             <CardTitle>Familien Kalendar</CardTitle>
         </CardHeader>

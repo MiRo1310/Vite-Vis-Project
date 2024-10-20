@@ -28,9 +28,5 @@ import HomeCalendar from '@/components/section/HomeCalendar.vue';
 
 
     </div>
-
-    <!-- <div class="w-52 mt-1 flex-wrap h-full mr-auto flex justify-end ">
-
-    </div> -->
   </div>
 </template>

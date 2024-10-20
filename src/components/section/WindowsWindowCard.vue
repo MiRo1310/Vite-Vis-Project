@@ -123,7 +123,9 @@ const getShutterImage = computed(() => {
 })
 
 const updateHandler = (value: number | string | boolean, type: SubKeyAdditive) => {
+  console.log(value, type, props.id)
   if (adminConnection.value) {
+    console.log(getID(type, props.id, idsToControl))
     adminConnection.value.setState(getID(type, props.id, idsToControl), value)
   }
 }

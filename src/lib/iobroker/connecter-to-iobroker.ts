@@ -53,6 +53,7 @@ export async function init() {
             }
 
             if (idObjectEntry.subKeyAdditive) {
+
               subKey += idObjectEntry.subKeyAdditive;
             }
 

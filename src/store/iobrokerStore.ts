@@ -97,14 +97,17 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
 
 const saveIdToStore = (obj: any, id: string, key: string, subKey: string | undefined) => {
   try {
+
     if (!subKey) {
       obj[key + "Id"] = id;
       return obj
     }
     if (!obj[key]) {
+
       obj[key] = {};
-      return obj;
+      // return obj;
     }
+
     obj[key][subKey + "Id"] = id;
 
     return obj;
