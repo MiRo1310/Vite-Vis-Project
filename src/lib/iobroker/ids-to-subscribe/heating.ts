@@ -25,6 +25,10 @@ export interface Heating {
     maxFillTemp: number;
     solarPump: boolean;
     heatingPump: boolean;
+    heatingControl: {
+        profile: number;
+        room: number;
+    };
 }
 
 
@@ -55,6 +59,8 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "s7.0.DBs.DB1.B056", firstKeyInObject: "maxFillTemp" },
         { id: "s7.0.DBs.DB1.Q3_-_NQ10", firstKeyInObject: "solarPump" },
         { id: "s7.0.DBs.DB1.Q4_-_NQ11", firstKeyInObject: "heatingPump" },
+        { id: "heatingcontrol.0.CurrentProfile", firstKeyInObject: "heatingControl", subKey: "profile" },
+        { id: "heatingcontrol.0.vis.ChoosenRoom", firstKeyInObject: "heatingControl", subKey: "room" },
     ],
 
 };

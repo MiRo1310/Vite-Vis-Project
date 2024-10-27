@@ -6,7 +6,7 @@ import { Entries } from "@/types";
 const props = defineProps<{ entries: Entries[]; title: string; class?: string }>();
 </script>
 <template>
-    <Card class="inline-block" :class="[props.class, 'mx-1 mt-1']">
+    <Card class="inline-block" :class="[props.class, 'mx-1 mt-2']">
         <CardHeader>
             <CardTitle>{{ title }}</CardTitle>
         </CardHeader>
