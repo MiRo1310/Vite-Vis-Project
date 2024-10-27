@@ -7,31 +7,31 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog'
-import { watchEffect, ref } from 'vue';
+} from "@/components/ui/dialog";
+import { watchEffect, ref } from "vue";
 
 const props = defineProps({
     open: Boolean,
-})
-const emit = defineEmits(['update:open'])
+    classContent: String,
+});
+const emit = defineEmits(["update:open"]);
 
-const localOpen = ref(false)
+const localOpen = ref(false);
 
 watchEffect(() => {
     localOpen.value = props.open;
 });
 const closeDialog = () => {
-    emit('update:open', false)
-}
+    emit("update:open", false);
+};
 </script>
 
 <template>
-    <Dialog v-model:open="localOpen" @update:open="emit('update:open', $event)
-        ">
+    <Dialog v-model:open="localOpen" @update:open="emit('update:open', $event)">
         <DialogTrigger>
             <slot name="trigger" />
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent :class="props.classContent">
             <DialogHeader>
                 <DialogTitle>
                     <slot name="title" />
