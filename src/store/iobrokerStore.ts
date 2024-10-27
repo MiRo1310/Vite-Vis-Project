@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid } from '../lib/iobroker/ids-to-subscribe/landroid';
 import { Calendar } from "@/lib/iobroker/ids-to-subscribe/calendar";
+import { Heating } from "@/lib/iobroker/ids-to-subscribe/heating";
 
 export interface IobrokerStoreState {
   wetter: Wetter;
@@ -25,6 +26,7 @@ export interface IobrokerStoreState {
   pool: Pool;
   landroid: Landroid;
   calendar: Calendar
+  heating: Heating
 
 }
 export type IobrokerStates = keyof IobrokerStoreState;
@@ -49,7 +51,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     pv: {} as Pv,
     pool: {} as Pool,
     landroid: {} as Landroid,
-    calendar: {} as Calendar
+    calendar: {} as Calendar,
+    heating: {} as Heating
   }),
   getters: {
 

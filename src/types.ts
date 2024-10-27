@@ -207,3 +207,11 @@ export interface CalendarObject {
   "APPLE-CREATOR-IDENTITY": string,
   "APPLE-CREATOR-TEAM-IDENTITY": string
 }
+
+
+export interface Entries {
+  title: string;
+  value: boolean | number | string;
+  type: "string" | "number" | "boolean";
+  unit?: string;
+}

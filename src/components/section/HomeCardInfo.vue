@@ -39,7 +39,6 @@ const infos = computed(() => [
       </CardTitle>
     </CardHeader>
     <CardContent class="text-xs">
-
       <div v-for="(info, index) in infos"
         :class="{ 'flex justify-between items-center text-accent-foreground/50 font-bold': true, 'animate-bounce': isTimeToWarn && (getOpenWindows > 0) && info.bounce, 'mt-2': index > 0 }"
         :key="index">

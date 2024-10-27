@@ -11,6 +11,7 @@ import { poolIds } from "./pool";
 import { wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { landroid } from "./landroid";
 import { calendar } from "./calendar";
+import { heating } from "./heating";
 
 
 export const idToSubscribe: IdToSubscribe<any>[] = [
@@ -30,6 +31,7 @@ export const idToSubscribe: IdToSubscribe<any>[] = [
   wetter,
   landroid,
   calendar,
+  heating,
   { objectNameInStore: "trash", value: [{ id: "trashschedule.0.type.json" }] },
   { objectNameInStore: "shoppingList", value: [{ id: "alexa-shoppinglist.0.list_activ" }] },
   { objectNameInStore: "urlaubAktiv", value: [{ id: "0_userdata.0.Urlaub.Urlaub_aktiv" }] },
