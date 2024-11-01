@@ -89,7 +89,7 @@ const getMode = (mode: string) => {
         <div class="flex justify-between">
           <span>Pool Wärmepumpe</span>
           <span class="text-accent-foreground/50 text-xs font-bold text-right">{{
-            pool.status ? "Online" : "Offline"
+            pool.status.val ? "Online" : "Offline"
           }}</span>
         </div>
       </CardTitle>
