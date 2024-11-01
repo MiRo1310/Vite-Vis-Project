@@ -60,10 +60,9 @@ export async function init() {
             iobrokerStore.setValues(
               listObjectOfIds.objectNameInStore || null,
               value,
+              id,
               idObjectEntry.firstKeyInObject || idObjectEntry.room || null,
               subKey,
-              idObjectEntry.saveId || false,
-              id
             );
           });
         }

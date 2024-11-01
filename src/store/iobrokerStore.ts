@@ -73,10 +73,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     setValues(
       objectNameInStore: string,
       val: string | number | boolean | object,
+      id: string,
       firstKeyInObject?: string | boolean,
       subKey?: string,
-      saveId?: boolean,
-      id?: string
     ) {
       if (objectNameInStore) {
         if (firstKeyInObject && firstKeyInObject !== true) {
@@ -84,11 +83,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
 
-          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKeyInObject, subKey, val, objectNameInStore);
+          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKeyInObject, subKey, val, objectNameInStore, id);
 
-          if (saveId && id) {
-            (this as any).idsToControl = saveIdToStore(this.getIdsToControl, id, firstKeyInObject, subKey);
-          }
           return;
         }
         (this as any)[objectNameInStore] = val;
@@ -98,47 +94,28 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   },
 });
 
-const saveIdToStore = (obj: any, id: string, key: string, subKey: string | undefined) => {
-  try {
-
-    if (!subKey) {
-      obj[key + "Id"] = id;
-      return obj
-    }
-    if (!obj[key]) {
-
-      obj[key] = {};
-      // return obj;
-    }
-
-    obj[key][subKey + "Id"] = id;
-
-    return obj;
-  } catch (e) {
-    console.log("Error in save ids to store " + e);
-  }
-};
-
 const getSubValue = (
   obj: any,
-  key: string,
-  subKey: string | undefined,
+  fistKey: string,
+  secondKey: string | undefined,
   val: string | number | boolean | object,
-  objectNameInStore: string
+  objectNameInStore: string,
+  id: string | undefined
 ) => {
   obj = obj[objectNameInStore];
 
-  if (!subKey) {
-    obj[key] = val;
+  if (!secondKey) {
+    obj[fistKey] = { val, id };
     return obj;
   }
 
-  if (!obj[key]) {
-    obj[key] = {};
+  if (!obj[fistKey]) {
+    obj[fistKey] = {};
   }
-  if (!obj[key][subKey]) {
-    obj[key][subKey] = {};
+
+  if (!obj[fistKey][secondKey]) {
+    obj[fistKey][secondKey] = {};
   }
-  obj[key][subKey] = val;
+  obj[fistKey][secondKey] = { val, id };
   return obj;
 };
