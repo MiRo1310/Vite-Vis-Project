@@ -2,7 +2,7 @@ import { AdminConnection } from "@iobroker/socket-client";
 import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { idToSubscribe } from "./ids-to-subscribe";
-import { NullableState } from "@/types";
+import { IobrokerState, IobrokerStateValue, IobrokerValues, NullableState } from "@/types";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";
@@ -39,10 +39,10 @@ export async function init() {
     // console.log(await adminConnection.value.getEnums());
     // console.log(await adminConnection.value.getStates());
     idToSubscribe.forEach((listObjectOfIds) => {
-      listObjectOfIds.value.forEach((idObjectEntry: any) => {
+      listObjectOfIds.value.forEach((idObjectEntry) => {
         if (adminConnection.value) {
-          adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: any) => {
-            let value = state.val;
+          adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: IobrokerState) => {
+            let value: IobrokerStateValue | null = state.val;
             if (!isPresentAndTruthy(value)) {
               value = null;
             }
@@ -61,7 +61,7 @@ export async function init() {
               listObjectOfIds.objectNameInStore || null,
               value,
               id,
-              idObjectEntry.firstKeyInObject || idObjectEntry.room || null,
+              idObjectEntry.firstKey || idObjectEntry.room || null,
               subKey,
             );
           });

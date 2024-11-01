@@ -1,4 +1,5 @@
 import { IobrokerStates, StoreValue } from '@/store/iobrokerStore';
+import { deprecate } from 'util';
 export type IobrokerValues = Record<string, string | number | boolean | object>;
 export interface ShoppingList {
   name: string;
@@ -105,7 +106,7 @@ export interface IdToSubscribe<TData> {
 
 export interface Ids<TData> {
   id: string;
-  firstKeyInObject?: keyof TData;
+  firstKey?: keyof TData;
   room?: Rooms;
   subKey?: string;
   subKeyAdditive?: SubKeyAdditive;
@@ -174,7 +175,7 @@ export interface IobrokerState {
   from: string;
   q: number;
 }
-type IobrokerStateValue = string | number | boolean;
+export type IobrokerStateValue = string | number | boolean;
 export type NullableState = null | IobrokerStateValue
 export interface CalendarDay {
   date: string;

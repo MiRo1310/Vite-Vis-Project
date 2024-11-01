@@ -6,15 +6,15 @@ import { timer, timer1, timer2, timer3, timer4 } from "./ids-to-subscribe/timer"
 import { shutterIdsLogo } from "./ids-to-subscribe/shutter-ids-logo";
 import { windowOpenClose } from "./ids-to-subscribe/window";
 import { pvIds } from "./ids-to-subscribe/pv-ids";
-import { IdToSubscribe } from "@/types";
-import { poolIds } from "./ids-to-subscribe/pool";
-import { wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
-import { landroid } from "./ids-to-subscribe/landroid";
-import { calendar } from "./ids-to-subscribe/calendar";
-import { heating } from "./ids-to-subscribe/heating";
+import { IdToSubscribe, Pv, Shutter, Timer1, Timer2, Timer3, Timer4, TimerObject, Window } from "@/types";
+import { Pool, poolIds } from "./ids-to-subscribe/pool";
+import { Wetter, wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
+import { Landroid, landroid } from "./ids-to-subscribe/landroid";
+import { Calendar, calendar } from "./ids-to-subscribe/calendar";
+import { Heating, heating } from "./ids-to-subscribe/heating";
 
 
-export const idToSubscribe: IdToSubscribe<any>[] = [
+export const idToSubscribe: IdToSubscribe<Pool & Shutter & TimerObject & Timer1 & Timer2 & Timer3 & Timer4 & Window & Pv & Wetter & Landroid & Calendar & Heating>[] = [
   poolIds,
   shutterAutoUp,
   shutterAutoDown,

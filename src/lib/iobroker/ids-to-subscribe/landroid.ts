@@ -16,15 +16,15 @@ export interface Landroid {
 export const landroid: IdToSubscribe<Landroid> = {
     objectNameInStore: "landroid",
     value: [
-        { id: "worx.0.202330294701005409AD.mower.batteryState", firstKeyInObject: "battery" },
-        { id: "worx.0.202330294701005409AD.mower.totalDistance", firstKeyInObject: "totalDistance" },
-        { id: "worx.0.202330294701005409AD.mower.totalBladeTime", firstKeyInObject: "totalBladeTime" },
-        { id: "worx.0.202330294701005409AD.mower.status", firstKeyInObject: "status" },
-        { id: "worx.0.202330294701005409AD.mower.online", firstKeyInObject: "online" },
-        { id: "worx.0.202330294701005409AD.mower.firmware", firstKeyInObject: "firmware" },
-        { id: "worx.0.202330294701005409AD.mower.error", firstKeyInObject: "error" },
-        { id: "worx.0.202330294701005409AD.mower.edgecut", firstKeyInObject: "edgecut" },
-        { id: "worx.0.202330294701005409AD.mower.batteryCharging", firstKeyInObject: "batteryCharging" },
+        { id: "worx.0.202330294701005409AD.mower.batteryState", firstKey: "battery" },
+        { id: "worx.0.202330294701005409AD.mower.totalDistance", firstKey: "totalDistance" },
+        { id: "worx.0.202330294701005409AD.mower.totalBladeTime", firstKey: "totalBladeTime" },
+        { id: "worx.0.202330294701005409AD.mower.status", firstKey: "status" },
+        { id: "worx.0.202330294701005409AD.mower.online", firstKey: "online" },
+        { id: "worx.0.202330294701005409AD.mower.firmware", firstKey: "firmware" },
+        { id: "worx.0.202330294701005409AD.mower.error", firstKey: "error" },
+        { id: "worx.0.202330294701005409AD.mower.edgecut", firstKey: "edgecut" },
+        { id: "worx.0.202330294701005409AD.mower.batteryCharging", firstKey: "batteryCharging" },
 
 
     ],
