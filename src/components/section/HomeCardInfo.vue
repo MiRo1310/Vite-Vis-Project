@@ -18,9 +18,9 @@ const isTimeToWarn = computed(() => {
 });
 
 const infos = computed(() => [
-  { title: "Aussentemperatur", value: wetter.value.Aussentemperatur.val, unit: "°C" },
-  { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit.val, unit: "%" },
-  { title: "Regen Menge", value: wetter.value.RegenMenge.val, unit: "mm" },
+  { title: "Aussentemperatur", value: wetter.value.Aussentemperatur?.val, unit: "°C" },
+  { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit?.val, unit: "%" },
+  { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
   { title: "", value: "" },
   { title: "Fenster offen", value: getOpenWindows, bounce: true },
 ]);
