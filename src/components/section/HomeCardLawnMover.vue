@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Card } from '@/components/ui/card';
-import CardHeader from '../ui/card/CardHeader.vue';
-import { landroidVison } from '@/assets/index.ts';
-import CardContent from '../ui/card/CardContent.vue';
-import { storeToRefs } from 'pinia';
-import { useIobrokerStore } from '@/store/iobrokerStore';
-import { computed } from 'vue';
-import BoolIcon from '../shared/BoolIcon.vue';
+import { Card } from "@/components/ui/card";
+import CardHeader from "../ui/card/CardHeader.vue";
+import { landroidVison } from "@/assets/index.ts";
+import CardContent from "../ui/card/CardContent.vue";
+import { storeToRefs } from "pinia";
+import { useIobrokerStore } from "@/store/iobrokerStore";
+import { computed } from "vue";
+import BoolIcon from "../shared/BoolIcon.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
 
@@ -45,8 +45,8 @@ const status = {
     112: "Bewegt sich zum Wiederherstellungspunkt",
     113: "Wartet auf Position",
     114: "Kartentraining (fahren)",
-    115: "Kartentraining (Rückwärtsfahren)"
-}
+    115: "Kartentraining (Rückwärtsfahren)",
+};
 const error = {
     0: "Kein Fehler",
     1: "Eingeklemmt",
@@ -89,18 +89,28 @@ const error = {
     117: "Nicht unterstützte Klingenhöhe",
     118: "Manuelles Firmware-Upgrade erforderlich",
     119: "Gebietsgrenze überschritten",
-    120: "Abdockfehler an der Ladestation"
-}
+    120: "Abdockfehler an der Ladestation",
+};
 const infos = computed(() => [
-    { title: `Akku ${landroid.value.batteryCharging ? " läd" : " ist geladen"}`, value: landroid.value.battery, unit: "%" },
-    { title: "Status", value: status[landroid.value.status as keyof typeof status], unit: "" },
-    { title: "Edgecut", value: landroid.value.edgecut, unit: "", type: "bool" },
-    { title: "Error", value: error[landroid.value.error as keyof typeof error], unit: "" },
-    { title: "Gefahren", value: landroid.value.totalDistance, unit: "m" },
-    { title: "Messer in Gebrauch", value: landroid.value.totalBladeTime, unit: "min" },
-
-]
-);
+    {
+        title: `Akku ${landroid.value.batteryCharging.val ? " läd" : " ist geladen"}`,
+        value: landroid.value.battery.val,
+        unit: "%",
+    },
+    {
+        title: "Status",
+        value: status[landroid.value.status.val as keyof typeof status],
+        unit: "",
+    },
+    { title: "Edgecut", value: landroid.value.edgecut.val, unit: "", type: "bool" },
+    {
+        title: "Error",
+        value: error[landroid.value.error.val as keyof typeof error],
+        unit: "",
+    },
+    { title: "Gefahren", value: landroid.value.totalDistance.val, unit: "m" },
+    { title: "Messer in Gebrauch", value: landroid.value.totalBladeTime.val, unit: "min" },
+]);
 </script>
 
 <template>
@@ -108,22 +118,23 @@ const infos = computed(() => [
         <CardHeader>
             <div class="flex justify-between">
                 <div class="w-12">
-                    <img :src="landroidVison">
+                    <img :src="landroidVison" />
                 </div>
                 <div>
                     <p class="text-accent-foreground/50 text-xs font-bold text-right">
-                        {{ landroid.online ? 'Online' : 'Offline' }}
-
+                        {{ landroid.online ? "Online" : "Offline" }}
                     </p>
-                    <p class="text-accent-foreground/50 text-xs font-bold text-right">v.{{ landroid.firmware }}</p>
+                    <p class="text-accent-foreground/50 text-xs font-bold text-right">
+                        v.{{ landroid.firmware.val }}
+                    </p>
                 </div>
             </div>
         </CardHeader>
-        <CardContent class=" text-accent-foreground/50 text-xs font-bold">
-
-            <div v-for="(info, index) in infos"
-                :class="{ 'flex justify-between items-center text-accent-foreground/50 font-bold w-full': true, 'mt-2': index > 0 }"
-                :key="index">
+        <CardContent class="text-accent-foreground/50 text-xs font-bold">
+            <div v-for="(info, index) in infos" :class="{
+                'flex justify-between items-center text-accent-foreground/50 font-bold w-full': true,
+                'mt-2': index > 0,
+            }" :key="index">
                 <p>{{ info.title }}</p>
                 <p class="flex justify-end ml-4 text-right w-[6.5rem]">
                     <BoolIcon v-if="info.type === 'bool'" :value="info.value" class="mr-5" />
@@ -131,7 +142,6 @@ const infos = computed(() => [
                         <span>{{ info.value }}</span>
                         <span class="w-5 inline-block text-left ml-1">{{ info.unit }} </span>
                     </span>
-
                 </p>
             </div>
         </CardContent>

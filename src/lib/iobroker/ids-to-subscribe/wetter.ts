@@ -1,10 +1,11 @@
+import { StoreValue } from "@/store/iobrokerStore";
 import { IdToSubscribe } from "@/types";
 
 export type BoolText = "true" | "false" | true | false;
 export interface Wetter {
-    Aussentemperatur: number;
-    Luftfeuchtigkeit: number;
-    RegenMenge: number;
+    Aussentemperatur: StoreValue<number>;
+    Luftfeuchtigkeit: StoreValue<number>;
+    RegenMenge: StoreValue<number>;
 }
 export const wetter: IdToSubscribe<Wetter> = {
     objectNameInStore: "wetter",

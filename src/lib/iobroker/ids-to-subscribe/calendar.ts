@@ -1,8 +1,9 @@
+import { StoreValue } from "@/store/iobrokerStore";
 import { IdToSubscribe } from "@/types";
 
 
 export interface Calendar {
-    table: string;
+    table: StoreValue<string>;
 
 }
 

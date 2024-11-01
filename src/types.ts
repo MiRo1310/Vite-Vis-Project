@@ -1,4 +1,4 @@
-import { IobrokerStates } from '@/store/iobrokerStore';
+import { IobrokerStates, StoreValue } from '@/store/iobrokerStore';
 export type IobrokerValues = Record<string, string | number | boolean | object>;
 export interface ShoppingList {
   name: string;
@@ -30,12 +30,12 @@ export interface Timer2 {
 }
 export type KeyOfTimerObject = keyof TimerObject;
 export interface Timer {
-  string: string;
-  device: string;
-  timeEnd: string;
-  timeStart: string;
-  percent: number;
-  name: string;
+  string: StoreValue<string>;
+  device: StoreValue<string>;
+  timeEnd: StoreValue<string>;
+  timeStart: StoreValue<string>;
+  percent: StoreValue<number>;
+  name: StoreValue<string>;
 }
 export type KeyOfTimer = keyof Timer;
 
@@ -47,55 +47,55 @@ export interface WindowObject {
 }
 export interface Shutter {
   wohnzimmer: {
-    mittig: number;
-    ecke: number;
-    links: number;
-    rechts: number;
+    mittig: StoreValue<number>;
+    ecke: StoreValue<number>;
+    links: StoreValue<number>;
+    rechts: StoreValue<number>;
   };
   kueche: {
-    tuer: number;
-    fenster: number;
+    tuer: StoreValue<number>;
+    fenster: StoreValue<number>;
   };
   esszimmer: {
-    fenster: number;
+    fenster: StoreValue<number>;
   };
   kinderzimmer: {
-    fenster: number;
+    fenster: StoreValue<number>;
   };
   schlafen: {
-    tuer: number;
+    tuer: StoreValue<number>;
   };
 }
 export interface Window {
   wohnzimmer: {
-    mittig: boolean;
-    ecke: boolean;
-    links: boolean;
-    rechts: boolean;
+    mittig: StoreValue<boolean>;
+    ecke: StoreValue<boolean>;
+    links: StoreValue<boolean>;
+    rechts: StoreValue<boolean>;
   };
   kueche: {
-    tuer: boolean;
-    fenster: boolean;
+    tuer: StoreValue<boolean>;
+    fenster: StoreValue<boolean>;
   };
   esszimmer: {
-    links: boolean;
-    rechts: boolean;
+    links: StoreValue<boolean>;
+    rechts: StoreValue<boolean>;
   };
   kinderzimmer: {
-    fenster: boolean;
+    fenster: StoreValue<boolean>;
   };
   schlafen: {
-    tuer: boolean;
+    tuer: StoreValue<boolean>;
   };
 }
 export interface Pv {
-  feedIn: number;
-  batteryCharging: number;
-  shellyFeedOut: number;
-  smallPv: number;
-  activeCharging: number;
-  profit: number;
-  pvGross: number;
+  feedIn: StoreValue<number>;
+  batteryCharging: StoreValue<number>;
+  shellyFeedOut: StoreValue<number>;
+  smallPv: StoreValue<number>;
+  activeCharging: StoreValue<number>;
+  profit: StoreValue<number>;
+  pvGross: StoreValue<number>;
 }
 
 export interface IdToSubscribe<TData> {

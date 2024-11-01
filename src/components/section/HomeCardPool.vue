@@ -29,29 +29,39 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
-    { title: "Heizung ist aktiv", type: "bool", value: pool.value.consumption > 100 },
+    { title: "Heizung ist aktiv", type: "bool", value: pool.value.consumption.val > 100 },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
-      value: pool.value.heaterState,
+      value: pool.value.heaterState.val,
     },
-    { title: "Modus", type: "text", value: getMode(pool.value.mode) },
+    { title: "Modus", type: "text", value: getMode(pool.value.mode.val) },
     {
       title: "Pool Heizung Energie Verbrauch",
       type: "number",
-      value: pool.value.consumption,
+      value: pool.value.consumption.val,
       unit: "W",
     },
     {
       title: "Wunschtemperatur",
       type: "input",
-      value: pool.value.tempSet,
+      value: pool.value.tempSet.val,
       function: handleChangeTempSet,
       unit: "°C",
     },
-    { title: "Temperatur Eingang", type: "text", value: pool.value.tempIn, unit: "°C" },
-    { title: "Temperatur Ausgang", type: "text", value: pool.value.tempOut, unit: "°C" },
-    { title: "Lüfterdrehzahl", type: "text", value: pool.value.rotor, unit: "Rpm" },
+    {
+      title: "Temperatur Eingang",
+      type: "text",
+      value: pool.value.tempIn.val,
+      unit: "°C",
+    },
+    {
+      title: "Temperatur Ausgang",
+      type: "text",
+      value: pool.value.tempOut.val,
+      unit: "°C",
+    },
+    { title: "Lüfterdrehzahl", type: "text", value: pool.value.rotor.val, unit: "Rpm" },
   ];
   return items;
 });

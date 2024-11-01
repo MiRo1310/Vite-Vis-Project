@@ -34,11 +34,8 @@ const windows: WindowObject[] = [
   { name: "Flur links", shutter: false, id: "flur,links" },
   { name: "Flur rechts", shutter: false, id: "flur,rechts" },
   { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
-
   { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
   { name: "Dachboden links", shutter: false, id: "dachboden,links" },
-
-
 ]
 
 </script>

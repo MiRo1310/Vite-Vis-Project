@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { useIobrokerStore } from '@/store/iobrokerStore';
 import { storeToRefs } from 'pinia';
+import { Window } from '@/types';
 
 const { fenster } = storeToRefs(useIobrokerStore())
 
@@ -16,7 +17,8 @@ export const getWindowInfos = () => {
         Object.keys(win).forEach(key => {
 
             possibleSettings.forEach(window => {
-                if (win[key as keyof typeof win][window as keyof typeof win[keyof typeof win]]) {
+
+                if (win[key as keyof Window][window as keyof typeof win[keyof typeof win]]?.["val"]) {
                     countedOpenWindows++
                 }
 

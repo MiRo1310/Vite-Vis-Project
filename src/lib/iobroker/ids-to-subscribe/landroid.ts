@@ -1,16 +1,17 @@
+import { StoreValue } from "@/store/iobrokerStore";
 import { IdToSubscribe } from "@/types";
 
 export type BoolText = "true" | "false" | true | false;
 export interface Landroid {
-    battery: number;
-    totalDistance: number;
-    totalBladeTime: number;
-    status: number;
-    online: boolean;
-    firmware: string;
-    error: number;
-    edgecut: boolean;
-    batteryCharging: boolean;
+    battery: StoreValue<number>;
+    totalDistance: StoreValue<number>;
+    totalBladeTime: StoreValue<number>;
+    status: StoreValue<number>;
+    online: StoreValue<boolean>;
+    firmware: StoreValue<string>;
+    error: StoreValue<number>;
+    edgecut: StoreValue<boolean>;
+    batteryCharging: StoreValue<boolean>;
 }
 export const landroid: IdToSubscribe<Landroid> = {
     objectNameInStore: "landroid",

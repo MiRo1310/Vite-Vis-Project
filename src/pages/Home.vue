@@ -5,7 +5,7 @@ import HomeActions from "@/components/section/HomeActions.vue";
 import HomeAlexaTimer from "@/components/section/HomeAlexaTimer.vue";
 import HomeCardPv from "@/components/section/HomeCardPv.vue";
 import HomeCardPool from "@/components/section/HomeCardPool.vue";
-import HomeLawnMover from "@/components/section/HomeLawnMover.vue";
+import HomeLawnMover from "@/components/section/HomeCardLawnMover.vue";
 import HomeCalendar from "@/components/section/HomeCalendar.vue";
 </script>
 
