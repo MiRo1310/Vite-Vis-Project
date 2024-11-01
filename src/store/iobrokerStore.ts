@@ -27,7 +27,10 @@ export interface IobrokerStoreState {
   landroid: Landroid;
   calendar: Calendar
   heating: Heating
-
+}
+export interface StoreValue<T> {
+  val: T;
+  id: string;
 }
 export type IobrokerStates = keyof IobrokerStoreState;
 
@@ -70,20 +73,23 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     },
   },
   actions: {
+    setValueToKey(key: string, val: string | number | boolean | object) {
+      (this as any)[key] = val;
+    },
     setValues(
       objectNameInStore: string,
       val: string | number | boolean | object,
       id: string,
-      firstKeyInObject?: string | boolean,
-      subKey?: string,
+      firstKey?: string | boolean,
+      secondKey?: string,
     ) {
       if (objectNameInStore) {
-        if (firstKeyInObject && firstKeyInObject !== true) {
+        if (firstKey && firstKey !== true) {
           if (!(this as any)[objectNameInStore]) {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
 
-          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKeyInObject, subKey, val, objectNameInStore, id);
+          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKey, secondKey, val, objectNameInStore, id);
 
           return;
         }

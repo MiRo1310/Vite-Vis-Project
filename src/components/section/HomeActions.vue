@@ -26,7 +26,7 @@ const getHoliday = computed(() => {
 })
 
 const toggleTimer = () => {
-  iobrokerStore.setValues("showTimerCard", !iobrokerStore.showTimerCard)
+  iobrokerStore.setValueToKey("showTimerCard", !iobrokerStore.showTimerCard)
 }
 
 </script>

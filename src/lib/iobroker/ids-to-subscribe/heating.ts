@@ -1,35 +1,37 @@
+import { StoreValue } from "@/store/iobrokerStore";
 import { IdToSubscribe } from "@/types";
 
+
 export interface Heating {
-    automatic: boolean;
-    level: boolean;
-    active: boolean;
-    autoSolar: boolean;
-    heatingTemperature: number;
-    heatingBuffer: number;
-    heatingSolar: number;
-    solarMaxToday: number;
-    solarMax: number;
-    pelletExist: boolean;
-    watcherAdmitter: boolean;
-    tempPelletBuffer: boolean;
-    confirmMessage: boolean;
-    snail: boolean;
-    spiral: boolean;
-    maxTimeToFill: number;
-    offsetFilling: number;
-    tempPumpOn: number;
-    tempPumpOff: number;
-    diffSolarBuffer: number;
-    minFillTemp: number;
-    maxFillTemp: number;
-    solarPump: boolean;
-    heatingPump: boolean;
+    automatic: StoreValue<boolean>;
+    level: StoreValue<boolean>;
+    active: StoreValue<boolean>;
+    autoSolar: StoreValue<boolean>;
+    heatingTemperature: StoreValue<number>;
+    heatingBuffer: StoreValue<number>;
+    heatingSolar: StoreValue<number>;
+    solarMaxToday: StoreValue<number>;
+    solarMax: StoreValue<number>;
+    pelletExist: StoreValue<boolean>;
+    watcherAdmitter: StoreValue<boolean>;
+    tempPelletBuffer: StoreValue<boolean>;
+    confirmMessage: StoreValue<boolean>;
+    snail: StoreValue<boolean>;
+    spiral: StoreValue<boolean>;
+    maxTimeToFill: StoreValue<number>;
+    offsetFilling: StoreValue<number>;
+    tempPumpOn: StoreValue<number>;
+    tempPumpOff: StoreValue<number>;
+    diffSolarBuffer: StoreValue<number>;
+    minFillTemp: StoreValue<number>;
+    maxFillTemp: StoreValue<number>;
+    solarPump: StoreValue<boolean>;
+    heatingPump: StoreValue<boolean>;
     heatingControl: {
-        profile: number;
-        room: number;
-        profileText: string;
-        profileValue: string;
+        profile: StoreValue<number>;
+        room: StoreValue<number>;
+        profileText: StoreValue<string>;
+        profileValue: StoreValue<string>;
     };
 }
 

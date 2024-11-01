@@ -2,15 +2,17 @@
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "../../store/iobrokerStore";
 import Select from "@/components/shared/select/select.vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker";
 
 const { heating, idsToControl } = useIobrokerStore();
 
 const items = computed((): { val: string; label: string }[] => {
-    return heating.heatingControl.profileText
+    return heating.heatingControl.profileText.val
         .split(";")
         .map((item: string, index: number) => {
-            return { label: item, val: heating.heatingControl.profileValue.split(";")[index] };
+            return {
+                label: item,
+                val: heating.heatingControl.profileValue.val.split(";")[index],
+            };
         });
 });
 const selected = ref("");
