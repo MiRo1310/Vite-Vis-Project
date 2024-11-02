@@ -50,6 +50,9 @@ export interface Heating {
         temperatureOverrideTemp: StoreValue<number>;
         temperatureOverrideTime: StoreValue<number>;
         minimumTemperature: StoreValue<number>;
+        //Window Status
+        openWindowCount: StoreValue<number>;
+        windowOpenHtmlTable: StoreValue<string>;
     };
 }
 
@@ -103,6 +106,11 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "heatingcontrol.0.vis.RoomValues.TemperaturOverride", firstKey: "heatingControl", secondKey: "temperatureOverrideTemp" },
         { id: "heatingcontrol.0.vis.RoomValues.TemperaturOverrideTime", firstKey: "heatingControl", secondKey: "temperatureOverrideTime" },
         { id: "heatingcontrol.0.vis.RoomValues.MinimumTemperature", firstKey: "heatingControl", secondKey: "minimumTemperature" },
+        //Window Status
+        { id: "heatingcontrol.0.vis.OpenWindowRoomCount", firstKey: "heatingControl", secondKey: "openWindowCount" },
+        { id: "heatingcontrol.0.vis.WindowStatesHtmlTable", firstKey: "heatingControl", secondKey: "windowOpenHtmlTable" },
+
+
     ],
 
 };
