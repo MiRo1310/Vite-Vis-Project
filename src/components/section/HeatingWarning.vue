@@ -6,14 +6,14 @@ import { Entries } from "@/types";
 const { heating } = useIobrokerStore();
 
 const entries: Entries[] = [
-    { title: "Brennstoff vorhanden", value: !heating.pelletExist, type: "boolean" },
-    { title: "Überwachung Zugeber", value: !heating.watcherAdmitter, type: "boolean" },
+    { title: "Brennstoff vorhanden", value: !heating.pelletExist.val, type: "boolean" },
+    { title: "Überwachung Zugeber", value: !heating.watcherAdmitter.val, type: "boolean" },
     {
         title: "Temperatur im Brennstoffbehälter",
-        value: !heating.tempPelletBuffer,
+        value: !heating.tempPelletBuffer.val,
         type: "boolean",
     },
-    { title: "Meldung quittiert", value: !heating.confirmMessage, type: "boolean" },
+    { title: "Meldung quittiert", value: !heating.confirmMessage.val, type: "boolean" },
 ];
 </script>
 <template>

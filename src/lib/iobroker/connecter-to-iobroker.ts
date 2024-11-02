@@ -2,7 +2,7 @@ import { AdminConnection } from "@iobroker/socket-client";
 import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { idToSubscribe } from "./ids-to-subscribe";
-import { IobrokerState, IobrokerStateValue, IobrokerValues, NullableState } from "@/types";
+import { IobrokerState, IobrokerStateValue, NullableState } from "@/types";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";
@@ -48,8 +48,8 @@ export async function init() {
             }
 
             let subKey = null;
-            if (idObjectEntry.subKey) {
-              subKey = idObjectEntry.subKey;
+            if (idObjectEntry.secondKey) {
+              subKey = idObjectEntry.secondKey;
             }
 
             if (idObjectEntry.subKeyAdditive) {

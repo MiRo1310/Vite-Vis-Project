@@ -33,6 +33,8 @@ export interface Heating {
         profileText: StoreValue<string>;
         profileValue: StoreValue<string>;
         usedRoom: StoreValue<string>;
+        periodActive: StoreValue<boolean>;
+        guestIncrease: StoreValue<number>;
     };
 }
 
@@ -64,11 +66,13 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "s7.0.DBs.DB1.B056", firstKey: "maxFillTemp" },
         { id: "s7.0.DBs.DB1.Q3_-_NQ10", firstKey: "solarPump" },
         { id: "s7.0.DBs.DB1.Q4_-_NQ11", firstKey: "heatingPump" },
-        { id: "heatingcontrol.0.CurrentProfile", firstKey: "heatingControl", subKey: "profile" },
-        { id: "heatingcontrol.0.vis.ChoosenRoom", firstKey: "heatingControl", subKey: "room" },
-        { id: "heatingcontrol.0.vis.ProfileValueListText", firstKey: "heatingControl", subKey: "profileText" },
-        { id: "heatingcontrol.0.vis.ProfileValueListValue", firstKey: "heatingControl", subKey: "profileValue" },
-        { id: "heatingcontrol.0.info.UsedRooms", firstKey: "heatingControl", subKey: "usedRoom" },
+        { id: "heatingcontrol.0.CurrentProfile", firstKey: "heatingControl", secondKey: "profile" },
+        { id: "heatingcontrol.0.vis.ChoosenRoom", firstKey: "heatingControl", secondKey: "room" },
+        { id: "heatingcontrol.0.vis.ProfileValueListText", firstKey: "heatingControl", secondKey: "profileText" },
+        { id: "heatingcontrol.0.vis.ProfileValueListValue", firstKey: "heatingControl", secondKey: "profileValue" },
+        { id: "heatingcontrol.0.info.UsedRooms", firstKey: "heatingControl", secondKey: "usedRoom" },
+        { id: "heatingcontrol.0.HeatingPeriodActive", firstKey: "heatingControl", secondKey: "periodActive" },
+        { id: "heatingcontrol.0.vis.TempDecreaseValues.GuestIncrease", firstKey: "heatingControl", secondKey: "guestIncrease" },
     ],
 
 };

@@ -10,9 +10,14 @@ import {
 } from "@/components/ui/select";
 const selected = defineModel<string>("selected");
 
+export interface SelectItem {
+    val: string;
+    label: string;
+}
+
 defineProps<{
     placeholder: string;
-    items: { val: string; label: string }[];
+    items: SelectItem[];
     label?: string;
     class?: string;
 }>();
