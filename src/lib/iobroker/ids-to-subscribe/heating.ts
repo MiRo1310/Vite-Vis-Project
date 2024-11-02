@@ -33,8 +33,23 @@ export interface Heating {
         profileText: StoreValue<string>;
         profileValue: StoreValue<string>;
         usedRoom: StoreValue<string>;
+        //HeatingControlConfig
         periodActive: StoreValue<boolean>;
+        publicHoliday: StoreValue<boolean>;
+        present: StoreValue<boolean>;
+        partyNow: StoreValue<boolean>;
+        guestsPresent: StoreValue<boolean>;
+        holidayPresent: StoreValue<boolean>;
+        vacationAbsent: StoreValue<boolean>;
+
         guestIncrease: StoreValue<number>;
+        partyDecrease: StoreValue<number>;
+        absentDecrease: StoreValue<number>;
+        vacationAbsentDecrease: StoreValue<number>;
+        windowOpenDecrease: StoreValue<number>;
+        temperatureOverrideTemp: StoreValue<number>;
+        temperatureOverrideTime: StoreValue<number>;
+        minimumTemperature: StoreValue<number>;
     };
 }
 
@@ -72,7 +87,22 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "heatingcontrol.0.vis.ProfileValueListValue", firstKey: "heatingControl", secondKey: "profileValue" },
         { id: "heatingcontrol.0.info.UsedRooms", firstKey: "heatingControl", secondKey: "usedRoom" },
         { id: "heatingcontrol.0.HeatingPeriodActive", firstKey: "heatingControl", secondKey: "periodActive" },
+        { id: "heatingcontrol.0.PublicHolidyToday", firstKey: "heatingControl", secondKey: "publicHoliday" },
+        { id: "heatingcontrol.0.Present", firstKey: "heatingControl", secondKey: "present" },
+        { id: "heatingcontrol.0.PartyNow", firstKey: "heatingControl", secondKey: "partyNow" },
+        { id: "heatingcontrol.0.GuestsPresent", firstKey: "heatingControl", secondKey: "guestsPresent" },
+        { id: "heatingcontrol.0.HolidayPresent", firstKey: "heatingControl", secondKey: "holidayPresent" },
+        { id: "heatingcontrol.0.VacationAbsent", firstKey: "heatingControl", secondKey: "vacationAbsent" },
+
+
         { id: "heatingcontrol.0.vis.TempDecreaseValues.GuestIncrease", firstKey: "heatingControl", secondKey: "guestIncrease" },
+        { id: "heatingcontrol.0.vis.TempDecreaseValues.PartyDecrease", firstKey: "heatingControl", secondKey: "partyDecrease" },
+        { id: "heatingcontrol.0.vis.TempDecreaseValues.AbsentDecrease", firstKey: "heatingControl", secondKey: "absentDecrease" },
+        { id: "heatingcontrol.0.vis.TempDecreaseValues.VacationAbsentDecrease", firstKey: "heatingControl", secondKey: "vacationAbsentDecrease" },
+        { id: "heatingcontrol.0.vis.TempDecreaseValues.WindowOpenDecrease", firstKey: "heatingControl", secondKey: "windowOpenDecrease" },
+        { id: "heatingcontrol.0.vis.RoomValues.TemperaturOverride", firstKey: "heatingControl", secondKey: "temperatureOverrideTemp" },
+        { id: "heatingcontrol.0.vis.RoomValues.TemperaturOverrideTime", firstKey: "heatingControl", secondKey: "temperatureOverrideTime" },
+        { id: "heatingcontrol.0.vis.RoomValues.MinimumTemperature", firstKey: "heatingControl", secondKey: "minimumTemperature" },
     ],
 
 };
