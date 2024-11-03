@@ -53,6 +53,18 @@ export interface Heating {
         //Window Status
         openWindowCount: StoreValue<number>;
         windowOpenHtmlTable: StoreValue<string>;
+
+        statusRoom: StoreValue<string>;
+        chosenRoom: StoreValue<string>;
+        sollTemp1: StoreValue<number>;
+        sollTemp2: StoreValue<number>;
+        tempRegler1: StoreValue<number>;
+        tempRegler2: StoreValue<number>;
+        ventil1: StoreValue<number>;
+        ventil2: StoreValue<number>;
+        tempSensor: StoreValue<number>;
+        roomState: StoreValue<string>;
+        resetButton: StoreValue<boolean>;
     };
 }
 
@@ -109,6 +121,18 @@ export const heating: IdToSubscribe<Heating> = {
         //Window Status
         { id: "heatingcontrol.0.vis.OpenWindowRoomCount", firstKey: "heatingControl", secondKey: "openWindowCount" },
         { id: "heatingcontrol.0.vis.WindowStatesHtmlTable", firstKey: "heatingControl", secondKey: "windowOpenHtmlTable" },
+
+        { id: "0_userdata.0.Heizung.heatingcontrol.Status_Zimmer_state", firstKey: "heatingControl", secondKey: "statusRoom" },
+        { id: "heatingcontrol.0.vis.ChoosenRoom", firstKey: "heatingControl", secondKey: "chosenRoom" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Soll_Temp", firstKey: "heatingControl", secondKey: "sollTemp1" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Soll_Temp_2", firstKey: "heatingControl", secondKey: "sollTemp2" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Temperatur_am_Regler", firstKey: "heatingControl", secondKey: "tempRegler1" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Temperatur_am_Regler_2", firstKey: "heatingControl", secondKey: "tempRegler2" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Ventilstellung", firstKey: "heatingControl", secondKey: "ventil1" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Ventilstellung_2", firstKey: "heatingControl", secondKey: "ventil2" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Temperatur_am_Raumsensor", firstKey: "heatingControl", secondKey: "tempSensor" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Room_State", firstKey: "heatingControl", secondKey: "roomState" },
+        { id: "0_userdata.0.Heizung.heatingcontrol.Reset_Button_", firstKey: "heatingControl", secondKey: "resetButton" },
 
 
     ],
