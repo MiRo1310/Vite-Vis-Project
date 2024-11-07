@@ -27,6 +27,94 @@ export interface Heating {
     maxFillTemp: StoreValue<number>;
     solarPump: StoreValue<boolean>;
     heatingPump: StoreValue<boolean>;
+    heatingControlProfile: {
+        "Mon.0.Temp": StoreValue<number>
+        "Mon.1.Temp": StoreValue<number>
+        "Mon.2.Temp": StoreValue<number>
+        "Mon.3.Temp": StoreValue<number>
+        "Mon.4.Temp": StoreValue<number>
+        "Mon.5.Temp": StoreValue<number>
+        "Tue.0.Temp": StoreValue<number>
+        "Tue.1.Temp": StoreValue<number>
+        "Tue.2.Temp": StoreValue<number>
+        "Tue.3.Temp": StoreValue<number>
+        "Tue.4.Temp": StoreValue<number>
+        "Tue.5.Temp": StoreValue<number>
+        "Wed.0.Temp": StoreValue<number>
+        "Wed.1.Temp": StoreValue<number>
+        "Wed.2.Temp": StoreValue<number>
+        "Wed.3.Temp": StoreValue<number>
+        "Wed.4.Temp": StoreValue<number>
+        "Wed.5.Temp": StoreValue<number>
+        "Thu.0.Temp": StoreValue<number>
+        "Thu.1.Temp": StoreValue<number>
+        "Thu.2.Temp": StoreValue<number>
+        "Thu.3.Temp": StoreValue<number>
+        "Thu.4.Temp": StoreValue<number>
+        "Thu.5.Temp": StoreValue<number>
+        "Fri.0.Temp": StoreValue<number>
+        "Fri.1.Temp": StoreValue<number>
+        "Fri.2.Temp": StoreValue<number>
+        "Fri.3.Temp": StoreValue<number>
+        "Fri.4.Temp": StoreValue<number>
+        "Fri.5.Temp": StoreValue<number>
+        "Sat.0.Temp": StoreValue<number>
+        "Sat.1.Temp": StoreValue<number>
+        "Sat.2.Temp": StoreValue<number>
+        "Sat.3.Temp": StoreValue<number>
+        "Sat.4.Temp": StoreValue<number>
+        "Sat.5.Temp": StoreValue<number>
+        "Sun.0.Temp": StoreValue<number>
+        "Sun.1.Temp": StoreValue<number>
+        "Sun.2.Temp": StoreValue<number>
+        "Sun.3.Temp": StoreValue<number>
+        "Sun.4.Temp": StoreValue<number>
+        "Sun.5.Temp": StoreValue<number>
+
+        "Mon.0.Time": StoreValue<string>
+        "Mon.1.Time": StoreValue<string>
+        "Mon.2.Time": StoreValue<string>
+        "Mon.3.Time": StoreValue<string>
+        "Mon.4.Time": StoreValue<string>
+        "Mon.5.Time": StoreValue<string>
+        "Tue.0.Time": StoreValue<string>
+        "Tue.1.Time": StoreValue<string>
+        "Tue.2.Time": StoreValue<string>
+        "Tue.3.Time": StoreValue<string>
+        "Tue.4.Time": StoreValue<string>
+        "Tue.5.Time": StoreValue<string>
+        "Wed.0.Time": StoreValue<string>
+        "Wed.1.Time": StoreValue<string>
+        "Wed.2.Time": StoreValue<string>
+        "Wed.3.Time": StoreValue<string>
+        "Wed.4.Time": StoreValue<string>
+        "Wed.5.Time": StoreValue<string>
+        "Thu.0.Time": StoreValue<string>
+        "Thu.1.Time": StoreValue<string>
+        "Thu.2.Time": StoreValue<string>
+        "Thu.3.Time": StoreValue<string>
+        "Thu.4.Time": StoreValue<string>
+        "Thu.5.Time": StoreValue<string>
+        "Fri.0.Time": StoreValue<string>
+        "Fri.1.Time": StoreValue<string>
+        "Fri.2.Time": StoreValue<string>
+        "Fri.3.Time": StoreValue<string>
+        "Fri.4.Time": StoreValue<string>
+        "Fri.5.Time": StoreValue<string>
+        "Sat.0.Time": StoreValue<string>
+        "Sat.1.Time": StoreValue<string>
+        "Sat.2.Time": StoreValue<string>
+        "Sat.3.Time": StoreValue<string>
+        "Sat.4.Time": StoreValue<string>
+        "Sat.5.Time": StoreValue<string>
+        "Sun.0.Time": StoreValue<string>
+        "Sun.1.Time": StoreValue<string>
+        "Sun.2.Time": StoreValue<string>
+        "Sun.3.Time": StoreValue<string>
+        "Sun.4.Time": StoreValue<string>
+        "Sun.5.Time": StoreValue<string>
+
+    };
     heatingControl: {
         profile: StoreValue<number>;
         room: StoreValue<number>;
@@ -65,9 +153,9 @@ export interface Heating {
         tempSensor: StoreValue<number>;
         roomState: StoreValue<string>;
         resetButton: StoreValue<boolean>;
+        visRoomStates: StoreValue<string>;
     };
 }
-
 
 export const heating: IdToSubscribe<Heating> = {
     objectNameInStore: "heating",
@@ -133,8 +221,29 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "0_userdata.0.Heizung.heatingcontrol.Temperatur_am_Raumsensor", firstKey: "heatingControl", secondKey: "tempSensor" },
         { id: "0_userdata.0.Heizung.heatingcontrol.Room_State", firstKey: "heatingControl", secondKey: "roomState" },
         { id: "0_userdata.0.Heizung.heatingcontrol.Reset_Button_", firstKey: "heatingControl", secondKey: "resetButton" },
+        { id: "heatingcontrol.0.vis.RoomStatesHtmlTable", firstKey: "heatingControl", secondKey: "visRoomStates" },
+
 
 
     ],
 
 };
+
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const rooms = ["Bad", "Esszimmer", "Flur", "Gäste Wc", "Gästezimmer", "Keller Michael", "Keller Waschen", "Kinderzimmer", "Küche", "Schlafen", "Wohnzimmer"];
+const profiles = 2
+addItems()
+function addItems() {
+    for (let i = 1; i < profiles; i++) {
+        console.log("i " + i)
+        for (let room of rooms) {
+            for (let day of days) {
+                for (let period = 0; period < 6; period++) {
+                    console.log("add")
+                    heating.value.push({ id: `heatingcontrol.0.Profiles.${profiles}.${room}.${day}.Periods.${period}.Temperature`, firstKey: "heatingControlProfile", secondKey: `${i}.${room}.${day}.${period}.temp` });
+                    heating.value.push({ id: `heatingcontrol.0.Profiles.${profiles}.${room}.${day}.Periods.${period}.time`, firstKey: "heatingControlProfile", secondKey: `${i}.${room}.${day}.${period}.time` });
+                }
+            }
+        }
+    }
+}

@@ -1,27 +1,10 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore";
-import HeatingControlConfigRow, { RowHeatingConfig } from "./HeatingControlConfigRow.vue";
-import { SelectItem } from "../shared/select/select.vue";
 import { computed } from "vue";
+import HeatingControlConfigRow, { RowHeatingConfig } from "./HeatingControlConfigRow.vue";
+import { tempArray } from "@/lib/object";
 
 const { heating } = useIobrokerStore();
-
-function tempArray() {
-    const array: SelectItem[] = [];
-    for (let i = 5; i < 30; i++) {
-        if (i === 5) {
-            array.push({
-                label: "Aus",
-                val: "0",
-            });
-        }
-        array.push({
-            label: i.toString(),
-            val: i.toString(),
-        });
-    }
-    return array;
-}
 
 const rows = computed((): RowHeatingConfig[] => [
     {
@@ -130,7 +113,9 @@ const rows = computed((): RowHeatingConfig[] => [
 ]);
 </script>
 <template>
-    <div v-for="(row, index) in rows" class="flex items-center space-x-4" :key="index">
-        <HeatingControlConfigRow :row="row" />
+    <div>
+        <div v-for="(row, index) in rows" class="flex items-center space-x-4" :key="index">
+            <HeatingControlConfigRow :row="row" />
+        </div>
     </div>
 </template>

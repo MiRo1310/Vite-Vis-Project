@@ -19,7 +19,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="w-48 border-2 h-48 overflow-auto">
+    <div class="ml-4 border-2 h-48 overflow-auto flex-1 p-1">
         <p>Fensterstatus</p>
         <span v-if="heating.heatingControl.openWindowCount.val"
             :class="{ bg__animation: heating.heatingControl.openWindowCount.val }">
@@ -58,5 +58,9 @@ onMounted(() => {
 
 :deep(.mdui-red-bg) {
     @apply bg-red-600 text-white;
+}
+
+:deep(img) {
+    @apply ml-2;
 }
 </style>

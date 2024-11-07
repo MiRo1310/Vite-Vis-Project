@@ -32,7 +32,7 @@ export async function init() {
     admin5only: false,
     autoSubscribes: [],
   });
-
+  console.log(idToSubscribe);
   if (adminConnection.value) {
     await adminConnection.value.startSocket();
     await adminConnection.value.waitForFirstConnection();
@@ -42,7 +42,7 @@ export async function init() {
       listObjectOfIds.value.forEach((idObjectEntry) => {
         if (adminConnection.value) {
           adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state.val;
+            let value: IobrokerStateValue | null = state?.val;
             if (!isPresentAndTruthy(value)) {
               value = null;
             }
