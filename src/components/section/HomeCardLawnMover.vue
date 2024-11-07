@@ -122,7 +122,7 @@ const infos = computed(() => [
                 </div>
                 <div>
                     <p class="text-accent-foreground/50 text-xs font-bold text-right">
-                        {{ landroid.online ? "Online" : "Offline" }}
+                        {{ landroid.online.val ? "Online" : "Offline" }}
                     </p>
                     <p class="text-accent-foreground/50 text-xs font-bold text-right">
                         v.{{ landroid.firmware.val }}

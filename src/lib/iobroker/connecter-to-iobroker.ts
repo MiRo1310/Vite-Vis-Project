@@ -2,7 +2,8 @@ import { AdminConnection } from "@iobroker/socket-client";
 import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { idToSubscribe } from "./ids-to-subscribe";
-import { IobrokerState, IobrokerStateValue, NullableState } from "@/types";
+import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types";
+import { subscribe } from "diagnostics_channel";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";
@@ -38,38 +39,51 @@ export async function init() {
     await adminConnection.value.waitForFirstConnection();
     // console.log(await adminConnection.value.getEnums());
     // console.log(await adminConnection.value.getStates());
-    idToSubscribe.forEach((listObjectOfIds) => {
-      listObjectOfIds.value.forEach((idObjectEntry) => {
-        if (adminConnection.value) {
-
-          adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state?.val;
-            if (!isPresentAndTruthy(value)) {
-              value = null;
-            }
-
-            let subKey = null;
-            if (idObjectEntry.secondKey) {
-              subKey = idObjectEntry.secondKey;
-            }
-
-            if (idObjectEntry.subKeyAdditive) {
-
-              subKey += idObjectEntry.subKeyAdditive;
-            }
-
-            iobrokerStore.setValues(
-              listObjectOfIds.objectNameInStore || null,
-              value,
-              id,
-              idObjectEntry.firstKey || idObjectEntry.room || null,
-              subKey,
-            );
-          });
-        }
-      });
-    });
+    subscribeStates(idToSubscribe);
   }
+}
+export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
+  states.forEach((listObjectOfIds) => {
+    listObjectOfIds.value.forEach((idObjectEntry) => {
+      if (adminConnection.value) {
+        adminConnection.value.unsubscribeState(idObjectEntry.id);
+      }
+    });
+  });
+}
+
+export function subscribeStates(states: IdsToSubscribe<any>[]) {
+  states.forEach((listObjectOfIds) => {
+    listObjectOfIds.value.forEach((idObjectEntry) => {
+      if (adminConnection.value) {
+
+        adminConnection.value.subscribeStateAsync(idObjectEntry.id, (id: string, state: IobrokerState) => {
+          let value: IobrokerStateValue | null = state?.val;
+          if (!isPresentAndTruthy(value)) {
+            value = null;
+          }
+
+          let subKey = null;
+          if (idObjectEntry.secondKey) {
+            subKey = idObjectEntry.secondKey;
+          }
+
+          if (idObjectEntry.subKeyAdditive) {
+
+            subKey += idObjectEntry.subKeyAdditive;
+          }
+
+          iobrokerStore.setValues(
+            listObjectOfIds.objectNameInStore || null,
+            value,
+            id,
+            idObjectEntry.firstKey || idObjectEntry.room || null,
+            subKey,
+          );
+        });
+      }
+    });
+  });
 }
 
 const isPresentAndTruthy = (value: NullableState) => {
