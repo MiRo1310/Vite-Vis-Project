@@ -154,6 +154,8 @@ export interface Heating {
         roomState: StoreValue<string>;
         resetButton: StoreValue<boolean>;
         visRoomStates: StoreValue<string>;
+
+        timeSlotBad: StoreValue<number>;
     };
 }
 
@@ -223,6 +225,7 @@ export const heating: IdToSubscribe<Heating> = {
         { id: "0_userdata.0.Heizung.heatingcontrol.Reset_Button_", firstKey: "heatingControl", secondKey: "resetButton" },
         { id: "heatingcontrol.0.vis.RoomStatesHtmlTable", firstKey: "heatingControl", secondKey: "visRoomStates" },
 
+        { id: "heatingcontrol.0.Rooms.Bad.ActiveTimeSlot", firstKey: "heatingControl", secondKey: "timeSlotBad" },
 
 
     ],
@@ -230,20 +233,15 @@ export const heating: IdToSubscribe<Heating> = {
 };
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const rooms = ["Bad", "Esszimmer", "Flur", "Gäste Wc", "Gästezimmer", "Keller Michael", "Keller Waschen", "Kinderzimmer", "Küche", "Schlafen", "Wohnzimmer"];
-const profiles = 2
+
 addItems()
 function addItems() {
-    for (let i = 1; i < profiles; i++) {
-        console.log("i " + i)
-        for (let room of rooms) {
-            for (let day of days) {
-                for (let period = 0; period < 6; period++) {
-                    console.log("add")
-                    heating.value.push({ id: `heatingcontrol.0.Profiles.${profiles}.${room}.${day}.Periods.${period}.Temperature`, firstKey: "heatingControlProfile", secondKey: `${i}.${room}.${day}.${period}.temp` });
-                    heating.value.push({ id: `heatingcontrol.0.Profiles.${profiles}.${room}.${day}.Periods.${period}.time`, firstKey: "heatingControlProfile", secondKey: `${i}.${room}.${day}.${period}.time` });
-                }
-            }
+    for (let day of days) {
+        for (let period = 0; period < 6; period++) {
+            heating.value.push({ id: `heatingcontrol.0.vis.ProfileTypes.${day}.Periods.${period}.Temperature`, firstKey: "heatingControlProfile", secondKey: `${day}.${period}.temp` });
+            heating.value.push({ id: `heatingcontrol.0.vis.ProfileTypes.${day}.Periods.${period}.time`, firstKey: "heatingControlProfile", secondKey: `${day}.${period}.time` });
         }
     }
+
+
 }
