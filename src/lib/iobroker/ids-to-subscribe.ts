@@ -13,8 +13,9 @@ import { Landroid, landroid } from "./ids-to-subscribe/landroid";
 import { Calendar, calendar } from "./ids-to-subscribe/calendar";
 import { Heating, heating } from "./ids-to-subscribe/heating";
 
+export type IdGroups = Pool & Shutter & TimerObject & Timer1 & Timer2 & Timer3 & Timer4 & Window & Pv & Wetter & Landroid & Calendar & Heating
 
-export const idToSubscribe: IdToSubscribe<Pool & Shutter & TimerObject & Timer1 & Timer2 & Timer3 & Timer4 & Window & Pv & Wetter & Landroid & Calendar & Heating>[] = [
+export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
   poolIds,
   shutterAutoUp,
   shutterAutoDown,

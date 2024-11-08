@@ -16,7 +16,7 @@ export interface SelectItem {
 }
 
 defineProps<{
-    placeholder: string;
+    placeholder?: string;
     items: SelectItem[];
     label?: string;
     class?: string;
