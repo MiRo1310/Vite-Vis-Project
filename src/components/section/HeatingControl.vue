@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import HeatingControlHeader from "./HeatingControlHeader.vue";
 import HeatingControlConfig from "./HeatingControlConfig.vue";
-import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
+import HeatingControlHeader from "./HeatingControlHeader.vue";
+import HeatingControlPeriod from "./HeatingControlPeriod.vue";
 import HeatingControlRoom from "./HeatingControlRoom.vue";
 import HeatingControlRoomStatus from "./HeatingControlRoomStatus.vue";
-import HeatingControlPeriod from "./HeatingControlPeriod.vue";
+import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
+
+
 </script>
 <template>
     <HeatingControlHeader />
