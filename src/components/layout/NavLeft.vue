@@ -1,19 +1,8 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
 
-import {
-  Home,
-  Blinds,
-  LampCeiling,
-  Plug,
-  Sun,
-  Heater,
-  PlugZap,
-  WashingMachine,
-  Cctv,
-  CalendarDays,
-} from "lucide-vue-next";
 import HomeCardInfoTime from "@/components/layout/NavLeftTime.vue";
+import { Blinds, CalendarDays, Heater, Home, Logs, PlugZap } from "lucide-vue-next";
 
 const buttons = [
   {
@@ -31,21 +20,21 @@ const buttons = [
     text: "Kalendar",
     link: "/kalendar",
   },
-  {
-    icon: LampCeiling,
-    text: "Licht",
-    link: "/licht",
-  },
-  {
-    icon: Plug,
-    text: "Steckdosen",
-    link: "/steckdosen",
-  },
-  {
-    icon: Sun,
-    text: "Wetter",
-    link: "/wetter",
-  },
+  // {
+  //   icon: LampCeiling,
+  //   text: "Licht",
+  //   link: "/licht",
+  // },
+  // {
+  //   icon: Plug,
+  //   text: "Steckdosen",
+  //   link: "/steckdosen",
+  // },
+  // {
+  //   icon: Sun,
+  //   text: "Wetter",
+  //   link: "/wetter",
+  // },
   {
     icon: Heater,
     text: "Heizung",
@@ -57,15 +46,20 @@ const buttons = [
     link: "/pv",
   },
   {
-    icon: WashingMachine,
-    text: "Geräte",
-    link: "/geraete",
+    icon: Logs,
+    text: "Logs",
+    link: "/logs",
   },
-  {
-    icon: Cctv,
-    text: "Sicherheit",
-    link: "/sicherheit",
-  },
+  // {
+  //   icon: WashingMachine,
+  //   text: "Geräte",
+  //   link: "/geraete",
+  // },
+  // {
+  //   icon: Cctv,
+  //   text: "Sicherheit",
+  //   link: "/sicherheit",
+  // },
 ];
 </script>
 

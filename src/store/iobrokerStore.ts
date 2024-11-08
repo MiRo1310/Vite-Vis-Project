@@ -5,6 +5,7 @@ import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid } from '../lib/iobroker/ids-to-subscribe/landroid';
 import { Calendar } from "@/lib/iobroker/ids-to-subscribe/calendar";
 import { Heating } from "@/lib/iobroker/ids-to-subscribe/heating";
+import { Logs } from "@/pages/logs.vue";
 
 export interface IobrokerStoreState {
   wetter: Wetter;
@@ -27,6 +28,7 @@ export interface IobrokerStoreState {
   landroid: Landroid;
   calendar: Calendar
   heating: Heating
+  logs: Logs
 }
 export interface StoreValue<T> {
   val: T;
@@ -55,7 +57,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     pool: {} as Pool,
     landroid: {} as Landroid,
     calendar: {} as Calendar,
-    heating: {} as Heating
+    heating: {} as Heating,
+    logs: {} as Logs
   }),
   getters: {
 

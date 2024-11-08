@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { idToSubscribe } from "./ids-to-subscribe";
 import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types";
-import { subscribe } from "diagnostics_channel";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";

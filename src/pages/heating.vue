@@ -8,6 +8,7 @@ import HeatingWarning from "@/components/section/HeatingWarning.vue";
 import PageSection from "@/components/shared/PageSection/PageSection.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import Button from "@/components/ui/button/Button.vue";
+
 </script>
 <template>
   <PageSection class="flex flex-wrap -mt-2">

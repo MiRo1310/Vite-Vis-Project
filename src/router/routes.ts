@@ -3,6 +3,7 @@ export const routes = [
   { path: "/fenster", component: async () => await import("@/pages/window.vue") },
   { path: "/heating", component: async () => await import("@/pages/heating.vue") },
   { path: "/pv", component: async () => await import("@/pages/pv.vue") },
+  { path: "/logs", component: async () => await import("@/pages/logs.vue") },
   { path: "/kalendar", name: "calendar", component: async () => await import("@/pages/calendar.vue") },
   { path: "/:pathMatch(.*)", component: async () => await import("@/pages/error-page-not-found.vue") },
 ];
