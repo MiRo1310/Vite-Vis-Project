@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card } from "@/components/ui/card";
 import CardHeader from "../ui/card/CardHeader.vue";
-import { landroidVison } from "@/assets/index.ts";
+import { landroidVision } from "@/assets/index.ts";
 import CardContent from "../ui/card/CardContent.vue";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
@@ -118,7 +118,7 @@ const infos = computed(() => [
         <CardHeader>
             <div class="flex justify-between">
                 <div class="w-12">
-                    <img :src="landroidVison" />
+                    <img :src="landroidVision" />
                 </div>
                 <div>
                     <p class="text-accent-foreground/50 text-xs font-bold text-right">
