@@ -20,17 +20,17 @@ function updateData(id: string, value: string) {
 }
 </script>
 <template>
-    <div>
+    <div class="day__container">
         <p class="day__label">{{ day.label }}</p>
-        <div class="day__container">
+        <div class="values__container">
             <div>
-                <p>ab</p>
+                <p class="text-center mb-2">ab</p>
                 <Input v-for="i in 5" :key="i" type="time"
                     :model-value="profile[`${day.val}.${i}.time` as keyof typeof profile]?.val" class="day__input"
                     @update:model-value="updateData(profile[`${day.val}.${i}.time` as keyof typeof profile]?.id, $event.toString())" />
             </div>
             <div>
-                <p>°C</p>
+                <p class="text-center mb-2">°C</p>
                 <Select v-for="i in 5" :key="i" :items="tempArray()"
                     :selected="profile[`${day.val}.${i}.temp` as keyof typeof profile]?.val?.toString()" class="p-0"
                     @update:selected="updateData(profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id, $event.toString())" />
@@ -39,11 +39,15 @@ function updateData(id: string, value: string) {
     </div>
 </template>
 <style scoped lang="postcss">
-.day__label {
-    @apply text-center;
+.day__container {
+    @apply bg-accent;
 }
 
-.day__container {
+.day__label {
+    @apply text-center mb-2;
+}
+
+.values__container {
     @apply flex;
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup></script>
 <template>
-    <div class="w-12 mt-5">
+    <div class="w-12 pl-4 pt-9 bg-accent">
         <p class="mb-1">Per.</p>
         <p class="row" v-for="i in 5">{{ i }}</p>
     </div>

@@ -19,7 +19,7 @@ onMounted(() => {
 });
 </script>
 <template>
-    <div class="ml-4 border-2 h-[17rem] overflow-auto flex-1 p-1">
+    <div class="ml-4 border-2 h-[16rem] overflow-auto flex-1 p-1">
         <p>Fensterstatus</p>
         <span v-if="heating.heatingControl.openWindowCount.val"
             :class="{ bg__animation: heating.heatingControl.openWindowCount.val }">
