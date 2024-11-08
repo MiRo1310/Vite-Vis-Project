@@ -7,7 +7,7 @@ defineProps<{ class: string }>();
 const { heating } = useIobrokerStore();
 </script>
 <template>
-    <div :class="['border-2 inline-block p-2 w-full relative', $props.class]">
+    <div :class="['inline-block p-2 w-full relative', $props.class]">
         <div>
             <p>{{ heating.heatingControl.chosenRoom.val }}</p>
             <p class="flex mt-2">
@@ -36,6 +36,6 @@ const { heating } = useIobrokerStore();
             @click="adminConnection?.setState(heating.heatingControl.resetButton.id, true)">Aktueller Status: {{
                 heating.heatingControl.roomState.val }}</Button>
 
-        <div class="text-xs border-2 overflow-auto h-[23rem]" v-html="heating.heatingControl.statusRoom.val" />
+        <div class="text-xs border-2 overflow-auto h-[21rem]" v-html="heating.heatingControl.statusRoom.val" />
     </div>
 </template>

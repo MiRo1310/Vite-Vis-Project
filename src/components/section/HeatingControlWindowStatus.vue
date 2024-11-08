@@ -7,25 +7,27 @@ const { heating } = useIobrokerStore();
 
 onMounted(() => {
     document
-        .querySelectorAll("[src='/vis.0/HeatingControl/images/fts_window_1w_open.svg']")
+        .querySelectorAll("img[src='/vis.0/HeatingControl/images/fts_window_1w_open.svg']")
         .forEach((img) => {
             img.setAttribute("src", window_open);
         });
     document
-        .querySelectorAll("[src='/vis.0/HeatingControl/images/fts_window_1w.svg']")
+        .querySelectorAll("img[src='/vis.0/HeatingControl/images/fts_window_1w.svg']")
         .forEach((img) => {
             img.setAttribute("src", window_close);
         });
 });
 </script>
 <template>
-    <div class="ml-4 border-2 h-[16rem] overflow-auto flex-1 p-1">
+    <div class="mx-1 px-4 bg-accent flex-1 p-1">
         <p>Fensterstatus</p>
-        <span v-if="heating.heatingControl.openWindowCount.val"
-            :class="{ bg__animation: heating.heatingControl.openWindowCount.val }">
-            {{ heating.heatingControl.openWindowCount.val }} Fenster offen
-        </span>
-        <div v-html="heating.heatingControl.windowOpenHtmlTable.val" />
+        <div class="h-[14rem] overflow-auto">
+            <span v-if="heating.heatingControl.openWindowCount.val"
+                :class="{ bg__animation: heating.heatingControl.openWindowCount.val }">
+                {{ heating.heatingControl.openWindowCount.val }} Fenster offen
+            </span>
+            <div v-html="heating.heatingControl.windowOpenHtmlTable.val" />
+        </div>
     </div>
 </template>
 
@@ -49,7 +51,7 @@ onMounted(() => {
 }
 
 :deep(img) {
-    @apply w-4 h-4;
+    @apply w-12 h-8 p-1 px-3 bg-white;
 }
 
 :deep(.mdui-listitem) {
@@ -58,9 +60,5 @@ onMounted(() => {
 
 :deep(.mdui-red-bg) {
     @apply bg-red-600 text-white;
-}
-
-:deep(img) {
-    @apply ml-2;
 }
 </style>

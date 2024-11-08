@@ -113,7 +113,7 @@ const rows = computed((): RowHeatingConfig[] => [
 ]);
 </script>
 <template>
-    <div>
+    <div class="bg-accent p-4">
         <div v-for="(row, index) in rows" class="flex items-center space-x-4" :key="index">
             <HeatingControlConfigRow :row="row" />
         </div>

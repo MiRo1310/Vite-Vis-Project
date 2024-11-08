@@ -40,7 +40,7 @@ function updateData(id: string, value: string) {
 </template>
 <style scoped lang="postcss">
 .day__container {
-    @apply bg-accent;
+    @apply bg-accent pt-2;
 }
 
 .day__label {
