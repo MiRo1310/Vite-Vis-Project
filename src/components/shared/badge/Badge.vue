@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-defineProps({
-    value: {
-        type: Number,
-        required: true
-    }
-})
+import { HTMLAttributes } from "vue";
+
+defineProps<{ value: string | number, class?: HTMLAttributes["class"] }>();
 </script>
 <template>
-    <span
-        class="border-2 border-accent-foreground/50 h-5 min-w-5 px-1 text-xs font-bold bg-blue-200 inline-block  rounded-full  mx-auto text-center align-middle leading-4">
-        {{ value }}
-    </span>
+  <span
+    :class="['inline-block border-2 border-accent-foreground/50 h-5 min-w-5 px-1 text-xs font-bold bg-blue-200 rounded-full mx-auto text-center align-middle leading-4', $props.class]"
+  >
+    {{ value }}
+  </span>
 </template>

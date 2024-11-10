@@ -1,12 +1,15 @@
 import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
-import { TimerObject, Shutter, Pv, Window, IdsToControl } from "@/types";
+import { IdsToControl, Pv, Shutter, TimerObject, Window } from "@/types";
 import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
-import { Landroid } from '../lib/iobroker/ids-to-subscribe/landroid';
+import { Landroid } from "../lib/iobroker/ids-to-subscribe/landroid";
 import { Calendar } from "@/lib/iobroker/ids-to-subscribe/calendar";
 import { Heating } from "@/lib/iobroker/ids-to-subscribe/heating";
+import { Log, LogReset } from "@/pages/logs.vue";
+import { LogStates } from "@/lib/iobroker/ids-to-subscribe/logs.ts";
+import { computed } from "vue";
 
-export interface IobrokerStoreState {
+export interface IoBrokerStoreState {
   wetter: Wetter;
   trash: object;
   shoppingList: string;
@@ -25,17 +28,21 @@ export interface IobrokerStoreState {
   pv: Pv;
   pool: Pool;
   landroid: Landroid;
-  calendar: Calendar
-  heating: Heating
+  calendar: Calendar;
+  heating: Heating;
+  logs: LogStates;
+  logReset: LogReset;
 }
+
 export interface StoreValue<T> {
   val: T;
   id: string;
 }
-export type IobrokerStates = keyof IobrokerStoreState;
+
+export type IoBrokerStates = keyof IoBrokerStoreState;
 
 export const useIobrokerStore = defineStore("iobrokerStore", {
-  state: (): IobrokerStoreState => ({
+  state: (): IoBrokerStoreState => ({
     wetter: {} as Wetter,
     trash: {},
     shoppingList: "",
@@ -55,10 +62,11 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     pool: {} as Pool,
     landroid: {} as Landroid,
     calendar: {} as Calendar,
-    heating: {} as Heating
+    heating: {} as Heating,
+    logs: {} as LogStates,
+    logReset: {} as LogReset
   }),
   getters: {
-
     getTrash(state) {
       return state.trash;
     },
@@ -71,6 +79,23 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     getIdsToControl(state) {
       return state.idsToControl;
     },
+    getParsedLogs(state) {
+      return computed(() => {
+        try {
+          return {
+            error: JSON.parse(state.logs.error?.val) as Log[],
+            warn: JSON.parse(state.logs.warning?.val) as Log[],
+            info: JSON.parse(state.logs.info?.val) as Log[]
+          };
+        } catch (e) {
+          return {
+            error: [],
+            warn: [],
+            info: []
+          };
+        }
+      });
+    }
   },
   actions: {
     setValueToKey(key: string, val: string | number | boolean | object) {
@@ -81,7 +106,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       val: string | number | boolean | object,
       id: string,
       firstKey?: string | boolean,
-      secondKey?: string,
+      secondKey?: string
     ) {
       if (objectNameInStore) {
         if (firstKey && firstKey !== true) {
@@ -96,8 +121,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
         (this as any)[objectNameInStore] = val;
       }
       return;
-    },
-  },
+    }
+  }
 });
 
 const getSubValue = (

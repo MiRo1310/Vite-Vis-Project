@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import { getWindowInfos } from "@/composables/windows";
 import { useTime } from "@/composables/time";
 import { computed } from "vue";
+import Badge from "@/components/shared/badge/Badge.vue";
 
 const { hour } = useTime();
 
 const { getOpenWindows } = getWindowInfos();
-const iobrokerStore = useIobrokerStore();
-const { wetter } = storeToRefs(iobrokerStore);
+const ioBrokerStore = useIobrokerStore();
+const { getParsedLogs } = useIobrokerStore();
+const { wetter } = storeToRefs(ioBrokerStore);
 
 const isTimeToWarn = computed(() => {
+  if (hour.value === null) {
+    return false;
+  }
   return hour.value >= 20 || hour.value <= 6;
 });
 
@@ -22,20 +27,37 @@ const infos = computed(() => [
   { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit?.val, unit: "%" },
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
   { title: "", value: "" },
-  { title: "Fenster offen", value: getOpenWindows, bounce: true },
+  { title: "Fenster offen", value: getOpenWindows, bounce: true }
 ]);
+
 </script>
 <template>
   <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }">
     <CardHeader>
-      <CardTitle> Infos </CardTitle>
+      <CardTitle> Infos</CardTitle>
     </CardHeader>
     <CardContent class="text-xs">
-      <div v-for="(info, index) in infos" :class="{
-        'flex justify-between items-center text-accent-foreground/50 font-bold': true,
-        'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
-        'mt-2': index > 0,
-      }" :key="index">
+      <div class="info__row ">
+        <p> Logs</p>
+        <p>
+          <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info?.length" class="bg-white info__badge" />
+          <Badge
+            v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn?.length"
+            class="bg-yellow-200 ml-1 info__badge"
+          />
+          <Badge
+            v-if="getParsedLogs.error?.length" :value="getParsedLogs.error?.length"
+            class="bg-destructive ml-1 info__badge"
+          />
+        </p>
+      </div>
+      <div
+        v-for="(info, index) in infos" :key="index" :class="{
+          'info__row mt-2': true,
+          'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
+
+        }"
+      >
         <p>{{ info.title }}</p>
         <p class="ml-3 mr-4">
           {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span>
@@ -44,3 +66,12 @@ const infos = computed(() => [
     </CardContent>
   </Card>
 </template>
+<style scoped lang="postcss">
+.info__row {
+  @apply flex justify-between items-center text-accent-foreground/50 font-bold
+}
+
+.info__badge {
+  @apply text-3xs
+}
+</style>

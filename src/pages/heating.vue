@@ -5,7 +5,7 @@ import HeatingPump from "@/components/section/HeatingPump.vue";
 import HeatingStatus from "@/components/section/HeatingStatus.vue";
 import HeatingTemperature from "@/components/section/HeatingTemperature.vue";
 import HeatingWarning from "@/components/section/HeatingWarning.vue";
-import PageSection from "@/components/shared/PageSection/PageSection.vue";
+import PageSection from "@/components/shared/page-section/PageSection.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import Button from "@/components/ui/button/Button.vue";
 </script>

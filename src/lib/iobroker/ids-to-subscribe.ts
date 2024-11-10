@@ -12,8 +12,23 @@ import { Wetter, wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid, landroid } from "./ids-to-subscribe/landroid";
 import { Calendar, calendar } from "./ids-to-subscribe/calendar";
 import { Heating, heating } from "./ids-to-subscribe/heating";
+import { LogStates, logStates } from "@/lib/iobroker/ids-to-subscribe/logs.ts";
 
-export type IdGroups = Pool & Shutter & TimerObject & Timer1 & Timer2 & Timer3 & Timer4 & Window & Pv & Wetter & Landroid & Calendar & Heating
+export type IdGroups =
+  Pool
+  & Shutter
+  & TimerObject
+  & Timer1
+  & Timer2
+  & Timer3
+  & Timer4
+  & Window
+  & Pv
+  & Wetter
+  & Landroid
+  & Calendar
+  & Heating
+  & LogStates;
 
 export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
   poolIds,
@@ -33,6 +48,7 @@ export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
   landroid,
   calendar,
   heating,
+  logStates,
 
   { objectNameInStore: "trash", value: [{ id: "trashschedule.0.type.json" }] },
   { objectNameInStore: "shoppingList", value: [{ id: "alexa-shoppinglist.0.list_activ" }] },
@@ -40,13 +56,13 @@ export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
   {
     // Fenster
     objectNameInStore: "fensterOffen",
-    value: [{ id: "0_userdata.0.Fenster.Sind_Fenster_offen" }],
+    value: [{ id: "0_userdata.0.Fenster.Sind_Fenster_offen" }]
   },
   {
     // Sonnenuntergang
     objectNameInStore: "sonnenuntergang",
-    value: [{ id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter" }],
-  },
+    value: [{ id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter" }]
+  }
 
 ];
 

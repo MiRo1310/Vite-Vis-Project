@@ -1,5 +1,7 @@
-import { IobrokerStates, StoreValue } from '@/store/iobrokerStore';
+import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore";
+
 export type IobrokerValues = Record<string, string | number | boolean | object>;
+
 export interface ShoppingList {
   name: string;
   time: string;
@@ -8,27 +10,38 @@ export interface ShoppingList {
   buttonmove: string;
   buttondelete: string;
 }
+
 export interface RowShoppinglist {
   user: string;
   amount: number;
   getValue: (key: string) => any;
 }
+
 export interface GlobalObject {
   [key: string]: any;
 }
+
 export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {
 }
+
 export interface Timer1 {
   timer1: Timer;
 }
+
 export interface Timer2 {
   timer2: Timer;
-} export interface Timer3 {
+}
+
+export interface Timer3 {
   timer3: Timer;
-} export interface Timer4 {
+}
+
+export interface Timer4 {
   timer4: Timer;
 }
+
 export type KeyOfTimerObject = keyof TimerObject;
+
 export interface Timer {
   string: StoreValue<string>;
   device: StoreValue<string>;
@@ -37,6 +50,7 @@ export interface Timer {
   percent: StoreValue<number>;
   name: StoreValue<string>;
 }
+
 export type KeyOfTimer = keyof Timer;
 
 export interface WindowObject {
@@ -45,6 +59,7 @@ export interface WindowObject {
   id: string;
   id2?: string;
 }
+
 export interface Shutter {
   wohnzimmer: {
     mittig: StoreValue<number>;
@@ -66,6 +81,7 @@ export interface Shutter {
     tuer: StoreValue<number>;
   };
 }
+
 export interface Window {
   wohnzimmer: {
     mittig: StoreValue<boolean>;
@@ -88,6 +104,7 @@ export interface Window {
     tuer: StoreValue<boolean>;
   };
 }
+
 export interface Pv {
   feedIn: StoreValue<number>;
   batteryCharging: StoreValue<number>;
@@ -100,7 +117,7 @@ export interface Pv {
 
 export interface IdToSubscribe<TData> {
   value: Ids<TData>[];
-  objectNameInStore?: IobrokerStates;
+  objectNameInStore?: IoBrokerStates;
 }
 
 export interface Ids<TData> {
@@ -111,6 +128,7 @@ export interface Ids<TData> {
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
 }
+
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
 export interface IdsToControl {
@@ -174,8 +192,10 @@ export interface IobrokerState {
   from: string;
   q: number;
 }
+
 export type IobrokerStateValue = string | number | boolean;
 export type NullableState = null | IobrokerStateValue
+
 export interface CalendarDay {
   date: string;
   event: string;
@@ -189,8 +209,9 @@ export interface CalendarDay {
   _rule: string;
   _location: string;
   _calName: string;
-  _object: CalendarObject
+  _object: CalendarObject;
 }
+
 export interface CalendarObject {
   type: string,
   params: [],

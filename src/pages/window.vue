@@ -1,14 +1,15 @@
-<script setup lang='ts'>
-import FensterCard from '@/components/section/WindowsWindowCard.vue';
-import { useIobrokerStore } from '@/store/iobrokerStore';
-import { storeToRefs } from 'pinia';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { WindowObject } from '@/types.ts';
-const iobrokerStore = useIobrokerStore();
-const { fensterOffen } = storeToRefs<any>(iobrokerStore)
-import { getWindowInfos } from '@/composables/windows';
+<script setup lang="ts">
+import FensterCard from "@/components/section/WindowsWindowCard.vue";
+import { useIobrokerStore } from "@/store/iobrokerStore";
+import { storeToRefs } from "pinia";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { WindowObject } from "@/types.ts";
+import { getWindowInfos } from "@/composables/windows";
 
-const { getOpenWindows } = getWindowInfos()
+const iobrokerStore = useIobrokerStore();
+const { fensterOffen } = storeToRefs<any>(iobrokerStore);
+
+const { getOpenWindows } = getWindowInfos();
 
 const windows: WindowObject[] = [
   { name: "Küche Tür", shutter: true, id: "kueche,tuer" },
@@ -35,12 +36,12 @@ const windows: WindowObject[] = [
   { name: "Flur rechts", shutter: false, id: "flur,rechts" },
   { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
   { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
-  { name: "Dachboden links", shutter: false, id: "dachboden,links" },
-]
+  { name: "Dachboden links", shutter: false, id: "dachboden,links" }
+];
 
 </script>
 <template>
-  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 lg:fixed right-4 lg:left-52 z-10 text-d bg-backgroundColor ">
+  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 -ml-4 -mr-[9px] lg:fixed right-4 lg:left-52 z-10 text-d bg-backgroundColor ">
     <Card>
       <CardHeader class="p-2">
         <CardTitle class=" flex justify-between">
@@ -55,7 +56,7 @@ const windows: WindowObject[] = [
             Fenster sind
             <span :class="fensterOffen ? 'text-red-500' : ''">{{
               fensterOffen ?
-                'offen' : 'geschlossen' }}</span>
+                "offen" : "geschlossen" }}</span>
           </p>
 
           <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
@@ -64,7 +65,10 @@ const windows: WindowObject[] = [
     </Card>
   </div>
   <div class=" flex flex-wrap lg:pt-12 lg:pl-0 pl-1">
-    <FensterCard v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter" :title="card.name"
-      :id2="card.id2" />
+    <FensterCard
+      v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
+      :title="card.name"
+      :id2="card.id2"
+    />
   </div>
 </template>
