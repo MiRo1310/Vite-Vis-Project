@@ -18,7 +18,6 @@ export interface DatatableColumns {
   className?: HTMLAttributes["class"];
   type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
   callback?: () => void;
-  deepNestedProp?: string;
   customValue?: CustomValue;
 }
 
@@ -47,7 +46,6 @@ export const getColumns = (columns: DatatableColumns[]) => {
         unit: column.unit,
         className: column.className,
         callback: column.callback,
-        deepNestedProp: column.deepNestedProp,
         customValue: column.customValue
       }),
       enableHiding: column.type === "checkbox" ? false : column.hideable,
@@ -92,14 +90,10 @@ interface DataTableCellCreator {
   decimal?: boolean;
   unitAdditive?: string;
   callback?: () => void;
-  deepNestedProp?: string;
   customValue?: CustomValue;
 }
 
 const getCell = (obj: DataTableCellCreator) => {
-  if (obj.deepNestedProp && !obj.component) {
-    return getDeepNestedProp(obj, TableCell);
-  }
   if (["text", "date", "bool", "datetime", "time", "number"].includes(obj.type)) {
     return getTableCell(
       TableCell,
@@ -139,9 +133,9 @@ const checkbox = () => {
 
 const getHtml = (source: string) => {
   return ({ row }: any) => {
-    let val = "";
-    if (row.original[source]) {
-      val = row.original[source];
+    let val = getValueByPath(row.original, source);
+    if (!val) {
+      return "";
     }
     val = val.replace(/(?:<br\/?>){2}/gi, "<br/>");
     return h("div", { innerHTML: val });
@@ -158,7 +152,7 @@ const getTableCell = (
   unitAdditive?: string
 ) => {
   return ({ row }: any) => {
-    const value = row.original[source];
+    const value = getValueByPath(row.original, source);
     return h(
       "div",
       {
@@ -186,7 +180,7 @@ const getComponent = (
   callback?: () => void | undefined
 ) => {
   return ({ row }: any) => {
-    const value = row.original[source] || row.original;
+    const value = getValueByPath(row.original, source);
     return h(
       "div",
       {
@@ -200,38 +194,7 @@ const getComponent = (
         row,
         source,
         customValue,
-        deepNestedProp: getValueByPath(row.original, source),
         ...(callback ? { callback: callback } : {})
-      })
-    );
-  };
-};
-const getDeepNestedProp = ({
-                             className,
-                             source,
-                             replacementForZero,
-                             unit,
-                             decimal,
-                             type,
-                             unitAdditive
-                           }: DataTableCellCreator, component: object) => {
-  return ({ row }: any) => {
-    const value = getValueByPath(row.original, source);
-    return h(
-      "div",
-      {
-        class: clsx({
-          "font-medium": true,
-          [className || ""]: true
-        })
-      },
-      h(component, {
-        value,
-        replacementForZero,
-        unit,
-        decimal,
-        type,
-        unitAdditive
       })
     );
   };
