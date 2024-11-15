@@ -96,7 +96,7 @@ function reset() {
 
 </script>
 <template>
-  <div class="pt-2 mr-2 relative">
+  <div class="relative">
     <Card>
       <CardHeader>
         <CardTitle>Logs</CardTitle>

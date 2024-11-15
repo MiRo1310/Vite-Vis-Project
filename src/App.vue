@@ -12,12 +12,12 @@ onMounted(async () => {
 </script>
 <template>
   <div>
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col py-2 pl-2 pr-1">
+    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col py-2 pl-2 pr-2">
       <NavLeft />
     </div>
 
     <div class="lg:pl-48 min-h-[100vh] bg-backgroundColor">
-      <main>
+      <main class="pt-2 mr-2 ">
         <RouterView />
       </main>
     </div>

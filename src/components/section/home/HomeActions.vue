@@ -32,7 +32,10 @@ const toggleTimer = () => {
 };
 </script>
 <template>
-  <ButtonCard :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" @click="handleWindowClick" />
+  <ButtonCard
+    :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" class-card="mt-2 ml-2"
+    @click="handleWindowClick"
+  />
   <ButtonCard
     :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70"
     @click="handleHolidayClick"

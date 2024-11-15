@@ -5,13 +5,12 @@ import HeatingPump from "@/components/section/heating/HeatingPump.vue";
 import HeatingStatus from "@/components/section/heating/HeatingStatus.vue";
 import HeatingTemperature from "@/components/section/heating/HeatingTemperature.vue";
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
-import PageSection from "@/components/shared/page-section/PageSection.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import Button from "@/components/ui/button/Button.vue";
 </script>
 <template>
-  <PageSection class="flex flex-wrap -mt-2">
-    <HeatingStatus />
+  <div class="flex flex-wrap space-x-2 space-y-2 -mt-2 -ml-2">
+    <HeatingStatus class="mt-2 ml-2" />
     <HeatingTemperature />
     <HeatingWarning />
     <HeatingPump />
@@ -26,5 +25,5 @@ import Button from "@/components/ui/button/Button.vue";
         <HeatingControl />
       </template>
     </Dialog>
-  </PageSection>
+  </div>
 </template>

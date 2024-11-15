@@ -51,5 +51,5 @@ const entries: Entries[] = [
 ];
 </script>
 <template>
-  <CardListing :entries="entries" title="Einstellungen" class="mx-2" />
+  <CardListing :entries="entries" title="Einstellungen" />
 </template>

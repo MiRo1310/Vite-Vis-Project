@@ -13,5 +13,5 @@ const entries: Entries[] = [
 ];
 </script>
 <template>
-  <CardListing :entries="entries" title="Heizung" class="mx-2" />
+  <CardListing :entries="entries" title="Heizung" />
 </template>

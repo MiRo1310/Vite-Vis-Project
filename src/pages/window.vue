@@ -41,8 +41,9 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div class="lg:pt-2 pb-1 lg:pl-1 pl-2 -ml-4 -mr-[9px] lg:fixed right-4 lg:left-52 z-10 text-d bg-backgroundColor ">
-    <Card>
+  <div />
+  <div class="lg:fixed right-2 lg:left-48 z-10 bg-backgroundColor -mt-2">
+    <Card class="mt-2">
       <CardHeader class="p-2">
         <CardTitle class=" flex justify-between">
           <p>Fensterstatus</p>
@@ -64,7 +65,7 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class=" flex flex-wrap lg:pt-12 lg:pl-0 pl-1">
+  <div class="flex flex-wrap lg:pt-9 -mx-1 ">
     <FensterCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"
