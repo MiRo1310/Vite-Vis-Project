@@ -118,6 +118,7 @@ export interface Pv {
 export interface IdToSubscribe<TData> {
   value: Ids<TData>[];
   objectNameInStore?: IoBrokerStates;
+
 }
 
 export interface Ids<TData> {
@@ -133,8 +134,6 @@ export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
 export interface IdsToControl {
   tempSetId: string;
-
-
 }
 
 export type Rooms =
@@ -232,7 +231,9 @@ export interface CalendarObject {
 
 export interface Entries {
   title: string;
-  value: boolean | number | string;
+  value: boolean | number | string | undefined;
   type: "string" | "number" | "boolean";
   unit?: string;
 }
+
+export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";

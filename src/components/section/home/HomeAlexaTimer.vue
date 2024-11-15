@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/ui/card";
-import CardHeader from "@/components/ui/card/CardHeader.vue";
+import CardHeader from "../../ui/card/CardHeader.vue";
 import { Hourglass, X } from "lucide-vue-next";
-import Button from "@/components/ui/button/Button.vue";
+import Button from "../../ui/button/Button.vue";
 import { ref, watch } from "vue";
-import { useIobrokerStore } from "@/store/iobrokerStore";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
 
 const iobrokerStore = useIobrokerStore();
@@ -58,32 +58,32 @@ const stopTimer = (index: number) => {
             <div class="w-1/2 flex justify-between mr-6">
               <p>Startzeit:</p>
               <p class="flex-1 text-right">
-                {{ timer[singleTimer as keyof typeof timer]?.timeStart.val }}
+                {{ timer[singleTimer as keyof typeof timer]?.timeStart?.val }}
               </p>
             </div>
             <div class="w-1/2 flex justify-between">
               <p>Endzeit:</p>
               <p class="flex-1 text-right">
-                {{ timer[singleTimer as keyof typeof timer]?.timeEnd.val }}
+                {{ timer[singleTimer as keyof typeof timer]?.timeEnd?.val }}
               </p>
             </div>
           </div>
           <div class="flex w-full mt-2">
             <p>Name:</p>
             <p class="flex-1 text-right">
-              {{ timer[singleTimer as keyof typeof timer]?.name.val }}
+              {{ timer[singleTimer as keyof typeof timer]?.name?.val }}
             </p>
           </div>
           <div class="flex w-full">
             <p>Gerät:</p>
             <p class="flex-1 text-right">
-              {{ timer[singleTimer as keyof typeof timer]?.device.val }}
+              {{ timer[singleTimer as keyof typeof timer]?.device?.val }}
             </p>
           </div>
           <div class="flex w-full">
             <p>Restdauer:</p>
             <p class="flex-1 text-right">
-              {{ timer[singleTimer as keyof typeof timer]?.string.val }}
+              {{ timer[singleTimer as keyof typeof timer]?.string?.val }}
             </p>
           </div>
         </div>

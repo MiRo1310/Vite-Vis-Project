@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import NavLeft from "./components/layout/NavLeft.vue";
 import { onMounted } from "vue";
-import {
-  loadScript,
-  init,
-  IOBROKER_ADMIN_PORT,
-  IOBROKER_HOST,
-} from "@/lib/iobroker/connecter-to-iobroker";
+import { init, IOBROKER_ADMIN_PORT, IOBROKER_HOST, loadScript } from "@/lib/iobroker/connecter-to-iobroker";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+
 
 onMounted(async () => {
+  useIobrokerStore().resetIdsToSubscribe();
   loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
 });
 </script>

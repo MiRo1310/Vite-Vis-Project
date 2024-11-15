@@ -2,7 +2,7 @@
 import Button from "@/components/ui/button/Button.vue";
 
 import HomeCardInfoTime from "@/components/layout/NavLeftTime.vue";
-import { Blinds, CalendarDays, Heater, Home, Logs, PlugZap } from "lucide-vue-next";
+import { Blinds, CalendarDays, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
 
 const buttons = [
   {
@@ -46,6 +46,10 @@ const buttons = [
     link: "/pv"
   },
   {
+    icon: Info,
+    text: "Iobroker Info",
+    link: "/iobroker-info"
+  }, {
     icon: Logs,
     text: "Logs",
     link: "/logs"

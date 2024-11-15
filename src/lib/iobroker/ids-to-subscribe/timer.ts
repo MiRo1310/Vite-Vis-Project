@@ -3,7 +3,7 @@ import { IdToSubscribe, Timer1, Timer2, Timer3, Timer4, TimerObject } from "@/ty
 export const timer: IdToSubscribe<TimerObject> = {
   // Timer
   objectNameInStore: "showTimerCard",
-  value: [{ id: "alexa-timer-vis.0.all_Timer.alive" }],
+  value: [{ id: "alexa-timer-vis.0.all_Timer.alive" }]
 };
 
 export const timer1: IdToSubscribe<Timer1> = {
@@ -14,8 +14,8 @@ export const timer1: IdToSubscribe<Timer1> = {
     { id: "alexa-timer-vis.0.timer1.TimeEnd", firstKey: "timer1", secondKey: "timeEnd" },
     { id: "alexa-timer-vis.0.timer1.TimeStart", firstKey: "timer1", secondKey: "timeStart" },
     { id: "alexa-timer-vis.0.timer1.InputDeviceName", firstKey: "timer1", secondKey: "device" },
-    { id: "alexa-timer-vis.0.timer1.name", firstKey: "timer1", secondKey: "name" },
-  ],
+    { id: "alexa-timer-vis.0.timer1.name", firstKey: "timer1", secondKey: "name" }
+  ]
 };
 
 export const timer2: IdToSubscribe<Timer2> = {
@@ -26,8 +26,8 @@ export const timer2: IdToSubscribe<Timer2> = {
     { id: "alexa-timer-vis.0.timer2.TimeEnd", firstKey: "timer2", secondKey: "timeEnd" },
     { id: "alexa-timer-vis.0.timer2.TimeStart", firstKey: "timer2", secondKey: "timeStart" },
     { id: "alexa-timer-vis.0.timer2.InputDeviceName", firstKey: "timer2", secondKey: "device" },
-    { id: "alexa-timer-vis.0.timer2.name", firstKey: "timer2", secondKey: "name" },
-  ],
+    { id: "alexa-timer-vis.0.timer2.name", firstKey: "timer2", secondKey: "name" }
+  ]
 };
 export const timer3: IdToSubscribe<Timer3> = {
   // Timer 3
@@ -37,8 +37,8 @@ export const timer3: IdToSubscribe<Timer3> = {
     { id: "alexa-timer-vis.0.timer3.TimeEnd", firstKey: "timer3", secondKey: "timeEnd" },
     { id: "alexa-timer-vis.0.timer3.TimeStart", firstKey: "timer3", secondKey: "timeStart" },
     { id: "alexa-timer-vis.0.timer3.InputDeviceName", firstKey: "timer3", secondKey: "device" },
-    { id: "alexa-timer-vis.0.timer3.name", firstKey: "timer3", secondKey: "name" },
-  ],
+    { id: "alexa-timer-vis.0.timer3.name", firstKey: "timer3", secondKey: "name" }
+  ]
 };
 export const timer4: IdToSubscribe<Timer4> = {
   // Timer 4
@@ -48,6 +48,6 @@ export const timer4: IdToSubscribe<Timer4> = {
     { id: "alexa-timer-vis.0.timer4.TimeEnd", firstKey: "timer4", secondKey: "timeEnd" },
     { id: "alexa-timer-vis.0.timer4.TimeStart", firstKey: "timer4", secondKey: "timeStart" },
     { id: "alexa-timer-vis.0.timer4.InputDeviceName", firstKey: "timer4", secondKey: "device" },
-    { id: "alexa-timer-vis.0.timer4.name", firstKey: "timer4", secondKey: "name" },
-  ],
+    { id: "alexa-timer-vis.0.timer4.name", firstKey: "timer4", secondKey: "name" }
+  ]
 };

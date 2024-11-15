@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import ButtonCard from "@/components/shared/ButtonCard.vue";
-import { Blinds, Hourglass, ListStart, UserRoundSearch } from "lucide-vue-next";
-import HomeShoppingCard from "@/components/section/HomeShoppingCard.vue";
+import { Blinds, Hourglass, UserRoundSearch } from "lucide-vue-next";
+import HomeShoppingCard from "@/components/section/home/HomeShoppingCard.vue";
 import { computed } from "vue";
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker";
+import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 
 const router = useRouter();
 const iobrokerStore = useIobrokerStore();
@@ -39,7 +39,4 @@ const toggleTimer = () => {
   />
   <HomeShoppingCard />
   <ButtonCard :icon="Hourglass" title="Timer" class="text-accent-foreground/70" @click="toggleTimer" />
-  <a href="http://192.168.1.81:8082/vis/index.html?FireHD10#1_Startseite" target="_self" rel="noopener noreferrer">
-    <ButtonCard :icon="ListStart" title="Alte VIS" class="text-accent-foreground/70" />
-  </a>
 </template>

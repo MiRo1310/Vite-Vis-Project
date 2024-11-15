@@ -8,8 +8,13 @@ import { Heating } from "@/lib/iobroker/ids-to-subscribe/heating";
 import { Log, LogReset } from "@/pages/logs.vue";
 import { LogStates } from "@/lib/iobroker/ids-to-subscribe/logs.ts";
 import { computed } from "vue";
+import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
+import { Infos } from "@/lib/iobroker/ids-to-subscribe/info.ts";
+import { stringToJSON } from "@/lib/string.ts";
 
 export interface IoBrokerStoreState {
+  adminConnectionEstablished: boolean;
+  subscribedIds: string[];
   wetter: Wetter;
   trash: object;
   shoppingList: string;
@@ -32,17 +37,23 @@ export interface IoBrokerStoreState {
   heating: Heating;
   logs: LogStates;
   logReset: LogReset;
+  heatingTimeSlot: HeatingTimeSlot;
+  infos: Infos;
 }
 
-export interface StoreValue<T> {
-  val: T;
-  id: string;
+export type StoreValue<T> = StoreValueType<T> | undefined
+
+export interface StoreValueType<T> {
+  val: T | undefined;
+  id: string | undefined;
 }
 
 export type IoBrokerStates = keyof IoBrokerStoreState;
 
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
+    adminConnectionEstablished: false,
+    subscribedIds: [],
     wetter: {} as Wetter,
     trash: {},
     shoppingList: "",
@@ -64,9 +75,15 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     calendar: {} as Calendar,
     heating: {} as Heating,
     logs: {} as LogStates,
-    logReset: {} as LogReset
+    logReset: {} as LogReset,
+    heatingTimeSlot: {} as HeatingTimeSlot,
+    infos: {} as Infos
+
   }),
   getters: {
+    isAdminConnected(state) {
+      return state.adminConnectionEstablished;
+    },
     getTrash(state) {
       return state.trash;
     },
@@ -81,23 +98,27 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     },
     getParsedLogs(state) {
       return computed(() => {
-        try {
-          return {
-            error: JSON.parse(state.logs.error?.val) as Log[],
-            warn: JSON.parse(state.logs.warning?.val) as Log[],
-            info: JSON.parse(state.logs.info?.val) as Log[]
-          };
-        } catch (e) {
-          return {
-            error: [],
-            warn: [],
-            info: []
-          };
-        }
+        return {
+          error: stringToJSON<Log[]>(state.logs.error?.val as string),
+          warn: stringToJSON<Log[]>(state.logs.warning?.val as string),
+          info: stringToJSON<Log[]>(state.logs.info?.val as string)
+        };
       });
     }
   },
   actions: {
+    setAdminConnection(val: boolean) {
+      this.adminConnectionEstablished = val;
+    },
+    resetIdsToSubscribe() {
+      this.subscribedIds = [];
+    },
+    addIdToSubscribedIds(id: string) {
+      this.subscribedIds.push(id);
+    },
+    removeIdFromSubscribedIds(id: string) {
+      this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
+    },
     setValueToKey(key: string, val: string | number | boolean | object) {
       (this as any)[key] = val;
     },

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import HomeTrash from "@/components/section/HomeTrash.vue";
-import HomeCardInfo from "@/components/section/HomeCardInfo.vue";
-import HomeActions from "@/components/section/HomeActions.vue";
-import HomeAlexaTimer from "@/components/section/HomeAlexaTimer.vue";
-import HomeCardPv from "@/components/section/HomeCardPv.vue";
-import HomeCardPool from "@/components/section/HomeCardPool.vue";
-import HomeLawnMover from "@/components/section/HomeCardLawnMover.vue";
-import HomeCalendar from "@/components/section/HomeCalendar.vue";
+import HomeTrash from "@/components/section/home/HomeTrash.vue";
+import HomeCardInfo from "@/components/section/home/HomeCardInfo.vue";
+import HomeActions from "@/components/section/home/HomeActions.vue";
+import HomeAlexaTimer from "@/components/section/home/HomeAlexaTimer.vue";
+import HomeCardPv from "@/components/section/home/HomeCardPv.vue";
+import HomeCardPool from "@/components/section/home/HomeCardPool.vue";
+import HomeLawnMover from "@/components/section/home/HomeCardLawnMover.vue";
+import HomeCalendar from "@/components/section/home/HomeCalendar.vue";
 </script>
 
 <template>

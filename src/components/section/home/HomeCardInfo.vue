@@ -1,19 +1,23 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
-import { getWindowInfos } from "@/composables/windows";
-import { useTime } from "@/composables/time";
+import { getWindowInfos } from "@/composables/windows.ts";
+import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
+import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
+import { infoStates } from "@/lib/iobroker/ids-to-subscribe/info.ts";
+
+useDynamicSubscribe(infoStates);
 
 const { hour } = useTime();
 
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs } = useIobrokerStore();
-const { wetter } = storeToRefs(ioBrokerStore);
+const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const isTimeToWarn = computed(() => {
   if (hour.value === null) {
@@ -38,6 +42,12 @@ const infos = computed(() => [
     </CardHeader>
     <CardContent class="text-xs">
       <div class="info__row ">
+        <p>Updates</p>
+        <p>
+          <Badge :value="infoStore.updatesNumber?.val" />
+        </p>
+      </div>
+      <div class="info__row">
         <p> Logs</p>
         <p>
           <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info?.length" class="bg-white info__badge" />
@@ -53,7 +63,7 @@ const infos = computed(() => [
       </div>
       <div
         v-for="(info, index) in infos" :key="index" :class="{
-          'info__row mt-2': true,
+          'info__row ': true,
           'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
 
         }"
@@ -68,7 +78,7 @@ const infos = computed(() => [
 </template>
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold
+  @apply flex justify-between items-center text-accent-foreground/50 font-bold mt-2
 }
 
 .info__badge {

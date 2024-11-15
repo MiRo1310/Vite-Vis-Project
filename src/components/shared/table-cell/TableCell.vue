@@ -66,5 +66,8 @@ const props = defineProps({
       :unit-additive="unitAdditive"
       :value="value as StringOrNumber"
     />
+    <p v-else class="text-muted-foreground">
+      {{ value }}
+    </p>
   </div>
 </template>

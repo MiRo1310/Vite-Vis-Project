@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import HomeFensterCardButtons from "@/components/section/HomeFensterCardButtons.vue";
+import HomeFensterCardButtons from "@/components/section/home/HomeFensterCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import HomeFensterCardOpenClose from "@/components/section/HomeFensterCardOpenClose.vue";
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import HomeFensterCardOpenClose from "@/components/section/home/HomeFensterCardOpenClose.vue";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker";
+import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import windowOpen from "@/assets/window_open.png";
 import windowClosed from "@/assets/window_closed.png";
 import {
-  blinds100,
-  blinds90,
-  blinds80,
   blinds0,
   blinds10,
+  blinds100,
   blinds20,
   blinds30,
   blinds40,
   blinds50,
   blinds60,
   blinds70,
-} from "@/assets/index.ts";
+  blinds80,
+  blinds90
+} from "@/assets";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs<any>(
@@ -32,26 +32,26 @@ const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs<an
 const props = defineProps({
   shutter: {
     type: Boolean,
-    required: true,
+    required: true
   },
   title: {
     type: String,
-    required: true,
+    required: true
   },
   id: {
     type: String,
-    required: true,
+    required: true
   },
   id2: {
     type: String,
     required: false,
-    default: null,
+    default: null
   },
   cl: {
     type: String,
     required: false,
-    default: null,
-  },
+    default: null
+  }
 });
 
 const getIsWindowOpen = computed(() => {
@@ -150,24 +150,28 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       <div class="flex items-center justify-between">
         <div class="flex">
           <div>
-            <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu" />
-            <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu" />
+            <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
           <div v-if="props.id2">
-            <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu" />
-            <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu" />
+            <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
         </div>
 
-        <HomeFensterCardOpenClose v-if="!props.shutter" class="text" :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
-          " />
+        <HomeFensterCardOpenClose
+          v-if="!props.shutter" class="text" :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
+          "
+        />
       </div>
       <div v-if="props.shutter">
         <div class="flex">
-          <img class="window--img" :src="getShutterImage" alt="FensterRollade" />
+          <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class="w-full">
-            <HomeFensterCardOpenClose :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
-              " class="text" />
+            <HomeFensterCardOpenClose
+              :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
+              " class="text"
+            />
             <p class="text" :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
               Rollade {{ getShutterPosition }}% offen
             </p>
@@ -176,22 +180,32 @@ const updateHandler = (value: number | string | boolean, id: string) => {
               <div class="flex items-center justify-between">
                 <div class="w-11">
                   <Switch :checked="getAutoClose?.val" @update:checked="updateHandler($event, getAutoClose?.id)" />
-                  <p class="text-[0.5rem]">Auto runter</p>
+                  <p class="text-[0.5rem]">
+                    Auto runter
+                  </p>
                 </div>
                 <div class="relative">
-                  <Input type="number" step="1" class="w-[5.8rem] pr-8" :model-value="getAutoCloseDelay?.val"
-                    @update:model-value="updateHandler($event, getAutoCloseDelay?.id)" />
-                  <div class="absolute text-sm top-2 right-2">min</div>
+                  <Input
+                    type="number" step="1" class="w-[5.8rem] pr-8" :model-value="getAutoCloseDelay?.val"
+                    @update:model-value="updateHandler($event, getAutoCloseDelay?.id)"
+                  />
+                  <div class="absolute text-sm top-2 right-2">
+                    min
+                  </div>
                 </div>
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
                   <Switch :checked="getAutoOpen?.val" @update:checked="updateHandler($event, getAutoOpen?.id)" />
-                  <p class="text-[0.5rem]">Auto hoch</p>
+                  <p class="text-[0.5rem]">
+                    Auto hoch
+                  </p>
                 </div>
                 <p>
-                  <Input type="time" :model-value="getAutoUpTime?.val"
-                    @update:model-value="updateHandler($event, getAutoUpTime?.id)" />
+                  <Input
+                    type="time" :model-value="getAutoUpTime?.val"
+                    @update:model-value="updateHandler($event, getAutoUpTime?.id)"
+                  />
                 </p>
               </div>
             </div>

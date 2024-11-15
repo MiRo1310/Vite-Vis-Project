@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FensterCard from "@/components/section/WindowsWindowCard.vue";
+import FensterCard from "@/components/section/window/WindowsWindowCard.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";

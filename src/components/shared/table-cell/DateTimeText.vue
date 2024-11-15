@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { PropType } from "vue";
 
-defineProps({
-  value: {
-    type: String as PropType<string | undefined>,
-    default: ""
-  }
+import { computed } from "vue";
+
+const props = defineProps<{ value?: string | undefined }>();
+
+const transformedDate = computed(() => {
+  console.log(props.value);
+  return props.value ? new Date(props.value.toString()).toLocaleString() : "-";
 });
 </script>
 
 <template>
   <span class="text-muted-foreground">
-    {{ value ? new Date(value.toString()) : "-" }}
+
+    {{ transformedDate }}
   </span>
 </template>
