@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { Card, CardContent } from "@/components/ui/card";
-import CardHeader from "../../ui/card/CardHeader.vue";
-import { Hourglass, X } from "lucide-vue-next";
-import Button from "../../ui/button/Button.vue";
+import { Card, CardContent, CardHeader } from "@/components/shared/card";
+import { X } from "lucide-vue-next";
+import Button from "@/components/ui/button/Button.vue";
 import { ref, watch } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
@@ -32,20 +31,19 @@ const stopTimer = (index: number) => {
 <template>
   <Card
     v-if="iobrokerStore.showTimerCard"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 z-50"
+
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent"
   >
-    <Button class="absolute w-8 h-8 p-0 top-4 right-4 z-20" @click="closeWindow">
+    <Button class="absolute w-4 h-4 p-0 top-4 right-4 z-20" @click="closeWindow">
       <X />
     </Button>
-
     <CardHeader class="text-center relative px-4">
-      <Hourglass class="w-10 h-10 absolute top-4 left-3" />
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="flex flex-wrap px-3 pt-0 pb-3">
       <div
         v-for="(singleTimer, i) in timersArray" :key="i"
-        class="bg-gray-100 rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative"
+        class="bg-backgroundCards rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative"
       >
         <Button class="w-8 h-8 p-0 absolute right-2" @click="stopTimer(i)">
           <X />

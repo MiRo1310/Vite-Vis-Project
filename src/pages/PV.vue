@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import CardTitle from "@/components/shared/card/CardTitle.vue";
-import { CardHeader } from "@/components/ui/card";
-import Card from "@/components/ui/card/Card.vue";
-import CardContent from "@/components/ui/card/CardContent.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 </script>
 <template>
-  <Card class="ml-0">
+  <Card class="ml-0 h-full" styling="blue">
     <CardHeader>
       <CardTitle>
-        Diagramme
+        Strom
       </CardTitle>
     </CardHeader>
     <CardContent>
