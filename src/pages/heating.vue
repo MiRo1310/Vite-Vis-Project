@@ -9,15 +9,15 @@ import Dialog from "@/components/shared/dialog/Dialog.vue";
 import Button from "@/components/ui/button/Button.vue";
 </script>
 <template>
-  <div class="flex flex-wrap space-x-2 space-y-2 -mt-2 -ml-2">
-    <HeatingStatus class="mt-2 ml-2" />
+  <div class="flex flex-wrap space-x-1 space-y-1 -mt-1 -ml-1">
+    <HeatingStatus class="mt-1 ml-1" />
     <HeatingTemperature />
     <HeatingWarning />
     <HeatingPump />
     <HeatingConfig />
     <Dialog class-content="h-full w-full max-w-full">
       <template #trigger>
-        <Button>
+        <Button class="bg-backgroundCards border-none rounded-none h-full">
           HeatingControl
         </Button>
       </template>
