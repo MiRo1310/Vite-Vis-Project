@@ -33,13 +33,16 @@ const toggleTimer = () => {
 </script>
 <template>
   <ButtonCard
-    :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" class-card="mt-2 ml-2"
+    :icon="Blinds" :class="getWindowStyle" class-card="mt-2 ml-1"
     @click="handleWindowClick"
   />
   <ButtonCard
-    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70"
+    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70 " class-card="mt-2 ml-1"
     @click="handleHolidayClick"
   />
   <HomeShoppingCard />
-  <ButtonCard :icon="Hourglass" title="Timer" class="text-accent-foreground/70" @click="toggleTimer" />
+  <ButtonCard
+    :icon="Hourglass" class="text-accent-foreground/70" class-card="mt-2 ml-1"
+    @click="toggleTimer"
+  />
 </template>

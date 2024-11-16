@@ -3,8 +3,8 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+
 
 const iobrokerStore = useIobrokerStore();
 const { trash } = storeToRefs<any>(iobrokerStore);
@@ -64,7 +64,7 @@ const days: Days = {
 
 </script>
 <template>
-  <Card>
+  <Card styling="blue">
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>

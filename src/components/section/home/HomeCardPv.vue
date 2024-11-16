@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
@@ -24,7 +24,7 @@ const values = computed(() => [
     title: pv.value.feedIn?.val || 0 > 0 ? "Einspeisung" : "Bezug",
     value: pv.value.feedIn?.val,
     unit: "W",
-    class: pv.value.feedIn?.val || 0 < 0 ? "text-red-500" : "text-green-500"
+    class: pv.value.feedIn?.val || 0 < 0 ? "text-destructive" : "text-green-500"
   },
   { title: "Erzeugnis grosse PV", value: pv.value.pvGross?.val, unit: "W" },
   { title: "Erzeugnis kleine PV", value: pv.value.smallPv?.val, unit: "W" },
@@ -32,7 +32,7 @@ const values = computed(() => [
 ]);
 </script>
 <template>
-  <Card class="w-auto cursor-pointer" @click="router.push('/pv')">
+  <Card class="w-auto cursor-pointer" styling="blue" @click="router.push('/pv')">
     <CardHeader>
       <CardTitle>PV Daten</CardTitle>
     </CardHeader>

@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { Check, X } from 'lucide-vue-next';
-import { PropType } from 'vue';
+import { Check, X } from "lucide-vue-next";
+import { PropType } from "vue";
+
 defineProps({
   value: {
-    type: [Boolean, String, null] as PropType<boolean | "true" | "false" | null>,
+    type: [Boolean, String, null, Number] as PropType<boolean | "true" | "false" | null | number>,
     required: true
   },
   class: {
     type: String,
-    default: ''
+    default: ""
   }
-})
+});
 </script>
 <template>
   <Check v-if="value == 'true' || value === true" :class="['text-green-500 -mr-1 h-4 w-4', $props.class]" />

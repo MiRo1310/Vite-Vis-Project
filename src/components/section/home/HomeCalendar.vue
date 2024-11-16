@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { Card } from "@/components/ui/card";
-import CardHeader from "../../ui/card/CardHeader.vue";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
-import CardContent from "../../ui/card/CardContent.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
@@ -67,7 +64,7 @@ function isNotAllDayEvent(event: CalendarDay) {
 }
 </script>
 <template>
-  <Card @click="router.push({ name: 'calendar' })">
+  <Card styling="blue" class="w-80" @click="router.push({ name: 'calendar' })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>
