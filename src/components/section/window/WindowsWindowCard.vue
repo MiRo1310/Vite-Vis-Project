@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import HomeFensterCardButtons from "@/components/section/home/HomeFensterCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -140,7 +140,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 };
 </script>
 <template>
-  <Card class="w-[32.5%] m-1 relative" :class="`${props.cl}`">
+  <Card class="window__card" :class="`${props.cl}`" styling="blue">
     <CardHeader class="pb-0 pt-2 px-2">
       <CardTitle class="flex">
         <p>{{ props.title }}</p>
@@ -218,6 +218,14 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </template>
 
 <style lang="postcss" scoped>
+.window__card {
+  @apply min-w-[32.5%] flex-1 relative
+}
+
+.window__card:first-child {
+  @apply mt-1 ml-1
+}
+
 .window--img {
   @apply w-8 h-12;
 }

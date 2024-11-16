@@ -2,7 +2,7 @@
 import FensterCard from "@/components/section/window/WindowsWindowCard.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { WindowObject } from "@/types.ts";
 import { getWindowInfos } from "@/composables/windows";
 
@@ -42,9 +42,9 @@ const windows: WindowObject[] = [
 </script>
 <template>
   <div />
-  <div class="lg:fixed right-2 lg:left-48 z-10 bg-backgroundColor -mt-2">
-    <Card class="mt-2">
-      <CardHeader class="p-2">
+  <div class="lg:fixed right-1 left-1 z-10 bg-backgroundColor">
+    <Card styling="blue">
+      <CardHeader class="p-1">
         <CardTitle class=" flex justify-between">
           <p>Fensterstatus</p>
           <p v-show="getOpenWindows === 1" class="flex ">
@@ -65,7 +65,7 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap lg:pt-9 -mx-1 ">
+  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1">
     <FensterCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"

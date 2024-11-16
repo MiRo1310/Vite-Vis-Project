@@ -28,7 +28,7 @@ const handleClick = () => {
 </script>
 <template>
   <Card
-    :class="{'w-16 h-16 cursor-pointer p-0 bg-backgroundCards border-none rounded-none relative mt-2 ml-1':true, classCard:true ,'flex items-center justify-center':!title}"
+    :class="{'w-16 h-16 cursor-pointer p-0 bg-backgroundCards border-none rounded-none relative mt-1 ml-1':true, classCard:true ,'flex items-center justify-center':!title}"
 
     @click="handleClick"
   >
