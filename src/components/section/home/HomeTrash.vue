@@ -68,9 +68,9 @@ const days: Days = {
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>
-    <CardContent class="grid grid-cols-2 gap-8">
+    <CardContent class="grid grid-cols-2 gap-2">
       <div v-for="(event, index) in trashEvents" :key="index">
-        <div class="flex justify-between ">
+        <div class="flex justify-between">
           <p class="text-accent-foreground/40 font-bold">
             {{ event.name }}
           </p>

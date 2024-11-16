@@ -2,15 +2,16 @@
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { Button } from "@/components/ui/button";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { storeToRefs } from "pinia";
 
 defineProps<{ class: string }>();
 
-const { heating } = useIobrokerStore();
+const { heating } = storeToRefs(useIobrokerStore());
 </script>
 <template>
   <div :class="['inline-block p-2 w-full relative', $props.class]">
     <div>
-      <p>{{ heating.heatingControl.chosenRoom?.val }}</p>
+      <p>{{ heating.heatingControl.room?.val }}</p>
       <p class="flex mt-2">
         <span class="w-36"> Temperatur am Regler </span>
         <span class="flex flex-1 justify-between ml-4">

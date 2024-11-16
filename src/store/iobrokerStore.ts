@@ -11,6 +11,7 @@ import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { Infos } from "@/lib/iobroker/ids-to-subscribe/info.ts";
 import { stringToJSON } from "@/lib/string.ts";
+import { PhoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -39,6 +40,7 @@ export interface IoBrokerStoreState {
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;
   infos: Infos;
+  phone: PhoneStates;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
@@ -77,7 +79,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     logs: {} as LogStates,
     logReset: {} as LogReset,
     heatingTimeSlot: {} as HeatingTimeSlot,
-    infos: {} as Infos
+    infos: {} as Infos,
+    phone: {} as PhoneStates
 
   }),
   getters: {

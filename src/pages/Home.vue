@@ -12,18 +12,18 @@ import HomeCalendar from "@/components/section/home/HomeCalendar.vue";
 <template>
   <HomeAlexaTimer />
   <div class="h-full w-full flex items-start">
-    <div class="grid grid-cols-12 mt-1 w-full">
-      <HomeCardInfo class="m-1 col-span-3" />
-      <HomeTrash class="m-1 col-span-4" />
-      <HomeCardPv class="m-1 col-span-3" />
+    <div class="grid grid-cols-12 w-full gap-2">
+      <HomeCardInfo class="col-span-3" />
+      <HomeTrash class="col-span-4" />
+      <HomeCardPv class="col-span-3" />
       <div class="col-span-2">
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap space-x-2 space-y-2 -mt-2 -ml-2">
           <HomeActions />
         </div>
       </div>
-      <HomeCardPool class="m-1 col-span-4" />
-      <HomeLawnMover class="m-1 col-span-3" />
-      <HomeCalendar class="m-1 col-span-5" />
+      <HomeCardPool class="col-span-4" />
+      <HomeLawnMover class="col-span-3" />
+      <HomeCalendar class="col-span-5" />
     </div>
   </div>
 </template>

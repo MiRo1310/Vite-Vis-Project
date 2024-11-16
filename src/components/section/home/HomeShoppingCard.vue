@@ -17,6 +17,7 @@ const createShoppinglist = computed(() => {
   } catch (error) {
     console.log("error", error);
   }
+  return [];
 });
 </script>
 <template>
@@ -25,7 +26,9 @@ const createShoppinglist = computed(() => {
       <ButtonCard :icon="ShoppingBag" class=" text-accent-foreground/70">
         <template #title>
           <p>Einkaufsliste</p>
-          <Badge :value="createShoppinglist?.length" />
+          <p class="flex justify-center">
+            <Badge :value="createShoppinglist?.length" />
+          </p>
         </template>
       </ButtonCard>
     </template>

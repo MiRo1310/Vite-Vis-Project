@@ -49,7 +49,7 @@ const infos = computed(() => [
       </div>
       <div class="info__row">
         <p> Logs</p>
-        <p>
+        <p class="flex">
           <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info?.length" class="bg-white info__badge" />
           <Badge
             v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn?.length"

@@ -143,7 +143,6 @@ export interface Heating {
     windowOpenHtmlTable: StoreValue<string>;
 
     statusRoom: StoreValue<string>;
-    chosenRoom: StoreValue<string>;
     sollTemp1: StoreValue<number>;
     sollTemp2: StoreValue<number>;
     tempRegler1: StoreValue<number>;
@@ -249,7 +248,7 @@ export const heating: IdToSubscribe<Heating> = {
       firstKey: "heatingControl",
       secondKey: "statusRoom"
     },
-    { id: "heatingcontrol.0.vis.ChoosenRoom", firstKey: "heatingControl", secondKey: "chosenRoom" },
+
     { id: "0_userdata.0.Heizung.heatingcontrol.Soll_Temp", firstKey: "heatingControl", secondKey: "sollTemp1" },
     { id: "0_userdata.0.Heizung.heatingcontrol.Soll_Temp_2", firstKey: "heatingControl", secondKey: "sollTemp2" },
     {
