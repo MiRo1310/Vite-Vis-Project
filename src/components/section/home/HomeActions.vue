@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonCard from "@/components/shared/ButtonCard.vue";
 import { Blinds, Hourglass, UserRoundSearch } from "lucide-vue-next";
-import HomeShoppingCard from "@/components/section/home/HomeShoppingCard.vue";
+import HomeShoppingCard from "@/components/section/home/HomeShopping.vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";

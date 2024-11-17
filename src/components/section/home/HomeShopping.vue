@@ -1,27 +1,22 @@
 <script setup lang="ts">
 import Sheet from "@/components/shared/Sheet.vue";
-import ShoppingList from "@/components/section/home/HomeShoppingCardList.vue";
+import HomeShoppingList from "@/components/section/home/HomeShoppingList.vue";
 import ButtonCard from "@/components/shared/ButtonCard.vue";
 import { ShoppingBag } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
+import { stringToJSON } from "@/lib/string.ts";
 
 const { shoppingList } = storeToRefs(useIobrokerStore());
 
-const createShoppinglist = computed(() => {
-  try {
-    if (shoppingList.value !== "" && typeof shoppingList.value === "string")
-      return JSON.parse(shoppingList.value);
-  } catch (error) {
-    console.log("error", error);
-  }
-  return [];
+const createShoppinglist = computed((): any[] => {
+  return stringToJSON(shoppingList.value);
 });
 </script>
 <template>
-  <Sheet>
+  <Sheet styling="blue" :show-footer="false">
     <template #trigger>
       <ButtonCard :icon="ShoppingBag" class=" text-accent-foreground/70" class-card="mt-2 ml-1">
         <template #icon>
@@ -35,7 +30,7 @@ const createShoppinglist = computed(() => {
       <p>Einkaufsliste</p>
     </template>
     <template #content>
-      <ShoppingList />
+      <HomeShoppingList />
     </template>
   </Sheet>
 </template>

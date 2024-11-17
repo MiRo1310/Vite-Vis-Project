@@ -9,7 +9,7 @@ defineProps<{ class: string }>();
 const { heating } = storeToRefs(useIobrokerStore());
 </script>
 <template>
-  <div :class="['inline-block p-2 w-full relative', $props.class]">
+  <div :class="['inline-block p-1 w-full relative', $props.class]">
     <div>
       <p>{{ heating.heatingControl.room?.val }}</p>
       <p class="flex mt-2">
@@ -42,6 +42,6 @@ const { heating } = storeToRefs(useIobrokerStore());
         heating.heatingControl.roomState?.val }}
     </Button>
 
-    <div class="text-xs border-2 overflow-auto h-[21rem]" v-html="heating.heatingControl.statusRoom?.val" />
+    <div class="text-xs border-2 p-1 overflow-auto h-[21rem]" v-html="heating.heatingControl.statusRoom?.val" />
   </div>
 </template>

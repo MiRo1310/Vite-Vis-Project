@@ -19,7 +19,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="mx-1 px-4 bg-accent flex-1 p-1">
+  <div class="mx-1 p-1 bg-backgroundCards flex-1">
     <p>Fensterstatus</p>
     <div class="h-[14rem] overflow-auto">
       <span

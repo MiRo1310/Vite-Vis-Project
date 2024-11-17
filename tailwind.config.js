@@ -2,7 +2,6 @@ const animate = require("tailwindcss-animate");
 
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-  important: true,
   darkMode: ["class"],
   safelist: ["dark"],
 
@@ -45,6 +44,7 @@ module.exports = {
         background: "hsl(var(--background))",
         backgroundColor: "hsl(var(--background-color))",
         backgroundCards: "hsl(var(--background-cards))",
+        backgroundHeader: "hsl(var(--background-header))",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",

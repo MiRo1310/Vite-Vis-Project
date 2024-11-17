@@ -13,7 +13,7 @@ const days = [
 ];
 </script>
 <template>
-  <div class="flex justify-between w-full">
+  <div class="flex justify-between w-full space-x-1">
     <HeatingControlPeriodFirst />
     <HeatingControlPeriodDay v-for="(day, index) in days" :key="index" :day="day" />
   </div>
