@@ -8,13 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
         Strom
       </CardTitle>
     </CardHeader>
-    <CardContent>
+    <CardContent class="flex flex-wrap">
       <iframe
         src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&panelId=2" width="750" height="300"
         frameborder="0"
       />
       <iframe
-        class="mt-4" src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&refresh=5s&panelId=13"
+        class="min-w-1/2" src="http://192.168.1.4:3000/d-solo/Biuksv-4k/strom?orgId=1&refresh=5s&panelId=13"
         width="750" height="300" frameborder="0"
       />
     </CardContent>

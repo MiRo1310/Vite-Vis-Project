@@ -7,9 +7,8 @@ import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types.ts";
-import { useTime } from "@/composables/time.ts";
 
-const props = defineProps<{ day: { val: string; label: string }; }>();
+const props = defineProps<{ day: { val: string; label: string, index: number }; }>();
 const { heating, heatingTimeSlot } = useIobrokerStore();
 
 const profile = computed(() => {
@@ -34,10 +33,9 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [{
   ]
 }];
 useDynamicSubscribe(states);
-const { weekday } = useTime();
 
 const activeClass = computed(() => (i: number) => {
-  return props.day.label === weekday.value && i === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "";
+  return (((i) + props.day.index * 5) === heatingTimeSlot.currentTimePeriod?.val) ? "bg-green-100" : "bg-white";
 });
 </script>
 <template>
@@ -85,10 +83,10 @@ const activeClass = computed(() => (i: number) => {
 }
 
 :deep(button[role="combobox"]) {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] bg-white mt-1;
+  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] mt-1;
 }
 
 .day__input {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none bg-white mt-1;
+  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none mt-1;
 }
 </style>

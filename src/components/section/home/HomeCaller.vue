@@ -16,6 +16,8 @@ const isCalling = computed((): string => {
   }
   return "";
 });
+
+
 </script>
 
 <template>
@@ -23,17 +25,19 @@ const isCalling = computed((): string => {
     <CardContent>
       <div class="callee__container">
         <p>Anrufer:</p>
-        <div v-if="phone.ringing?.val">
-          <p>{{ phone.calleeName?.val }}</p>
-          <p>{{ phone.callee?.val }}</p>
+        <div v-if="phone.ringing?.val" class="caller">
+          <p>{{ phone.callerName?.val }}</p>
+          <p>{{ phone.caller?.val }}</p>
+          <p>{{ phone.callerTimestamp?.val }}</p>
         </div>
       </div>
       <div class="callee__container">
         <p>Letzter Anruf von:</p>
-        <div class="ml-2">
-          <p>{{ phone.lastCalleeName?.val }}</p>
-          <p>{{ phone.lastCallee?.val }}</p>
+        <div class="caller">
+          <p>{{ phone.lastCallerName?.val }}</p>
+          <p>{{ phone.lastCaller?.val }}</p>
           <p>{{ phone.lastCallTimestamp?.val }}</p>
+          <p>{{ phone.lastDuration?.val }}</p>
         </div>
       </div>
     </CardContent>
@@ -42,6 +46,10 @@ const isCalling = computed((): string => {
 
 <style scoped lang="postcss">
 .callee__container {
-  @apply text-xs mt-2 min-h-16 border p-1 border-backgroundColor
+  @apply text-xs mt-2 min-h-20 border p-1 border-accent text-accent-foreground/50
+}
+
+.caller {
+  @apply ml-2 text-2xs text-black
 }
 </style>

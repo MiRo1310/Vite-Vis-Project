@@ -14,7 +14,7 @@ const values = computed(() => [
   { title: "Batterieladung", value: pv.value.batteryCharging?.val, unit: "%" },
   {
     title:
-      pv.value.activeCharging?.val || 0 > 0
+      (pv.value.activeCharging?.val || 0) > 0
         ? "Batterie wird geladen"
         : "Batterie wird entladen",
     value: pv.value.activeCharging?.val,
