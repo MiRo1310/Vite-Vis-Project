@@ -1,12 +1,16 @@
 <script lang="ts" setup></script>
 <template>
-    <div class="w-12 pl-4 pt-9 bg-accent">
-        <p class="mb-1">Per.</p>
-        <p class="row" v-for="i in 5">{{ i }}</p>
-    </div>
+  <div class="w-12 pl-4 pt-11 mb-1 bg-backgroundCards ">
+    <p class="mb-2">
+      Per.
+    </p>
+    <p v-for="i in 5" :key="i" class="row">
+      {{ i }}
+    </p>
+  </div>
 </template>
 <style scoped lang="postcss">
 .row {
-    @apply h-6;
+  @apply h-6 mb-1;
 }
 </style>

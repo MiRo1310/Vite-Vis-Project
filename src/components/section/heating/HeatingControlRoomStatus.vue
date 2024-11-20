@@ -4,12 +4,15 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 const { heating } = useIobrokerStore();
 </script>
 <template>
-  <div class="w-full bg-accent p-4 my-1 mr-1 container__table" v-html="heating.heatingControl.visRoomStates?.val" />
+  <div
+    class="w-full bg-backgroundCards p-1 my-1 mr-1 container__table"
+    v-html="heating.heatingControl.visRoomStates?.val"
+  />
 </template>
 
 <style lang="postcss">
 .container__table table {
-  @apply w-full;
+  @apply w-full text-sm;
 }
 
 .mdui-green-bg {

@@ -45,28 +45,30 @@ function updateSelected(val: string | undefined, id: string | undefined) {
 
 <template>
   <div class="header__container">
-    <p class="header__label">
-      Aktives Profil
-    </p>
-    <Select
-      v-model:selected="selected" placeholder="Wähle ein Profil aus" :items="items"
-      class="w-[100px] header__select"
-      @update:selected="updateSelected($event, heating.heatingControl.profile?.id)"
-    />
-    <p class="header__label">
-      Raum:
-    </p>
-    <Select
-      v-model:selected="room" placeholder="Wähle einen Raum" :items="roomItems"
-      class="w-[150px] header__select"
-      @update:selected="updateSelected($event, heating.heatingControl.room?.id)"
-    />
+    <div class="mt-1 mx-1 p-1 bg-backgroundHeader flex flex-wrap items-center space-x-4">
+      <p class="header__label">
+        Aktives Profil
+      </p>
+      <Select
+        v-model:selected="selected" placeholder="Wähle ein Profil aus" :items="items"
+        class="w-[100px] header__select"
+        @update:selected="updateSelected($event, heating.heatingControl.profile?.id)"
+      />
+      <p class="header__label">
+        Raum:
+      </p>
+      <Select
+        v-model:selected="room" placeholder="Wähle einen Raum" :items="roomItems"
+        class="w-[150px] header__select"
+        @update:selected="updateSelected($event, heating.heatingControl.room?.id)"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="postcss">
 .header__container {
-  @apply flex flex-wrap items-center space-x-4 bg-blue-600 absolute top-0 left-0 rounded-t-lg w-full h-12 pl-4;
+  @apply bg-backgroundColor absolute top-0 left-0  w-full h-12;
 }
 
 .header__label {
@@ -74,6 +76,6 @@ function updateSelected(val: string | undefined, id: string | undefined) {
 }
 
 .header__select {
-  @apply bg-white rounded-lg;
+  @apply bg-white ;
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import { getWindowInfos } from "@/composables/windows.ts";
 import { useTime } from "@/composables/time.ts";
@@ -36,9 +36,9 @@ const infos = computed(() => [
 
 </script>
 <template>
-  <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }">
+  <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }" styling="blue">
     <CardHeader>
-      <CardTitle> Infos</CardTitle>
+      <CardTitle>Infos</CardTitle>
     </CardHeader>
     <CardContent class="text-xs">
       <div class="info__row ">

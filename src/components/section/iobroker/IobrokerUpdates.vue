@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
@@ -66,7 +65,7 @@ const columns: DatatableColumns[] = [
 </script>
 
 <template>
-  <Card :class="['inline-block', $props.class]">
+  <Card :class="['inline-block', $props.class]" styling="blue">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between items-center">

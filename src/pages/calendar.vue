@@ -2,7 +2,7 @@
 import CalendarAdjustDayOrder from "@/components/section/calendar/CalendarAdjustDayOrder.vue";
 import CalendarMonthSelector from "@/components/section/calendar/CalendarMonthSelector.vue";
 import CalenderMonthDay from "@/components/section/calendar/CalenderMonthDay.vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { ref } from "vue";
 
 const daysInMonth = ref(0);
@@ -13,7 +13,7 @@ const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sa
 
 </script>
 <template>
-  <Card class="h-[calc(100vh-1rem)]">
+  <Card class="h-full" styling="blue">
     <CardHeader class="p-2 ">
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>

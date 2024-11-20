@@ -151,7 +151,6 @@ export interface Heating {
     ventil2: StoreValue<number>;
     tempSensor: StoreValue<number>;
     roomState: StoreValue<string>;
-    resetButton: StoreValue<boolean>;
     visRoomStates: StoreValue<string>;
 
     timeSlotBad: StoreValue<number>;
@@ -269,7 +268,6 @@ export const heating: IdToSubscribe<Heating> = {
       secondKey: "tempSensor"
     },
     { id: "0_userdata.0.Heizung.heatingcontrol.Room_State", firstKey: "heatingControl", secondKey: "roomState" },
-    { id: "0_userdata.0.Heizung.heatingcontrol.Reset_Button_", firstKey: "heatingControl", secondKey: "resetButton" },
     { id: "heatingcontrol.0.vis.RoomStatesHtmlTable", firstKey: "heatingControl", secondKey: "visRoomStates" },
 
     { id: "heatingcontrol.0.Rooms.Bad.ActiveTimeSlot", firstKey: "heatingControl", secondKey: "timeSlotBad" }

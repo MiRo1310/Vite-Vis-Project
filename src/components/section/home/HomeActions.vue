@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonCard from "@/components/shared/ButtonCard.vue";
 import { Blinds, Hourglass, UserRoundSearch } from "lucide-vue-next";
-import HomeShoppingCard from "@/components/section/home/HomeShoppingCard.vue";
+import HomeShoppingCard from "@/components/section/home/HomeShopping.vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
@@ -33,13 +33,16 @@ const toggleTimer = () => {
 </script>
 <template>
   <ButtonCard
-    :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" class-card="mt-2 ml-2"
+    :icon="Blinds" :class="getWindowStyle" class-card="ml-1"
     @click="handleWindowClick"
   />
   <ButtonCard
-    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70"
+    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70 " class-card=" ml-1"
     @click="handleHolidayClick"
   />
   <HomeShoppingCard />
-  <ButtonCard :icon="Hourglass" title="Timer" class="text-accent-foreground/70" @click="toggleTimer" />
+  <ButtonCard
+    :icon="Hourglass" class="text-accent-foreground/70" class-card="ml-1"
+    @click="toggleTimer"
+  />
 </template>

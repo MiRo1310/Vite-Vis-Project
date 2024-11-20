@@ -2,8 +2,7 @@
 
 
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -30,7 +29,7 @@ const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]
 </script>
 
 <template>
-  <Card>
+  <Card class="flex-1" styling="blue">
     <CardHeader>
       <CardTitle>
         News

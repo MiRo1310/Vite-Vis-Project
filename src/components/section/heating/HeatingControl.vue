@@ -7,15 +7,17 @@ import HeatingControlRoomStatus from "./HeatingControlRoomStatus.vue";
 import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
 </script>
 <template>
-  <HeatingControlHeader />
-  <div class="grid grid-cols-12 -mx-4">
-    <div class="col-span-8 mt-6 flex flex-wrap">
-      <HeatingControlConfig />
-      <HeatingControlWindowStatus />
-      <HeatingControlRoomStatus />
+  <div class="bg-backgroundColor p-0 m-0 w-full px-1">
+    <HeatingControlHeader />
+    <div class="grid grid-cols-12">
+      <div class="col-span-8 mt-6 flex flex-wrap">
+        <HeatingControlConfig />
+        <HeatingControlWindowStatus />
+        <HeatingControlRoomStatus />
+      </div>
+      <HeatingControlRoom class="mt-6 col-span-4 bg-backgroundCards mb-1" />
     </div>
-    <HeatingControlRoom class="mt-6 col-span-4 bg-accent mb-1" />
+    <HeatingControlPeriod />
   </div>
-  <HeatingControlPeriod />
 </template>
 <style scoped lang="postcss"></style>
