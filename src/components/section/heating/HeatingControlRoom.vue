@@ -7,6 +7,11 @@ import { storeToRefs } from "pinia";
 defineProps<{ class: string }>();
 
 const { heating } = storeToRefs(useIobrokerStore());
+
+function resetStatus() {
+  const id = `heatingcontrol.0.Rooms.${heating.value.heatingControl.room?.val}.ResetManual`;
+  id ? adminConnection.value?.setState(id, true, false) : null;
+}
 </script>
 <template>
   <div :class="['inline-block p-1 w-full relative', $props.class]">
@@ -36,7 +41,7 @@ const { heating } = storeToRefs(useIobrokerStore());
 
     <Button
       class="w-full my-2"
-      @click="heating.heatingControl.resetButton?.id?adminConnection?.setState(heating.heatingControl.resetButton.id, true):null"
+      @click="resetStatus"
     >
       Aktueller Status: {{
         heating.heatingControl.roomState?.val }}
