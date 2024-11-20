@@ -2,7 +2,7 @@
 import { Card } from "@/components/shared/card";
 
 const width = "110";
-const height = "70";
+const height = "100";
 </script>
 
 <template>
@@ -19,6 +19,14 @@ const height = "70";
       <iframe
         src="http://192.168.1.4:3000/d-solo/de48h6zf94jcwe/pv-fuer-vis?orgId=1&refresh=5s&theme=dark&panelId=3"
         :width :height frameborder="0"
+      />
+      <iframe
+        src="http://192.168.1.4:3000/d-solo/de48h6zf94jcwe/pv-fuer-vis?orgId=1&refresh=10s&panelId=5"
+        :width :height frameborder="0"
+      />
+      <iframe
+        src="http://192.168.1.4:3000/d-solo/de48h6zf94jcwe/pv-fuer-vis?orgId=1&refresh=10s&panelId=6" :width
+        :height frameborder="0"
       />
     </div>
   </Card>
