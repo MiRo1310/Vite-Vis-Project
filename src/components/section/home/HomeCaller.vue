@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/shared/card";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { phoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { formatSecondsToTime } from "@/lib/time.ts";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 useDynamicSubscribe([phoneStates]);
@@ -17,6 +18,9 @@ const isCalling = computed((): string => {
   return "";
 });
 
+const lastCallDuration = computed(() => {
+  return formatSecondsToTime(Number(phone?.lastDuration?.val) || 0);
+});
 
 </script>
 
@@ -37,7 +41,7 @@ const isCalling = computed((): string => {
           <p>{{ phone.lastCallerName?.val }}</p>
           <p>{{ phone.lastCaller?.val }}</p>
           <p>{{ phone.lastCallTimestamp?.val }}</p>
-          <p>{{ phone.lastDuration?.val }}</p>
+          <p>{{ lastCallDuration }}</p>
         </div>
       </div>
     </CardContent>

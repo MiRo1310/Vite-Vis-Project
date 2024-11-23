@@ -2,7 +2,6 @@
 import HomeCardInfo from "@/components/section/home/HomeInfo.vue";
 import HomeCardInfoTime from "@/components/section/home/HomeTime.vue";
 import HomeTrash from "@/components/section/home/HomeTrash.vue";
-import HomeCardPv from "@/components/section/home/HomePv.vue";
 import HomeLawnMover from "@/components/section/home/HomeLawnMover.vue";
 import HomeCardPool from "@/components/section/home/HomePool.vue";
 import HomeCalendar from "@/components/section/home/HomeCalendar.vue";
@@ -18,7 +17,7 @@ import HomeDiagramm from "@/components/section/home/HomeDiagramm.vue";
     </div>
     <HomeCardInfo class="min-w-56" />
     <HomeTrash class="col-span-4 min-w-[350px]" />
-    <HomeCardPv class="flex-1 min-w-48" />
+    <!--    <HomeCardPv class="flex-1 min-w-48" />-->
     <HomeDiagramm />
 
     <HomeCardPool class="col-span-4 flex-1" />

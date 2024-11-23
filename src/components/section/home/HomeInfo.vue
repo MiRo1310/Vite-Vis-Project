@@ -16,7 +16,7 @@ const { hour } = useTime();
 
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs } = useIobrokerStore();
+const { getParsedLogs, pv } = useIobrokerStore();
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const isTimeToWarn = computed(() => {
@@ -31,7 +31,8 @@ const infos = computed(() => [
   { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit?.val, unit: "%" },
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
   { title: "", value: "" },
-  { title: "Fenster offen", value: getOpenWindows, bounce: true }
+  { title: "Fenster offen", value: getOpenWindows, bounce: true },
+  { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" }
 ]);
 
 </script>
