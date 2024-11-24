@@ -63,7 +63,11 @@ function updateInputMin($event: Event) {
 
   if (!logs1) {
     const maxValue = ($event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value;
-    const maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
+    let maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
+    if (Number(maxValue) < Number(maxRangeSlider)) {
+      ($event.target as HTMLInputElement).setAttribute("max", (maxValue || "100"));
+      maxRangeSlider = maxValue;
+    }
     logs1 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxValue), {
       minRangeValue: 0,
       logarithmic: true,
@@ -174,9 +178,4 @@ const sliderValueMax = ref(100);
   z-index: 2;
 }
 
-.range-values {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
 </style>
