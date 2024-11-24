@@ -15,22 +15,34 @@ const useLogarithmicSlider = () => {
   let logarithmic = false;
   let minValueToUseLogarithmic = 0;
 
-  function init(maxRangeSli: number, maxRangeValue: number, options?: {
+  function init(event: Event, options?: {
     minRangeValue?: number,
     logarithmic?: boolean,
     minValueToUseLogarithmic?: number
   }) {
-    rangeSum = getSum(maxRangeSli);
-    unitValue = (maxRangeValue - (options?.minRangeValue || 0)) / getSum(maxRangeSli);
+    const maxRangeValue = Number((event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value);
+
+    maxRangeSlider = Number((event.target as HTMLInputElement).attributes.getNamedItem("max")?.value);
+
+    handleValueIsSmallerThanMaxRange(event, maxRangeValue);
+    rangeSum = getSum(maxRangeSlider);
+    unitValue = (maxRangeValue - (options?.minRangeValue || 0)) / getSum(maxRangeSlider);
     minRange = options?.minRangeValue || 0;
     maxRange = maxRangeValue - (options?.minRangeValue || 0);
-    maxRangeSlider = maxRangeSli;
+
     logarithmic = options?.logarithmic || false;
     minValueToUseLogarithmic = options?.minValueToUseLogarithmic || 2500;
 
     return {
       init, inputValue, sliderValue, rangeSum, unitValue
     };
+  }
+
+  function handleValueIsSmallerThanMaxRange(event: Event, maxRangeValue: number) {
+    if (Number(maxRangeValue) < Number(maxRangeSlider)) {
+      (event.target as HTMLInputElement).setAttribute("max", (maxRangeValue.toString() || "100"));
+      maxRangeSlider = maxRangeValue;
+    }
   }
 
   const inputValue = (rangeValue: number) => useLogarithmic() ? getLogarithmicInputVal(rangeValue) : getLinearInputVal(rangeValue);
@@ -62,13 +74,8 @@ function updateInputMin($event: Event) {
   valueMin.value = Number(($event.target as HTMLInputElement).value);
 
   if (!logs1) {
-    const maxValue = ($event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value;
-    let maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
-    if (Number(maxValue) < Number(maxRangeSlider)) {
-      ($event.target as HTMLInputElement).setAttribute("max", (maxValue || "100"));
-      maxRangeSlider = maxValue;
-    }
-    logs1 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxValue), {
+
+    logs1 = useLogarithmicSlider().init($event, {
       minRangeValue: 0,
       logarithmic: true,
       minValueToUseLogarithmic: 2000
@@ -82,9 +89,12 @@ function updateInputMax($event: Event) {
   valueMax.value = Number(($event.target as HTMLInputElement).value);
 
   if (!logs2) {
-    const maxValue = ($event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value;
-    const maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
-    logs2 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxValue));
+
+    logs2 = useLogarithmicSlider().init($event, {
+      minRangeValue: 0,
+      logarithmic: true,
+      minValueToUseLogarithmic: 2000
+    });
   }
 
   inputValueMax.value = logs2.inputValue(valueMax.value);
@@ -96,7 +106,6 @@ const inputValueMax = ref(5000);
 const sliderValueMin = ref(0);
 const sliderValueMax = ref(100);
 
-
 </script>
 
 <template>
@@ -104,7 +113,7 @@ const sliderValueMax = ref(100);
     <CardContent>
       <div
         class="range-slider" data-logarithmic data-range-min="0"
-        data-range-max="100"
+        data-range-max="10000"
       >
         <input
           id="min-slider" type="range" min="0" max="225"
