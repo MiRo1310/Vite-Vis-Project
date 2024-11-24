@@ -9,27 +9,47 @@ const valueMin = ref(0);
 const useLogarithmicSlider = () => {
   let rangeSum = 0;
   let unitValue = 0;
+  let minRange = 0;
   let maxRange = 0;
+  let maxRangeSlider = 0;
+  let logarithmic = false;
+  let minValueToUseLogarithmic = 0;
 
-  function getSum(range: number) {
-    // Gaußsche Summenformel
-    return range * (range + 1) / 2;
-  }
-
-  // MaxRangeSlider: 100 so every step will be 1, MaxRangeValue: 5000 is the max price for example
-  function init(maxRangeSlider: number, maxRangeValue: number, minRangeValue: number = 0) {
-    rangeSum = getSum(maxRangeSlider);
-    unitValue = maxRangeValue / getSum(maxRangeSlider);
-    maxRange = maxRangeValue - minRangeValue;
+  function init(maxRangeSli: number, maxRangeValue: number, options?: {
+    minRangeValue?: number,
+    logarithmic?: boolean,
+    minValueToUseLogarithmic?: number
+  }) {
+    rangeSum = getSum(maxRangeSli);
+    unitValue = (maxRangeValue - (options?.minRangeValue || 0)) / getSum(maxRangeSli);
+    minRange = options?.minRangeValue || 0;
+    maxRange = maxRangeValue - (options?.minRangeValue || 0);
+    maxRangeSlider = maxRangeSli;
+    logarithmic = options?.logarithmic || false;
+    minValueToUseLogarithmic = options?.minValueToUseLogarithmic || 2500;
 
     return {
       init, inputValue, sliderValue, rangeSum, unitValue
     };
   }
 
-  const inputValue = (rangeValue: number) => Math.ceil(maxRange / rangeSum * getSum(rangeValue));
-  const sliderValue = (inputValue: number) => calcLastIndexFromSum(inputValue / unitValue);
+  const inputValue = (rangeValue: number) => useLogarithmic() ? getLogarithmicInputVal(rangeValue) : getLinearInputVal(rangeValue);
+  const sliderValue = (inputValue: number) => useLogarithmic() ? getLogarithmicSliderVal(inputValue) : getLinearSliderVal(inputValue);
+
   const calcLastIndexFromSum = (S: number): number => Math.floor((-1 + Math.sqrt(1 + 8 * S)) / 2);
+  const getSum = (n: number) => n * (n + 1) / 2;
+
+  const getLogarithmicInputVal = (rangeValue: number) => Math.ceil((maxRange / rangeSum * getSum(rangeValue)) + minRange);
+  const getLogarithmicSliderVal = (inputValue: number) => calcLastIndexFromSum((inputValue - minRange) / unitValue);
+  const getLinearInputVal = (rangeValue: number) => Math.ceil((rangeValue * maxRange / maxRangeSlider) + minRange);
+  const getLinearSliderVal = (inputValue: number) => (inputValue - minRange) * maxRangeSlider / maxRange;
+
+  function useLogarithmic() {
+    if (maxRange > minValueToUseLogarithmic) {
+      return logarithmic;
+    }
+    return false;
+  }
 
   return { init };
 };
@@ -42,27 +62,35 @@ function updateInputMin($event: Event) {
   valueMin.value = Number(($event.target as HTMLInputElement).value);
 
   if (!logs1) {
-    const maxvalue = ($event.target as HTMLInputElement).attributes.getNamedItem("data-range-max")?.value;
+    const maxValue = ($event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value;
     const maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
-    logs1 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxvalue));
+    logs1 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxValue), {
+      minRangeValue: 0,
+      logarithmic: true,
+      minValueToUseLogarithmic: 2000
+    });
   }
   inputValueMin.value = logs1.inputValue(valueMin.value);
+  sliderValueMin.value = logs1.sliderValue(inputValueMin.value);
 }
 
 function updateInputMax($event: Event) {
   valueMax.value = Number(($event.target as HTMLInputElement).value);
 
   if (!logs2) {
-    const maxvalue = ($event.target as HTMLInputElement).attributes.getNamedItem("data-range-max")?.value;
+    const maxValue = ($event.target as HTMLInputElement).closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value;
     const maxRangeSlider = ($event.target as HTMLInputElement).attributes.getNamedItem("max")?.value;
-    logs2 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxvalue));
+    logs2 = useLogarithmicSlider().init(Number(maxRangeSlider), Number(maxValue));
   }
 
   inputValueMax.value = logs2.inputValue(valueMax.value);
+  sliderValueMax.value = logs2.sliderValue(inputValueMax.value);
 }
 
 const inputValueMin = ref(0);
 const inputValueMax = ref(5000);
+const sliderValueMin = ref(0);
+const sliderValueMax = ref(100);
 
 
 </script>
@@ -70,17 +98,16 @@ const inputValueMax = ref(5000);
 <template>
   <Card>
     <CardContent>
-      <div class="range-slider" data-logarithmic>
+      <div
+        class="range-slider" data-logarithmic data-range-min="0"
+        data-range-max="100"
+      >
         <input
           id="min-slider" type="range" min="0" max="225"
-          data-range-min="0"
-          data-range-max="5000"
           value="0" @input="updateInputMin"
         >
         <input
           id="max-slider" type="range" min="0" max="225"
-          data-range-min="0"
-          data-range-max="5000"
           value="225" @input="updateInputMax"
         >
         <div class="slider-track" />
@@ -88,6 +115,12 @@ const inputValueMax = ref(5000);
       <div class="mt-10">
         <p>ValueMin: {{ inputValueMin }}</p>
         <p>ValueMax: {{ inputValueMax }}</p>
+
+        <p>Value direkt Slider: {{ valueMin }}</p>
+        <p>Value direkt Slider: {{ valueMax }}</p>
+
+        <p>ValueSlider: {{ sliderValueMin }}</p>
+        <p>ValueSlider: {{ sliderValueMax }}</p>
       </div>
     </CardContent>
   </Card>
