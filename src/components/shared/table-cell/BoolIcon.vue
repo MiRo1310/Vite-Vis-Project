@@ -18,6 +18,6 @@ const props = defineProps({
 <template>
   <span class="inline-block">
     <Check v-if="value" :class="['w-4 h-4 mt-1 text-[--success-secondary] isSuccess', props.classIcon]" />
-    <X v-else :class="['w-4 h-4 mt-1 text-[--error-secondary] isError', props.classIcon]" />
+    <X v-else-if="value === false " :class="['w-4 h-4 mt-1 text-[--error-secondary] isError', props.classIcon]" />
   </span>
 </template>

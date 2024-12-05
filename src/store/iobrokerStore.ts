@@ -12,6 +12,7 @@ import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeri
 import { Infos } from "@/lib/iobroker/ids-to-subscribe/info.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import { PhoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
+import { BatteriesType } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -41,6 +42,7 @@ export interface IoBrokerStoreState {
   heatingTimeSlot: HeatingTimeSlot;
   infos: Infos;
   phone: PhoneStates;
+  batteries: BatteriesType;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
@@ -80,7 +82,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     logReset: {} as LogReset,
     heatingTimeSlot: {} as HeatingTimeSlot,
     infos: {} as Infos,
-    phone: {} as PhoneStates
+    phone: {} as PhoneStates,
+    batteries: {} as BatteriesType
 
   }),
   getters: {

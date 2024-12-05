@@ -16,5 +16,7 @@ defineProps({
 </script>
 
 <template>
-  <p>{{ value }} {{ unit }}</p>
+  <p v-if="!!value">
+    {{ value }} {{ unit }}
+  </p>
 </template>
