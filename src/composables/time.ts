@@ -1,11 +1,11 @@
-import { onUnmounted, ref } from "vue";
+import { ref } from "vue";
 
-let time: null | ReturnType<typeof timer> = null;
+let timeFunc: null | ReturnType<typeof timer> = null;
 export const useTime = () => {
-  if (!time) {
-    time = timer();
+  if (!timeFunc) {
+    timeFunc = timer();
   }
-  return time;
+  return timeFunc;
 };
 
 const timer = () => {
@@ -26,9 +26,11 @@ const timer = () => {
     hour.value = d.getHours();
     minute.value = d.getMinutes();
   }, 1000);
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
 
-  return { time, date, weekday, hour, minute };
+  function clear() {
+    clearInterval(interval);
+    timeFunc = null;
+  }
+
+  return { time, date, weekday, hour, minute, clear };
 };

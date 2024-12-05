@@ -1,15 +1,22 @@
 <script lang="ts" setup>
 import Nav from "./components/layout/Nav.vue";
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { init, IOBROKER_ADMIN_PORT, IOBROKER_HOST, loadScript } from "@/lib/iobroker/connecter-to-iobroker";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import HomeAlexaTimer from "@/components/section/home/HomeAlexaTimer.vue";
-
+import { useTime } from "@/composables/time.ts";
 
 onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
   loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
 });
+
+onUnmounted(() => {
+  console.log("unmount");
+  
+  useTime().clear();
+});
+
 </script>
 <template>
   <div class="h-[100vh] flex flex-col bg-backgroundColor">

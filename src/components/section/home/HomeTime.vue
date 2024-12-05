@@ -3,8 +3,6 @@ import { useTime } from "@/composables/time.ts";
 import { Card, CardContent } from "@/components/shared/card";
 
 const { date, time } = useTime();
-
-
 </script>
 <template>
   <Card styling="blue">
