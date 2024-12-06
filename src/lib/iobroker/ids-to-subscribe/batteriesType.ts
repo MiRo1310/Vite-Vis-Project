@@ -2,7 +2,7 @@ import { IdToSubscribe } from "@/types.ts";
 import { StoreValue } from "@/store/iobrokerStore.ts";
 
 export interface BatteriesType {
-  ShellyPlusSmokeFloorOG: { percent: StoreValue<number>, firmware: StoreValue<boolean> };
+  "Shelly Plus Smoke Flur OG": { percent: StoreValue<number>, firmware: StoreValue<boolean> };
   "HMIP Flur": { lowBat: StoreValue<boolean> };
 }
 
@@ -11,12 +11,12 @@ export const batteryIds: IdToSubscribe<BatteriesType> = {
   value: [
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
-      firstKey: "ShellyPlusSmokeFloorOG",
+      firstKey: "Shelly Plus Smoke Flur OG",
       secondKey: "percent"
     },
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware",
-      firstKey: "ShellyPlusSmokeFloorOG",
+      firstKey: "Shelly Plus Smoke Flur OG",
       secondKey: "firmware"
     },
     {

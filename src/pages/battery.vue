@@ -17,22 +17,41 @@ const columns: DatatableColumns[] = [
   { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
   { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" }
 ];
-const data = computed(() =>
-  [{
-    name: "Shelly Smoke Flur OG",
-    percent: batteries.ShellyPlusSmokeFloorOG?.percent?.val,
-    firmware: batteries.ShellyPlusSmokeFloorOG?.firmware?.val
-  }, {
-    name: "HMIP Flur", lowBat: batteries["HMIP Flur"]?.lowBat?.val
-  }
-  ]);
+type BatteryItem = {
+  name: string;
+  percent?: { val: number };
+  lowBat?: { val: boolean };
+  firmware?: { val: boolean };
+  [key: string]: any;
+};
 
+const data = computed(() => {
+  let data: any[] = [];
+  Object.keys(batteries).forEach((key) => {
+    const item = batteries[key as keyof typeof batteries] as BatteryItem;
+
+    Object.keys(item).forEach((value) => {
+      if (!item[value as keyof typeof item]) return;
+
+      const existingElement = data.find((element) => element.name === key);
+      if (existingElement) {
+        existingElement[value] = item[value as keyof typeof item]?.val;
+        return;
+      }
+      data.push({
+        name: key,
+        [value]: item[value as keyof typeof item]?.val
+      });
+    });
+  });
+
+  return data;
+});
 
 </script>
 
 <template>
   <Card styling="blue">
-    {{ batteries }}
     <CardHeader>
       <CardTitle>Batteriesensoren</CardTitle>
     </CardHeader>
@@ -43,7 +62,3 @@ const data = computed(() =>
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="postcss">
-
-</style>
