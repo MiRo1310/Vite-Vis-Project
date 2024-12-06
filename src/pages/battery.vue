@@ -5,6 +5,7 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { batteryIds } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { computed } from "vue";
 
 const { batteries } = useIobrokerStore();
 
@@ -16,20 +17,22 @@ const columns: DatatableColumns[] = [
   { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
   { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" }
 ];
-const data = [{
-  name: "Shelly Smoke Flur OG",
-  percent: batteries.ShellyPlusSmokeFloorOG?.percent?.val || 0,
-  firmware: batteries.ShellyPlusSmokeFloorOG?.firmware?.val || false
-}, {
-  name: "HMIP Flur", lowBat: batteries["HMIP Flur"]?.lowBat?.val || false
-}
-];
+const data = computed(() =>
+  [{
+    name: "Shelly Smoke Flur OG",
+    percent: batteries.ShellyPlusSmokeFloorOG?.percent?.val,
+    firmware: batteries.ShellyPlusSmokeFloorOG?.firmware?.val
+  }, {
+    name: "HMIP Flur", lowBat: batteries["HMIP Flur"]?.lowBat?.val
+  }
+  ]);
 
 
 </script>
 
 <template>
   <Card styling="blue">
+    {{ batteries }}
     <CardHeader>
       <CardTitle>Batteriesensoren</CardTitle>
     </CardHeader>
