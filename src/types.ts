@@ -128,6 +128,7 @@ export interface Ids<TData> {
   secondKey?: string;
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
+  timestamp?: boolean;
 }
 
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";

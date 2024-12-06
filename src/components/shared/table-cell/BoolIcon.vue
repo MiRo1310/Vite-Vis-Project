@@ -2,7 +2,7 @@
 import { Check, X } from "lucide-vue-next";
 import { isFalsy, isTruthy } from "@/lib/utilities.ts";
 
-const props = defineProps<{ value: boolean | undefined, classIcon: string }>();
+const props = defineProps<{ value: boolean | undefined, classIcon?: string }>();
 
 </script>
 

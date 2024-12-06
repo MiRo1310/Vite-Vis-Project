@@ -63,8 +63,9 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
       if (adminConnection.value && !iobrokerStore.subscribedIds.includes(stateId.id)) {
         adminConnection.value.subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-         
+
           let value: IobrokerStateValue | null = state?.val;
+          const timestamp = state?.ts;
           if (!isPresentAndTruthy(value)) {
             value = null;
           }
@@ -86,6 +87,15 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             stateId.firstKey || stateId.room || null,
             subKey
           );
+          if (stateId.timestamp) {
+            iobrokerStore.setValues(
+              item.objectNameInStore || null,
+              timestamp,
+              id,
+              stateId.firstKey || stateId.room || null,
+              "timestamp"
+            );
+          }
         });
         iobrokerStore.addIdToSubscribedIds(stateId.id);
       }

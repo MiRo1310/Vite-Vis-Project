@@ -14,9 +14,12 @@ useDynamicSubscribe([batteryIds]);
 const columns: DatatableColumns[] = [
   { source: "name", labelKey: "Name", type: "text", accessorKey: "name" },
   { source: "percent", labelKey: "Batterieladung", type: "number", unit: "%", accessorKey: "Batterieladung" },
+  { source: "voltage", labelKey: "Batteriespannung", type: "number", unit: "V", accessorKey: "voltage" },
   { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
-  { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" }
+  { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" },
+  { source: "timestamp", labelKey: "Letzte Aktualisierung", type: "datetime", accessorKey: "timestamp" }
 ];
+
 type BatteryItem = {
   name: string;
   percent?: { val: number };
