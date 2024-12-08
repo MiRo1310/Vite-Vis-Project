@@ -76,9 +76,10 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
           }
 
           if (stateId.subKeyAdditive) {
-
             subKey += stateId.subKeyAdditive;
           }
+
+          value = checkAndRevert(value, stateId.revertValue);
 
           iobrokerStore.setValues(
             item.objectNameInStore || null,
@@ -87,6 +88,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             stateId.firstKey || stateId.room || null,
             subKey
           );
+
           if (stateId.timestamp) {
             iobrokerStore.setValues(
               item.objectNameInStore || null,
@@ -96,7 +98,11 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               "timestamp"
             );
           }
+        }).catch((e) => {
+          console.error(`Error subscribing to ${stateId.id}`);
+          console.error(e);
         });
+
         iobrokerStore.addIdToSubscribedIds(stateId.id);
       }
 
@@ -104,6 +110,13 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
 
   });
+}
+
+function checkAndRevert(value: IobrokerStateValue | null, revertValue: boolean | undefined) {
+  if (revertValue && typeof value === "boolean") {
+    return !value;
+  }
+  return value;
 }
 
 const isPresentAndTruthy = (value: NullableState) => {

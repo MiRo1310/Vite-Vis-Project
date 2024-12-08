@@ -104,32 +104,17 @@ const getAutoUpTime = computed((): { val: any; id: string } => {
 
 const getShutterImage = computed(() => {
   const position = getShutterPosition.value;
-  switch (position) {
-    case 0:
-      return blinds100;
-    case 10:
-      return blinds90;
-    case 20:
-      return blinds80;
-    case 30:
-      return blinds70;
-    case 40:
-      return blinds60;
-    case 50:
-      return blinds50;
-    case 60:
-      return blinds40;
-    case 70:
-      return blinds30;
-    case 80:
-      return blinds20;
-    case 90:
-      return blinds10;
-    case 100:
-      return blinds0;
-    default:
-      return blinds0;
-  }
+  if (position === 0) return blinds100;
+  if (position <= 10) return blinds90;
+  if (position <= 20) return blinds80;
+  if (position <= 30) return blinds70;
+  if (position <= 40) return blinds60;
+  if (position <= 50) return blinds50;
+  if (position <= 60) return blinds40;
+  if (position <= 70) return blinds30;
+  if (position <= 80) return blinds20;
+  if (position <= 90) return blinds10;
+  return blinds0;
 });
 
 const updateHandler = (value: number | string | boolean, id: string) => {

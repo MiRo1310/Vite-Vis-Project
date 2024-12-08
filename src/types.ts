@@ -129,6 +129,7 @@ export interface Ids<TData> {
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
   timestamp?: boolean;
+  revertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";

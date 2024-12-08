@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { batteryIds } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
+import { createArrayByStore } from "@/lib/object.ts";
 
 const { batteries } = useIobrokerStore();
 
@@ -17,46 +18,29 @@ const columns: DatatableColumns[] = [
   { source: "voltage", labelKey: "Batteriespannung", type: "number", unit: "V", accessorKey: "voltage" },
   { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
   { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" },
-  { source: "timestamp", labelKey: "Letzte Aktualisierung", type: "datetime", accessorKey: "timestamp" }
+  { source: "available", labelKey: "Erreichbar", type: "bool", accessorKey: "available" },
+  {
+    source: "timestamp",
+    labelKey: "Letzte Aktualisierung",
+    type: "datetime",
+    accessorKey: "timestamp",
+    className: "text-right"
+  }
 ];
 
-type BatteryItem = {
-  name: string;
-  percent?: { val: number };
-  lowBat?: { val: boolean };
-  firmware?: { val: boolean };
-  [key: string]: any;
-};
 
 const data = computed(() => {
-  let data: any[] = [];
-  Object.keys(batteries).forEach((key) => {
-    const item = batteries[key as keyof typeof batteries] as BatteryItem;
-
-    Object.keys(item).forEach((value) => {
-      if (!item[value as keyof typeof item]) return;
-
-      const existingElement = data.find((element) => element.name === key);
-      if (existingElement) {
-        existingElement[value] = item[value as keyof typeof item]?.val;
-        return;
-      }
-      data.push({
-        name: key,
-        [value]: item[value as keyof typeof item]?.val
-      });
-    });
-  });
-
-  return data;
+  return createArrayByStore(batteries);
 });
 
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="blue" class="battery__card">
     <CardHeader>
-      <CardTitle>Batteriesensoren</CardTitle>
+      <CardTitle>
+        Batteriesensoren
+      </CardTitle>
     </CardHeader>
     <CardContent class="pt-2">
       <div class="bg-white">
@@ -65,3 +49,16 @@ const data = computed(() => {
     </CardContent>
   </Card>
 </template>
+<style lang="postcss">
+#app table td {
+  @apply h-6 py-0
+}
+
+.battery__card {
+  @apply overflow-hidden
+}
+
+table {
+  @apply overflow-auto
+}
+</style>
