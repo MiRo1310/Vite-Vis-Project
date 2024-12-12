@@ -41,11 +41,10 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div />
-  <div class="lg:fixed right-1 left-1 z-10 bg-backgroundColor">
+  <div class="lg:fixed right-1 left-1 z-50">
     <Card styling="blue">
       <CardHeader class="p-1">
-        <CardTitle class=" flex justify-between">
+        <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>
           <p v-show="getOpenWindows === 1" class="flex ">
             Ein Fenster ist
@@ -65,7 +64,7 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1">
+  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
     <FensterCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"
