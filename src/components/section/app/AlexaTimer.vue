@@ -2,27 +2,22 @@
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { X } from "lucide-vue-next";
 import Button from "../../ui/button/Button.vue";
-import { ref, watch } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store/appStore.ts";
 
+const appStore = useAppStore();
 const iobrokerStore = useIobrokerStore();
 
 const { timer } = storeToRefs(iobrokerStore);
 
 const closeWindow = () => {
-  iobrokerStore.setValueToKey("showTimerCard", false);
+  appStore.toggleTimerVisibility();
 };
-const showTimerCard = ref(false);
+
 const timersArray = ["timer1", "timer2", "timer3", "timer4"];
 
-watch(
-  () => iobrokerStore.showTimerCard,
-  (val: boolean) => {
-    showTimerCard.value = val;
-  }
-);
 const stopTimer = (index: number) => {
   if (adminConnection.value)
     adminConnection.value.setState(`alexa-timer-vis.0.${timersArray[index]}.Reset`, true);
@@ -30,8 +25,7 @@ const stopTimer = (index: number) => {
 </script>
 <template>
   <Card
-    v-if="iobrokerStore.showTimerCard"
-
+    v-if="appStore.showTimer"
     class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent"
   >
     <Button class="absolute w-4 h-4 p-0 top-4 right-4 z-20" @click="closeWindow">
@@ -89,5 +83,3 @@ const stopTimer = (index: number) => {
     </CardContent>
   </Card>
 </template>
-<style lang="postcss" scoped></style>
-../ui/card

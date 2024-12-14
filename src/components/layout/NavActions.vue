@@ -6,7 +6,9 @@ import { computed } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { useAppStore } from "@/store/appStore.ts";
 
+const appStore = useAppStore();
 const router = useRouter();
 const iobrokerStore = useIobrokerStore();
 const handleWindowClick = () => {
@@ -27,9 +29,6 @@ const getHoliday = computed(() => {
   return "Kein Urlaub";
 });
 
-const toggleTimer = () => {
-  iobrokerStore.setValueToKey("showTimerCard", !iobrokerStore.showTimerCard);
-};
 </script>
 <template>
   <ButtonCard
@@ -43,6 +42,6 @@ const toggleTimer = () => {
   <NavActionsShoppingCard />
   <ButtonCard
     :icon="Hourglass" class="text-accent-foreground/70" class-card="ml-1"
-    @click="toggleTimer"
+    @click="appStore.toggleTimerVisibility"
   />
 </template>

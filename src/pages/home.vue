@@ -7,6 +7,7 @@ import Pool from "@/components/section/home/Pool.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Diagramm from "@/components/section/home/Diagramm.vue";
+import Timer from "@/components/section/home/Timer.vue";
 </script>
 
 <template>
@@ -22,7 +23,7 @@ import Diagramm from "@/components/section/home/Diagramm.vue";
     <Pool class="col-span-4 flex-1" />
     <LawnMover class="col-span-3" />
     <Calendar class="col-span-5" />
-    <div class="flex-1 bg-backgroundCards w-[100px]" />
-    <div class="flex-1 bg-backgroundCards min-w-[30vw]" />
+    <Timer class="flex-1 max-w-[800px]" />
+    <div class="flex-1 bg-backgroundCards" />
   </div>
 </template>
