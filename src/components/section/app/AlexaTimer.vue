@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { X } from "lucide-vue-next";
-import Button from "@/components/ui/button/Button.vue";
+import Button from "../../ui/button/Button.vue";
 import { ref, watch } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import FensterCard from "@/components/section/window/WindowsWindowCard.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
@@ -55,8 +54,8 @@ const windows: WindowObject[] = [
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
             Fenster sind
             <span :class="fensterOffen ? 'text-red-500' : ''">{{
-              fensterOffen ?
-                "offen" : "geschlossen" }}</span>
+                fensterOffen ?
+                  "offen" : "geschlossen" }}</span>
           </p>
 
           <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
@@ -65,7 +64,7 @@ const windows: WindowObject[] = [
     </Card>
   </div>
   <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
-    <FensterCard
+    <Card
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"
       :id2="card.id2"

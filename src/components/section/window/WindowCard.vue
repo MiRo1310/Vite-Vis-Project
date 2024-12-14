@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import HomeFensterCardButtons from "@/components/section/home/HomeWindowButtons.vue";
+import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import HomeFensterCardOpenClose from "@/components/section/home/HomeWindowOpenClose.vue";
+import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
@@ -144,7 +144,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
           </div>
         </div>
 
-        <HomeFensterCardOpenClose
+        <WindowCardOpenClose
           v-if="!props.shutter" class="text" :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
           "
         />
@@ -153,7 +153,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
         <div class="flex">
           <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class="w-full">
-            <HomeFensterCardOpenClose
+            <WindowCardOpenClose
               :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
               " class="text"
             />
@@ -196,7 +196,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
             </div>
           </div>
         </div>
-        <HomeFensterCardButtons :id="props.id" />
+        <WindowCardButtons :id="props.id" />
       </div>
     </CardContent>
   </Card>

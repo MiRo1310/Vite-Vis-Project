@@ -3,7 +3,7 @@ import Nav from "./components/layout/Nav.vue";
 import { onMounted, onUnmounted } from "vue";
 import { init, IOBROKER_ADMIN_PORT, IOBROKER_HOST, loadScript } from "@/lib/iobroker/connecter-to-iobroker";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import HomeAlexaTimer from "@/components/section/home/HomeAlexaTimer.vue";
+import AlexaTimer from "@/components/section/app/AlexaTimer.vue";
 import { useTime } from "@/composables/time.ts";
 
 onMounted(async () => {
@@ -13,14 +13,14 @@ onMounted(async () => {
 
 onUnmounted(() => {
   console.log("unmount");
-  
+
   useTime().clear();
 });
 
 </script>
 <template>
   <div class="h-[100vh] flex flex-col bg-backgroundColor">
-    <HomeAlexaTimer />
+    <AlexaTimer />
     <main class="px-1 pt-1 flex-1 overflow-auto">
       <RouterView />
     </main>

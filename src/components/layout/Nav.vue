@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
 import { BatteryFull, Blinds, CalendarDays, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
-import HomeActions from "@/components/section/home/HomeActions.vue";
+import NavActions from "@/components/layout/NavActions.vue";
 
 const buttons = [
   {
@@ -80,6 +80,6 @@ const buttons = [
         <component :is="button.icon" class="w-10 h-10" />
       </Button>
     </router-link>
-    <HomeActions />
+    <NavActions />
   </div>
 </template>

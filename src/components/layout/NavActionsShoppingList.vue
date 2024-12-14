@@ -2,7 +2,7 @@
 import { toLocaleTime } from "@/lib/time.ts";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card } from "@/components/shared/card";
-import Button from "@/components/ui/button/Button.vue";
+import Button from "../ui/button/Button.vue";
 import { X } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";

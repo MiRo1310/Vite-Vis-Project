@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sheet from "@/components/shared/Sheet.vue";
-import HomeShoppingList from "@/components/section/home/HomeShoppingList.vue";
+import NavActionsShoppingList from "@/components/layout/NavActionsShoppingList.vue";
 import ButtonCard from "@/components/shared/ButtonCard.vue";
 import { ShoppingBag } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
@@ -30,7 +30,7 @@ const createShoppinglist = computed((): any[] => {
       <p>Einkaufsliste</p>
     </template>
     <template #content>
-      <HomeShoppingList />
+      <NavActionsShoppingList />
     </template>
   </Sheet>
 </template>
