@@ -1,23 +1,24 @@
-<script setup lang='ts'>
-import { ref, watch } from 'vue';
-const props = defineProps({
-    windowOpen: {
-        type: Boolean,
-        required: false
-    }
-})
+<script setup lang="ts">
+import { ref, watch } from "vue";
 
-const isWindowOpen = ref(false)
-const noValue = ref(false)
+const props = defineProps({
+  windowOpen: {
+    type: Boolean,
+    required: false
+  }
+});
+
+const isWindowOpen = ref(false);
+const noValue = ref(false);
 
 watch(() => props.windowOpen, (value) => {
-    if (!value && value != false) {
-        noValue.value = true
-        return
-    }
-    noValue.value = false
-    isWindowOpen.value = value
-}, { immediate: true })
+  if (!value) {
+    noValue.value = true;
+    return;
+  }
+  noValue.value = false;
+  isWindowOpen.value = value;
+}, { immediate: true });
 
 </script>
 <template>

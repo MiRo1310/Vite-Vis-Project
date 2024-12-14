@@ -12,8 +12,6 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  console.log("unmount");
-
   useTime().clear();
 });
 

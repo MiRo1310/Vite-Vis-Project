@@ -14,10 +14,12 @@ const handleClick = (i: number) => {
   const arrayOfIds = props.id.split(",").map((id) => id.trim());
   const key = arrayOfIds[0] as keyof typeof notSubscribedIds;
   if (!key) return;
-  const subKey = arrayOfIds[1] as keyof typeof notSubscribedIds[typeof key];
+  const subKey = arrayOfIds[1];
 
   if (!subKey && typeof subKey != "string") return;
-  const id = (notSubscribedIds[key][subKey] as { shutterPosition: string }).shutterPosition;
+  const id = (notSubscribedIds[key][subKey as keyof typeof notSubscribedIds[typeof key]] as {
+    shutterPosition: string
+  }).shutterPosition;
 
 
   if (adminConnection.value)

@@ -54,8 +54,8 @@ const windows: WindowObject[] = [
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
             Fenster sind
             <span :class="fensterOffen ? 'text-red-500' : ''">{{
-                fensterOffen ?
-                  "offen" : "geschlossen" }}</span>
+              fensterOffen ?
+                "offen" : "geschlossen" }}</span>
           </p>
 
           <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
