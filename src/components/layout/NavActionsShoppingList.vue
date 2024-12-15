@@ -12,7 +12,7 @@ import { ShoppingList } from "@/types.ts";
 import { stringToJSON } from "@/lib/string.ts";
 
 const iobrokerStore = useIobrokerStore();
-const { shoppingList } = storeToRefs<any>(iobrokerStore);
+const { shoppingList } = storeToRefs(iobrokerStore);
 
 const createShoppinglist = computed((): ShoppingList[] => {
   return stringToJSON(shoppingList.value);

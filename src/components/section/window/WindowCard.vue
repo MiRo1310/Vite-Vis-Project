@@ -25,7 +25,7 @@ import {
 } from "@/assets";
 
 const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs<any>(
+const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
   iobrokerStore
 );
 

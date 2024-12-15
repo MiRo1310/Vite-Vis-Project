@@ -2,6 +2,7 @@ export const routes = [
   { path: "/", component: async () => await import("@/pages/home.vue") },
   { path: "/fenster", component: async () => await import("@/pages/window.vue") },
   { path: "/heating", component: async () => await import("@/pages/heating.vue") },
+  { path: "/alexa", component: async () => await import("@/pages/alexa.vue") },
   { path: "/pv", component: async () => await import("@/pages/pv.vue") },
   { path: "/logs", component: async () => await import("@/pages/logs.vue") },
   { path: "/kalendar", name: "calendar", component: async () => await import("@/pages/calendar.vue") },

@@ -17,11 +17,11 @@ export interface DatatableColumns {
   component?: object;
   className?: HTMLAttributes["class"];
   type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
-  callback?: () => void;
+  callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
 }
 
-type CustomValue = string | number | boolean
+export type CustomValue = string | number | boolean | undefined | object
 
 export const getColumns = (columns: DatatableColumns[]) => {
   return columns.map((column: DatatableColumns) => {
@@ -89,7 +89,7 @@ interface DataTableCellCreator {
   unit?: string;
   decimal?: boolean;
   unitAdditive?: string;
-  callback?: () => void;
+  callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
 }
 
@@ -177,7 +177,7 @@ const getComponent = (
   source: string,
   className: string | undefined,
   customValue: CustomValue | undefined,
-  callback?: () => void | undefined
+  callback?: (params: Record<string, any>) => void | undefined
 ) => {
   return ({ row }: any) => {
     const value = getValueByPath(row.original, source);
@@ -199,6 +199,7 @@ const getComponent = (
     );
   };
 };
+
 export const getValueByPath = (obj: any, path: string) => {
   return path.split(".").reduce((acc, part) => {
     const index = parseInt(part, 10);

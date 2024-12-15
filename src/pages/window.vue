@@ -6,7 +6,7 @@ import { WindowObject } from "@/types.ts";
 import { getWindowInfos } from "@/composables/windows";
 
 const iobrokerStore = useIobrokerStore();
-const { fensterOffen } = storeToRefs<any>(iobrokerStore);
+const { fensterOffen } = storeToRefs(iobrokerStore);
 
 const { getOpenWindows } = getWindowInfos();
 
