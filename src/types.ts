@@ -82,7 +82,7 @@ export interface Shutter {
   };
 }
 
-export interface Window {
+export interface WindowType {
   wohnzimmer: {
     mittig: StoreValue<boolean>;
     ecke: StoreValue<boolean>;

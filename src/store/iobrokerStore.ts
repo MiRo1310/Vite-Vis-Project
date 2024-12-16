@@ -1,5 +1,5 @@
 import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
-import { IdsToControl, Pv, Shutter, TimerObject, Window } from "@/types";
+import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types";
 import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid } from "../lib/iobroker/ids-to-subscribe/landroid";
@@ -32,7 +32,7 @@ export interface IoBrokerStoreState {
   shutterAutoDownTime: object;
   timer: TimerObject;
   rolladen: Shutter;
-  fenster: Window;
+  fenster: WindowType;
   pv: Pv;
   pool: Pool;
   landroid: Landroid;
@@ -74,7 +74,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     shutterAutoDownTime: {},
     timer: {} as TimerObject,
     rolladen: {} as Shutter,
-    fenster: {} as Window,
+    fenster: {} as WindowType,
     pv: {} as Pv,
     pool: {} as Pool,
     landroid: {} as Landroid,

@@ -5,7 +5,7 @@ import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose.vue";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import windowOpen from "@/assets/window_open.png";
@@ -23,6 +23,7 @@ import {
   blinds80,
   blinds90
 } from "@/assets";
+import { Shutter, WindowType } from "@/types";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
@@ -54,56 +55,60 @@ const props = defineProps({
   }
 });
 
+function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter | object, subKey?: string) {
+  const arrayOfIds = id.split(",").map((id) => id.trim());
+  const first = arrayOfIds[0];
+  const second = arrayOfIds[1];
+  const obj = object?.[first as keyof typeof object];
+  const subObj = obj?.[`${second}${subKey}` as keyof typeof obj];
+  return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
+}
+
 const getIsWindowOpen = computed(() => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  const value = fenster.value?.[arrayOfIds[0]]?.[arrayOfIds[1]].val;
+  const value = getValue<boolean>(true, props.id, fenster.value);
   if (!value && value != false) {
-    return null;
+    return false;
   }
-  return value;
+  return value as boolean;
 });
 
 const getIsSecondWindowOpen = computed(() => {
   if (!props.id2) return false;
-  const arrayOfIds = props.id2.split(",").map((id) => id.trim());
-  const value = fenster.value?.[arrayOfIds[0]]?.[arrayOfIds[1]].val;
+  const value = getValue<boolean>(true, props.id2, fenster.value);
   if (!value && value != false) {
-    return null;
+    return false;
   }
-  return value;
+  return value as boolean;
 });
 
 const getShutterPosition = computed(() => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  const value = rolladen.value?.[arrayOfIds[0]]?.[arrayOfIds[1]].val;
+  const value = getValue<number>(true, props.id, rolladen.value);
   if (!value && value != 0) {
     return "n/a ";
   }
   return value;
 });
 
-const getAutoCloseDelay = computed((): { val: any; id: string } => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + "Delay"];
+const getAutoCloseDelay = computed((): { id: string, val: number } => {
+  return getValue<number>(false, props.id, shutterAutoDownTime.value, "Delay") as { id: string, val: number };
 });
 
-const getAutoClose = computed((): { val: any; id: string } => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  return shutterAutoDownTime.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + "Auto"];
+const getAutoClose = computed((): { id: string, val: boolean } => {
+  return getValue<boolean>(true, props.id, shutterAutoDownTime.value, "Auto") as { id: string, val: boolean };
 });
 
-const getAutoOpen = computed((): { val: any; id: string } => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + "AutoUp"];
+const getAutoOpen = computed((): { id: string, val: boolean } => {
+  return getValue<boolean>(true, props.id, shutterAutoUp.value, "AutoUp") as { id: string, val: boolean };
 });
 
-const getAutoUpTime = computed((): { val: any; id: string } => {
-  const arrayOfIds = props.id.split(",").map((id) => id.trim());
-  return shutterAutoUp.value?.[arrayOfIds[0]]?.[arrayOfIds[1] + "AutoUpTime"];
+const getAutoUpTime = computed((): { id: string, val: number } => {
+  return getValue<number>(true, props.id, shutterAutoUp.value, "AutoUpTime") as { id: string, val: number };
 });
 
 const getShutterImage = computed(() => {
   const position = getShutterPosition.value;
+  if (typeof position !== "number") return blinds0;
+
   if (position === 0) return blinds100;
   if (position <= 10) return blinds90;
   if (position <= 20) return blinds80;
