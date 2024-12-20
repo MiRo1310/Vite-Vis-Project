@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import BoolIcon from "@/components/shared/BoolIcon.vue";
 import { Entries } from "@/types";
 
 const props = defineProps<{ entries: Entries[]; title: string; class?: string }>();
 </script>
 <template>
-  <Card class="inline-block" :class="[props.class ]">
+  <Card styling="blue" :class="[props.class, 'inline-block']">
     <CardHeader>
       <CardTitle>{{ title }}</CardTitle>
     </CardHeader>

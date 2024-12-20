@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-
-import HomeCardInfoTime from "@/components/layout/NavLeftTime.vue";
-import { Blinds, CalendarDays, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
+import { BatteryFull, Blinds, CalendarDays, CircleDot, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
+import NavActions from "@/components/layout/NavActions.vue";
 
 const buttons = [
   {
@@ -19,6 +18,10 @@ const buttons = [
     icon: CalendarDays,
     text: "Kalendar",
     link: "/kalendar"
+  }, {
+    icon: BatteryFull,
+    text: "Battery",
+    link: "/battery"
   },
   // {
   //   icon: LampCeiling,
@@ -30,11 +33,11 @@ const buttons = [
   //   text: "Steckdosen",
   //   link: "/steckdosen",
   // },
-  // {
-  //   icon: Sun,
-  //   text: "Wetter",
-  //   link: "/wetter",
-  // },
+  {
+    icon: CircleDot,
+    text: "Alexa",
+    link: "/alexa"
+  },
   {
     icon: Heater,
     text: "Heizung",
@@ -68,18 +71,15 @@ const buttons = [
 </script>
 
 <template>
-  <div class="w-full">
-    <HomeCardInfoTime />
+  <div class="w-full flex">
     <router-link v-for="(button, index) in buttons" :key="index" :to="button.link">
       <Button
         variant="outline"
-        class="justify-start w-full mb-2 cursor-pointer h-12 text-accent-foreground/80 rounded-xl"
+        class="w-16 h-16 mb-1 p-0 cursor-pointer mt-1 text-accent-foreground/80 ml-1 bg-backgroundCards border-none rounded-none"
       >
-        <component :is="button.icon" class="w-4 h-4" />
-        <span class="ml-2">{{
-          button.text
-        }}</span>
+        <component :is="button.icon" class="w-10 h-10" />
       </Button>
     </router-link>
+    <NavActions />
   </div>
 </template>

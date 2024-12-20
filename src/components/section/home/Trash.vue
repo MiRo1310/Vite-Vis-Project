@@ -3,11 +3,11 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+
 
 const iobrokerStore = useIobrokerStore();
-const { trash } = storeToRefs<any>(iobrokerStore);
+const { trash } = storeToRefs(iobrokerStore);
 
 const transformDate = (date: number) => {
   const d = new Date(date);
@@ -25,7 +25,7 @@ interface TrashType {
 const trashEvents = ref<TrashType[]>([]);
 
 watch(trash, (newVal) => {
-  trashEvents.value = JSON.parse(newVal);
+  trashEvents.value = JSON.parse(newVal.toString());
 });
 onMounted(() => {
   const value = iobrokerStore.getTrash;
@@ -64,7 +64,7 @@ const days: Days = {
 
 </script>
 <template>
-  <Card>
+  <Card styling="blue">
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>

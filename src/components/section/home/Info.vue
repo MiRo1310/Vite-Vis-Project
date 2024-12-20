@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import { getWindowInfos } from "@/composables/windows.ts";
 import { useTime } from "@/composables/time.ts";
@@ -16,7 +16,7 @@ const { hour } = useTime();
 
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs } = useIobrokerStore();
+const { getParsedLogs, pv } = useIobrokerStore();
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const isTimeToWarn = computed(() => {
@@ -31,14 +31,15 @@ const infos = computed(() => [
   { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit?.val, unit: "%" },
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
   { title: "", value: "" },
-  { title: "Fenster offen", value: getOpenWindows, bounce: true }
+  { title: "Fenster offen", value: getOpenWindows, bounce: true },
+  { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" }
 ]);
 
 </script>
 <template>
-  <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }">
+  <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }" styling="blue">
     <CardHeader>
-      <CardTitle> Infos</CardTitle>
+      <CardTitle>Infos</CardTitle>
     </CardHeader>
     <CardContent class="text-xs">
       <div class="info__row ">

@@ -51,5 +51,5 @@ const entries: Entries[] = [
 ];
 </script>
 <template>
-  <CardListing :entries="entries" title="Einstellungen" />
+  <CardListing :entries="entries" title="Einstellungen" class="flex-1" />
 </template>

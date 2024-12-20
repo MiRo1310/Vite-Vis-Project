@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import ButtonCard from "@/components/shared/ButtonCard.vue";
 import { Blinds, Hourglass, UserRoundSearch } from "lucide-vue-next";
-import HomeShoppingCard from "@/components/section/home/HomeShoppingCard.vue";
+import NavActionsShoppingCard from "@/components/layout/NavActionsShopping.vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { useAppStore } from "@/store/appStore.ts";
 
+const appStore = useAppStore();
 const router = useRouter();
 const iobrokerStore = useIobrokerStore();
 const handleWindowClick = () => {
@@ -27,19 +29,19 @@ const getHoliday = computed(() => {
   return "Kein Urlaub";
 });
 
-const toggleTimer = () => {
-  iobrokerStore.setValueToKey("showTimerCard", !iobrokerStore.showTimerCard);
-};
 </script>
 <template>
   <ButtonCard
-    :icon="Blinds" :title="'Fenster'" :class="getWindowStyle" class-card="mt-2 ml-2"
+    :icon="Blinds" :class="getWindowStyle" class-card="ml-1"
     @click="handleWindowClick"
   />
   <ButtonCard
-    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70"
+    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70 " class-card=" ml-1"
     @click="handleHolidayClick"
   />
-  <HomeShoppingCard />
-  <ButtonCard :icon="Hourglass" title="Timer" class="text-accent-foreground/70" @click="toggleTimer" />
+  <NavActionsShoppingCard />
+  <ButtonCard
+    :icon="Hourglass" class="text-accent-foreground/70" class-card="ml-1"
+    @click="appStore.toggleTimerVisibility"
+  />
 </template>

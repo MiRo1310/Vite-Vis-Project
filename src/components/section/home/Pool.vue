@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
@@ -83,7 +83,7 @@ const getMode = (mode: string) => {
 </script>
 
 <template>
-  <Card>
+  <Card styling="blue">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between">
@@ -105,7 +105,7 @@ const getMode = (mode: string) => {
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
         <InputUnit
           v-else-if="item.type === 'input'"
-          class="w-16 text-accent-foreground/50 text-xs font-bold border-0 border-b shadow-none rounded-none"
+          class="w-16 text-accent-foreground/50 text-xs font-bold border-0 border-b shadow-none rounded-none bg-white"
           type="number" :model-value="item?.value.toString()" :unit="item.unit"
           @update:model-value="(value: string | number) => item && item.function && item.function(value)"
         />

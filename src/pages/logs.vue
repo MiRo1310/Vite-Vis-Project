@@ -2,7 +2,7 @@
 import { IdToSubscribe } from "@/types";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import CardDescription from "@/components/ui/card/CardDescription.vue";
 import { computed, HTMLAttributes, onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
@@ -97,7 +97,7 @@ function reset() {
 </script>
 <template>
   <div class="relative">
-    <Card>
+    <Card styling="blue">
       <CardHeader>
         <CardTitle>Logs</CardTitle>
         <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>

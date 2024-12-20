@@ -1,6 +1,6 @@
-import { IdToSubscribe, Window } from "@/types";
+import { IdToSubscribe, WindowType } from "@/types";
 
-export const windowOpenClose: IdToSubscribe<Window> = {
+export const windowOpenClose: IdToSubscribe<WindowType> = {
   objectNameInStore: "fenster",
   value: [
     {

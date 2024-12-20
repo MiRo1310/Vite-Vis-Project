@@ -1,42 +1,29 @@
 <script setup lang="ts">
 import { toLocaleTime } from "@/lib/time.ts";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
-import Button from "../../ui/button/Button.vue";
+import { Card } from "@/components/shared/card";
+import Button from "../ui/button/Button.vue";
 import { X } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import { ShoppingList } from "@/types.ts";
+import { stringToJSON } from "@/lib/string.ts";
 
 const iobrokerStore = useIobrokerStore();
-const { shoppingList } = storeToRefs<any>(iobrokerStore);
+const { shoppingList } = storeToRefs(iobrokerStore);
 
-onMounted(() => {
-  createShoppinglist();
+const createShoppinglist = computed((): ShoppingList[] => {
+  return stringToJSON(shoppingList.value);
 });
-
-const shoppingListData = ref<ShoppingList[]>([]);
-watch(shoppingList, () => {
-  createShoppinglist();
-});
-
-const createShoppinglist = () => {
-  try {
-    if (shoppingList.value !== "" && typeof shoppingList.value === "string")
-      shoppingListData.value = JSON.parse(shoppingList.value);
-  } catch (error) {
-    console.log("error", error);
-  }
-};
 
 const removeItem = (id: string) => {
   if (adminConnection.value) adminConnection.value.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true);
 };
 </script>
 <template>
-  <Card class="h-[90%] overflow-y-auto">
+  <Card class="h-[90%] overflow-y-auto" styling="blue">
     <Table>
       <TableHeader>
         <TableRow>
@@ -50,7 +37,7 @@ const removeItem = (id: string) => {
       </TableHeader>
 
       <TableBody>
-        <TableRow v-for="item in shoppingListData" :key="item.name">
+        <TableRow v-for="item in createShoppinglist" :key="item.name">
           <TableCell class="font-medium">
             {{ item.pos }}
           </TableCell>

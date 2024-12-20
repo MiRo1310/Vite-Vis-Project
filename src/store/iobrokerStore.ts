@@ -1,5 +1,5 @@
 import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
-import { IdsToControl, Pv, Shutter, TimerObject, Window } from "@/types";
+import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types";
 import { defineStore } from "pinia";
 import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
 import { Landroid } from "../lib/iobroker/ids-to-subscribe/landroid";
@@ -12,6 +12,8 @@ import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeri
 import { Infos } from "@/lib/iobroker/ids-to-subscribe/info.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import { PhoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
+import { BatteriesType } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
+import { AlexaAction } from "@/pages/alexa.vue";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -30,7 +32,7 @@ export interface IoBrokerStoreState {
   shutterAutoDownTime: object;
   timer: TimerObject;
   rolladen: Shutter;
-  fenster: Window;
+  fenster: WindowType;
   pv: Pv;
   pool: Pool;
   landroid: Landroid;
@@ -41,6 +43,8 @@ export interface IoBrokerStoreState {
   heatingTimeSlot: HeatingTimeSlot;
   infos: Infos;
   phone: PhoneStates;
+  batteries: BatteriesType;
+  alexaAction: AlexaAction;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
@@ -70,7 +74,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     shutterAutoDownTime: {},
     timer: {} as TimerObject,
     rolladen: {} as Shutter,
-    fenster: {} as Window,
+    fenster: {} as WindowType,
     pv: {} as Pv,
     pool: {} as Pool,
     landroid: {} as Landroid,
@@ -80,8 +84,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     logReset: {} as LogReset,
     heatingTimeSlot: {} as HeatingTimeSlot,
     infos: {} as Infos,
-    phone: {} as PhoneStates
-
+    phone: {} as PhoneStates,
+    batteries: {} as BatteriesType,
+    alexaAction: {} as AlexaAction
   }),
   getters: {
     isAdminConnected(state) {

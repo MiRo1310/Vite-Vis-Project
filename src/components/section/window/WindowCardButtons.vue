@@ -10,15 +10,16 @@ const props = defineProps({
   }
 });
 
-
 const handleClick = (i: number) => {
   const arrayOfIds = props.id.split(",").map((id) => id.trim());
   const key = arrayOfIds[0] as keyof typeof notSubscribedIds;
   if (!key) return;
-  const subKey = arrayOfIds[1] as keyof typeof notSubscribedIds[typeof key];
+  const subKey = arrayOfIds[1];
 
   if (!subKey && typeof subKey != "string") return;
-  const id = (notSubscribedIds[key][subKey] as { shutterPosition: string }).shutterPosition;
+  const id = (notSubscribedIds[key][subKey as keyof typeof notSubscribedIds[typeof key]] as {
+    shutterPosition: string
+  }).shutterPosition;
 
 
   if (adminConnection.value)
@@ -28,7 +29,8 @@ const handleClick = (i: number) => {
 <template>
   <div class=" flex justify-between">
     <Button
-      v-for="i in 6" :key="i" class="mx-1 w-10 h-6 text-xs" :size="'sm'"
+      v-for="i in 6" :key="i" class="mx-1 w-10 h-6 text-xs bg-accent-foreground/10" variant="outline"
+      :size="'sm'"
       @click="handleClick(i)"
     >
       {{ 100 - (i - 1) * 20 }}%

@@ -15,7 +15,7 @@ const emits = defineEmits<{
 
 const modelValue = useVModel(props, "modelValue", emits, {
   passive: true,
-  defaultValue: props.defaultValue,
+  defaultValue: props.defaultValue
 });
 </script>
 
@@ -28,5 +28,5 @@ const modelValue = useVModel(props, "modelValue", emits, {
         props.class
       )
     "
-  />
+  >
 </template>

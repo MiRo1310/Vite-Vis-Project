@@ -82,7 +82,7 @@ export interface Shutter {
   };
 }
 
-export interface Window {
+export interface WindowType {
   wohnzimmer: {
     mittig: StoreValue<boolean>;
     ecke: StoreValue<boolean>;
@@ -128,6 +128,8 @@ export interface Ids<TData> {
   secondKey?: string;
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
+  timestamp?: boolean;
+  revertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";

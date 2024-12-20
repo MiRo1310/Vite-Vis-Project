@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-
+import { Button } from "@/components/ui/button";
 import {
-    Sheet,
-    SheetClose,
-    SheetContent,
-    SheetDescription,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/components/ui/sheet'
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
+} from "@/components/ui/sheet";
+
+withDefaults(defineProps<{ styling?: keyof typeof style, showFooter?: boolean }>(), {
+  styling: "default",
+  showFooter: true
+});
+
+const style = {
+  default: "",
+  blue: "bg-backgroundCards"
+};
 </script>
 
 <template>
@@ -18,7 +27,7 @@ import {
     <SheetTrigger as-child>
       <slot name="trigger" />
     </SheetTrigger>
-    <SheetContent>
+    <SheetContent :class="[style[$props.styling as keyof typeof style]]">
       <SheetHeader>
         <SheetTitle>
           <slot name="title" />
@@ -28,7 +37,7 @@ import {
         </SheetDescription>
       </SheetHeader>
       <slot name="content" />
-      <SheetFooter>
+      <SheetFooter v-if="showFooter">
         <SheetClose as-child>
           <Button
             type="submit"

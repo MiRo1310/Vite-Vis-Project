@@ -27,11 +27,16 @@ const handleClick = () => {
 };
 </script>
 <template>
-  <Card :class="['w-20 h-20 cursor-pointer', classCard]" @click="handleClick">
-    <CardTitle class="m-2 mb-2 h-8 text-center text-accent-foreground/70 text-xs">
+  <Card
+    :class="{'w-16 h-16 cursor-pointer p-0 bg-backgroundCards border-none rounded-none relative mt-1 ml-1':true, classCard:true ,'flex items-center justify-center':!title}"
+
+    @click="handleClick"
+  >
+    <CardTitle v-if="title" class="mt-1 text-center mb-1 text-3xs">
       <slot name="title" />
-      {{ props.title }}
+      {{ title }}
     </CardTitle>
-    <component :is="props.icon" class="w-7 h-7 mx-auto" :class="props.class" />
+    <component :is="icon" :class="{'w-7 h-7 mx-auto':title, 'w-10 h-10 mx-auto':!title , [props.class]:true}" />
+    <slot name="icon" />
   </Card>
 </template>

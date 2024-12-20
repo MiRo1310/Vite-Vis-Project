@@ -1,58 +1,35 @@
 <script setup lang="ts">
-import { Card } from "@/components/ui/card";
-import CardHeader from "../../ui/card/CardHeader.vue";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
-import CardContent from "../../ui/card/CardContent.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
 import { CalendarDay } from "@/types.ts";
 import { useRouter } from "vue-router";
+import { stringToJSON } from "@/lib/string.ts";
 
 const { calendar } = storeToRefs(useIobrokerStore());
 const router = useRouter();
 
 const data: Ref<CalendarDay[]> = computed(() => {
-  if (calendar.value.table) {
-    try {
-      return JSON.parse(calendar.value.table?.val || "[]");
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  return [];
+  return stringToJSON(calendar.value.table?.val || "[]");
 });
 
 const today = computed(() => {
   if (data.value) {
     return data.value.filter((day) => {
-      return (
-        new Date(day._date).getTime() <= new Date().getTime() &&
-        new Date(day._end).getTime() >= new Date().getTime()
-      );
+      return day.date.includes("Heute");
     });
   }
   return [];
 });
 
-function addDays(date: Date, days: number): Date {
-  const result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
-}
-
 const tomorrow = computed(() => {
   if (data.value) {
     return data.value.filter((day) => {
-      const tomorrowDate = addDays(new Date(), 1).getTime();
-
-      return (
-        new Date(day._date).getTime() <= tomorrowDate &&
-        new Date(day._end).getTime() >= tomorrowDate
-      );
+      return day.date.includes("Morgen");
     });
   }
-  return;
+  return [];
 });
 
 function getLocalTimeString(event: string) {
@@ -67,7 +44,7 @@ function isNotAllDayEvent(event: CalendarDay) {
 }
 </script>
 <template>
-  <Card @click="router.push({ name: 'calendar' })">
+  <Card styling="blue" class="w-80" @click="router.push({ name: 'calendar' })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>

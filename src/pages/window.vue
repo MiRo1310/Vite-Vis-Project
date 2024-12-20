@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import FensterCard from "@/components/section/window/WindowsWindowCard.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { WindowObject } from "@/types.ts";
 import { getWindowInfos } from "@/composables/windows";
+import WindowCard from "@/components/section/window/WindowCard.vue";
 
 const iobrokerStore = useIobrokerStore();
-const { fensterOffen } = storeToRefs<any>(iobrokerStore);
+const { fensterOffen } = storeToRefs(iobrokerStore);
 
 const { getOpenWindows } = getWindowInfos();
 
@@ -41,11 +41,10 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div />
-  <div class="lg:fixed right-2 lg:left-48 z-10 bg-backgroundColor -mt-2">
-    <Card class="mt-2">
-      <CardHeader class="p-2">
-        <CardTitle class=" flex justify-between">
+  <div class="lg:fixed right-1 left-1 z-50">
+    <Card styling="blue">
+      <CardHeader class="p-1">
+        <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>
           <p v-show="getOpenWindows === 1" class="flex ">
             Ein Fenster ist
@@ -65,8 +64,8 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap lg:pt-9 -mx-1 ">
-    <FensterCard
+  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
+    <WindowCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"
       :id2="card.id2"

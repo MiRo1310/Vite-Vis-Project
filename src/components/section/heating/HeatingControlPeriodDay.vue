@@ -7,9 +7,8 @@ import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types.ts";
-import { useTime } from "@/composables/time.ts";
 
-const props = defineProps<{ day: { val: string; label: string }; }>();
+const props = defineProps<{ day: { val: string; label: string, index: number }; }>();
 const { heating, heatingTimeSlot } = useIobrokerStore();
 
 const profile = computed(() => {
@@ -31,24 +30,12 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [{
   objectNameInStore: "heatingTimeSlot",
   value: [
     { id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod", firstKey: "currentTimePeriod" }
-    // { id: "heatingcontrol.0.Rooms.Esszimmer.ActiveTimeSlot", firstKey: "Esszimmer" },
-    // { id: "heatingcontrol.0.Rooms.Flur.ActiveTimeSlot", firstKey: "Flur" },
-    // { id: "heatingcontrol.0.Rooms.Gäste WC.ActiveTimeSlot", firstKey: "Gäste WC" },
-    // { id: "heatingcontrol.0.Rooms.Gästezimmer.ActiveTimeSlot", firstKey: "Gästezimmer" },
-    // { id: "heatingcontrol.0.Rooms.Keller Michael.ActiveTimeSlot", firstKey: "Keller Michael" },
-    // { id: "heatingcontrol.0.Rooms.Keller Waschen.ActiveTimeSlot", firstKey: "Keller Waschen" },
-    // { id: "heatingcontrol.0.Rooms.Kinderzimmer.ActiveTimeSlot", firstKey: "Kinderzimmer" },
-    // { id: "heatingcontrol.0.Rooms.Küche.ActiveTimeSlot", firstKey: "Küche" },
-    // { id: "heatingcontrol.0.Rooms.Schlafzimmer.ActiveTimeSlot", firstKey: "Schlafzimmer" },
-    // { id: "heatingcontrol.0.Rooms.Wohnzimmer.ActiveTimeSlot", firstKey: "Wohnzimmer" }
-
   ]
 }];
 useDynamicSubscribe(states);
-const { weekday } = useTime();
 
 const activeClass = computed(() => (i: number) => {
-  return props.day.label === weekday.value && i === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "";
+  return (((i) + props.day.index * 5) === heatingTimeSlot.currentTimePeriod?.val) ? "bg-green-100" : "bg-white";
 });
 </script>
 <template>
@@ -84,22 +71,22 @@ const activeClass = computed(() => (i: number) => {
 </template>
 <style scoped lang="postcss">
 .day__container {
-  @apply bg-accent pt-2;
+  @apply bg-backgroundCards pt-2 flex-1 mb-1;
 }
 
 .day__label {
-  @apply text-center mb-2;
+  @apply text-center mb-3;
 }
 
 .values__container {
-  @apply flex;
+  @apply flex justify-center mb-1 space-x-1;
 }
 
 :deep(button[role="combobox"]) {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem];
+  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] mt-1;
 }
 
 .day__input {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none;
+  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none mt-1;
 }
 </style>

@@ -63,8 +63,9 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
       if (adminConnection.value && !iobrokerStore.subscribedIds.includes(stateId.id)) {
         adminConnection.value.subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-         
+
           let value: IobrokerStateValue | null = state?.val;
+          const timestamp = state?.ts;
           if (!isPresentAndTruthy(value)) {
             value = null;
           }
@@ -75,9 +76,10 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
           }
 
           if (stateId.subKeyAdditive) {
-
             subKey += stateId.subKeyAdditive;
           }
+
+          value = checkAndRevert(value, stateId.revertValue);
 
           iobrokerStore.setValues(
             item.objectNameInStore || null,
@@ -86,7 +88,21 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             stateId.firstKey || stateId.room || null,
             subKey
           );
+
+          if (stateId.timestamp) {
+            iobrokerStore.setValues(
+              item.objectNameInStore || null,
+              timestamp,
+              id,
+              stateId.firstKey || stateId.room || null,
+              "timestamp"
+            );
+          }
+        }).catch((e) => {
+          console.error(`Error subscribing to ${stateId.id}`);
+          console.error(e);
         });
+
         iobrokerStore.addIdToSubscribedIds(stateId.id);
       }
 
@@ -94,6 +110,13 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
 
   });
+}
+
+function checkAndRevert(value: IobrokerStateValue | null, revertValue: boolean | undefined) {
+  if (revertValue && typeof value === "boolean") {
+    return !value;
+  }
+  return value;
 }
 
 const isPresentAndTruthy = (value: NullableState) => {
