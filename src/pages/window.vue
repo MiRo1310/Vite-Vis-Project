@@ -4,6 +4,7 @@ import { storeToRefs } from "pinia";
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { WindowObject } from "@/types.ts";
 import { getWindowInfos } from "@/composables/windows";
+import WindowCard from "@/components/section/window/WindowCard.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { fensterOffen } = storeToRefs(iobrokerStore);
@@ -64,7 +65,7 @@ const windows: WindowObject[] = [
     </Card>
   </div>
   <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
-    <Card
+    <WindowCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :title="card.name"
       :id2="card.id2"

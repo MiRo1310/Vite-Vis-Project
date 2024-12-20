@@ -91,13 +91,21 @@ function getColor(event: CalendarDay): string {
 const open = ref(false);
 </script>
 <template>
-  <div :class="{ 'h-full': true, 'border-blue-500 border-2': isToday }" @click="open = !open">
+  <div
+    :class="{ 'h-full': true, 'border-blue-500 border-2': isToday }"
+    @click="open = !open"
+  >
     <span :class="{ 'm-1 ml-1 pb-[1px] px-1 rounded-md': true, 'bg-blue-300': isToday }">
       {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
     </span>
-    <p v-for="(event, index) in getDayValue" :key="index" class="text-xs px-1 mr-1 whitespace-nowrap truncate">
-      <span :class="[[getColor(event)], 'mb-[2px] inline-block']">{{ event.event }}</span>
-    </p>
+    <div class=" overflow-auto max-h-[calc(6rem-22px)]">
+      <p
+        v-for="(event, index) in getDayValue" :key="index"
+        class="text-xs px-1 mr-1 whitespace-nowrap truncate"
+      >
+        <span :class="[[getColor(event)], 'mb-[2px] inline-block']">{{ event.event }}</span>
+      </p>
+    </div>
   </div>
 
   <CalenderMonthDayDialog :open="open" :events="getDayValue" v-bind="props" @update:open="open = $event" />

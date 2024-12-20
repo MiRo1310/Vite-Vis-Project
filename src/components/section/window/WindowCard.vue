@@ -60,7 +60,10 @@ function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter |
   const first = arrayOfIds[0];
   const second = arrayOfIds[1];
   const obj = object?.[first as keyof typeof object];
-  const subObj = obj?.[`${second}${subKey}` as keyof typeof obj];
+  console.log(obj);
+  console.log(second, subKey);
+  const subObj = obj?.[`${second}${subKey ? subKey : ""}` as keyof typeof obj];
+  console.log(subObj);
   return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
 }
 
@@ -83,6 +86,7 @@ const getIsSecondWindowOpen = computed(() => {
 
 const getShutterPosition = computed(() => {
   const value = getValue<number>(true, props.id, rolladen.value);
+
   if (!value && value != 0) {
     return "n/a ";
   }
@@ -148,7 +152,6 @@ const updateHandler = (value: number | string | boolean, id: string) => {
             <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
         </div>
-
         <WindowCardOpenClose
           v-if="!props.shutter" class="text" :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
           "

@@ -25,7 +25,7 @@ const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sa
         </div>
         <CalendarAdjustDayOrder :month="month" :year="year" />
 
-        <div v-for="(_, i) in daysInMonth" :key="i" class="col-span-1 bg-accent  h-[6.8rem] m-[2px]">
+        <div v-for="(_, i) in daysInMonth" :key="i" class="col-span-1 bg-accent  max-h-[7rem] m-[2px]">
           <CalenderMonthDay :day-index="i" :month="month" :year="year" />
         </div>
       </div>

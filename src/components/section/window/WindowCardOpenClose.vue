@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-const props = defineProps({
-  windowOpen: {
-    type: Boolean,
-    required: false
-  }
-});
+const props = defineProps<{ windowOpen: boolean | undefined | null }>();
 
 const isWindowOpen = ref(false);
-const noValue = ref(false);
+const noValue = ref<boolean | undefined>(false);
 
 watch(() => props.windowOpen, (value) => {
-  if (!value) {
+  if (typeof value !== "boolean") {
     noValue.value = true;
     return;
   }
@@ -23,7 +18,7 @@ watch(() => props.windowOpen, (value) => {
 </script>
 <template>
   <p
-    v-if="noValue"
+    v-if="!!noValue"
     class="text text-red-500 ml-3 animate-bounce"
   >
     No Value
