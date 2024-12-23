@@ -60,10 +60,8 @@ function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter |
   const first = arrayOfIds[0];
   const second = arrayOfIds[1];
   const obj = object?.[first as keyof typeof object];
-  console.log(obj);
-  console.log(second, subKey);
+
   const subObj = obj?.[`${second}${subKey ? subKey : ""}` as keyof typeof obj];
-  console.log(subObj);
   return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
 }
 
@@ -98,15 +96,16 @@ const getAutoCloseDelay = computed((): { id: string, val: number } => {
 });
 
 const getAutoClose = computed((): { id: string, val: boolean } => {
-  return getValue<boolean>(true, props.id, shutterAutoDownTime.value, "Auto") as { id: string, val: boolean };
+
+  return getValue<boolean>(false, props.id, shutterAutoDownTime.value, "Auto") as { id: string, val: boolean };
 });
 
 const getAutoOpen = computed((): { id: string, val: boolean } => {
-  return getValue<boolean>(true, props.id, shutterAutoUp.value, "AutoUp") as { id: string, val: boolean };
+  return getValue<boolean>(false, props.id, shutterAutoUp.value, "AutoUp") as { id: string, val: boolean };
 });
 
 const getAutoUpTime = computed((): { id: string, val: number } => {
-  return getValue<number>(true, props.id, shutterAutoUp.value, "AutoUpTime") as { id: string, val: number };
+  return getValue<number>(false, props.id, shutterAutoUp.value, "AutoUpTime") as { id: string, val: number };
 });
 
 const getShutterImage = computed(() => {

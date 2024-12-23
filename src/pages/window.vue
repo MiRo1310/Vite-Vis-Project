@@ -26,7 +26,6 @@ const windows: WindowObject[] = [
   { name: "Gästezimmer", shutter: true, id: "gaestezimmer,fenster" },
   { name: "Abstellraum OG links", shutter: true, id: "abstellraumog,links" },
   { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumog,rechts" },
-
   { name: "Kellertür", shutter: false, id: "keller,tuer" },
   { name: "Keller Flur", shutter: false, id: "keller,flurFenster" },
   { name: "Büro Keller", shutter: false, id: "buero,fenster" },
