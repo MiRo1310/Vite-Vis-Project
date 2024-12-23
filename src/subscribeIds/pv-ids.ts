@@ -1,4 +1,4 @@
-import { IdToSubscribe, Pv } from "@/types";
+import { IdToSubscribe, Pv } from "@/types.ts";
 
 export const pvIds: IdToSubscribe<Pv> = {
   objectNameInStore: "pv",
@@ -9,6 +9,7 @@ export const pvIds: IdToSubscribe<Pv> = {
     { id: "shelly.0.shellypro3em#ec6260976f14#1.EM0.TotalActivePower", firstKey: "shellyFeedOut" },
     { id: "sonoff.0.Photovoltaik.ENERGY_Power", firstKey: "smallPv" },
     { id: "0_userdata.0.Photovoltaik.Einnahme_Einspeisung", firstKey: "profit" },
-    { id: "fronius.0.inverter.1.P", firstKey: "pvGross" }
+    { id: "fronius.0.inverter.1.P", firstKey: "pvGross" },
+    { id: "0_userdata.0.Photovoltaik.Einsparung_durch_PV", firstKey: "savedMoney" }
   ]
 };

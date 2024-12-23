@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import Select, { SelectOption } from "@/components/shared/select/select.vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 
 const { heating } = useIobrokerStore();
 
@@ -39,7 +39,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, val);
+  adminConnection?.setState(id, val);
 }
 </script>
 

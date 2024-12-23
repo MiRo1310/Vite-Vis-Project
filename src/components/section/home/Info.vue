@@ -8,7 +8,8 @@ import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/lib/iobroker/ids-to-subscribe/info.ts";
+import { infoStates } from "@/subscribeIds/info.ts";
+import Badges from "@/components/section/home/Badges.vue";
 
 useDynamicSubscribe(infoStates);
 
@@ -16,7 +17,7 @@ const { hour } = useTime();
 
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs, pv } = useIobrokerStore();
+const { getParsedLogs, pv } = ioBrokerStore;
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const isTimeToWarn = computed(() => {
@@ -32,7 +33,9 @@ const infos = computed(() => [
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
   { title: "", value: "" },
   { title: "Fenster offen", value: getOpenWindows, bounce: true },
-  { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" }
+  { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" },
+  { title: "Genutzter Strom", value: ((pv?.savedMoney?.val || 0) - (pv?.profit?.val || 0)).toFixed(2), unit: "€" },
+  { title: "Ersparnis", value: pv?.savedMoney?.val, unit: "€" }
 ]);
 
 </script>
@@ -51,15 +54,7 @@ const infos = computed(() => [
       <div class="info__row">
         <p> Logs</p>
         <p class="flex">
-          <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info?.length" class="bg-white info__badge" />
-          <Badge
-            v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn?.length"
-            class="bg-yellow-200 ml-1 info__badge"
-          />
-          <Badge
-            v-if="getParsedLogs.error?.length" :value="getParsedLogs.error?.length"
-            class="bg-destructive ml-1 info__badge"
-          />
+          <Badges :get-parsed-logs="getParsedLogs" />
         </p>
       </div>
       <div
@@ -82,7 +77,4 @@ const infos = computed(() => [
   @apply flex justify-between items-center text-accent-foreground/50 font-bold mt-2
 }
 
-.info__badge {
-  @apply text-3xs
-}
 </style>

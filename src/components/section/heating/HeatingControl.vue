@@ -6,6 +6,7 @@ import HeatingControlRoom from "./HeatingControlRoom.vue";
 import HeatingControlRoomStatus from "./HeatingControlRoomStatus.vue";
 import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
 </script>
+
 <template>
   <div class="bg-backgroundColor p-0 m-0 w-full px-1">
     <HeatingControlHeader />

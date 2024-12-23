@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Checkbox } from "@/components/ui/checkbox";
 import Select, { SelectOption } from "@/components/shared/select/select.vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { Input } from "@/components/ui/input";
 
 export interface RowHeatingConfig {
@@ -18,7 +18,7 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, val);
+  adminConnection?.setState(id, val);
 };
 </script>
 

@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import windowOpen from "@/assets/window_open.png";
 import windowClosed from "@/assets/window_closed.png";
 import {
@@ -127,9 +127,8 @@ const getShutterImage = computed(() => {
 });
 
 const updateHandler = (value: number | string | boolean, id: string) => {
-  console.log(value, id);
-  if (adminConnection.value) {
-    adminConnection.value.setState(id, value);
+  if (adminConnection) {
+    adminConnection.setState(id, value);
   }
 };
 </script>

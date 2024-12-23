@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
@@ -33,7 +33,7 @@ const loading = ref(false);
 const alexaNames = ref<AlexaDotAction[]>([]);
 
 async function getAlexaEnum(): Promise<any[]> {
-  const res = await adminConnection.value?.getObject("enum.functions.alexa");
+  const res = await adminConnection?.getObject("enum.functions.alexa");
   if (res) {
     return res.common.members as string[];
   }
@@ -41,7 +41,7 @@ async function getAlexaEnum(): Promise<any[]> {
 }
 
 const getAlexInfos = async (id: string) => {
-  const res = await adminConnection.value?.getObject(id);
+  const res = await adminConnection?.getObject(id);
   console.log(res);
   return { name: res?.common.name, speak: `${res._id}.Commands.speak` };
 };
@@ -75,7 +75,7 @@ function getMoreInfos(name: string) {
 }
 
 watchEffect(() => {
-  if (adminConnection.value && alexaNames.value.length === 0) {
+  if (adminConnection && alexaNames.value.length === 0) {
     loading.value = true;
     loadAlexaObject();
   }
@@ -93,7 +93,7 @@ function callback(params: Record<string, any>) {
   actions.value[name][params.source] = params.checked || params.value;
   const id = alexaActionStore.alexaSpeak?.id;
   if (!id) return;
-  adminConnection.value?.setState(id, JSONToString(actions.value), true);
+  adminConnection?.setState(id, JSONToString(actions.value), true);
 }
 
 const columns: DatatableColumns[] = [

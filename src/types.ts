@@ -113,6 +113,7 @@ export interface Pv {
   activeCharging: StoreValue<number>;
   profit: StoreValue<number>;
   pvGross: StoreValue<number>;
+  savedMoney: StoreValue<number>;
 }
 
 export interface IdToSubscribe<TData> {

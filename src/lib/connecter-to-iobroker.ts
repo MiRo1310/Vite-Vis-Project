@@ -1,8 +1,7 @@
 import { AdminConnection } from "@iobroker/socket-client";
-import { ref } from "vue";
-import { useIobrokerStore } from "@/store/iobrokerStore";
-import { idToSubscribe } from "./ids-to-subscribe";
-import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { idToSubscribe } from "../subscribeIds/ids-to-subscribe.ts";
+import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types.ts";
 
 // Konfigurationswerte
 export const IOBROKER_HOST = "192.168.1.81";
@@ -14,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   iobrokerStore = useIobrokerStore();
 });
 
-export const adminConnection = ref<AdminConnection>();
+export let adminConnection: AdminConnection | undefined = undefined;
 
 export function loadScript(src: string, callback: any) {
   const script = document.createElement("script");
@@ -24,7 +23,7 @@ export function loadScript(src: string, callback: any) {
 }
 
 export async function init() {
-  adminConnection.value = new AdminConnection({
+  adminConnection = new AdminConnection({
     protocol: "ws",
     host: IOBROKER_HOST,
     port: IOBROKER_WS_PORT,
@@ -32,9 +31,9 @@ export async function init() {
     autoSubscribes: []
   });
 
-  if (adminConnection.value) {
-    await adminConnection.value.startSocket();
-    await adminConnection.value.waitForFirstConnection();
+  if (adminConnection) {
+    await adminConnection.startSocket();
+    await adminConnection.waitForFirstConnection();
     // console.log(await adminConnection.value.getEnums());
     // console.log(await adminConnection.value.getStates());
     useIobrokerStore().setAdminConnection(true);
@@ -46,8 +45,8 @@ export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
 
   states.forEach((listObjectOfIds) => {
     listObjectOfIds.value.forEach((idObjectEntry) => {
-      if (adminConnection.value) {
-        adminConnection.value.unsubscribeState(idObjectEntry.id);
+      if (adminConnection) {
+        adminConnection.unsubscribeState(idObjectEntry.id);
       }
     });
 
@@ -61,8 +60,8 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
     item.value.forEach((stateId) => {
 
-      if (adminConnection.value && !iobrokerStore.subscribedIds.includes(stateId.id)) {
-        adminConnection.value.subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
+      if (adminConnection && !iobrokerStore.subscribedIds.includes(stateId.id)) {
+        adminConnection.subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
 
           let value: IobrokerStateValue | null = state?.val;
           const timestamp = state?.ts;

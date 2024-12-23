@@ -3,7 +3,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { batteryIds } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
+import { batteryIds } from "@/subscribeIds/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import { createArrayByStore } from "@/lib/object.ts";

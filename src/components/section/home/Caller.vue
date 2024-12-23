@@ -2,7 +2,7 @@
 import { computed, HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { phoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
+import { phoneStates } from "@/subscribeIds/phone.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
 

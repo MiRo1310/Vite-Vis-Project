@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
-import { notSubscribedIds } from "@/lib/iobroker/ids-not-subscribed.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.ts";
 
 const props = defineProps({
   id: {
@@ -22,8 +22,8 @@ const handleClick = (i: number) => {
   }).shutterPosition;
 
 
-  if (adminConnection.value)
-    adminConnection.value.setState(id, 100 - (i - 1) * 20);
+  if (adminConnection)
+    adminConnection.setState(id, 100 - (i - 1) * 20);
 };
 </script>
 <template>

@@ -1,4 +1,4 @@
-import { IdToSubscribe, Timer1, Timer2, Timer3, Timer4, TimerObject } from "@/types";
+import { IdToSubscribe, Timer1, Timer2, Timer3, Timer4, TimerObject } from "@/types.ts";
 
 export const timer: IdToSubscribe<TimerObject> = {
   // Timer

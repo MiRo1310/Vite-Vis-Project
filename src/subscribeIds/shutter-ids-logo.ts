@@ -1,4 +1,4 @@
-import { IdToSubscribe, Shutter } from "@/types";
+import { IdToSubscribe, Shutter } from "@/types.ts";
 
 export const shutterIdsLogo: IdToSubscribe<Shutter> = {
   // Rolladen

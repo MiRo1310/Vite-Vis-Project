@@ -8,7 +8,7 @@ import { computed, HTMLAttributes, onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import { firstLetterToUpperCase } from "../lib/string.ts";
 import { toLocaleTime } from "../lib/time.ts";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
 
@@ -85,12 +85,10 @@ const buttons = computed((): Buttons[] => {
 function reset() {
 
   const id = logReset.value[selected.value]?.id;
-  console.log(id);
-  console.log(selected.value);
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, true, false);
+  adminConnection?.setState(id, true, false);
 }
 
 

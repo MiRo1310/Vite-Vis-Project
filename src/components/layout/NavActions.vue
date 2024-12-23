@@ -5,7 +5,7 @@ import NavActionsShoppingCard from "@/components/layout/NavActionsShopping.vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useAppStore } from "@/store/appStore.ts";
 
 const appStore = useAppStore();
@@ -15,7 +15,7 @@ const handleWindowClick = () => {
   router.push({ path: "/fenster" });
 };
 const handleHolidayClick = () => {
-  adminConnection.value?.setState(
+  adminConnection?.setState(
     "0_userdata.0.Urlaub.Urlaub_aktiv",
     !iobrokerStore.urlaubAktiv
   );

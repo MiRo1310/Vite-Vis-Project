@@ -4,7 +4,7 @@ import Select from "@/components/shared/select/select.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types.ts";
 
@@ -19,7 +19,8 @@ function updateData(id: string | undefined, value: string) {
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, { val: value, ack: false });
+
+  adminConnection?.setState(id, { val: value, ack: false });
 }
 
 export interface HeatingTimeSlot {

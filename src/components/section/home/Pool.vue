@@ -2,17 +2,17 @@
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import InputUnit from "@/components/shared/InputWithUnit.vue";
 import BoolIcon from "@/components/shared/BoolIcon.vue";
-import { BoolText } from "@/lib/iobroker/ids-to-subscribe/pool.ts";
+import { BoolText } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 
 const { pool, idsToControl } = storeToRefs(useIobrokerStore());
 const handleChangeTempSet = (value: string | number) => {
-  if (adminConnection.value) {
-    adminConnection.value.setState(
+  if (adminConnection) {
+    adminConnection.setState(
       idsToControl.value.tempSetId,
       parseInt(value?.toString())
     );

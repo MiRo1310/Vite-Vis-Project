@@ -1,18 +1,18 @@
-import { Pool } from "@/lib/iobroker/ids-to-subscribe/pool";
+import { Pool } from "@/subscribeIds/pool.ts";
 import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types";
 import { defineStore } from "pinia";
-import { Wetter } from "@/lib/iobroker/ids-to-subscribe/wetter";
-import { Landroid } from "../lib/iobroker/ids-to-subscribe/landroid";
-import { Calendar } from "@/lib/iobroker/ids-to-subscribe/calendar";
-import { Heating } from "@/lib/iobroker/ids-to-subscribe/heating";
+import { Wetter } from "@/subscribeIds/wetter.ts";
+import { Landroid } from "../subscribeIds/landroid.ts";
+import { Calendar } from "@/subscribeIds/calendar.ts";
+import { Heating } from "@/subscribeIds/heating.ts";
 import { Log, LogReset } from "@/pages/logs.vue";
-import { LogStates } from "@/lib/iobroker/ids-to-subscribe/logs.ts";
+import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
-import { Infos } from "@/lib/iobroker/ids-to-subscribe/info.ts";
+import { Infos } from "@/subscribeIds/info.ts";
 import { stringToJSON } from "@/lib/string.ts";
-import { PhoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
-import { BatteriesType } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
+import { PhoneStates } from "@/subscribeIds/phone.ts";
+import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
 import { AlexaAction } from "@/pages/alexa.vue";
 
 export interface IoBrokerStoreState {
@@ -52,6 +52,12 @@ export type StoreValue<T> = StoreValueType<T> | undefined
 export interface StoreValueType<T> {
   val: T | undefined;
   id: string | undefined;
+}
+
+export interface ParsedLogs {
+  error: Log[];
+  warn: Log[];
+  info: Log[];
 }
 
 export type IoBrokerStates = keyof IoBrokerStoreState;
@@ -105,7 +111,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       return state.idsToControl;
     },
     getParsedLogs(state) {
-      return computed(() => {
+      return computed(():ParsedLogs => {
         return {
           error: stringToJSON<Log[]>(state.logs.error?.val as string),
           warn: stringToJSON<Log[]>(state.logs.warning?.val as string),
