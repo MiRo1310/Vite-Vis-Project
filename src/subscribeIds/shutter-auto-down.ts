@@ -33,6 +33,13 @@ export const shutterAutoDown: IdToSubscribe<Shutter> = {
       saveId: true
     },
     {
+      id: "0_userdata.0.Rolladen.Schlafzimmer.Schlafzimmer_Rollade_Fenster_Zeitsteuerung",
+      room: "schlafen",
+      secondKey: "fenster",
+      subKeyAdditive: "Auto",
+      saveId: true
+    },
+    {
       id: "0_userdata.0.Rolladen.Kinderzimmer.Rollade_automisch_runter",
       room: "kinderzimmer",
       secondKey: "fenster",

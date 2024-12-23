@@ -19,16 +19,16 @@ export const shutterAutoDownTime: IdToSubscribe<Shutter> = {
       saveId: true
     },
     {
-      id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
+      id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang_Tür",
       room: "schlafen",
-      secondKey: "fenster",
+      secondKey: "tuer",
       subKeyAdditive: "Delay",
       saveId: true
     },
     {
       id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
       room: "schlafen",
-      secondKey: "tuer",
+      secondKey: "fenster",
       subKeyAdditive: "Delay",
       saveId: true
     },
