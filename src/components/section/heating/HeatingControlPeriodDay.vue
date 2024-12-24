@@ -6,7 +6,7 @@ import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { IdToSubscribe } from "@/types.ts";
+import { IdToSubscribe } from "@/types/types.ts";
 
 const props = defineProps<{ day: { val: string; label: string, index: number }; }>();
 const { heating, heatingTimeSlot } = useIobrokerStore();

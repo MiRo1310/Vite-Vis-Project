@@ -1,4 +1,4 @@
-import { IdToSubscribe } from "@/types.ts";
+import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue } from "@/store/iobrokerStore.ts";
 
 interface XiaomiWindowSensor {

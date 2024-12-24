@@ -1,4 +1,4 @@
-import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore";
+import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore.ts";
 
 export type IobrokerValues = Record<string, string | number | boolean | object>;
 

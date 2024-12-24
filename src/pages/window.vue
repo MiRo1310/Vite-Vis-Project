@@ -2,7 +2,7 @@
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
-import { WindowObject } from "@/types.ts";
+import { WindowObject } from "@/types/types.ts";
 import { getWindowInfos } from "@/composables/windows";
 import WindowCard from "@/components/section/window/WindowCard.vue";
 

@@ -2,7 +2,7 @@
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 
 import { ref, watchEffect } from "vue";
-import { CalendarDay } from "@/types.ts";
+import { CalendarDay } from "@/types/types.ts";
 
 const props = defineProps<CalendarMonthDayDialog>();
 

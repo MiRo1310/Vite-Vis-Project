@@ -7,7 +7,7 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import tableName from "@/components/section/alexa/tableName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { IdToSubscribe } from "@/types.ts";
+import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { JSONToString, stringToJSON } from "@/lib/string.ts";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import CardListing from "../../shared/card/CardListing.vue";
-import { Entries } from "@/types.ts";
+import { Entries } from "@/types/types.ts";
 
 const { heating } = useIobrokerStore();
 

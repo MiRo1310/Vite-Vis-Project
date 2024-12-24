@@ -2,7 +2,7 @@
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
-import { CalendarDay } from "@/types.ts";
+import { CalendarDay } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 
 const { calendar } = storeToRefs(useIobrokerStore());

@@ -1,12 +1,8 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { idToSubscribe } from "../subscribeIds/ids-to-subscribe.ts";
-import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types.ts";
-
-// Konfigurationswerte
-export const IOBROKER_HOST = "192.168.1.81";
-export const IOBROKER_ADMIN_PORT = "8081";
-const IOBROKER_WS_PORT = "8084";
+import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types/types.ts";
+import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 
 let iobrokerStore: any;
 document.addEventListener("DOMContentLoaded", () => {
@@ -15,10 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 export let adminConnection: AdminConnection | undefined = undefined;
 
-export function loadScript(src: string, callback: any) {
+export function loadScript(src: string) {
   const script = document.createElement("script");
   script.src = src;
-  script.onload = () => callback();
+  script.onload = () => init();
   document.body.appendChild(script);
 }
 
@@ -34,8 +30,6 @@ export async function init() {
   if (adminConnection) {
     await adminConnection.startSocket();
     await adminConnection.waitForFirstConnection();
-    // console.log(await adminConnection.value.getEnums());
-    // console.log(await adminConnection.value.getStates());
     useIobrokerStore().setAdminConnection(true);
     subscribeStates(idToSubscribe);
   }

@@ -6,7 +6,7 @@ import { timer, timer1, timer2, timer3, timer4 } from "./timer.ts";
 import { shutterIdsLogo } from "./shutter-ids-logo.ts";
 import { windowOpenClose } from "./window.ts";
 import { pvIds } from "./pv-ids.ts";
-import { IdToSubscribe, Pv, Shutter, Timer1, Timer2, Timer3, Timer4, TimerObject, WindowType } from "@/types.ts";
+import { IdToSubscribe, Pv, Shutter, Timer1, Timer2, Timer3, Timer4, TimerObject, WindowType } from "@/types/types.ts";
 import { Pool, poolIds } from "./pool.ts";
 import { Wetter, wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid, landroid } from "./landroid.ts";

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
-import { CalendarDay } from "@/types.ts";
+import { CalendarDay } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import { stringToJSON } from "@/lib/string.ts";
 

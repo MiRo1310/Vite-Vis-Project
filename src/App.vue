@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import Nav from "./components/layout/Nav.vue";
 import { onMounted, onUnmounted } from "vue";
-import { init, IOBROKER_ADMIN_PORT, IOBROKER_HOST, loadScript } from "@/lib/connecter-to-iobroker.ts";
+import { loadScript } from "@/lib/connecter-to-iobroker.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import AlexaTimer from "@/components/section/app/AlexaTimer.vue";
 import { useTime } from "@/composables/time.ts";
+import { IOBROKER_ADMIN_PORT, IOBROKER_HOST } from "@/config/config.ts";
 
 onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
-  loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`, init);
+  loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`);
 });
 
 onUnmounted(() => {

@@ -1,4 +1,4 @@
-import { IdToSubscribe, Pv } from "@/types.ts";
+import { IdToSubscribe, Pv } from "@/types/types.ts";
 
 export const pvIds: IdToSubscribe<Pv> = {
   objectNameInStore: "pv",

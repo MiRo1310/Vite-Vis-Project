@@ -8,8 +8,8 @@ import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import windowOpen from "@/assets/window_open.png";
-import windowClosed from "@/assets/window_closed.png";
+import windowOpen from "@/public/window_open.png";
+import windowClosed from "@/public/window_closed.png";
 import {
   blinds0,
   blinds10,
@@ -22,8 +22,8 @@ import {
   blinds70,
   blinds80,
   blinds90
-} from "@/assets";
-import { Shutter, WindowType } from "@/types";
+} from "@/public";
+import { Shutter, WindowType } from "@/types/types.ts";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(

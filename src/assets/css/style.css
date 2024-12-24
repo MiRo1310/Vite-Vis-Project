@@ -26,7 +26,9 @@
 
 
 @tailwind utilities;
-
+.flex-between {
+    @apply flex justify-between items-center;
+}
 
 @layer base {
     :root {

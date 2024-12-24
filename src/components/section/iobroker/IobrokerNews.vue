@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { IobrokerLanguages } from "@/types.ts";
+import { IobrokerLanguages } from "@/types/types.ts";
 import { computed } from "vue";
 
 interface NewsFeed {

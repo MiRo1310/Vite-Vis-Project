@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { window_close, window_open } from "@/assets";
+import { window_close, window_open } from "@/public";
 import { onMounted } from "vue";
 
 const { heating } = useIobrokerStore();

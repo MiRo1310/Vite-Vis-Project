@@ -1,4 +1,4 @@
-import { IdToSubscribe, WindowType } from "@/types.ts";
+import { IdToSubscribe, WindowType } from "@/types/types.ts";
 
 export const windowOpenClose: IdToSubscribe<WindowType> = {
   objectNameInStore: "fenster",

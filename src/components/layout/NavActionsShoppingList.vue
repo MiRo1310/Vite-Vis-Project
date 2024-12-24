@@ -8,7 +8,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { ShoppingList } from "@/types.ts";
+import { ShoppingList } from "@/types/types.ts";
 import { stringToJSON } from "@/lib/string.ts";
 
 const iobrokerStore = useIobrokerStore();

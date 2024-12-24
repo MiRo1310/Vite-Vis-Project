@@ -1,4 +1,4 @@
-import { IdToSubscribe, Shutter } from "@/types.ts";
+import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
 export const shutterAutoDownTime: IdToSubscribe<Shutter> = {
   // Zeitversatz Rolladen Auto herunter fahren

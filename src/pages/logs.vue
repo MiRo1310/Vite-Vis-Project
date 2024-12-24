@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IdToSubscribe } from "@/types";
+import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";

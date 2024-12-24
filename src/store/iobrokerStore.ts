@@ -1,5 +1,5 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types";
+import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
@@ -111,7 +111,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       return state.idsToControl;
     },
     getParsedLogs(state) {
-      return computed(():ParsedLogs => {
+      return computed((): ParsedLogs => {
         return {
           error: stringToJSON<Log[]>(state.logs.error?.val as string),
           warn: stringToJSON<Log[]>(state.logs.warning?.val as string),

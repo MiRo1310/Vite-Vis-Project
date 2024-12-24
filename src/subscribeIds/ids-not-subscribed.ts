@@ -1,4 +1,4 @@
-import { NotSubscribedIds } from "@/types.ts";
+import { NotSubscribedIds } from "@/types/types.ts";
 
 export const notSubscribedIds: NotSubscribedIds = {
   esszimmer: { links: { shutterPosition: "0_userdata.0.Rolladen.Esszimmer.Position_anfahren" } },
