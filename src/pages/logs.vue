@@ -90,9 +90,8 @@ function reset() {
   }
   adminConnection?.setState(id, true, false);
 }
-
-
 </script>
+
 <template>
   <div class="relative">
     <Card styling="blue">
@@ -122,6 +121,6 @@ function reset() {
           </div>
         </div>
       </CardContent>
-    </card>
+    </Card>
   </div>
 </template>

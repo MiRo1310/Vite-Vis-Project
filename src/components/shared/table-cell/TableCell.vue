@@ -7,7 +7,7 @@ import TimeText from "@/components/shared/table-cell/TimeText.vue";
 import NumberText from "@/components/shared/table-cell/NumberText.vue";
 
 export type StringOrNumber = string | number;
-export type TableCellType = "bool" | "datetime" | "date" | "time" | "number";
+export type TableCellType = "bool" | "datetime" | "date" | "time" | "number" | "text";
 
 const props = defineProps({
   value: {
@@ -26,27 +26,8 @@ const props = defineProps({
   unit: {
     type: String,
     default: null
-  },
-  replacementForZero: {
-    type: String,
-    default: null
-  },
-  decimal: {
-    type: Boolean,
-    default: null
-  },
-  unitAdditive: {
-    type: String,
-    default: ""
-  },
-  cuttable: {
-    type: Boolean,
-    default: false
-  },
-  copyable: {
-    type: Boolean,
-    default: false
   }
+
 });
 </script>
 
@@ -58,12 +39,7 @@ const props = defineProps({
     <TimeText v-else-if="type === 'time'" :value="value as string" />
     <NumberText
       v-else-if="type === 'number'"
-      :copyable="copyable"
-      :cuttable="cuttable"
-      :decimal="decimal"
-      :replacement-for-zero="replacementForZero"
       :unit="unit"
-      :unit-additive="unitAdditive"
       :value="value as StringOrNumber"
     />
     <p v-else class="text-muted-foreground">
