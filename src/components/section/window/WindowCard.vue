@@ -24,6 +24,7 @@ import {
   blinds90
 } from "@/public";
 import { Shutter, WindowType } from "@/types/types.ts";
+import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
@@ -48,17 +49,9 @@ function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter |
   return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
 }
 
-const getIsWindowOpen = computed(() => {
-  const value = getValue<boolean>(true, props.id, fenster.value);
-  if (!value && value != false) {
-    return false;
-  }
-  return value as boolean;
-});
-
-const getIsSecondWindowOpen = computed(() => {
-  if (!props.id2) return false;
-  const value = getValue<boolean>(true, props.id2, fenster.value);
+const getIsWindowOpen = computed(() => (id: string) => {
+  if (!id) return false;
+  const value = getValue<boolean>(true, id, fenster.value);
   if (!value && value != false) {
     return false;
   }
@@ -69,7 +62,7 @@ const getShutterPosition = computed(() => {
   const value = getValue<number>(true, props.id, rolladen.value);
 
   if (!value && value != 0) {
-    return "n/a ";
+    return "n/a";
   }
   return value;
 });
@@ -123,16 +116,16 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       <div class="flex items-center justify-between">
         <div class="flex">
           <div>
-            <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
+            <img v-show="getIsWindowOpen(id)" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsWindowOpen(id)" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
           <div v-if="id2">
-            <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
+            <img v-show="getIsWindowOpen(id2)" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
+            <img v-show="!getIsWindowOpen(id2)" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
           </div>
         </div>
         <WindowCardOpenClose
-          v-if="!shutter" class="text" :window-open="id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
+          v-if="!shutter" class="text" :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)
           "
         />
       </div>
@@ -141,12 +134,10 @@ const updateHandler = (value: number | string | boolean, id: string) => {
           <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class="w-full">
             <WindowCardOpenClose
-              :window-open="id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
+              :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)
               " class="text"
             />
-            <p class="text" :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
-              Rollade {{ getShutterPosition }}% offen
-            </p>
+            <ShutterLabel :get-shutter-position="getShutterPosition" />
 
             <div class="absolute top-2 right-2">
               <div class="flex items-center justify-between">
