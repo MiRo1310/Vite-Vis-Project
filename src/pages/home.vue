@@ -14,7 +14,7 @@ import Timer from "@/components/section/home/Timer.vue";
   <div class="flex space-x-1 space-y-1 -mt-1 -ml-1 flex-wrap">
     <div class="min-w-36 w-auto mt-1 ml-1 flex flex-col">
       <Time />
-      <Caller class="bg-color__default w-full flex-1 mt-1" />
+      <Caller class="w-full flex-1 mt-1" />
     </div>
     <Info class="min-w-56" />
     <Trash class="col-span-4 min-w-[350px]" />
