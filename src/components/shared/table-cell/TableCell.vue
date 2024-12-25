@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from "vue";
+import { HTMLAttributes } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import DateTimeText from "@/components/shared/table-cell/DateTimeText.vue";
 import DateText from "@/components/shared/table-cell/DateText.vue";
@@ -9,26 +9,12 @@ import NumberText from "@/components/shared/table-cell/NumberText.vue";
 export type StringOrNumber = string | number;
 export type TableCellType = "bool" | "datetime" | "date" | "time" | "number" | "text";
 
-const props = defineProps({
-  value: {
-    type: [String, Number, Boolean, null] as PropType<boolean | number | string | null>,
-    default: null
-  },
-  class: {
-    type: String,
-    default: ""
-  },
-  type: {
-    type: String as PropType<TableCellType>,
-    required: false,
-    default: "text"
-  },
-  unit: {
-    type: String,
-    default: null
-  }
-
-});
+const props = defineProps<{
+  value: string | number | boolean | null | undefined,
+  class?: HTMLAttributes["class"],
+  type: TableCellType,
+  unit?: string
+}>();
 </script>
 
 <template>

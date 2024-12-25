@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import { BatteryFull, Blinds, CalendarDays, CircleDot, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
+import { BatteryFull, CalendarDays, CircleDot, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
 import NavActions from "@/components/layout/NavActions.vue";
 
 const buttons = [
@@ -8,11 +8,6 @@ const buttons = [
     icon: Home,
     text: "Home",
     link: "/"
-  },
-  {
-    icon: Blinds,
-    text: "Rolladen Fenster",
-    link: "/fenster"
   },
   {
     icon: CalendarDays,

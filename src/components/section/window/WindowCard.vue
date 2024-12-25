@@ -4,12 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose.vue";
+import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import windowOpen from "@/public/window_open.png";
-import windowClosed from "@/public/window_closed.png";
 import {
   blinds0,
   blinds10,
@@ -25,6 +23,7 @@ import {
 } from "@/public";
 import { Shutter, WindowType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
+import WindowImage from "@/components/section/window/WindowImage.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
@@ -37,6 +36,7 @@ const props = defineProps<{
   id: string,
   id2?: string,
   class?: HTMLAttributes["class"]
+  door: boolean
 }>();
 
 function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter | object, subKey?: string) {
@@ -49,7 +49,7 @@ function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter |
   return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
 }
 
-const getIsWindowOpen = computed(() => (id: string) => {
+const getIsWindowOpen = computed(() => (id: string | undefined) => {
   if (!id) return false;
   const value = getValue<boolean>(true, id, fenster.value);
   if (!value && value != false) {
@@ -113,30 +113,20 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       </CardTitle>
     </CardHeader>
     <CardContent class="px-2 pb-2">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center">
         <div class="flex">
-          <div>
-            <img v-show="getIsWindowOpen(id)" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsWindowOpen(id)" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
-          </div>
-          <div v-if="id2">
-            <img v-show="getIsWindowOpen(id2)" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsWindowOpen(id2)" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
-          </div>
+          <WindowImage :exist="!!id" :is-open="getIsWindowOpen(id)" />
+          <WindowImage :exist="!!id2" :is-open="getIsWindowOpen(id2)" />
         </div>
-        <WindowCardOpenClose
-          v-if="!shutter" class="text" :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)
-          "
+        <WindowCardOpenCloseText
+          :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id) "
+          :door
         />
       </div>
       <div v-if="shutter">
-        <div class="flex">
+        <div class="flex items-center">
           <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class="w-full">
-            <WindowCardOpenClose
-              :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)
-              " class="text"
-            />
             <ShutterLabel :get-shutter-position="getShutterPosition" />
 
             <div class="absolute top-2 right-2">

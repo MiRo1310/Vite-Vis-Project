@@ -58,6 +58,7 @@ export interface WindowObject {
   shutter: boolean;
   id: string;
   id2?: string;
+  door?: boolean;
 }
 
 export interface Shutter {

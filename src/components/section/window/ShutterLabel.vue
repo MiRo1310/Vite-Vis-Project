@@ -10,7 +10,7 @@ const text = {
 </script>
 
 <template>
-  <p :class="['text',getShutterPosition === 'n/a' ? 'text-bounce' : '']">
+  <p :class="['text text__container',getShutterPosition === 'n/a' ? 'text-bounce' : '']">
     {{ text[getShutterPosition as keyof typeof text] || `Rollade ${getShutterPosition}% offen` }}
   </p>
 </template>
@@ -23,5 +23,9 @@ const text = {
 
 .text-bounce {
   @apply animate-bounce text-red-500;
+}
+
+.text__container {
+  @apply bg-muted-foreground/40 inline-block px-1 rounded-sm
 }
 </style>

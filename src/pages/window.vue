@@ -12,7 +12,7 @@ const { fensterOffen } = storeToRefs(iobrokerStore);
 const { getOpenWindows } = getWindowInfos();
 
 const windows: WindowObject[] = [
-  { name: "Küche Tür", shutter: true, id: "kueche,tuer" },
+  { name: "Küche Tür", shutter: true, id: "kueche,tuer", door: true },
   { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
   { name: "Esszimmer", shutter: true, id: "esszimmer,links", id2: "esszimmer,rechts" },
   { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmer,ecke" },
@@ -20,13 +20,14 @@ const windows: WindowObject[] = [
   { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmer,mittig" },
   { name: "Wohnzimmer rechts", shutter: true, id: "wohnzimmer,rechts" },
   { name: "Schlafzimmer Fenster", shutter: true, id: "schlafen,fenster" },
-  { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer" },
+  { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer", door: true },
   { name: "Kinderzimmer", shutter: true, id: "kinderzimmer,fenster" },
   { name: "Bad", shutter: true, id: "bad,fenster" },
   { name: "Gästezimmer", shutter: true, id: "gaestezimmer,fenster" },
   { name: "Abstellraum OG links", shutter: true, id: "abstellraumog,links" },
   { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumog,rechts" },
-  { name: "Kellertür", shutter: false, id: "keller,tuer" },
+  { name: "Haustür", shutter: false, id: "haustür,tuer", door: true },
+  { name: "Kellertür", shutter: false, id: "keller,tuer", door: true },
   { name: "Keller Flur", shutter: false, id: "keller,flurFenster" },
   { name: "Büro Keller", shutter: false, id: "buero,fenster" },
   { name: "Gäste-WC links", shutter: false, id: "gaesteWc,links" },
@@ -40,7 +41,7 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div class="lg:fixed right-1 left-1 z-50">
+  <div class="lg:fixed right-1 left-1 top-0 border-t-4  border-t-backgroundColor z-50 ">
     <Card styling="blue">
       <CardHeader class="p-1">
         <CardTitle class="flex justify-between">
@@ -66,6 +67,7 @@ const windows: WindowObject[] = [
   <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
     <WindowCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
+      :door="card.door||false"
       :title="card.name"
       :id2="card.id2"
     />
