@@ -65,10 +65,10 @@ const days: Days = {
 </script>
 <template>
   <Card styling="light">
-    <CardHeader class="mx-2 mt-2">
+    <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>
-    <CardContent class="grid grid-cols-2 gap-2 mt-2">
+    <CardContent class="grid grid-cols-2 gap-2">
       <div v-for="(event, index) in trashEvents" :key="index" class="bg-white p-2 shadow-lg">
         <div class="flex justify-between  border-b-color__default border-b-2">
           <p class="text-accent-foreground/40 font-bold">
