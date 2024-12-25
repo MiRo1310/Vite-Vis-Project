@@ -14,7 +14,7 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
 </script>
 
 <template>
-  <Card :class="$props.class" styling="blue" @click="useAppStore().toggleTimerVisibility()">
+  <Card :class="$props.class" styling="light" @click="useAppStore().toggleTimerVisibility()">
     <CardHeader>
       <CardTitle>
         <p>Alexa Timer</p>
@@ -23,10 +23,10 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
     <CardContent class="flex flex-wrap -mx-2 min-w-[400px]">
       <div
         v-for="(singleTimer, i) in timersArray" :key="i"
-        class="rounded-md min-w-[180px] flex-1 max-w-1/2 m-1 flex px-2"
+        class="min-w-[180px] flex-1 max-w-1/2 m-1 flex px-2 default_card"
       >
         <div class="w-full">
-          <h1 class="text-lg text-gray-500 ">
+          <h1 class="text-lg text-gray-500 line">
             Timer {{ i + 1 }}
           </h1>
           <div class="w-full text-xs">

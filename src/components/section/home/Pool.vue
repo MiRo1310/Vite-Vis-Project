@@ -29,7 +29,7 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
-    { title: "Heizung ist aktiv", type: "bool", value: pool.value.consumption?.val || 0 > 100 },
+    { title: "Heizung erreichbar", type: "bool", value: pool.value.consumption?.val || 0 > 100 },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
@@ -83,7 +83,7 @@ const getMode = (mode: string) => {
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between">
@@ -94,7 +94,7 @@ const getMode = (mode: string) => {
         </div>
       </CardTitle>
     </CardHeader>
-    <CardContent>
+    <CardContent class="bg-white p-2 shadow-lg mx-2 mb-2">
       <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
         <span
           :class="{

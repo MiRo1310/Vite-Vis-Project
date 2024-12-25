@@ -112,7 +112,7 @@ const infos = computed(() => [
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <div class="flex justify-between">
         <div class="w-12">
@@ -128,7 +128,7 @@ const infos = computed(() => [
         </div>
       </div>
     </CardHeader>
-    <CardContent class="text-accent-foreground/50 text-xs font-bold">
+    <CardContent class="text-accent-foreground/50 text-xs font-bold bg-white p-2 shadow-lg mx-2 mb-2">
       <div
         v-for="(info, index) in infos" :key="index" :class="{
           'flex justify-between items-center text-accent-foreground/50 font-bold w-full': true,

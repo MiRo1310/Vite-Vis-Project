@@ -24,6 +24,6 @@ import Timer from "@/components/section/home/Timer.vue";
     <LawnMover class="col-span-3" />
     <Calendar class="col-span-5" />
     <Timer class="flex-1 max-w-[800px]" />
-    <div class="flex-1 bg-color__default" />
+    <div class="flex-1" />
   </div>
 </template>

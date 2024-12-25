@@ -28,7 +28,9 @@ const lastCallDuration = computed(() => {
   <Card styling="light" :class="[$props.class , isCalling]">
     <CardContent>
       <div class="callee__container">
-        <p>Anrufer:</p>
+        <p class="line">
+          Anrufer:
+        </p>
         <div v-if="phone.ringing?.val" class="caller">
           <p>{{ phone.callerName?.val }}</p>
           <p>{{ phone.caller?.val }}</p>
@@ -36,7 +38,9 @@ const lastCallDuration = computed(() => {
         </div>
       </div>
       <div class="callee__container">
-        <p>Letzter Anruf von:</p>
+        <p class="line">
+          Letzter Anruf von:
+        </p>
         <div class="caller">
           <p>{{ phone.lastCallerName?.val }}</p>
           <p>{{ phone.lastCaller?.val }}</p>
