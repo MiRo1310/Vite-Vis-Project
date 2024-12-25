@@ -92,6 +92,6 @@ const stopTimer = (index: number) => {
 }
 
 .card__timer {
-  @apply bg-backgroundCards rounded-md min-w-[40%] flex-1 max-w-[50%] m-1 flex p-2 relative
+  @apply bg-color__default rounded-md min-w-[40%] flex-1 max-w-[50%] m-1 flex p-2 relative
 }
 </style>

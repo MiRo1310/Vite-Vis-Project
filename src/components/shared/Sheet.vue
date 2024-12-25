@@ -18,7 +18,7 @@ withDefaults(defineProps<{ styling?: keyof typeof style, showFooter?: boolean }>
 
 const style = {
   default: "",
-  blue: "bg-backgroundCards"
+  blue: "bg-color__default"
 };
 </script>
 

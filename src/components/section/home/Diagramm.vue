@@ -15,7 +15,7 @@ const diagramms = [
 
 <template>
   <keep-alive>
-    <Card styling="blue" class="flex-row p-1 bg-backgroundCards max-w-[14.3rem]">
+    <Card styling="blue" class="flex-row p-1 bg-color__default max-w-[14.3rem]">
       <div class="flex flex-wrap ">
         <iframe
           v-for="(diagramm, index) in diagramms" :key="index"

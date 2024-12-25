@@ -72,7 +72,7 @@ const activeClass = computed(() => (i: number) => {
 </template>
 <style scoped lang="postcss">
 .day__container {
-  @apply bg-backgroundCards pt-2 flex-1 mb-1;
+  @apply bg-color__default pt-2 flex-1 mb-1;
 }
 
 .day__label {

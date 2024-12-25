@@ -14,7 +14,7 @@ import Timer from "@/components/section/home/Timer.vue";
   <div class="flex space-x-1 space-y-1 -mt-1 -ml-1 flex-wrap">
     <div class="min-w-36 w-auto mt-1 ml-1 flex flex-col">
       <Time />
-      <Caller class="bg-backgroundCards w-full flex-1 mt-1" />
+      <Caller class="bg-color__default w-full flex-1 mt-1" />
     </div>
     <Info class="min-w-56" />
     <Trash class="col-span-4 min-w-[350px]" />
@@ -24,6 +24,6 @@ import Timer from "@/components/section/home/Timer.vue";
     <LawnMover class="col-span-3" />
     <Calendar class="col-span-5" />
     <Timer class="flex-1 max-w-[800px]" />
-    <div class="flex-1 bg-backgroundCards" />
+    <div class="flex-1 bg-color__default" />
   </div>
 </template>

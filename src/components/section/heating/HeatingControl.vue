@@ -16,7 +16,7 @@ import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
         <HeatingControlWindowStatus />
         <HeatingControlRoomStatus />
       </div>
-      <HeatingControlRoom class="mt-6 col-span-4 bg-backgroundCards mb-1" />
+      <HeatingControlRoom class="mt-6 col-span-4 bg-color__default mb-1" />
     </div>
     <HeatingControlPeriod />
   </div>

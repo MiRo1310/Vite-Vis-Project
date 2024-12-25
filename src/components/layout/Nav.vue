@@ -70,7 +70,7 @@ const buttons = [
     <router-link v-for="(button, index) in buttons" :key="index" :to="button.link">
       <Button
         variant="outline"
-        class="w-16 h-16 mb-1 p-0 cursor-pointer mt-1 text-accent-foreground/80 ml-1 bg-backgroundCards border-none rounded-none"
+        class="w-16 h-16 mb-1 p-0 cursor-pointer mt-1 text-accent-foreground/80 ml-1 bg-color__default border-none rounded-none"
       >
         <component :is="button.icon" class="w-10 h-10" />
       </Button>

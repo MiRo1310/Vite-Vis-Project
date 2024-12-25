@@ -8,7 +8,8 @@ const props = withDefaults(defineProps<{
 
 const style = {
   default: "rounded-xl border bg-card text-card-foreground shadow",
-  blue: "bg-backgroundCards"
+  blue: "bg-color__default",
+  light: "border bg-muted text-card-foreground shadow"
 };
 </script>
 
