@@ -14,6 +14,8 @@ import { stringToJSON } from "@/lib/string.ts";
 import { PhoneStates } from "@/subscribeIds/phone.ts";
 import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
 import { AlexaAction } from "@/pages/alexa.vue";
+import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
+
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -45,6 +47,8 @@ export interface IoBrokerStoreState {
   phone: PhoneStates;
   batteries: BatteriesType;
   alexaAction: AlexaAction;
+  lights: LightTypes;
+  lightsAdditive: LightTypesAdditive;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
@@ -92,7 +96,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     infos: {} as Infos,
     phone: {} as PhoneStates,
     batteries: {} as BatteriesType,
-    alexaAction: {} as AlexaAction
+    alexaAction: {} as AlexaAction,
+    lights: {} as LightTypes,
+    lightsAdditive: {} as LightTypesAdditive
   }),
   getters: {
     isAdminConnected(state) {
