@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import { BatteryFull, CalendarDays, CircleDot, Heater, Home, Info, Logs, PlugZap } from "lucide-vue-next";
+import { BatteryFull, CalendarDays, CircleDot, Heater, Home, Info, LampCeiling, Logs, PlugZap } from "lucide-vue-next";
 import NavActions from "@/components/layout/NavActions.vue";
 
 const buttons = [
@@ -18,11 +18,11 @@ const buttons = [
     text: "Battery",
     link: "/battery"
   },
-  // {
-  //   icon: LampCeiling,
-  //   text: "Licht",
-  //   link: "/licht",
-  // },
+  {
+    icon: LampCeiling,
+    text: "Licht",
+    link: "/light"
+  },
   // {
   //   icon: Plug,
   //   text: "Steckdosen",

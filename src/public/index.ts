@@ -13,4 +13,6 @@ export { default as landroidVision } from "@/public/landroidVision.jpg";
 
 export { default as window_open } from "@/public/window_open.png";
 export { default as window_close } from "@/public/window_closed.png";
+export { default as light_on } from "@/public/light_on.svg";
+export { default as light_off } from "@/public/light_off.svg";
 
