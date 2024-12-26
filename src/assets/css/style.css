@@ -2,7 +2,7 @@
 @layer base {
     /* CSS für die Scrollleiste */
     ::-webkit-scrollbar {
-        width: 0px; /* Breite der Scrollleiste */
+        width: 0; /* Breite der Scrollleiste */
 
     }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import * as icons from "@/assets/img/svg/";
+import * as icons from "@/assets/img/svg";
 
 const props = defineProps<{ name: keyof typeof icons }>();
 

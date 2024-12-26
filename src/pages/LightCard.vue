@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card } from "@/components/shared/card";
-import Svg from "@/components/shared/Svg.vue";
+import Svg from "@/components/shared/image/Svg.vue";
 import { StoreValue } from "@/store/iobrokerStore.ts";
 import { computed, HTMLAttributes } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
@@ -49,9 +49,4 @@ function handleClickLight() {
 .light__svg {
   @apply w-12 h-12
 }
-
-.light__on {
-  @apply animate-pulse text-yellow-400
-}
-
 </style>

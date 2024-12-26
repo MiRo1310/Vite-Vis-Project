@@ -6,7 +6,7 @@ import { CalendarDay } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 
 const { calendar } = storeToRefs(useIobrokerStore());
-const props = defineProps<{ dayIndex: number, month: number, year: number }>();
+const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();
 
 const getDayValue = computed(() => {
   if (!calendar.value.table) {
@@ -66,15 +66,6 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
   );
 }
 
-const isToday = computed(() => {
-  const today = new Date();
-  return (
-    today.getDate() - 1 === props.dayIndex &&
-    today.getMonth() === props.month &&
-    today.getFullYear() === props.year
-  );
-});
-
 function getColor(event: CalendarDay): string {
   if (event.event.includes("Melanie")) {
     return "bg-green-200";
@@ -92,12 +83,14 @@ const open = ref(false);
 </script>
 <template>
   <div
-    :class="{ 'h-full': true, 'border-blue-500 border-2': isToday }"
+    :class="{ 'h-full': true,}"
     @click="open = !open"
   >
-    <span :class="{ 'm-1 ml-1 pb-[1px] px-1 rounded-md': true, 'bg-blue-300': isToday }">
-      {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
-    </span>
+    <p class="line">
+      <span :class="{ 'ml-1 pb-[1px] px-1 rounded-md inline-block': true, 'bg-blue-300 text-xs': isToday }">
+        {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
+      </span>
+    </p>
     <div class=" overflow-auto max-h-[calc(6rem-22px)]">
       <p
         v-for="(event, index) in getDayValue" :key="index"
