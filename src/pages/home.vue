@@ -6,7 +6,7 @@ import LawnMover from "@/components/section/home/LawnMover.vue";
 import Pool from "@/components/section/home/Pool.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
-import Diagramm from "@/components/section/home/Diagramm.vue";
+import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
 </script>
 
@@ -18,7 +18,7 @@ import Timer from "@/components/section/home/Timer.vue";
     </div>
     <Info class="min-w-56" />
     <Trash class="col-span-4 min-w-[350px]" />
-    <Diagramm />
+    <Pv />
 
     <Pool class="col-span-4 flex-1" />
     <LawnMover class="col-span-3" />

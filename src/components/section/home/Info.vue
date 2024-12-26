@@ -16,7 +16,7 @@ useDynamicSubscribe(infoStates);
 
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs, pv } = ioBrokerStore;
+const { getParsedLogs } = ioBrokerStore;
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const { hour } = useTime();
@@ -34,11 +34,8 @@ const infos = computed(() => [[
 ],
   [
     { title: "Fenster offen", value: getOpenWindows, bounce: true }
-  ],
-  [
-    { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" },
-    { title: "Genutzter Strom", value: ((pv?.savedMoney?.val || 0) - (pv?.profit?.val || 0)).toFixed(2), unit: "€" },
-    { title: "Ersparnis", value: pv?.savedMoney?.val, unit: "€" }]]);
+  ]
+]);
 
 </script>
 <template>
