@@ -65,7 +65,7 @@ const columns: DatatableColumns[] = [
 </script>
 
 <template>
-  <Card :class="['inline-block', $props.class]" styling="blue">
+  <Card :class="['inline-block', $props.class]" styling="light">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between items-center">
@@ -75,7 +75,9 @@ const columns: DatatableColumns[] = [
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <TableBasic :columns="getColumns(columns)" :data="availableUpdates" />
+      <div class="default_card">
+        <TableBasic :columns="getColumns(columns)" :data="availableUpdates" />
+      </div>
     </CardContent>
   </Card>
 </template>

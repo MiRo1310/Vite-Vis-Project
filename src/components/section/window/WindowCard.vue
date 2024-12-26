@@ -106,10 +106,12 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 };
 </script>
 <template>
-  <Card class="window__card" :class="`${props.class}`" styling="blue">
+  <Card class="window__card" :class="`${props.class}`" styling="light">
     <CardHeader class="pb-0 pt-2 px-2">
       <CardTitle class="flex">
-        <p>{{ title }}</p>
+        <p class="line px-2">
+          {{ title }}
+        </p>
       </CardTitle>
     </CardHeader>
     <CardContent class="px-2 pb-2">
@@ -140,10 +142,11 @@ const updateHandler = (value: number | string | boolean, id: string) => {
                     Auto runter
                   </p>
                 </div>
-                <div class="relative">
+                <div class="relative line">
                   <Input
-                    type="number" step="1" class="w-[5.8rem] pr-8"
+                    type="number" step="1"
                     :model-value="values<number>('Delay',shutterAutoDownTime)?.val"
+
                     @update:model-value="updateHandler($event, values<number>('Delay',shutterAutoDownTime)?.id||'')"
                   />
                   <div class="absolute text-sm top-2 right-2">
@@ -161,7 +164,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
                     Auto hoch
                   </p>
                 </div>
-                <p>
+                <p class="line">
                   <Input
                     type="time" :model-value="values<number>('AutoUpTime',shutterAutoUp)?.val"
                     @update:model-value="updateHandler($event, values<number>('AutoUpTime',shutterAutoUp)?.id||'')"
@@ -178,8 +181,12 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </template>
 
 <style lang="postcss" scoped>
+input {
+  @apply w-[5.2rem] pr-8 border-none shadow-none
+}
+
 .window__card {
-  @apply min-w-[32.5%] flex-1 relative
+  @apply min-w-[32.5%] flex-1 relative bg-white
 }
 
 .window__card:first-child {

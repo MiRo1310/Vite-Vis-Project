@@ -12,7 +12,7 @@ const { lights, lightsAdditive } = useIobrokerStore();
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <CardTitle>Licht</CardTitle>
     </CardHeader>

@@ -18,7 +18,8 @@ withDefaults(defineProps<{ styling?: keyof typeof style, showFooter?: boolean }>
 
 const style = {
   default: "",
-  blue: "bg-color__default"
+  blue: "bg-color__default",
+  light: "bg-gray-200 p-2"
 };
 </script>
 

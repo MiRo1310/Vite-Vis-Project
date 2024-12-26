@@ -29,7 +29,7 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
-    { title: "Heizung erreichbar", type: "bool", value: pool.value.consumption?.val || 0 > 100 },
+    { title: "Heizung aktiv", type: "bool", value: pool.value.consumption?.val || 0 > 100 },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
@@ -37,9 +37,9 @@ const items = computed(() => {
     },
     { title: "Modus", type: "text", value: getMode(pool.value.mode?.val || "") },
     {
-      title: "Pool Heizung Energie Verbrauch",
+      title: "Verbrauch",
       type: "number",
-      value: pool.value.consumption?.val || 0,
+      value: pool.value.status?.val ? pool.value.consumption?.val || 0 : 0,
       unit: "W"
     },
     {
@@ -52,13 +52,13 @@ const items = computed(() => {
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: pool.value.tempIn?.val || 0,
+      value: pool.value.status?.val ? pool.value.tempIn?.val || 0 : 0,
       unit: "°C"
     },
     {
       title: "Temperatur Ausgang",
       type: "text",
-      value: pool.value.tempOut?.val || 0,
+      value: pool.value.status?.val ? pool.value.tempOut?.val || 0 : 0,
       unit: "°C"
     },
     { title: "Lüfterdrehzahl", type: "text", value: pool.value.rotor?.val || 0, unit: "Rpm" }
@@ -103,12 +103,14 @@ const getMode = (mode: string) => {
           }"
         >{{ item.title }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
-        <InputUnit
-          v-else-if="item.type === 'input'"
-          class="w-16 text-accent-foreground/50 text-xs font-bold border-0 border-b shadow-none rounded-none bg-white"
-          type="number" :model-value="item?.value.toString()" :unit="item.unit"
-          @update:model-value="(value: string | number) => item && item.function && item.function(value)"
-        />
+        <div v-else-if="item.type === 'input'" class="line">
+          <InputUnit
+
+            class="w-16 text-accent-foreground/50 text-xs font-bold border-0 shadow-none rounded-none bg-white"
+            type="number" :model-value="item?.value.toString()" :unit="item.unit"
+            @update:model-value="(value: string | number) => item && item.function && item.function(value)"
+          />
+        </div>
         <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold">{{
           parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
         </span>

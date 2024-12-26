@@ -94,7 +94,7 @@ function reset() {
 
 <template>
   <div class="relative">
-    <Card styling="blue">
+    <Card styling="light">
       <CardHeader>
         <CardTitle>Logs</CardTitle>
         <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>
@@ -112,7 +112,7 @@ function reset() {
         </div>
       </CardHeader>
       <CardContent class="h-[86vh]">
-        <div class="max-h-[86vh] overflow-auto  ">
+        <div class="max-h-[86vh] overflow-auto default_card ">
           <div v-if="!getParsedLogs[selected]?.length">
             Es sind keine Logs vorhanden
           </div>

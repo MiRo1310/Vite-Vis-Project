@@ -42,7 +42,6 @@ async function getAlexaEnum(): Promise<any[]> {
 
 const getAlexInfos = async (id: string) => {
   const res = await adminConnection?.getObject(id);
-  console.log(res);
   return { name: res?.common.name, speak: `${res._id}.Commands.speak` };
 };
 
@@ -145,14 +144,16 @@ const columns: DatatableColumns[] = [
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <CardTitle>
         <p>Alexa Dots</p>
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaNames" />
+      <div class="default_card">
+        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaNames" />
+      </div>
     </CardContent>
   </Card>
 </template>

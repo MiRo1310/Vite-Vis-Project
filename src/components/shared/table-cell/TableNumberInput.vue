@@ -27,11 +27,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Input
-    class="w-24"
-    :model-value="value" type="number" :step="props.customValue.step" :min="props.customValue.min"
-    :default-value="props.customValue.defaultValue"
-    :max="props.customValue.max"
-    @update:model-value="update($event)"
-  />
+  <div class="line">
+    <Input
+      class="border-none shadow-none w-full"
+      :model-value="value" type="number" :step="props.customValue.step" :min="props.customValue.min"
+      :default-value="props.customValue.defaultValue"
+      :max="props.customValue.max"
+      @update:model-value="update($event)"
+    />
+  </div>
 </template>

@@ -29,14 +29,16 @@ const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]
 </script>
 
 <template>
-  <Card class="flex-1" styling="blue">
+  <Card class="flex-1" styling="light">
     <CardHeader>
       <CardTitle>
         News
       </CardTitle>
     </CardHeader>
-    <CardContent class="max-h-56 overflow-auto">
-      <TableBasic :columns="getColumns(columns)" :data="json" />
+    <CardContent class="max-h-full overflow-auto">
+      <div class="default_card">
+        <TableBasic :columns="getColumns(columns)" :data="json" />
+      </div>
     </CardContent>
   </Card>
 </template>

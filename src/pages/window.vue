@@ -42,7 +42,7 @@ const windows: WindowObject[] = [
 </script>
 <template>
   <div class="lg:fixed right-1 left-1 top-0 border-t-4  border-t-backgroundColor z-50 ">
-    <Card styling="blue">
+    <Card styling="light">
       <CardHeader class="p-1">
         <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>

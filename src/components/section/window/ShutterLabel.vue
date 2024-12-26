@@ -26,6 +26,6 @@ const text = {
 }
 
 .text__container {
-  @apply bg-muted-foreground/40 inline-block px-1 rounded-sm
+  @apply inline-block px-1 rounded-sm
 }
 </style>

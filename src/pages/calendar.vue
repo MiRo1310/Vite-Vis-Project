@@ -11,7 +11,7 @@ const year = ref(0);
 
 const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 
-const isToday = computed(() => (i) => {
+const isToday = computed(() => (i: number) => {
   const today = new Date();
   return (
     today.getDate() - 1 === i &&

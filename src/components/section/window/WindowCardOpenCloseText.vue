@@ -29,7 +29,7 @@ watch(() => props.windowOpen, (value) => {
     </p>
     <p
       v-show="!isWindowOpen"
-      class="text-green-500 text__container"
+      class=" text__container"
     >
       {{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen
     </p>
@@ -41,6 +41,6 @@ watch(() => props.windowOpen, (value) => {
 }
 
 .text__container {
-  @apply bg-muted text-xs inline-block px-1 rounded-sm ml-1
+  @apply bg-green-600 text-white text-xs inline-block px-1 rounded-sm ml-1
 }
 </style>

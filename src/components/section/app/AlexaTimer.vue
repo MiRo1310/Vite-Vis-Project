@@ -33,12 +33,12 @@ const stopTimer = (index: number) => {
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="flex flex-wrap px-3 pt-0 pb-3">
-      <div v-for="(singleTimer, i) in timersArray" :key="i" class="card__timer">
-        <Button class="w-8 h-8 p-0 absolute right-2" @click="stopTimer(i)">
+      <div v-for="(singleTimer, i) in timersArray" :key="i" class="card__timer default_card">
+        <Button class="w-6 h-6 p-0 absolute right-2" @click="stopTimer(i)">
           <X />
         </Button>
         <div class="w-full">
-          <h1 class="text-xl text-gray-500 h-8">
+          <h1 class="text-xl text-gray-500 h-8 line">
             Timer {{ i + 1 }}
           </h1>
           <div class="flex-between mt-2 text-xs">
@@ -92,6 +92,6 @@ const stopTimer = (index: number) => {
 }
 
 .card__timer {
-  @apply bg-color__default rounded-md min-w-[40%] flex-1 max-w-[50%] m-1 flex p-2 relative
+  @apply min-w-[40%] flex-1 max-w-[50%] m-1 flex p-2 relative
 }
 </style>

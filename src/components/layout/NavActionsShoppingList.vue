@@ -23,7 +23,7 @@ const removeItem = (id: string) => {
 };
 </script>
 <template>
-  <Card class="h-[90%] overflow-y-auto" styling="blue">
+  <Card class="h-[90%] overflow-y-auto bg-white p-2 m-0" styling="light">
     <Table>
       <TableHeader>
         <TableRow>
