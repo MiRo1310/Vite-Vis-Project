@@ -23,13 +23,13 @@ watch(() => props.windowOpen, (value) => {
   <div v-else>
     <p
       v-show="isWindowOpen"
-      class="text-destructive text__container"
+      class="text-destructive text__container bg-destructive"
     >
       {{ door ? "Die Tür" : "Das Fenster" }} ist offen
     </p>
     <p
       v-show="!isWindowOpen"
-      class=" text__container"
+      class="text__container bg-green-600"
     >
       {{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen
     </p>
@@ -41,6 +41,6 @@ watch(() => props.windowOpen, (value) => {
 }
 
 .text__container {
-  @apply bg-green-600 text-white text-xs inline-block px-1 rounded-sm ml-1
+  @apply text-white text-xs inline-block px-1 rounded-sm ml-1
 }
 </style>

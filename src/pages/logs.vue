@@ -97,18 +97,21 @@ function reset() {
     <Card styling="light">
       <CardHeader>
         <CardTitle>Logs</CardTitle>
-        <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>
-        <div class="flex flex-wrap space-x-2 absolute right-6">
-          <Button variant="outline" size="sm" class="mr-5" @click="reset">
-            Reset
-          </Button>
-          <Button
-            v-for="button in buttons" :key="button.val" variant="outline" size="sm"
-            :class="[button.class, 'w-24 relative']" @click="selected=button.val"
-          >
-            {{ button.label }}
-            <Badge :value="button.count as number" class="absolute -right-1 -top-1" />
-          </Button>
+
+        <div class="flex-between flex-wrap space-x-2 ">
+          <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>
+          <div>
+            <Button variant="outline" size="sm" class="mr-5" @click="reset">
+              Reset
+            </Button>
+            <Button
+              v-for="button in buttons" :key="button.val" variant="outline" size="sm"
+              :class="[button.class, 'w-24 relative ml-2']" @click="selected=button.val"
+            >
+              {{ button.label }}
+              <Badge :value="button.count as number" class="absolute -right-1 -top-1" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent class="h-[86vh]">

@@ -30,7 +30,7 @@ export const lightStates: IdToSubscribe<LightTypes>[] = [
   {
     objectNameInStore: "lightsAdditive",
     value: [
-      { id: "Wohnzimmer Steckdose", firstKey: "Wohnzimmer_Ecklampe" }
+      { id: "s7.2.DBs.DB1.Q11", firstKey: "Wohnzimmer_Ecklampe" }
     ]
   }
 ];

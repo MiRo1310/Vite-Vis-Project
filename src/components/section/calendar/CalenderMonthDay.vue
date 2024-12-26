@@ -37,9 +37,6 @@ function isDateBetween(day: CalendarDay): boolean | undefined {
 }
 
 function isSameDay(start: Date, end: Date): boolean {
-  if (!props.dayIndex) {
-    return false;
-  }
   return start.getDate() <= props.dayIndex + 1 && end.getDate() >= props.dayIndex + 1;
 }
 
@@ -58,9 +55,6 @@ function isSameYear(start: Date, end: Date): boolean {
 }
 
 function isNotStartAtMidNight(date: Date, param: number): boolean {
-  if (!props.dayIndex) {
-    return false;
-  }
   return !(
     date.getDate() === props.dayIndex + param && date.toLocaleTimeString() === "00:00:00"
   );

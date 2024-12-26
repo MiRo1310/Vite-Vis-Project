@@ -108,7 +108,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 <template>
   <Card class="window__card" :class="`${props.class}`" styling="light">
     <CardHeader class="pb-0 pt-2 px-2">
-      <CardTitle class="flex">
+      <CardTitle class="flex bg-white">
         <p class="line px-2">
           {{ title }}
         </p>

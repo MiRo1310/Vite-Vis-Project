@@ -49,4 +49,8 @@ function handleClickLight() {
 .light__svg {
   @apply w-12 h-12
 }
+
+.light__on {
+  @apply animate-pulse text-yellow-400
+}
 </style>

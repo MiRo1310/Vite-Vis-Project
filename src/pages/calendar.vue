@@ -14,7 +14,7 @@ const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Sa
 const isToday = computed(() => (i: number) => {
   const today = new Date();
   return (
-    today.getDate() - 1 === i &&
+    today.getDate() - 1 === i - 1 &&
     today.getMonth() === month.value &&
     today.getFullYear() === year.value
   );
@@ -30,7 +30,7 @@ const isToday = computed(() => (i: number) => {
       <CalendarMonthSelector v-model:days-in-month="daysInMonth" v-model:month="month" v-model:year="year" />
       <div class="grid grid-cols-7 mt-2 -mx-1">
         <div v-for="i in 7" :key="i" class="h-6 text-xs m-[2px] flex items-center pl-2 default_card ">
-          {{ weekdays[i] }}
+          {{ weekdays[i - 1] }}
         </div>
         <CalendarAdjustDayOrder :month="month" :year="year" />
 
@@ -38,7 +38,7 @@ const isToday = computed(() => (i: number) => {
           v-for="i in daysInMonth" :key="i"
           :class="{'col-span-1 default_card  max-h-[7rem] m-[2px]':true,'border-blue-500 border-2 ': isToday(i)}"
         >
-          <CalenderMonthDay :day-index="i" :month="month" :year="year" :is-today="isToday(i)" />
+          <CalenderMonthDay :day-index="i-1" :month="month" :year="year" :is-today="isToday(i)" />
         </div>
       </div>
     </CardContent>
