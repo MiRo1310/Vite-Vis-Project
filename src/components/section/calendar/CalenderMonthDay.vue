@@ -10,12 +10,15 @@ const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();
 
 const getDayValue = computed(() => {
+
   if (!calendar.value.table) {
     return;
   }
   try {
     const cal: CalendarDay[] = JSON.parse(calendar.value.table?.val || "[]");
-    return cal.filter((day) => isDateBetween(day));
+    return cal.filter((day) => {
+      return isDateBetween(day);
+    });
   } catch (error) {
     console.error(error);
   }
@@ -23,17 +26,21 @@ const getDayValue = computed(() => {
 });
 
 function isDateBetween(day: CalendarDay): boolean | undefined {
+
   const start = new Date(day._object.start);
   const end = new Date(day._object.end);
-  if (!props.year || !props.month) {
+
+  if (!props.year) {
+
     return;
   }
+
   return (
-    isSameDay(start, end) &&
-    isNotStartAtMidNight(start, 2) &&
-    isNotStartAtMidNight(end, 1) &&
-    isSameMonth(start, end) &&
-    isSameYear(start, end)
+    isSameDay(start, end)
+    && isNotStartAtMidNight(start, 2)
+    && isNotStartAtMidNight(end, 1)
+    && isSameMonth(start, end)
+    && isSameYear(start, end)
   );
 }
 
@@ -42,9 +49,6 @@ function isSameDay(start: Date, end: Date): boolean {
 }
 
 function isSameMonth(start: Date, end: Date): boolean {
-  if (!props.month) {
-    return false;
-  }
   return start.getMonth() === props.month && end.getMonth() === props.month;
 }
 
