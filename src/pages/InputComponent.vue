@@ -16,7 +16,8 @@ function update() {
   <Input v-model:model-value="inputValue" @update:model-value="update" />
   <Select
     v-model:selected-obj="selected" :items="colors"
-    :class="['w-36', `${selected?.class}`]"
+    :selected="selected?.label||selected?.val"
+    :class="['w-36 rounded-lg', `${selected?.class}`]"
     @update:selected-obj="update"
   />
 </template>
