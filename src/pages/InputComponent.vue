@@ -2,13 +2,19 @@
 import { Input } from "@/components/ui/input";
 import Select, { SelectOption } from "@/components/shared/select/select.vue";
 import { colors } from "@/config/colors.ts";
+import { Button } from "@/components/shared/button";
+import { Trash2 } from "lucide-vue-next";
+
+const props = defineProps<{
+  index: number
+}>();
 
 const selected = defineModel<SelectOption | undefined>("selected");
 const inputValue = defineModel<string>("inputValue");
-const emit = defineEmits(["update:inputs"]);
+const emit = defineEmits(["update:inputs", "update:delete"]);
 
 function update() {
-  emit("update:inputs", { input: inputValue.value, select: selected.value });
+  emit("update:inputs", { input: inputValue.value, select: selected.value, index: props.index });
 }
 </script>
 
@@ -20,4 +26,7 @@ function update() {
     :class="['w-36 rounded-lg', `${selected?.class}`]"
     @update:selected-obj="update"
   />
+  <Button variant="outline" size="icon" @click="emit('update:delete', index)">
+    <Trash2 />
+  </Button>
 </template>

@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import { CalendarDay } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 import { stringToJSON } from "@/lib/string.ts";
+import { JSONStyle } from "@/pages/DialogSettings.vue";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();
@@ -68,13 +69,14 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 
 const getColor = computed(() => (event: CalendarDay): string => {
 
-  const styleObj = stringToJSON(styles.value?.calendarStyle?.val) as Record<string, string>;
-  const keys = Object.keys(styleObj);
+  let keys = stringToJSON(styles.value?.calendarStyle?.val) as JSONStyle[];
+  if (!Array.isArray(keys)) {
+    keys = [];
+  }
 
   for (const key of keys) {
-    if (event.event.includes(key)) {
-
-      return styleObj?.[key as keyof typeof styleObj];
+    if (event.event.includes(key.name)) {
+      return key.color;
     }
   }
   return "";

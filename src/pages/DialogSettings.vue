@@ -9,8 +9,8 @@ import { stringToJSON } from "@/lib/string.ts";
 import InputComponent from "@/pages/InputComponent.vue";
 import { computed, ref } from "vue";
 import { SelectOption } from "@/components/shared/select/select.vue";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { colors } from "@/config/colors.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 
 const open = defineModel<boolean>("open");
 
@@ -18,47 +18,92 @@ useDynamicSubscribe([styles]);
 
 const { styles: styling } = useIobrokerStore();
 
-const json = computed((): object => stringToJSON(styling?.calendarStyle?.val));
-const newInputValue = ref<string>("");
-const newInputSelected = ref<string>("");
+export interface JSONStyle {
+  name: string;
+  color: string;
+}
 
-function updateHandler(val: { input: string, select: SelectOption }) {
-  newInputValue.value = val.input as string;
-  newInputSelected.value = val.select.class;
+
+const json = computed((): JSONStyle[] => {
+  return stringToJSON(styling?.calendarStyle?.val);
+});
+
+const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
+
+function updateHandler(val: { input: string, select: SelectOption, index: number }) {
+
+
+  if (val.select?.class == "" || !val.input || val?.input as string == "") {
+    return;
+  }
+
+  const jsonCopy = [...json.value] as JSONStyle[];
+  let jsonCopyElement = jsonCopy[val.index];
+
+  if (!jsonCopyElement && modifiedObj.value) {
+
+    jsonCopyElement = modifiedObj.value[val.index];
+
+    addValueToObj(jsonCopyElement, val);
+    return;
+  }
+
+  addValueToObj(jsonCopyElement, val);
+  modifiedObj.value = jsonCopy;
+}
+
+function addValueToObj(obj: JSONStyle, val: { input: string, select: SelectOption, index: number }) {
+  obj.name = val?.input;
+  obj.color = val.select?.class;
 }
 
 function updateToIobroker() {
-  if (newInputValue.value == "" || newInputSelected.value == "") {
-    return;
-  }
-  const jsonCopy = { ...json.value } as Record<string, any>;
-  jsonCopy[newInputValue.value] = newInputSelected.value;
+  if (!modifiedObj.value) return;
+
   const id = styling?.calendarStyle?.id;
   if (!id) return;
-  adminConnection?.setState(id, JSON.stringify(jsonCopy));
+  adminConnection?.setState(id, JSON.stringify(modifiedObj.value));
 }
 
+function reset() {
+  open.value = false;
+  modifiedObj.value = undefined;
+}
+
+function addNewRow() {
+  const jsonCopy = [...json.value] as JSONStyle[];
+  jsonCopy.push({ name: "", color: "" });
+  modifiedObj.value = jsonCopy;
+}
+
+function deleteRow(index: number) {
+  const jsonCopy = modifiedObj.value || [...json.value] as JSONStyle[];
+  jsonCopy.splice(index, 1);
+  modifiedObj.value = jsonCopy;
+}
 
 </script>
 <template>
-  <Dialog v-model:open="open" styling="default" class-content="w-3/4 max-w-3/4 max-h-100vh ">
+  <Dialog v-model:open="open" styling="default" class-content="w-3/4 max-w-3/4 max-h-[60vh] ">
     <template #title>
       Farben
     </template>
     <template #content>
-      <Button size="icon">
+      <Button size="icon" @click="addNewRow">
         <Plus />
       </Button>
-      <div v-for="(item,i) in Object.keys(json)" :key="i" class="flex space-x-2">
-        <InputComponent
-          :input-value="item" :selected="colors.find((i)=> i.class===json[item as keyof typeof json] )"
-          @update:inputs="updateHandler($event)"
-        />
-        <span />
+      <div class="max-h-[100%] overflow-auto">
+        <div v-for="(item,i) in modifiedObj||json" :key="i" class="flex space-x-2 ">
+          <InputComponent
+            :input-value="item.name" :selected="colors.find((e)=> e.class===item.color )"
+            :index="i"
+            @update:inputs="updateHandler($event)" @update:delete="deleteRow"
+          />
+        </div>
       </div>
     </template>
     <template #footer>
-      <Button variant="outline">
+      <Button variant="outline" @click="reset">
         Schließen
       </Button>
       <Button variant="save" @click="updateToIobroker">
