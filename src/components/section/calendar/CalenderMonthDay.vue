@@ -4,8 +4,9 @@ import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { CalendarDay } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
+import { stringToJSON } from "@/lib/string.ts";
 
-const { calendar } = storeToRefs(useIobrokerStore());
+const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();
 
 const getDayValue = computed(() => {
@@ -60,38 +61,39 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
   );
 }
 
-function getColor(event: CalendarDay): string {
-  if (event.event.includes("Melanie")) {
-    return "bg-green-200";
-  }
-  if (event.event.includes("Hannah")) {
-    return "bg-yellow-200";
-  }
-  if (event.event.includes("Michael")) {
-    return "bg-blue-400";
+
+const getColor = computed(() => (event: CalendarDay): string => {
+
+  const styleObj = stringToJSON(styles.value?.calendarStyle?.val) as Record<string, string>;
+  const keys = Object.keys(styleObj);
+
+  for (const key of keys) {
+    if (event.event.includes(key)) {
+
+      return styleObj?.[key as keyof typeof styleObj];
+    }
   }
   return "";
-}
+});
 
 const open = ref(false);
 </script>
 <template>
-  <div
-    :class="{ 'h-full': true,}"
-    @click="open = !open"
-  >
-    <p class="line">
-      <span :class="{ 'ml-1 pb-[1px] px-1 rounded-md inline-block': true, 'bg-blue-300 text-xs': isToday }">
+  <div class="flex-1 max-w-full" @click="open = !open">
+    <p class="line block">
+      <span :class="{ 'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs': true, 'bg-blue-300 text-xs': isToday }">
         {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
       </span>
     </p>
-    <div class=" overflow-auto max-h-[calc(6rem-22px)]">
-      <p
+    <div class="overflow-auto max-h-[calc(6rem-22px)] ">
+      <div
         v-for="(event, index) in getDayValue" :key="index"
-        class="text-xs px-1 mr-1 whitespace-nowrap truncate"
+        class="text-xs"
       >
-        <span :class="[[getColor(event)], 'mb-[2px] inline-block']">{{ event.event }}</span>
-      </p>
+        <p :class="[[getColor(event)], 'mb-[2px] px-2 mt-[1px] block truncate']">
+          {{ event.event }}
+        </p>
+      </div>
     </div>
   </div>
 

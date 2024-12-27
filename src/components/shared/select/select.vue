@@ -8,21 +8,32 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { HTMLAttributes } from "vue";
+import { HTMLAttributes, watchEffect } from "vue";
 
-const selected = defineModel<string>("selected");
-
-export interface SelectOption {
-  val: string;
-  label: string;
-}
-
-defineProps<{
+const props = defineProps<{
   placeholder?: string;
   items: SelectOption[];
   label?: string;
   class?: HTMLAttributes["class"];
+  disbaleHover?: boolean
 }>();
+
+const selected = defineModel<string>("selected");
+const selectedObj = defineModel<SelectOption>("selectedObj");
+
+watchEffect(() => {
+  if (selected.value) {
+    selectedObj.value = props.items.find((item) => item.val === selected.value);
+  }
+});
+
+export interface SelectOption {
+  val: string;
+  label?: string;
+  class?: HTMLAttributes["class"];
+}
+
+
 </script>
 
 <template>
@@ -36,8 +47,11 @@ defineProps<{
           <SelectLabel v-if="label">
             {{ label }}
           </SelectLabel>
-          <SelectItem v-for="(item, index) in items" :key="index" :value="item.val">
-            {{ item.label }}
+          <SelectItem
+            v-for="(item, index) in items" :key="index" :value="item.val"
+            :class="{[item?.class]:true, [`hover:bg-black`]:disbaleHover}"
+          >
+            {{ item.label || item.val }}
           </SelectItem>
         </SelectGroup>
       </SelectContent>
