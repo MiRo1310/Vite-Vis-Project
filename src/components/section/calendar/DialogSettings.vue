@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Dialog from "@/components/shared/dialog/Dialog.vue";
-import { Button } from "@/components/shared/button/";
+import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { styles } from "@/subscribeIds/styles.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { stringToJSON } from "@/lib/string.ts";
-import InputComponent from "@/pages/InputComponent.vue";
+import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { SelectOption } from "@/components/shared/select/select.vue";
 import { colors } from "@/config/colors.ts";
@@ -31,13 +31,11 @@ const json = computed((): JSONStyle[] => {
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
 function updateHandler(val: { input: string, select: SelectOption, index: number }) {
-
-
   if (val.select?.class == "" || !val.input || val?.input as string == "") {
     return;
   }
 
-  const jsonCopy = [...json.value] as JSONStyle[];
+  const jsonCopy = modifiedObj.value || [...json.value] as JSONStyle[];
   let jsonCopyElement = jsonCopy[val.index];
 
   if (!jsonCopyElement && modifiedObj.value) {
@@ -84,7 +82,7 @@ function deleteRow(index: number) {
 
 </script>
 <template>
-  <Dialog v-model:open="open" styling="default" class-content="w-3/4 max-w-3/4 max-h-[60vh] ">
+  <Dialog v-model:open="open" styling="default" class-content="w-3/4 max-w-3/4 h-[60vh] ">
     <template #title>
       Farben
     </template>
@@ -92,8 +90,8 @@ function deleteRow(index: number) {
       <Button size="icon" @click="addNewRow">
         <Plus />
       </Button>
-      <div class="max-h-[100%] overflow-auto">
-        <div v-for="(item,i) in modifiedObj||json" :key="i" class="flex space-x-2 ">
+      <div class="h-[20rem] overflow-auto">
+        <div v-for="(item,i) in modifiedObj||json" :key="i" class="flex space-x-2 space-y-[2px] ">
           <InputComponent
             :input-value="item.name" :selected="colors.find((e)=> e.class===item.color )"
             :index="i"

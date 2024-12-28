@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { ref } from "vue";
 
 const props = defineProps<{
-  value: boolean,
+  value: boolean | undefined,
   row: Row<AlexaDotAction>,
   source: string,
   customValue: CustomValue,

@@ -36,13 +36,13 @@ const data = computed(() => {
 </script>
 
 <template>
-  <Card styling="light" class="battery__card">
+  <Card styling="light" class="battery__card h-full">
     <CardHeader>
       <CardTitle>
         Batteriestatus von Aktoren
       </CardTitle>
     </CardHeader>
-    <CardContent class="pt-2">
+    <CardContent class="pt-2 overflow-auto max-h-full">
       <div class="default_card">
         <TableBasic :columns="getColumns(columns)" :data="data" />
       </div>

@@ -4,8 +4,8 @@ import CalendarMonthSelector from "@/components/section/calendar/CalendarMonthSe
 import CalenderMonthDay from "@/components/section/calendar/CalenderMonthDay.vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { computed, ref } from "vue";
-import ColorSettings from "@/pages/ColorSettings.vue";
-import DialogSettings from "@/pages/DialogSettings.vue";
+import ColorSettings from "@/components/section/calendar/ColorSettings.vue";
+import DialogSettings from "@/components/section/calendar/DialogSettings.vue";
 
 
 const daysInMonth = ref(0);
@@ -25,11 +25,11 @@ const isToday = computed(() => (i: number) => {
 const open = ref(false);
 </script>
 <template>
-  <Card styling="light">
+  <Card styling="light" class="h-full">
     <CardHeader class="p-2 ">
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>
-    <CardContent class="px-2 h-full">
+    <CardContent class="px-2">
       <CalendarMonthSelector v-model:days-in-month="daysInMonth" v-model:month="month" v-model:year="year">
         <ColorSettings v-model:open="open" />
       </CalendarMonthSelector>

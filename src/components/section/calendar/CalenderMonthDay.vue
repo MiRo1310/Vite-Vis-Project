@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
 import { CalendarDay } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 import { stringToJSON } from "@/lib/string.ts";
-import { JSONStyle } from "@/pages/DialogSettings.vue";
+import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();

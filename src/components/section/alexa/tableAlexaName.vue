@@ -8,12 +8,12 @@ defineProps<{
   row: Row<AlexaDotAction>,
   source: string,
   customValue: CustomValue,
-  callback: () => void
+  callback?: () => void
 }>();
 </script>
 
 <template>
-  <p class="flex items-end ">
+  <p class="container">
     <img src="@/public/echo_dot3.png" alt="Echo Dot">
     <span>{{ value }}</span>
   </p>
@@ -22,5 +22,9 @@ defineProps<{
 <style scoped lang="postcss">
 img {
   @apply w-14
+}
+
+.container {
+  @apply flex items-end
 }
 </style>

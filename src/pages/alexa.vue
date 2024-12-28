@@ -4,7 +4,7 @@ import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import tableName from "@/components/section/alexa/tableName.vue";
+import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
@@ -96,7 +96,7 @@ function callback(params: Record<string, any>) {
 }
 
 const columns: DatatableColumns[] = [
-  { source: "name", type: "component", component: tableName, accessorKey: "name", labelKey: "Echo Dot" },
+  { source: "name", type: "component", component: TableAlexaName, accessorKey: "name", labelKey: "Echo Dot" },
   {
     source: "bell",
     type: "component",
@@ -144,7 +144,7 @@ const columns: DatatableColumns[] = [
 </script>
 
 <template>
-  <Card styling="light">
+  <Card styling="light" class="h-full">
     <CardHeader>
       <CardTitle>
         <p>Alexa Dots</p>

@@ -5,7 +5,7 @@ import { AlexaDotAction } from "@/pages/alexa.vue";
 import { ref, watchEffect } from "vue";
 
 const props = defineProps<{
-  value: string,
+  value: string | number,
   row: Row<AlexaDotAction>,
   source: string,
   customValue: { step?: number, min?: number, max?: number, defaultValue?: number },

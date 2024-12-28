@@ -19,11 +19,12 @@ function update() {
 </script>
 
 <template>
-  <Input v-model:model-value="inputValue" @update:model-value="update" />
+  <Input v-model:model-value="inputValue" placeholder="Suche nach diesem Text" @update:model-value="update" />
   <Select
     v-model:selected-obj="selected" :items="colors"
     :selected="selected?.label||selected?.val"
     :class="['w-36 rounded-lg', `${selected?.class}`]"
+    :disbale-hover="true"
     @update:selected-obj="update"
   />
   <Button variant="outline" size="icon" @click="emit('update:delete', index)">

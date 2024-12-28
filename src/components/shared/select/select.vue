@@ -33,6 +33,12 @@ export interface SelectOption {
   class?: HTMLAttributes["class"];
 }
 
+function getFocusClass(item: SelectOption) {
+  let string = "";
+  item?.class?.split(" ").forEach((cl: string) => string += `focus:${cl} `);
+
+  return string;
+}
 
 </script>
 
@@ -49,7 +55,7 @@ export interface SelectOption {
           </SelectLabel>
           <SelectItem
             v-for="(item, index) in items" :key="index" :value="item.val"
-            :class="{[item?.class]:true, [`hover:bg-black`]:disbaleHover}"
+            :class="{[`${item?.class} border-2 border-${item?.class || 'accent'}`]:true, [`${getFocusClass(item)} focus:border-black focus:border-2`]:disbaleHover}"
           >
             {{ item.label || item.val }}
           </SelectItem>

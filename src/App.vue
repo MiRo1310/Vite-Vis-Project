@@ -20,7 +20,7 @@ onUnmounted(() => {
 <template>
   <div class="h-[100vh] flex flex-col bg-backgroundColor">
     <AlexaTimer />
-    <main class="px-1 pt-1 flex-1 overflow-auto">
+    <main class="px-1 pt-1 flex-1 overflow-hidden">
       <RouterView />
     </main>
 
