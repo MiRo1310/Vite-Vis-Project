@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import BoolIcon from "../../shared/BoolIcon.vue";
+import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
 
@@ -119,9 +120,7 @@ const infos = computed(() => [
           <img :src="landroidVision" alt="vision">
         </div>
         <div>
-          <p class="text-accent-foreground/50 text-xs font-bold text-right">
-            {{ landroid.online?.val ? "Online" : "Offline" }}
-          </p>
+          <OnlineOffline :status="landroid.online?.val" />
           <p class="text-accent-foreground/50 text-xs font-bold text-right">
             v.{{ landroid.firmware?.val }}
           </p>

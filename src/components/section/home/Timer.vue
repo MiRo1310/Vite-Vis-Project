@@ -20,7 +20,7 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
         <p>Alexa Timer</p>
       </CardTitle>
     </CardHeader>
-    <CardContent class="flex flex-wrap -mx-2 min-w-[400px]">
+    <CardContent class="flex flex-wrap -mx-1 min-w-[400px]">
       <div
         v-for="(singleTimer, i) in timersArray" :key="i"
         class="min-w-[180px] flex-1 max-w-1/2 m-1 flex px-2 default_card"

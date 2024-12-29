@@ -6,13 +6,16 @@ defineProps<{ isTimeToWarn: boolean, getOpenWindows: number, infos: any }>();
     <div
       v-for="(info, index) in infos" :key="index" :class="{
         'info__row': true,
+        [`${info.class}`]: info.class,
         'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
 
       }"
     >
       <p>{{ info.title }}</p>
       <p class="ml-3 mr-4">
-        {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span>
+        {{ info.value }}
+        <span />
+        <span class="w-1 inline-block">{{ info.unit }} </span>
       </p>
     </div>
   </div>
@@ -20,7 +23,7 @@ defineProps<{ isTimeToWarn: boolean, getOpenWindows: number, infos: any }>();
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-1
+  @apply flex justify-between items-center text-accent-foreground/50 font-bold -mx-1 px-1
 }
 
 .card__shadow {

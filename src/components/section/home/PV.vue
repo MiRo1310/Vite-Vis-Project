@@ -13,10 +13,11 @@ const infos = computed((): InfoTypes[][] => [
     { title: "Kleine PV", value: pv?.smallPv?.val, unit: "Wh" }
   ], [
     {
-      title: "Netzanschluss",
-      value: pv?.feedIn?.val,
+      title: pv?.feedIn?.val || 0 < 0 ? "Bezug" : "Einspeisung",
+      value: pv?.feedIn?.val || 0 < 0 ? (pv?.feedIn?.val || 0) * -1 : pv?.feedIn?.val,
       unit: "W",
-      class: (pv?.feedIn?.val || 0) < 0 ? "text-red-500" : "text-green-400"
+      valueClass: (pv?.feedIn?.val || 0) < 0 ? "text-red-500" : "text-green-400",
+      class: (pv?.feedIn?.val || 0) < 0 ? "bg-red-100 " : "bg-green-100"
     },
     { title: "Aktives Laden", value: pv?.activeCharging?.val, unit: "W" },
     { title: "Ladezustand", value: pv?.batteryCharging?.val, unit: "%" }

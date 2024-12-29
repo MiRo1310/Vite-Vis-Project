@@ -33,7 +33,12 @@ const infos = computed(() => [[
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" }
 ],
   [
-    { title: "Fenster offen", value: getOpenWindows, bounce: true }
+    {
+      title: "Fenster offen",
+      value: getOpenWindows,
+      bounce: true,
+      class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100"
+    }
   ]
 ]);
 

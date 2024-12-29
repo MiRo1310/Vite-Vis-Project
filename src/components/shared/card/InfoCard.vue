@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { HTMLAttributes } from "vue";
+
 export interface InfoTypes {
   title: string;
   value: number | string | undefined;
   unit: string;
-  class?: string;
+  valueClass?: HTMLAttributes["class"];
+  class?: HTMLAttributes["class"];
 }
 
 defineProps<{ infos: InfoTypes [] }>();
@@ -13,11 +16,12 @@ defineProps<{ infos: InfoTypes [] }>();
     <div
       v-for="(info, index) in infos" :key="index" :class="{
         'info__row': true,
+        [info?.class]: info.class
 
       }"
     >
       <p>{{ info.title }}</p>
-      <p :class="['ml-3 mr-4', info?.class]">
+      <p :class="['ml-3 mr-4', info?.valueClass]">
         {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span>
       </p>
     </div>
@@ -26,7 +30,7 @@ defineProps<{ infos: InfoTypes [] }>();
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-1 text-xs
+  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-[2px] text-xs -mx-1 px-1
 }
 
 .card__shadow {

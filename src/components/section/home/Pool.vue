@@ -8,6 +8,7 @@ import BoolIcon from "@/components/shared/BoolIcon.vue";
 import { BoolText } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
+import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 
 const { pool, idsToControl } = storeToRefs(useIobrokerStore());
 const handleChangeTempSet = (value: string | number) => {
@@ -86,11 +87,9 @@ const getMode = (mode: string) => {
   <Card styling="light">
     <CardHeader>
       <CardTitle>
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center">
           <span>Pool Wärmepumpe</span>
-          <span class="text-accent-foreground/50 text-xs font-bold text-right">{{
-            pool.status?.val ? "Online" : "Offline"
-          }}</span>
+          <OnlineOffline :status="pool.status?.val" />
         </div>
       </CardTitle>
     </CardHeader>

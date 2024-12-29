@@ -7,7 +7,7 @@ import { Infos } from "@/subscribeIds/info.ts";
 defineProps<{ info: Infos, getParsedLogs: ParsedLogs }>();
 </script>
 <template>
-  <div class="card__shadow mb-2">
+  <div class="card__shadow">
     <div class="info__row">
       <p>Updates</p>
       <p>
