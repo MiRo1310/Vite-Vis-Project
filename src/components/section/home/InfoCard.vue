@@ -8,8 +8,9 @@ defineProps<{ isTimeToWarn: boolean, getOpenWindows: number, infos: any }>();
         'info__row': true,
         [`${info.class}`]: info.class,
         'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
-
+        'cursor-pointer':info?.callback
       }"
+      @click="info?.callback?info.callback():null"
     >
       <p>{{ info.title }}</p>
       <p class="ml-3 mr-4">

@@ -10,6 +10,9 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { infoStates } from "@/subscribeIds/info.ts";
 import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard from "@/components/section/home/InfoCard.vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 useDynamicSubscribe(infoStates);
 
@@ -37,7 +40,10 @@ const infos = computed(() => [[
       title: "Fenster offen",
       value: getOpenWindows,
       bounce: true,
-      class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100"
+      class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
+      callback: () => {
+        router.push({ path: "/fenster" });
+      }
     }
   ]
 ]);
