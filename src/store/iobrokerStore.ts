@@ -56,6 +56,11 @@ export interface IoBrokerStoreState {
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
+export type StoreValueWithTimestamp<T> = StoreValueType<T> & Timestamp | undefined
+
+export interface Timestamp {
+  ts: number;
+}
 
 export interface StoreValueType<T> {
   val: T | undefined;
@@ -145,23 +150,23 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     removeIdFromSubscribedIds(id: string) {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
-    setValueToKey(key: string, val: string | number | boolean | object) {
-      (this as any)[key] = val;
-    },
+
     setValues(
-      objectNameInStore: string,
-      val: string | number | boolean | object,
-      id: string,
-      firstKey?: string | boolean,
-      secondKey?: string
-    ) {
+      { objectNameInStore, val, id, firstKey, secondKey, timestamp }: {
+        objectNameInStore: string;
+        val: string | number | boolean | object;
+        id: string;
+        firstKey?: string | boolean;
+        secondKey?: string;
+        timestamp?: boolean
+      }) {
       if (objectNameInStore) {
         if (firstKey && firstKey !== true) {
           if (!(this as any)[objectNameInStore]) {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
 
-          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKey, secondKey, val, objectNameInStore, id);
+          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKey, secondKey, val, objectNameInStore, id, timestamp);
 
           return;
         }
@@ -178,7 +183,8 @@ const getSubValue = (
   secondKey: string | undefined,
   val: string | number | boolean | object,
   objectNameInStore: string,
-  id: string | undefined
+  id: string | undefined,
+  timestamp: boolean | undefined
 ) => {
   obj = obj[objectNameInStore];
 
@@ -193,6 +199,10 @@ const getSubValue = (
 
   if (!obj[fistKey][secondKey]) {
     obj[fistKey][secondKey] = {};
+  }
+  if (timestamp) {
+    obj[fistKey][secondKey] = val;
+    return obj;
   }
   obj[fistKey][secondKey] = { val, id };
   return obj;

@@ -74,21 +74,25 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
           value = checkAndRevert(value, stateId.revertValue);
 
-          iobrokerStore.setValues(
-            item.objectNameInStore || null,
-            value,
-            id,
-            stateId.firstKey || stateId.room || null,
-            subKey
+          iobrokerStore.setValues({
+              objectNameInStore: item.objectNameInStore || null,
+              val: value,
+              id,
+              firstKey: stateId.firstKey || stateId.room || null,
+              secondKey: subKey
+            }
           );
 
           if (stateId.timestamp) {
             iobrokerStore.setValues(
-              item.objectNameInStore || null,
-              timestamp,
-              id,
-              stateId.firstKey || stateId.room || null,
-              "timestamp"
+              {
+                objectNameInStore: item.objectNameInStore || null,
+                val: timestamp,
+                id,
+                firstKey: stateId.firstKey || stateId.room || null,
+                secondKey: "ts",
+                timestamp: true
+              }
             );
           }
         }).catch((e) => {

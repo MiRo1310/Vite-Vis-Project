@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import TableBasic from "@/components/shared/table/TableBasic.vue";
+import TableBasic from "../../../../node_my_sql/frontend/src/components/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { batteryIds } from "@/subscribeIds/batteriesType.ts";
