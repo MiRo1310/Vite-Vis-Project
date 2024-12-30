@@ -14,12 +14,13 @@ const props = defineProps<{
   class?: HTMLAttributes["class"],
   type: TableCellType,
   unit?: string
+  reverse?: boolean
 }>();
 </script>
 
 <template>
   <div :class="props.class">
-    <BoolIcon v-if="type === 'bool'" :value="value as boolean" />
+    <BoolIcon v-if="type === 'bool'" :value="reverse? !value as boolean: value as boolean" />
     <DateTimeText v-else-if="type === 'datetime'" :value="value as string" />
     <DateText v-else-if="type === 'date'" :value="value as string" />
     <TimeText v-else-if="type === 'time'" :value="value as string" />

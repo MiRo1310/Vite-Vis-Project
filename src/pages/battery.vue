@@ -16,7 +16,7 @@ const columns: DatatableColumns[] = [
   { source: "name", labelKey: "Name", type: "text", accessorKey: "name" },
   { source: "percent", labelKey: "Batterieladung", type: "number", unit: "%", accessorKey: "Batterieladung" },
   { source: "voltage", labelKey: "Batteriespannung", type: "number", unit: "V", accessorKey: "voltage" },
-  { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
+  { source: "lowBat", labelKey: "Ladung okay", type: "bool", reverse: true, accessorKey: "lowBat" },
   { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" },
   { source: "available", labelKey: "Erreichbar", type: "bool", accessorKey: "available" },
   {

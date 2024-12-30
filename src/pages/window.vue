@@ -41,17 +41,17 @@ const windows: WindowObject[] = [
 
 </script>
 <template>
-  <div class="lg:fixed right-1 left-1 top-0 border-t-4  border-t-backgroundColor z-50 ">
+  <div class="lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50 ">
     <Card styling="light">
       <CardHeader class="p-1">
         <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>
-          <p v-show="getOpenWindows === 1" class="flex ">
+          <p v-show="getOpenWindows === 1" class="flex text-muted-foreground">
             Ein Fenster ist
             <span :class="fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1 ">offen </span>
           </p>
 
-          <p v-show="getOpenWindows !== 1">
+          <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
             Fenster sind
             <span :class="fensterOffen ? 'text-red-500' : ''">{{
@@ -64,7 +64,7 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10">
+  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full">
     <WindowCard
       v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
       :door="card.door||false"

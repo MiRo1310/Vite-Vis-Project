@@ -31,7 +31,7 @@ function handleClickLight() {
       <div class="w-1/2 flex justify-center py-2">
         <Svg :name="isActive?'lightOn':'lightOff'" :class="['light__svg', isActive?'light__on':'']" />
       </div>
-      <div class="w-1/2 border-l-2 border-color__default text-color__default p-2 my-2 text-sm">
+      <div class="w-1/2 border-l-2 border-color__default text-color__default p-2 my-2 text-sm min-h-[55px]">
         {{ name.replace(/_/g, " ") }}
       </div>
     </div>

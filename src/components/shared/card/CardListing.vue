@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import BoolIcon from "@/components/shared/BoolIcon.vue";
+import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import { Entries } from "@/types/types.ts";
 
 const props = defineProps<{ entries: Entries[]; title: string; class?: string }>();

@@ -36,7 +36,7 @@ const { lights, lightsAdditive } = useIobrokerStore();
   @apply p-2 flex flex-wrap space-x-1 -ml-1 -mt-1 space-y-1
 }
 
-.light__card:nth-child(0) {
+.light__card:nth-child(1) {
   @apply ml-1 mt-1
 }
 </style>

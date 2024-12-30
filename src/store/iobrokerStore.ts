@@ -16,6 +16,7 @@ import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
 import { AlexaAction } from "@/pages/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
+import { PresenceType } from "@/subscribeIds/presence.ts";
 
 
 export interface IoBrokerStoreState {
@@ -51,6 +52,7 @@ export interface IoBrokerStoreState {
   lights: LightTypes;
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
+  presence: PresenceType;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined
@@ -101,7 +103,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     alexaAction: {} as AlexaAction,
     lights: {} as LightTypes,
     lightsAdditive: {} as LightTypesAdditive,
-    styles: {} as StylesType
+    styles: {} as StylesType,
+    presence: {} as PresenceType
   }),
   getters: {
     isAdminConnected(state) {

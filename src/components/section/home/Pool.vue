@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import InputUnit from "@/components/shared/InputWithUnit.vue";
-import BoolIcon from "@/components/shared/BoolIcon.vue";
+import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import { BoolText } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";

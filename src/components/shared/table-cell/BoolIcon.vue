@@ -1,14 +1,12 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Check, X } from "lucide-vue-next";
-import { isFalsy, isTruthy } from "@/lib/utilities.ts";
+import { HTMLAttributes } from "vue";
 
-const props = defineProps<{ value: boolean | undefined, classIcon?: string }>();
+defineProps<{ value: boolean | "true" | "false" | undefined, classIcon?: HTMLAttributes["class"] }>();
 
 </script>
 
 <template>
-  <span class="inline-block">
-    <Check v-if="isTruthy(value)" :class="['w-4 h-4 mt-1 text-[--success-secondary] isSuccess', props.classIcon]" />
-    <X v-else-if="isFalsy(value)" :class="['w-4 h-4 mt-1 text-[--error-secondary] isError', props.classIcon]" />
-  </span>
+  <Check v-if="value == 'true' || value === true" :class="['text-green-500 -mr-1 h-4 w-4', $props.class]" />
+  <X v-else :class="['text-destructive -mr-1 h-4 w-4 p-0', $props.class]" />
 </template>
