@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import BoolIcon from "@/components/shared/BoolIcon.vue";
-import { Entries } from "@/types";
+import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
+import { Entries } from "@/types/types.ts";
 
 const props = defineProps<{ entries: Entries[]; title: string; class?: string }>();
 </script>
 <template>
-  <Card styling="blue" :class="[props.class, 'inline-block']">
+  <Card styling="light" :class="[props.class, 'inline-block']">
     <CardHeader>
       <CardTitle>{{ title }}</CardTitle>
     </CardHeader>
-    <CardContent>
+    <CardContent class="default_card mx-2 mb-2">
       <div
         v-for="(entry, i) in entries" :key="i"
-        class="flex justify-between items-center text-accent-foreground/50 font-bold text-xs"
+        class="flex-between text-accent-foreground/50 font-bold text-xs"
       >
         <div>
           <p>{{ entry.title }}</p>

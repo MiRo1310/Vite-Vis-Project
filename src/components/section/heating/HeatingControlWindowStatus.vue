@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { window_close, window_open } from "@/assets";
+import { window_close, window_open } from "@/public";
 import { onMounted } from "vue";
 
 const { heating } = useIobrokerStore();
@@ -19,7 +19,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="mx-1 p-1 bg-backgroundCards flex-1">
+  <div class="mx-1 p-1 bg-color__default flex-1">
     <p>Fensterstatus</p>
     <div class="h-[14rem] overflow-auto">
       <span

@@ -17,6 +17,7 @@ export interface DatatableColumns {
   component?: object;
   className?: HTMLAttributes["class"];
   type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  reverse?: true;
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
 }
@@ -37,7 +38,6 @@ export const getColumns = (columns: DatatableColumns[]) => {
         sortable: column?.sortable,
         className: column?.className,
         type: column.type
-
       }),
       cell: getCell({
         source: column.source,
@@ -46,7 +46,9 @@ export const getColumns = (columns: DatatableColumns[]) => {
         unit: column.unit,
         className: column.className,
         callback: column.callback,
-        customValue: column.customValue
+        customValue: column.customValue,
+        reverse: column.reverse
+
       }),
       enableHiding: column.type === "checkbox" ? false : column.hideable,
       enableSorting: column.type !== "checkbox" && column.sortable
@@ -60,6 +62,7 @@ const getHeader = (obj: {
   label: string | undefined;
   sortable: boolean | undefined;
   type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  reverse?: boolean | undefined;
 }) => {
 
   if (obj.sortable) {
@@ -91,20 +94,23 @@ interface DataTableCellCreator {
   unitAdditive?: string;
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
+  reverse?: boolean | undefined;
 }
 
 const getCell = (obj: DataTableCellCreator) => {
   if (["text", "date", "bool", "datetime", "time", "number"].includes(obj.type)) {
     return getTableCell(
-      TableCell,
-      obj.source,
-      obj.className,
-      obj.type,
-      obj.replacementForZero,
-      obj.unit,
-      obj.decimal,
-      obj.unitAdditive
-    );
+      {
+        component: TableCell,
+        source: obj.source,
+        className: obj.className,
+        type: obj.type,
+        replacementForZero: obj.replacementForZero,
+        unit: obj.unit,
+        decimal: obj.decimal,
+        unitAdditive: obj.unitAdditive,
+        reverse: obj?.reverse
+      });
   }
   if (obj.type === "html") {
     return getHtml(obj.source);
@@ -142,15 +148,17 @@ const getHtml = (source: string) => {
   };
 };
 const getTableCell = (
-  component: object,
-  source: string,
-  className: string | undefined,
-  type: string,
-  replacementForZero?: string | null,
-  unit?: string | undefined,
-  decimal?: boolean | undefined,
-  unitAdditive?: string
-) => {
+  { component, source, className, type, replacementForZero, unit, decimal, unitAdditive, reverse }: {
+    component: object;
+    source: string;
+    className: string | undefined;
+    type: string;
+    replacementForZero?: string | null;
+    unit?: string | undefined;
+    decimal?: boolean | undefined;
+    unitAdditive?: string;
+    reverse?: boolean
+  }) => {
   return ({ row }: any) => {
     const value = getValueByPath(row.original, source);
     return h(
@@ -167,7 +175,8 @@ const getTableCell = (
         unit,
         decimal,
         type,
-        unitAdditive
+        unitAdditive,
+        reverse
       })
     );
   };

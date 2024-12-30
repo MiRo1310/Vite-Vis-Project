@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { X } from "lucide-vue-next";
 import Button from "../../ui/button/Button.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/appStore.ts";
 
@@ -19,62 +19,57 @@ const closeWindow = () => {
 const timersArray = ["timer1", "timer2", "timer3", "timer4"];
 
 const stopTimer = (index: number) => {
-  if (adminConnection.value)
-    adminConnection.value.setState(`alexa-timer-vis.0.${timersArray[index]}.Reset`, true);
+  if (adminConnection)
+    adminConnection.setState(`alexa-timer-vis.0.${timersArray[index]}.Reset`, true);
 };
 </script>
+
 <template>
-  <Card
-    v-if="appStore.showTimer"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent"
-  >
-    <Button class="absolute w-4 h-4 p-0 top-4 right-4 z-20" @click="closeWindow">
+  <Card v-if="appStore.showTimer" class="card">
+    <Button class="button__close" @click="closeWindow">
       <X />
     </Button>
-    <CardHeader class="text-center relative px-4">
+    <CardHeader class="card__header">
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="flex flex-wrap px-3 pt-0 pb-3">
-      <div
-        v-for="(singleTimer, i) in timersArray" :key="i"
-        class="bg-backgroundCards rounded-md min-w-[40%] flex-1 max-w-1/2 m-1 flex p-2 relative"
-      >
-        <Button class="w-8 h-8 p-0 absolute right-2" @click="stopTimer(i)">
+      <div v-for="(singleTimer, i) in timersArray" :key="i" class="card__timer default_card">
+        <Button class="w-6 h-6 p-0 absolute right-2" @click="stopTimer(i)">
           <X />
         </Button>
         <div class="w-full">
-          <h1 class="text-xl text-gray-500 h-8">
+          <h1 class="text-xl text-gray-500 h-8 line">
             Timer {{ i + 1 }}
           </h1>
-          <div class="flex w-full mt-2 justify-between text-xs">
-            <div class="w-1/2 flex justify-between mr-6">
+          <div class="flex-between mt-2 text-xs">
+            <div class="flex-between w-1/2 mr-6">
               <p>Startzeit:</p>
-              <p class="flex-1 text-right">
+              <p class="">
                 {{ timer[singleTimer as keyof typeof timer]?.timeStart?.val }}
               </p>
             </div>
-            <div class="w-1/2 flex justify-between">
+            <div class="flex-between w-1/2">
               <p>Endzeit:</p>
-              <p class="flex-1 text-right">
+              <p>
                 {{ timer[singleTimer as keyof typeof timer]?.timeEnd?.val }}
               </p>
             </div>
           </div>
-          <div class="flex w-full mt-2">
+          <div class="flex-between mt-2">
             <p>Name:</p>
-            <p class="flex-1 text-right">
+            <p>
               {{ timer[singleTimer as keyof typeof timer]?.name?.val }}
             </p>
           </div>
-          <div class="flex w-full">
+          <div class="flex-between">
             <p>Gerät:</p>
-            <p class="flex-1 text-right">
+            <p>
               {{ timer[singleTimer as keyof typeof timer]?.device?.val }}
             </p>
           </div>
-          <div class="flex w-full">
+          <div class="flex-between">
             <p>Restdauer:</p>
-            <p class="flex-1 text-right">
+            <p>
               {{ timer[singleTimer as keyof typeof timer]?.string?.val }}
             </p>
           </div>
@@ -83,3 +78,20 @@ const stopTimer = (index: number) => {
     </CardContent>
   </Card>
 </template>
+<style lang="postcss" scoped>
+.card {
+  @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent w-3/5 max-w-[60rem]
+}
+
+.card__header {
+  @apply text-center relative px-4
+}
+
+.button__close {
+  @apply absolute w-4 h-4 p-0 top-4 right-4 z-20
+}
+
+.card__timer {
+  @apply min-w-[40%] flex-1 max-w-[50%] m-1 flex p-2 relative
+}
+</style>

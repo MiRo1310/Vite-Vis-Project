@@ -5,7 +5,7 @@ import { AlexaDotAction } from "@/pages/alexa.vue";
 import { ref, watchEffect } from "vue";
 
 const props = defineProps<{
-  value: string,
+  value: string | number,
   row: Row<AlexaDotAction>,
   source: string,
   customValue: { step?: number, min?: number, max?: number, defaultValue?: number },
@@ -27,11 +27,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Input
-    class="w-24"
-    :model-value="value" type="number" :step="props.customValue.step" :min="props.customValue.min"
-    :default-value="props.customValue.defaultValue"
-    :max="props.customValue.max"
-    @update:model-value="update($event)"
-  />
+  <div class="line">
+    <Input
+      class="border-none shadow-none w-full"
+      :model-value="value" type="number" :step="props.customValue.step" :min="props.customValue.min"
+      :default-value="props.customValue.defaultValue"
+      :max="props.customValue.max"
+      @update:model-value="update($event)"
+    />
+  </div>
 </template>

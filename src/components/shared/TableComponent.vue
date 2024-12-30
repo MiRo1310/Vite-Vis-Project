@@ -1,28 +1,30 @@
 <script setup lang="ts">
-import { GlobalObject } from "@/types";
-import { ref, defineProps, computed, watch, defineEmits } from "vue";
+import { GlobalObject } from "@/types/types.ts";
+import { computed, defineEmits, defineProps, ref, watch } from "vue";
+
 const props = defineProps({
   tableData: {
     type: Array as () => GlobalObject[],
-    required: true,
+    required: true
   },
   itemsPerPage: {
     type: Number,
     required: false,
-    default: 20,
+    default: 20
   },
   page: {
     type: Number,
     required: false,
-    default: 1,
+    default: 1
   },
   totalItems: {
     type: Number,
     required: false,
-    default: 0,
-  },
+    default: 0
+  }
 });
 const emit = defineEmits(["update:page", "row"]);
+
 interface Header {
   title: string;
   entry: string;
@@ -33,7 +35,7 @@ const header: Header[] = [
   { title: "Number", entry: "id", align: "text--left" },
   { title: "Name", entry: "produkt", align: "text--left" },
   { title: "Menge", entry: "menge", align: "text--left" },
-  { title: "Zeitstempel", entry: "timestamp", align: "text--right" },
+  { title: "Zeitstempel", entry: "timestamp", align: "text--right" }
 ];
 
 const page = ref(props.page);
@@ -58,11 +60,11 @@ const itemsPerPage = ref(props.itemsPerPage);
 const pageItems = computed(() => {
   const end = page.value * itemsPerPage.value > props.totalItems ? props.totalItems : page.value * itemsPerPage.value;
   return `${page.value * itemsPerPage.value - itemsPerPage.value + 1} - ${end}`;
-})
+});
 
 watch(page, (newVal) => {
-  emit('update:page', newVal);
-})
+  emit("update:page", newVal);
+});
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { Button } from "@/components/ui/button";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
 
 defineProps<{ class: string }>();
@@ -10,7 +10,7 @@ const { heating } = storeToRefs(useIobrokerStore());
 
 function resetStatus() {
   const id = `heatingcontrol.0.Rooms.${heating.value.heatingControl.room?.val}.ResetManual`;
-  id ? adminConnection.value?.setState(id, true, false) : null;
+  id ? adminConnection?.setState(id, true, false) : null;
 }
 </script>
 <template>

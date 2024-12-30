@@ -64,18 +64,18 @@ const days: Days = {
 
 </script>
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-2">
-      <div v-for="(event, index) in trashEvents" :key="index">
-        <div class="flex justify-between">
+      <div v-for="(event, index) in trashEvents" :key="index" class="default_card">
+        <div class="flex justify-between  line">
           <p class="text-accent-foreground/40 font-bold">
             {{ event.name }}
           </p>
           <Trash2
-            :class="['inline-block mb-3 ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]"
+            :class="['inline-block mb-1 ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]"
           />
         </div>
         <p class="text-xs text-accent-foreground font-bold">

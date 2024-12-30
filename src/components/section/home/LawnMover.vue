@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import { landroidVision } from "@/assets";
+import { landroidVision } from "@/public";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import BoolIcon from "../../shared/BoolIcon.vue";
+import BoolIcon from "../../shared/table-cell/BoolIcon.vue";
+import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
 
@@ -112,23 +113,21 @@ const infos = computed(() => [
 </script>
 
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardHeader>
       <div class="flex justify-between">
         <div class="w-12">
           <img :src="landroidVision" alt="vision">
         </div>
         <div>
-          <p class="text-accent-foreground/50 text-xs font-bold text-right">
-            {{ landroid.online?.val ? "Online" : "Offline" }}
-          </p>
+          <OnlineOffline :status="landroid.online?.val" />
           <p class="text-accent-foreground/50 text-xs font-bold text-right">
             v.{{ landroid.firmware?.val }}
           </p>
         </div>
       </div>
     </CardHeader>
-    <CardContent class="text-accent-foreground/50 text-xs font-bold">
+    <CardContent class="text-accent-foreground/50 text-xs font-bold bg-white p-2 shadow-lg mx-2 mb-2">
       <div
         v-for="(info, index) in infos" :key="index" :class="{
           'flex justify-between items-center text-accent-foreground/50 font-bold w-full': true,

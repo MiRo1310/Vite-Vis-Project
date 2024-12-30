@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IdToSubscribe } from "@/types";
+import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
@@ -8,7 +8,7 @@ import { computed, HTMLAttributes, onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
 import { firstLetterToUpperCase } from "../lib/string.ts";
 import { toLocaleTime } from "../lib/time.ts";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
 
@@ -85,37 +85,37 @@ const buttons = computed((): Buttons[] => {
 function reset() {
 
   const id = logReset.value[selected.value]?.id;
-  console.log(id);
-  console.log(selected.value);
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, true, false);
+  adminConnection?.setState(id, true, false);
 }
-
-
 </script>
+
 <template>
   <div class="relative">
-    <Card styling="blue">
+    <Card styling="light">
       <CardHeader>
         <CardTitle>Logs</CardTitle>
-        <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>
-        <div class="flex flex-wrap space-x-2 absolute right-6">
-          <Button variant="outline" size="sm" class="mr-5" @click="reset">
-            Reset
-          </Button>
-          <Button
-            v-for="button in buttons" :key="button.val" variant="outline" size="sm"
-            :class="[button.class, 'w-24 relative']" @click="selected=button.val"
-          >
-            {{ button.label }}
-            <Badge :value="button.count as number" class="absolute -right-1 -top-1" />
-          </Button>
+
+        <div class="flex-between flex-wrap space-x-2 ">
+          <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs</CardDescription>
+          <div>
+            <Button variant="outline" size="sm" class="mr-5" @click="reset">
+              Reset
+            </Button>
+            <Button
+              v-for="button in buttons" :key="button.val" variant="outline" size="sm"
+              :class="[button.class, 'w-24 relative ml-2']" @click="selected=button.val"
+            >
+              {{ button.label }}
+              <Badge :value="button.count as number" class="absolute -right-1 -top-1" />
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent class="h-[86vh]">
-        <div class="max-h-[86vh] overflow-auto  ">
+        <div class="max-h-[86vh] overflow-auto default_card ">
           <div v-if="!getParsedLogs[selected]?.length">
             Es sind keine Logs vorhanden
           </div>
@@ -124,6 +124,6 @@ function reset() {
           </div>
         </div>
       </CardContent>
-    </card>
+    </Card>
   </div>
 </template>

@@ -3,7 +3,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { batteryIds } from "@/lib/iobroker/ids-to-subscribe/batteriesType.ts";
+import { batteryIds } from "@/subscribeIds/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import { createArrayByStore } from "@/lib/object.ts";
@@ -16,7 +16,7 @@ const columns: DatatableColumns[] = [
   { source: "name", labelKey: "Name", type: "text", accessorKey: "name" },
   { source: "percent", labelKey: "Batterieladung", type: "number", unit: "%", accessorKey: "Batterieladung" },
   { source: "voltage", labelKey: "Batteriespannung", type: "number", unit: "V", accessorKey: "voltage" },
-  { source: "lowBat", labelKey: "Niedrige Ladung", type: "bool", accessorKey: "lowBat" },
+  { source: "lowBat", labelKey: "Ladung okay", type: "bool", reverse: true, accessorKey: "lowBat" },
   { source: "firmware", labelKey: "Neue Firmware verfügbar", type: "bool", accessorKey: "firmware" },
   { source: "available", labelKey: "Erreichbar", type: "bool", accessorKey: "available" },
   {
@@ -36,14 +36,14 @@ const data = computed(() => {
 </script>
 
 <template>
-  <Card styling="blue" class="battery__card">
+  <Card styling="light" class="battery__card h-full">
     <CardHeader>
       <CardTitle>
-        Batteriesensoren
+        Batteriestatus von Aktoren
       </CardTitle>
     </CardHeader>
-    <CardContent class="pt-2">
-      <div class="bg-white">
+    <CardContent class="pt-2 overflow-auto max-h-full">
+      <div class="default_card">
         <TableBasic :columns="getColumns(columns)" :data="data" />
       </div>
     </CardContent>

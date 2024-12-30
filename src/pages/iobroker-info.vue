@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/lib/iobroker/ids-to-subscribe/info.ts";
+import { infoStates } from "@/subscribeIds/info.ts";
 import IobrokerUpdates from "@/components/section/iobroker/IobrokerUpdates.vue";
 import IobrokerNews from "@/components/section/iobroker/IobrokerNews.vue";
 

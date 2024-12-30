@@ -16,7 +16,7 @@ const createShoppinglist = computed((): any[] => {
 });
 </script>
 <template>
-  <Sheet styling="blue" :show-footer="false">
+  <Sheet styling="light" :show-footer="false">
     <template #trigger>
       <ButtonCard :icon="ShoppingBag" class=" text-accent-foreground/70" class-card="mt-2 ml-1">
         <template #icon>

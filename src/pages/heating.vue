@@ -17,7 +17,7 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
     <HeatingConfig />
     <Dialog class-content="h-full w-full max-w-full p-0 pt-7 " stying="small">
       <template #trigger>
-        <Button class="bg-backgroundCards border-none rounded-none h-full">
+        <Button class=" border-none rounded-none h-full">
           HeatingControl
         </Button>
       </template>

@@ -4,9 +4,9 @@ import Select from "@/components/shared/select/select.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { IdToSubscribe } from "@/types.ts";
+import { IdToSubscribe } from "@/types/types.ts";
 
 const props = defineProps<{ day: { val: string; label: string, index: number }; }>();
 const { heating, heatingTimeSlot } = useIobrokerStore();
@@ -19,7 +19,8 @@ function updateData(id: string | undefined, value: string) {
   if (!id) {
     return;
   }
-  adminConnection.value?.setState(id, { val: value, ack: false });
+
+  adminConnection?.setState(id, { val: value, ack: false });
 }
 
 export interface HeatingTimeSlot {
@@ -71,7 +72,7 @@ const activeClass = computed(() => (i: number) => {
 </template>
 <style scoped lang="postcss">
 .day__container {
-  @apply bg-backgroundCards pt-2 flex-1 mb-1;
+  @apply bg-color__default pt-2 flex-1 mb-1;
 }
 
 .day__label {

@@ -7,8 +7,8 @@ import { X } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
-import { ShoppingList } from "@/types.ts";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { ShoppingList } from "@/types/types.ts";
 import { stringToJSON } from "@/lib/string.ts";
 
 const iobrokerStore = useIobrokerStore();
@@ -19,11 +19,11 @@ const createShoppinglist = computed((): ShoppingList[] => {
 });
 
 const removeItem = (id: string) => {
-  if (adminConnection.value) adminConnection.value.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true);
+  if (adminConnection) adminConnection.setState(`alexa2.0.Lists.SHOPPING_LIST.items.${id}.#delete`, true);
 };
 </script>
 <template>
-  <Card class="h-[90%] overflow-y-auto" styling="blue">
+  <Card class="h-[90%] overflow-y-auto bg-white p-2 m-0" styling="light">
     <Table>
       <TableHeader>
         <TableRow>

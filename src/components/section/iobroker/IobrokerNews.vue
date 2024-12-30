@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { IobrokerLanguages } from "@/types.ts";
+import { IobrokerLanguages } from "@/types/types.ts";
 import { computed } from "vue";
 
 interface NewsFeed {
@@ -29,14 +29,16 @@ const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]
 </script>
 
 <template>
-  <Card class="flex-1" styling="blue">
+  <Card class="flex-1" styling="light">
     <CardHeader>
       <CardTitle>
         News
       </CardTitle>
     </CardHeader>
-    <CardContent class="max-h-56 overflow-auto">
-      <TableBasic :columns="getColumns(columns)" :data="json" />
+    <CardContent class="max-h-full overflow-auto">
+      <div class="default_card">
+        <TableBasic :columns="getColumns(columns)" :data="json" />
+      </div>
     </CardContent>
   </Card>
 </template>

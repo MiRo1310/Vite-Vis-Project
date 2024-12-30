@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, HTMLAttributes } from "vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import WindowCardOpenClose from "@/components/section/window/WindowCardOpenClose.vue";
+import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { adminConnection } from "@/lib/iobroker/connecter-to-iobroker.ts";
-import windowOpen from "@/assets/window_open.png";
-import windowClosed from "@/assets/window_closed.png";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import {
   blinds0,
   blinds10,
@@ -22,62 +20,38 @@ import {
   blinds70,
   blinds80,
   blinds90
-} from "@/assets";
-import { Shutter, WindowType } from "@/types";
+} from "@/public";
+import { Shutter, WindowType } from "@/types/types.ts";
+import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
+import WindowImage from "@/components/section/window/WindowImage.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
   iobrokerStore
 );
 
-const props = defineProps({
-  shutter: {
-    type: Boolean,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  id: {
-    type: String,
-    required: true
-  },
-  id2: {
-    type: String,
-    required: false,
-    default: null
-  },
-  cl: {
-    type: String,
-    required: false,
-    default: null
-  }
-});
+const props = defineProps<{
+  shutter: boolean,
+  title: string,
+  id: string,
+  id2?: string,
+  class?: HTMLAttributes["class"]
+  door: boolean
+}>();
 
 function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter | object, subKey?: string) {
   const arrayOfIds = id.split(",").map((id) => id.trim());
   const first = arrayOfIds[0];
   const second = arrayOfIds[1];
   const obj = object?.[first as keyof typeof object];
-  console.log(obj);
-  console.log(second, subKey);
+
   const subObj = obj?.[`${second}${subKey ? subKey : ""}` as keyof typeof obj];
-  console.log(subObj);
   return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
 }
 
-const getIsWindowOpen = computed(() => {
-  const value = getValue<boolean>(true, props.id, fenster.value);
-  if (!value && value != false) {
-    return false;
-  }
-  return value as boolean;
-});
-
-const getIsSecondWindowOpen = computed(() => {
-  if (!props.id2) return false;
-  const value = getValue<boolean>(true, props.id2, fenster.value);
+const getIsWindowOpen = computed(() => (id: string | undefined) => {
+  if (!id) return false;
+  const value = getValue<boolean>(true, id, fenster.value);
   if (!value && value != false) {
     return false;
   }
@@ -88,26 +62,25 @@ const getShutterPosition = computed(() => {
   const value = getValue<number>(true, props.id, rolladen.value);
 
   if (!value && value != 0) {
-    return "n/a ";
+    return "n/a";
   }
   return value;
 });
 
-const getAutoCloseDelay = computed((): { id: string, val: number } => {
-  return getValue<number>(false, props.id, shutterAutoDownTime.value, "Delay") as { id: string, val: number };
+type SubKey = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
+
+const values = computed(() => <T>(subKey: SubKey, obj: any) => {
+  const id = useDefaultLivingRoom(props.id);
+  return getValue<T>(false, id, obj, subKey) as StoreValue<T>;
 });
 
-const getAutoClose = computed((): { id: string, val: boolean } => {
-  return getValue<boolean>(true, props.id, shutterAutoDownTime.value, "Auto") as { id: string, val: boolean };
-});
-
-const getAutoOpen = computed((): { id: string, val: boolean } => {
-  return getValue<boolean>(true, props.id, shutterAutoUp.value, "AutoUp") as { id: string, val: boolean };
-});
-
-const getAutoUpTime = computed((): { id: string, val: number } => {
-  return getValue<number>(true, props.id, shutterAutoUp.value, "AutoUpTime") as { id: string, val: number };
-});
+function useDefaultLivingRoom(param: string) {
+  const array = param.split(",");
+  if (array[0] === "wohnzimmer") {
+    return `${array[0]},ecke`;
+  }
+  return param;
+}
 
 const getShutterImage = computed(() => {
   const position = getShutterPosition.value;
@@ -127,60 +100,54 @@ const getShutterImage = computed(() => {
 });
 
 const updateHandler = (value: number | string | boolean, id: string) => {
-  console.log(value, id);
-  if (adminConnection.value) {
-    adminConnection.value.setState(id, value);
+  if (adminConnection) {
+    adminConnection.setState(id, value);
   }
 };
 </script>
 <template>
-  <Card class="window__card" :class="`${props.cl}`" styling="blue">
+  <Card class="window__card" :class="`${props.class}`" styling="light">
     <CardHeader class="pb-0 pt-2 px-2">
-      <CardTitle class="flex">
-        <p>{{ props.title }}</p>
+      <CardTitle class="flex bg-white">
+        <p class="line px-2">
+          {{ title }}
+        </p>
       </CardTitle>
     </CardHeader>
     <CardContent class="px-2 pb-2">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center">
         <div class="flex">
-          <div>
-            <img v-show="getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
-          </div>
-          <div v-if="props.id2">
-            <img v-show="getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowOpen" alt="FensterAufZu">
-            <img v-show="!getIsSecondWindowOpen" class="w-8 h-6 mt-1" :src="windowClosed" alt="FensterAufZu">
-          </div>
+          <WindowImage :exist="!!id" :is-open="getIsWindowOpen(id)" />
+          <WindowImage :exist="!!id2" :is-open="getIsWindowOpen(id2)" />
         </div>
-        <WindowCardOpenClose
-          v-if="!props.shutter" class="text" :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
-          "
+        <WindowCardOpenCloseText
+          :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id) "
+          :door
         />
       </div>
-      <div v-if="props.shutter">
-        <div class="flex">
+      <div v-if="shutter">
+        <div class="flex items-center">
           <img class="window--img" :src="getShutterImage" alt="FensterRollade">
           <div class="w-full">
-            <WindowCardOpenClose
-              :window-open="props.id2 ? getIsWindowOpen || getIsSecondWindowOpen : getIsWindowOpen
-              " class="text"
-            />
-            <p class="text" :class="getShutterPosition === 'n/a ' ? 'text-red-500 animate-bounce' : ''">
-              Rollade {{ getShutterPosition }}% offen
-            </p>
+            <ShutterLabel :get-shutter-position="getShutterPosition" />
 
             <div class="absolute top-2 right-2">
               <div class="flex items-center justify-between">
                 <div class="w-11">
-                  <Switch :checked="getAutoClose?.val" @update:checked="updateHandler($event, getAutoClose?.id)" />
+                  <Switch
+                    :checked="values<boolean>('Auto',shutterAutoDownTime)?.val"
+                    @update:checked="updateHandler($event, values<boolean>('Auto',shutterAutoDownTime)?.id||'')"
+                  />
                   <p class="text-[0.5rem]">
                     Auto runter
                   </p>
                 </div>
-                <div class="relative">
+                <div class="relative line">
                   <Input
-                    type="number" step="1" class="w-[5.8rem] pr-8" :model-value="getAutoCloseDelay?.val"
-                    @update:model-value="updateHandler($event, getAutoCloseDelay?.id)"
+                    type="number" step="1"
+                    :model-value="values<number>('Delay',shutterAutoDownTime)?.val"
+
+                    @update:model-value="updateHandler($event, values<number>('Delay',shutterAutoDownTime)?.id||'')"
                   />
                   <div class="absolute text-sm top-2 right-2">
                     min
@@ -189,30 +156,37 @@ const updateHandler = (value: number | string | boolean, id: string) => {
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
-                  <Switch :checked="getAutoOpen?.val" @update:checked="updateHandler($event, getAutoOpen?.id)" />
+                  <Switch
+                    :checked="values<boolean>('AutoUp',shutterAutoUp)?.val"
+                    @update:checked="updateHandler($event, values<boolean>('AutoUp',shutterAutoUp)?.id||'')"
+                  />
                   <p class="text-[0.5rem]">
                     Auto hoch
                   </p>
                 </div>
-                <p>
+                <p class="line">
                   <Input
-                    type="time" :model-value="getAutoUpTime?.val"
-                    @update:model-value="updateHandler($event, getAutoUpTime?.id)"
+                    type="time" :model-value="values<number>('AutoUpTime',shutterAutoUp)?.val"
+                    @update:model-value="updateHandler($event, values<number>('AutoUpTime',shutterAutoUp)?.id||'')"
                   />
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <WindowCardButtons :id="props.id" />
+        <WindowCardButtons :id="id" />
       </div>
     </CardContent>
   </Card>
 </template>
 
 <style lang="postcss" scoped>
+input {
+  @apply w-[5.2rem] pr-8 border-none shadow-none
+}
+
 .window__card {
-  @apply min-w-[32.5%] flex-1 relative
+  @apply min-w-[32.5%] flex-1 relative bg-white
 }
 
 .window__card:first-child {

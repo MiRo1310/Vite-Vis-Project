@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/shared/card";
 const { date, time } = useTime();
 </script>
 <template>
-  <Card styling="blue">
+  <Card styling="light">
     <CardContent class="text-left text-accent-foreground/1000 font-bold pt-1 text-xs">
       <p>{{ date }} </p>
       <span>

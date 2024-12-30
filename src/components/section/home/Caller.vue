@@ -2,7 +2,7 @@
 import { computed, HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { phoneStates } from "@/lib/iobroker/ids-to-subscribe/phone.ts";
+import { phoneStates } from "@/subscribeIds/phone.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
 
@@ -25,10 +25,12 @@ const lastCallDuration = computed(() => {
 </script>
 
 <template>
-  <Card styling="blue" :class="[$props.class , isCalling]">
+  <Card styling="light" :class="[$props.class , isCalling]">
     <CardContent>
       <div class="callee__container">
-        <p>Anrufer:</p>
+        <p class="line">
+          Anrufer:
+        </p>
         <div v-if="phone.ringing?.val" class="caller">
           <p>{{ phone.callerName?.val }}</p>
           <p>{{ phone.caller?.val }}</p>
@@ -36,7 +38,9 @@ const lastCallDuration = computed(() => {
         </div>
       </div>
       <div class="callee__container">
-        <p>Letzter Anruf von:</p>
+        <p class="line">
+          Letzter Anruf von:
+        </p>
         <div class="caller">
           <p>{{ phone.lastCallerName?.val }}</p>
           <p>{{ phone.lastCaller?.val }}</p>
@@ -50,7 +54,7 @@ const lastCallDuration = computed(() => {
 
 <style scoped lang="postcss">
 .callee__container {
-  @apply text-xs mt-2 min-h-20 border p-1 border-accent text-accent-foreground/50
+  @apply text-xs mt-2 min-h-20  p-1  text-accent-foreground/50 bg-white p-2 shadow-lg
 }
 
 .caller {
