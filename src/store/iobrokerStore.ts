@@ -166,7 +166,15 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
             console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
 
-          (this as any)[objectNameInStore] = getSubValue(this.getState, firstKey, secondKey, val, objectNameInStore, id, timestamp);
+          (this as any)[objectNameInStore] = getSubValue({
+            obj: this.getState,
+            fistKey: firstKey,
+            secondKey: secondKey,
+            val: val,
+            objectNameInStore: objectNameInStore,
+            id: id,
+            timestamp: timestamp
+          });
 
           return;
         }
@@ -178,13 +186,15 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
 });
 
 const getSubValue = (
-  obj: any,
-  fistKey: string,
-  secondKey: string | undefined,
-  val: string | number | boolean | object,
-  objectNameInStore: string,
-  id: string | undefined,
-  timestamp: boolean | undefined
+  { obj, fistKey, secondKey, val, objectNameInStore, id, timestamp }: {
+    obj: any,
+    fistKey: string,
+    secondKey?: string,
+    val: string | number | boolean | object,
+    objectNameInStore: string,
+    id?: string,
+    timestamp?: boolean
+  }
 ) => {
   obj = obj[objectNameInStore];
 
