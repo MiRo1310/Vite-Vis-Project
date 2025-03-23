@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
-import TableBasic from "../../../../node_my_sql/frontend/src/components/table/TableBasic.vue";
+import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
@@ -10,7 +10,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { JSONToString, stringToJSON } from "@/lib/string.ts";
-import TableNumberInput from "../../../../node_my_sql/frontend/src/components/table-cell/TableNumberInput.vue";
+import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 
 const { alexaAction: alexaActionStore } = useIobrokerStore();
 

@@ -2,7 +2,7 @@
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import TableBasic from "../../../../../../node_my_sql/frontend/src/components/table/TableBasic.vue";
+import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
