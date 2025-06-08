@@ -34,7 +34,7 @@ const closeDialog = () => {
 
 <template>
   <Dialog v-model:open="localOpen" @update:open="emit('update:open', $event)">
-    <DialogTrigger>
+    <DialogTrigger v-if="$slots.trigger">
       <slot name="trigger" />
     </DialogTrigger>
     <DialogContent :class="[props.classContent, style[styling]]">

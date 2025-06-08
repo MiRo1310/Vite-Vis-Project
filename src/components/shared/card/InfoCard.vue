@@ -4,7 +4,7 @@ import { HTMLAttributes } from "vue";
 export interface InfoTypes {
   title: string;
   value: number | string | undefined;
-  unit: string;
+  unit?: string;
   valueClass?: HTMLAttributes["class"];
   class?: HTMLAttributes["class"];
 }

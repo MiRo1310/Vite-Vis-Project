@@ -4,7 +4,7 @@ import { landroidVision } from "@/public";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import BoolIcon from "../../shared/table-cell/BoolIcon.vue";
+import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
