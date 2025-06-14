@@ -9,7 +9,7 @@ const entries: Entries[] = [
   { title: "Brennstoff vorhanden", value: !heating.pelletExist?.val, type: "boolean" },
   { title: "Überwachung Zugeber", value: !heating.watcherAdmitter?.val, type: "boolean" },
   {
-    title: "Temperatur im Brennstoffbehälter",
+    title: "Überwachung Brennstoffbehälter",
     value: !heating.tempPelletBuffer?.val,
     type: "boolean"
   },

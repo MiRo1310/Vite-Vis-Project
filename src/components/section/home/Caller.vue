@@ -7,7 +7,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
-useDynamicSubscribe([phoneStates]);
+useDynamicSubscribe(phoneStates);
 
 const { phone } = useIobrokerStore();
 

@@ -18,12 +18,23 @@ onUnmounted(() => {
 
 </script>
 <template>
-  <div class="h-[100vh] flex flex-col bg-backgroundColor">
+  <div class="app">
     <AlexaTimer />
-    <main class="px-1 pt-1 flex-1 overflow-hidden">
+    <main class="app__main">
       <RouterView />
     </main>
 
     <Nav />
   </div>
 </template>
+
+<style scoped lang="scss">
+.app {
+  @apply h-[100vh] flex flex-col bg-backgroundColor;
+
+  &__main {
+    @apply px-1 pt-1 flex-1 overflow-hidden;
+  }
+}
+
+</style>

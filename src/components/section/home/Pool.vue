@@ -2,23 +2,21 @@
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import InputUnit from "@/components/shared/InputWithUnit.vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
-import { BoolText } from "@/subscribeIds/pool.ts";
+import { BoolText, poolIds } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
+import { setstate } from "@/lib/setstate.ts";
+import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 
-const { pool, idsToControl } = storeToRefs(useIobrokerStore());
+const { pool } = storeToRefs(useIobrokerStore());
 const handleChangeTempSet = (value: string | number) => {
-  if (adminConnection) {
-    adminConnection.setState(
-      idsToControl.value.tempSetId,
-      parseInt(value?.toString())
-    );
-  }
+  setstate(pool.value.tempSet?.id, value);
 };
+
+useDynamicSubscribe(poolIds);
 
 interface Items {
   title: string;
@@ -30,30 +28,30 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
-    { title: "Heizung aktiv", type: "bool", value: pool.value.consumption?.val || 0 > 100 },
+    { title: "Heizung aktiv", type: "bool", value: pool.value.consumption?.val ?? 0 > 100 },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
-      value: pool.value.heaterState?.val || false
+      value: pool.value.heaterState?.val ?? false
     },
-    { title: "Modus", type: "text", value: getMode(pool.value.mode?.val || "") },
+    { title: "Modus", type: "text", value: getMode(pool.value.mode?.val ?? "") },
     {
       title: "Verbrauch",
       type: "number",
-      value: pool.value.status?.val ? pool.value.consumption?.val || 0 : 0,
+      value: pool.value.status?.val ? pool.value.consumption?.val ?? 0 : 0,
       unit: "W"
     },
     {
       title: "Wunschtemperatur",
       type: "input",
-      value: pool.value.tempSet?.val || 0,
+      value: pool.value.tempSet?.val ?? 0,
       function: handleChangeTempSet,
       unit: "°C"
     },
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: pool.value.status?.val ? pool.value.tempIn?.val || 0 : 0,
+      value: pool.value.status?.val ? pool.value.tempIn?.val ?? 0 : 0,
       unit: "°C"
     },
     {
@@ -111,7 +109,7 @@ const getMode = (mode: string) => {
           />
         </div>
         <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold">{{
-          parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
+            parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
         </span>
         <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }}
         </span>

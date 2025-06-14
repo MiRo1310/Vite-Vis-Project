@@ -8,8 +8,6 @@ import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
-import Presence from "@/components/section/home/Presence.vue";
-import PoolData from "@/components/section/home/PoolData.vue";
 </script>
 
 <template>
@@ -26,7 +24,5 @@ import PoolData from "@/components/section/home/PoolData.vue";
     <LawnMover class="col-span-3" />
     <Calendar class="col-span-5" />
     <Timer class="flex-1 max-w-[800px]" />
-    <PoolData class="flex-1" />
-    <Presence class="flex-1" />
   </div>
 </template>

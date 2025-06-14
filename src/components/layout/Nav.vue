@@ -3,6 +3,7 @@ import Button from "@/components/ui/button/Button.vue";
 import {
   BatteryFull,
   CalendarDays,
+  ChartSpline,
   CircleDot,
   Heater,
   Home,
@@ -67,6 +68,10 @@ const buttons: Buttons[] = [
     icon: Logs,
     text: "Logs",
     link: "/logs"
+  }, {
+    icon: ChartSpline,
+    text: "Diagramme",
+    link: "/diagrams"
   },
   {
     icon: Utensils,
