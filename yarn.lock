@@ -303,10 +303,10 @@
   resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-2.4.18.tgz#d886c7dccd043163e6b1d3d716484ac152a905be"
   integrity sha512-9NjQFHuFXe1I4r67cYCnnx96PBAGa6jqceYwdMfzfatk3Oxlzpfff3tOOvaWOCNV0yj1ij/4nIh9pX+Y/W/gOg==
 
-"@iobroker/types@^5.0.19":
-  version "5.0.19"
-  resolved "https://registry.yarnpkg.com/@iobroker/types/-/types-5.0.19.tgz#4319405cdccc71b0a821cecf0aacb0623a42380b"
-  integrity sha512-FY+lpPbYVlX/WHzEGVIXZrM6XQXI+GtWb3E/ZR2ZKdSBK4/w7VezUQuqxq1lYW914LxjcynXxYtLxHva/nal6g==
+"@iobroker/types@^7.0.7":
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@iobroker/types/-/types-7.0.7.tgz#4a342ff5e6c958a1f84ce29fb72d11548ace1275"
+  integrity sha512-1pOAy/dKM5LbMToN8C18vJZNrczekwP+kibkj80bBt4dUJmhT/e0F0A2INfgwo73OE3luVxOMcQgnF0NH8MZkA==
 
 "@isaacs/cliui@^8.0.2":
   version "8.0.2"
