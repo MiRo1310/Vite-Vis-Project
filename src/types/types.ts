@@ -14,6 +14,7 @@ export interface ShoppingList {
 export interface RowShoppinglist {
   user: string;
   amount: number;
+  // @ts-expect-error @typescript-eslint/no-explicit-any
   getValue: (key: string) => any;
 }
 
