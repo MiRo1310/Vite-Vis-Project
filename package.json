@@ -23,7 +23,7 @@
     "@vueuse/router": "^13.3.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "eslint-plugin-vue": "^9.22.0",
+    "eslint-plugin-vue": "^10.2.0",
     "lucide-vue-next": "^0.468.0",
     "path": "^0.12.7",
     "pinia": "^2.3.0",

@@ -109,7 +109,7 @@ const getMode = (mode: string) => {
           />
         </div>
         <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold">{{
-            parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
+          parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
         </span>
         <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }}
         </span>

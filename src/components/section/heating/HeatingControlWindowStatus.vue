@@ -28,6 +28,7 @@ onMounted(() => {
       >
         {{ heating.heatingControl.openWindowCount?.val }} Fenster offen
       </span>
+      //
       <div v-html="heating.heatingControl.windowOpenHtmlTable?.val" />
     </div>
   </div>

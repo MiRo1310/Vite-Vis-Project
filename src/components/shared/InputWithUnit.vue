@@ -23,8 +23,10 @@ defineEmits(['update:modelValue'])
 </script>
 <template>
   <div :class="['flex items-center']">
-    <Input :type="type" :class="{ [props.class]: true, 'h-6': true }" :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)" />
+    <Input
+      :type="type" :class="{ [props.class]: true, 'h-6': true }" :model-value="modelValue"
+      @update:model-value="$emit('update:modelValue', $event)"
+    />
     <span class="ml-2 text-accent-foreground/50 font-bold text-xs">{{ unit }}</span>
   </div>
 </template>

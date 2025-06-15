@@ -25,8 +25,9 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
         <HeatingControl />
       </template>
     </Dialog>
-    <iframe src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
-            width="100%" height="400" frameborder="0"
+    <iframe
+      src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
+      width="100%" height="400" frameborder="0"
     />
   </div>
 </template>

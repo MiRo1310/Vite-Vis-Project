@@ -24,11 +24,16 @@ const clickHandler = (direction: number) => {
 
 <template>
   <div class="diagrams">
-    <Button variant="outline" @click="clickHandler(1)">Zurück</Button>
-    <Button variant="outline" @click="clickHandler(-1)">Vor</Button>
+    <Button variant="outline" @click="clickHandler(1)">
+      Zurück
+    </Button>
+    <Button variant="outline" @click="clickHandler(-1)">
+      Vor
+    </Button>
   </div>
-  <iframe :src="diagrams[diagramIndex]"
-          width="100%" height="100%"
+  <iframe
+    :src="diagrams[diagramIndex]"
+    width="100%" height="100%"
   />
 </template>
 
