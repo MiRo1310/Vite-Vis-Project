@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<PaginationFirstProps & { class?: HTMLAttr
 });
 
 const delegatedProps = computed(() => {
+   
   const { class: _, ...delegated } = props;
 
   return delegated;

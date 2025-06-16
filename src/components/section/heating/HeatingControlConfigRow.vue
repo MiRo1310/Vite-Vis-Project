@@ -44,7 +44,7 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
       <Select
         :items="row.select.items" :selected="row.select.selected"
         :placeholder="row.select.placeholder || ''"
-        @update:selected="updateData(parseInt($event), row.select.id)"
+        @update:selected="updateData(parseInt($event??''), row.select.id)"
       />
     </span>
   </span>

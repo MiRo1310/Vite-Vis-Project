@@ -64,7 +64,7 @@ const activeClass = computed(() => (i: number) => {
           v-for="i in 5" :key="i" :items="tempArray()"
           :selected="profile[`${day.val}.${i}.temp` as keyof typeof profile]?.val?.toString()"
           :class="['p-0', activeClass(i)]"
-          @update:selected="updateData(profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id, $event.toString())"
+          @update:selected="updateData(profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id, $event?.toString()??'')"
         />
       </div>
     </div>

@@ -6,7 +6,7 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,vue}"],
+    files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },
     extends: ["js/recommended"],
     languageOptions: {
@@ -16,12 +16,19 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginVue.configs["flat/essential"],
   {
-    files: ["**/*.vue"],
+    files: ["**/*.{ts,tsx,vue}"],
     rules: {
-      "vue/multi-word-component-names": "off"
+      "@typescript-eslint/no-explicit-any": "off"
     },
     languageOptions: {
       parserOptions: { parser: tseslint.parser }
+    }
+  },
+  {
+    files: ["**/*.vue"],
+    rules: {
+      "vue/multi-word-component-names": "off",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }]
     }
   }
 ]);

@@ -23,8 +23,11 @@ const shouldLoadFallBack = ref(false);
 const imageLoadTimeout: Ref<null | NodeJS.Timeout> = ref(null);
 
 const clickImageHandler = () => {
-  props.useLightbox ? (showDialog.value = true) : null;
+  if (props.useLightbox) {
+    showDialog.value = true;
+  }
 };
+
 watchEffect(() => {
   if (!props.src) {
     shouldLoadFallBack.value = true;

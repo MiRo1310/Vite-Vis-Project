@@ -298,10 +298,10 @@
   dependencies:
     "@swc/helpers" "^0.5.0"
 
-"@iobroker/socket-client@^2.3.13":
-  version "2.4.18"
-  resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-2.4.18.tgz#d886c7dccd043163e6b1d3d716484ac152a905be"
-  integrity sha512-9NjQFHuFXe1I4r67cYCnnx96PBAGa6jqceYwdMfzfatk3Oxlzpfff3tOOvaWOCNV0yj1ij/4nIh9pX+Y/W/gOg==
+"@iobroker/socket-client@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-4.1.3.tgz#b56418800f9e41af115764fb87dedfec6270cad5"
+  integrity sha512-uLBTkjsYfgIkxMnveq3/5+ScHoJwFFe95SBxvBVsVdMVuJ20ZkrKcZBoLDGqhlxDlRTxWKX2Zr0T/So/cMAs7g==
 
 "@iobroker/types@^7.0.7":
   version "7.0.7"

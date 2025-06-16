@@ -40,7 +40,7 @@ function getYearMonth() {
 
   if (month <= -1) {
     if (month % 12 === -0) {
-      month * -1;
+      month = month * -1;
     }
     month = (12 + month % 12) % 12;
 

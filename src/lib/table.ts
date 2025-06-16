@@ -233,9 +233,9 @@ const buttonSorting = (column: any, obj: DataTableHeaderCreator) => {
       {
         variant: "ghost",
         onClick: () => {
-          obj.sortable
-            ? column.toggleSorting(column.getIsSorted() === "asc", obj.label)
-            : column.toggleSortingHandler(column.getIsSorted() === "asc", obj.label);
+
+          column.toggleSorting(column.getIsSorted() === "asc", obj.label);
+
         },
         class: "px-0 hover:bg-accent/50"
       },

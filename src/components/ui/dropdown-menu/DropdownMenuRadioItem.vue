@@ -15,6 +15,7 @@ const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes[
 const emits = defineEmits<DropdownMenuRadioItemEmits>()
 
 const delegatedProps = computed(() => {
+   
   const { class: _, ...delegated } = props
 
   return delegated

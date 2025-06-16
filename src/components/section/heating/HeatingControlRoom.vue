@@ -10,7 +10,9 @@ const { heating } = storeToRefs(useIobrokerStore());
 
 function resetStatus() {
   const id = `heatingcontrol.0.Rooms.${heating.value.heatingControl.room?.val}.ResetManual`;
-  id ? adminConnection?.setState(id, true, false) : null;
+  if (id) {
+    adminConnection?.setState(id, true, false);
+  }
 }
 </script>
 <template>
