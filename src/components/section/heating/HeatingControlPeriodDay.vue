@@ -35,7 +35,7 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [
     value: [
       {
         id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
-        firstKey: "currentTimePeriod",
+        key: "currentTimePeriod",
       },
     ],
   },

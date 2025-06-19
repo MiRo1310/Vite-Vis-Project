@@ -68,18 +68,18 @@ const batteryIds: IdToSubscribe<BatteriesType> = {
   value: [
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage",
-      firstKey: "Shelly Plus Smoke Flur OG",
+      key: "Shelly Plus Smoke Flur OG",
       secondKey: "voltage",
     },
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
-      firstKey: "Shelly Plus Smoke Flur OG",
+      key: "Shelly Plus Smoke Flur OG",
       timestamp: true,
       secondKey: "percent",
     },
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware",
-      firstKey: "Shelly Plus Smoke Flur OG",
+      key: "Shelly Plus Smoke Flur OG",
       secondKey: "firmware",
     },
   ],
@@ -206,13 +206,13 @@ function addHMIPDevices() {
     batteryIds.value.push(
       {
         id: `${device.id}.channels.0.lowBat`,
-        firstKey: `${device.name}`,
+        key: `${device.name}`,
         timestamp: true,
         secondKey: "lowBat",
       },
       {
         id: `${device.id}.channels.0.unreach`,
-        firstKey: `${device.name}`,
+        key: `${device.name}`,
         revertValue: true,
         secondKey: "available",
       },
@@ -225,18 +225,18 @@ function addZigbeeWindowDevices() {
     batteryIds.value.push(
       {
         id: `${device.id}.battery`,
-        firstKey: `${device.name}`,
+        key: `${device.name}`,
         timestamp: true,
         secondKey: "percent",
       },
       {
         id: `${device.id}.voltage`,
-        firstKey: `${device.name}`,
+        key: `${device.name}`,
         secondKey: "voltage",
       },
       {
         id: `${device.id}.available`,
-        firstKey: `${device.name}`,
+        key: `${device.name}`,
         secondKey: "available",
       },
     );

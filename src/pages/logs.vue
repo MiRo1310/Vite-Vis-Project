@@ -37,9 +37,9 @@ export interface LogReset {
 const statesReset: IdToSubscribe<LogReset> = {
   storeFolder: "logReset",
   value: [
-    { id: "logparser.0.filters.Error.emptyJson", firstKey: "error" },
-    { id: "logparser.0.filters.Info.emptyJson", firstKey: "info" },
-    { id: "logparser.0.filters.Warn.emptyJson", firstKey: "warn" },
+    { id: "logparser.0.filters.Error.emptyJson", key: "error" },
+    { id: "logparser.0.filters.Info.emptyJson", key: "info" },
+    { id: "logparser.0.filters.Warn.emptyJson", key: "warn" },
   ],
 };
 

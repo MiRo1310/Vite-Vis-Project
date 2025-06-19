@@ -2,14 +2,12 @@
 import windowOpen from "@/public/window_open.png";
 import windowClosed from "@/public/window_closed.png";
 
-defineProps<{ isOpen: boolean; exist: boolean }>();
+defineProps<{ isOpen: boolean }>();
 </script>
 
 <template>
-  <div v-if="exist">
-    <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" />
-    <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" />
-  </div>
+  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" />
+  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" />
 </template>
 
 <style scoped lang="postcss">

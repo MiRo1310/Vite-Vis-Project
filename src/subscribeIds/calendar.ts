@@ -7,5 +7,5 @@ export interface Calendar {
 
 export const calendar: IdToSubscribe<Calendar> = {
   storeFolder: "calendar",
-  value: [{ id: "ical.1.data.table", firstKey: "table" }],
+  value: [{ id: "ical.1.data.table", key: "table" }],
 };

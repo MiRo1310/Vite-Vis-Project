@@ -3,45 +3,43 @@ import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { WindowObject } from "@/types/types.ts";
-import { getWindowInfos } from "@/composables/windows";
 import WindowCard from "@/components/section/window/WindowCard.vue";
+import { getOpenWindows } from "@/composables/windows.ts";
 
 const iobrokerStore = useIobrokerStore();
 const { fensterOffen } = storeToRefs(iobrokerStore);
 
-const { getOpenWindows } = getWindowInfos();
-
 const windows: WindowObject[] = [
-  { name: "Küche Tür", shutter: true, id: "kueche,tuer", door: true },
-  { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
+  { name: "Küche Tür", shutter: true, id: "kuecheTuer", door: true },
+  { name: "Küche Fenster", shutter: true, id: "kuecheFenster" },
   {
     name: "Esszimmer",
     shutter: true,
-    id: "esszimmer,links",
-    id2: "esszimmer,rechts",
+    id: "esszimmerLinks",
+    id2: "esszimmerRechts",
   },
-  { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmer,ecke" },
-  { name: "Wohnzimmer links", shutter: true, id: "wohnzimmer,links" },
-  { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmer,mittig" },
-  { name: "Wohnzimmer rechts", shutter: true, id: "wohnzimmer,rechts" },
-  { name: "Schlafzimmer Fenster", shutter: true, id: "schlafen,fenster" },
-  { name: "Schlafzimmer Tür", shutter: true, id: "schlafen,tuer", door: true },
-  { name: "Kinderzimmer", shutter: true, id: "kinderzimmer,fenster" },
-  { name: "Bad", shutter: true, id: "bad,fenster" },
-  { name: "Gästezimmer", shutter: true, id: "gaestezimmer,fenster" },
-  { name: "Abstellraum OG links", shutter: true, id: "abstellraumog,links" },
-  { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumog,rechts" },
-  { name: "Haustür", shutter: false, id: "haustür,tuer", door: true },
-  { name: "Kellertür", shutter: false, id: "keller,tuer", door: true },
-  { name: "Keller Flur", shutter: false, id: "keller,flurFenster" },
-  { name: "Büro Keller", shutter: false, id: "buero,fenster" },
-  { name: "Gäste-WC links", shutter: false, id: "gaesteWc,links" },
-  { name: "Gäste-WC rechts", shutter: false, id: "gaesteWc,rechts" },
-  { name: "Flur links", shutter: false, id: "flur,links" },
-  { name: "Flur rechts", shutter: false, id: "flur,rechts" },
-  { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
-  { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
-  { name: "Dachboden links", shutter: false, id: "dachboden,links" },
+  { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmerEcke" },
+  { name: "Wohnzimmer links", shutter: true, id: "wohnzimmerLinks" },
+  { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmerMittig" },
+  { name: "Wohnzimmer rechts", shutter: true, id: "wohnzimmerRechts" },
+  { name: "Schlafzimmer Fenster", shutter: true, id: "schlafenFenster" },
+  { name: "Schlafzimmer Tür", shutter: true, id: "schlafenTuer", door: true },
+  { name: "Kinderzimmer", shutter: true, id: "kinderzimmerFenster" },
+  { name: "Bad", shutter: true, id: "badFenster" },
+  { name: "Gästezimmer", shutter: true, id: "gaestezimmerFenster" },
+  { name: "Abstellraum OG links", shutter: true, id: "abstellraumOgLinks" },
+  { name: "Abstellraum OG rechts", shutter: true, id: "abstellraumOgRechts" },
+  { name: "Haustür", shutter: false, id: "haustuer", door: true },
+  { name: "Kellertür", shutter: false, id: "kellerTuer", door: true },
+  { name: "Keller Flur", shutter: false, id: "kellerFlurFenster" },
+  { name: "Büro Keller", shutter: false, id: "bueroFenster" },
+  { name: "Gäste-WC links", shutter: false, id: "gaesteWcLinks" },
+  { name: "Gäste-WC rechts", shutter: false, id: "gaesteWcRechts" },
+  { name: "Flur links", shutter: false, id: "flurLinks" },
+  { name: "Flur rechts", shutter: false, id: "flurRechts" },
+  { name: "Abstellraum", shutter: false, id: "abstellraumFenster" },
+  { name: "Dachboden rechts", shutter: false, id: "dachbodenRechts" },
+  { name: "Dachboden links", shutter: false, id: "dachbodenLinks" },
 ];
 </script>
 <template>

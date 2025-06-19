@@ -29,6 +29,7 @@ import {
 import { Shutter, WindowType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
+import { isDefined } from "@vueuse/core";
 
 const iobrokerStore = useIobrokerStore();
 const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } =
@@ -37,58 +38,32 @@ const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } =
 const props = defineProps<{
   shutter: boolean;
   title: string;
-  id: string;
-  id2?: string;
+  id: keyof WindowType;
+  id2?: keyof WindowType;
   class?: HTMLAttributes["class"];
   door: boolean;
 }>();
 
-function getValue<T>(
-  getVal: boolean,
-  id: string,
-  object: WindowType | Shutter | object,
-  subKey?: string,
-) {
-  const arrayOfIds = id.split(",").map((id) => id.trim());
-  const first = arrayOfIds[0];
-  const second = arrayOfIds[1];
-  const obj = object?.[first as keyof typeof object];
-
-  const subObj = obj?.[`${second}${subKey ? subKey : ""}` as keyof typeof obj];
-  return getVal ? (subObj as StoreValue<T>)?.val : (subObj as StoreValue<T>);
-}
-
-const getIsWindowOpen = computed(() => (id: string | undefined) => {
-  if (!id) return false;
-  const value = getValue<boolean>(true, id, fenster.value);
-  if (!value && value != false) {
-    return false;
-  }
-  return value as boolean;
-});
+const getIsWindowOpen = computed(
+  () => (id: keyof WindowType) => fenster.value[id]?.val ?? false,
+);
 
 const getShutterPosition = computed(() => {
-  const value = getValue<number>(true, props.id, rolladen.value);
+  const value =
+    rolladen.value[(props.id + "Position") as keyof typeof rolladen.value]?.val;
 
-  if (!value && value != 0) {
-    return "n/a";
-  }
-  return value;
+  return isDefined(value) ? value : "n/a";
 });
 
 type SubKey = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
 const values = computed(() => <T,>(subKey: SubKey, obj: any) => {
   const id = useDefaultLivingRoom(props.id);
-  return getValue<T>(false, id, obj, subKey) as StoreValue<T>;
+  return obj[(id + subKey) as keyof typeof obj];
 });
 
 function useDefaultLivingRoom(param: string) {
-  const array = param.split(",");
-  if (array[0] === "wohnzimmer") {
-    return `${array[0]},ecke`;
-  }
-  return param;
+  return param.includes("wohnzimmer") ? "wohnzimmerEcke" : param;
 }
 
 const getShutterImage = computed(() => {
@@ -118,16 +93,14 @@ const updateHandler = (value: number | string | boolean, id: string) => {
   <Card class="window__card" :class="`${props.class}`" styling="light">
     <CardHeader class="pb-0 pt-2 px-2">
       <CardTitle class="flex bg-white">
-        <p class="line px-2">
-          {{ title }}
-        </p>
+        <p class="line px-2">{{ title }}</p>
       </CardTitle>
     </CardHeader>
     <CardContent class="px-2 pb-2">
       <div class="flex items-center">
         <div class="flex">
-          <WindowImage :exist="!!id" :is-open="getIsWindowOpen(id)" />
-          <WindowImage :exist="!!id2" :is-open="getIsWindowOpen(id2)" />
+          <WindowImage :is-open="getIsWindowOpen(id)" />
+          <WindowImage v-if="id2" :is-open="getIsWindowOpen(id2)" />
         </div>
         <WindowCardOpenCloseText
           :window-open="
@@ -216,7 +189,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
   </Card>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 input {
   @apply w-[5.2rem] pr-8 border-none shadow-none;
 }

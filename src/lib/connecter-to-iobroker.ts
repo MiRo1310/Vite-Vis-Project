@@ -84,7 +84,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
                 objectNameInStore: item.storeFolder || null,
                 val: value,
                 id,
-                firstKey: stateId.firstKey || stateId.room || null,
+                firstKey: stateId.key || stateId.room || null,
                 secondKey: subKey,
               });
 
@@ -93,7 +93,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
                   objectNameInStore: item.storeFolder || null,
                   val: timestamp,
                   id,
-                  firstKey: stateId.firstKey || stateId.room || null,
+                  firstKey: stateId.key || stateId.room || null,
                   secondKey: "ts",
                   timestamp: true,
                 });

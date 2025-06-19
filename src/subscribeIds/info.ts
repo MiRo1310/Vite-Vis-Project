@@ -12,10 +12,10 @@ export const infoStates: IdToSubscribe<Infos>[] = [
   {
     storeFolder: "infos",
     value: [
-      { id: "admin.0.info.updatesJson", firstKey: "updatesJson" },
-      { id: "admin.0.info.updatesNumber", firstKey: "updatesNumber" },
-      { id: "admin.0.info.lastUpdateCheck", firstKey: "lastUpdateCheck" },
-      { id: "admin.0.info.newsFeed", firstKey: "newsFeeds" },
+      { id: "admin.0.info.updatesJson", key: "updatesJson" },
+      { id: "admin.0.info.updatesNumber", key: "updatesNumber" },
+      { id: "admin.0.info.lastUpdateCheck", key: "lastUpdateCheck" },
+      { id: "admin.0.info.newsFeed", key: "newsFeeds" },
     ],
   },
 ];
