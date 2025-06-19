@@ -10,44 +10,44 @@ const entries: Entries[] = [
     title: "Maximale Zeit zum befüllen",
     value: heating.maxTimeToFill?.val,
     type: "number",
-    unit: "s"
+    unit: "s",
   },
   {
     title: "Nachlauf Spirale",
     value: heating.offsetFilling?.val,
     type: "number",
-    unit: "s"
+    unit: "s",
   },
   {
     title: "Pumpe Heizung an, ab",
     value: heating.tempPumpOn?.val,
     type: "number",
-    unit: "°C"
+    unit: "°C",
   },
   {
     title: "Pumpe Heizung aus, ab",
     value: heating.tempPumpOff?.val,
     type: "number",
-    unit: "°C"
+    unit: "°C",
   },
   {
     title: "Differenz Solar/ Puffer",
     value: heating.diffSolarBuffer?.val,
     type: "number",
-    unit: "°C"
+    unit: "°C",
   },
   {
     title: "Min. Temp Solar zum Puffer füllen",
     value: heating.minFillTemp?.val,
     type: "number",
-    unit: "°C"
+    unit: "°C",
   },
   {
     title: "Max. Temp des Puffer zum Solar füllen",
     value: heating.maxFillTemp?.val,
     type: "number",
-    unit: "°C"
-  }
+    unit: "°C",
+  },
 ];
 </script>
 <template>

@@ -4,16 +4,16 @@ import { computed } from "vue";
 const props = defineProps({
   actualPage: {
     type: Number,
-    required: true
+    required: true,
   },
   totalPages: {
     type: Number,
-    required: true
+    required: true,
   },
   itemsPerPage: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const getPageRangeStart = computed(() => {

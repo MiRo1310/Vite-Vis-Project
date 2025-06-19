@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
@@ -54,12 +59,15 @@ function isNotAllDayEvent(event: CalendarDay) {
           Heute
         </p>
         <p
-          v-for="(event, index) in today" :key="index"
+          v-for="(event, index) in today"
+          :key="index"
           class="text-accent-foreground/50 text-xs font-bold flex justify-between"
         >
           <span>{{ event._object.summary }}</span>
-          <span v-if="isNotAllDayEvent(event)" class="ml-2">{{ getLocalTimeString(event._object.start) }} bis
-            {{ getLocalTimeString(event._object.end) }}</span>
+          <span v-if="isNotAllDayEvent(event)" class="ml-2"
+            >{{ getLocalTimeString(event._object.start) }} bis
+            {{ getLocalTimeString(event._object.end) }}</span
+          >
         </p>
       </div>
       <div class="calendar__section mt-2">
@@ -68,11 +76,14 @@ function isNotAllDayEvent(event: CalendarDay) {
         </p>
         <p
           v-for="(event, index) in tomorrow"
-          :key="index" class="text-accent-foreground/50 text-xs font-bold flex justify-between"
+          :key="index"
+          class="text-accent-foreground/50 text-xs font-bold flex justify-between"
         >
           <span>{{ event._object.summary }}</span>
-          <span v-if="isNotAllDayEvent(event)">{{ getLocalTimeString(event._object.start) }} bis
-            {{ getLocalTimeString(event._object.end) }}</span>
+          <span v-if="isNotAllDayEvent(event)"
+            >{{ getLocalTimeString(event._object.start) }} bis
+            {{ getLocalTimeString(event._object.end) }}</span
+          >
         </p>
       </div>
     </CardContent>
@@ -80,6 +91,6 @@ function isNotAllDayEvent(event: CalendarDay) {
 </template>
 <style>
 .calendar__section {
-  @apply bg-white p-2 shadow-lg
+  @apply bg-white p-2 shadow-lg;
 }
 </style>

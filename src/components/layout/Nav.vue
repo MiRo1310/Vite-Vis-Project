@@ -11,7 +11,7 @@ import {
   LampCeiling,
   Logs,
   PlugZap,
-  Utensils
+  Utensils,
 } from "lucide-vue-next";
 import NavActions from "@/components/layout/NavActions.vue";
 import { FunctionalComponent } from "vue";
@@ -27,58 +27,59 @@ const buttons: Buttons[] = [
   {
     icon: Home,
     text: "Home",
-    link: "/"
+    link: "/",
   },
   {
     icon: CalendarDays,
     text: "Kalendar",
-    link: "/kalendar"
+    link: "/kalendar",
   },
   {
     icon: BatteryFull,
     text: "Battery",
-    link: "/battery"
+    link: "/battery",
   },
   {
     icon: LampCeiling,
     text: "Licht",
-    link: "/light"
+    link: "/light",
   },
   {
     icon: CircleDot,
     text: "Alexa",
-    link: "/alexa"
+    link: "/alexa",
   },
   {
     icon: Heater,
     text: "Heizung",
-    link: "/heating"
+    link: "/heating",
   },
   {
     icon: PlugZap,
     text: "PV",
-    link: "/pv"
+    link: "/pv",
   },
   {
     icon: Info,
     text: "Iobroker Info",
-    link: "/iobroker-info"
+    link: "/iobroker-info",
   },
   {
     icon: Logs,
     text: "Logs",
-    link: "/logs"
-  }, {
+    link: "/logs",
+  },
+  {
     icon: ChartSpline,
     text: "Diagramme",
-    link: "/diagrams"
+    link: "/diagrams",
   },
   {
     icon: Utensils,
     text: "Rezepte",
     link: "http://192.168.1.13/",
-    externalLink: true
-  }
+    externalLink: true,
+  },
 ];
 </script>
 
@@ -86,18 +87,11 @@ const buttons: Buttons[] = [
   <div class="nav">
     <div v-for="(button, index) in buttons" :key="index">
       <router-link v-if="!button.externalLink" :to="button.link">
-        <Button
-          variant="outline"
-          class="nav__button"
-        >
+        <Button variant="outline" class="nav__button">
           <component :is="button.icon" class="nav__button-icon" />
         </Button>
       </router-link>
-      <Button
-        v-else variant="outline"
-        as="div"
-        class="nav__button"
-      >
+      <Button v-else variant="outline" as="div" class="nav__button">
         <a :href="button.link" target="_self" rel="noopener noreferrer">
           <component :is="button.icon" class="nav__button-icon" />
         </a>
@@ -112,11 +106,11 @@ const buttons: Buttons[] = [
   @apply w-full flex;
 
   &__button {
-    @apply w-16 h-16 mb-1 p-0 cursor-pointer mt-1 text-accent-foreground/80 ml-1 bg-color__default border-none rounded-none
+    @apply w-16 h-16 mb-1 p-0 cursor-pointer mt-1 text-accent-foreground/80 ml-1 bg-color__default border-none rounded-none;
   }
 
   &__button-icon {
-    @apply w-10 h-10
+    @apply w-10 h-10;
   }
 }
 </style>

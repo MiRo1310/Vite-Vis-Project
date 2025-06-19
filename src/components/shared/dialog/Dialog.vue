@@ -6,20 +6,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { HTMLAttributes, ref, watchEffect } from "vue";
 
-const props = withDefaults(defineProps<{
-  open?: boolean,
-  classContent?: HTMLAttributes["class"]
-  styling?: keyof typeof style
-}>(), { classContent: "", styling: "default" });
+const props = withDefaults(
+  defineProps<{
+    open?: boolean;
+    classContent?: HTMLAttributes["class"];
+    styling?: keyof typeof style;
+  }>(),
+  { classContent: "", styling: "default" },
+);
 const emit = defineEmits(["update:open"]);
 
 const style = {
   small: "p-0 bg-backgroundColor border-none rounded-none",
-  default: ""
+  default: "",
 };
 
 const localOpen = ref(false);

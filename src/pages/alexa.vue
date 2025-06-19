@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -25,7 +30,8 @@ export interface AlexaAction {
 const alexaAction: IdToSubscribe<AlexaAction> = {
   objectNameInStore: "alexaAction",
   value: [
-    { id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", firstKey: "alexaSpeak" }]
+    { id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", firstKey: "alexaSpeak" },
+  ],
 };
 
 useDynamicSubscribe(alexaAction);
@@ -35,7 +41,7 @@ const alexaNames = ref<AlexaDotAction[]>([]);
 
 async function getAlexaEnum(): Promise<any[]> {
   const res = await adminConnection?.getObject("enum.functions.alexa");
-  return res ? res.common.members as string[] : [];
+  return res ? (res.common.members as string[]) : [];
 }
 
 const getAlexInfos = async (id: string) => {
@@ -53,7 +59,7 @@ async function loadAlexaObject() {
       let obj = { name, speak };
       const data = getMoreInfos(name);
       if (typeof data === "object") {
-        obj = { ...obj, ...data as object };
+        obj = { ...obj, ...(data as object) };
       }
       alexaNames.value.push(obj);
     }
@@ -67,7 +73,8 @@ function getMoreInfos(name: string) {
   const obj = stringToJSON(alexaActionStore.alexaSpeak?.val);
   if (!obj) return;
   actions.value = obj;
-  if (typeof obj === "object" && obj[name as keyof typeof obj]) return obj[name as keyof typeof obj];
+  if (typeof obj === "object" && obj[name as keyof typeof obj])
+    return obj[name as keyof typeof obj];
   return;
 }
 
@@ -94,14 +101,20 @@ function callback(params: Record<string, any>) {
 }
 
 const columns: DatatableColumns[] = [
-  { source: "name", type: "component", component: TableAlexaName, accessorKey: "name", labelKey: "Echo Dot" },
+  {
+    source: "name",
+    type: "component",
+    component: TableAlexaName,
+    accessorKey: "name",
+    labelKey: "Echo Dot",
+  },
   {
     source: "bell",
     type: "component",
     component: TableSwitch,
     accessorKey: "bell",
     labelKey: "Klingel",
-    callback
+    callback,
   },
   {
     source: "bellVolume",
@@ -109,7 +122,8 @@ const columns: DatatableColumns[] = [
     component: TableNumberInput,
     accessorKey: "bellVolume",
     labelKey: "Klingel Lautstärke",
-    customValue: { step: 10, min: 0, max: 100, defaultValue: 40 }, callback
+    customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
+    callback,
   },
   {
     source: "washer",
@@ -117,7 +131,7 @@ const columns: DatatableColumns[] = [
     component: TableSwitch,
     accessorKey: "washer",
     labelKey: "Waschmaschine",
-    callback
+    callback,
   },
   {
     source: "washerVolume",
@@ -126,9 +140,16 @@ const columns: DatatableColumns[] = [
     accessorKey: "washerVolume",
     labelKey: "Waschmaschine Lautstärke",
     customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
-    callback
+    callback,
   },
-  { source: "tel", type: "component", component: TableSwitch, accessorKey: "tel", labelKey: "Telefon", callback },
+  {
+    source: "tel",
+    type: "component",
+    component: TableSwitch,
+    accessorKey: "tel",
+    labelKey: "Telefon",
+    callback,
+  },
   {
     source: "telVolume",
     type: "component",
@@ -136,8 +157,8 @@ const columns: DatatableColumns[] = [
     accessorKey: "telVolume",
     labelKey: "Telefon Laustärke",
     customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
-    callback
-  }
+    callback,
+  },
 ];
 </script>
 
@@ -150,7 +171,11 @@ const columns: DatatableColumns[] = [
     </CardHeader>
     <CardContent>
       <div class="default_card">
-        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaNames" />
+        <TableBasic
+          v-if="!loading"
+          :columns="getColumns(columns)"
+          :data="alexaNames"
+        />
       </div>
     </CardContent>
   </Card>

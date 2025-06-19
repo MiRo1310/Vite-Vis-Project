@@ -4,8 +4,8 @@ import { PropType } from "vue";
 defineProps({
   value: {
     type: String as PropType<string | undefined>,
-    default: ""
-  }
+    default: "",
+  },
 });
 </script>
 

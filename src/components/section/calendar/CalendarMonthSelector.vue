@@ -16,7 +16,7 @@ const months = [
   "September",
   "Oktober",
   "November",
-  "Dezember"
+  "Dezember",
 ];
 
 const monthModifikator = ref(0);
@@ -32,7 +32,6 @@ const getCurrentMonthName = computed(() => {
 let yearAdder = 0;
 
 function getYearMonth() {
-
   let month = new Date().getMonth() + monthModifikator.value;
   if (month > 0) {
     month = month % 12;
@@ -42,8 +41,7 @@ function getYearMonth() {
     if (month % 12 === -0) {
       month = month * -1;
     }
-    month = (12 + month % 12) % 12;
-
+    month = (12 + (month % 12)) % 12;
   }
   let year = new Date().getFullYear() + yearAdder;
 
@@ -90,9 +88,7 @@ const getDaysInMonth = (): number => {
       <Button size="icon" @click="changeMonth(1)">
         <ChevronRight />
       </Button>
-      <Button @click="resetMonth">
-        Heute
-      </Button>
+      <Button @click="resetMonth"> Heute </Button>
     </div>
     <slot />
   </div>

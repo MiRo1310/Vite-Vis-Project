@@ -15,4 +15,3 @@ export { default as window_open } from "@/public/window_open.png";
 export { default as window_close } from "@/public/window_closed.png";
 export { default as light_on } from "@/assets/img/svg/lightOn.svg";
 export { default as light_off } from "@/assets/img/svg/lightOff.svg";
-

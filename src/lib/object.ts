@@ -6,12 +6,12 @@ export function tempArray() {
     if (i === 5) {
       array.push({
         label: "Aus",
-        val: "0"
+        val: "0",
       });
     }
     array.push({
       label: i.toString(),
-      val: i.toString()
+      val: i.toString(),
     });
   }
   return array;

@@ -6,6 +6,6 @@
 
 <style scoped lang="postcss">
 .card-simple {
-  @apply bg-white p-2 shadow-lg
+  @apply bg-white p-2 shadow-lg;
 }
 </style>

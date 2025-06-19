@@ -16,7 +16,4 @@ the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-scrip
 
 ### Subscribe von Ids
 
-- Man kann es 
-
-
-
+- Man kann es

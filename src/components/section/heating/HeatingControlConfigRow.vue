@@ -8,8 +8,17 @@ export interface RowHeatingConfig {
   checkbox: { id: string | undefined; val: boolean | undefined };
   titleCheckbox: string;
   titleSelect: string;
-  input?: { id: string | undefined; val: string | undefined; textBehind: string };
-  select: { items: SelectOption[]; selected: string | undefined; placeholder?: string; id: string | undefined };
+  input?: {
+    id: string | undefined;
+    val: string | undefined;
+    textBehind: string;
+  };
+  select: {
+    items: SelectOption[];
+    selected: string | undefined;
+    placeholder?: string;
+    id: string | undefined;
+  };
 }
 
 defineProps<{ row: RowHeatingConfig }>();
@@ -26,7 +35,8 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
   <span class="flex justify-between w-[24rem]">
     <span class="flex items-center">
       <Checkbox
-        :checked="row.checkbox.val" class="bg-white"
+        :checked="row.checkbox.val"
+        class="bg-white"
         @update:checked="updateData($event, row.checkbox?.id)"
       />
       <p class="ml-4">{{ row.titleCheckbox }}</p>
@@ -35,16 +45,18 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
       <p class="mr-1 text-xs">{{ row.titleSelect }}</p>
       <span v-if="row.input" class="flex mr-1 items-center">
         <Input
-          :model-value="row.input.val" type="time"
+          :model-value="row.input.val"
+          type="time"
           class="h-6 shadow-none border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 bg-white"
           @update:model-value="updateData($event, row.input.id)"
         />
         <span class="ml-1 text-xs">{{ row.input.textBehind }}</span>
       </span>
       <Select
-        :items="row.select.items" :selected="row.select.selected"
+        :items="row.select.items"
+        :selected="row.select.selected"
         :placeholder="row.select.placeholder || ''"
-        @update:selected="updateData(parseInt($event??''), row.select.id)"
+        @update:selected="updateData(parseInt($event ?? ''), row.select.id)"
       />
     </span>
   </span>

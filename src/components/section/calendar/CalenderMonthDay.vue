@@ -8,10 +8,14 @@ import { stringToJSON } from "@/lib/string.ts";
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
-const props = defineProps<{ dayIndex: number, month: number, year: number, isToday: boolean }>();
+const props = defineProps<{
+  dayIndex: number;
+  month: number;
+  year: number;
+  isToday: boolean;
+}>();
 
 const getDayValue = computed(() => {
-
   if (!calendar.value.table) {
     return;
   }
@@ -27,26 +31,26 @@ const getDayValue = computed(() => {
 });
 
 function isDateBetween(day: CalendarDay): boolean | undefined {
-
   const start = new Date(day._object.start);
   const end = new Date(day._object.end);
 
   if (!props.year) {
-
     return;
   }
 
   return (
-    isSameDay(start, end)
-    && isNotStartAtMidNight(start, 2)
-    && isNotStartAtMidNight(end, 1)
-    && isSameMonth(start, end)
-    && isSameYear(start, end)
+    isSameDay(start, end) &&
+    isNotStartAtMidNight(start, 2) &&
+    isNotStartAtMidNight(end, 1) &&
+    isSameMonth(start, end) &&
+    isSameYear(start, end)
   );
 }
 
 function isSameDay(start: Date, end: Date): boolean {
-  return start.getDate() <= props.dayIndex + 1 && end.getDate() >= props.dayIndex + 1;
+  return (
+    start.getDate() <= props.dayIndex + 1 && end.getDate() >= props.dayIndex + 1
+  );
 }
 
 function isSameMonth(start: Date, end: Date): boolean {
@@ -62,13 +66,12 @@ function isSameYear(start: Date, end: Date): boolean {
 
 function isNotStartAtMidNight(date: Date, param: number): boolean {
   return !(
-    date.getDate() === props.dayIndex + param && date.toLocaleTimeString() === "00:00:00"
+    date.getDate() === props.dayIndex + param &&
+    date.toLocaleTimeString() === "00:00:00"
   );
 }
 
-
 const getColor = computed(() => (event: CalendarDay): string => {
-
   let keys = stringToJSON(styles.value?.calendarStyle?.val) as JSONStyle[];
   if (!Array.isArray(keys)) {
     keys = [];
@@ -87,21 +90,30 @@ const open = ref(false);
 <template>
   <div class="flex-1 max-w-full" @click="open = !open">
     <p class="line block">
-      <span :class="{ 'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs': true, 'bg-blue-300 text-xs': isToday }">
+      <span
+        :class="{
+          'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs': true,
+          'bg-blue-300 text-xs': isToday,
+        }"
+      >
         {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
       </span>
     </p>
-    <div class="overflow-auto max-h-[calc(6rem-22px)] ">
-      <div
-        v-for="(event, index) in getDayValue" :key="index"
-        class="text-xs"
-      >
-        <p :class="[[getColor(event)], 'mb-[2px] px-2 mt-[1px] block truncate']">
+    <div class="overflow-auto max-h-[calc(6rem-22px)]">
+      <div v-for="(event, index) in getDayValue" :key="index" class="text-xs">
+        <p
+          :class="[[getColor(event)], 'mb-[2px] px-2 mt-[1px] block truncate']"
+        >
           {{ event.event }}
         </p>
       </div>
     </div>
   </div>
 
-  <CalenderMonthDayDialog :open="open" :events="getDayValue" v-bind="props" @update:open="open = $event" />
+  <CalenderMonthDayDialog
+    :open="open"
+    :events="getDayValue"
+    v-bind="props"
+    @update:open="open = $event"
+  />
 </template>

@@ -2,8 +2,8 @@
 defineProps({
   value: {
     type: Object as () => string[],
-    required: true
-  }
+    required: true,
+  },
 });
 </script>
 

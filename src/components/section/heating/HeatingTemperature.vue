@@ -6,16 +6,36 @@ import { Entries } from "@/types/types.ts";
 const { heating } = useIobrokerStore();
 
 const entries: Entries[] = [
-  { title: "Heizung", value: heating.heatingTemperature?.val, type: "number", unit: "°C" },
-  { title: "Solar", value: heating.heatingSolar?.val, type: "number", unit: "°C" },
-  { title: "Puffer", value: heating.heatingBuffer?.val, type: "number", unit: "°C" },
+  {
+    title: "Heizung",
+    value: heating.heatingTemperature?.val,
+    type: "number",
+    unit: "°C",
+  },
+  {
+    title: "Solar",
+    value: heating.heatingSolar?.val,
+    type: "number",
+    unit: "°C",
+  },
+  {
+    title: "Puffer",
+    value: heating.heatingBuffer?.val,
+    type: "number",
+    unit: "°C",
+  },
   {
     title: "Solar Max heute",
     value: heating.solarMaxToday?.val,
     type: "number",
-    unit: "°C"
+    unit: "°C",
   },
-  { title: "Solar Max", value: heating.solarMax?.val, type: "number", unit: "°C" }
+  {
+    title: "Solar Max",
+    value: heating.solarMax?.val,
+    type: "number",
+    unit: "°C",
+  },
 ];
 </script>
 <template>

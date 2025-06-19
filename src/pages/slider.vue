@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { Card, CardContent } from "@/components/shared/card";
 import { onMounted, ref } from "vue";
 
@@ -15,18 +14,25 @@ const useLogarithmicSlider = () => {
   let logarithmic = false;
   let minValueToUseLogarithmic = 0;
 
-  function init(el: HTMLInputElement | null, options?: {
-    minRangeValue?: number,
-    logarithmic?: boolean,
-    minValueToUseLogarithmic?: number
-  }) {
-    const maxRangeValue = Number(el?.closest(".range-slider")?.attributes.getNamedItem("data-range-max")?.value);
+  function init(
+    el: HTMLInputElement | null,
+    options?: {
+      minRangeValue?: number;
+      logarithmic?: boolean;
+      minValueToUseLogarithmic?: number;
+    },
+  ) {
+    const maxRangeValue = Number(
+      el?.closest(".range-slider")?.attributes.getNamedItem("data-range-max")
+        ?.value,
+    );
 
     maxRangeSlider = getMaxRangeOffSlider(el);
 
     handleValueIsSmallerThanMaxRange(el, maxRangeValue);
     arithmeticSum = getSum(maxRangeSlider);
-    scale = (maxRangeValue - (options?.minRangeValue || 0)) / getSum(maxRangeSlider);
+    scale =
+      (maxRangeValue - (options?.minRangeValue || 0)) / getSum(maxRangeSlider);
     minRange = options?.minRangeValue || 0;
     maxRange = maxRangeValue - (options?.minRangeValue || 0);
 
@@ -34,7 +40,13 @@ const useLogarithmicSlider = () => {
     minValueToUseLogarithmic = options?.minValueToUseLogarithmic || 2500;
 
     return {
-      init, inputValue, sliderValue, arithmeticSum, scale, getMargin, maxRangeSlider
+      init,
+      inputValue,
+      sliderValue,
+      arithmeticSum,
+      scale,
+      getMargin,
+      maxRangeSlider,
     };
   }
 
@@ -52,30 +64,41 @@ const useLogarithmicSlider = () => {
     return maxRangeSlider;
   }
 
-  function handleValueIsSmallerThanMaxRange(el: HTMLInputElement | null, maxRangeValue: number) {
+  function handleValueIsSmallerThanMaxRange(
+    el: HTMLInputElement | null,
+    maxRangeValue: number,
+  ) {
     if (Number(maxRangeValue) < Number(maxRangeSlider)) {
-      el?.setAttribute("max", (maxRangeValue.toString() || "100"));
+      el?.setAttribute("max", maxRangeValue.toString() || "100");
       maxRangeSlider = maxRangeValue;
     }
   }
 
-  const inputValue = (rangeValue: number) => useLogarithmic() ? getLogarithmicInputVal(rangeValue) : getLinearInputVal(rangeValue);
-  const sliderValue = (inputValue: number) => useLogarithmic() ? getLogarithmicSliderVal(inputValue) : getLinearSliderVal(inputValue);
-  const getMargin = (sliderValMin: number, sliderValMax: number) => (
-    {
-      left: (sliderValMin / maxRangeSlider * 100).toString(),
-      right: (100 - (sliderValMax / maxRangeSlider * 100)).toString()
-    }
-  );
+  const inputValue = (rangeValue: number) =>
+    useLogarithmic()
+      ? getLogarithmicInputVal(rangeValue)
+      : getLinearInputVal(rangeValue);
+  const sliderValue = (inputValue: number) =>
+    useLogarithmic()
+      ? getLogarithmicSliderVal(inputValue)
+      : getLinearSliderVal(inputValue);
+  const getMargin = (sliderValMin: number, sliderValMax: number) => ({
+    left: ((sliderValMin / maxRangeSlider) * 100).toString(),
+    right: (100 - (sliderValMax / maxRangeSlider) * 100).toString(),
+  });
 
+  const calcLastIndexFromSum = (S: number): number =>
+    Math.floor((-1 + Math.sqrt(1 + 8 * S)) / 2);
+  const getSum = (n: number) => (n * (n + 1)) / 2;
 
-  const calcLastIndexFromSum = (S: number): number => Math.floor((-1 + Math.sqrt(1 + 8 * S)) / 2);
-  const getSum = (n: number) => n * (n + 1) / 2;
-
-  const getLogarithmicInputVal = (rangeValue: number) => Math.ceil((maxRange / arithmeticSum * getSum(rangeValue)) + minRange);
-  const getLogarithmicSliderVal = (inputValue: number) => calcLastIndexFromSum((inputValue - minRange) / scale);
-  const getLinearInputVal = (rangeValue: number) => Math.ceil((rangeValue * maxRange / maxRangeSlider) + minRange);
-  const getLinearSliderVal = (inputValue: number) => Math.floor((inputValue - minRange) * maxRangeSlider / maxRange);
+  const getLogarithmicInputVal = (rangeValue: number) =>
+    Math.ceil((maxRange / arithmeticSum) * getSum(rangeValue) + minRange);
+  const getLogarithmicSliderVal = (inputValue: number) =>
+    calcLastIndexFromSum((inputValue - minRange) / scale);
+  const getLinearInputVal = (rangeValue: number) =>
+    Math.ceil((rangeValue * maxRange) / maxRangeSlider + minRange);
+  const getLinearSliderVal = (inputValue: number) =>
+    Math.floor(((inputValue - minRange) * maxRangeSlider) / maxRange);
 
   function useLogarithmic() {
     if (maxRange > minValueToUseLogarithmic) {
@@ -87,19 +110,22 @@ const useLogarithmicSlider = () => {
   return { init };
 };
 
-
 const inputValueMin = ref(0);
 const inputValueMax = ref(0);
 const sliderValueMin = ref(0);
 const sliderValueMax = ref(0);
 onMounted(() => {
-  const inputMinEl = document.getElementsByClassName("min-slider")[0] as HTMLInputElement;
-  const inputMaxEl = document.getElementsByClassName("max-slider")[0] as HTMLInputElement;
+  const inputMinEl = document.getElementsByClassName(
+    "min-slider",
+  )[0] as HTMLInputElement;
+  const inputMaxEl = document.getElementsByClassName(
+    "max-slider",
+  )[0] as HTMLInputElement;
 
   const options = {
     minRangeValue: 0,
     logarithmic: true,
-    minValueToUseLogarithmic: 2000
+    minValueToUseLogarithmic: 2000,
   };
   const logs1 = useLogarithmicSlider().init(inputMinEl, options);
   const logs2 = useLogarithmicSlider().init(inputMaxEl, options);
@@ -147,25 +173,19 @@ onMounted(() => {
     sliderTrackRange.style.marginRight = right + "%" || "0";
   }
 });
-
-
 </script>
 
 <template>
   <Card>
     <CardContent>
       <div
-        class="range-slider" data-logarithmic data-range-min="0"
+        class="range-slider"
+        data-logarithmic
+        data-range-min="0"
         data-range-max="5000"
       >
-        <input
-          class="min-slider" type="range" min="0" max="225"
-          value="0"
-        >
-        <input
-          class="max-slider" type="range" min="0" max="225"
-          value="225"
-        >
+        <input class="min-slider" type="range" min="0" max="225" value="0" />
+        <input class="max-slider" type="range" min="0" max="225" value="225" />
         <div class="slider-track">
           <div id="slider-track-range" />
         </div>
@@ -231,5 +251,4 @@ onMounted(() => {
   background: #007bff;
   z-index: 5;
 }
-
 </style>

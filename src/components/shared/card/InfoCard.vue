@@ -9,15 +9,16 @@ export interface InfoTypes {
   class?: HTMLAttributes["class"];
 }
 
-defineProps<{ infos: InfoTypes [] }>();
+defineProps<{ infos: InfoTypes[] }>();
 </script>
 <template>
   <div class="card__shadow mt-2">
     <div
-      v-for="(info, index) in infos" :key="index" :class="{
-        'info__row': true,
-        [info?.class]: info.class
-
+      v-for="(info, index) in infos"
+      :key="index"
+      :class="{
+        info__row: true,
+        [info?.class]: info.class,
       }"
     >
       <p>{{ info.title }}</p>
@@ -30,11 +31,10 @@ defineProps<{ infos: InfoTypes [] }>();
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-[2px] text-xs -mx-1 px-1
+  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-[2px] text-xs -mx-1 px-1;
 }
 
 .card__shadow {
-  @apply bg-white p-2 shadow-lg
+  @apply bg-white p-2 shadow-lg;
 }
-
 </style>

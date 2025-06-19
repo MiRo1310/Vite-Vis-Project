@@ -9,13 +9,14 @@ import { IOBROKER_ADMIN_PORT, IOBROKER_HOST } from "@/config/config.ts";
 
 onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
-  loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`);
+  loadScript(
+    `http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`,
+  );
 });
 
 onUnmounted(() => {
   useTime().clear();
 });
-
 </script>
 <template>
   <div class="app">
@@ -36,5 +37,4 @@ onUnmounted(() => {
     @apply px-1 pt-1 flex-1 overflow-hidden;
   }
 }
-
 </style>

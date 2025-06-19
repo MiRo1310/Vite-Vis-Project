@@ -15,7 +15,7 @@ const items = computed((): SelectOption[] => {
     .map((item: string, index: number) => {
       return {
         label: item,
-        val: heating.heatingControl.profileValue?.val?.split(";")[index] || ""
+        val: heating.heatingControl.profileValue?.val?.split(";")[index] || "",
       };
     });
 });
@@ -24,12 +24,14 @@ const roomItems = computed((): { val: string; label: string }[] => {
   if (!heating.heatingControl.usedRoom?.val) {
     return [];
   }
-  return heating.heatingControl.usedRoom?.val?.split(";").map((item: string) => {
-    return {
-      label: item,
-      val: item
-    };
-  });
+  return heating.heatingControl.usedRoom?.val
+    ?.split(";")
+    .map((item: string) => {
+      return {
+        label: item,
+        val: item,
+      };
+    });
 });
 
 const selected = ref(heating.heatingControl.profile?.val?.toString());
@@ -45,22 +47,28 @@ function updateSelected(val: string | undefined, id: string | undefined) {
 
 <template>
   <div class="header__container">
-    <div class="mt-1 mx-1 p-1 bg-backgroundHeader flex flex-wrap items-center space-x-4">
-      <p class="header__label">
-        Aktives Profil
-      </p>
+    <div
+      class="mt-1 mx-1 p-1 bg-backgroundHeader flex flex-wrap items-center space-x-4"
+    >
+      <p class="header__label">Aktives Profil</p>
       <Select
-        v-model:selected="selected" placeholder="Wähle ein Profil aus" :items="items"
+        v-model:selected="selected"
+        placeholder="Wähle ein Profil aus"
+        :items="items"
         class="w-[100px] header__select"
-        @update:selected="updateSelected($event, heating.heatingControl.profile?.id)"
+        @update:selected="
+          updateSelected($event, heating.heatingControl.profile?.id)
+        "
       />
-      <p class="header__label">
-        Raum:
-      </p>
+      <p class="header__label">Raum:</p>
       <Select
-        v-model:selected="room" placeholder="Wähle einen Raum" :items="roomItems"
+        v-model:selected="room"
+        placeholder="Wähle einen Raum"
+        :items="roomItems"
         class="w-[150px] header__select"
-        @update:selected="updateSelected($event, heating.heatingControl.room?.id)"
+        @update:selected="
+          updateSelected($event, heating.heatingControl.room?.id)
+        "
       />
     </div>
   </div>
@@ -76,6 +84,6 @@ function updateSelected(val: string | undefined, id: string | undefined) {
 }
 
 .header__select {
-  @apply bg-white ;
+  @apply bg-white;
 }
 </style>

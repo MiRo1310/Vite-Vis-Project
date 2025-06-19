@@ -1,14 +1,15 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import TableData, { TableCellType } from "@/components/shared/table-cell/TableCell.vue";
+import TableData, {
+  TableCellType,
+} from "@/components/shared/table-cell/TableCell.vue";
 
 export interface TableListingType {
   val: boolean | number | string | null;
   type: TableCellType;
 }
 
-const props = defineProps<{ data: TableListingType[][]; class?: string; }>();
-
+const props = defineProps<{ data: TableListingType[][]; class?: string }>();
 </script>
 <template>
   <Table :class="props.class">

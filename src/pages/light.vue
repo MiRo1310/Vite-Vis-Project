@@ -5,7 +5,6 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { lightStates } from "@/subscribeIds/light.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 
-
 useDynamicSubscribe(lightStates);
 
 const { lights, lightsAdditive } = useIobrokerStore();
@@ -18,8 +17,12 @@ const { lights, lightsAdditive } = useIobrokerStore();
     </CardHeader>
     <div class="light__container">
       <LightCard
-        v-for="(light, i ) in Object.keys(lights)" :key="i" :light="lights[light as keyof typeof lights]"
-        :value-additive="lightsAdditive[light as keyof typeof lightsAdditive]?.val"
+        v-for="(light, i) in Object.keys(lights)"
+        :key="i"
+        :light="lights[light as keyof typeof lights]"
+        :value-additive="
+          lightsAdditive[light as keyof typeof lightsAdditive]?.val
+        "
         :name="light"
         class="light__card"
       />
@@ -29,14 +32,14 @@ const { lights, lightsAdditive } = useIobrokerStore();
 
 <style scoped lang="postcss">
 .card {
-  @apply h-full
+  @apply h-full;
 }
 
 .light__container {
-  @apply p-2 flex flex-wrap space-x-1 -ml-1 -mt-1 space-y-1
+  @apply p-2 flex flex-wrap space-x-1 -ml-1 -mt-1 space-y-1;
 }
 
 .light__card:nth-child(1) {
-  @apply ml-1 mt-1
+  @apply ml-1 mt-1;
 }
 </style>

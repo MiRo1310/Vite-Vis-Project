@@ -47,5 +47,5 @@ export const colors: SelectOption[] = [
   { val: "DarkLightBlack", class: "bg-[#000]" },
   { val: "DarkLightWhite", class: "bg-[#f8f8]" },
   { val: "DarkLightGray", class: "bg-[#a9a9]" },
-  { val: "DarkLightBrown", class: "bg-[#a52a]" }
+  { val: "DarkLightBrown", class: "bg-[#a52a]" },
 ];

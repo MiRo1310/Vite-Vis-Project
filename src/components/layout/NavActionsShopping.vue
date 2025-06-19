@@ -18,9 +18,13 @@ const createShoppinglist = computed((): any[] => {
 <template>
   <Sheet styling="light" :show-footer="false">
     <template #trigger>
-      <ButtonCard :icon="ShoppingBag" class=" text-accent-foreground/70" class-card="mt-2 ml-1">
+      <ButtonCard
+        :icon="ShoppingBag"
+        class="text-accent-foreground/70"
+        class-card="mt-2 ml-1"
+      >
         <template #icon>
-          <p class="absolute top-7 ">
+          <p class="absolute top-7">
             <Badge :value="createShoppinglist?.length" />
           </p>
         </template>

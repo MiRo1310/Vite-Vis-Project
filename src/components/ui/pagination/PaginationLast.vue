@@ -5,13 +5,15 @@ import { DoubleArrowRightIcon } from "@radix-icons/vue";
 import { PaginationLast, type PaginationLastProps } from "radix-vue";
 import { computed, type HTMLAttributes } from "vue";
 
-const props = withDefaults(defineProps<PaginationLastProps & { class?: HTMLAttributes["class"] }>(), {
-  asChild: true,
-  class: ""
-});
+const props = withDefaults(
+  defineProps<PaginationLastProps & { class?: HTMLAttributes["class"] }>(),
+  {
+    asChild: true,
+    class: "",
+  },
+);
 
 const delegatedProps = computed(() => {
-   
   const { class: _, ...delegated } = props;
 
   return delegated;

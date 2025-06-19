@@ -14,7 +14,12 @@ const { getOpenWindows } = getWindowInfos();
 const windows: WindowObject[] = [
   { name: "Küche Tür", shutter: true, id: "kueche,tuer", door: true },
   { name: "Küche Fenster", shutter: true, id: "kueche,fenster" },
-  { name: "Esszimmer", shutter: true, id: "esszimmer,links", id2: "esszimmer,rechts" },
+  {
+    name: "Esszimmer",
+    shutter: true,
+    id: "esszimmer,links",
+    id2: "esszimmer,rechts",
+  },
   { name: "Wohnzimmer Ecke", shutter: true, id: "wohnzimmer,ecke" },
   { name: "Wohnzimmer links", shutter: true, id: "wohnzimmer,links" },
   { name: "Wohnzimmer mitte", shutter: true, id: "wohnzimmer,mittig" },
@@ -36,27 +41,32 @@ const windows: WindowObject[] = [
   { name: "Flur rechts", shutter: false, id: "flur,rechts" },
   { name: "Abstellraum", shutter: false, id: "abstellraum,fenster" },
   { name: "Dachboden rechts", shutter: false, id: "dachboden,rechts" },
-  { name: "Dachboden links", shutter: false, id: "dachboden,links" }
+  { name: "Dachboden links", shutter: false, id: "dachboden,links" },
 ];
-
 </script>
 <template>
-  <div class="lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50 ">
+  <div
+    class="lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50"
+  >
     <Card styling="light">
       <CardHeader class="p-1">
         <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>
           <p v-show="getOpenWindows === 1" class="flex text-muted-foreground">
             Ein Fenster ist
-            <span :class="fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1 ">offen </span>
+            <span
+              :class="fensterOffen ? 'text-red-500 animate-pulse' : ''"
+              class="ml-1"
+              >offen
+            </span>
           </p>
 
           <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
             Fenster sind
             <span :class="fensterOffen ? 'text-red-500' : ''">{{
-              fensterOffen ?
-                "offen" : "geschlossen" }}</span>
+              fensterOffen ? "offen" : "geschlossen"
+            }}</span>
           </p>
 
           <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
@@ -64,10 +74,15 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full">
+  <div
+    class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full"
+  >
     <WindowCard
-      v-for="card in windows" :id="card.id" :key="card.name" :shutter="card.shutter"
-      :door="card.door||false"
+      v-for="card in windows"
+      :id="card.id"
+      :key="card.name"
+      :shutter="card.shutter"
+      :door="card.door || false"
       :title="card.name"
       :id2="card.id2"
     />

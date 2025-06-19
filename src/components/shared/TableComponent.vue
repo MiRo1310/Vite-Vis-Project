@@ -5,23 +5,23 @@ import { computed, defineEmits, defineProps, ref, watch } from "vue";
 const props = defineProps({
   tableData: {
     type: Array as () => GlobalObject[],
-    required: true
+    required: true,
   },
   itemsPerPage: {
     type: Number,
     required: false,
-    default: 20
+    default: 20,
   },
   page: {
     type: Number,
     required: false,
-    default: 1
+    default: 1,
   },
   totalItems: {
     type: Number,
     required: false,
-    default: 0
-  }
+    default: 0,
+  },
 });
 const emit = defineEmits(["update:page", "row"]);
 
@@ -35,7 +35,7 @@ const header: Header[] = [
   { title: "Number", entry: "id", align: "text--left" },
   { title: "Name", entry: "produkt", align: "text--left" },
   { title: "Menge", entry: "menge", align: "text--left" },
-  { title: "Zeitstempel", entry: "timestamp", align: "text--right" }
+  { title: "Zeitstempel", entry: "timestamp", align: "text--right" },
 ];
 
 const page = ref(props.page);
@@ -58,7 +58,10 @@ const lastPage = () => {
 const maxpages = ref(Math.round(props.totalItems / props.itemsPerPage));
 const itemsPerPage = ref(props.itemsPerPage);
 const pageItems = computed(() => {
-  const end = page.value * itemsPerPage.value > props.totalItems ? props.totalItems : page.value * itemsPerPage.value;
+  const end =
+    page.value * itemsPerPage.value > props.totalItems
+      ? props.totalItems
+      : page.value * itemsPerPage.value;
   return `${page.value * itemsPerPage.value - itemsPerPage.value + 1} - ${end}`;
 });
 
@@ -101,7 +104,7 @@ watch(page, (newVal) => {
     <span> von </span>
     <span>{{ totalItems }}</span>
     <button
-      class="table--pagination-item "
+      class="table--pagination-item"
       :disabled="page === 1"
       :class="page === 1 ? 'cursor-default' : ''"
       @click="firstPage"
@@ -109,7 +112,7 @@ watch(page, (newVal) => {
       &lt;&lt;
     </button>
     <button
-      class="table--pagination-item "
+      class="table--pagination-item"
       :disabled="page === 1"
       :class="page === 1 ? 'cursor-default' : ''"
       @click="previousPage"
@@ -117,7 +120,7 @@ watch(page, (newVal) => {
       &lt;
     </button>
     <button
-      class="table--pagination-item "
+      class="table--pagination-item"
       :disabled="page === maxpages"
       :class="page === maxpages ? 'cursor-default' : ''"
       @click="nextPage"
@@ -125,7 +128,7 @@ watch(page, (newVal) => {
       &gt;
     </button>
     <button
-      class="table--pagination-item "
+      class="table--pagination-item"
       :disabled="page === maxpages"
       :class="page === maxpages ? 'cursor-default' : ''"
       @click="lastPage"
@@ -169,7 +172,6 @@ tbody tr {
   @apply border border-b w-full cursor-pointer hover:bg-gray-100;
 }
 
-
 td {
   @apply text-lg;
 }
@@ -181,4 +183,5 @@ td {
 .table--pagination-item {
   @apply text-lg mx-4;
 }
-</style>../../helper/data
+</style>
+../../helper/data

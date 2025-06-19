@@ -21,8 +21,7 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {
-}
+export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {}
 
 export interface Timer1 {
   timer1: Timer;
@@ -120,7 +119,6 @@ export interface Pv {
 export interface IdToSubscribe<TData> {
   value: Ids<TData>[];
   objectNameInStore?: IoBrokerStates;
-
 }
 
 export interface Ids<TData> {
@@ -197,7 +195,7 @@ export interface IobrokerState {
 }
 
 export type IobrokerStateValue = string | number | boolean;
-export type NullableState = null | IobrokerStateValue
+export type NullableState = null | IobrokerStateValue;
 
 export interface CalendarDay {
   date: string;
@@ -216,22 +214,21 @@ export interface CalendarDay {
 }
 
 export interface CalendarObject {
-  type: string,
-  params: [],
-  created: string,
-  description: string,
-  end: string,
-  dtstamp: string,
-  start: string,
-  datetype: string,
-  lastmodified: string,
-  sequence: number,
-  summary: string,
-  uid: string,
-  "APPLE-CREATOR-IDENTITY": string,
-  "APPLE-CREATOR-TEAM-IDENTITY": string
+  type: string;
+  params: [];
+  created: string;
+  description: string;
+  end: string;
+  dtstamp: string;
+  start: string;
+  datetype: string;
+  lastmodified: string;
+  sequence: number;
+  summary: string;
+  uid: string;
+  "APPLE-CREATOR-IDENTITY": string;
+  "APPLE-CREATOR-TEAM-IDENTITY": string;
 }
-
 
 export interface Entries {
   title: string;
@@ -240,4 +237,15 @@ export interface Entries {
   unit?: string;
 }
 
-export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
+export type IobrokerLanguages =
+  | "en"
+  | "de"
+  | "ru"
+  | "pt"
+  | "nl"
+  | "fr"
+  | "it"
+  | "es"
+  | "pl"
+  | "uk"
+  | "zh-cn";

@@ -24,15 +24,17 @@ function resetStatus() {
         <span class="flex flex-1 justify-between ml-4">
           <span>{{ heating.heatingControl.tempRegler1?.val }} °C</span>
           <span v-if="heating.heatingControl.tempRegler2?.val !== -1">
-            {{ heating.heatingControl.tempRegler2?.val }} °C</span>
+            {{ heating.heatingControl.tempRegler2?.val }} °C</span
+          >
         </span>
       </p>
       <p class="flex">
         <span class="inline-block w-36"> Ventilstellung </span>
         <span class="flex flex-1 justify-between ml-4">
           <span>{{ heating.heatingControl.ventil1?.val }} %</span>
-          <span v-if="heating.heatingControl.ventil2?.val !== -1">{{ heating.heatingControl.ventil2?.val }}
-            %</span>
+          <span v-if="heating.heatingControl.ventil2?.val !== -1"
+            >{{ heating.heatingControl.ventil2?.val }} %</span
+          >
         </span>
       </p>
     </div>
@@ -41,14 +43,13 @@ function resetStatus() {
       {{ heating.heatingControl.sollTemp1?.val }}°C
     </p>
 
-    <Button
-      class="w-full my-2"
-      @click="resetStatus"
-    >
-      Aktueller Status: {{
-        heating.heatingControl.roomState?.val }}
+    <Button class="w-full my-2" @click="resetStatus">
+      Aktueller Status: {{ heating.heatingControl.roomState?.val }}
     </Button>
 
-    <div class="text-xs border-2 p-1 overflow-auto h-[21rem]" v-html="heating.heatingControl.statusRoom?.val" />
+    <div
+      class="text-xs border-2 p-1 overflow-auto h-[21rem]"
+      v-html="heating.heatingControl.statusRoom?.val"
+    />
   </div>
 </template>

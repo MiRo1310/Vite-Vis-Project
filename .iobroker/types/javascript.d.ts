@@ -4,16 +4,22 @@ import * as os from "os";
 
 type EmptyCallback = () => void | Promise<void>;
 type ErrorCallback = (err?: string) => void | Promise<void>;
-type GenericCallback<T> = (err?: string | null, result?: T) => void | Promise<void>;
+type GenericCallback<T> = (
+  err?: string | null,
+  result?: T,
+) => void | Promise<void>;
 type SimpleCallback<T> = (result?: T) => void | Promise<void>;
-type MessageCallback<T> = (data: T, callback: iobJS.MessageCallback) => void | Promise<void>;
+type MessageCallback<T> = (
+  data: T,
+  callback: iobJS.MessageCallback,
+) => void | Promise<void>;
 type LogCallback = (msg: any) => void | Promise<void>;
 
 type SecondParameterOf<T extends (...args: any[]) => any> = T extends (
-    arg0: any,
-    arg1: infer R,
-    ...args: any[]
-  ) => any
+  arg0: any,
+  arg1: infer R,
+  ...args: any[]
+) => any
   ? R
   : never;
 /** Infers the return type from a callback-style API and strips out null and undefined */
@@ -22,10 +28,13 @@ type NonNullCallbackReturnTypeOf<T extends (...args: any[]) => any> = Exclude<
   null | undefined
 >;
 /** Infers the return type from a callback-style API and leaves null and undefined in */
-type CallbackReturnTypeOf<T extends (...args: any[]) => any> = SecondParameterOf<T>;
+type CallbackReturnTypeOf<T extends (...args: any[]) => any> =
+  SecondParameterOf<T>;
 
 /** Returns a type that requires at least one of the properties from the given type */
-type AtLeastOne<T, U = { [K in keyof T]-?: T[K] }> = { [K in keyof U]: { [P in K]: U[P] } }[keyof U];
+type AtLeastOne<T, U = { [K in keyof T]-?: T[K] }> = {
+  [K in keyof U]: { [P in K]: U[P] };
+}[keyof U];
 
 /** Returns all possible keys of a union of objects */
 type AllKeys<T> = T extends any ? keyof T : never;
@@ -46,8 +55,8 @@ type AddMissingNever<T, Keys extends string | number | symbol> = {
 type CombineObjectUnion<
   T,
   Keys extends string | number | symbol = AllKeys<T>,
-  O = T extends any ? AddMissingNever<T, Keys> : never
-> = Simplify<{ [K in Keys]: K extends keyof O ? O[K] : never }>
+  O = T extends any ? AddMissingNever<T, Keys> : never,
+> = Simplify<{ [K in Keys]: K extends keyof O ? O[K] : never }>;
 
 /**
  * Takes a union of ioBroker Object types and returns a combined object type
@@ -58,20 +67,20 @@ type CombineObjectUnion<
 type AnyOf<
   T,
   Keys extends string | number | symbol = AllKeys<T>,
-  O = T extends any ? AddMissingNever<T, Keys> : never
+  O = T extends any ? AddMissingNever<T, Keys> : never,
 > = Simplify<{
-  [K in Keys]: K extends keyof O ? (
-    O[K] extends any[] ? O[K]
-      : O[K] extends Record<any, any> ? CombineObjectUnion<O[K]>
+  [K in Keys]: K extends keyof O
+    ? O[K] extends any[]
+      ? O[K]
+      : O[K] extends Record<any, any>
+        ? CombineObjectUnion<O[K]>
         : O[K]
-    ) : never;
+    : never;
 }>;
 
 // tslint:disable:no-namespace
 declare global {
-
   namespace iobJS {
-
     enum StateQuality {
       good = 0x00, // or undefined or null
       bad = 0x01,
@@ -85,7 +94,11 @@ declare global {
     }
 
     type PrimitiveTypeStateValue = string | number | boolean;
-    type StateValue = null | PrimitiveTypeStateValue | PrimitiveTypeStateValue[] | Record<string, any>;
+    type StateValue =
+      | null
+      | PrimitiveTypeStateValue
+      | PrimitiveTypeStateValue[]
+      | Record<string, any>;
 
     interface State<T extends StateValue = any> {
       /** The value of the state. */
@@ -131,9 +144,27 @@ declare global {
       c: undefined;
     }
 
-    type Languages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
-    type StringOrTranslated = string | { [lang in Languages]?: string; };
-    type CommonType = "number" | "string" | "boolean" | "array" | "object" | "mixed" | "file";
+    type Languages =
+      | "en"
+      | "de"
+      | "ru"
+      | "pt"
+      | "nl"
+      | "fr"
+      | "it"
+      | "es"
+      | "pl"
+      | "uk"
+      | "zh-cn";
+    type StringOrTranslated = string | { [lang in Languages]?: string };
+    type CommonType =
+      | "number"
+      | "string"
+      | "boolean"
+      | "array"
+      | "object"
+      | "mixed"
+      | "file";
 
     /** Defines access rights for a single object type */
     interface ObjectOperationPermissions {
@@ -218,9 +249,7 @@ declare global {
 
       // Unsure, can be folder, device, channel or state
       // --> We need this match to avoid matching the more specific types below
-      type Misc =
-        | `system.host.${string}.${string}`
-        | `0_userdata.0.${string}`;
+      type Misc = `system.host.${string}.${string}` | `0_userdata.0.${string}`;
 
       // Guaranteed channel objects
       type Channel =
@@ -229,8 +258,7 @@ declare global {
       // Either script or channel object
       type ScriptOrChannel = `script.js.${string}`;
       // Guaranteed state objects
-      type State =
-        | `system.adapter.${string}.${number}.${string}`;
+      type State = `system.adapter.${string}.${number}.${string}`;
       // Guaranteed enum objects
       type Enum = `enum.${string}`;
       // Guaranteed instance objects
@@ -247,8 +275,7 @@ declare global {
       type Config = `system.${"certificates" | "config" | "repositories"}`;
 
       // Unsure, can be folder, device, channel or state (or whatever an adapter does)
-      type AdapterScoped =
-        | `${string}.${number}.${string}`;
+      type AdapterScoped = `${string}.${number}.${string}`;
 
       /** All possible typed object IDs */
       type Any =
@@ -270,22 +297,35 @@ declare global {
     type ObjectIdToObjectType<
       T extends string,
       Read extends "read" | "write" = "read",
-      O =
-        // State must come before Adapter or system.adapter.admin.0.foobar will resolve to AdapterObject
-        T extends ObjectIDs.State ? StateObject :
-          // Instance and Adapter must come before meta or `system.adapter.admin` will resolve to MetaObject
-          T extends ObjectIDs.Instance ? InstanceObject :
-            T extends ObjectIDs.Adapter ? AdapterObject :
-              T extends ObjectIDs.Channel ? ChannelObject :
-                T extends ObjectIDs.Meta ? MetaObject :
-                  T extends ObjectIDs.Misc ? AdapterScopedObject :
-                    T extends ObjectIDs.ScriptOrChannel ? (ScriptObject | ChannelObject) :
-                      T extends ObjectIDs.Enum ? EnumObject :
-                        T extends ObjectIDs.Group ? GroupObject :
-                          T extends ObjectIDs.User ? UserObject :
-                            T extends ObjectIDs.Host ? HostObject :
-                              T extends ObjectIDs.Config ? OtherObject & { type: "config" } :
-                                T extends ObjectIDs.AdapterScoped ? AdapterScopedObject : iobJS.AnyObject
+      O = // State must come before Adapter or system.adapter.admin.0.foobar will resolve to AdapterObject
+      T extends ObjectIDs.State
+        ? StateObject
+        : // Instance and Adapter must come before meta or `system.adapter.admin` will resolve to MetaObject
+          T extends ObjectIDs.Instance
+          ? InstanceObject
+          : T extends ObjectIDs.Adapter
+            ? AdapterObject
+            : T extends ObjectIDs.Channel
+              ? ChannelObject
+              : T extends ObjectIDs.Meta
+                ? MetaObject
+                : T extends ObjectIDs.Misc
+                  ? AdapterScopedObject
+                  : T extends ObjectIDs.ScriptOrChannel
+                    ? ScriptObject | ChannelObject
+                    : T extends ObjectIDs.Enum
+                      ? EnumObject
+                      : T extends ObjectIDs.Group
+                        ? GroupObject
+                        : T extends ObjectIDs.User
+                          ? UserObject
+                          : T extends ObjectIDs.Host
+                            ? HostObject
+                            : T extends ObjectIDs.Config
+                              ? OtherObject & { type: "config" }
+                              : T extends ObjectIDs.AdapterScoped
+                                ? AdapterScopedObject
+                                : iobJS.AnyObject,
       // When reading objects, we should be less strict, so working with the return type is less of a pain to work with
     > = Read extends "read" ? AnyOf<O> : O;
 
@@ -372,12 +412,14 @@ declare global {
        * Settings for IOT adapters and how the state should be named in e.g., Alexa.
        * The string "ignore" is a special case, causing the state to be ignored.
        */
-      smartName?: string | ({ [lang in Languages]?: string; } & {
-        /** Which kind of device this is */
-        smartType?: string | null;
-        /** Which value to set when the ON command is issued */
-        byOn?: string | null;
-      });
+      smartName?:
+        | string
+        | ({ [lang in Languages]?: string } & {
+            /** Which kind of device this is */
+            smartType?: string | null;
+            /** Which value to set when the ON command is issued */
+            byOn?: string | null;
+          });
     }
 
     interface ChannelCommon extends ObjectCommon {
@@ -411,7 +453,13 @@ declare global {
       custom?: undefined;
     }
 
-    type InstanceMode = "none" | "daemon" | "subscribe" | "schedule" | "once" | "extension";
+    type InstanceMode =
+      | "none"
+      | "daemon"
+      | "subscribe"
+      | "schedule"
+      | "once"
+      | "extension";
 
     interface InstanceCommon extends ObjectCommon {
       /** The name of the host where this instance is running */
@@ -449,18 +497,18 @@ declare global {
         env: Record<string, string>;
       };
       os: {
-        hostname: string,
-        type: ReturnType<typeof os["type"]>;
-        platform: ReturnType<typeof os["platform"]>;
-        arch: ReturnType<typeof os["arch"]>;
-        release: ReturnType<typeof os["release"]>;
-        endianness: ReturnType<typeof os["endianness"]>;
-        tmpdir: ReturnType<typeof os["tmpdir"]>;
+        hostname: string;
+        type: ReturnType<(typeof os)["type"]>;
+        platform: ReturnType<(typeof os)["platform"]>;
+        arch: ReturnType<(typeof os)["arch"]>;
+        release: ReturnType<(typeof os)["release"]>;
+        endianness: ReturnType<(typeof os)["endianness"]>;
+        tmpdir: ReturnType<(typeof os)["tmpdir"]>;
       };
       hardware: {
-        cpus: ReturnType<typeof os["cpus"]>;
-        totalmem: ReturnType<typeof os["totalmem"]>;
-        networkInterfaces: ReturnType<typeof os["networkInterfaces"]>;
+        cpus: ReturnType<(typeof os)["cpus"]>;
+        totalmem: ReturnType<(typeof os)["totalmem"]>;
+        networkInterfaces: ReturnType<(typeof os)["networkInterfaces"]>;
       };
     }
 
@@ -511,12 +559,14 @@ declare global {
       custom?: undefined;
     }
 
-    type WelcomeScreenEntry = string | {
-      link: string;
-      name: string;
-      img: string;
-      color: string;
-    };
+    type WelcomeScreenEntry =
+      | string
+      | {
+          link: string;
+          name: string;
+          img: string;
+          color: string;
+        };
 
     interface AdapterCommon extends ObjectCommon {
       /** Custom attributes to be shown in admin in the object browser */
@@ -603,7 +653,7 @@ declare global {
         win32: string[];
       };
       /** Which OSes this adapter supports */
-      os?: "linux" | "darwin" | "win32" | Array<("linux" | "darwin" | "win32")>;
+      os?: "linux" | "darwin" | "win32" | Array<"linux" | "darwin" | "win32">;
       platform: "Javascript/Node.js";
       /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
       preserveSettings?: string | string[];
@@ -690,7 +740,8 @@ declare global {
       enumNames?: Array<iobJS.StringOrTranslated>;
     }
 
-    interface PartialStateObject extends Partial<Omit<StateObject, "common" | "acl">> {
+    interface PartialStateObject
+      extends Partial<Omit<StateObject, "common" | "acl">> {
       common?: Partial<StateCommon>;
       acl?: Partial<StateACL>;
     }
@@ -710,7 +761,8 @@ declare global {
       common: DeviceCommon;
     }
 
-    interface PartialDeviceObject extends Partial<Omit<DeviceObject, "common">> {
+    interface PartialDeviceObject
+      extends Partial<Omit<DeviceObject, "common">> {
       common?: Partial<DeviceCommon>;
     }
 
@@ -720,7 +772,8 @@ declare global {
       common: OtherCommon;
     }
 
-    interface PartialFolderObject extends Partial<Omit<FolderObject, "common">> {
+    interface PartialFolderObject
+      extends Partial<Omit<FolderObject, "common">> {
       common?: Partial<OtherCommon>;
     }
 
@@ -747,7 +800,8 @@ declare global {
       common: InstanceCommon;
     }
 
-    interface PartialInstanceObject extends Partial<Omit<InstanceObject, "common">> {
+    interface PartialInstanceObject
+      extends Partial<Omit<InstanceObject, "common">> {
       common?: Partial<InstanceCommon>;
     }
 
@@ -760,7 +814,8 @@ declare global {
       encryptedNative?: string[];
     }
 
-    interface PartialAdapterObject extends Partial<Omit<AdapterObject, "common">> {
+    interface PartialAdapterObject
+      extends Partial<Omit<AdapterObject, "common">> {
       common?: Partial<AdapterCommon>;
     }
 
@@ -770,7 +825,8 @@ declare global {
       native: HostNative;
     }
 
-    interface PartialHostObject extends Partial<Omit<HostObject, "common" | "native">> {
+    interface PartialHostObject
+      extends Partial<Omit<HostObject, "common" | "native">> {
       common?: Partial<HostCommon>;
       native?: Partial<HostNative>;
     }
@@ -798,7 +854,8 @@ declare global {
       common: ScriptCommon;
     }
 
-    interface PartialScriptObject extends Partial<Omit<ScriptObject, "common">> {
+    interface PartialScriptObject
+      extends Partial<Omit<ScriptObject, "common">> {
       common?: Partial<ScriptCommon>;
     }
 
@@ -842,24 +899,34 @@ declare global {
       | PartialOtherObject;
 
     /** All objects that usually appear in an adapter scope */
-    type AdapterScopedObject = FolderObject | DeviceObject | ChannelObject | StateObject;
+    type AdapterScopedObject =
+      | FolderObject
+      | DeviceObject
+      | ChannelObject
+      | StateObject;
 
     // For all objects that are exposed to the user we need to tone the strictness down.
     // Otherwise, every operation on objects becomes a pain to work with
     type Object = AnyObject;
 
     // In set[Foreign]Object[NotExists] methods, the ID and acl of the object is optional
-    type SettableObjectWorker<T> = T extends AnyObject ? Omit<T, "_id" | "acl"> & {
-      _id?: T["_id"];
-      acl?: T["acl"];
-    } : never;
+    type SettableObjectWorker<T> = T extends AnyObject
+      ? Omit<T, "_id" | "acl"> & {
+          _id?: T["_id"];
+          acl?: T["acl"];
+        }
+      : never;
     // in extend[Foreign]Object, most properties are optional
-    type PartialObjectWorker<T> = T extends AnyObject ? AnyPartialObject & { type?: T["type"] } : never;
+    type PartialObjectWorker<T> = T extends AnyObject
+      ? AnyPartialObject & { type?: T["type"] }
+      : never;
 
-    type PartialObject<T extends AnyObject = AnyObject> = PartialObjectWorker<T>;
+    type PartialObject<T extends AnyObject = AnyObject> =
+      PartialObjectWorker<T>;
 
     // Convenient definitions for manually specifying settable object types
-    type SettableObject<T extends AnyObject = AnyObject> = SettableObjectWorker<T>;
+    type SettableObject<T extends AnyObject = AnyObject> =
+      SettableObjectWorker<T>;
     type SettableStateObject = SettableObject<StateObject>;
     type SettableChannelObject = SettableObject<ChannelObject>;
     type SettableDeviceObject = SettableObject<DeviceObject>;
@@ -875,7 +942,10 @@ declare global {
     type SettableOtherObject = SettableObject<OtherObject>;
 
     /** Represents the change of a state */
-    interface ChangedStateObject<TOld extends StateValue = any, TNew extends StateValue = TOld> extends StateObject {
+    interface ChangedStateObject<
+      TOld extends StateValue = any,
+      TNew extends StateValue = TOld,
+    > extends StateObject {
       common: StateCommon;
       native: Record<string, any>;
       id?: string;
@@ -904,33 +974,86 @@ declare global {
       ack?: boolean;
     }
 
-    type GetStateCallback<T extends StateValue = any> = (err?: string | null, state?: State<T> | AbsentState) => void | Promise<void>;
-    type ExistsStateCallback = (err?: string | null, exists?: Boolean) => void | Promise<void>;
+    type GetStateCallback<T extends StateValue = any> = (
+      err?: string | null,
+      state?: State<T> | AbsentState,
+    ) => void | Promise<void>;
+    type ExistsStateCallback = (
+      err?: string | null,
+      exists?: Boolean,
+    ) => void | Promise<void>;
 
-    type SetStateCallback = (err?: string | null, id?: string) => void | Promise<void>;
-    type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;
+    type SetStateCallback = (
+      err?: string | null,
+      id?: string,
+    ) => void | Promise<void>;
+    type SetStatePromise = Promise<
+      NonNullCallbackReturnTypeOf<SetStateCallback>
+    >;
 
-    type StateChangeHandler<TOld extends StateValue = any, TNew extends TOld = any> = (obj: ChangedStateObject<TOld, TNew>) => void | Promise<void>;
-    type ObjectChangeHandler = (id: string, obj: iobJS.Object) => void | Promise<void>;
+    type StateChangeHandler<
+      TOld extends StateValue = any,
+      TNew extends TOld = any,
+    > = (obj: ChangedStateObject<TOld, TNew>) => void | Promise<void>;
+    type ObjectChangeHandler = (
+      id: string,
+      obj: iobJS.Object,
+    ) => void | Promise<void>;
 
     type FileChangeHandler<WithFile extends boolean> =
-    // Variant 1: WithFile is false, data/mimeType is definitely not there
-      [WithFile] extends [false] ? (id: string, fileName: string, size: number, data?: undefined, mimeType?: undefined) => void | Promise<void>
-        // Variant 2: WithFile is true, data (and mimeType?) is definitely there
-        : [WithFile] extends [true] ? (id: string, fileName: string, size: number, data: Buffer | string, mimeType?: string) => void | Promise<void>
-          // Variant 3: WithFile is not known, data/mimeType might be there
-          : (id: string, fileName: string, size: number, data?: Buffer | string, mimeType?: string) => void | Promise<void>;
+      // Variant 1: WithFile is false, data/mimeType is definitely not there
+      [WithFile] extends [false]
+        ? (
+            id: string,
+            fileName: string,
+            size: number,
+            data?: undefined,
+            mimeType?: undefined,
+          ) => void | Promise<void>
+        : // Variant 2: WithFile is true, data (and mimeType?) is definitely there
+          [WithFile] extends [true]
+          ? (
+              id: string,
+              fileName: string,
+              size: number,
+              data: Buffer | string,
+              mimeType?: string,
+            ) => void | Promise<void>
+          : // Variant 3: WithFile is not known, data/mimeType might be there
+            (
+              id: string,
+              fileName: string,
+              size: number,
+              data?: Buffer | string,
+              mimeType?: string,
+            ) => void | Promise<void>;
 
-    type SetObjectCallback = (err?: string | null, obj?: { id: string }) => void | Promise<void>;
-    type SetObjectPromise = Promise<NonNullCallbackReturnTypeOf<SetObjectCallback>>;
+    type SetObjectCallback = (
+      err?: string | null,
+      obj?: { id: string },
+    ) => void | Promise<void>;
+    type SetObjectPromise = Promise<
+      NonNullCallbackReturnTypeOf<SetObjectCallback>
+    >;
 
-    type GetObjectCallback<T extends string = string> = (err?: string | null, obj?: ObjectIdToObjectType<T> | null) => void;
-    type GetObjectPromise<T extends string = string> = Promise<CallbackReturnTypeOf<GetObjectCallback<T>>>;
+    type GetObjectCallback<T extends string = string> = (
+      err?: string | null,
+      obj?: ObjectIdToObjectType<T> | null,
+    ) => void;
+    type GetObjectPromise<T extends string = string> = Promise<
+      CallbackReturnTypeOf<GetObjectCallback<T>>
+    >;
 
     type LogLevel = "silly" | "debug" | "info" | "warn" | "error" | "force";
 
-    type ReadFileCallback = (err?: string | null, file?: Buffer | string, mimeType?: string) => void | Promise<void>;
-    type ReadFilePromise = Promise<NonNullCallbackReturnTypeOf<ReadFileCallback>>;
+    type ReadFileCallback = (
+      err?: string | null,
+      file?: Buffer | string,
+      mimeType?: string,
+    ) => void | Promise<void>;
+    type ReadFilePromise = Promise<
+      NonNullCallbackReturnTypeOf<ReadFileCallback>
+    >;
 
     /** Callback information for a passed message */
     interface MessageCallbackInfo {
@@ -953,7 +1076,13 @@ declare global {
 
     interface Subscription {
       name: string;
-      pattern: string | RegExp | string[] | iobJS.SubscribeOptions | iobJS.SubscribeTime | iobJS.AstroSchedule;
+      pattern:
+        | string
+        | RegExp
+        | string[]
+        | iobJS.SubscribeOptions
+        | iobJS.SubscribeTime
+        | iobJS.AstroSchedule;
     }
 
     interface SubscribeOptions {
@@ -1067,7 +1196,12 @@ declare global {
        * Executes a function for each state id in the result array
        * The execution is canceled if a callback returns false
        */
-      each(callback?: (id: string, index: number) => boolean | void | Promise<void>): this;
+      each(
+        callback?: (
+          id: string,
+          index: number,
+        ) => boolean | void | Promise<void>,
+      ): this;
 
       /**
        * Returns the first state found by this query.
@@ -1079,23 +1213,45 @@ declare global {
 
       getState<T extends StateValue = any>(): State<T> | null | undefined;
 
-      getStateAsync<T extends StateValue = any>(): Promise<State<T> | null | undefined>;
+      getStateAsync<T extends StateValue = any>(): Promise<
+        State<T> | null | undefined
+      >;
 
       /**
        * Sets all queried states to the given value.
        */
-      setState(state: State | StateValue | SettableState, ack?: boolean, callback?: SetStateCallback): this;
+      setState(
+        state: State | StateValue | SettableState,
+        ack?: boolean,
+        callback?: SetStateCallback,
+      ): this;
 
-      setStateAsync(state: State | StateValue | SettableState, ack?: boolean): Promise<void>;
+      setStateAsync(
+        state: State | StateValue | SettableState,
+        ack?: boolean,
+      ): Promise<void>;
 
-      setStateDelayed(state: any, isAck?: boolean, delay?: number, clearRunning?: boolean, callback?: SetStateCallback): this;
+      setStateDelayed(
+        state: any,
+        isAck?: boolean,
+        delay?: number,
+        clearRunning?: boolean,
+        callback?: SetStateCallback,
+      ): this;
 
       /**
        * Sets all queried states to the given value only if the value really changed.
        */
-      setStateChanged(state: State | StateValue | SettableState, ack?: boolean, callback?: SetStateCallback): this;
+      setStateChanged(
+        state: State | StateValue | SettableState,
+        ack?: boolean,
+        callback?: SetStateCallback,
+      ): this;
 
-      setStateChangedAsync(state: State | StateValue | SettableState, ack?: boolean): Promise<void>;
+      setStateChangedAsync(
+        state: State | StateValue | SettableState,
+        ack?: boolean,
+      ): Promise<void>;
 
       /**
        * Subscribes the given callback to changes of the matched states.
@@ -1120,7 +1276,7 @@ declare global {
      * * "nadir": nadir (darkest moment of the night, sun is in the lowest position)
      */
     type AstroPattern =
-      "sunrise"
+      | "sunrise"
       | "sunriseEnd"
       | "goldenHourEnd"
       | "solarNoon"
@@ -1231,12 +1387,17 @@ declare global {
 
     interface LogMessage {
       severity: LogLevel; // severity
-      ts: number; 		// timestamp as Date.now()
-      message: string; 	// message
-      from: string; 		// origin of the message
+      ts: number; // timestamp as Date.now()
+      message: string; // message
+      from: string; // origin of the message
     }
 
-    type SchedulePattern = ScheduleRule | ScheduleRuleConditional | Date | string | number;
+    type SchedulePattern =
+      | ScheduleRule
+      | ScheduleRuleConditional
+      | Date
+      | string
+      | number;
 
     interface SubscribeTime {
       time: SchedulePattern;
@@ -1267,12 +1428,15 @@ declare global {
       basicAuth?: {
         user: string;
         password: string;
-      },
+      };
       bearerAuth?: string;
       headers?: Record<string, string>;
     }
 
-    type HttpResponseCallback = (err?: string | null, response?: iobJS.httpResponse) => void | Promise<void>;
+    type HttpResponseCallback = (
+      err?: string | null,
+      response?: iobJS.httpResponse,
+    ) => void | Promise<void>;
 
     interface httpResponse {
       responseCode: number;
@@ -1292,7 +1456,7 @@ declare global {
   /**
    * The name of the current script
    */
-    // @ts-ignore We need this variable, although it conflicts with lib.es6
+  // @ts-ignore We need this variable, although it conflicts with lib.es6
   const name: string;
   /**
    * The name of the current script
@@ -1364,33 +1528,68 @@ declare global {
   function pushover(msg: any): void;
 
   function httpGet(url: string, callback: iobJS.HttpResponseCallback): void;
-  function httpGet(url: string, options: iobJS.HttpRequestOptions, callback: iobJS.HttpResponseCallback): void;
+  function httpGet(
+    url: string,
+    options: iobJS.HttpRequestOptions,
+    callback: iobJS.HttpResponseCallback,
+  ): void;
 
   function httpGetAsync(url: string): Promise<iobJS.httpResponse>;
-  function httpGetAsync(url: string, options: iobJS.HttpRequestOptions): Promise<iobJS.httpResponse>;
+  function httpGetAsync(
+    url: string,
+    options: iobJS.HttpRequestOptions,
+  ): Promise<iobJS.httpResponse>;
 
-  function httpPost(url: string, data: object | string, callback: iobJS.HttpResponseCallback): void;
-  function httpPost(url: string, data: object | string, options: iobJS.HttpRequestOptions, callback: iobJS.HttpResponseCallback): void;
+  function httpPost(
+    url: string,
+    data: object | string,
+    callback: iobJS.HttpResponseCallback,
+  ): void;
+  function httpPost(
+    url: string,
+    data: object | string,
+    options: iobJS.HttpRequestOptions,
+    callback: iobJS.HttpResponseCallback,
+  ): void;
 
-  function httpPostAsync(url: string, data: object | string): Promise<iobJS.httpResponse>;
-  function httpPostAsync(url: string, data: object | string, options: iobJS.HttpRequestOptions): Promise<iobJS.httpResponse>;
+  function httpPostAsync(
+    url: string,
+    data: object | string,
+  ): Promise<iobJS.httpResponse>;
+  function httpPostAsync(
+    url: string,
+    data: object | string,
+    options: iobJS.HttpRequestOptions,
+  ): Promise<iobJS.httpResponse>;
 
   /**
    * Subscribe to the changes of the matched states.
    */
-  function on(pattern: string | RegExp | string[], handler: iobJS.StateChangeHandler): any;
   function on(
-    astroOrScheduleOrOptions: iobJS.AstroSchedule | iobJS.SubscribeTime | iobJS.SubscribeOptions,
-    handler: iobJS.StateChangeHandler
+    pattern: string | RegExp | string[],
+    handler: iobJS.StateChangeHandler,
+  ): any;
+  function on(
+    astroOrScheduleOrOptions:
+      | iobJS.AstroSchedule
+      | iobJS.SubscribeTime
+      | iobJS.SubscribeOptions,
+    handler: iobJS.StateChangeHandler,
   ): any;
 
   /**
    * Subscribe to the changes of the matched states.
    */
-  function subscribe(pattern: string | RegExp | string[], handler: iobJS.StateChangeHandler): any;
   function subscribe(
-    astroOrScheduleOrOptions: iobJS.AstroSchedule | iobJS.SubscribeTime | iobJS.SubscribeOptions,
-    handler: iobJS.StateChangeHandler
+    pattern: string | RegExp | string[],
+    handler: iobJS.StateChangeHandler,
+  ): any;
+  function subscribe(
+    astroOrScheduleOrOptions:
+      | iobJS.AstroSchedule
+      | iobJS.SubscribeTime
+      | iobJS.SubscribeOptions,
+    handler: iobJS.StateChangeHandler,
   ): any;
 
   /**
@@ -1401,8 +1600,17 @@ declare global {
    * @param withFile If the content of the file must be returned in callback (high usage of memory)
    * @param handler Callback: function (id, fileName, size, data, mimeType) {}
    */
-  function onFile<WithFile extends boolean>(id: string, filePattern: string | string[], withFile: WithFile, handler: iobJS.FileChangeHandler<WithFile>): any;
-  function onFile(id: string, filePattern: string | string[], handler: iobJS.FileChangeHandler<false>): any;
+  function onFile<WithFile extends boolean>(
+    id: string,
+    filePattern: string | string[],
+    withFile: WithFile,
+    handler: iobJS.FileChangeHandler<WithFile>,
+  ): any;
+  function onFile(
+    id: string,
+    filePattern: string | string[],
+    handler: iobJS.FileChangeHandler<false>,
+  ): any;
 
   /**
    * Un-subscribe from the changes of the matched files.
@@ -1415,11 +1623,23 @@ declare global {
    * Registers a one-time subscription which automatically unsubscribes after the first invocation
    */
   function once(
-    pattern: string | RegExp | string[] | iobJS.AstroSchedule | iobJS.SubscribeTime | iobJS.SubscribeOptions,
-    handler: iobJS.StateChangeHandler
+    pattern:
+      | string
+      | RegExp
+      | string[]
+      | iobJS.AstroSchedule
+      | iobJS.SubscribeTime
+      | iobJS.SubscribeOptions,
+    handler: iobJS.StateChangeHandler,
   ): any;
   function once(
-    pattern: string | RegExp | string[] | iobJS.AstroSchedule | iobJS.SubscribeTime | iobJS.SubscribeOptions
+    pattern:
+      | string
+      | RegExp
+      | string[]
+      | iobJS.AstroSchedule
+      | iobJS.SubscribeTime
+      | iobJS.SubscribeOptions,
   ): Promise<iobJS.ChangedStateObject>;
 
   /**
@@ -1471,7 +1691,10 @@ declare global {
    * Schedules a function to be executed on a defined schedule.
    * The return value can be used to clear the schedule later.
    */
-  function schedule(pattern: string | iobJS.SchedulePattern, callback: EmptyCallback): any;
+  function schedule(
+    pattern: string | iobJS.SchedulePattern,
+    callback: EmptyCallback,
+  ): any;
   function schedule(date: Date, callback: EmptyCallback): any;
   function schedule(astro: iobJS.AstroSchedule, callback: EmptyCallback): any;
 
@@ -1501,7 +1724,11 @@ declare global {
    * @param date (optional) The date for which the astro time should be calculated. Default = today
    * @param offsetMinutes (optional) The number of minutes to be added to the return value.
    */
-  function getAstroDate(pattern: string, date?: Date | number, offsetMinutes?: number): Date;
+  function getAstroDate(
+    pattern: string,
+    date?: Date | number,
+    offsetMinutes?: number,
+  ): Date;
 
   /**
    * Determines if now is between sunrise and sunset.
@@ -1512,20 +1739,45 @@ declare global {
    * Sets a state to the given value
    * @param id The ID of the state to be set
    */
-  function setState(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, callback?: iobJS.SetStateCallback): void;
-  function setState(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack: boolean, callback?: iobJS.SetStateCallback): void;
+  function setState(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function setState(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): void;
 
-  function setStateAsync(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack?: boolean): iobJS.SetStatePromise;
+  function setStateAsync(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack?: boolean,
+  ): iobJS.SetStatePromise;
 
   /**
    * Sets a state to the given value only if the value really changed.
    * @param id The ID of the state to be set
    */
-  function setStateChanged(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, callback?: iobJS.SetStateCallback): void;
-  function setStateChanged(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack: boolean, callback?: iobJS.SetStateCallback): void;
+  function setStateChanged(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function setStateChanged(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): void;
 
-  function setStateChangedAsync(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack?: boolean): iobJS.SetStatePromise;
-
+  function setStateChangedAsync(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack?: boolean,
+  ): iobJS.SetStatePromise;
 
   /**
    * Sets a state to the given value after a timeout has passed.
@@ -1535,12 +1787,46 @@ declare global {
    * @param clearRunning (optional) Whether an existing timeout for this state should be cleared
    * @returns If a delayed setState was scheduled, this returns the timer id, otherwise null.
    */
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, delay: number, clearRunning: boolean, callback?: iobJS.SetStateCallback): number | null;
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack: boolean, clearRunning: boolean, callback?: iobJS.SetStateCallback): number | null;
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack: boolean, delay: number, callback?: iobJS.SetStateCallback): number | null;
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, delay: number, callback?: iobJS.SetStateCallback): number | null;
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, callback?: iobJS.SetStateCallback): number | null;
-  function setStateDelayed(id: string, state: iobJS.State | iobJS.StateValue | iobJS.SettableState, ack: boolean, delay: number, clearRunning: boolean, callback?: iobJS.SetStateCallback): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    delay: number,
+    clearRunning: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack: boolean,
+    clearRunning: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack: boolean,
+    delay: number,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    delay: number,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
+  function setStateDelayed(
+    id: string,
+    state: iobJS.State | iobJS.StateValue | iobJS.SettableState,
+    ack: boolean,
+    delay: number,
+    clearRunning: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): number | null;
 
   /**
    * Clears a timer created by setStateDelayed
@@ -1566,10 +1852,17 @@ declare global {
    * this can be called synchronously and immediately returns the state.
    * Otherwise, you need to provide a callback.
    */
-  function getState<T extends iobJS.StateValue = any>(id: string, callback: iobJS.GetStateCallback<T>): void;
-  function getState<T extends iobJS.StateValue = any>(id: string): iobJS.State<T> | iobJS.AbsentState;
+  function getState<T extends iobJS.StateValue = any>(
+    id: string,
+    callback: iobJS.GetStateCallback<T>,
+  ): void;
+  function getState<T extends iobJS.StateValue = any>(
+    id: string,
+  ): iobJS.State<T> | iobJS.AbsentState;
 
-  function getStateAsync<T extends iobJS.StateValue = any>(id: string): Promise<iobJS.State<T>>;
+  function getStateAsync<T extends iobJS.StateValue = any>(
+    id: string,
+  ): Promise<iobJS.State<T>>;
 
   /**
    * Checks if the state with the given ID exists
@@ -1597,25 +1890,56 @@ declare global {
    * Reads an object from the object db.
    * @param enumName Which enum should be included in the returned object. `true` to return all enums.
    */
-  function getObject<T extends string>(id: T, enumName?: string | true): iobJS.ObjectIdToObjectType<T, "read">;
-  function getObject<T extends string>(id: T, callback: iobJS.GetObjectCallback<T>): void;
-  function getObject<T extends string>(id: T, enumName: string | true, callback: iobJS.GetObjectCallback<T>): void;
+  function getObject<T extends string>(
+    id: T,
+    enumName?: string | true,
+  ): iobJS.ObjectIdToObjectType<T, "read">;
+  function getObject<T extends string>(
+    id: T,
+    callback: iobJS.GetObjectCallback<T>,
+  ): void;
+  function getObject<T extends string>(
+    id: T,
+    enumName: string | true,
+    callback: iobJS.GetObjectCallback<T>,
+  ): void;
 
-  function getObjectAsync<T extends string>(id: T, enumName?: string | true): iobJS.GetObjectPromise<T>;
+  function getObjectAsync<T extends string>(
+    id: T,
+    enumName?: string | true,
+  ): iobJS.GetObjectPromise<T>;
 
   /** Creates or overwrites an object in the object db */
-  function setObject(id: string, obj: iobJS.SettableObject, callback?: iobJS.SetObjectCallback): void;
+  function setObject(
+    id: string,
+    obj: iobJS.SettableObject,
+    callback?: iobJS.SetObjectCallback,
+  ): void;
 
-  function setObjectAsync(id: string, obj: iobJS.SettableObject): iobJS.SetObjectPromise;
+  function setObjectAsync(
+    id: string,
+    obj: iobJS.SettableObject,
+  ): iobJS.SetObjectPromise;
 
   /** Extend an object and create it if it might not exist */
-  function extendObject(id: string, objPart: iobJS.PartialObject, callback?: iobJS.SetObjectCallback): void;
+  function extendObject(
+    id: string,
+    objPart: iobJS.PartialObject,
+    callback?: iobJS.SetObjectCallback,
+  ): void;
 
-  function extendObjectAsync(id: string, objPart: iobJS.PartialObject): iobJS.SetObjectPromise;
+  function extendObjectAsync(
+    id: string,
+    objPart: iobJS.PartialObject,
+  ): iobJS.SetObjectPromise;
 
   /** Deletes an object in the object db */
   function deleteObject(id: string, callback?: ErrorCallback): void;
-  function deleteObject(id: string, recursive: boolean, callback?: ErrorCallback): void;
+  function deleteObject(
+    id: string,
+    recursive: boolean,
+    callback?: ErrorCallback,
+  ): void;
 
   function deleteObjectAsync(id: string, recursive?: boolean): Promise<void>;
 
@@ -1631,32 +1955,143 @@ declare global {
    * @param callback (optional) Called after the state was created
    */
   function createState(name: string, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, forceCreation: boolean, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, forceCreation: boolean, common: Partial<iobJS.StateCommon>, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, forceCreation: boolean, common: Partial<iobJS.StateCommon>, native: any, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, common: Partial<iobJS.StateCommon>, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, common: Partial<iobJS.StateCommon>, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, common: Partial<iobJS.StateCommon>, native: any, callback?: iobJS.SetStateCallback): void;
-  function createState(name: string, initValue: iobJS.StateValue, common: Partial<iobJS.StateCommon>, native: any, callback?: iobJS.SetStateCallback): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    forceCreation: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    forceCreation: boolean,
+    common: Partial<iobJS.StateCommon>,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    forceCreation: boolean,
+    common: Partial<iobJS.StateCommon>,
+    native: any,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    common: Partial<iobJS.StateCommon>,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    common: Partial<iobJS.StateCommon>,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    common: Partial<iobJS.StateCommon>,
+    native: any,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createState(
+    name: string,
+    initValue: iobJS.StateValue,
+    common: Partial<iobJS.StateCommon>,
+    native: any,
+    callback?: iobJS.SetStateCallback,
+  ): void;
 
-  function createStateAsync(name: string, initValue?: iobJS.StateValue, forceCreation?: boolean, common?: Partial<iobJS.StateCommon>, native?: any): iobJS.SetStatePromise;
-  function createStateAsync(name: string, common: Partial<iobJS.StateCommon>): iobJS.SetStatePromise;
-  function createStateAsync(name: string, common: Partial<iobJS.StateCommon>, native?: any): iobJS.SetStatePromise;
-  function createStateAsync(name: string, initValue: iobJS.StateValue, common: Partial<iobJS.StateCommon>): iobJS.SetStatePromise;
-  function createStateAsync(name: string, initValue: iobJS.StateValue, common: Partial<iobJS.StateCommon>, native?: any): iobJS.SetStatePromise;
+  function createStateAsync(
+    name: string,
+    initValue?: iobJS.StateValue,
+    forceCreation?: boolean,
+    common?: Partial<iobJS.StateCommon>,
+    native?: any,
+  ): iobJS.SetStatePromise;
+  function createStateAsync(
+    name: string,
+    common: Partial<iobJS.StateCommon>,
+  ): iobJS.SetStatePromise;
+  function createStateAsync(
+    name: string,
+    common: Partial<iobJS.StateCommon>,
+    native?: any,
+  ): iobJS.SetStatePromise;
+  function createStateAsync(
+    name: string,
+    initValue: iobJS.StateValue,
+    common: Partial<iobJS.StateCommon>,
+  ): iobJS.SetStatePromise;
+  function createStateAsync(
+    name: string,
+    initValue: iobJS.StateValue,
+    common: Partial<iobJS.StateCommon>,
+    native?: any,
+  ): iobJS.SetStatePromise;
 
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, callback?: iobJS.SetStateCallback): void;
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, forceCreation: boolean, callback?: iobJS.SetStateCallback): void;
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, forceCreation: boolean, common: Partial<iobJS.StateCommon>, callback?: iobJS.SetStateCallback): void;
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, forceCreation: boolean, common: Partial<iobJS.StateCommon>, native: any, callback?: iobJS.SetStateCallback): void;
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, common: Partial<iobJS.StateCommon>, callback?: iobJS.SetStateCallback): void;
-  function createAlias(name: string, alias: string | iobJS.StateCommonAlias, common: Partial<iobJS.StateCommon>, native: any, callback?: iobJS.SetStateCallback): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    forceCreation: boolean,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    forceCreation: boolean,
+    common: Partial<iobJS.StateCommon>,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    forceCreation: boolean,
+    common: Partial<iobJS.StateCommon>,
+    native: any,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    common: Partial<iobJS.StateCommon>,
+    callback?: iobJS.SetStateCallback,
+  ): void;
+  function createAlias(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    common: Partial<iobJS.StateCommon>,
+    native: any,
+    callback?: iobJS.SetStateCallback,
+  ): void;
 
-  function createAliasAsync(name: string, alias: string | iobJS.StateCommonAlias, forceCreation?: boolean, common?: Partial<iobJS.StateCommon>, native?: any): iobJS.SetStatePromise;
-  function createAliasAsync(name: string, alias: string | iobJS.StateCommonAlias, common: Partial<iobJS.StateCommon>): iobJS.SetStatePromise;
-  function createAliasAsync(name: string, alias: string | iobJS.StateCommonAlias, common: Partial<iobJS.StateCommon>, native?: any): iobJS.SetStatePromise;
-
+  function createAliasAsync(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    forceCreation?: boolean,
+    common?: Partial<iobJS.StateCommon>,
+    native?: any,
+  ): iobJS.SetStatePromise;
+  function createAliasAsync(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    common: Partial<iobJS.StateCommon>,
+  ): iobJS.SetStatePromise;
+  function createAliasAsync(
+    name: string,
+    alias: string | iobJS.StateCommonAlias,
+    common: Partial<iobJS.StateCommon>,
+    native?: any,
+  ): iobJS.SetStatePromise;
 
   /**
    * Deletes the state with the given ID
@@ -1674,13 +2109,40 @@ declare global {
    * @param command (optional) Command name of the target instance. Default: "send"
    * @param message The message (e.g., params) to send.
    */
-  function sendTo(instanceName: string, command: string, message: string | object, options: iobJS.SendToOptions, callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo): void;
-  function sendTo(instanceName: string, command: string, message: string | object, callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo): void;
-  function sendTo(instanceName: string, message: string | object, callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo): void;
+  function sendTo(
+    instanceName: string,
+    command: string,
+    message: string | object,
+    options: iobJS.SendToOptions,
+    callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo,
+  ): void;
+  function sendTo(
+    instanceName: string,
+    command: string,
+    message: string | object,
+    callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo,
+  ): void;
+  function sendTo(
+    instanceName: string,
+    message: string | object,
+    callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo,
+  ): void;
 
-  function sendToAsync(instanceName: string, message: string | object): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
-  function sendToAsync(instanceName: string, command: string, message: string | object): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
-  function sendToAsync(instanceName: string, command: string, message: string | object, options: iobJS.SendToOptions): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
+  function sendToAsync(
+    instanceName: string,
+    message: string | object,
+  ): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
+  function sendToAsync(
+    instanceName: string,
+    command: string,
+    message: string | object,
+  ): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
+  function sendToAsync(
+    instanceName: string,
+    command: string,
+    message: string | object,
+    options: iobJS.SendToOptions,
+  ): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
 
   /**
    * Sends a message to a specific instance or all instances of some specific adapter.
@@ -1688,24 +2150,48 @@ declare global {
    * @param command Command name for the target host.
    * @param message The message (e.g., params) to send.
    */
-  function sendToHost(host: string, command: string, message: string | object, callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo): void;
+  function sendToHost(
+    host: string,
+    command: string,
+    message: string | object,
+    callback?: iobJS.MessageCallback | iobJS.MessageCallbackInfo,
+  ): void;
 
-  function sendToHostAsync(host: string, command: string, message: string | object): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
+  function sendToHostAsync(
+    host: string,
+    command: string,
+    message: string | object,
+  ): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
 
-  function setTimeout(callback: (args: void) => void, ms?: number): NodeJS.Timeout;
+  function setTimeout(
+    callback: (args: void) => void,
+    ms?: number,
+  ): NodeJS.Timeout;
 
-  function clearTimeout(timeoutId: NodeJS.Timeout | string | number | undefined): void;
+  function clearTimeout(
+    timeoutId: NodeJS.Timeout | string | number | undefined,
+  ): void;
 
-  function setInterval(callback: (args: void) => void, ms?: number): NodeJS.Timeout;
+  function setInterval(
+    callback: (args: void) => void,
+    ms?: number,
+  ): NodeJS.Timeout;
 
-  function clearInterval(intervalId: NodeJS.Timeout | string | number | undefined): void;
+  function clearInterval(
+    intervalId: NodeJS.Timeout | string | number | undefined,
+  ): void;
 
   function setImmediate(callback: (args: void) => void): NodeJS.Immediate;
 
   type CompareTimeOperations =
-    "between" | "not between" |
-    ">" | ">=" | "<" | "<=" | "==" | "<>"
-    ;
+    | "between"
+    | "not between"
+    | ">"
+    | ">="
+    | "<"
+    | "<="
+    | "=="
+    | "<>";
 
   /**
    * Compares two or more times
@@ -1715,17 +2201,33 @@ declare global {
     startTime: string | number | Date | iobJS.AstroDate,
     endTime: string | number | Date | iobJS.AstroDate,
     operation: CompareTimeOperations,
-    timeToCompare?: string | number | Date | iobJS.AstroDate
+    timeToCompare?: string | number | Date | iobJS.AstroDate,
   ): boolean;
 
   /** Sets up a callback which is called when the script stops */
-  function onStop(callback: (cb?: EmptyCallback) => void, timeout?: number): void;
+  function onStop(
+    callback: (cb?: EmptyCallback) => void,
+    timeout?: number,
+  ): void;
 
   function formatValue(value: number | string, format?: any): string;
-  function formatValue(value: number | string, decimals: number, format?: any): string;
+  function formatValue(
+    value: number | string,
+    decimals: number,
+    format?: any,
+  ): string;
 
-  function formatDate(dateObj: string | Date | number, format: string, language?: string): string;
-  function formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string, language?: string): string;
+  function formatDate(
+    dateObj: string | Date | number,
+    format: string,
+    language?: string,
+  ): string;
+  function formatDate(
+    dateObj: string | Date | number,
+    isDuration: boolean | string,
+    format: string,
+    language?: string,
+  ): string;
 
   function formatTimeDiff(diff: number): string;
   function formatTimeDiff(diff: number, format: string): string;
@@ -1739,9 +2241,18 @@ declare global {
    * @param data Contents of the file
    * @param callback Is called when the operation has finished (successfully or not)
    */
-  function writeFile(id: string, name: string, data: Buffer | string, callback: ErrorCallback): void;
+  function writeFile(
+    id: string,
+    name: string,
+    data: Buffer | string,
+    callback: ErrorCallback,
+  ): void;
 
-  function writeFileAsync(id: string, name: string, data: Buffer | string): Promise<void>;
+  function writeFileAsync(
+    id: string,
+    name: string,
+    data: Buffer | string,
+  ): Promise<void>;
 
   /**
    * Reads a file.
@@ -1749,7 +2260,11 @@ declare global {
    * @param name File name
    * @param callback Is called when the operation has finished (successfully or not)
    */
-  function readFile(id: string, name: string, callback: iobJS.ReadFileCallback): void;
+  function readFile(
+    id: string,
+    name: string,
+    callback: iobJS.ReadFileCallback,
+  ): void;
 
   function readFileAsync(id: string, name: string): iobJS.ReadFilePromise;
 
@@ -1780,7 +2295,12 @@ declare global {
    * @param newName New file name
    * @param callback Is called when the operation has finished (successfully or not)
    */
-  function rename(id: string, oldName: string, newName: string, callback: ErrorCallback);
+  function rename(
+    id: string,
+    oldName: string,
+    newName: string,
+    callback: ErrorCallback,
+  );
 
   function renameAsync(id: string, oldName: string, newName: string);
 
@@ -1791,7 +2311,12 @@ declare global {
    * @param newName New file name
    * @param callback Is called when the operation has finished (successfully or not)
    */
-  function renameFile(id: string, oldName: string, newName: string, callback: ErrorCallback);
+  function renameFile(
+    id: string,
+    oldName: string,
+    newName: string,
+    callback: ErrorCallback,
+  );
 
   function renameFileAsync(id: string, oldName: string, newName: string);
 
@@ -1813,22 +2338,35 @@ declare global {
    * @param ignoreIfStarted If set to true, running scripts will not be restarted.
    * @param callback (optional) Is called when the script has finished (successfully or not)
    */
-  function startScript(scriptName: string | undefined, ignoreIfStarted: boolean, callback?: GenericCallback<boolean>): boolean;
+  function startScript(
+    scriptName: string | undefined,
+    ignoreIfStarted: boolean,
+    callback?: GenericCallback<boolean>,
+  ): boolean;
 
-  function startScriptAsync(scriptName?: string | undefined, ignoreIfStarted?: boolean): Promise<void>;
+  function startScriptAsync(
+    scriptName?: string | undefined,
+    ignoreIfStarted?: boolean,
+  ): Promise<void>;
 
   /**
    * Starts or restarts a script by name
    * @param scriptName (optional) Name of the script. If none is given, the current script is (re)started.
    * @param callback (optional) Is called when the script has finished (successfully or not)
    */
-  function startScript(scriptName?: string, callback?: GenericCallback<boolean>): boolean;
+  function startScript(
+    scriptName?: string,
+    callback?: GenericCallback<boolean>,
+  ): boolean;
 
   /**
    * Stops a script by name
    * @param scriptName (optional) Name of the script. If none is given, the current script is stopped.
    */
-  function stopScript(scriptName: string | undefined, callback?: GenericCallback<boolean>): boolean;
+  function stopScript(
+    scriptName: string | undefined,
+    callback?: GenericCallback<boolean>,
+  ): boolean;
 
   function stopScriptAsync(scriptName?: string): Promise<void>;
 
@@ -1848,7 +2386,10 @@ declare global {
    * @param obj The object to dig in
    * @param path The path of the property to dig for in the given object
    */
-  function getAttr(obj: string | Record<string, any>, path: string | string[]): any;
+  function getAttr(
+    obj: string | Record<string, any>,
+    path: string | string[],
+  ): any;
 
   /**
    * Sends a message to another script.
@@ -1858,9 +2399,18 @@ declare global {
    * @param callback Callback to get the result from other script
    * @return ID of the subscription. It could be used for un-subscribe.
    */
-  function messageTo(target: iobJS.MessageTarget | string, data: any, options?: any, callback?: SimpleCallback<any>): iobJS.MessageSubscribeID;
+  function messageTo(
+    target: iobJS.MessageTarget | string,
+    data: any,
+    options?: any,
+    callback?: SimpleCallback<any>,
+  ): iobJS.MessageSubscribeID;
 
-  function messageToAsync(target: iobJS.MessageTarget | string, data: any, options?: any): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
+  function messageToAsync(
+    target: iobJS.MessageTarget | string,
+    data: any,
+    options?: any,
+  ): Promise<iobJS.MessageCallback | iobJS.MessageCallbackInfo>;
 
   /**
    * Process message from another script.
@@ -1880,7 +2430,10 @@ declare global {
 
   function onObject(pattern: string, callback: iobJS.ObjectChangeHandler);
 
-  function subscribeObject(pattern: string, callback: iobJS.ObjectChangeHandler);
+  function subscribeObject(
+    pattern: string,
+    callback: iobJS.ObjectChangeHandler,
+  );
 
   function unsubscribeObject(id: string);
 
@@ -1889,14 +2442,23 @@ declare global {
    * @param severity Severity level
    * @param callback Callback to send the result to another script
    */
-  function onLog(severity: iobJS.LogLevel | "*", callback: SimpleCallback<iobJS.LogMessage>);
+  function onLog(
+    severity: iobJS.LogLevel | "*",
+    callback: SimpleCallback<iobJS.LogMessage>,
+  );
 
   /**
    * Unsubscribe log handler.
    * @param idOrCallbackOrSeverity Message subscription id from onLog or by callback function
    * @return true if subscription exists and was deleted.
    */
-  function onLogUnregister(idOrCallbackOrSeverity: iobJS.MessageSubscribeID | SimpleCallback<iobJS.LogMessage> | iobJS.LogLevel | "*"): boolean;
+  function onLogUnregister(
+    idOrCallbackOrSeverity:
+      | iobJS.MessageSubscribeID
+      | SimpleCallback<iobJS.LogMessage>
+      | iobJS.LogLevel
+      | "*",
+  ): boolean;
 
   /** `await` this method to pause for the given number of milliseconds */
   function wait(ms: number): Promise<void>;

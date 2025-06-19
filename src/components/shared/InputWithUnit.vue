@@ -1,32 +1,36 @@
 <script lang="ts" setup>
-import { Input } from '@/components/ui/input';
+import { Input } from "@/components/ui/input";
 const props = defineProps({
   type: {
     type: String,
-    default: 'text'
+    default: "text",
   },
   class: {
     type: String,
-    default: ''
+    default: "",
   },
   unit: {
     type: String,
-    default: null
+    default: null,
   },
   modelValue: {
     type: [String, Number],
-    default: ''
-  }
-})
+    default: "",
+  },
+});
 
-defineEmits(['update:modelValue'])
+defineEmits(["update:modelValue"]);
 </script>
 <template>
   <div :class="['flex items-center']">
     <Input
-      :type="type" :class="{ [props.class]: true, 'h-6': true }" :model-value="modelValue"
+      :type="type"
+      :class="{ [props.class]: true, 'h-6': true }"
+      :model-value="modelValue"
       @update:model-value="$emit('update:modelValue', $event)"
     />
-    <span class="ml-2 text-accent-foreground/50 font-bold text-xs">{{ unit }}</span>
+    <span class="ml-2 text-accent-foreground/50 font-bold text-xs">{{
+      unit
+    }}</span>
   </div>
 </template>

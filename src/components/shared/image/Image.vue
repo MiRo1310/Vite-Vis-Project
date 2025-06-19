@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<ImageProps>(), {
   useLightbox: false,
   fallbackImgClass: "",
   imgClass: "",
-  class: ""
+  class: "",
 });
 const showDialog = ref(false);
 const shouldLoadFallBack = ref(false);
@@ -57,7 +57,11 @@ const loadImage = () => {
 
 <template>
   <div
-    :class="{ image__container: true, 'cursor-pointer': useLightbox, [props.class]: true }"
+    :class="{
+      image__container: true,
+      'cursor-pointer': useLightbox,
+      [props.class]: true,
+    }"
     @click="clickImageHandler"
   >
     <img
@@ -67,8 +71,13 @@ const loadImage = () => {
       :class="[imgClass, 'image__main']"
       @error="errorHandler"
       @load="loadImage"
-    >
-    <img v-if="shouldLoadFallBack" alt="fallback_image" :src="fallback" :class="['image-fallback', fallbackImgClass]">
+    />
+    <img
+      v-if="shouldLoadFallBack"
+      alt="fallback_image"
+      :src="fallback"
+      :class="['image-fallback', fallbackImgClass]"
+    />
   </div>
 </template>
 <style scoped lang="postcss">

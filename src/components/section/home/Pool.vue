@@ -28,39 +28,52 @@ interface Items {
 
 const items = computed(() => {
   const items: Items[] = [
-    { title: "Heizung aktiv", type: "bool", value: (pool.value.consumption?.val ?? 0) > 30 },
+    {
+      title: "Heizung aktiv",
+      type: "bool",
+      value: (pool.value.consumption?.val ?? 0) > 30,
+    },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
-      value: pool.value.heaterState?.val ?? false
+      value: pool.value.heaterState?.val ?? false,
     },
-    { title: "Modus", type: "text", value: getMode(pool.value.mode?.val ?? "") },
+    {
+      title: "Modus",
+      type: "text",
+      value: getMode(pool.value.mode?.val ?? ""),
+    },
     {
       title: "Verbrauch",
       type: "number",
-      value: pool.value.status?.val ? pool.value.consumption?.val ?? 0 : 0,
-      unit: "W"
+      value: pool.value.status?.val ? (pool.value.consumption?.val ?? 0) : 0,
+      unit: "W",
     },
     {
       title: "Wunschtemperatur",
       type: "input",
       value: pool.value.tempSet?.val ?? 0,
       function: handleChangeTempSet,
-      unit: "°C"
+      unit: "°C",
     },
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: pool.value.status?.val ? pool.value.tempIn?.val ?? 0 : 0,
-      unit: "°C"
+      value: pool.value.status?.val ? (pool.value.tempIn?.val ?? 0) : 0,
+      unit: "°C",
     },
     {
       title: "Temperatur Ausgang",
       type: "text",
       value: pool.value.status?.val ? pool.value.tempOut?.val || 0 : 0,
-      unit: "°C"
+      unit: "°C",
     },
-    { title: "Lüfterdrehzahl", type: "text", value: pool.value.rotor?.val || 0, unit: "Rpm" }
+    {
+      title: "Lüfterdrehzahl",
+      type: "text",
+      value: pool.value.rotor?.val || 0,
+      unit: "Rpm",
+    },
   ];
   return items;
 });
@@ -92,24 +105,38 @@ const getMode = (mode: string) => {
       </CardTitle>
     </CardHeader>
     <CardContent class="pool__content">
-      <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
+      <div
+        v-for="(item, index) in items"
+        :key="index"
+        class="flex justify-between items-center"
+      >
         <span
-          :class="[            'mr-12 text-accent-foreground/50 font-bold text-xs',
-            {'mt-2': index > 0,
-          }]"
-        >{{ item.title }}</span>
+          :class="[
+            'mr-12 text-accent-foreground/50 font-bold text-xs',
+            { 'mt-2': index > 0 },
+          ]"
+          >{{ item.title }}</span
+        >
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
         <div v-else-if="item.type === 'input'" class="line">
           <InputUnit
             class="w-16 text-accent-foreground/50 text-xs font-bold border-0 shadow-none rounded-none bg-white"
-            type="number" :model-value="item?.value.toString()" :unit="item.unit"
-            @update:model-value="(value: string | number) => item && item.function && item.function(value)"
+            type="number"
+            :model-value="item?.value.toString()"
+            :unit="item.unit"
+            @update:model-value="
+              (value: string | number) =>
+                item && item.function && item.function(value)
+            "
           />
         </div>
-        <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold">{{
-            parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
+        <span
+          v-else-if="item.type === 'number'"
+          class="text-accent-foreground/50 text-xs font-bold"
+          >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
         </span>
-        <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }}
+        <span v-else class="text-accent-foreground/50 text-xs font-bold"
+          >{{ item.value }} {{ item.unit }}
         </span>
       </div>
     </CardContent>
@@ -119,12 +146,11 @@ const getMode = (mode: string) => {
 <style scoped lang="scss">
 .pool {
   &__title {
-    @apply flex justify-between items-center
-
+    @apply flex justify-between items-center;
   }
 
   &__content {
-    @apply bg-white p-2 shadow-lg mx-2 mb-2
+    @apply bg-white p-2 shadow-lg mx-2 mb-2;
   }
 }
 </style>

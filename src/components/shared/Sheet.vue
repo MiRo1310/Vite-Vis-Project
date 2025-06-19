@@ -8,18 +8,21 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 
-withDefaults(defineProps<{ styling?: keyof typeof style, showFooter?: boolean }>(), {
-  styling: "default",
-  showFooter: true
-});
+withDefaults(
+  defineProps<{ styling?: keyof typeof style; showFooter?: boolean }>(),
+  {
+    styling: "default",
+    showFooter: true,
+  },
+);
 
 const style = {
   default: "",
   blue: "bg-color__default",
-  light: "bg-gray-200 p-2"
+  light: "bg-gray-200 p-2",
 };
 </script>
 
@@ -40,12 +43,7 @@ const style = {
       <slot name="content" />
       <SheetFooter v-if="showFooter">
         <SheetClose as-child>
-          <Button
-            type="submit"
-            class="mt-4"
-          >
-            Close
-          </Button>
+          <Button type="submit" class="mt-4"> Close </Button>
         </SheetClose>
       </SheetFooter>
     </SheetContent>

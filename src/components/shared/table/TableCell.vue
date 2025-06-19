@@ -3,21 +3,23 @@ import { HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
-const props = withDefaults(defineProps<{
-  class?: HTMLAttributes["class"],
-  size?: TableCellSize
-}>(), { size: "default" });
+const props = withDefaults(
+  defineProps<{
+    class?: HTMLAttributes["class"];
+    size?: TableCellSize;
+  }>(),
+  { size: "default" },
+);
 
-type Variants = typeof variants
+type Variants = typeof variants;
 export type TableCellSize = keyof Variants["size"];
 
 const variants = {
   size: {
     default: "p-2",
-    small: "p-0"
-  }
+    small: "p-0",
+  },
 };
-
 </script>
 
 <template>
@@ -25,7 +27,8 @@ const variants = {
     :class="
       cn(
         'align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5',
-        props.class, getVariantsClasses(variants,props)
+        props.class,
+        getVariantsClasses(variants, props),
       )
     "
   >

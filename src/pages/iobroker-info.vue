@@ -5,8 +5,6 @@ import IobrokerUpdates from "@/components/section/iobroker/IobrokerUpdates.vue";
 import IobrokerNews from "@/components/section/iobroker/IobrokerNews.vue";
 
 useDynamicSubscribe(infoStates);
-
-
 </script>
 
 <template>

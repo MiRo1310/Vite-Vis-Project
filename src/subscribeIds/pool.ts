@@ -41,7 +41,6 @@ export const poolIds: IdToSubscribe<Pool> = {
     { id: "midas-aquatemp.0.tempOut", firstKey: "tempOut" },
     { id: "midas-aquatemp.0.rotor", firstKey: "rotor" },
     { id: "midas-aquatemp.0.mode", firstKey: "mode" },
-    { id: "midas-aquatemp.0.info.connection", firstKey: "status" }
-  ]
-
+    { id: "midas-aquatemp.0.info.connection", firstKey: "status" },
+  ],
 };
