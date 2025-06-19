@@ -9,13 +9,13 @@ import {
 
 export const timer: IdToSubscribe<TimerObject> = {
   // Timer
-  objectNameInStore: "showTimerCard",
+  storeFolder: "showTimerCard",
   value: [{ id: "alexa-timer-vis.0.all_Timer.alive" }],
 };
 
 export const timer1: IdToSubscribe<Timer1> = {
   // Timer 1
-  objectNameInStore: "timer",
+  storeFolder: "timer",
   value: [
     {
       id: "alexa-timer-vis.0.timer1.string_2",
@@ -47,7 +47,7 @@ export const timer1: IdToSubscribe<Timer1> = {
 
 export const timer2: IdToSubscribe<Timer2> = {
   // Timer 2
-  objectNameInStore: "timer",
+  storeFolder: "timer",
   value: [
     {
       id: "alexa-timer-vis.0.timer2.string_2",
@@ -78,7 +78,7 @@ export const timer2: IdToSubscribe<Timer2> = {
 };
 export const timer3: IdToSubscribe<Timer3> = {
   // Timer 3
-  objectNameInStore: "timer",
+  storeFolder: "timer",
   value: [
     {
       id: "alexa-timer-vis.0.timer3.string_2",
@@ -109,7 +109,7 @@ export const timer3: IdToSubscribe<Timer3> = {
 };
 export const timer4: IdToSubscribe<Timer4> = {
   // Timer 4
-  objectNameInStore: "timer",
+  storeFolder: "timer",
   value: [
     {
       id: "alexa-timer-vis.0.timer4.string_2",

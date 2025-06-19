@@ -16,7 +16,7 @@ export interface Landroid {
 }
 
 export const landroid: IdToSubscribe<Landroid> = {
-  objectNameInStore: "landroid",
+  storeFolder: "landroid",
   value: [
     {
       id: "worx.0.202330294701005409AD.mower.batteryState",

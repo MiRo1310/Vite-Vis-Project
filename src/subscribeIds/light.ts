@@ -16,7 +16,7 @@ export interface LightTypesAdditive {
 
 export const lightStates: IdToSubscribe<LightTypes>[] = [
   {
-    objectNameInStore: "lights",
+    storeFolder: "lights",
     value: [
       { id: "sonoff.0.Sonoff_Wohnzimmer.POWER", firstKey: "Wohnzimmer" },
       { id: "s7.2.DBs.DB1.M6", firstKey: "Wohnzimmer_Ecklampe" },
@@ -31,7 +31,7 @@ export const lightStates: IdToSubscribe<LightTypes>[] = [
     ],
   },
   {
-    objectNameInStore: "lightsAdditive",
+    storeFolder: "lightsAdditive",
     value: [{ id: "s7.2.DBs.DB1.Q11", firstKey: "Wohnzimmer_Ecklampe" }],
   },
 ];

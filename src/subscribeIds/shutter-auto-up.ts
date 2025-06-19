@@ -2,7 +2,7 @@ import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
 export const shutterAutoUp: IdToSubscribe<Shutter> = {
   // Auto hoch aktiv
-  objectNameInStore: "shutterAutoUp",
+  storeFolder: "shutterAutoUp",
   value: [
     {
       id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_links",

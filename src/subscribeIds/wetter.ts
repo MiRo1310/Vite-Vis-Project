@@ -10,7 +10,7 @@ export interface Wetter {
 }
 
 export const wetter: IdToSubscribe<Wetter> = {
-  objectNameInStore: "wetter",
+  storeFolder: "wetter",
   value: [
     {
       id: "javascript.0.Geraete.WetterCom.temp_value",

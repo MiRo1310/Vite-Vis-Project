@@ -28,7 +28,7 @@ export interface AlexaAction {
 }
 
 const alexaAction: IdToSubscribe<AlexaAction> = {
-  objectNameInStore: "alexaAction",
+  storeFolder: "alexaAction",
   value: [
     { id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", firstKey: "alexaSpeak" },
   ],

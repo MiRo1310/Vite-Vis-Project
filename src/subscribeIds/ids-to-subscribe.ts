@@ -58,23 +58,23 @@ export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
   heating,
   logStates,
 
-  { objectNameInStore: "trash", value: [{ id: "trashschedule.0.type.json" }] },
+  { storeFolder: "trash", value: [{ id: "trashschedule.0.type.json" }] },
   {
-    objectNameInStore: "shoppingList",
+    storeFolder: "shoppingList",
     value: [{ id: "alexa-shoppinglist.0.list_activ" }],
   },
   {
-    objectNameInStore: "urlaubAktiv",
+    storeFolder: "urlaubAktiv",
     value: [{ id: "0_userdata.0.Urlaub.Urlaub_aktiv" }],
   },
   {
     // Fenster
-    objectNameInStore: "fensterOffen",
+    storeFolder: "fensterOffen",
     value: [{ id: "0_userdata.0.Fenster.Sind_Fenster_offen" }],
   },
   {
     // Sonnenuntergang
-    objectNameInStore: "sonnenuntergang",
+    storeFolder: "sonnenuntergang",
     value: [{ id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter" }],
   },
 ];

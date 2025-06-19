@@ -2,7 +2,7 @@ import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
 export const shutterIdsLogo: IdToSubscribe<Shutter> = {
   // Rolladen
-  objectNameInStore: "rolladen",
+  storeFolder: "rolladen",
   value: [
     {
       id: "s7.1.DBs.DB1.B150",

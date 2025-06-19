@@ -156,7 +156,7 @@ export interface Heating {
 }
 
 export const heating: IdToSubscribe<Heating> = {
-  objectNameInStore: "heating",
+  storeFolder: "heating",
   value: [
     { id: "s7.0.DBs.DB1.I6_-_NQ5", firstKey: "automatic" },
     { id: "s7.0.DBs.DB1.I5_-_NQ2", firstKey: "level" },

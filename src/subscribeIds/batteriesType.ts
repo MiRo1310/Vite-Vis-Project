@@ -64,7 +64,7 @@ export interface BatteriesType {
 }
 
 const batteryIds: IdToSubscribe<BatteriesType> = {
-  objectNameInStore: "batteries",
+  storeFolder: "batteries",
   value: [
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage",

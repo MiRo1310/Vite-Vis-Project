@@ -48,7 +48,7 @@ export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
       }
     });
 
-    iobrokerStore.removeIdFromSubscribedIds(listObjectOfIds.objectNameInStore);
+    iobrokerStore.removeIdFromSubscribedIds(listObjectOfIds.storeFolder);
   });
 }
 
@@ -81,7 +81,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               value = checkAndRevert(value, stateId.revertValue);
 
               iobrokerStore.setValues({
-                objectNameInStore: item.objectNameInStore || null,
+                objectNameInStore: item.storeFolder || null,
                 val: value,
                 id,
                 firstKey: stateId.firstKey || stateId.room || null,
@@ -90,7 +90,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
               if (stateId.timestamp) {
                 iobrokerStore.setValues({
-                  objectNameInStore: item.objectNameInStore || null,
+                  objectNameInStore: item.storeFolder || null,
                   val: timestamp,
                   id,
                   firstKey: stateId.firstKey || stateId.room || null,

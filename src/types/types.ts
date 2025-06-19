@@ -118,7 +118,7 @@ export interface Pv {
 
 export interface IdToSubscribe<TData> {
   value: Ids<TData>[];
-  objectNameInStore?: IoBrokerStates;
+  storeFolder?: IoBrokerStates;
 }
 
 export interface Ids<TData> {

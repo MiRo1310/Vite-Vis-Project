@@ -31,7 +31,7 @@ export interface HeatingTimeSlot {
 
 const states: IdToSubscribe<HeatingTimeSlot>[] = [
   {
-    objectNameInStore: "heatingTimeSlot",
+    storeFolder: "heatingTimeSlot",
     value: [
       {
         id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",

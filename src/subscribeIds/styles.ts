@@ -6,7 +6,7 @@ export interface StylesType {
 }
 
 export const styles: IdToSubscribe<StylesType> = {
-  objectNameInStore: "styles",
+  storeFolder: "styles",
   value: [
     { id: "0_userdata.0.vis.calendar_styles", firstKey: "calendarStyle" },
   ],

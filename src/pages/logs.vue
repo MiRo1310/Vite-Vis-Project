@@ -34,16 +34,15 @@ export interface LogReset {
   info: StoreValue<boolean>;
 }
 
-const statesReset: IdToSubscribe<LogReset>[] = [
-  {
-    objectNameInStore: "logReset",
-    value: [
-      { id: "logparser.0.filters.Error.emptyJson", firstKey: "error" },
-      { id: "logparser.0.filters.Info.emptyJson", firstKey: "info" },
-      { id: "logparser.0.filters.Warn.emptyJson", firstKey: "warn" },
-    ],
-  },
-];
+const statesReset: IdToSubscribe<LogReset> = {
+  storeFolder: "logReset",
+  value: [
+    { id: "logparser.0.filters.Error.emptyJson", firstKey: "error" },
+    { id: "logparser.0.filters.Info.emptyJson", firstKey: "info" },
+    { id: "logparser.0.filters.Warn.emptyJson", firstKey: "warn" },
+  ],
+};
+
 onMounted(() => {
   useDynamicSubscribe(statesReset);
 });
@@ -106,8 +105,8 @@ function reset() {
 
         <div class="flex-between flex-wrap space-x-2">
           <CardDescription
-            >{{ firstLetterToUpperCase(selected) }} Logs</CardDescription
-          >
+            >{{ firstLetterToUpperCase(selected) }} Logs
+          </CardDescription>
           <div>
             <Button variant="outline" size="sm" class="mr-5" @click="reset">
               Reset

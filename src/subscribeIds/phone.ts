@@ -15,7 +15,7 @@ export interface PhoneStates {
 }
 
 export const phoneStates: IdToSubscribe<PhoneStates> = {
-  objectNameInStore: "phone",
+  storeFolder: "phone",
   value: [
     { id: "tr-064.0.callmonitor.ringing", firstKey: "ringing" },
     {

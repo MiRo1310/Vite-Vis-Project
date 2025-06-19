@@ -1,7 +1,7 @@
 import { IdToSubscribe, WindowType } from "@/types/types.ts";
 
 export const windowOpenClose: IdToSubscribe<WindowType> = {
-  objectNameInStore: "fenster",
+  storeFolder: "fenster",
   value: [
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL",

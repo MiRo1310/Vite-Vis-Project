@@ -8,7 +8,7 @@ export interface LogStates {
 }
 
 export const logStates: IdToSubscribe<LogStates> = {
-  objectNameInStore: "logs",
+  storeFolder: "logs",
   value: [
     { id: "logparser.0.filters.Error.json", firstKey: "error" },
     { id: "logparser.0.filters.Info.json", firstKey: "info" },

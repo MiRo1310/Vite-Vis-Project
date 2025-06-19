@@ -2,7 +2,7 @@ import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
 export const shutterAutoDown: IdToSubscribe<Shutter> = {
   // Auto herunterfahren Rolladen
-  objectNameInStore: "shutterAutoDownTime",
+  storeFolder: "shutterAutoDownTime",
   value: [
     {
       id: "0_userdata.0.Rolladen.Esszimmer.Esszimmer_Rolladen_Zeitsteuerung",

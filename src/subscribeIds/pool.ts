@@ -32,7 +32,7 @@ export interface Pool {
 }
 
 export const poolIds: IdToSubscribe<Pool> = {
-  objectNameInStore: "pool",
+  storeFolder: "pool",
   value: [
     { id: "midas-aquatemp.0.state", firstKey: "heaterState" },
     { id: "midas-aquatemp.0.tempSet", firstKey: "tempSet", saveId: true },

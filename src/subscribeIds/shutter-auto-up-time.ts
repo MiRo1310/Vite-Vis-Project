@@ -2,7 +2,7 @@ import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
 export const shutterAutoUpTime: IdToSubscribe<Shutter> = {
   // Zeit Auto hochfahren Rolladen
-  objectNameInStore: "shutterAutoUp",
+  storeFolder: "shutterAutoUp",
   value: [
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",

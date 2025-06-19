@@ -10,7 +10,7 @@ export interface Infos {
 
 export const infoStates: IdToSubscribe<Infos>[] = [
   {
-    objectNameInStore: "infos",
+    storeFolder: "infos",
     value: [
       { id: "admin.0.info.updatesJson", firstKey: "updatesJson" },
       { id: "admin.0.info.updatesNumber", firstKey: "updatesNumber" },
