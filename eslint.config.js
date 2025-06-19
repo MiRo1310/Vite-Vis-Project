@@ -19,19 +19,14 @@ export default defineConfig([
     files: ["**/*.{ts,tsx,vue}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
-    },
-    languageOptions: {
-      parserOptions: { parser: tseslint.parser },
-    },
-  },
-  {
-    files: ["**/*.vue"],
-    rules: {
-      "vue/multi-word-component-names": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+      "vue/multi-word-component-names": "off",
+    },
+    languageOptions: {
+      parserOptions: { parser: tseslint.parser },
     },
   },
 ]);
