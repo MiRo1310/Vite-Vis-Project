@@ -1,27 +1,39 @@
 import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue } from "@/store/iobrokerStore.ts";
 
-interface XiaomiWindowSensor {
+export interface XiaomiWindowSensor {
   percent: StoreValue<number>;
   available: StoreValue<boolean>;
   voltage: StoreValue<number>;
-  timestamp: StoreValue<number>;
+  ts: number;
+}
+
+export interface HMIPDevice {
+  lowBat: StoreValue<boolean>;
+  available: StoreValue<boolean>;
+  ts: number;
+}
+
+export interface ShellyPlusSmoke {
+  percent: StoreValue<number>;
+  firmware: StoreValue<boolean>;
+  ts: number;
 }
 
 export interface BatteriesType {
-  "Shelly Plus Smoke Flur OG": { percent: StoreValue<number>, firmware: StoreValue<boolean> };
-  "HMIP Flur": { lowBat: StoreValue<boolean> };
-  "HMIP Wohnzimmer links": { lowBat: StoreValue<boolean> };
-  "HMIP Wohnzimmer rechts": { lowBat: StoreValue<boolean> };
-  "HMIP Kueche": { lowBat: StoreValue<boolean> };
-  "HMIP Esszimmer": { lowBat: StoreValue<boolean> };
-  "HMIP Bad": { lowBat: StoreValue<boolean> };
-  "HMIP Gaeste WC": { lowBat: StoreValue<boolean> };
-  "HMIP Keller Waschen": { lowBat: StoreValue<boolean> };
-  "HMIP Buero": { lowBat: StoreValue<boolean> };
-  "HMIP Schlafzimmer": { lowBat: StoreValue<boolean> };
-  "HMIP Kinderzimmer": { lowBat: StoreValue<boolean> };
-  "HMIP Gaestezimmer": { lowBat: StoreValue<boolean> };
+  "Shelly Plus Smoke Flur OG": ShellyPlusSmoke;
+  "HMIP Flur": HMIPDevice;
+  "HMIP Wohnzimmer links": HMIPDevice;
+  "HMIP Wohnzimmer rechts": HMIPDevice;
+  "HMIP Kueche": HMIPDevice;
+  "HMIP Esszimmer": HMIPDevice;
+  "HMIP Bad": HMIPDevice;
+  "HMIP Gaeste WC": HMIPDevice;
+  "HMIP Keller Waschen": HMIPDevice;
+  "HMIP Buero": HMIPDevice;
+  "HMIP Schlafzimmer": HMIPDevice;
+  "HMIP Kinderzimmer": HMIPDevice;
+  "HMIP Gaestezimmer": HMIPDevice;
   "Xioami Fensterkontakt Keller Tür": XiaomiWindowSensor;
   "Xioami Fensterkontakt Kellertreppe Flur": XiaomiWindowSensor;
   "Xioami Fensterkontakt Büro": XiaomiWindowSensor;

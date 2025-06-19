@@ -27,17 +27,15 @@ const alexaAction: IdToSubscribe<AlexaAction> = {
   value: [
     { id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", firstKey: "alexaSpeak" }]
 };
-useDynamicSubscribe([alexaAction]);
+
+useDynamicSubscribe(alexaAction);
 
 const loading = ref(false);
 const alexaNames = ref<AlexaDotAction[]>([]);
 
 async function getAlexaEnum(): Promise<any[]> {
   const res = await adminConnection?.getObject("enum.functions.alexa");
-  if (res) {
-    return res.common.members as string[];
-  }
-  return [];
+  return res ? res.common.members as string[] : [];
 }
 
 const getAlexInfos = async (id: string) => {

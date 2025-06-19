@@ -3,10 +3,10 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { batteryIds } from "@/subscribeIds/batteriesType.ts";
+import { batteryIds, HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import { createArrayByStore } from "@/lib/object.ts";
+import CardSimple from "@/components/shared/card/CardSimple.vue";
 
 const { batteries } = useIobrokerStore();
 
@@ -28,32 +28,56 @@ const columns: DatatableColumns[] = [
   }
 ];
 
+interface BatteryTableData {
+  name: string;
+  percent?: number;
+  voltage?: number;
+  lowBat?: boolean;
+  firmware?: boolean;
+  available?: boolean;
+  timestamp?: number;
+}
+
 
 const data = computed(() => {
-  return createArrayByStore(batteries);
-});
+    const data: BatteryTableData[] = [];
+    Object.keys(batteries).forEach((key) => {
+      const item = batteries[key as keyof typeof batteries];
+      data.push({
+        name: key,
+        firmware: (item as ShellyPlusSmoke)?.firmware?.val ?? false,
+        timestamp: item?.ts,
+        lowBat: (item as HMIPDevice)?.lowBat?.val ?? false,
+        available: (item as XiaomiWindowSensor)?.available?.val ?? false,
+        percent: (item as XiaomiWindowSensor)?.percent?.val ?? 0,
+        voltage: (item as XiaomiWindowSensor)?.voltage?.val ?? 0
+      });
+    });
+    return data;
+  }
+);
 
 </script>
 
 <template>
-  <Card styling="light" class="battery__card">
+  <Card styling="light" variant="contentScrollable">
     <CardHeader>
       <CardTitle>
         Batteriestatus von Aktoren
       </CardTitle>
     </CardHeader>
-    <CardContent class="py-2 mb-6 overflow-auto max-h-full">
-      <div class="default_card">
+    <CardContent class="battery__content">
+      <CardSimple>
         <TableBasic :columns="getColumns(columns)" :data />
-      </div>
+      </CardSimple>
     </CardContent>
   </Card>
 </template>
 
 <style scoped lang="scss">
 .battery {
-  &__card {
-    @apply overflow-hidden h-full;
+  &__content {
+    @apply py-4 pb-12 overflow-auto max-h-full;
   }
 }
 </style>
