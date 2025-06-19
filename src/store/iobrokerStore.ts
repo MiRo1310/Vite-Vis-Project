@@ -1,5 +1,11 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
+import {
+  IdsToControl,
+  Pv,
+  Shutter,
+  TimerObject,
+  WindowType,
+} from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
@@ -17,7 +23,6 @@ import { AlexaAction } from "@/pages/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
-
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -55,8 +60,10 @@ export interface IoBrokerStoreState {
   presence: PresenceType;
 }
 
-export type StoreValue<T> = StoreValueType<T> | undefined
-export type StoreValueWithTimestamp<T> = StoreValueType<T> & Timestamp | undefined
+export type StoreValue<T> = StoreValueType<T> | undefined;
+export type StoreValueWithTimestamp<T> =
+  | (StoreValueType<T> & Timestamp)
+  | undefined;
 
 export interface Timestamp {
   ts: number;
@@ -109,7 +116,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     lights: {} as LightTypes,
     lightsAdditive: {} as LightTypesAdditive,
     styles: {} as StylesType,
-    presence: {} as PresenceType
+    presence: {} as PresenceType,
   }),
   getters: {
     isAdminConnected(state) {
@@ -132,10 +139,10 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
         return {
           error: stringToJSON<Log[]>(state.logs.error?.val as string),
           warn: stringToJSON<Log[]>(state.logs.warning?.val as string),
-          info: stringToJSON<Log[]>(state.logs.info?.val as string)
+          info: stringToJSON<Log[]>(state.logs.info?.val as string),
         };
       });
-    }
+    },
   },
   actions: {
     setAdminConnection(val: boolean) {
@@ -151,19 +158,28 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
 
-    setValues(
-      { objectNameInStore, val, id, firstKey, secondKey, timestamp }: {
-        objectNameInStore: string;
-        val: string | number | boolean | object;
-        id: string;
-        firstKey?: string | boolean;
-        secondKey?: string;
-        timestamp?: boolean
-      }) {
+    setValues({
+      objectNameInStore,
+      val,
+      id,
+      firstKey,
+      secondKey,
+      timestamp,
+    }: {
+      objectNameInStore: string;
+      val: string | number | boolean | object;
+      id: string;
+      firstKey?: string | boolean;
+      secondKey?: string;
+      timestamp?: boolean;
+    }) {
       if (objectNameInStore) {
         if (firstKey && firstKey !== true) {
           if (!(this as any)[objectNameInStore]) {
-            console.log("Key not found, please put it to the store. ", objectNameInStore);
+            console.log(
+              "Key not found, please put it to the store. ",
+              objectNameInStore,
+            );
           }
 
           (this as any)[objectNameInStore] = getSubValue({
@@ -173,7 +189,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
             val: val,
             objectNameInStore: objectNameInStore,
             id: id,
-            timestamp: timestamp
+            timestamp: timestamp,
           });
 
           return;
@@ -181,21 +197,27 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
         (this as any)[objectNameInStore] = val;
       }
       return;
-    }
-  }
+    },
+  },
 });
 
-const getSubValue = (
-  { obj, fistKey, secondKey, val, objectNameInStore, id, timestamp }: {
-    obj: any,
-    fistKey: string,
-    secondKey?: string,
-    val: string | number | boolean | object,
-    objectNameInStore: string,
-    id?: string,
-    timestamp?: boolean
-  }
-) => {
+const getSubValue = ({
+  obj,
+  fistKey,
+  secondKey,
+  val,
+  objectNameInStore,
+  id,
+  timestamp,
+}: {
+  obj: any;
+  fistKey: string;
+  secondKey?: string;
+  val: string | number | boolean | object;
+  objectNameInStore: string;
+  id?: string;
+  timestamp?: boolean;
+}) => {
   obj = obj[objectNameInStore];
 
   if (!secondKey) {

@@ -14,7 +14,6 @@ interface CalendarMonthDayDialog {
   year?: number;
 }
 
-
 const emit = defineEmits(["update:open"]);
 
 const localOpen = ref(false);
@@ -31,7 +30,6 @@ const formatTime = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
-
 </script>
 <template>
   <Dialog :open="localOpen" @update:open="updateOpen($event)">
@@ -40,7 +38,11 @@ const formatTime = (dateString: string) => {
     </template>
     <template #description>
       <div v-if="events">
-        <div v-for="event in events" :key="event._IDID" class="flex justify-between mt-2">
+        <div
+          v-for="event in events"
+          :key="event._IDID"
+          class="flex justify-between mt-2"
+        >
           <div>{{ event._object.summary }}</div>
           <div v-if="!event._allDay" class="flex">
             <div>{{ formatTime(event._object.start) }}</div>

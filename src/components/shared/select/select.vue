@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectLabel,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import { HTMLAttributes, watchEffect } from "vue";
 
@@ -15,7 +15,7 @@ const props = defineProps<{
   items: SelectOption[];
   label?: string;
   class?: HTMLAttributes["class"];
-  disbaleHover?: boolean
+  disbaleHover?: boolean;
 }>();
 
 const selected = defineModel<string>("selected");
@@ -35,11 +35,10 @@ export interface SelectOption {
 
 function getFocusClass(item: SelectOption) {
   let string = "";
-  item?.class?.split(" ").forEach((cl: string) => string += `focus:${cl} `);
+  item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
 
   return string;
 }
-
 </script>
 
 <template>
@@ -54,8 +53,14 @@ function getFocusClass(item: SelectOption) {
             {{ label }}
           </SelectLabel>
           <SelectItem
-            v-for="(item, index) in items" :key="index" :value="item.val"
-            :class="{[`${item?.class} border-2 border-${item?.class || 'accent'}`]:true, [`${getFocusClass(item)} focus:border-black focus:border-2`]:disbaleHover}"
+            v-for="(item, index) in items"
+            :key="index"
+            :value="item.val"
+            :class="{
+              [`${item?.class} border-2 border-${item?.class || 'accent'}`]: true,
+              [`${getFocusClass(item)} focus:border-black focus:border-2`]:
+                disbaleHover,
+            }"
           >
             {{ item.label || item.val }}
           </SelectItem>

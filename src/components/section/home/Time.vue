@@ -6,8 +6,10 @@ const { date, time } = useTime();
 </script>
 <template>
   <Card styling="light">
-    <CardContent class="text-left text-accent-foreground/1000 font-bold pt-1 text-xs">
-      <p>{{ date }} </p>
+    <CardContent
+      class="text-left text-accent-foreground/1000 font-bold pt-1 text-xs"
+    >
+      <p>{{ date }}</p>
       <span>
         {{ time }}
       </span>

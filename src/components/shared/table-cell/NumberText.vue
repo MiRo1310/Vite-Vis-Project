@@ -4,19 +4,15 @@ import { PropType } from "vue";
 defineProps({
   value: {
     type: [Number, String] as PropType<number | string | undefined>,
-    default: null
+    default: null,
   },
   unit: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
-
-
 </script>
 
 <template>
-  <p v-if="!!value">
-    {{ value }} {{ unit }}
-  </p>
+  <p v-if="!!value">{{ value }} {{ unit }}</p>
 </template>

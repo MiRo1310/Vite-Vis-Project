@@ -9,12 +9,16 @@ const days = [
   { val: "Thu", label: "Donnerstag", index: 3 },
   { val: "Fri", label: "Freitag", index: 4 },
   { val: "Sat", label: "Samstag", index: 5 },
-  { val: "Sun", label: "Sonntag", index: 6 }
+  { val: "Sun", label: "Sonntag", index: 6 },
 ];
 </script>
 <template>
   <div class="flex justify-between w-full space-x-1">
     <HeatingControlPeriodFirst />
-    <HeatingControlPeriodDay v-for="(day, index) in days" :key="index" :day="day" />
+    <HeatingControlPeriodDay
+      v-for="(day, index) in days"
+      :key="index"
+      :day="day"
+    />
   </div>
 </template>

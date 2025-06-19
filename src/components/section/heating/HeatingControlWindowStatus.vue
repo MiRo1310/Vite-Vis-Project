@@ -7,12 +7,16 @@ const { heating } = useIobrokerStore();
 
 onMounted(() => {
   document
-    .querySelectorAll("img[src='/vis.0/HeatingControl/images/fts_window_1w_open.svg']")
+    .querySelectorAll(
+      "img[src='/vis.0/HeatingControl/images/fts_window_1w_open.svg']",
+    )
     .forEach((img) => {
       img.setAttribute("src", window_open);
     });
   document
-    .querySelectorAll("img[src='/vis.0/HeatingControl/images/fts_window_1w.svg']")
+    .querySelectorAll(
+      "img[src='/vis.0/HeatingControl/images/fts_window_1w.svg']",
+    )
     .forEach((img) => {
       img.setAttribute("src", window_close);
     });
@@ -28,6 +32,7 @@ onMounted(() => {
       >
         {{ heating.heatingControl.openWindowCount?.val }} Fenster offen
       </span>
+      //
       <div v-html="heating.heatingControl.windowOpenHtmlTable?.val" />
     </div>
   </div>

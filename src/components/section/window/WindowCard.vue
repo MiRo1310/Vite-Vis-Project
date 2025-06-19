@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, HTMLAttributes } from "vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
@@ -19,34 +24,38 @@ import {
   blinds60,
   blinds70,
   blinds80,
-  blinds90
+  blinds90,
 } from "@/public";
 import { Shutter, WindowType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 
 const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(
-  iobrokerStore
-);
+const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } =
+  storeToRefs(iobrokerStore);
 
 const props = defineProps<{
-  shutter: boolean,
-  title: string,
-  id: string,
-  id2?: string,
-  class?: HTMLAttributes["class"]
-  door: boolean
+  shutter: boolean;
+  title: string;
+  id: string;
+  id2?: string;
+  class?: HTMLAttributes["class"];
+  door: boolean;
 }>();
 
-function getValue<T>(getVal: boolean, id: string, object: WindowType | Shutter | object, subKey?: string) {
+function getValue<T>(
+  getVal: boolean,
+  id: string,
+  object: WindowType | Shutter | object,
+  subKey?: string,
+) {
   const arrayOfIds = id.split(",").map((id) => id.trim());
   const first = arrayOfIds[0];
   const second = arrayOfIds[1];
   const obj = object?.[first as keyof typeof object];
 
   const subObj = obj?.[`${second}${subKey ? subKey : ""}` as keyof typeof obj];
-  return getVal ? (subObj as StoreValue<T>)?.val : subObj as StoreValue<T>;
+  return getVal ? (subObj as StoreValue<T>)?.val : (subObj as StoreValue<T>);
 }
 
 const getIsWindowOpen = computed(() => (id: string | undefined) => {
@@ -69,7 +78,7 @@ const getShutterPosition = computed(() => {
 
 type SubKey = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
-const values = computed(() => <T>(subKey: SubKey, obj: any) => {
+const values = computed(() => <T,>(subKey: SubKey, obj: any) => {
   const id = useDefaultLivingRoom(props.id);
   return getValue<T>(false, id, obj, subKey) as StoreValue<T>;
 });
@@ -121,13 +130,21 @@ const updateHandler = (value: number | string | boolean, id: string) => {
           <WindowImage :exist="!!id2" :is-open="getIsWindowOpen(id2)" />
         </div>
         <WindowCardOpenCloseText
-          :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id) "
+          :window-open="
+            id2
+              ? getIsWindowOpen(id) || getIsWindowOpen(id2)
+              : getIsWindowOpen(id)
+          "
           :door
         />
       </div>
       <div v-if="shutter">
         <div class="flex items-center">
-          <img class="window--img" :src="getShutterImage" alt="FensterRollade">
+          <img
+            class="window--img"
+            :src="getShutterImage"
+            alt="FensterRollade"
+          />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="getShutterPosition" />
 
@@ -135,39 +152,58 @@ const updateHandler = (value: number | string | boolean, id: string) => {
               <div class="flex items-center justify-between">
                 <div class="w-11">
                   <Switch
-                    :checked="values<boolean>('Auto',shutterAutoDownTime)?.val"
-                    @update:checked="updateHandler($event, values<boolean>('Auto',shutterAutoDownTime)?.id||'')"
+                    :checked="values<boolean>('Auto', shutterAutoDownTime)?.val"
+                    @update:checked="
+                      updateHandler(
+                        $event,
+                        values<boolean>('Auto', shutterAutoDownTime)?.id || '',
+                      )
+                    "
                   />
-                  <p class="text-[0.5rem]">
-                    Auto runter
-                  </p>
+                  <p class="text-[0.5rem]">Auto runter</p>
                 </div>
                 <div class="relative line">
                   <Input
-                    type="number" step="1"
-                    :model-value="values<number>('Delay',shutterAutoDownTime)?.val"
-
-                    @update:model-value="updateHandler($event, values<number>('Delay',shutterAutoDownTime)?.id||'')"
+                    type="number"
+                    step="1"
+                    :model-value="
+                      values<number>('Delay', shutterAutoDownTime)?.val
+                    "
+                    @update:model-value="
+                      updateHandler(
+                        $event,
+                        values<number>('Delay', shutterAutoDownTime)?.id || '',
+                      )
+                    "
                   />
-                  <div class="absolute text-sm top-2 right-2">
-                    min
-                  </div>
+                  <div class="absolute text-sm top-2 right-2">min</div>
                 </div>
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
                   <Switch
-                    :checked="values<boolean>('AutoUp',shutterAutoUp)?.val"
-                    @update:checked="updateHandler($event, values<boolean>('AutoUp',shutterAutoUp)?.id||'')"
+                    :checked="values<boolean>('AutoUp', shutterAutoUp)?.val"
+                    @update:checked="
+                      updateHandler(
+                        $event,
+                        values<boolean>('AutoUp', shutterAutoUp)?.id || '',
+                      )
+                    "
                   />
-                  <p class="text-[0.5rem]">
-                    Auto hoch
-                  </p>
+                  <p class="text-[0.5rem]">Auto hoch</p>
                 </div>
                 <p class="line">
                   <Input
-                    type="time" :model-value="values<number>('AutoUpTime',shutterAutoUp)?.val"
-                    @update:model-value="updateHandler($event, values<number>('AutoUpTime',shutterAutoUp)?.id||'')"
+                    type="time"
+                    :model-value="
+                      values<number>('AutoUpTime', shutterAutoUp)?.val
+                    "
+                    @update:model-value="
+                      updateHandler(
+                        $event,
+                        values<number>('AutoUpTime', shutterAutoUp)?.id || '',
+                      )
+                    "
                   />
                 </p>
               </div>
@@ -182,15 +218,15 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 
 <style lang="postcss" scoped>
 input {
-  @apply w-[5.2rem] pr-8 border-none shadow-none
+  @apply w-[5.2rem] pr-8 border-none shadow-none;
 }
 
 .window__card {
-  @apply min-w-[32.5%] flex-1 relative bg-white
+  @apply min-w-[32.5%] flex-1 relative bg-white;
 }
 
 .window__card:first-child {
-  @apply mt-1 ml-1
+  @apply mt-1 ml-1;
 }
 
 .window--img {

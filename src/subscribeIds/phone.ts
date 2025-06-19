@@ -14,18 +14,25 @@ export interface PhoneStates {
   callerTimestamp: StoreValue<string>;
 }
 
-export const phoneStates: IdToSubscribe<PhoneStates> =
-  {
-    objectNameInStore: "phone",
-    value: [
-      { id: "tr-064.0.callmonitor.ringing", firstKey: "ringing" },
-      { id: "tr-064.0.callmonitor.lastCall.timestamp", firstKey: "lastCallTimestamp" },
-      { id: "tr-064.0.callmonitor.lastCall.callerName", firstKey: "lastCallerName" },
-      { id: "tr-064.0.callmonitor.lastCall.caller", firstKey: "lastCaller" },
-      { id: "tr-064.0.callmonitor.lastCall.duration", firstKey: "lastDuration" },
-      { id: "tr-064.0.callmonitor.inbound.caller", firstKey: "caller" },
-      { id: "tr-064.0.callmonitor.inbound.callerName", firstKey: "callerName" },
-      { id: "tr-064.0.callmonitor.inbound.timestamp", firstKey: "callerTimestamp" }
-    ]
-  }
-;
+export const phoneStates: IdToSubscribe<PhoneStates> = {
+  objectNameInStore: "phone",
+  value: [
+    { id: "tr-064.0.callmonitor.ringing", firstKey: "ringing" },
+    {
+      id: "tr-064.0.callmonitor.lastCall.timestamp",
+      firstKey: "lastCallTimestamp",
+    },
+    {
+      id: "tr-064.0.callmonitor.lastCall.callerName",
+      firstKey: "lastCallerName",
+    },
+    { id: "tr-064.0.callmonitor.lastCall.caller", firstKey: "lastCaller" },
+    { id: "tr-064.0.callmonitor.lastCall.duration", firstKey: "lastDuration" },
+    { id: "tr-064.0.callmonitor.inbound.caller", firstKey: "caller" },
+    { id: "tr-064.0.callmonitor.inbound.callerName", firstKey: "callerName" },
+    {
+      id: "tr-064.0.callmonitor.inbound.timestamp",
+      firstKey: "callerTimestamp",
+    },
+  ],
+};

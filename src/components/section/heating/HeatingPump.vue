@@ -9,7 +9,7 @@ const entries: Entries[] = [
   { title: "Heizung Schnecke", value: heating.snail?.val, type: "boolean" },
   { title: "Förderspirale", value: heating.spiral?.val, type: "boolean" },
   { title: "Pumpe Solar", value: heating.solarPump?.val, type: "boolean" },
-  { title: "Heizung Zusatz", value: heating.heatingPump?.val, type: "boolean" }
+  { title: "Heizung Zusatz", value: heating.heatingPump?.val, type: "boolean" },
 ];
 </script>
 <template>

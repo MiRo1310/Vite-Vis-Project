@@ -5,13 +5,21 @@ import IobrokerUpdates from "@/components/section/iobroker/IobrokerUpdates.vue";
 import IobrokerNews from "@/components/section/iobroker/IobrokerNews.vue";
 
 useDynamicSubscribe(infoStates);
-
-
 </script>
 
 <template>
-  <div class="flex flex-wrap space-x-1 space-y-1 -mt-1 -ml-1">
-    <IobrokerUpdates class="mt-1 ml-1 " />
+  <div class="iobroker-info">
+    <IobrokerUpdates class="iobroker-info__updates" />
     <IobrokerNews />
   </div>
 </template>
+
+<style scoped lang="scss">
+.iobroker-info {
+  @apply flex flex-wrap space-x-1 space-y-1 -mt-1 -ml-1;
+
+  &__updates {
+    @apply mt-1 ml-1;
+  }
+}
+</style>

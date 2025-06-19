@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { HTMLAttributes } from "vue";
@@ -14,7 +19,11 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
 </script>
 
 <template>
-  <Card :class="$props.class" styling="light" @click="useAppStore().toggleTimerVisibility()">
+  <Card
+    :class="$props.class"
+    styling="light"
+    @click="useAppStore().toggleTimerVisibility()"
+  >
     <CardHeader>
       <CardTitle>
         <p>Alexa Timer</p>
@@ -22,18 +31,15 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
     </CardHeader>
     <CardContent class="flex flex-wrap -mx-1 min-w-[400px]">
       <div
-        v-for="(singleTimer, i) in timersArray" :key="i"
+        v-for="(singleTimer, i) in timersArray"
+        :key="i"
         class="min-w-[180px] flex-1 max-w-1/2 m-1 flex px-2 default_card"
       >
         <div class="w-full">
-          <h1 class="text-lg text-gray-500 line">
-            Timer {{ i + 1 }}
-          </h1>
+          <h1 class="text-lg text-gray-500 line">Timer {{ i + 1 }}</h1>
           <div class="w-full text-xs">
             <div class="flex justify-between timer__title">
-              <p>
-                Name:
-              </p>
+              <p>Name:</p>
               <p class="flex-1 text-right">
                 {{ timer[singleTimer as keyof typeof timer]?.name?.val }}
               </p>
@@ -45,7 +51,7 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
               </p>
             </div>
             <div class="flex timer__title">
-              <p> Restdauer: </p>
+              <p>Restdauer:</p>
               <p class="flex-1 text-right">
                 {{ timer[singleTimer as keyof typeof timer]?.string?.val }}
               </p>
@@ -59,6 +65,6 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
 
 <style scoped lang="postcss">
 .timer__title {
-  @apply text-accent-foreground/50 font-bold
+  @apply text-accent-foreground/50 font-bold;
 }
 </style>

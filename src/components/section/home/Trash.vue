@@ -3,8 +3,12 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 
 const iobrokerStore = useIobrokerStore();
 const { trash } = storeToRefs(iobrokerStore);
@@ -59,9 +63,8 @@ const days: Days = {
   3: "Mittwoch",
   4: "Donnerstag",
   5: "Freitag",
-  6: "Samstag"
+  6: "Samstag",
 };
-
 </script>
 <template>
   <Card styling="light">
@@ -69,13 +72,21 @@ const days: Days = {
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-2">
-      <div v-for="(event, index) in trashEvents" :key="index" class="default_card">
-        <div class="flex justify-between  line">
+      <div
+        v-for="(event, index) in trashEvents"
+        :key="index"
+        class="default_card"
+      >
+        <div class="flex justify-between line">
           <p class="text-accent-foreground/40 font-bold">
             {{ event.name }}
           </p>
           <Trash2
-            :class="['inline-block mb-1 ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]"
+            :class="[
+              'inline-block mb-1 ml-2 p-1 rounded-md',
+              getColor(event.name),
+              getAnimation(event.daysLeft),
+            ]"
           />
         </div>
         <p class="text-xs text-accent-foreground font-bold">
@@ -85,8 +96,7 @@ const days: Days = {
           am {{ transformDate(event.nextDate) }}
         </p>
         <p class="text-xs text-accent-foreground/40 font-bold">
-          {{ days[new Date(event.nextDate).getDay() as keyof Days]
-          }}
+          {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
         </p>
       </div>
     </CardContent>

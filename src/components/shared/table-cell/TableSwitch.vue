@@ -6,18 +6,21 @@ import { Switch } from "@/components/ui/switch";
 import { ref } from "vue";
 
 const props = defineProps<{
-  value: boolean | undefined,
-  row: Row<AlexaDotAction>,
-  source: string,
-  customValue: CustomValue,
-  callback: (params: Record<string, any>) => void
+  value: boolean | undefined;
+  row: Row<AlexaDotAction>;
+  source: string;
+  customValue: CustomValue;
+  callback: (params: Record<string, any>) => void;
 }>();
-
 
 const checked = ref(props.value);
 
 function update() {
-  props.callback({ checked: !checked.value, row: props.row, source: props.source });
+  props.callback({
+    checked: !checked.value,
+    row: props.row,
+    source: props.source,
+  });
 }
 </script>
 

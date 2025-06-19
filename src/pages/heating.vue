@@ -17,7 +17,7 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
     <HeatingConfig />
     <Dialog class-content="h-full w-full max-w-full p-0 pt-7 " stying="small">
       <template #trigger>
-        <Button class=" border-none rounded-none h-full">
+        <Button class="border-none rounded-none h-full">
           HeatingControl
         </Button>
       </template>
@@ -25,5 +25,11 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
         <HeatingControl />
       </template>
     </Dialog>
+    <iframe
+      src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
+      width="100%"
+      height="400"
+      frameborder="0"
+    />
   </div>
 </template>

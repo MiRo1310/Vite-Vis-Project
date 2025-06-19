@@ -8,7 +8,9 @@ import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 
-const props = defineProps<{ day: { val: string; label: string, index: number }; }>();
+const props = defineProps<{
+  day: { val: string; label: string; index: number };
+}>();
 const { heating, heatingTimeSlot } = useIobrokerStore();
 
 const profile = computed(() => {
@@ -27,16 +29,23 @@ export interface HeatingTimeSlot {
   currentTimePeriod: StoreValue<number>;
 }
 
-const states: IdToSubscribe<HeatingTimeSlot>[] = [{
-  objectNameInStore: "heatingTimeSlot",
-  value: [
-    { id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod", firstKey: "currentTimePeriod" }
-  ]
-}];
+const states: IdToSubscribe<HeatingTimeSlot>[] = [
+  {
+    objectNameInStore: "heatingTimeSlot",
+    value: [
+      {
+        id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
+        firstKey: "currentTimePeriod",
+      },
+    ],
+  },
+];
 useDynamicSubscribe(states);
 
 const activeClass = computed(() => (i: number) => {
-  return (((i) + props.day.index * 5) === heatingTimeSlot.currentTimePeriod?.val) ? "bg-green-100" : "bg-white";
+  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val
+    ? "bg-green-100"
+    : "bg-white";
 });
 </script>
 <template>
@@ -46,25 +55,41 @@ const activeClass = computed(() => (i: number) => {
     </p>
     <div class="values__container">
       <div>
-        <p class="text-center mb-2">
-          ab
-        </p>
+        <p class="text-center mb-2">ab</p>
         <Input
-          v-for="i in 5" :key="i" type="time"
-          :model-value="profile[`${day.val}.${i}.time` as keyof typeof profile]?.val"
+          v-for="i in 5"
+          :key="i"
+          type="time"
+          :model-value="
+            profile[`${day.val}.${i}.time` as keyof typeof profile]?.val
+          "
           :class="['day__input', activeClass(i)]"
-          @update:model-value="updateData(profile[`${day.val}.${i}.time` as keyof typeof profile]?.id, $event.toString())"
+          @update:model-value="
+            updateData(
+              profile[`${day.val}.${i}.time` as keyof typeof profile]?.id,
+              $event.toString(),
+            )
+          "
         />
       </div>
       <div>
-        <p class="text-center mb-2">
-          °C
-        </p>
+        <p class="text-center mb-2">°C</p>
         <Select
-          v-for="i in 5" :key="i" :items="tempArray()"
-          :selected="profile[`${day.val}.${i}.temp` as keyof typeof profile]?.val?.toString()"
+          v-for="i in 5"
+          :key="i"
+          :items="tempArray()"
+          :selected="
+            profile[
+              `${day.val}.${i}.temp` as keyof typeof profile
+            ]?.val?.toString()
+          "
           :class="['p-0', activeClass(i)]"
-          @update:selected="updateData(profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id, $event.toString())"
+          @update:selected="
+            updateData(
+              profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id,
+              $event?.toString() ?? '',
+            )
+          "
         />
       </div>
     </div>

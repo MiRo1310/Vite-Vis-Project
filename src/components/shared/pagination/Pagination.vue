@@ -8,7 +8,7 @@ import {
   PaginationFirst,
   PaginationLast,
   PaginationNext,
-  PaginationPrev
+  PaginationPrev,
 } from "@/components/ui/pagination";
 
 import { computed } from "vue";
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   autoHidePagination: false,
   totalCount: 0,
   itemsPerPage: 20,
-  siblingCount: 2
+  siblingCount: 2,
 });
 
 const showPagination = computed(() => {
@@ -58,15 +58,30 @@ const updateHandler = (page: number) => {
     :items-per-page="itemsPerPage"
     @update:page="updateHandler($event)"
   >
-    <PaginationList v-slot="{ items }" class="flex items-center justify-end gap-1">
-      <PaginationStatus :items-per-page="itemsPerPage" :actual-page="activePage" :total-pages="totalCount || 0" />
+    <PaginationList
+      v-slot="{ items }"
+      class="flex items-center justify-end gap-1"
+    >
+      <PaginationStatus
+        :items-per-page="itemsPerPage"
+        :actual-page="activePage"
+        :total-pages="totalCount || 0"
+      />
       <slot />
       <PaginationFirst />
       <PaginationPrev />
 
       <template v-for="(item, index) in items">
-        <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
-          <Button class="w-10 h-10 p-0" :variant="item.value === activePage ? 'secondary' : 'outline'">
+        <PaginationListItem
+          v-if="item.type === 'page'"
+          :key="index"
+          :value="item.value"
+          as-child
+        >
+          <Button
+            class="w-10 h-10 p-0"
+            :variant="item.value === activePage ? 'secondary' : 'outline'"
+          >
             {{ item.value }}
           </Button>
         </PaginationListItem>

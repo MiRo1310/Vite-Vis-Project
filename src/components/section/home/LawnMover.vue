@@ -44,7 +44,7 @@ const status = {
   112: "Bewegt sich zum Wiederherstellungspunkt",
   113: "Wartet auf Position",
   114: "Kartentraining (fahren)",
-  115: "Kartentraining (Rückwärtsfahren)"
+  115: "Kartentraining (Rückwärtsfahren)",
 };
 const error = {
   0: "Kein Fehler",
@@ -88,27 +88,36 @@ const error = {
   117: "Nicht unterstützte Klingenhöhe",
   118: "Manuelles Firmware-Upgrade erforderlich",
   119: "Gebietsgrenze überschritten",
-  120: "Abdockfehler an der Ladestation"
+  120: "Abdockfehler an der Ladestation",
 };
 const infos = computed(() => [
   {
     title: `Akku ${landroid.value.batteryCharging?.val ? " läd" : " ist geladen"}`,
     value: landroid.value.battery?.val,
-    unit: "%"
+    unit: "%",
   },
   {
     title: "Status",
     value: status[landroid.value.status?.val as keyof typeof status],
-    unit: ""
+    unit: "",
   },
-  { title: "Edgecut", value: landroid.value.edgecut?.val, unit: "", type: "bool" },
+  {
+    title: "Edgecut",
+    value: landroid.value.edgecut?.val,
+    unit: "",
+    type: "bool",
+  },
   {
     title: "Error",
     value: error[landroid.value.error?.val as keyof typeof error],
-    unit: ""
+    unit: "",
   },
   { title: "Gefahren", value: landroid.value.totalDistance?.val, unit: "m" },
-  { title: "Messer in Gebrauch", value: landroid.value.totalBladeTime?.val, unit: "min" }
+  {
+    title: "Messer in Gebrauch",
+    value: landroid.value.totalBladeTime?.val,
+    unit: "min",
+  },
 ]);
 </script>
 
@@ -117,7 +126,7 @@ const infos = computed(() => [
     <CardHeader>
       <div class="flex justify-between">
         <div class="w-12">
-          <img :src="landroidVision" alt="vision">
+          <img :src="landroidVision" alt="vision" />
         </div>
         <div>
           <OnlineOffline :status="landroid.online?.val" />
@@ -127,19 +136,29 @@ const infos = computed(() => [
         </div>
       </div>
     </CardHeader>
-    <CardContent class="text-accent-foreground/50 text-xs font-bold bg-white p-2 shadow-lg mx-2 mb-2">
+    <CardContent
+      class="text-accent-foreground/50 text-xs font-bold bg-white p-2 shadow-lg mx-2 mb-2"
+    >
       <div
-        v-for="(info, index) in infos" :key="index" :class="{
+        v-for="(info, index) in infos"
+        :key="index"
+        :class="{
           'flex justify-between items-center text-accent-foreground/50 font-bold w-full': true,
           'mt-2': index > 0,
         }"
       >
         <p>{{ info.title }}</p>
         <p class="flex justify-end ml-4 text-right w-[6.5rem]">
-          <BoolIcon v-if="info.type === 'bool'" :value="info.value||false" class="mr-5" />
+          <BoolIcon
+            v-if="info.type === 'bool'"
+            :value="info.value || false"
+            class="mr-5"
+          />
           <span v-else>
             <span>{{ info.value }}</span>
-            <span class="w-5 inline-block text-left ml-1">{{ info.unit }} </span>
+            <span class="w-5 inline-block text-left ml-1"
+              >{{ info.unit }}
+            </span>
           </span>
         </p>
       </div>

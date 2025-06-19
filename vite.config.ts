@@ -7,9 +7,9 @@ export default defineConfig({
   plugins: [vue(), svgLoader()],
   resolve: {
     alias: {
-      "@": "/src"
-    }
+      "@": "/src",
+    },
   },
 
-  base: "/"
+  base: "/",
 });

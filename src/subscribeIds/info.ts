@@ -6,18 +6,16 @@ export interface Infos {
   updatesNumber: StoreValue<number>;
   newsFeeds: StoreValue<string>;
   lastUpdateCheck: StoreValue<string>;
-
 }
 
-export const infoStates: IdToSubscribe<Infos>[] =
-  [{
+export const infoStates: IdToSubscribe<Infos>[] = [
+  {
     objectNameInStore: "infos",
     value: [
       { id: "admin.0.info.updatesJson", firstKey: "updatesJson" },
       { id: "admin.0.info.updatesNumber", firstKey: "updatesNumber" },
       { id: "admin.0.info.lastUpdateCheck", firstKey: "lastUpdateCheck" },
-      { id: "admin.0.info.newsFeed", firstKey: "newsFeeds" }
-
-    ]
-  }]
-;
+      { id: "admin.0.info.newsFeed", firstKey: "newsFeeds" },
+    ],
+  },
+];

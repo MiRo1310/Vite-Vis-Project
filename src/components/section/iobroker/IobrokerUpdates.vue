@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shared/card";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
-
 
 const { infos } = useIobrokerStore();
 
@@ -35,7 +39,7 @@ const availableUpdates = computed((): UpdatesArray[] => {
       jsonArray.push({
         name: key,
         availableVersion: json[key].availableVersion,
-        installedVersion: json[key].installedVersion
+        installedVersion: json[key].installedVersion,
       });
     });
   }
@@ -47,20 +51,20 @@ const columns: DatatableColumns[] = [
     source: "name",
     labelKey: "Name",
     accessorKey: "name",
-    type: "text"
+    type: "text",
   },
   {
     source: "installedVersion",
     labelKey: "Installiert",
     accessorKey: "installedVersion",
-    type: "text"
+    type: "text",
   },
   {
     source: "availableVersion",
     labelKey: "Verfügbar",
     accessorKey: "availableVersion",
-    type: "text"
-  }
+    type: "text",
+  },
 ];
 </script>
 

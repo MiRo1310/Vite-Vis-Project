@@ -5,10 +5,13 @@ import { ChevronRightIcon } from "@radix-icons/vue";
 import { PaginationNext, type PaginationNextProps } from "radix-vue";
 import { computed, type HTMLAttributes } from "vue";
 
-const props = withDefaults(defineProps<PaginationNextProps & { class?: HTMLAttributes["class"] }>(), {
-  asChild: true,
-  class: ""
-});
+const props = withDefaults(
+  defineProps<PaginationNextProps & { class?: HTMLAttributes["class"] }>(),
+  {
+    asChild: true,
+    class: "",
+  },
+);
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

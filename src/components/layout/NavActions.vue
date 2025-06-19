@@ -19,7 +19,7 @@ const handleWindowClick = () => {
 const handleHolidayClick = () => {
   adminConnection?.setState(
     "0_userdata.0.Urlaub.Urlaub_aktiv",
-    !iobrokerStore.urlaubAktiv
+    !iobrokerStore.urlaubAktiv,
   );
 };
 
@@ -32,20 +32,26 @@ const getHoliday = computed(() => {
   if (iobrokerStore.urlaubAktiv) return "Urlaub";
   return "Kein Urlaub";
 });
-
 </script>
 <template>
   <ButtonCard
-    :icon="Blinds" :class="getWindowStyle" class-card="ml-1"
+    :icon="Blinds"
+    :class="getWindowStyle"
+    class-card="ml-1"
     @click="handleWindowClick"
   />
   <ButtonCard
-    :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70 " class-card=" ml-1"
+    :icon="UserRoundSearch"
+    :title="getHoliday"
+    class="text-accent-foreground/70"
+    class-card=" ml-1"
     @click="handleHolidayClick"
   />
   <NavActionsShoppingCard />
   <ButtonCard
-    :icon="Hourglass" class="text-accent-foreground/70" class-card="ml-1"
+    :icon="Hourglass"
+    class="text-accent-foreground/70"
+    class-card="ml-1"
     @click="appStore.toggleTimerVisibility"
   />
 </template>

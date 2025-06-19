@@ -9,11 +9,20 @@ export const useTime = () => {
 };
 
 const timer = () => {
-
   const d = new Date();
-  const weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+  const weekdays = [
+    "Sonntag",
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+  ];
   const time = ref<string | null>(d.toLocaleTimeString());
-  const date = ref<string | null>(weekdays[d.getDay()] + " " + d.toLocaleDateString());
+  const date = ref<string | null>(
+    weekdays[d.getDay()] + " " + d.toLocaleDateString(),
+  );
   const hour = ref<number | null>(null);
   const minute = ref(0);
   const weekday = ref("");

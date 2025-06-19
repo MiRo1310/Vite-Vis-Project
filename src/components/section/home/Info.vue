@@ -16,7 +16,6 @@ const router = useRouter();
 
 useDynamicSubscribe(infoStates);
 
-
 const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs } = ioBrokerStore;
@@ -30,11 +29,20 @@ const isTimeToWarn = computed(() => {
   return hour.value >= 20 || hour.value <= 6;
 });
 
-const infos = computed(() => [[
-  { title: "Aussentemperatur", value: wetter.value.Aussentemperatur?.val, unit: "°C" },
-  { title: "Luftfeuchtigkeit", value: wetter.value.Luftfeuchtigkeit?.val, unit: "%" },
-  { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" }
-],
+const infos = computed(() => [
+  [
+    {
+      title: "Aussentemperatur",
+      value: wetter.value.Aussentemperatur?.val,
+      unit: "°C",
+    },
+    {
+      title: "Luftfeuchtigkeit",
+      value: wetter.value.Luftfeuchtigkeit?.val,
+      unit: "%",
+    },
+    { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
+  ],
   [
     {
       title: "Fenster offen",
@@ -43,14 +51,18 @@ const infos = computed(() => [[
       class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
       callback: () => {
         router.push({ path: "/fenster" });
-      }
-    }
-  ]
+      },
+    },
+  ],
 ]);
-
 </script>
 <template>
-  <Card :class="{ 'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0 }" styling="light">
+  <Card
+    :class="{
+      'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0,
+    }"
+    styling="light"
+  >
     <CardHeader>
       <CardTitle>Infos</CardTitle>
     </CardHeader>
@@ -58,8 +70,11 @@ const infos = computed(() => [[
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
 
       <InfoCard
-        v-for="(info, i ) in infos" :key="i" :get-open-windows="getOpenWindows"
-        :infos="info" :is-time-to-warn="isTimeToWarn"
+        v-for="(info, i) in infos"
+        :key="i"
+        :get-open-windows="getOpenWindows"
+        :infos="info"
+        :is-time-to-warn="isTimeToWarn"
       />
     </CardContent>
   </Card>

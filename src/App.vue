@@ -9,21 +9,32 @@ import { IOBROKER_ADMIN_PORT, IOBROKER_HOST } from "@/config/config.ts";
 
 onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
-  loadScript(`http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`);
+  loadScript(
+    `http://${IOBROKER_HOST}:${IOBROKER_ADMIN_PORT}/lib/js/socket.io.js`,
+  );
 });
 
 onUnmounted(() => {
   useTime().clear();
 });
-
 </script>
 <template>
-  <div class="h-[100vh] flex flex-col bg-backgroundColor">
+  <div class="app">
     <AlexaTimer />
-    <main class="px-1 pt-1 flex-1 overflow-hidden">
+    <main class="app__content">
       <RouterView />
     </main>
 
     <Nav />
   </div>
 </template>
+
+<style scoped lang="scss">
+.app {
+  @apply h-[100vh] flex flex-col bg-backgroundColor;
+
+  &__content {
+    @apply px-1 pt-1 flex-1 overflow-hidden;
+  }
+}
+</style>
