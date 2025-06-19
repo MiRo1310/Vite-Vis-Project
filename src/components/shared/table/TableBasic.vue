@@ -1,7 +1,8 @@
 <script setup lang="ts" generic="TData, TValue">
 import type { ColumnDef } from "@tanstack/vue-table";
 import { FlexRender, getCoreRowModel, getSortedRowModel, useVueTable } from "@tanstack/vue-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import TableCell from "@/components/shared/table/TableCell.vue";
 
 type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   width?: string;
@@ -44,9 +45,8 @@ const table = useVueTable({
           v-for="row in table.getRowModel().rows"
           :key="row.id"
           :data-state="row.getIsSelected() ? 'selected' : undefined"
-          class="table--body-row"
         >
-          <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+          <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id" size="small">
             <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
           </TableCell>
         </TableRow>

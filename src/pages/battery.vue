@@ -36,29 +36,24 @@ const data = computed(() => {
 </script>
 
 <template>
-  <Card styling="light" class="battery__card h-full">
+  <Card styling="light" class="battery__card">
     <CardHeader>
       <CardTitle>
         Batteriestatus von Aktoren
       </CardTitle>
     </CardHeader>
-    <CardContent class="pt-2 overflow-auto max-h-full">
+    <CardContent class="py-2 mb-6 overflow-auto max-h-full">
       <div class="default_card">
-        <TableBasic :columns="getColumns(columns)" :data="data" />
+        <TableBasic :columns="getColumns(columns)" :data />
       </div>
     </CardContent>
   </Card>
 </template>
-<style lang="postcss">
-#app table td {
-  @apply h-6 py-0
-}
 
-.battery__card {
-  @apply overflow-hidden
-}
-
-table {
-  @apply overflow-auto
+<style scoped lang="scss">
+.battery {
+  &__card {
+    @apply overflow-hidden h-full;
+  }
 }
 </style>
