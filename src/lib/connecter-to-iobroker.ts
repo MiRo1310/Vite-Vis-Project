@@ -60,15 +60,15 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             }
 
             let subKey = null;
-            if (stateId.secondKey) {
-              subKey = stateId.secondKey;
+            if (stateId.subFolder) {
+              subKey = stateId.subFolder;
             }
 
             if (stateId.subKeyAdditive) {
               subKey += stateId.subKeyAdditive;
             }
 
-            value = checkAndRevert(value, stateId.revertValue);
+            value = checkAndRevert(value, stateId.invertValue);
 
             iobrokerStore.setValues({
               objectNameInStore: item.storeFolder || null,

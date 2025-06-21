@@ -199,12 +199,12 @@ export interface IdToSubscribe<TData> {
 export interface Ids<TData> {
   id: string;
   key: keyof TData;
-  secondKey?: string;
+  subFolder?: string;
 
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
   timestamp?: boolean;
-  revertValue?: boolean; // if true, the value(boolean) will be inverted
+  invertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 
 export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";

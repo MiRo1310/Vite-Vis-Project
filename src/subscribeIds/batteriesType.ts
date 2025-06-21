@@ -69,18 +69,18 @@ const batteryIds: IdToSubscribe<BatteriesType> = {
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage",
       key: "Shelly Plus Smoke Flur OG",
-      secondKey: "voltage",
+      subFolder: "voltage",
     },
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
       key: "Shelly Plus Smoke Flur OG",
       timestamp: true,
-      secondKey: "percent",
+      subFolder: "percent",
     },
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware",
       key: "Shelly Plus Smoke Flur OG",
-      secondKey: "firmware",
+      subFolder: "firmware",
     },
   ],
 };
@@ -208,13 +208,13 @@ function addHMIPDevices() {
         id: `${device.id}.channels.0.lowBat`,
         key: `${device.name}`,
         timestamp: true,
-        secondKey: "lowBat",
+        subFolder: "lowBat",
       },
       {
         id: `${device.id}.channels.0.unreach`,
         key: `${device.name}`,
-        revertValue: true,
-        secondKey: "available",
+        invertValue: true,
+        subFolder: "available",
       },
     );
   }
@@ -227,17 +227,17 @@ function addZigbeeWindowDevices() {
         id: `${device.id}.battery`,
         key: `${device.name}`,
         timestamp: true,
-        secondKey: "percent",
+        subFolder: "percent",
       },
       {
         id: `${device.id}.voltage`,
         key: `${device.name}`,
-        secondKey: "voltage",
+        subFolder: "voltage",
       },
       {
         id: `${device.id}.available`,
         key: `${device.name}`,
-        secondKey: "available",
+        subFolder: "available",
       },
     );
   }
