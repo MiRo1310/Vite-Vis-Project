@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -29,9 +24,7 @@ export interface AlexaAction {
 
 const alexaAction: IdToSubscribe<AlexaAction> = {
   storeFolder: "alexaAction",
-  value: [
-    { id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak" },
-  ],
+  value: [{ id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak" }],
 };
 
 useDynamicSubscribe(alexaAction);
@@ -73,8 +66,7 @@ function getMoreInfos(name: string) {
   const obj = stringToJSON(alexaActionStore.alexaSpeak?.val);
   if (!obj) return;
   actions.value = obj;
-  if (typeof obj === "object" && obj[name as keyof typeof obj])
-    return obj[name as keyof typeof obj];
+  if (typeof obj === "object" && obj[name as keyof typeof obj]) return obj[name as keyof typeof obj];
   return;
 }
 
@@ -171,11 +163,7 @@ const columns: DatatableColumns[] = [
     </CardHeader>
     <CardContent>
       <div class="default_card">
-        <TableBasic
-          v-if="!loading"
-          :columns="getColumns(columns)"
-          :data="alexaNames"
-        />
+        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaNames" />
       </div>
     </CardContent>
   </Card>

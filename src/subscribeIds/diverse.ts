@@ -38,9 +38,7 @@ export const holiday: IdToSubscribe<HolidayStates> = {
 
 export const windowGlobal: IdToSubscribe<WindowGlobalStates> = {
   storeFolder: "fenster",
-  value: [
-    { id: "0_userdata.0.Fenster.Sind_Fenster_offen", key: "fensterOffen" },
-  ],
+  value: [{ id: "0_userdata.0.Fenster.Sind_Fenster_offen", key: "fensterOffen" }],
 };
 
 export const timeIds: IdToSubscribe<TimeStates> = {

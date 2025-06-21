@@ -150,39 +150,39 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     },
 
     setValues({
-      objectNameInStore,
+      storeFolder,
       val,
       id,
       firstKey,
       secondKey,
       timestamp,
     }: {
-      objectNameInStore: string;
+      storeFolder: string;
       val: string | number | boolean | object;
       id: string;
       firstKey?: string | boolean;
       secondKey?: string;
       timestamp?: boolean;
     }) {
-      if (objectNameInStore) {
+      if (storeFolder) {
         if (firstKey && firstKey !== true) {
-          if (!(this as any)[objectNameInStore]) {
-            console.log("Key not found, please put it to the store. ", objectNameInStore);
+          if (!(this as any)[storeFolder]) {
+            console.log("Key not found, please put it to the store. ", storeFolder);
           }
 
-          (this as any)[objectNameInStore] = getSubValue({
+          (this as any)[storeFolder] = getSubValue({
             obj: this.getState,
             fistKey: firstKey,
             secondKey: secondKey,
             val: val,
-            objectNameInStore: objectNameInStore,
+            objectNameInStore: storeFolder,
             id: id,
             timestamp: timestamp,
           });
 
           return;
         }
-        (this as any)[objectNameInStore] = val;
+        (this as any)[storeFolder] = val;
       }
       return;
     },

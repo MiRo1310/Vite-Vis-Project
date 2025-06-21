@@ -1,8 +1,9 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { idToSubscribe } from "../subscribeIds/ids-to-subscribe.ts";
-import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types/types.ts";
+import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
+import { isDefined } from "@vueuse/core";
 
 let iobrokerStore: any;
 document.addEventListener("DOMContentLoaded", () => {
@@ -53,35 +54,24 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
       if (adminConnection && !iobrokerStore.subscribedIds.includes(stateId.id)) {
         adminConnection
           .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state?.val;
-            const timestamp = state?.ts;
-            if (!isPresentAndTruthy(value)) {
+            let value: IobrokerStateValue | null = state.val;
+
+            if (!isDefined(value)) {
               value = null;
             }
 
-            let subKey = null;
-            if (stateId.subFolder) {
-              subKey = stateId.subFolder;
-            }
-
-            if (stateId.subKeyAdditive) {
-              subKey += stateId.subKeyAdditive;
-            }
-
-            value = checkAndRevert(value, stateId.invertValue);
-
             iobrokerStore.setValues({
-              objectNameInStore: item.storeFolder || null,
-              val: value,
+              storeFolder: item.storeFolder,
+              val: checkAndRevert(value, stateId.invertValue),
               id,
               firstKey: stateId.key,
-              secondKey: subKey,
+              secondKey: stateId.subKey,
             });
 
             if (stateId.timestamp) {
               iobrokerStore.setValues({
-                objectNameInStore: item.storeFolder || null,
-                val: timestamp,
+                storeFolder: item.storeFolder,
+                val: state?.ts,
                 id,
                 firstKey: stateId.key,
                 secondKey: "ts",
@@ -106,7 +96,3 @@ function checkAndRevert(value: IobrokerStateValue | null, revertValue: boolean |
   }
   return value;
 }
-
-const isPresentAndTruthy = (value: NullableState) => {
-  return value || value === false || value === 0;
-};

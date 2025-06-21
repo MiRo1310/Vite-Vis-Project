@@ -193,21 +193,16 @@ export interface Pv {
 
 export interface IdToSubscribe<TData> {
   value: Ids<TData>[];
-  storeFolder?: IoBrokerStates;
+  storeFolder: IoBrokerStates;
 }
 
 export interface Ids<TData> {
   id: string;
   key: keyof TData;
-  subFolder?: string;
-
-  subKeyAdditive?: SubKeyAdditive;
-  saveId?: boolean;
+  subKey?: string;
   timestamp?: boolean;
   invertValue?: boolean; // if true, the value(boolean) will be inverted
 }
-
-export type SubKeyAdditive = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
 export interface IdsToControl {
   tempSetId: string;

@@ -35,7 +35,7 @@ export const poolIds: IdToSubscribe<Pool> = {
   storeFolder: "pool",
   value: [
     { id: "midas-aquatemp.0.state", key: "heaterState" },
-    { id: "midas-aquatemp.0.tempSet", key: "tempSet", saveId: true },
+    { id: "midas-aquatemp.0.tempSet", key: "tempSet" },
     { id: "midas-aquatemp.0.consumption", key: "consumption" },
     { id: "midas-aquatemp.0.tempIn", key: "tempIn" },
     { id: "midas-aquatemp.0.tempOut", key: "tempOut" },
