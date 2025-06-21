@@ -61,6 +61,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             }
 
             iobrokerStore.setValues({
+              state,
               storeFolder: item.storeFolder,
               val: checkAndRevert(value, stateId.invertValue),
               id,
@@ -70,6 +71,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
 
             if (stateId.timestamp) {
               iobrokerStore.setValues({
+                state,
                 storeFolder: item.storeFolder,
                 val: state?.ts,
                 id,

@@ -1,5 +1,5 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
@@ -63,7 +63,8 @@ export interface Timestamp {
 
 export interface StoreValueType<T> {
   val: T | undefined;
-  id: string | undefined;
+  id: string;
+  ack: boolean;
 }
 
 export interface ParsedLogs {
@@ -79,6 +80,7 @@ interface SetValues {
   key: string;
   subKey?: string;
   timestamp?: boolean;
+  state: IobrokerState;
 }
 
 export type IoBrokerStates = keyof IoBrokerStoreState;
@@ -158,7 +160,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
 
-    setValues({ storeFolder, val, id, key, subKey, timestamp }: SetValues): void {
+    setValues({ storeFolder, val, id, key, subKey, timestamp, state }: SetValues): void {
       this[storeFolder] = getSubValue({
         obj: this.getState,
         key,
@@ -167,6 +169,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
         storeFolder,
         id,
         timestamp,
+        state,
       });
     },
   },
@@ -180,6 +183,7 @@ const getSubValue = ({
   storeFolder,
   id,
   timestamp,
+  state,
 }: {
   obj: any;
   key: string;
@@ -188,11 +192,12 @@ const getSubValue = ({
   storeFolder: string;
   id: string;
   timestamp?: boolean;
+  state: IobrokerState;
 }) => {
   obj = obj[storeFolder];
 
   if (!subKey) {
-    obj[key] = { val, id };
+    obj[key] = { val, id, ack: state.ack };
     return obj;
   }
 
@@ -207,6 +212,6 @@ const getSubValue = ({
     obj[key][subKey] = val;
     return obj;
   }
-  obj[key][subKey] = { val, id };
+  obj[key][subKey] = { val, id, ack: state.ack };
   return obj;
 };

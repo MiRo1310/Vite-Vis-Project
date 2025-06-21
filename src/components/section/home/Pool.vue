@@ -12,6 +12,7 @@ import { setstate } from "@/lib/setstate.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 
 const { pool } = storeToRefs(useIobrokerStore());
+
 const handleChangeTempSet = (value: string | number) => {
   setstate(pool.value.tempSet?.id, value);
 };
@@ -105,18 +106,8 @@ const getMode = (mode: string) => {
       </CardTitle>
     </CardHeader>
     <CardContent class="pool__content">
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        class="flex justify-between items-center"
-      >
-        <span
-          :class="[
-            'mr-12 text-accent-foreground/50 font-bold text-xs',
-            { 'mt-2': index > 0 },
-          ]"
-          >{{ item.title }}</span
-        >
+      <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
+        <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
         <div v-else-if="item.type === 'input'" class="line">
           <InputUnit
@@ -124,20 +115,14 @@ const getMode = (mode: string) => {
             type="number"
             :model-value="item?.value.toString()"
             :unit="item.unit"
-            @update:model-value="
-              (value: string | number) =>
-                item && item.function && item.function(value)
-            "
+            :ack="pool.tempSet?.ack"
+            @update:model-value="(value?: string | number) => value && item?.function?.(value)"
           />
         </div>
-        <span
-          v-else-if="item.type === 'number'"
-          class="text-accent-foreground/50 text-xs font-bold"
+        <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold"
           >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
         </span>
-        <span v-else class="text-accent-foreground/50 text-xs font-bold"
-          >{{ item.value }} {{ item.unit }}
-        </span>
+        <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }} </span>
       </div>
     </CardContent>
   </Card>
