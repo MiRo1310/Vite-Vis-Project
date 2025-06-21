@@ -44,20 +44,20 @@ const windows: WindowObject[] = [
 </script>
 
 <template>
-  <div class="lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50">
+  <div class="windows__header">
     <Card styling="light">
       <CardHeader class="p-1">
         <CardTitle class="flex justify-between">
           <p>Fensterstatus</p>
-          <p v-show="getOpenWindows === 1" class="flex text-muted-foreground">
-            Ein Fenster ist
-            <span :class="windowGlobal.fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
+          <p v-show="getOpenWindows === 1" class="text-muted-foreground">
+            Ein Fenster oder eine Tür ist
+            <span :class="windowGlobal.fensterOffen ? 'windows__notification' : ''" class="ml-1">offen </span>
           </p>
 
           <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
-            Fenster sind
-            <span :class="windowGlobal.fensterOffen ? 'text-red-500' : ''">{{ windowGlobal.fensterOffen ? "offen" : "geschlossen" }}</span>
+            Fenster / Türen sind
+            <span :class="{ window__notification: windowGlobal.fensterOffen }">{{ windowGlobal.fensterOffen ? "offen" : "geschlossen" }}</span>
           </p>
 
           <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
@@ -65,7 +65,7 @@ const windows: WindowObject[] = [
       </CardHeader>
     </Card>
   </div>
-  <div class="flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full">
+  <div class="windows__window-cards">
     <WindowCard
       v-for="card in windows"
       :id="card.id"
@@ -77,3 +77,19 @@ const windows: WindowObject[] = [
     />
   </div>
 </template>
+
+<style scoped lang="scss">
+.windows {
+  &__header {
+    @apply lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50;
+  }
+
+  &__window-cards {
+    @apply flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full;
+  }
+
+  &__notification {
+    @apply text-red-500 animate-pulse;
+  }
+}
+</style>
