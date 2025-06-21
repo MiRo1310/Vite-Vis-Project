@@ -2,21 +2,11 @@
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
-import {
-  batteryIds,
-  HMIPDevice,
-  ShellyPlusSmoke,
-  XiaomiWindowSensor,
-} from "@/subscribeIds/batteriesType.ts";
+import { batteryIds, HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import CardSimple from "@/components/shared/card/CardSimple.vue";
+import PageContent from "@/components/shared/page/PageContent.vue";
+import Page from "@/components/shared/page/Page.vue";
 
 const { batteries } = useIobrokerStore();
 
@@ -95,22 +85,11 @@ const data = computed(() => {
 </script>
 
 <template>
-  <Card styling="light" variant="contentScrollable">
-    <CardHeader>
-      <CardTitle> Batteriestatus von Aktoren </CardTitle>
-    </CardHeader>
-    <CardContent class="battery__content">
-      <CardSimple>
+  <Page title="Batteriestatus von Aktoren">
+    <template #default>
+      <PageContent>
         <TableBasic :columns="getColumns(columns)" :data />
-      </CardSimple>
-    </CardContent>
-  </Card>
+      </PageContent>
+    </template>
+  </Page>
 </template>
-
-<style scoped lang="scss">
-.battery {
-  &__content {
-    @apply py-4 pb-12 overflow-auto max-h-full;
-  }
-}
-</style>

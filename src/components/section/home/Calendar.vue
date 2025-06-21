@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
@@ -22,16 +17,23 @@ const data: Ref<CalendarDay[]> = computed(() => {
 const today = computed(() => {
   if (data.value) {
     return data.value.filter((day) => {
-      return day.date.includes("Heute");
+      return day.date.includes("Heute") || isInTimeRange(day);
     });
   }
   return [];
 });
 
+const isInTimeRange = (day: CalendarDay): boolean => {
+  const now = new Date();
+  const start = new Date(day._object.start);
+  const end = new Date(day._object.end);
+  return now >= start && now <= end;
+};
+
 const tomorrow = computed(() => {
   if (data.value) {
     return data.value.filter((day) => {
-      return day.date.includes("Morgen");
+      return day.date.includes("Morgen") || isInTimeRange(day);
     });
   }
   return [];
@@ -42,10 +44,7 @@ function getLocalTimeString(event: string) {
 }
 
 function isNotAllDayEvent(event: CalendarDay) {
-  return (
-    getLocalTimeString(event._object.start) !== "00:00:00" &&
-    getLocalTimeString(event._object.end) !== "00:00:00"
-  );
+  return getLocalTimeString(event._object.start) !== "00:00:00" && getLocalTimeString(event._object.end) !== "00:00:00";
 }
 </script>
 <template>
@@ -55,35 +54,19 @@ function isNotAllDayEvent(event: CalendarDay) {
     </CardHeader>
     <CardContent>
       <div class="calendar__section">
-        <p class="text-accent-foreground/70 text-xs font-bold mb-2 line">
-          Heute
-        </p>
-        <p
-          v-for="(event, index) in today"
-          :key="index"
-          class="text-accent-foreground/50 text-xs font-bold flex justify-between"
-        >
+        <p class="text-accent-foreground/70 text-xs font-bold mb-2 line">Heute</p>
+        <p v-for="(event, index) in today" :key="index" class="text-accent-foreground/50 text-xs font-bold flex justify-between">
           <span>{{ event._object.summary }}</span>
           <span v-if="isNotAllDayEvent(event)" class="ml-2"
-            >{{ getLocalTimeString(event._object.start) }} bis
-            {{ getLocalTimeString(event._object.end) }}</span
+            >{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span
           >
         </p>
       </div>
       <div class="calendar__section mt-2">
-        <p class="text-accent-foreground/70 text-xs font-bold my-2 line">
-          Morgen
-        </p>
-        <p
-          v-for="(event, index) in tomorrow"
-          :key="index"
-          class="text-accent-foreground/50 text-xs font-bold flex justify-between"
-        >
+        <p class="text-accent-foreground/70 text-xs font-bold my-2 line">Morgen</p>
+        <p v-for="(event, index) in tomorrow" :key="index" class="text-accent-foreground/50 text-xs font-bold flex justify-between">
           <span>{{ event._object.summary }}</span>
-          <span v-if="isNotAllDayEvent(event)"
-            >{{ getLocalTimeString(event._object.start) }} bis
-            {{ getLocalTimeString(event._object.end) }}</span
-          >
+          <span v-if="isNotAllDayEvent(event)">{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span>
         </p>
       </div>
     </CardContent>
