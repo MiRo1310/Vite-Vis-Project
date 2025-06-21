@@ -1,16 +1,10 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import {
-  IdsToControl,
-  Pv,
-  Shutter,
-  TimerObject,
-  WindowType,
-} from "@/types/types.ts";
+import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
 import { Calendar } from "@/subscribeIds/calendar.ts";
-import { Heating } from "@/subscribeIds/heating.ts";
+import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
 import { Log, LogReset } from "@/pages/logs.vue";
 import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed } from "vue";
@@ -23,19 +17,12 @@ import { AlexaAction } from "@/pages/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
+import { HolidayStates, ShoppingListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
   wetter: Wetter;
-  trash: object;
-  shoppingList: string;
-  urlaubAktiv: boolean;
-  fensterOffen: boolean;
-  fensterStatus1: string;
-  fensterStatus2: string;
-  showTimerCard: boolean;
-  sonnenuntergang: string;
   idsToControl: IdsToControl;
   shutterAutoUp: object;
   shutterAutoDownTime: object;
@@ -43,6 +30,8 @@ export interface IoBrokerStoreState {
   rolladen: Shutter;
   fenster: WindowType;
   pv: Pv;
+  trash: TrashStates;
+  shoppingList: ShoppingListStates;
   pool: Pool;
   landroid: Landroid;
   calendar: Calendar;
@@ -58,12 +47,15 @@ export interface IoBrokerStoreState {
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
   presence: PresenceType;
+  holiday: HolidayStates;
+  windowGlobal: WindowGlobalStates;
+  time: TimeStates;
+  showTimerCard: TimerObject;
+  heatingControl: HeatingControlType;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
-export type StoreValueWithTimestamp<T> =
-  | (StoreValueType<T> & Timestamp)
-  | undefined;
+export type StoreValueWithTimestamp<T> = (StoreValueType<T> & Timestamp) | undefined;
 
 export interface Timestamp {
   ts: number;
@@ -87,14 +79,8 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     adminConnectionEstablished: false,
     subscribedIds: [],
     wetter: {} as Wetter,
-    trash: {},
-    shoppingList: "",
-    urlaubAktiv: false,
-    fensterOffen: false,
-    fensterStatus1: "",
-    fensterStatus2: "",
-    showTimerCard: false,
-    sonnenuntergang: "",
+    trash: {} as TrashStates,
+    shoppingList: {} as ShoppingListStates,
     idsToControl: {} as IdsToControl,
     shutterAutoUp: {},
     shutterAutoDownTime: {},
@@ -117,6 +103,11 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     lightsAdditive: {} as LightTypesAdditive,
     styles: {} as StylesType,
     presence: {} as PresenceType,
+    holiday: {} as HolidayStates,
+    windowGlobal: {} as WindowGlobalStates,
+    time: {} as TimeStates,
+    showTimerCard: {} as TimerObject,
+    heatingControl: {} as HeatingControlType,
   }),
   getters: {
     isAdminConnected(state) {
@@ -176,10 +167,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       if (objectNameInStore) {
         if (firstKey && firstKey !== true) {
           if (!(this as any)[objectNameInStore]) {
-            console.log(
-              "Key not found, please put it to the store. ",
-              objectNameInStore,
-            );
+            console.log("Key not found, please put it to the store. ", objectNameInStore);
           }
 
           (this as any)[objectNameInStore] = getSubValue({

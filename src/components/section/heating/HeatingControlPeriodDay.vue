@@ -11,11 +11,7 @@ import { IdToSubscribe } from "@/types/types.ts";
 const props = defineProps<{
   day: { val: string; label: string; index: number };
 }>();
-const { heating, heatingTimeSlot } = useIobrokerStore();
-
-const profile = computed(() => {
-  return heating?.heatingControlProfile;
-});
+const { heatingControl, heatingTimeSlot } = useIobrokerStore();
 
 function updateData(id: string | undefined, value: string) {
   if (!id) {
@@ -43,9 +39,7 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [
 useDynamicSubscribe(states);
 
 const activeClass = computed(() => (i: number) => {
-  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val
-    ? "bg-green-100"
-    : "bg-white";
+  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "bg-white";
 });
 </script>
 <template>
@@ -60,16 +54,9 @@ const activeClass = computed(() => (i: number) => {
           v-for="i in 5"
           :key="i"
           type="time"
-          :model-value="
-            profile[`${day.val}.${i}.time` as keyof typeof profile]?.val
-          "
+          :model-value="String(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.val)"
           :class="['day__input', activeClass(i)]"
-          @update:model-value="
-            updateData(
-              profile[`${day.val}.${i}.time` as keyof typeof profile]?.id,
-              $event.toString(),
-            )
-          "
+          @update:model-value="updateData(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.id, $event.toString())"
         />
       </div>
       <div>
@@ -78,18 +65,9 @@ const activeClass = computed(() => (i: number) => {
           v-for="i in 5"
           :key="i"
           :items="tempArray()"
-          :selected="
-            profile[
-              `${day.val}.${i}.temp` as keyof typeof profile
-            ]?.val?.toString()
-          "
+          :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
           :class="['p-0', activeClass(i)]"
-          @update:selected="
-            updateData(
-              profile[`${day.val}.${i}.temp` as keyof typeof profile]?.id,
-              $event?.toString() ?? '',
-            )
-          "
+          @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
         />
       </div>
     </div>

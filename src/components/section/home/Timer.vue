@@ -41,19 +41,19 @@ const timersArray = ["timer1", "timer2", "timer3", "timer4"];
             <div class="flex justify-between timer__title">
               <p>Name:</p>
               <p class="flex-1 text-right">
-                {{ timer[singleTimer as keyof typeof timer]?.name?.val }}
+                {{ timer[(singleTimer + "Name") as keyof typeof timer]?.val }}
               </p>
             </div>
             <div class="flex timer__title">
               <p>Gerät:</p>
               <p class="flex-1 text-right">
-                {{ timer[singleTimer as keyof typeof timer]?.device?.val }}
+                {{ timer[(singleTimer + "Device") as keyof typeof timer]?.val }}
               </p>
             </div>
             <div class="flex timer__title">
               <p>Restdauer:</p>
               <p class="flex-1 text-right">
-                {{ timer[singleTimer as keyof typeof timer]?.string?.val }}
+                {{ timer[(singleTimer + "String") as keyof typeof timer]?.val }}
               </p>
             </div>
           </div>

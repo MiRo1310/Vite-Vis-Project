@@ -10,7 +10,7 @@ import {
 export const timer: IdToSubscribe<TimerObject> = {
   // Timer
   storeFolder: "showTimerCard",
-  value: [{ id: "alexa-timer-vis.0.all_Timer.alive" }],
+  value: [{ id: "alexa-timer-vis.0.all_Timer.alive", key: "timerAlive" }],
 };
 
 export const timer1: IdToSubscribe<Timer1> = {
@@ -19,28 +19,23 @@ export const timer1: IdToSubscribe<Timer1> = {
   value: [
     {
       id: "alexa-timer-vis.0.timer1.string_2",
-      key: "timer1",
-      secondKey: "string",
+      key: "timer1String",
     },
     {
       id: "alexa-timer-vis.0.timer1.TimeEnd",
-      key: "timer1",
-      secondKey: "timeEnd",
+      key: "timer1TimeEnd",
     },
     {
       id: "alexa-timer-vis.0.timer1.TimeStart",
-      key: "timer1",
-      secondKey: "timeStart",
+      key: "timer1TimeStart",
     },
     {
       id: "alexa-timer-vis.0.timer1.InputDeviceName",
-      key: "timer1",
-      secondKey: "device",
+      key: "timer1Device",
     },
     {
       id: "alexa-timer-vis.0.timer1.name",
-      key: "timer1",
-      secondKey: "name",
+      key: "timer1Name",
     },
   ],
 };
@@ -51,28 +46,23 @@ export const timer2: IdToSubscribe<Timer2> = {
   value: [
     {
       id: "alexa-timer-vis.0.timer2.string_2",
-      key: "timer2",
-      secondKey: "string",
+      key: "timer2String",
     },
     {
       id: "alexa-timer-vis.0.timer2.TimeEnd",
-      key: "timer2",
-      secondKey: "timeEnd",
+      key: "timer2TimeEnd",
     },
     {
       id: "alexa-timer-vis.0.timer2.TimeStart",
-      key: "timer2",
-      secondKey: "timeStart",
+      key: "timer2TimeStart",
     },
     {
       id: "alexa-timer-vis.0.timer2.InputDeviceName",
-      key: "timer2",
-      secondKey: "device",
+      key: "timer2Device",
     },
     {
       id: "alexa-timer-vis.0.timer2.name",
-      key: "timer2",
-      secondKey: "name",
+      key: "timer2Name",
     },
   ],
 };
@@ -82,28 +72,23 @@ export const timer3: IdToSubscribe<Timer3> = {
   value: [
     {
       id: "alexa-timer-vis.0.timer3.string_2",
-      key: "timer3",
-      secondKey: "string",
+      key: "timer3String",
     },
     {
       id: "alexa-timer-vis.0.timer3.TimeEnd",
-      key: "timer3",
-      secondKey: "timeEnd",
+      key: "timer3TimeEnd",
     },
     {
       id: "alexa-timer-vis.0.timer3.TimeStart",
-      key: "timer3",
-      secondKey: "timeStart",
+      key: "timer3TimeStart",
     },
     {
       id: "alexa-timer-vis.0.timer3.InputDeviceName",
-      key: "timer3",
-      secondKey: "device",
+      key: "timer3Device",
     },
     {
       id: "alexa-timer-vis.0.timer3.name",
-      key: "timer3",
-      secondKey: "name",
+      key: "timer3Name",
     },
   ],
 };
@@ -113,28 +98,23 @@ export const timer4: IdToSubscribe<Timer4> = {
   value: [
     {
       id: "alexa-timer-vis.0.timer4.string_2",
-      key: "timer4",
-      secondKey: "string",
+      key: "timer4String",
     },
     {
       id: "alexa-timer-vis.0.timer4.TimeEnd",
-      key: "timer4",
-      secondKey: "timeEnd",
+      key: "timer4TimeEnd",
     },
     {
       id: "alexa-timer-vis.0.timer4.TimeStart",
-      key: "timer4",
-      secondKey: "timeStart",
+      key: "timer4TimeStart",
     },
     {
       id: "alexa-timer-vis.0.timer4.InputDeviceName",
-      key: "timer4",
-      secondKey: "device",
+      key: "timer4Device",
     },
     {
       id: "alexa-timer-vis.0.timer4.name",
-      key: "timer4",
-      secondKey: "name",
+      key: "timer4Name",
     },
   ],
 };

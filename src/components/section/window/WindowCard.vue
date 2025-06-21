@@ -26,7 +26,7 @@ import {
   blinds80,
   blinds90,
 } from "@/public";
-import { Shutter, WindowType } from "@/types/types.ts";
+import { WindowType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { isDefined } from "@vueuse/core";
@@ -57,7 +57,7 @@ const getShutterPosition = computed(() => {
 
 type SubKey = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
 
-const values = computed(() => <T,>(subKey: SubKey, obj: any) => {
+const values = computed(() => <T,>(subKey: SubKey, obj: any): StoreValue<T> => {
   const id = useDefaultLivingRoom(props.id);
   return obj[(id + subKey) as keyof typeof obj];
 });

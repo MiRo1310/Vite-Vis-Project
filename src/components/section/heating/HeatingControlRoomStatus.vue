@@ -1,13 +1,10 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 
-const { heating } = useIobrokerStore();
+const { heatingControl } = useIobrokerStore();
 </script>
 <template>
-  <div
-    class="w-full bg-color__default p-1 my-1 mr-1 container__table"
-    v-html="heating.heatingControl.visRoomStates?.val"
-  />
+  <div class="w-full bg-color__default p-1 my-1 mr-1 container__table" v-html="heatingControl.visRoomStates?.val" />
 </template>
 
 <style lang="postcss">

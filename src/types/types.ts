@@ -1,7 +1,5 @@
 import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore.ts";
 
-export type IobrokerValues = Record<string, string | number | boolean | object>;
-
 export interface ShoppingList {
   name: string;
   time: string;
@@ -21,31 +19,44 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {}
+export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {
+  timerAlive: StoreValue<boolean>;
+}
 
 export interface Timer1 {
-  timer1: Timer;
+  timer1String: StoreValue<string>;
+  timer1Device: StoreValue<string>;
+  timer1TimeEnd: StoreValue<string>;
+  timer1TimeStart: StoreValue<string>;
+  timer1Percent: StoreValue<number>;
+  timer1Name: StoreValue<string>;
 }
 
 export interface Timer2 {
-  timer2: Timer;
+  timer2String: StoreValue<string>;
+  timer2Device: StoreValue<string>;
+  timer2TimeEnd: StoreValue<string>;
+  timer2TimeStart: StoreValue<string>;
+  timer2Percent: StoreValue<number>;
+  timer2Name: StoreValue<string>;
 }
 
 export interface Timer3 {
-  timer3: Timer;
+  timer3String: StoreValue<string>;
+  timer3Device: StoreValue<string>;
+  timer3TimeEnd: StoreValue<string>;
+  timer3TimeStart: StoreValue<string>;
+  timer3Percent: StoreValue<number>;
+  timer3Name: StoreValue<string>;
 }
 
 export interface Timer4 {
-  timer4: Timer;
-}
-
-export interface Timer {
-  string: StoreValue<string>;
-  device: StoreValue<string>;
-  timeEnd: StoreValue<string>;
-  timeStart: StoreValue<string>;
-  percent: StoreValue<number>;
-  name: StoreValue<string>;
+  timer4String: StoreValue<string>;
+  timer4Device: StoreValue<string>;
+  timer4TimeEnd: StoreValue<string>;
+  timer4TimeStart: StoreValue<string>;
+  timer4Percent: StoreValue<number>;
+  timer4Name: StoreValue<string>;
 }
 
 export interface WindowObject {
@@ -187,9 +198,9 @@ export interface IdToSubscribe<TData> {
 
 export interface Ids<TData> {
   id: string;
-  key?: keyof TData;
-  room?: Rooms;
+  key: keyof TData;
   secondKey?: string;
+
   subKeyAdditive?: SubKeyAdditive;
   saveId?: boolean;
   timestamp?: boolean;
@@ -202,37 +213,15 @@ export interface IdsToControl {
   tempSetId: string;
 }
 
-export type Rooms =
-  | "wohnzimmer"
-  | "kueche"
-  | "esszimmer"
-  | "kinderzimmer"
-  | "schlafen"
-  | "bad"
-  | "flur"
-  | "gaesteWC"
-  | "buero"
-  | "abstellraum"
-  | "abstellraumog"
-  | "keller"
-  | "gaestezimmer"
-  | "dachboden"
-  | "gaesteWc";
-
 export type Esszimmer = "links" | "rechts";
 export type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
 export type Kinderzimmer = "fenster";
 export type Kueche = "tuer" | "fenster";
 export type Schlafen = "tuer" | "fenster";
 export type Bad = "fenster";
-export type Flur = "links" | "rechts";
-export type GaesteWC = "links" | "rechts";
-export type Buero = "fenster";
 export type Abstellraum = "fenster";
 export type Abstellraumog = "links" | "rechts";
-export type Keller = "fenster" | "tuer";
 export type Gaestezimmer = "fenster";
-export type Dachboden = "links" | "rechts";
 
 export type NotSubscribedIds = {
   wohnzimmer: { [key in Wohnzimmer]: ShutterPosition };
@@ -301,15 +290,4 @@ export interface Entries {
   unit?: string;
 }
 
-export type IobrokerLanguages =
-  | "en"
-  | "de"
-  | "ru"
-  | "pt"
-  | "nl"
-  | "fr"
-  | "it"
-  | "es"
-  | "pl"
-  | "uk"
-  | "zh-cn";
+export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";

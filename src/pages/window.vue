@@ -7,7 +7,7 @@ import WindowCard from "@/components/section/window/WindowCard.vue";
 import { getOpenWindows } from "@/composables/windows.ts";
 
 const iobrokerStore = useIobrokerStore();
-const { fensterOffen } = storeToRefs(iobrokerStore);
+const { windowGlobal, time } = storeToRefs(iobrokerStore);
 
 const windows: WindowObject[] = [
   { name: "Küche Tür", shutter: true, id: "kuecheTuer", door: true },
@@ -53,7 +53,9 @@ const windows: WindowObject[] = [
           <p v-show="getOpenWindows === 1" class="flex text-muted-foreground">
             Ein Fenster ist
             <span
-              :class="fensterOffen ? 'text-red-500 animate-pulse' : ''"
+              :class="
+                windowGlobal.fensterOffen ? 'text-red-500 animate-pulse' : ''
+              "
               class="ml-1"
               >offen
             </span>
@@ -62,12 +64,12 @@ const windows: WindowObject[] = [
           <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
             {{ getOpenWindows ? getOpenWindows : "Alle" }}
             Fenster sind
-            <span :class="fensterOffen ? 'text-red-500' : ''">{{
-              fensterOffen ? "offen" : "geschlossen"
+            <span :class="windowGlobal.fensterOffen ? 'text-red-500' : ''">{{
+              windowGlobal.fensterOffen ? "offen" : "geschlossen"
             }}</span>
           </p>
 
-          <p>Sonnenuntergang: {{ iobrokerStore.sonnenuntergang }}</p>
+          <p>Sonnenuntergang: {{ time.sonnenuntergang }}</p>
         </CardTitle>
       </CardHeader>
     </Card>

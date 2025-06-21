@@ -50,32 +50,36 @@ const stopTimer = (index: number) => {
             <div class="flex-between w-1/2 mr-6">
               <p>Startzeit:</p>
               <p class="">
-                {{ timer[singleTimer as keyof typeof timer]?.timeStart?.val }}
+                {{
+                  timer[(singleTimer + "TimeStart") as keyof typeof timer]?.val
+                }}
               </p>
             </div>
             <div class="flex-between w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{ timer[singleTimer as keyof typeof timer]?.timeEnd?.val }}
+                {{
+                  timer[(singleTimer + "TimeEnd") as keyof typeof timer]?.val
+                }}
               </p>
             </div>
           </div>
           <div class="flex-between mt-2">
             <p>Name:</p>
             <p>
-              {{ timer[singleTimer as keyof typeof timer]?.name?.val }}
+              {{ timer[(singleTimer + "Name") as keyof typeof timer]?.val }}
             </p>
           </div>
           <div class="flex-between">
             <p>Gerät:</p>
             <p>
-              {{ timer[singleTimer as keyof typeof timer]?.device?.val }}
+              {{ timer[(singleTimer + "Device") as keyof typeof timer]?.val }}
             </p>
           </div>
           <div class="flex-between">
             <p>Restdauer:</p>
             <p>
-              {{ timer[singleTimer as keyof typeof timer]?.string?.val }}
+              {{ timer[(singleTimer + "String") as keyof typeof timer]?.val }}
             </p>
           </div>
         </div>

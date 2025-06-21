@@ -1,12 +1,7 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { idToSubscribe } from "../subscribeIds/ids-to-subscribe.ts";
-import {
-  IdToSubscribe as IdsToSubscribe,
-  IobrokerState,
-  IobrokerStateValue,
-  NullableState,
-} from "@/types/types.ts";
+import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue, NullableState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 
 let iobrokerStore: any;
@@ -55,51 +50,45 @@ export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
 export function subscribeStates(states: IdsToSubscribe<any>[]) {
   states.forEach((item) => {
     item.value.forEach((stateId) => {
-      if (
-        adminConnection &&
-        !iobrokerStore.subscribedIds.includes(stateId.id)
-      ) {
+      if (adminConnection && !iobrokerStore.subscribedIds.includes(stateId.id)) {
         adminConnection
-          .subscribeStateAsync(
-            stateId.id,
-            (id: string, state: IobrokerState) => {
-              let value: IobrokerStateValue | null = state?.val;
-              const timestamp = state?.ts;
-              if (!isPresentAndTruthy(value)) {
-                value = null;
-              }
+          .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
+            let value: IobrokerStateValue | null = state?.val;
+            const timestamp = state?.ts;
+            if (!isPresentAndTruthy(value)) {
+              value = null;
+            }
 
-              let subKey = null;
-              if (stateId.secondKey) {
-                subKey = stateId.secondKey;
-              }
+            let subKey = null;
+            if (stateId.secondKey) {
+              subKey = stateId.secondKey;
+            }
 
-              if (stateId.subKeyAdditive) {
-                subKey += stateId.subKeyAdditive;
-              }
+            if (stateId.subKeyAdditive) {
+              subKey += stateId.subKeyAdditive;
+            }
 
-              value = checkAndRevert(value, stateId.revertValue);
+            value = checkAndRevert(value, stateId.revertValue);
 
+            iobrokerStore.setValues({
+              objectNameInStore: item.storeFolder || null,
+              val: value,
+              id,
+              firstKey: stateId.key,
+              secondKey: subKey,
+            });
+
+            if (stateId.timestamp) {
               iobrokerStore.setValues({
                 objectNameInStore: item.storeFolder || null,
-                val: value,
+                val: timestamp,
                 id,
-                firstKey: stateId.key || stateId.room || null,
-                secondKey: subKey,
+                firstKey: stateId.key,
+                secondKey: "ts",
+                timestamp: true,
               });
-
-              if (stateId.timestamp) {
-                iobrokerStore.setValues({
-                  objectNameInStore: item.storeFolder || null,
-                  val: timestamp,
-                  id,
-                  firstKey: stateId.key || stateId.room || null,
-                  secondKey: "ts",
-                  timestamp: true,
-                });
-              }
-            },
-          )
+            }
+          })
           .catch((e) => {
             console.error(`Error subscribing to ${stateId.id}`);
             console.error(e);
@@ -111,10 +100,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
   });
 }
 
-function checkAndRevert(
-  value: IobrokerStateValue | null,
-  revertValue: boolean | undefined,
-) {
+function checkAndRevert(value: IobrokerStateValue | null, revertValue: boolean | undefined) {
   if (revertValue && typeof value === "boolean") {
     return !value;
   }
