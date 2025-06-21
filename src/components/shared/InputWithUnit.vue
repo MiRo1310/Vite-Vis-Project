@@ -1,36 +1,40 @@
 <script lang="ts" setup>
 import { Input } from "@/components/ui/input";
-const props = defineProps({
-  type: {
-    type: String,
-    default: "text",
-  },
-  class: {
-    type: String,
-    default: "",
-  },
-  unit: {
-    type: String,
-    default: null,
-  },
-  modelValue: {
-    type: [String, Number],
-    default: "",
-  },
-});
+import { HTMLAttributes } from "vue";
 
-defineEmits(["update:modelValue"]);
+const props = withDefaults(
+  defineProps<{
+    type?: string;
+    class?: HTMLAttributes["class"];
+    unit?: string;
+    ack?: boolean;
+  }>(),
+  { type: "text", class: "", unit: undefined, ack: true },
+);
+const modelValue = defineModel<string | number>();
 </script>
+
 <template>
-  <div :class="['flex items-center']">
-    <Input
-      :type="type"
-      :class="{ [props.class]: true, 'h-6': true }"
-      :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
-    />
-    <span class="ml-2 text-accent-foreground/50 font-bold text-xs">{{
-      unit
-    }}</span>
+  <div :class="['input-with-unit', { 'input-with-unit--not-ack': !ack }]">
+    <Input :type :class="[props.class, 'input-with-unit__input']" v-model:model-value="modelValue" />
+    <span class="input-with-unit__unit">{{ unit }}</span>
   </div>
 </template>
+
+<style scoped lang="scss">
+.input-with-unit {
+  @apply flex items-center border-2 border-transparent;
+
+  &--not-ack {
+    @apply border-red-500;
+  }
+
+  .input-with-unit__input {
+    @apply h-6;
+  }
+
+  .input-with-unit__unit {
+    @apply ml-1 pr-1 text-accent-foreground/50 font-bold text-xs;
+  }
+}
+</style>
