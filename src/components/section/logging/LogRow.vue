@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Log } from "@/types/types.ts";
+import { type Log } from "@/pages/logs.vue";
 import { toLocaleTime } from "@/lib/time.ts";
 
 defineProps<{ log: Log }>();

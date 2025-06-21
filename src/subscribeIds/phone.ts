@@ -15,24 +15,24 @@ export interface PhoneStates {
 }
 
 export const phoneStates: IdToSubscribe<PhoneStates> = {
-  objectNameInStore: "phone",
+  storeFolder: "phone",
   value: [
-    { id: "tr-064.0.callmonitor.ringing", firstKey: "ringing" },
+    { id: "tr-064.0.callmonitor.ringing", key: "ringing" },
     {
       id: "tr-064.0.callmonitor.lastCall.timestamp",
-      firstKey: "lastCallTimestamp",
+      key: "lastCallTimestamp",
     },
     {
       id: "tr-064.0.callmonitor.lastCall.callerName",
-      firstKey: "lastCallerName",
+      key: "lastCallerName",
     },
-    { id: "tr-064.0.callmonitor.lastCall.caller", firstKey: "lastCaller" },
-    { id: "tr-064.0.callmonitor.lastCall.duration", firstKey: "lastDuration" },
-    { id: "tr-064.0.callmonitor.inbound.caller", firstKey: "caller" },
-    { id: "tr-064.0.callmonitor.inbound.callerName", firstKey: "callerName" },
+    { id: "tr-064.0.callmonitor.lastCall.caller", key: "lastCaller" },
+    { id: "tr-064.0.callmonitor.lastCall.duration", key: "lastDuration" },
+    { id: "tr-064.0.callmonitor.inbound.caller", key: "caller" },
+    { id: "tr-064.0.callmonitor.inbound.callerName", key: "callerName" },
     {
       id: "tr-064.0.callmonitor.inbound.timestamp",
-      firstKey: "callerTimestamp",
+      key: "callerTimestamp",
     },
   ],
 };

@@ -22,7 +22,7 @@ const iobrokerStore = useIobrokerStore();
 const { shoppingList } = storeToRefs(iobrokerStore);
 
 const createShoppinglist = computed((): ShoppingList[] => {
-  return stringToJSON(shoppingList.value);
+  return stringToJSON(shoppingList.value.shoppingListActive?.val);
 });
 
 const removeItem = (id: string) => {
@@ -38,7 +38,7 @@ const removeItem = (id: string) => {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead class="w-auto"> Pos </TableHead>
+          <TableHead class="w-auto"> Pos</TableHead>
           <TableHead>Artikel</TableHead>
           <TableHead>Hinzugefügt</TableHead>
           <TableHead class="text-right" />

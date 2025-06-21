@@ -10,19 +10,19 @@ export interface Wetter {
 }
 
 export const wetter: IdToSubscribe<Wetter> = {
-  objectNameInStore: "wetter",
+  storeFolder: "wetter",
   value: [
     {
       id: "javascript.0.Geraete.WetterCom.temp_value",
-      firstKey: "Aussentemperatur",
+      key: "Aussentemperatur",
     },
     {
       id: "daswetter.0.NextHours.Location_1.Day_1.humidity_value",
-      firstKey: "Luftfeuchtigkeit",
+      key: "Luftfeuchtigkeit",
     },
     {
       id: "daswetter.0.NextHours.Location_1.Day_1.rain_value",
-      firstKey: "RegenMenge",
+      key: "RegenMenge",
     },
   ],
 };

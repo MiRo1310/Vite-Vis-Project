@@ -2,12 +2,7 @@
 import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import CardDescription from "@/components/ui/card/CardDescription.vue";
 import { computed, HTMLAttributes, onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
@@ -34,16 +29,15 @@ export interface LogReset {
   info: StoreValue<boolean>;
 }
 
-const statesReset: IdToSubscribe<LogReset>[] = [
-  {
-    objectNameInStore: "logReset",
-    value: [
-      { id: "logparser.0.filters.Error.emptyJson", firstKey: "error" },
-      { id: "logparser.0.filters.Info.emptyJson", firstKey: "info" },
-      { id: "logparser.0.filters.Warn.emptyJson", firstKey: "warn" },
-    ],
-  },
-];
+const statesReset: IdToSubscribe<LogReset> = {
+  storeFolder: "logReset",
+  value: [
+    { id: "logparser.0.filters.Error.emptyJson", key: "error" },
+    { id: "logparser.0.filters.Info.emptyJson", key: "info" },
+    { id: "logparser.0.filters.Warn.emptyJson", key: "warn" },
+  ],
+};
+
 onMounted(() => {
   useDynamicSubscribe(statesReset);
 });
@@ -105,13 +99,9 @@ function reset() {
         <CardTitle>Logs</CardTitle>
 
         <div class="flex-between flex-wrap space-x-2">
-          <CardDescription
-            >{{ firstLetterToUpperCase(selected) }} Logs</CardDescription
-          >
+          <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs </CardDescription>
           <div>
-            <Button variant="outline" size="sm" class="mr-5" @click="reset">
-              Reset
-            </Button>
+            <Button variant="outline" size="sm" class="mr-5" @click="reset"> Reset </Button>
             <Button
               v-for="button in buttons"
               :key="button.val"
@@ -121,24 +111,15 @@ function reset() {
               @click="selected = button.val"
             >
               {{ button.label }}
-              <Badge
-                :value="button.count as number"
-                class="absolute -right-1 -top-1"
-              />
+              <Badge :value="button.count as number" class="absolute -right-1 -top-1" />
             </Button>
           </div>
         </div>
       </CardHeader>
       <CardContent class="h-[86vh]">
         <div class="max-h-[86vh] overflow-auto default_card">
-          <div v-if="!getParsedLogs[selected]?.length">
-            Es sind keine Logs vorhanden
-          </div>
-          <div
-            v-for="(log, index) in getParsedLogs[selected] as Log[]"
-            :key="index"
-            class="text-2xs"
-          >
+          <div v-if="!getParsedLogs[selected]?.length">Es sind keine Logs vorhanden</div>
+          <div v-for="(log, index) in getParsedLogs[selected] as Log[]" :key="index" class="text-2xs">
             <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
             <span class="inline-block w-24">{{ log.from }}</span>
             {{ log.message }}

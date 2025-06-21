@@ -19,17 +19,17 @@ const handleWindowClick = () => {
 const handleHolidayClick = () => {
   adminConnection?.setState(
     "0_userdata.0.Urlaub.Urlaub_aktiv",
-    !iobrokerStore.urlaubAktiv,
+    !iobrokerStore.holiday.urlaubAktiv,
   );
 };
 
 const getWindowStyle = computed(() => {
-  if (iobrokerStore.fensterOffen) return "text-red-500";
+  if (iobrokerStore.windowGlobal.fensterOffen) return "text-red-500";
   return "text-green-500";
 });
 
 const getHoliday = computed(() => {
-  if (iobrokerStore.urlaubAktiv) return "Urlaub";
+  if (iobrokerStore.holiday.urlaubAktiv) return "Urlaub";
   return "Kein Urlaub";
 });
 </script>

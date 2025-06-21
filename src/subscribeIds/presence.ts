@@ -7,9 +7,9 @@ export interface PresenceType {
 }
 
 export const presenceStates: IdToSubscribe<PresenceType> = {
-  objectNameInStore: "presence",
+  storeFolder: "presence",
   value: [
-    { id: "ping.0.iobroker.192_168_1_186", firstKey: "Iphone_Michael" },
-    { id: "ping.0.iobroker.192_168_1_187", firstKey: "Iphone_Hannah" },
+    { id: "ping.0.iobroker.192_168_1_186", key: "Iphone_Michael" },
+    { id: "ping.0.iobroker.192_168_1_187", key: "Iphone_Hannah" },
   ],
 };

@@ -3,7 +3,6 @@ import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
-import { getWindowInfos } from "@/composables/windows.ts";
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
@@ -11,12 +10,12 @@ import { infoStates } from "@/subscribeIds/info.ts";
 import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard from "@/components/section/home/InfoCard.vue";
 import { useRouter } from "vue-router";
+import { getOpenWindows } from "@/composables/windows.ts";
 
 const router = useRouter();
 
 useDynamicSubscribe(infoStates);
 
-const { getOpenWindows } = getWindowInfos();
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs } = ioBrokerStore;
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
@@ -46,7 +45,7 @@ const infos = computed(() => [
   [
     {
       title: "Fenster offen",
-      value: getOpenWindows,
+      value: getOpenWindows.value,
       bounce: true,
       class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
       callback: () => {

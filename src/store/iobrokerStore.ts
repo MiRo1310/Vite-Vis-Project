@@ -1,16 +1,10 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import {
-  IdsToControl,
-  Pv,
-  Shutter,
-  TimerObject,
-  WindowType,
-} from "@/types/types.ts";
+import { IdsToControl, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
 import { Calendar } from "@/subscribeIds/calendar.ts";
-import { Heating } from "@/subscribeIds/heating.ts";
+import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
 import { Log, LogReset } from "@/pages/logs.vue";
 import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed } from "vue";
@@ -23,26 +17,21 @@ import { AlexaAction } from "@/pages/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
+import { HolidayStates, ShoppingListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
   wetter: Wetter;
-  trash: object;
-  shoppingList: string;
-  urlaubAktiv: boolean;
-  fensterOffen: boolean;
-  fensterStatus1: string;
-  fensterStatus2: string;
-  showTimerCard: boolean;
-  sonnenuntergang: string;
   idsToControl: IdsToControl;
-  shutterAutoUp: object;
-  shutterAutoDownTime: object;
+  shutterAutoUp: Shutter;
+  shutterAutoDownTime: Shutter;
   timer: TimerObject;
   rolladen: Shutter;
   fenster: WindowType;
   pv: Pv;
+  trash: TrashStates;
+  shoppingList: ShoppingListStates;
   pool: Pool;
   landroid: Landroid;
   calendar: Calendar;
@@ -58,12 +47,15 @@ export interface IoBrokerStoreState {
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
   presence: PresenceType;
+  holiday: HolidayStates;
+  windowGlobal: WindowGlobalStates;
+  time: TimeStates;
+  showTimerCard: TimerObject;
+  heatingControl: HeatingControlType;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
-export type StoreValueWithTimestamp<T> =
-  | (StoreValueType<T> & Timestamp)
-  | undefined;
+export type StoreValueWithTimestamp<T> = (StoreValueType<T> & Timestamp) | undefined;
 
 export interface Timestamp {
   ts: number;
@@ -80,43 +72,51 @@ export interface ParsedLogs {
   info: Log[];
 }
 
+interface SetValues {
+  storeFolder: keyof IoBrokerStoreState;
+  val: string | number | boolean | object;
+  id: string;
+  key: string;
+  subKey?: string;
+  timestamp?: boolean;
+}
+
 export type IoBrokerStates = keyof IoBrokerStoreState;
 
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
-    subscribedIds: [],
-    wetter: {} as Wetter,
-    trash: {},
-    shoppingList: "",
-    urlaubAktiv: false,
-    fensterOffen: false,
-    fensterStatus1: "",
-    fensterStatus2: "",
-    showTimerCard: false,
-    sonnenuntergang: "",
-    idsToControl: {} as IdsToControl,
-    shutterAutoUp: {},
-    shutterAutoDownTime: {},
-    timer: {} as TimerObject,
-    rolladen: {} as Shutter,
-    fenster: {} as WindowType,
-    pv: {} as Pv,
-    pool: {} as Pool,
-    landroid: {} as Landroid,
-    calendar: {} as Calendar,
-    heating: {} as Heating,
-    logs: {} as LogStates,
-    logReset: {} as LogReset,
-    heatingTimeSlot: {} as HeatingTimeSlot,
-    infos: {} as Infos,
-    phone: {} as PhoneStates,
-    batteries: {} as BatteriesType,
     alexaAction: {} as AlexaAction,
+    batteries: {} as BatteriesType,
+    calendar: {} as Calendar,
+    fenster: {} as WindowType,
+    heating: {} as Heating,
+    heatingControl: {} as HeatingControlType,
+    heatingTimeSlot: {} as HeatingTimeSlot,
+    holiday: {} as HolidayStates,
+    idsToControl: {} as IdsToControl,
+    infos: {} as Infos,
+    landroid: {} as Landroid,
     lights: {} as LightTypes,
     lightsAdditive: {} as LightTypesAdditive,
-    styles: {} as StylesType,
+    logReset: {} as LogReset,
+    logs: {} as LogStates,
+    phone: {} as PhoneStates,
+    pool: {} as Pool,
     presence: {} as PresenceType,
+    pv: {} as Pv,
+    rolladen: {} as Shutter,
+    shoppingList: {} as ShoppingListStates,
+    showTimerCard: {} as TimerObject,
+    subscribedIds: [],
+    shutterAutoUp: {} as Shutter,
+    shutterAutoDownTime: {} as Shutter,
+    styles: {} as StylesType,
+    time: {} as TimeStates,
+    timer: {} as TimerObject,
+    trash: {} as TrashStates,
+    wetter: {} as Wetter,
+    windowGlobal: {} as WindowGlobalStates,
   }),
   getters: {
     isAdminConnected(state) {
@@ -158,84 +158,55 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
 
-    setValues({
-      objectNameInStore,
-      val,
-      id,
-      firstKey,
-      secondKey,
-      timestamp,
-    }: {
-      objectNameInStore: string;
-      val: string | number | boolean | object;
-      id: string;
-      firstKey?: string | boolean;
-      secondKey?: string;
-      timestamp?: boolean;
-    }) {
-      if (objectNameInStore) {
-        if (firstKey && firstKey !== true) {
-          if (!(this as any)[objectNameInStore]) {
-            console.log(
-              "Key not found, please put it to the store. ",
-              objectNameInStore,
-            );
-          }
-
-          (this as any)[objectNameInStore] = getSubValue({
-            obj: this.getState,
-            fistKey: firstKey,
-            secondKey: secondKey,
-            val: val,
-            objectNameInStore: objectNameInStore,
-            id: id,
-            timestamp: timestamp,
-          });
-
-          return;
-        }
-        (this as any)[objectNameInStore] = val;
-      }
-      return;
+    setValues({ storeFolder, val, id, key, subKey, timestamp }: SetValues): void {
+      this[storeFolder] = getSubValue({
+        obj: this.getState,
+        key,
+        subKey,
+        val,
+        storeFolder,
+        id,
+        timestamp,
+      });
     },
   },
 });
 
 const getSubValue = ({
   obj,
-  fistKey,
-  secondKey,
+  key,
+  subKey,
   val,
-  objectNameInStore,
+  storeFolder,
   id,
   timestamp,
 }: {
   obj: any;
-  fistKey: string;
-  secondKey?: string;
+  key: string;
+  subKey?: string;
   val: string | number | boolean | object;
-  objectNameInStore: string;
-  id?: string;
+  storeFolder: string;
+  id: string;
   timestamp?: boolean;
 }) => {
-  obj = obj[objectNameInStore];
+  obj = obj[storeFolder];
 
-  if (!secondKey) {
-    obj[fistKey] = { val, id };
+  if (!subKey) {
+    obj[key] = { val, id };
     return obj;
   }
 
-  if (!obj[fistKey]) {
-    obj[fistKey] = {};
+  if (!obj[key]) {
+    obj[key] = {};
   }
 
-  if (!obj[fistKey][secondKey]) {
-    obj[fistKey][secondKey] = {};
+  if (!obj[key][subKey]) {
+    obj[key][subKey] = {};
   }
   if (timestamp) {
-    obj[fistKey][secondKey] = val;
+    obj[key][subKey] = val;
     return obj;
   }
-  obj[fistKey][secondKey] = { val, id };
+  obj[key][subKey] = { val, id };
   return obj;
 };

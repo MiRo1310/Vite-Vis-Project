@@ -16,28 +16,28 @@ export interface Landroid {
 }
 
 export const landroid: IdToSubscribe<Landroid> = {
-  objectNameInStore: "landroid",
+  storeFolder: "landroid",
   value: [
     {
       id: "worx.0.202330294701005409AD.mower.batteryState",
-      firstKey: "battery",
+      key: "battery",
     },
     {
       id: "worx.0.202330294701005409AD.mower.totalDistance",
-      firstKey: "totalDistance",
+      key: "totalDistance",
     },
     {
       id: "worx.0.202330294701005409AD.mower.totalBladeTime",
-      firstKey: "totalBladeTime",
+      key: "totalBladeTime",
     },
-    { id: "worx.0.202330294701005409AD.mower.status", firstKey: "status" },
-    { id: "worx.0.202330294701005409AD.mower.online", firstKey: "online" },
-    { id: "worx.0.202330294701005409AD.mower.firmware", firstKey: "firmware" },
-    { id: "worx.0.202330294701005409AD.mower.error", firstKey: "error" },
-    { id: "worx.0.202330294701005409AD.mower.edgecut", firstKey: "edgecut" },
+    { id: "worx.0.202330294701005409AD.mower.status", key: "status" },
+    { id: "worx.0.202330294701005409AD.mower.online", key: "online" },
+    { id: "worx.0.202330294701005409AD.mower.firmware", key: "firmware" },
+    { id: "worx.0.202330294701005409AD.mower.error", key: "error" },
+    { id: "worx.0.202330294701005409AD.mower.edgecut", key: "edgecut" },
     {
       id: "worx.0.202330294701005409AD.mower.batteryCharging",
-      firstKey: "batteryCharging",
+      key: "batteryCharging",
     },
   ],
 };

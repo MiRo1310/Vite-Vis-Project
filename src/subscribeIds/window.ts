@@ -1,137 +1,115 @@
 import { IdToSubscribe, WindowType } from "@/types/types.ts";
 
 export const windowOpenClose: IdToSubscribe<WindowType> = {
-  objectNameInStore: "fenster",
+  storeFolder: "fenster",
   value: [
     {
+      id: "zigbee.0.00158d00049fd9ee.opened",
+      key: "haustuer",
+    },
+    {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL",
-      room: "wohnzimmer",
-      secondKey: "ecke",
-    },
-    {
-      id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
-      room: "gaesteWc",
-      secondKey: "rechts",
-    },
-    {
-      id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
-      room: "gaesteWc",
-      secondKey: "links",
-    },
-    {
-      id: "zigbee.0.00158d0003cb431e.opened",
-      room: "buero",
-      secondKey: "fenster",
-    },
-    {
-      id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "schlafen",
-      secondKey: "fenster",
-    },
-    {
-      id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL",
-      room: "schlafen",
-      secondKey: "tuer",
-    },
-    {
-      id: "alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open",
-      room: "keller",
-      secondKey: "tuer",
-    },
-    {
-      id: "alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "kinderzimmer",
-      secondKey: "fenster",
-    },
-    {
-      id: "alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "bad",
-      secondKey: "fenster",
-    },
-    {
-      id: "alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "gaestezimmer",
-      secondKey: "fenster",
+      key: "wohnzimmerEcke",
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
-      room: "wohnzimmer",
-      secondKey: "links",
+      key: "wohnzimmerLinks",
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
-      room: "wohnzimmer",
-      secondKey: "rechts",
+      key: "wohnzimmerRechts",
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL",
-      room: "wohnzimmer",
-      secondKey: "mittig",
+      key: "wohnzimmerMittig",
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL",
-      room: "wohnzimmer",
-      secondKey: "ecke",
+      key: "wohnzimmerEcke",
+    },
+    {
+      id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
+      key: "gaesteWcRechts",
+    },
+    {
+      id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
+      key: "gaesteWcLinks",
+    },
+    {
+      id: "zigbee.0.00158d0003cb431e.opened",
+      key: "bueroFenster",
+    },
+    {
+      id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
+      key: "schlafenFenster",
+    },
+    {
+      id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL",
+      key: "schlafenTuer",
+    },
+    {
+      id: "alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open",
+      key: "kellerTuer",
+    },
+    {
+      id: "alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
+      key: "kinderzimmerFenster",
+    },
+    {
+      id: "alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
+      key: "badFenster",
+    },
+    {
+      id: "alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
+      key: "gaestezimmerFenster",
     },
     {
       id: "alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL",
-      room: "esszimmer",
-      secondKey: "links",
+      key: "esszimmerLinks",
     },
     {
       id: "alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL",
-      room: "esszimmer",
-      secondKey: "rechts",
+      key: "esszimmerRechts",
     },
     {
       id: "alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL",
-      room: "kueche",
-      secondKey: "tuer",
+      key: "kuecheTuer",
     },
     {
       id: "alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "kueche",
-      secondKey: "fenster",
+      key: "kuecheFenster",
     },
     {
       id: "alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL",
-      room: "abstellraum",
-      secondKey: "fenster",
+      key: "abstellraumFenster",
     },
     {
       id: "alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
-      room: "abstellraumog",
-      secondKey: "links",
+      key: "abstellraumOgLinks",
     },
     {
       id: "alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
-      room: "abstellraumog",
-      secondKey: "rechts",
+      key: "abstellraumOgRechts",
     },
     {
       id: "alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
-      room: "dachboden",
-      secondKey: "links",
+      key: "dachbodenLinks",
     },
     {
       id: "alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
-      room: "dachboden",
-      secondKey: "rechts",
+      key: "dachbodenRechts",
     },
     {
       id: "alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL",
-      room: "flur",
-      secondKey: "links",
+      key: "flurLinks",
     },
     {
       id: "alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL",
-      room: "flur",
-      secondKey: "rechts",
+      key: "flurRechts",
     },
     {
       id: "alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster",
-      room: "keller",
-      secondKey: "flurFenster",
+      key: "kellerFlurFenster",
     },
   ],
 };

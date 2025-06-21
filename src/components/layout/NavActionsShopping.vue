@@ -12,7 +12,7 @@ import { stringToJSON } from "@/lib/string.ts";
 const { shoppingList } = storeToRefs(useIobrokerStore());
 
 const createShoppinglist = computed((): any[] => {
-  return stringToJSON(shoppingList.value);
+  return stringToJSON(shoppingList.value.shoppingListActive?.val);
 });
 </script>
 <template>
