@@ -47,7 +47,7 @@ export type IdGroups = Pool &
   TimeStates &
   HeatingControlType;
 
-export const idToSubscribe: IdToSubscribe<IdGroups>[] = [
+export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
   shutterAutoUp,
   shutterAutoDown,
   shutterAutoUpTime,

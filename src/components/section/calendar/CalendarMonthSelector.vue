@@ -2,22 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import { computed, onMounted, ref } from "vue";
+import { months } from "@/defaultValues/defaultValues.ts";
 
 const emit = defineEmits(["update:daysInMonth", "update:year", "update:month"]);
-const months = [
-  "Januar",
-  "Februar",
-  "März",
-  "April",
-  "Mai",
-  "Juni",
-  "Juli",
-  "August",
-  "September",
-  "Oktober",
-  "November",
-  "Dezember",
-];
 
 const monthModifikator = ref(0);
 onMounted(() => {
@@ -38,7 +25,7 @@ function getYearMonth() {
   }
 
   if (month <= -1) {
-    if (month % 12 === -0) {
+    if (month % 12 === 0) {
       month = month * -1;
     }
     month = (12 + (month % 12)) % 12;
@@ -88,7 +75,7 @@ const getDaysInMonth = (): number => {
       <Button size="icon" @click="changeMonth(1)">
         <ChevronRight />
       </Button>
-      <Button @click="resetMonth"> Heute </Button>
+      <Button @click="resetMonth"> Heute</Button>
     </div>
     <slot />
   </div>

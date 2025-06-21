@@ -1,6 +1,6 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { idToSubscribe } from "../subscribeIds/ids-to-subscribe.ts";
+import { idToSubscribeOnAppStart } from "../subscribeIds/ids-to-subscribe.ts";
 import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { isDefined } from "@vueuse/core";
@@ -32,7 +32,7 @@ export async function init() {
     await adminConnection.startSocket();
     await adminConnection.waitForFirstConnection();
     useIobrokerStore().setAdminConnection(true);
-    subscribeStates(idToSubscribe);
+    subscribeStates(idToSubscribeOnAppStart);
   }
 }
 
@@ -64,8 +64,8 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               storeFolder: item.storeFolder,
               val: checkAndRevert(value, stateId.invertValue),
               id,
-              firstKey: stateId.key,
-              secondKey: stateId.subKey,
+              key: stateId.key,
+              subKey: stateId.subKey,
             });
 
             if (stateId.timestamp) {
@@ -73,8 +73,8 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
                 storeFolder: item.storeFolder,
                 val: state?.ts,
                 id,
-                firstKey: stateId.key,
-                secondKey: "ts",
+                key: stateId.key,
+                subKey: "ts",
                 timestamp: true,
               });
             }

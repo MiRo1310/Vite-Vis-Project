@@ -14,7 +14,7 @@ import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 
 const open = defineModel<boolean>("open");
 
-useDynamicSubscribe([styles]);
+useDynamicSubscribe(styles);
 
 const { styles: styling } = useIobrokerStore();
 
@@ -29,11 +29,7 @@ const json = computed((): JSONStyle[] => {
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
-function updateHandler(val: {
-  input: string;
-  select: SelectOption;
-  index: number;
-}) {
+function updateHandler(val: { input: string; select: SelectOption; index: number }) {
   if (val.select?.class == "" || !val.input || (val?.input as string) == "") {
     return;
   }
@@ -52,10 +48,7 @@ function updateHandler(val: {
   modifiedObj.value = jsonCopy;
 }
 
-function addValueToObj(
-  obj: JSONStyle,
-  val: { input: string; select: SelectOption; index: number },
-) {
+function addValueToObj(obj: JSONStyle, val: { input: string; select: SelectOption; index: number }) {
   obj.name = val?.input;
   obj.color = val.select?.class;
 }
@@ -86,22 +79,14 @@ function deleteRow(index: number) {
 }
 </script>
 <template>
-  <Dialog
-    v-model:open="open"
-    styling="default"
-    class-content="w-3/4 max-w-3/4 h-[60vh] "
-  >
-    <template #title> Farben </template>
+  <Dialog v-model:open="open" styling="default" class-content="w-3/4 max-w-3/4 h-[60vh] ">
+    <template #title> Farben</template>
     <template #content>
       <Button size="icon" @click="addNewRow">
         <Plus />
       </Button>
       <div class="h-[20rem] overflow-auto">
-        <div
-          v-for="(item, i) in modifiedObj || json"
-          :key="i"
-          class="flex space-x-2 space-y-[2px]"
-        >
+        <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-[2px]">
           <InputComponent
             :input-value="item.name"
             :selected="colors.find((e) => e.class === item.color)"
@@ -113,8 +98,8 @@ function deleteRow(index: number) {
       </div>
     </template>
     <template #footer>
-      <Button variant="outline" @click="reset"> Schließen </Button>
-      <Button variant="save" @click="updateToIobroker"> Speichern </Button>
+      <Button variant="outline" @click="reset"> Schließen</Button>
+      <Button variant="save" @click="updateToIobroker"> Speichern</Button>
     </template>
   </Dialog>
 </template>
