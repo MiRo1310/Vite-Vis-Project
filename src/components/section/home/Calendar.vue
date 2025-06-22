@@ -3,14 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, Ref } from "vue";
-import { CalendarDay } from "@/types/types.ts";
+import { CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import { stringToJSON } from "@/lib/string.ts";
+import CalendarDay from "@/components/section/home/CalenderDay.vue";
 
 const { calendar } = storeToRefs(useIobrokerStore());
 const router = useRouter();
 
-const data: Ref<CalendarDay[]> = computed(() => {
+const data: Ref<CalendarDayType[]> = computed(() => {
   return stringToJSON(calendar.value.table?.val || "[]");
 });
 
@@ -23,13 +24,6 @@ const today = computed(() => {
   return [];
 });
 
-const isInTimeRange = (day: CalendarDay): boolean => {
-  const now = new Date();
-  const start = new Date(day._object.start);
-  const end = new Date(day._object.end);
-  return now >= start && now <= end;
-};
-
 const tomorrow = computed(() => {
   if (data.value) {
     return data.value.filter((day) => {
@@ -39,41 +33,30 @@ const tomorrow = computed(() => {
   return [];
 });
 
-function getLocalTimeString(event: string) {
-  return new Date(event).toLocaleTimeString();
-}
-
-function isNotAllDayEvent(event: CalendarDay) {
-  return getLocalTimeString(event._object.start) !== "00:00:00" && getLocalTimeString(event._object.end) !== "00:00:00";
-}
+const isInTimeRange = (day: CalendarDayType): boolean => {
+  const now = new Date();
+  const start = new Date(day._object.start);
+  const end = new Date(day._object.end);
+  return now >= start && now <= end;
+};
 </script>
 <template>
-  <Card styling="light" class="w-80" @click="router.push({ name: 'calendar' })">
+  <Card styling="light" class="calendar" @click="router.push({ name: 'calendar' })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>
-    <CardContent>
-      <div class="calendar__section">
-        <p class="text-accent-foreground/70 text-xs font-bold mb-2 line">Heute</p>
-        <p v-for="(event, index) in today" :key="index" class="text-accent-foreground/50 text-xs font-bold flex justify-between">
-          <span>{{ event._object.summary }}</span>
-          <span v-if="isNotAllDayEvent(event)" class="ml-2"
-            >{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span
-          >
-        </p>
-      </div>
-      <div class="calendar__section mt-2">
-        <p class="text-accent-foreground/70 text-xs font-bold my-2 line">Morgen</p>
-        <p v-for="(event, index) in tomorrow" :key="index" class="text-accent-foreground/50 text-xs font-bold flex justify-between">
-          <span>{{ event._object.summary }}</span>
-          <span v-if="isNotAllDayEvent(event)">{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span>
-        </p>
-      </div>
+    <CardContent class="calendar__content">
+      <CalendarDay :data="today" />
+      <CalendarDay :data="tomorrow" />
     </CardContent>
   </Card>
 </template>
-<style>
-.calendar__section {
-  @apply bg-white p-2 shadow-lg;
+<style scoped lang="scss">
+.calendar {
+  @apply w-80;
+
+  &__content {
+    @apply flex flex-col gap-2;
+  }
 }
 </style>

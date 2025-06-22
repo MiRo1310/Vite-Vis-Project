@@ -245,7 +245,7 @@ export interface IobrokerState {
 export type IobrokerStateValue = string | number | boolean;
 export type NullableState = null | IobrokerStateValue;
 
-export interface CalendarDay {
+export interface CalendarDayType {
   date: string;
   event: string;
   _class: string;
