@@ -1,0 +1,41 @@
+<svg width="600" height="100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Clipping-Pfad für die Leitung -->
+    <clipPath id="clipLine">
+        <rect x="50" y="40" width="500" height="20" rx="10" ry="10"/>
+    </clipPath>
+
+    <!-- Leitungshintergrund -->
+    <rect x="50" y="40" width="500" height="20" fill="#ccc" rx="10" ry="10"/>
+
+    <rect x="-50" y="0" width="100" height="100" fill="#ccc" rx="10" ry="10"/>
+
+    <!-- Fließende Punkte, beschnitten auf die Leitung -->
+    <g clip-path="url(#clipLine)">
+        <!-- Viele animierte Punkte (Kreise) -->
+        <!-- Wir erzeugen mehrere Kreise mit unterschiedlichen Startzeiten -->
+        <!-- Jeder animiert sich von links nach rechts innerhalb der Leitung -->
+        <circle r="4" fill="deepskyblue">
+            <animate attributeName="cx" from="50" to="550" dur="5s" repeatCount="indefinite"/>
+            <animate attributeName="cy" from="50" to="50" dur="5s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" fill="deepskyblue">
+            <animate attributeName="cx" from="30" to="530" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+            <animate attributeName="cy" from="50" to="50" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" fill="deepskyblue">
+            <animate attributeName="cx" from="10" to="510" dur="5s" begin="1s" repeatCount="indefinite"/>
+            <animate attributeName="cy" from="50" to="50" dur="5s" begin="1s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" fill="deepskyblue">
+            <animate attributeName="cx" from="-10" to="490" dur="5s" begin="1.5s" repeatCount="indefinite"/>
+            <animate attributeName="cy" from="50" to="50" dur="5s" begin="1.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle r="4" fill="deepskyblue">
+            <animate attributeName="cx" from="-30" to="470" dur="5s" begin="2s" repeatCount="indefinite"/>
+            <animate attributeName="cy" from="50" to="50" dur="5s" begin="2s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Du kannst nach Wunsch weitere hinzufügen -->
+    </g>
+</svg>
+
