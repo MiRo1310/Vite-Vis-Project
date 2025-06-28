@@ -2,7 +2,7 @@
 import { CalendarDayType } from "@/types/types.ts";
 import { getLocalTimeString } from "@/lib/date.ts";
 
-defineProps<{ data: CalendarDayType[] }>();
+defineProps<{ data: CalendarDayType[]; title: string }>();
 
 function isNotAllDayEvent(event: CalendarDayType) {
   return getLocalTimeString(event._object.start) !== "00:00:00" && getLocalTimeString(event._object.end) !== "00:00:00";
@@ -11,7 +11,7 @@ function isNotAllDayEvent(event: CalendarDayType) {
 
 <template>
   <div class="calendar-day">
-    <p class="calendar-day__title line">Heute</p>
+    <p class="calendar-day__title line">{{ title }}</p>
     <p v-for="(event, index) in data" :key="index" class="calendar-day__event-wrapper">
       <span>{{ event._object.summary }}</span>
       <span v-if="isNotAllDayEvent(event)" class="calendar-day__event"

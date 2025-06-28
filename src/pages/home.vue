@@ -20,7 +20,6 @@ import AirConditioners from "@/components/section/home/AirConditioners.vue";
     <Info class="home__info" />
     <Trash class="home__trash" />
     <Pv />
-
     <Pool class="home__pool" />
     <AirConditioners />
     <LawnMover class="home__lawn-mover" />

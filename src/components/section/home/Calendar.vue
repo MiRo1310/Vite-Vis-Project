@@ -25,32 +25,37 @@ const today = computed(() => {
 });
 
 const tomorrow = computed(() => {
-  if (data.value) {
-    return data.value.filter((day) => {
-      return day.date.includes("Morgen") || isInTimeRange(day);
-    });
+  if (!data.value) {
+    return [];
   }
-  return [];
+  return data.value.filter((day) => {
+    return day.date.includes("Morgen") || isInTimeRange(day, 1);
+  });
 });
 
-const isInTimeRange = (day: CalendarDayType): boolean => {
+const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
   const now = new Date();
+  if (offsetDay) {
+    now.setDate(now.getDate() + offsetDay);
+  }
   const start = new Date(day._object.start);
   const end = new Date(day._object.end);
   return now >= start && now <= end;
 };
 </script>
+
 <template>
   <Card styling="light" class="calendar" @click="router.push({ name: 'calendar' })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>
     <CardContent class="calendar__content">
-      <CalendarDay :data="today" />
-      <CalendarDay :data="tomorrow" />
+      <CalendarDay :data="today" title="Heute" />
+      <CalendarDay :data="tomorrow" title="Morgen" />
     </CardContent>
   </Card>
 </template>
+
 <style scoped lang="scss">
 .calendar {
   @apply w-80;
