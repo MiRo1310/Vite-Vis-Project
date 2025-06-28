@@ -25,6 +25,7 @@ import {
   windowGlobal,
   WindowGlobalStates,
 } from "@/subscribeIds/diverse.ts";
+import { AirConditioners, airConditioners } from "@/subscribeIds/air-conditioners.ts";
 
 export type IdGroups = Pool &
   Shutter &
@@ -45,6 +46,7 @@ export type IdGroups = Pool &
   HolidayStates &
   WindowGlobalStates &
   TimeStates &
+  AirConditioners &
   HeatingControlType;
 
 export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
@@ -71,4 +73,5 @@ export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
   windowGlobal,
   timeIds,
   heatingControl,
+  airConditioners,
 ];

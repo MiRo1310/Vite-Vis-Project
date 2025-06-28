@@ -18,6 +18,7 @@ import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
 import { HolidayStates, ShoppingListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
+import { AirConditioners } from "@/subscribeIds/air-conditioners.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -52,6 +53,7 @@ export interface IoBrokerStoreState {
   time: TimeStates;
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
+  airConditioners?: AirConditioners;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
@@ -88,7 +90,9 @@ export type IoBrokerStates = keyof IoBrokerStoreState;
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
+
     alexaAction: {} as AlexaAction,
+    airConditioners: {} as AirConditioners,
     batteries: {} as BatteriesType,
     calendar: {} as Calendar,
     fenster: {} as WindowType,

@@ -8,6 +8,7 @@ import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
+import AirConditioners from "@/components/section/home/AirConditioners.vue";
 </script>
 
 <template>
@@ -21,6 +22,7 @@ import Timer from "@/components/section/home/Timer.vue";
     <Pv />
 
     <Pool class="home__pool" />
+    <AirConditioners />
     <LawnMover class="home__lawn-mover" />
     <Calendar class="home__calendar" />
     <Timer class="home__timer" />
