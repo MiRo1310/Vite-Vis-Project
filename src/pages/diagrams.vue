@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Button } from "@/components/shared/button";
+import PageContent from "@/components/shared/page/PageContent.vue";
+import Page from "@/components/shared/page/Page.vue";
 
 const diagrams: string[] = [
   "http://192.168.1.4:3000/d/feobdyuntkhs0d/temperaturen?orgId=1&from=now-24h&to=now&refresh=30s&kiosk",
@@ -23,11 +25,17 @@ const clickHandler = (direction: number) => {
 </script>
 
 <template>
-  <div class="diagrams">
-    <Button variant="outline" @click="clickHandler(1)"> Zurück </Button>
-    <Button variant="outline" @click="clickHandler(-1)"> Vor </Button>
-  </div>
-  <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" />
+  <Page title="Diagramme">
+    <template #default>
+      <PageContent>
+        <div class="diagrams">
+          <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
+          <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
+        </div>
+        <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" />
+      </PageContent>
+    </template>
+  </Page>
 </template>
 
 <style scoped lang="scss">

@@ -7,9 +7,9 @@ defineProps<{ title: string }>();
     <div class="page__title">
       {{ title }}
     </div>
-
-    <slot name="header" />
-
+    <div class="page__header">
+      <slot name="header" />
+    </div>
     <div class="page__content">
       <slot />
     </div>
@@ -23,6 +23,10 @@ defineProps<{ title: string }>();
 
   &__title {
     @apply text-color__default text-base font-bold bg-accent px-2;
+  }
+
+  &__header {
+    @apply mt-2;
   }
 
   &__content {

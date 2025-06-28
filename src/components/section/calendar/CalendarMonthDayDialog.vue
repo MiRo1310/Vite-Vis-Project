@@ -2,13 +2,13 @@
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 
 import { ref, watchEffect } from "vue";
-import { CalendarDay } from "@/types/types.ts";
+import { CalendarDayType } from "@/types/types.ts";
 
 const props = defineProps<CalendarMonthDayDialog>();
 
 interface CalendarMonthDayDialog {
   open: boolean;
-  events: CalendarDay[] | undefined;
+  events: CalendarDayType[] | undefined;
   dayIndex?: number | undefined;
   month?: number;
   year?: number;
@@ -38,11 +38,7 @@ const formatTime = (dateString: string) => {
     </template>
     <template #description>
       <div v-if="events">
-        <div
-          v-for="event in events"
-          :key="event._IDID"
-          class="flex justify-between mt-2"
-        >
+        <div v-for="event in events" :key="event._IDID" class="flex justify-between mt-2">
           <div>{{ event._object.summary }}</div>
           <div v-if="!event._allDay" class="flex">
             <div>{{ formatTime(event._object.start) }}</div>

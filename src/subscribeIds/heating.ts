@@ -230,7 +230,7 @@ addItems();
 
 function addItems() {
   for (const day of days) {
-    for (let period = 0; period < 6; period++) {
+    for (let period = 1; period < 6; period++) {
       heatingControl.value.push({
         id: `heatingcontrol.0.vis.ProfileTypes.${day}.Periods.${period}.Temperature`,
         key: `${day}.${period}.temp` as keyof HeatingControlType,

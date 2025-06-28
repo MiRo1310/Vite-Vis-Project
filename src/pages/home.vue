@@ -8,21 +8,61 @@ import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
+import AirConditioners from "@/components/section/home/AirConditioners.vue";
 </script>
 
 <template>
-  <div class="flex space-x-1 space-y-1 -mt-1 -ml-1 flex-wrap">
-    <div class="min-w-36 w-auto mt-1 ml-1 flex flex-col">
+  <div class="home">
+    <div class="home__first">
       <Time />
-      <Caller class="w-full flex-1 mt-1" />
+      <Caller class="home__caller" />
     </div>
-    <Info class="min-w-56" />
-    <Trash class="col-span-4 min-w-[350px]" />
+    <Info class="home__info" />
+    <Trash class="home__trash" />
     <Pv />
 
-    <Pool class="col-span-4 flex-1" />
-    <LawnMover class="col-span-3" />
-    <Calendar class="col-span-5" />
-    <Timer class="flex-1 max-w-[800px]" />
+    <Pool class="home__pool" />
+    <AirConditioners />
+    <LawnMover class="home__lawn-mover" />
+    <Calendar class="home__calendar" />
+    <Timer class="home__timer" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.home {
+  @apply flex gap-1 flex-wrap;
+
+  &__first {
+    @apply min-w-36 w-auto flex flex-col gap-1;
+  }
+
+  &__caller {
+    @apply w-full flex-1;
+  }
+
+  &__info {
+    @apply min-w-56;
+  }
+
+  &__trash {
+    @apply col-span-4 min-w-[350px];
+  }
+
+  &__pool {
+    @apply col-span-4 flex-1;
+  }
+
+  &__lawn-mover {
+    @apply col-span-3;
+  }
+
+  &__calendar {
+    @apply col-span-5;
+  }
+
+  &__timer {
+    @apply flex-1 max-w-[800px];
+  }
+}
+</style>
