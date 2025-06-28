@@ -58,8 +58,6 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
 
 <style scoped lang="scss">
 .calendar {
-  @apply w-80;
-
   &__content {
     @apply flex flex-col gap-2;
   }
