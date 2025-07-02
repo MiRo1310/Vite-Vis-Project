@@ -2,20 +2,15 @@
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import InputUnit from "@/components/shared/InputWithUnit.vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import { BoolText, poolIds } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
-import { setstate } from "@/lib/setstate.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const { pool } = storeToRefs(useIobrokerStore());
-
-const handleChangeTempSet = (value: string | number) => {
-  setstate(pool.value.tempSet?.id, value);
-};
 
 useDynamicSubscribe(poolIds);
 
@@ -54,7 +49,6 @@ const items = computed(() => {
       title: "Wunschtemperatur",
       type: "input",
       value: pool.value.tempSet?.val ?? 0,
-      function: handleChangeTempSet,
       unit: "°C",
     },
     {
@@ -109,15 +103,8 @@ const getMode = (mode: string) => {
       <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
         <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
-        <div v-else-if="item.type === 'input'" class="line">
-          <InputUnit
-            class="w-16 text-accent-foreground/50 text-xs font-bold border-0 shadow-none rounded-none bg-white"
-            type="number"
-            :model-value="item?.value.toString()"
-            :unit="item.unit"
-            :ack="pool.tempSet?.ack"
-            @update:model-value="(value?: string | number) => value && item?.function?.(value)"
-          />
+        <div v-else-if="item.type === 'input'">
+          <InputIobroker :state="pool.tempSet" unit="°C" />
         </div>
         <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold"
           >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
