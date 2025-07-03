@@ -1,32 +1,51 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { useVModel } from "@vueuse/core";
-import { cn } from "@/lib/utils";
+import { twMerge } from "tailwind-merge";
+
+import { ChevronDown, ChevronUp } from "lucide-vue-next";
 
 const props = defineProps<{
   defaultValue?: string | number;
-  modelValue?: string | number;
   class?: HTMLAttributes["class"];
+  type: "number" | "text";
 }>();
 
-const emits = defineEmits<{
-  (e: "update:modelValue", payload: string | number): void;
-}>();
-
-const modelValue = useVModel(props, "modelValue", emits, {
-  passive: true,
-  defaultValue: props.defaultValue,
+const modelValue = defineModel<string | number>("modelValue", {
+  default: 0,
 });
+const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + 1);
+const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - 1);
 </script>
 
 <template>
   <input
     v-model="modelValue"
+    :type
     :class="
-      cn(
-        'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
-        props.class,
-      )
+      twMerge([
+        'flex h-9 rounded-md w-full border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input',
+        $props.class,
+      ])
     "
   />
+  <span>
+    <ChevronUp class="icon" @click="countUp" />
+    <ChevronDown class="icon" @click="countDown" />
+  </span>
 </template>
+
+<style scoped lang="scss">
+.input {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.icon {
+  @apply w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer;
+}
+</style>

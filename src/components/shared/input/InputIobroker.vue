@@ -13,7 +13,7 @@ const props = withDefaults(
     debounce?: number;
     setAck?: boolean;
   }>(),
-  { type: "number", unit: undefined, debounce: 500 },
+  { type: "number", unit: undefined, debounce: 1000 },
 );
 
 const modelValue = defineModel<string | number>();
@@ -39,7 +39,12 @@ const setState = () => {
 
 <template>
   <div :class="['input-with-unit', { 'input-with-unit__input--not-ack': !state?.ack }]">
-    <Input :type :class="['input-with-unit__input']" v-model:model-value="modelValue" @update:model-value="debounceFn" />
+    <Input
+      :type
+      class="h-6 border-2 border-transparent shadow-none w-12 focus:border-none active:border-none ring-0 text-right focus:ring-0 mr-4"
+      v-model:model-value="modelValue"
+      @update:model-value="debounceFn"
+    />
     <span class="input-with-unit__unit">{{ unit }}</span>
   </div>
 </template>
@@ -49,8 +54,6 @@ const setState = () => {
   @apply relative flex items-center border-b-color__default border-b-2;
 
   &__input {
-    @apply h-6 border-2 border-transparent shadow-none w-16 focus:border-none active:border-none ring-0 text-right focus:ring-0 pr-4;
-
     &--not-ack {
       @apply border-red-500;
     }
@@ -58,7 +61,7 @@ const setState = () => {
 
   &__unit {
     @apply ml-1 pr-1 text-accent-foreground/50 font-bold text-xs;
-    @apply absolute right-0;
+    @apply absolute right-3;
   }
 }
 </style>
