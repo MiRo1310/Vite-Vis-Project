@@ -2,6 +2,7 @@
 import { computed, HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
 import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
+import { InputShadcn } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
