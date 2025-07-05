@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Input } from "@/components/ui/input";
+import { InputShadcn } from "@/components/ui/input";
 import Select from "@/components/shared/select/select.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
@@ -7,6 +7,7 @@ import { computed } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };
@@ -17,7 +18,6 @@ function updateData(id: string | undefined, value: string) {
   if (!id) {
     return;
   }
-
   adminConnection?.setState(id, { val: value, ack: false });
 }
 
@@ -49,14 +49,13 @@ const activeClass = computed(() => (i: number) => {
     </p>
     <div class="values__container">
       <div>
-        <p class="text-center mb-2">ab</p>
-        <Input
+        <p class="flex flex-col items-center gap-2 mb-2">ab</p>
+        <InputIobroker
           v-for="i in 5"
           :key="i"
           type="time"
-          :model-value="String(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.val)"
-          :class="['day__input', activeClass(i)]"
-          @update:model-value="updateData(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.id, $event.toString())"
+          color="white"
+          :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
         />
       </div>
       <div>
@@ -88,9 +87,5 @@ const activeClass = computed(() => (i: number) => {
 
 :deep(button[role="combobox"]) {
   @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] mt-1;
-}
-
-.day__input {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none mt-1;
 }
 </style>

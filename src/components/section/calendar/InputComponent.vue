@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Input } from "@/components/ui/input";
+import { InputShadcn } from "@/components/ui/input";
 import Select, { SelectOption } from "@/components/shared/select/select.vue";
 import { colors } from "@/config/colors.ts";
 import { Button } from "@/components/shared/button";
@@ -23,11 +23,7 @@ function update() {
 </script>
 
 <template>
-  <Input
-    v-model:model-value="inputValue"
-    placeholder="Suche nach diesem Text"
-    @update:model-value="update"
-  />
+  <InputShadcn v-model:model-value="inputValue" placeholder="Suche nach diesem Text" @update:model-value="update" />
   <Select
     v-model:selected-obj="selected"
     :items="colors"

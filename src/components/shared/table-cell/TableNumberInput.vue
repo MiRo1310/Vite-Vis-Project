@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Input } from "@/components/ui/input";
+import { InputShadcn } from "@/components/ui/input";
 import { Row } from "@tanstack/vue-table";
 import { AlexaDotAction } from "@/pages/alexa.vue";
 import { ref, watchEffect } from "vue";
@@ -37,7 +37,7 @@ watchEffect(() => {
 
 <template>
   <div class="line">
-    <Input
+    <InputShadcn
       class="border-none shadow-none w-full"
       :model-value="value"
       type="number"

@@ -4,11 +4,19 @@ import { twMerge } from "tailwind-merge";
 
 import { ChevronDown, ChevronUp } from "lucide-vue-next";
 
-const props = defineProps<{
-  defaultValue?: string | number;
-  class?: HTMLAttributes["class"];
-  type: "number" | "text";
-}>();
+export type InputType = "number" | "text" | "time";
+const props = withDefaults(
+  defineProps<{
+    defaultValue?: string | number;
+    class?: HTMLAttributes["class"];
+    type?: InputType;
+  }>(),
+  {
+    defaultValue: 0,
+    class: "",
+    type: "number",
+  },
+);
 
 const modelValue = defineModel<string | number>("modelValue", {
   default: 0,
@@ -28,7 +36,7 @@ const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) -
       ])
     "
   />
-  <span>
+  <span v-if="props.type === 'number'" class="mr-1">
     <ChevronUp class="icon" @click="countUp" />
     <ChevronDown class="icon" @click="countDown" />
   </span>
@@ -38,6 +46,10 @@ const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) -
 .input {
   appearance: textfield;
   -moz-appearance: textfield;
+
+  &:focus {
+    @apply outline-none ring-0;
+  }
 }
 
 .input::-webkit-outer-spin-button,

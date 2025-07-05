@@ -2,7 +2,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import Select, { SelectOption } from "@/components/shared/select/select.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { Input } from "@/components/ui/input";
+import { InputShadcn } from "@/components/ui/input";
 
 export interface RowHeatingConfig {
   checkbox: { id: string | undefined; val: boolean | undefined };
@@ -34,17 +34,13 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
 <template>
   <span class="flex justify-between w-[24rem]">
     <span class="flex items-center">
-      <Checkbox
-        :checked="row.checkbox.val"
-        class="bg-white"
-        @update:checked="updateData($event, row.checkbox?.id)"
-      />
+      <Checkbox :checked="row.checkbox.val" class="bg-white" @update:checked="updateData($event, row.checkbox?.id)" />
       <p class="ml-4">{{ row.titleCheckbox }}</p>
     </span>
     <span class="flex items-center">
       <p class="mr-1 text-xs">{{ row.titleSelect }}</p>
       <span v-if="row.input" class="flex mr-1 items-center">
-        <Input
+        <InputShadcn
           :model-value="row.input.val"
           type="time"
           class="h-6 shadow-none border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 bg-white"
@@ -61,6 +57,7 @@ const updateData = (val: string | number | boolean, id: string | undefined) => {
     </span>
   </span>
 </template>
+
 <style scoped lang="postcss">
 :deep(button[role="combobox"]) {
   @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] bg-white;

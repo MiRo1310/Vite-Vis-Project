@@ -20,9 +20,9 @@ import PageContent from "@/components/shared/page/PageContent.vue";
           <HeatingWarning />
           <HeatingPump />
           <HeatingConfig />
-          <Dialog class-content="h-full w-full max-w-full p-0 pt-7 " stying="small">
+          <Dialog class-content="w-full max-w-full p-0 pt-7 ">
             <template #trigger>
-              <Button variant="outline" class="h-full"> HeatingControl</Button>
+              <Button variant="outline" class="h-full">HeatingControl</Button>
             </template>
             <template #content>
               <HeatingControl />
