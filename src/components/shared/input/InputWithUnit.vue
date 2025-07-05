@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
 import { HTMLAttributes } from "vue";
+import { InputType } from "@/components/ui/input/InputShadcn.vue";
 
 const props = withDefaults(
   defineProps<{
-    type?: string;
+    type?: InputType;
     class?: HTMLAttributes["class"];
     unit?: string;
     ack?: boolean;

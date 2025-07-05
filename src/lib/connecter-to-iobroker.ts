@@ -69,18 +69,6 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
                 key: stateId.key,
                 subKey: stateId.subKey,
               });
-
-              if (stateId.timestamp) {
-                iobrokerStore.setValues({
-                  state,
-                  storeFolder: item.storeFolder,
-                  val: state?.ts,
-                  id,
-                  key: stateId.key,
-                  subKey: "ts",
-                  timestamp: true,
-                });
-              }
             })
             .catch((e) => {
               console.error(`Error subscribing to ${stateId.id}`);

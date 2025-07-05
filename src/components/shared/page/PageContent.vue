@@ -6,6 +6,6 @@
 
 <style scoped lang="scss">
 .card-simple {
-  @apply bg-white p-2 shadow-lg h-full;
+  @apply bg-white p-2 shadow-lg;
 }
 </style>

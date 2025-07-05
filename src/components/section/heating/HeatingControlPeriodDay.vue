@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { InputShadcn } from "@/components/ui/input";
 import Select from "@/components/shared/select/select.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
