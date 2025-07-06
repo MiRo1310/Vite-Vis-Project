@@ -1,41 +1,21 @@
-<script lang="ts" setup>
-import HeatingControlConfig from "./HeatingControlConfig.vue";
-import HeatingControlHeader from "./HeatingControlHeader.vue";
-import HeatingControlPeriod from "./HeatingControlPeriod.vue";
-import HeatingControlRoom from "./HeatingControlRoom.vue";
-import HeatingControlRoomStatus from "./HeatingControlRoomStatus.vue";
-import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
+<script setup lang="ts">
+import Button from "../../shared/button/Button.vue";
+import HeatingControlDialog from "@/components/section/heating/HeatingControlDialog.vue";
+import Dialog from "@/components/shared/dialog/Dialog.vue";
+import { ButtonVariantProps } from "@/components/shared/button/Button.vue";
+
+defineProps<ButtonVariantProps>();
 </script>
 
 <template>
-  <div class="heating-control">
-    <HeatingControlHeader />
-    <div class="heating-control__grid">
-      <div class="heating-control__section1">
-        <HeatingControlConfig />
-        <HeatingControlWindowStatus />
-        <HeatingControlRoomStatus />
-      </div>
-      <HeatingControlRoom class="heating-control__room" />
-    </div>
-    <HeatingControlPeriod />
-  </div>
+  <Dialog class-content="w-full max-w-full p-0 pt-7 ">
+    <template #trigger>
+      <Button v-bind="$props" class="h-full">Thermostat Steuerung</Button>
+    </template>
+    <template #content>
+      <HeatingControlDialog />
+    </template>
+  </Dialog>
 </template>
 
-<style scoped lang="scss">
-.heating-control {
-  @apply bg-backgroundColor p-0 m-0 w-full px-1;
-
-  &__grid {
-    @apply grid grid-cols-12;
-  }
-
-  &__section1 {
-    @apply col-span-8 mt-6 flex flex-wrap;
-  }
-
-  &__room {
-    @apply mt-6 col-span-4 bg-color__default mb-1;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

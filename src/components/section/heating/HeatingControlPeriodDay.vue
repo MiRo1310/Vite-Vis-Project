@@ -46,19 +46,21 @@ const activeClass = computed(() => (i: number) => {
     <p class="day__label">
       {{ day.label }}
     </p>
-    <div class="values__container">
+    <div class="day__content">
       <div>
-        <p class="flex flex-col items-center gap-2 mb-2">ab</p>
-        <InputIobroker
-          v-for="i in 5"
-          :key="i"
-          type="time"
-          color="white"
-          :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
-        />
+        <p class="day__section-label">ab</p>
+        <div class="day__input-wrapper">
+          <InputIobroker
+            v-for="i in 5"
+            :key="i"
+            type="time"
+            color="white"
+            :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
+          />
+        </div>
       </div>
       <div>
-        <p class="text-center mb-2">°C</p>
+        <p class="day__section-label">°C</p>
         <Select
           v-for="i in 5"
           :key="i"
@@ -71,17 +73,27 @@ const activeClass = computed(() => (i: number) => {
     </div>
   </div>
 </template>
-<style scoped lang="postcss">
-.day__container {
-  @apply bg-color__default pt-2 flex-1 mb-1;
-}
+<style scoped lang="scss">
+.day {
+  &__container {
+    @apply bg-color__default pt-2 flex-1 mb-1;
+  }
 
-.day__label {
-  @apply text-center mb-3;
-}
+  &__label {
+    @apply text-center mb-1 bg-white mx-2;
+  }
 
-.values__container {
-  @apply flex justify-center mb-1 space-x-1;
+  &__content {
+    @apply flex justify-center mb-1 space-x-1;
+  }
+
+  &__section-label {
+    @apply text-center mb-1;
+  }
+
+  &__input-wrapper {
+    @apply flex flex-col gap-[2px];
+  }
 }
 
 :deep(button[role="combobox"]) {

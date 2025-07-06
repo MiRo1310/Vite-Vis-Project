@@ -27,7 +27,7 @@ defineProps<{
         <p>Ist: {{ tempIs }} °C</p>
       </div>
       <div class="air-conditioner__row">
-        <ButtonIobroker :state="power" icon="power" />
+        <ButtonIobroker variant="outline" size="icon" :state="power" icon="power" />
         <InputIobroker :state="tempSet" unit="°C" />
       </div>
     </div>
