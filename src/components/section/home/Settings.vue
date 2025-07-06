@@ -5,6 +5,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { heatingControl } from "@/subscribeIds/heating.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import HeatingControl from "@/components/section/heating/HeatingControl.vue";
+import { ThermometerSun } from "lucide-vue-next";
 
 useDynamicSubscribe(heatingControl);
 
@@ -17,7 +18,9 @@ const { heatingControl: control } = useIobrokerStore();
       <CardTitle>Einstellungen</CardTitle>
     </CardHeader>
     <CardContent class="settings__content">
-      <HeatingControl :size="'square'" text="multiline" />
+      <HeatingControl :size="'square'" text="multiline">
+        <ThermometerSun />
+      </HeatingControl>
 
       <ButtonIobroker :state="control.periodActive" variant="outline"> Thermostate aktivieren</ButtonIobroker>
     </CardContent>
