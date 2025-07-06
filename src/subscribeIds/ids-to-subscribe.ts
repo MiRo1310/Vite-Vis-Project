@@ -17,7 +17,7 @@ import {
   holiday,
   HolidayStates,
   shoppingList,
-  ShoppingListStates,
+  AlexaListStates,
   timeIds,
   TimeStates,
   trash,
@@ -42,7 +42,7 @@ export type IdGroups = Pool &
   Heating &
   LogStates &
   TrashStates &
-  ShoppingListStates &
+  AlexaListStates &
   HolidayStates &
   WindowGlobalStates &
   TimeStates &

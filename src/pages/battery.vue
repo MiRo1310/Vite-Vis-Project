@@ -7,7 +7,6 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import PageContent from "@/components/shared/page/PageContent.vue";
 import Page from "@/components/shared/page/Page.vue";
-import { timestamp } from "@vueuse/core";
 
 const { batteries } = useIobrokerStore();
 

@@ -5,8 +5,9 @@ export interface TrashStates {
   json: StoreValue<string>;
 }
 
-export interface ShoppingListStates {
+export interface AlexaListStates {
   shoppingListActive: StoreValue<string>;
+  michaelsTodoList: StoreValue<string>;
 }
 
 export interface HolidayStates {
@@ -26,9 +27,12 @@ export const trash: IdToSubscribe<TrashStates> = {
   value: [{ id: "trashschedule.0.type.json", key: "json" }],
 };
 
-export const shoppingList: IdToSubscribe<ShoppingListStates> = {
-  storeFolder: "shoppingList",
-  value: [{ id: "alexa-shoppinglist.0.list_activ", key: "shoppingListActive" }],
+export const shoppingList: IdToSubscribe<AlexaListStates> = {
+  storeFolder: "alexaLists",
+  value: [
+    { id: "alexa-shoppinglist.0.list_activ", key: "shoppingListActive" },
+    { id: "alexa-shoppinglist.1.list_activ", key: "michaelsTodoList" },
+  ],
 };
 
 export const holiday: IdToSubscribe<HolidayStates> = {

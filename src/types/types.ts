@@ -1,12 +1,14 @@
 import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore.ts";
 
-export interface ShoppingList {
+export interface AlexaList {
   name: string;
   time: string;
   id: string;
   pos: number;
   buttonmove: string;
   buttondelete: string;
+  buttonCompletedId: string;
+  buttonDeleteId: string;
 }
 
 export interface RowShoppinglist {

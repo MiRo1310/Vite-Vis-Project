@@ -17,7 +17,7 @@ import { AlexaAction } from "@/pages/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
-import { HolidayStates, ShoppingListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
+import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
 import { AirConditioners } from "@/subscribeIds/air-conditioners.ts";
 
 export interface IoBrokerStoreState {
@@ -32,7 +32,7 @@ export interface IoBrokerStoreState {
   fenster: WindowType;
   pv: Pv;
   trash: TrashStates;
-  shoppingList: ShoppingListStates;
+  alexaLists: AlexaListStates;
   pool: Pool;
   landroid: Landroid;
   calendar: Calendar;
@@ -116,7 +116,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     presence: {} as PresenceType,
     pv: {} as Pv,
     rolladen: {} as Shutter,
-    shoppingList: {} as ShoppingListStates,
+    alexaLists: {} as AlexaListStates,
     showTimerCard: {} as TimerObject,
     subscribedIds: [],
     shutterAutoUp: {} as Shutter,
@@ -136,7 +136,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       return state.trash;
     },
     getShoppinglist(state) {
-      return state.shoppingList;
+      return state.alexaLists;
     },
     getState(state) {
       return state;
