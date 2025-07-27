@@ -200,7 +200,6 @@ export interface Ids<TData> {
   id: string;
   key: keyof TData;
   subKey?: string;
-  timestamp?: boolean;
   invertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 

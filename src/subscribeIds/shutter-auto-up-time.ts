@@ -22,7 +22,7 @@ export const shutterAutoUpTime: IdToSubscribe<Shutter> = {
     },
     {
       id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch_Tür",
-      key: "schlafenFensterAutoUpTime",
+      key: "schlafenTuerAutoUpTime",
     },
     {
       id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch",

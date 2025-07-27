@@ -9,6 +9,7 @@ import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import AirConditioners from "@/components/section/home/AirConditioners.vue";
+import Settings from "@/components/section/home/Settings.vue";
 </script>
 
 <template>
@@ -19,49 +20,58 @@ import AirConditioners from "@/components/section/home/AirConditioners.vue";
     </div>
     <Info class="home__info" />
     <Trash class="home__trash" />
-    <Pv />
+    <Pv class="home__pv" />
+    <AirConditioners class="home__air-conditioner" />
     <Pool class="home__pool" />
-    <AirConditioners />
     <LawnMover class="home__lawn-mover" />
     <Calendar class="home__calendar" />
+    <Settings class="col-span-3" />
     <Timer class="home__timer" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .home {
-  @apply flex gap-1 flex-wrap;
+  @apply grid grid-cols-11 gap-1 h-full;
 
   &__first {
-    @apply min-w-36 w-auto flex flex-col gap-1;
+    @apply col-span-2 flex flex-col;
   }
 
   &__caller {
-    @apply w-full flex-1;
+    @apply flex-1;
   }
 
   &__info {
-    @apply min-w-56;
+    @apply col-span-2;
   }
 
   &__trash {
-    @apply col-span-4 min-w-[350px];
-  }
-
-  &__pool {
-    @apply col-span-4 flex-1;
-  }
-
-  &__lawn-mover {
     @apply col-span-3;
   }
 
+  &__pv {
+    @apply col-span-2;
+  }
+
+  &__air-conditioner {
+    @apply col-span-2;
+  }
+
+  &__pool {
+    @apply col-span-3;
+  }
+
+  &__lawn-mover {
+    @apply col-span-2;
+  }
+
   &__calendar {
-    @apply col-span-5;
+    @apply col-span-3;
   }
 
   &__timer {
-    @apply flex-1 max-w-[800px];
+    @apply col-span-11;
   }
 }
 </style>

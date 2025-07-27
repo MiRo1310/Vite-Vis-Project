@@ -1,39 +1,21 @@
 <script setup lang="ts">
 import { computed, HTMLAttributes } from "vue";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent } from "@/components/shared/card";
 import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import {
-  blinds0,
-  blinds10,
-  blinds100,
-  blinds20,
-  blinds30,
-  blinds40,
-  blinds50,
-  blinds60,
-  blinds70,
-  blinds80,
-  blinds90,
-} from "@/public";
+import { blinds0, blinds10, blinds100, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70, blinds80, blinds90 } from "@/public";
 import { WindowType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { isDefined } from "@vueuse/core";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } =
-  storeToRefs(iobrokerStore);
+const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(iobrokerStore);
 
 const props = defineProps<{
   shutter: boolean;
@@ -44,13 +26,10 @@ const props = defineProps<{
   door: boolean;
 }>();
 
-const getIsWindowOpen = computed(
-  () => (id: keyof WindowType) => fenster.value[id]?.val ?? false,
-);
+const getIsWindowOpen = computed(() => (id: keyof WindowType) => fenster.value[id]?.val ?? false);
 
 const getShutterPosition = computed(() => {
-  const value =
-    rolladen.value[(props.id + "Position") as keyof typeof rolladen.value]?.val;
+  const value = rolladen.value[(props.id + "Position") as keyof typeof rolladen.value]?.val;
 
   return isDefined(value) ? value : "n/a";
 });
@@ -91,33 +70,19 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </script>
 <template>
   <Card class="window__card" :class="`${props.class}`" styling="light">
-    <CardHeader class="pb-0 pt-2 px-2">
-      <CardTitle class="flex bg-white">
-        <p class="line px-2">{{ title }}</p>
-      </CardTitle>
-    </CardHeader>
+    <span class="text-lg text-muted-foreground line ml-2">{{ title }}</span>
+
     <CardContent class="px-2 pb-2">
       <div class="flex items-center">
         <div class="flex">
           <WindowImage :is-open="getIsWindowOpen(id)" />
           <WindowImage v-if="id2" :is-open="getIsWindowOpen(id2)" />
         </div>
-        <WindowCardOpenCloseText
-          :window-open="
-            id2
-              ? getIsWindowOpen(id) || getIsWindowOpen(id2)
-              : getIsWindowOpen(id)
-          "
-          :door
-        />
+        <WindowCardOpenCloseText :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)" :door />
       </div>
       <div v-if="shutter">
         <div class="flex items-center">
-          <img
-            class="window--img"
-            :src="getShutterImage"
-            alt="FensterRollade"
-          />
+          <img class="window--img" :src="getShutterImage" alt="FensterRollade" />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="getShutterPosition" />
 
@@ -126,59 +91,22 @@ const updateHandler = (value: number | string | boolean, id: string) => {
                 <div class="w-11">
                   <Switch
                     :checked="values<boolean>('Auto', shutterAutoDownTime)?.val"
-                    @update:checked="
-                      updateHandler(
-                        $event,
-                        values<boolean>('Auto', shutterAutoDownTime)?.id || '',
-                      )
-                    "
+                    @update:checked="updateHandler($event, values<boolean>('Auto', shutterAutoDownTime)?.id || '')"
                   />
                   <p class="text-[0.5rem]">Auto runter</p>
                 </div>
-                <div class="relative line">
-                  <Input
-                    type="number"
-                    step="1"
-                    :model-value="
-                      values<number>('Delay', shutterAutoDownTime)?.val
-                    "
-                    @update:model-value="
-                      updateHandler(
-                        $event,
-                        values<number>('Delay', shutterAutoDownTime)?.id || '',
-                      )
-                    "
-                  />
-                  <div class="absolute text-sm top-2 right-2">min</div>
-                </div>
+
+                <InputIobroker :state="values<number>('Delay', shutterAutoDownTime)" unit="min" :ack="true" />
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
                   <Switch
                     :checked="values<boolean>('AutoUp', shutterAutoUp)?.val"
-                    @update:checked="
-                      updateHandler(
-                        $event,
-                        values<boolean>('AutoUp', shutterAutoUp)?.id || '',
-                      )
-                    "
+                    @update:checked="updateHandler($event, values<boolean>('AutoUp', shutterAutoUp)?.id || '')"
                   />
                   <p class="text-[0.5rem]">Auto hoch</p>
                 </div>
-                <p class="line">
-                  <Input
-                    type="time"
-                    :model-value="
-                      values<number>('AutoUpTime', shutterAutoUp)?.val
-                    "
-                    @update:model-value="
-                      updateHandler(
-                        $event,
-                        values<number>('AutoUpTime', shutterAutoUp)?.id || '',
-                      )
-                    "
-                  />
-                </p>
+                <InputIobroker :state="values<number>('AutoUpTime', shutterAutoUp)" type="time" :ack="true" />
               </div>
             </div>
           </div>
@@ -190,7 +118,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </template>
 
 <style lang="scss" scoped>
-input {
+input-shadcn {
   @apply w-[5.2rem] pr-8 border-none shadow-none;
 }
 

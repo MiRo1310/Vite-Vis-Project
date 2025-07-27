@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { HTMLAttributes, ref, watchEffect } from "vue";
 
 const props = withDefaults(
@@ -51,7 +43,7 @@ const closeDialog = () => {
       </DialogHeader>
       <slot name="content" />
 
-      <DialogFooter @click="closeDialog">
+      <DialogFooter v-if="$slots.footer" @click="closeDialog">
         <slot name="footer" />
       </DialogFooter>
     </DialogContent>
