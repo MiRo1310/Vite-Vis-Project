@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { Input } from "@/components/ui/input";
 import Select from "@/components/shared/select/select.vue";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
@@ -7,6 +6,7 @@ import { computed } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };
@@ -17,7 +17,6 @@ function updateData(id: string | undefined, value: string) {
   if (!id) {
     return;
   }
-
   adminConnection?.setState(id, { val: value, ack: false });
 }
 
@@ -47,20 +46,21 @@ const activeClass = computed(() => (i: number) => {
     <p class="day__label">
       {{ day.label }}
     </p>
-    <div class="values__container">
+    <div class="day__content">
       <div>
-        <p class="text-center mb-2">ab</p>
-        <Input
-          v-for="i in 5"
-          :key="i"
-          type="time"
-          :model-value="String(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.val)"
-          :class="['day__input', activeClass(i)]"
-          @update:model-value="updateData(heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl]?.id, $event.toString())"
-        />
+        <p class="day__section-label">ab</p>
+        <div class="day__input-wrapper">
+          <InputIobroker
+            v-for="i in 5"
+            :key="i"
+            type="time"
+            color="white"
+            :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
+          />
+        </div>
       </div>
       <div>
-        <p class="text-center mb-2">°C</p>
+        <p class="day__section-label">°C</p>
         <Select
           v-for="i in 5"
           :key="i"
@@ -73,24 +73,30 @@ const activeClass = computed(() => (i: number) => {
     </div>
   </div>
 </template>
-<style scoped lang="postcss">
-.day__container {
-  @apply bg-color__default pt-2 flex-1 mb-1;
-}
+<style scoped lang="scss">
+.day {
+  &__container {
+    @apply bg-color__default pt-2 flex-1 mb-1;
+  }
 
-.day__label {
-  @apply text-center mb-3;
-}
+  &__label {
+    @apply text-center mb-1 bg-white mx-2;
+  }
 
-.values__container {
-  @apply flex justify-center mb-1 space-x-1;
+  &__content {
+    @apply flex justify-center mb-1 space-x-1;
+  }
+
+  &__section-label {
+    @apply text-center mb-1;
+  }
+
+  &__input-wrapper {
+    @apply flex flex-col gap-[2px];
+  }
 }
 
 :deep(button[role="combobox"]) {
   @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] mt-1;
-}
-
-.day__input {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none mt-1;
 }
 </style>

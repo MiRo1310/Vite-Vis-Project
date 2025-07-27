@@ -43,6 +43,7 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
   return now >= start && now <= end;
 };
 </script>
+
 <template>
   <span class="text-white">{{ tomorrow }}</span>
   <Card styling="light" class="calendar" @click="router.push({ name: 'calendar' })">
@@ -55,10 +56,9 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
     </CardContent>
   </Card>
 </template>
+
 <style scoped lang="scss">
 .calendar {
-  @apply w-80;
-
   &__content {
     @apply flex flex-col gap-2;
   }

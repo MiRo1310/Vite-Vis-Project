@@ -67,6 +67,10 @@ export interface StoreValueType<T> {
   val: T | undefined;
   id: string;
   ack: boolean;
+  ts?: number;
+  lc?: number;
+  from?: string;
+  q?: number;
 }
 
 export interface ParsedLogs {
@@ -164,7 +168,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
 
-    setValues({ storeFolder, val, id, key, subKey, timestamp, state }: SetValues): void {
+    setValues({ storeFolder, val, id, key, subKey, state }: SetValues): void {
       this[storeFolder] = getSubValue({
         obj: this.getState,
         key,
@@ -172,7 +176,6 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
         val,
         storeFolder,
         id,
-        timestamp,
         state,
       });
     },
@@ -186,7 +189,6 @@ const getSubValue = ({
   val,
   storeFolder,
   id,
-  timestamp,
   state,
 }: {
   obj: any;
@@ -200,8 +202,18 @@ const getSubValue = ({
 }) => {
   obj = obj[storeFolder];
 
+  const newObj: StoreValue<typeof val> = {
+    val,
+    id,
+    ack: state.ack,
+    ts: state.ts,
+    lc: state.lc,
+    from: state.from,
+    q: state.q,
+  };
+
   if (!subKey) {
-    obj[key] = { val, id, ack: state.ack };
+    obj[key] = newObj;
     return obj;
   }
 
@@ -212,10 +224,7 @@ const getSubValue = ({
   if (!obj[key][subKey]) {
     obj[key][subKey] = {};
   }
-  if (timestamp) {
-    obj[key][subKey] = val;
-    return obj;
-  }
-  obj[key][subKey] = { val, id, ack: state.ack };
+
+  obj[key][subKey] = newObj;
   return obj;
 };

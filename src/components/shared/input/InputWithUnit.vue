@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { Input } from "@/components/ui/input";
+import { InputShadcn } from "@/components/ui/input";
 import { HTMLAttributes } from "vue";
+import { InputType } from "@/components/ui/input/InputShadcn.vue";
 
 const props = withDefaults(
   defineProps<{
-    type?: string;
+    type?: InputType;
     class?: HTMLAttributes["class"];
     unit?: string;
     ack?: boolean;
@@ -16,7 +17,7 @@ const modelValue = defineModel<string | number>();
 
 <template>
   <div :class="['input-with-unit', { 'input-with-unit--not-ack': !ack }]">
-    <Input :type :class="[props.class, 'input-with-unit__input']" v-model:model-value="modelValue" />
+    <InputShadcn :type :class="[props.class, 'input-with-unit__input']" v-model:model-value="modelValue" />
     <span class="input-with-unit__unit">{{ unit }}</span>
   </div>
 </template>

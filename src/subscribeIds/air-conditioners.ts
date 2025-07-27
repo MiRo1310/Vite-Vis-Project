@@ -26,7 +26,7 @@ export const airConditioners: IdToSubscribe<AirConditioners> = {
 
     { id: "tuya.0.bf57f6b83543b4f45dwh13.online", key: "childOnline" },
     { id: "tuya.0.bf57f6b83543b4f45dwh13.1", key: "childPowerStatus" },
-    { id: "shelly.0.SHPLG-S#4022D8895174#1.Relay0.Energy", key: "childPower" },
+    { id: "shelly.0.SHPLG-S#4022D8895174#1.Relay0.Power", key: "childPower" },
     { id: "tuya.0.bf57f6b83543b4f45dwh13.8", key: "childIsTemp" },
     { id: "tuya.0.bf57f6b83543b4f45dwh13.5", key: "childSetTemp" },
   ],

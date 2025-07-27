@@ -74,7 +74,6 @@ const batteryIds: IdToSubscribe<BatteriesType> = {
     {
       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
       key: "Shelly Plus Smoke Flur OG",
-      timestamp: true,
       subKey: "percent",
     },
     {
@@ -207,7 +206,6 @@ function addHMIPDevices() {
       {
         id: `${device.id}.channels.0.lowBat`,
         key: `${device.name}`,
-        timestamp: true,
         subKey: "lowBat",
       },
       {
@@ -226,7 +224,6 @@ function addZigbeeWindowDevices() {
       {
         id: `${device.id}.battery`,
         key: `${device.name}`,
-        timestamp: true,
         subKey: "percent",
       },
       {

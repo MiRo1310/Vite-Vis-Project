@@ -7,6 +7,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import PageContent from "@/components/shared/page/PageContent.vue";
 import Page from "@/components/shared/page/Page.vue";
+import { timestamp } from "@vueuse/core";
 
 const { batteries } = useIobrokerStore();
 
@@ -70,10 +71,11 @@ const data = computed(() => {
   const data: BatteryTableData[] = [];
   Object.keys(batteries).forEach((key) => {
     const item = batteries[key as keyof typeof batteries];
+    const timestamp = "percent" in item ? item.percent?.ts : "lowBat" in item ? item.lowBat?.ts : 0;
     data.push({
       name: key,
       firmware: (item as ShellyPlusSmoke)?.firmware?.val ?? false,
-      timestamp: item?.ts,
+      timestamp,
       lowBat: (item as HMIPDevice)?.lowBat?.val ?? false,
       available: (item as XiaomiWindowSensor)?.available?.val ?? false,
       percent: (item as XiaomiWindowSensor)?.percent?.val ?? 0,

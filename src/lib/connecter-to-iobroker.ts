@@ -52,39 +52,32 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
   states.forEach((item) => {
     item.value.forEach((stateId) => {
       if (adminConnection && !iobrokerStore.subscribedIds.includes(stateId.id)) {
-        adminConnection
-          .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state.val;
+        try {
+          adminConnection
+            .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
+              let value: IobrokerStateValue | null = state.val;
 
-            if (!isDefined(value)) {
-              value = null;
-            }
+              if (!isDefined(value)) {
+                value = null;
+              }
 
-            iobrokerStore.setValues({
-              state,
-              storeFolder: item.storeFolder,
-              val: checkAndRevert(value, stateId.invertValue),
-              id,
-              key: stateId.key,
-              subKey: stateId.subKey,
-            });
-
-            if (stateId.timestamp) {
               iobrokerStore.setValues({
                 state,
                 storeFolder: item.storeFolder,
-                val: state?.ts,
+                val: checkAndRevert(value, stateId.invertValue),
                 id,
                 key: stateId.key,
-                subKey: "ts",
-                timestamp: true,
+                subKey: stateId.subKey,
               });
-            }
-          })
-          .catch((e) => {
-            console.error(`Error subscribing to ${stateId.id}`);
-            console.error(e);
-          });
+            })
+            .catch((e) => {
+              console.error(`Error subscribing to ${stateId.id}`);
+              console.error(e);
+            });
+        } catch (e) {
+          console.error(`Error subscribing to ${stateId.id}`);
+          console.error(e);
+        }
 
         iobrokerStore.addIdToSubscribedIds(stateId.id);
       }

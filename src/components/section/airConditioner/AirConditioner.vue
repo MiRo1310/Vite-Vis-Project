@@ -1,24 +1,17 @@
 <script setup lang="ts">
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
-import InputWithUnit from "@/components/shared/InputWithUnit.vue";
 import { StoreValue } from "@/store/iobrokerStore.ts";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
 
-const props = defineProps<{
+defineProps<{
   online: boolean;
   powerWh: number;
   title: string;
   tempSet: StoreValue<number>;
   tempIs: number;
+  power: StoreValue<boolean>;
 }>();
-
-const setState = (val?: string | number) => {
-  const id = props.tempSet?.id;
-  if (!val || !id) {
-    return;
-  }
-  adminConnection?.setState(id, val, false);
-};
 </script>
 
 <template>
@@ -29,19 +22,13 @@ const setState = (val?: string | number) => {
       <OnlineOffline :status="online" />
     </p>
     <div class="air-conditioner__content">
-      <div class="flex justify-between items-center w-full">
-        <p>{{ online ? powerWh : "0.00" }} Wh</p>
+      <div class="air-conditioner__row">
+        <p>{{ online ? powerWh : "0.00" }} W</p>
         <p>Ist: {{ tempIs }} °C</p>
       </div>
-      <div class="line w-24 text-right">
-        <InputWithUnit
-          class="w-16 text-accent-foreground/50 text-xs font-bold border-0 shadow-none rounded-none bg-white"
-          type="number"
-          :model-value="tempSet?.val?.toString()"
-          unit="°C"
-          :ack="tempSet?.ack"
-          @update:model-value="setState"
-        />
+      <div class="air-conditioner__row">
+        <ButtonIobroker variant="outline" size="icon" :state="power" icon="power" />
+        <InputIobroker :state="tempSet" unit="°C" />
       </div>
     </div>
   </div>
@@ -53,6 +40,10 @@ const setState = (val?: string | number) => {
 
   &__description {
     @apply text-xs text-muted-foreground min-w-40 bg-white p-1 flex justify-between items-center;
+  }
+
+  &__row {
+    @apply flex justify-between items-center w-full;
   }
 
   &__content {
