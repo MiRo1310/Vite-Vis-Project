@@ -45,7 +45,6 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
 </script>
 
 <template>
-  <span class="text-white">{{ tomorrow }}</span>
   <Card styling="light" class="calendar" @click="router.push({ name: 'calendar' })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>

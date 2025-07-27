@@ -7,6 +7,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useRouter } from "vue-router";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { useAppStore } from "@/store/appStore.ts";
+import NavActionsMichaelsTodos from "@/components/layout/NavActionsMichaelsTodos.vue";
 
 const appStore = useAppStore();
 const router = useRouter();
@@ -17,10 +18,7 @@ const handleWindowClick = () => {
 };
 
 const handleHolidayClick = () => {
-  adminConnection?.setState(
-    "0_userdata.0.Urlaub.Urlaub_aktiv",
-    !iobrokerStore.holiday.urlaubAktiv,
-  );
+  adminConnection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobrokerStore.holiday.urlaubAktiv);
 };
 
 const getWindowStyle = computed(() => {
@@ -34,24 +32,9 @@ const getHoliday = computed(() => {
 });
 </script>
 <template>
-  <ButtonCard
-    :icon="Blinds"
-    :class="getWindowStyle"
-    class-card="ml-1"
-    @click="handleWindowClick"
-  />
-  <ButtonCard
-    :icon="UserRoundSearch"
-    :title="getHoliday"
-    class="text-accent-foreground/70"
-    class-card=" ml-1"
-    @click="handleHolidayClick"
-  />
+  <ButtonCard :icon="Blinds" :class="getWindowStyle" class-card="ml-1" @click="handleWindowClick" />
+  <ButtonCard :icon="UserRoundSearch" :title="getHoliday" class="text-accent-foreground/70" class-card=" ml-1" @click="handleHolidayClick" />
   <NavActionsShoppingCard />
-  <ButtonCard
-    :icon="Hourglass"
-    class="text-accent-foreground/70"
-    class-card="ml-1"
-    @click="appStore.toggleTimerVisibility"
-  />
+  <ButtonCard :icon="Hourglass" class="text-accent-foreground/70" class-card="ml-1" @click="appStore.toggleTimerVisibility" />
+  <NavActionsMichaelsTodos />
 </template>

@@ -6,6 +6,8 @@ import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { buttonDefaults, buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
 
 interface Props extends PrimitiveProps, ButtonVariantProps {
+  variant?: keyof typeof variants.variant;
+  size?: keyof typeof variants.size;
   as?: string;
   class?: HTMLAttributes["class"];
 }
