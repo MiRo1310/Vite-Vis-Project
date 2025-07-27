@@ -23,9 +23,6 @@ const { heatingControl: control } = useIobrokerStore();
       </HeatingControl>
 
       <ButtonIobroker :state="control.periodActive" variant="outline"> Thermostate aktivieren</ButtonIobroker>
-      <HeatingControl :size="'square'" text="multiline">
-        <ThermometerSun />
-      </HeatingControl>
     </CardContent>
   </Card>
 </template>
