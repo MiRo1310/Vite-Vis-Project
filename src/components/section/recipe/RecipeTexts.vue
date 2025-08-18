@@ -1,0 +1,34 @@
+<script setup lang="ts">
+import { GetRecipeByIdQuery } from "@/api/gql/graphql";
+import { getElementByPosition } from "@/components/section/new-recipe/utils";
+
+type DescriptionType = NonNullable<GetRecipeByIdQuery["recipe"]>["recipeDescriptions"];
+
+defineProps<{ descriptions: DescriptionType }>();
+</script>
+
+<template>
+  <div class="recipe__text-wrapper">
+    <template v-for="(_, index) in descriptions" :key="index">
+      <p class="recipe__text-header">{{ getElementByPosition(index + 1, descriptions)?.header }}</p>
+      <p class="recipe__text-description">{{ getElementByPosition(index + 1, descriptions)?.text }}</p>
+    </template>
+  </div>
+</template>
+
+<style scoped>
+.recipe__text-wrapper {
+  @apply w-[50%] border border-muted-foreground mb-4 p-2 rounded-lg;
+}
+.recipe__text-header {
+  @apply font-bold text-accent-foreground mb-2 mt-2;
+  @apply 2xl:text-2xl text-xl;
+}
+.recipe__text-header:first-child {
+  @apply mt-0;
+}
+.recipe__text-description {
+  @apply w-full h-auto whitespace-pre-wrap;
+  @apply 2xl:text-lg xl:text-base;
+}
+</style>

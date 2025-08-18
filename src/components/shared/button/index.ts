@@ -4,14 +4,6 @@ import type { FunctionalComponent } from "vue";
 
 export { default as Button } from "./Button.vue";
 
-export const buttonDefaults: ButtonVariantProps = {
-  variant: "outline",
-  size: "default",
-  action: "default",
-  text: "default",
-  icon: "default",
-};
-
 export interface ButtonVariantProps {
   variant?: keyof ButtonVariants["variant"];
   size?: keyof ButtonVariants["size"];

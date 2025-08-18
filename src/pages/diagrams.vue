@@ -28,11 +28,15 @@ const clickHandler = (direction: number) => {
   <Page title="Diagramme">
     <template #default>
       <PageContent>
-        <div class="diagrams">
-          <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
-          <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
+        <div class="flex flex-col h-full">
+          <div class="diagrams">
+            <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
+            <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
+          </div>
+          <div class="flex-1">
+            <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" />
+          </div>
         </div>
-        <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" />
       </PageContent>
     </template>
   </Page>

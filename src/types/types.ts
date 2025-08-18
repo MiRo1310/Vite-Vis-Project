@@ -287,3 +287,76 @@ export interface Entries {
 }
 
 export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
+
+import { Row } from "@tanstack/vue-table";
+import { ApolloQueryResult } from "@apollo/client";
+
+export type DefaultTypes = string | number | boolean | object;
+export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
+
+export interface TableCellTypes<T, R, C = null, F = null> {
+  value?: T;
+  row: Row<R>;
+  source: string;
+  customValue?: C | DefaultTypes;
+  callback?: F | CallbackFunktion;
+}
+
+export interface TextPositionType {
+  position: number;
+  text: string;
+  id?: string;
+}
+
+export interface ProductObjType {
+  productId: string;
+  description: string;
+  amount: number;
+  unit: string;
+  productPosition: number;
+  groupPosition: number;
+  id?: string;
+}
+
+export interface FormNewRecipeType {
+  name?: string;
+  portions?: number;
+  headers?: TextPositionType[];
+  textAreas?: TextPositionType[];
+  headersProductArray?: TextPositionType[];
+  productArray?: ProductObjType[];
+}
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+export interface HasOptionalNameAndId {
+  name?: string;
+  id?: string;
+}
+
+export type OnResult<T> = Omit<ApolloQueryResult<T>, "data"> & { data: T | undefined };
+
+export interface FileData {
+  name: string;
+  url: string;
+}
+
+export interface ProductUnitVariants {
+  unit: string;
+  amount: number;
+  id?: string | null;
+}
+
+export interface TranslationObj {
+  [key: string]: string | TranslationObj;
+}
+
+export type Path<T> = T extends object
+  ? {
+      [K in keyof T]-?: K extends string | number ? `${K}` | Join<K, Path<T[K]>> : never;
+    }[keyof T]
+  : "";
+type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
