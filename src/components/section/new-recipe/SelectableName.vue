@@ -2,7 +2,7 @@
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { ProductObjType } from "@/types/types";
 import { computed, ref, watchEffect } from "vue";
-import { useProducts } from "@/composable/querys/products";
+import { useProducts } from "@/composables/querys/products";
 import { translation } from "@/lib/translation";
 
 const props = defineProps<{ productIndex: number; groupIndex: number }>();
@@ -11,7 +11,7 @@ const { selectableOptions, result } = useProducts();
 
 const getValue = computed(
   () => (productIndex: number, target: keyof ProductObjType) =>
-    productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === props.groupIndex)?.[target]
+    productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === props.groupIndex)?.[target],
 );
 
 const updateName = (value?: string) => {

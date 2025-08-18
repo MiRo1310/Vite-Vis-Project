@@ -8,7 +8,7 @@ import ProductTableCellCategoryName from "@/components/section/products/ProductT
 import ProductRemoveRow from "@/components/section/products/ProductRemoveRow.vue";
 import ProductEditRow from "@/components/section/products/ProductEditRow.vue";
 import Header from "@/components/section/header/Header.vue";
-import { useProducts } from "@/composable/querys/products";
+import { useProducts } from "@/composables/querys/products";
 import Button from "@/components/shared/button/Button.vue";
 import { translation } from "@/lib/translation";
 
@@ -38,7 +38,7 @@ const dialogOpen = ref(false);
       <template #description>
         <p class="products__header-label">{{ translation("products.description", { length }) }}</p>
       </template>
-      <Button variant="outline" :icon="'Add'" size="icon" @click="dialogOpen = !dialogOpen" />
+      <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
     <PageSection class="products__page-section">
       <TableBasic :data="result || []" :columns="getColumns(columns)" />
@@ -50,7 +50,7 @@ const dialogOpen = ref(false);
 <style scoped lang="scss">
 .products {
   &__header-label {
-    @apply font-bold text-lg text-muted-foreground;
+    @apply font-bold text-xl text-muted-foreground;
   }
 
   &__page-section {

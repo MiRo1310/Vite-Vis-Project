@@ -24,6 +24,6 @@ const addNewProductGroup = () => {
 </script>
 <template>
   <div class="flex justify-end">
-    <Button size="icon" class="mt-2" variant="outline" icon="Add" @click.prevent="addNewProductGroup" />
+    <Button size="icon" class="mt-2" variant="outline" icon="add" @click.prevent="addNewProductGroup" />
   </div>
 </template>

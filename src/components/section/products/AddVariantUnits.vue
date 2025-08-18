@@ -53,7 +53,7 @@ const deleteVariant = async ({ id, index }: { id?: string | null; index: number 
 
 <template>
   <div class="flex items-center space-x-2">
-    <Button variant="outline" icon="Add" size="icon" @click.prevent="addVariant" />
+    <Button variant="outline" icon="add" size="icon" @click.prevent="addVariant" />
     <p>Eine Variante hinzufügen</p>
   </div>
   <div class="w-full items-center mt-2">
@@ -79,7 +79,7 @@ const deleteVariant = async ({ id, index }: { id?: string | null; index: number 
         options-id="units"
         @update:model-value="updateValue(index, 'unit', $event)"
       />
-      <Button icon="Remove" size="icon" variant="outline" class="mt-4" @click.prevent="deleteVariant({ id: unitVariant?.id, index: index })" />
+      <Button icon="remove" size="icon" variant="outline" class="mt-4" @click.prevent="deleteVariant({ id: unitVariant?.id, index: index })" />
     </div>
   </div>
 </template>

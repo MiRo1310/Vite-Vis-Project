@@ -2,8 +2,8 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/routes.ts";
-import "./assets/css/style.css";
-import App from "./App.vue";
+import "@/assets/css/style.css";
+import App from "@/App.vue";
 import apolloClient from "@/apolloClient.ts";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 

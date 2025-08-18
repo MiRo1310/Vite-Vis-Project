@@ -2,7 +2,7 @@
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { sortedHeaders } from "@/lib/object";
 import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
-import { Input } from "@/components/ui/input";
+import Input from "@/components/ui/input/InputShadcn.vue";
 import { computed, ref, watch } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { translation } from "@/lib/translation";
@@ -45,14 +45,14 @@ const getTotalKcal = computed(() => {
 const getTotalKcalForSection = computed(
   () =>
     (index: number): number =>
-      calcKcal.value[index]?.reduce((acc, curr) => acc + curr, 0) ?? 0
+      calcKcal.value[index]?.reduce((acc, curr) => acc + curr, 0) ?? 0,
 );
 
 watch(
   () => props.portions,
   () => {
     customPortions.value = props.portions;
-  }
+  },
 );
 
 const getIngredientGroupLength = computed(() => {
@@ -75,7 +75,7 @@ const getIngredientGroupLength = computed(() => {
       </div>
       <div>
         <label class="ingredients__header-badge-label">{{ translation("recipe.ingredient.badgeLabel") }}</label>
-        <Badge :val="getTotalKcal" :unit="translation('recipe.ingredient.badgeUnit')" />
+        <Badge :value="getTotalKcal" :unit="translation('recipe.ingredient.badgeUnit')" />
       </div>
     </div>
     <div v-for="(_, index) in getIngredientGroupLength" :key="index">
@@ -83,14 +83,14 @@ const getIngredientGroupLength = computed(() => {
         <p class="ingredients__section-title">{{ sortedHeaders(headers)[index]?.text }}</p>
         <Badge
           v-if="getTotalKcalForSection(index) > 0"
-          :val="(getTotalKcalForSection(index) / customPortions).toFixed(2)"
+          :value="(getTotalKcalForSection(index) / customPortions).toFixed(2)"
           :unit="translation('recipe.ingredient.badgeUnit')"
         />
       </div>
       <div v-for="(ingredient, i) in filteredIngredients(index)" :key="i">
         <RecipeIngredient
           v-if="ingredient"
-          :ingredient="ingredient"
+          :ingredient
           :custom-portions
           :portions
           @update:calc-kcal="updateKcal({ kcal: $event, index: index, i: i })"

@@ -10,7 +10,7 @@ import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import { products } from "@/api/query/products";
 import { addProduct } from "@/api/mutation/addProduct";
-import { useProductCategories } from "@/composable/querys/productCategories";
+import { useProductCategories } from "@/composables/querys/productCategories";
 import ProductCategories from "@/components/section/products/ProductCategories.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { updateProduct } from "@/api/mutation/updateProduct";
@@ -41,7 +41,7 @@ const formSchema = toTypedSchema(
     sugar: z.number().optional(),
     amount: z.number().optional(),
     unit: z.string().optional(),
-  })
+  }),
 );
 
 const form = useForm({
@@ -90,7 +90,7 @@ watch(
   () => {
     if (updateValue.value) return;
     form.resetForm();
-  }
+  },
 );
 const updateValue = ref(false);
 
@@ -114,7 +114,7 @@ watch(
         unit: nullToUndefined(unit),
       });
     }
-  }
+  },
 );
 
 const nullToUndefined = <T,>(val: T | null): T | undefined => {
@@ -135,7 +135,7 @@ const { load, result } = useLazyQuery(getUnits);
 onMounted(() => load());
 
 const getOptions = computed(
-  (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? []
+  (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? [],
 );
 type Units = NonNullable<ProductsQuery["products"][number]>["productUnits"];
 const unitVariants = ref<Units>([]);
@@ -145,13 +145,13 @@ watch(
   () => props.data?.unit,
   () => {
     unit.value = props.data?.unit;
-  }
+  },
 );
 watch(
   () => props.data?.amount,
   () => {
     amount.value = props.data?.amount;
-  }
+  },
 );
 </script>
 

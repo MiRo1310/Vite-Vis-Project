@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { clsx } from "clsx";
 
 export interface DatatableColumns {
-  accessorKey: string;
+  accessorKey?: string;
   headerClass?: string;
   source: string;
   labelKey: string;
@@ -16,16 +16,7 @@ export interface DatatableColumns {
   sortable?: boolean;
   component?: object;
   className?: HTMLAttributes["class"];
-  type:
-    | "text"
-    | "date"
-    | "bool"
-    | "datetime"
-    | "time"
-    | "number"
-    | "component"
-    | "html"
-    | "checkbox";
+  type?: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
   reverse?: true;
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
@@ -46,12 +37,12 @@ export const getColumns = (columns: DatatableColumns[]) => {
         label: column.labelKey,
         sortable: column?.sortable,
         className: column?.className,
-        type: column.type,
+        type: column.type ?? "text",
       }),
       cell: getCell({
         source: column.source,
         component: column.component,
-        type: column.type,
+        type: column.type ?? "text",
         unit: column.unit,
         className: column.className,
         callback: column.callback,
@@ -69,16 +60,7 @@ const getHeader = (obj: {
   source: string;
   label: string | undefined;
   sortable: boolean | undefined;
-  type:
-    | "text"
-    | "date"
-    | "bool"
-    | "datetime"
-    | "time"
-    | "number"
-    | "component"
-    | "html"
-    | "checkbox";
+  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
   reverse?: boolean | undefined;
 }) => {
   if (obj.sortable) {
@@ -90,33 +72,18 @@ const getHeader = (obj: {
     return ({ table }: any) =>
       h(Checkbox, {
         checked: table.getIsAllPageRowsSelected(),
-        "onUpdate:checked": (value: boolean) =>
-          table.toggleAllPageRowsSelected(value),
+        "onUpdate:checked": (value: boolean) => table.toggleAllPageRowsSelected(value),
         ariaLabel: "Select all",
       });
   }
 
-  return () =>
-    h(
-      "div",
-      { class: clsx(obj.className) },
-      obj.label === "" ? "" : (obj.label ?? obj.source),
-    );
+  return () => h("div", { class: clsx(obj.className) }, obj.label === "" ? "" : (obj.label ?? obj.source));
 };
 
 interface DataTableCellCreator {
   source: string;
   component?: object;
-  type:
-    | "text"
-    | "date"
-    | "bool"
-    | "datetime"
-    | "time"
-    | "number"
-    | "component"
-    | "html"
-    | "checkbox";
+  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
   className?: string;
   monoFont?: boolean;
   replacementForZero?: string | null;
@@ -129,9 +96,7 @@ interface DataTableCellCreator {
 }
 
 const getCell = (obj: DataTableCellCreator) => {
-  if (
-    ["text", "date", "bool", "datetime", "time", "number"].includes(obj.type)
-  ) {
+  if (["text", "date", "bool", "datetime", "time", "number"].includes(obj.type)) {
     return getTableCell({
       component: TableCell,
       source: obj.source,
@@ -148,13 +113,7 @@ const getCell = (obj: DataTableCellCreator) => {
     return getHtml(obj.source);
   }
   if (obj.type === "component" && obj.component) {
-    return getComponent(
-      obj.component,
-      obj.source,
-      obj.className,
-      obj.customValue,
-      obj.callback,
-    );
+    return getComponent(obj.component, obj.source, obj.className, obj.customValue, obj.callback);
   }
 
   if (obj.type === "checkbox") {
@@ -268,16 +227,7 @@ interface DataTableHeaderCreator {
   source: string;
   sortable: boolean | undefined;
   className: string | undefined;
-  type:
-    | "text"
-    | "date"
-    | "bool"
-    | "datetime"
-    | "time"
-    | "number"
-    | "component"
-    | "html"
-    | "checkbox";
+  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
 }
 
 const buttonSorting = (column: any, obj: DataTableHeaderCreator) => {
@@ -293,10 +243,7 @@ const buttonSorting = (column: any, obj: DataTableHeaderCreator) => {
         },
         class: "px-0 hover:bg-accent/50",
       },
-      () => [
-        obj.label === "" ? "" : (obj.label ?? obj.source),
-        h(ArrowUpDown, { class: "ml-2 h-4 w-4 " }),
-      ],
+      () => [obj.label === "" ? "" : (obj.label ?? obj.source), h(ArrowUpDown, { class: "ml-2 h-4 w-4 " })],
     ),
   );
 };

@@ -5,12 +5,7 @@ module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
 
-  content: [
-    "./pages/**/*.{ts,tsx,vue}",
-    "./components/**/*.{ts,tsx,vue}",
-    "./app/**/*.{ts,tsx,vue}",
-    "./src/**/*.{ts,tsx,vue}",
-  ],
+  content: ["./pages/**/*.{ts,tsx,vue}", "./components/**/*.{ts,tsx,vue}", "./app/**/*.{ts,tsx,vue}", "./src/**/*.{ts,tsx,vue}"],
 
   theme: {
     container: {
@@ -34,8 +29,8 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        smarthome1: "url('/public/smart-home-3395993_1280.jpg')",
-        smarthome2: "url('/public/smart-home-5575122_1280.jpg')",
+        smarthome1: "url(/public/smart-home-3395993_1280.jpg)",
+        smarthome2: "url(/public/smart-home-5575122_1280.jpg)",
       },
       colors: {
         trashPapier: "#2e12cc",
@@ -53,6 +48,10 @@ module.exports = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          brown: {
+            lightest: "hsl(var(--brown-lightest), <alpha-value>)",
+            dark: "hsl(var(--brown-dark))",
+          },
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -78,6 +77,13 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
       },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",
@@ -87,20 +93,36 @@ module.exports = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: 0 },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: 0,
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: 0,
+          },
         },
         "collapsible-down": {
-          from: { height: 0 },
-          to: { height: "var(--radix-collapsible-content-height)" },
+          from: {
+            height: 0,
+          },
+          to: {
+            height: "var(--radix-collapsible-content-height)",
+          },
         },
         "collapsible-up": {
-          from: { height: "var(--radix-collapsible-content-height)" },
-          to: { height: 0 },
+          from: {
+            height: "var(--radix-collapsible-content-height)",
+          },
+          to: {
+            height: 0,
+          },
         },
       },
       animation: {
@@ -111,5 +133,5 @@ module.exports = {
       },
     },
   },
-  plugins: [animate, require("@tailwindcss/forms")],
+  plugins: [animate, require("@tailwindcss/forms"), require("tailwindcss-animate")],
 };

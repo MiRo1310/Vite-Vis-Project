@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProducts } from "@/composable/querys/products";
+import { useProducts } from "@/composables/querys/products";
 import RecipeProductProperties from "@/components/section/recipe/RecipeProductProperties.vue";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
@@ -16,7 +16,7 @@ const calculatedAmount = computed(() => {
   return props.ingredient.amount ? ((props.ingredient.amount / props.portions) * props.customPortions).toFixed(2) : 0;
 });
 
-const result = computed((): ProductsQuery["products"][number]  => {
+const result = computed((): ProductsQuery["products"][number] => {
   if (props.ingredient.productId) {
     return getProductResultById(props.ingredient.productId) ?? ({} as ProductsQuery["products"][number]);
   }
@@ -48,11 +48,11 @@ const calcKcal = defineModel<number>("calcKcal");
           <p v-if="result?.id" class="ingredient__name">{{ getProductNameById(result.id) }}</p>
           <p class="ingredient__description">{{ ingredient?.description }}</p>
         </div>
-        <Badge :val="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
+        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
       </div>
       <div>
         <Badge
-          :val="typeof calculatedKcal === 'number' ? calculatedKcal.toFixed(2) : calculatedKcal"
+          :value="typeof calculatedKcal === 'number' ? calculatedKcal.toFixed(2) : calculatedKcal"
           :unit="translation('recipe.ingredient.badgeUnit2')"
           class="ingredient__badge"
         />

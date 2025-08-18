@@ -33,7 +33,7 @@ onResult((result: OnResult<GetProductByIdQuery>) => {
 </script>
 
 <template>
-  <Button variant="outline" size="iconMedium" icon="Edit" @click.prevent="productById" />
+  <Button variant="outline" size="icon" icon="edit" @click.prevent="productById" />
   <Teleport to="body">
     <DialogAddProduct v-model:dialog-open="dialogOpen" :data />
   </Teleport>

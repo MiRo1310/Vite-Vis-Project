@@ -4,7 +4,7 @@ import { Button } from "@/components/shared/button";
 import { computed, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { getProductById } from "@/api/query/getProductById";
-import { useProductCategories } from "@/composable/querys/productCategories";
+import { useProductCategories } from "@/composables/querys/productCategories";
 import { translation } from "@/lib/translation";
 
 const props = defineProps<{ productId: string }>();
@@ -20,7 +20,7 @@ watch(
       await load(getProductById, { id: props.productId });
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const isOpen = ref(false);
@@ -46,7 +46,7 @@ const information = computed((): { name: string; value?: string | number | null;
 <template>
   <CollapsibleShared v-model:open="isOpen" :class="{ 'product-properties__collapsible--close': !isOpen }">
     <template #trigger>
-      <Button as="div" size="iconSmall" :icon="isOpen ? 'ChevronDown' : 'ChevronRight'" variant="rounded" class="product-properties__trigger" />
+      <Button as="div" size="icon" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
     </template>
     <template #content>
       <p class="product-properties__title">{{ translation("recipe.ingredient.productProperties") }}</p>

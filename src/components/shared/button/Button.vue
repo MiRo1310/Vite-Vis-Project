@@ -55,6 +55,11 @@ const variants = {
     default: "",
     power: "power",
     powerOff: "powerOff",
+    add: "add",
+    chevronDown: "chevronDown",
+    chevronRight: "chevronRight",
+    edit: "edit",
+    remove: "remove",
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProducts } from "@/composable/querys/products";
+import { useProducts } from "@/composables/querys/products";
 import { computed } from "vue";
 import { ProductObjType } from "@/types/types";
 

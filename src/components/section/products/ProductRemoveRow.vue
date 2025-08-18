@@ -22,7 +22,7 @@ const dialogOpen = ref(false);
 </script>
 
 <template>
-  <Button variant="outline" size="iconMedium" @click.prevent="dialogOpen = true">
+  <Button variant="outline" size="icon" @click.prevent="dialogOpen = true">
     <Trash />
   </Button>
   <DialogConfirm v-model:dialog-open="dialogOpen" title="Soll das Produkt wirklich gelöscht werden?" @update:confirm="remove" />

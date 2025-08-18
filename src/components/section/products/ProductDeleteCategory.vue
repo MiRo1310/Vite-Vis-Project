@@ -5,7 +5,7 @@ import { removeCategory } from "@/api/mutation/removeCategory";
 import { productCategories } from "@/api/query/products";
 import { Trash } from "lucide-vue-next";
 import { Button } from "@/components/shared/button";
-import { useProductCategories } from "@/composable/querys/productCategories";
+import { useProductCategories } from "@/composables/querys/productCategories";
 
 const props = defineProps<{ id?: string }>();
 const emits = defineEmits(["update:removeCategory"]);

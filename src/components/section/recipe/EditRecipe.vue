@@ -7,6 +7,6 @@ defineProps<{ recipe?: GetRecipeByIdQuery["recipe"]; selectedName?: string }>();
 
 <template>
   <RouterLink :to="{ name: 'new-recipe', params: { id: recipe?.id } }">
-    <Button as="div" size="icon" icon="Edit" variant="outline" />
+    <Button as="div" size="icon" icon="edit" variant="outline" />
   </RouterLink>
 </template>

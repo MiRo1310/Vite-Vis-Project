@@ -11,7 +11,7 @@ import RecipeDescriptionGroup from "@/components/section/new-recipe/RecipeDescri
 import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
 import AddNewGroup from "@/components/section/new-recipe/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
-import { useRecipeStore } from "@/stores/recipeStore";
+import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { getRecipeById } from "@/api/query/getRecipeById";
 import { isDefined } from "@vueuse/core";
@@ -200,7 +200,7 @@ watch(
   (newValue) => {
     form.setFieldValue("descriptions", newValue);
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -208,7 +208,7 @@ watch(
   (newValue) => {
     form.setFieldValue("headersProductArray", newValue);
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
@@ -216,13 +216,13 @@ watch(
   (newValue) => {
     form.setFieldValue("productArray", newValue);
   },
-  { deep: true }
+  { deep: true },
 );
 
 const countedProductGroups = computed(() =>
   productArray.value.reduce((acc, curr) => {
     return curr.groupPosition > acc ? curr.groupPosition : acc;
-  }, 1)
+  }, 1),
 );
 
 const addDescription = () => {
@@ -241,7 +241,7 @@ const addDescription = () => {
             <RecipeDescriptionGroup v-model:descriptions="descriptions" :index />
           </div>
           <div class="new-recipe__left-col-button">
-            <Button size="icon" variant="outline" icon="Add" @click.prevent="addDescription" />
+            <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
         <div class="new-recipe__right-col">

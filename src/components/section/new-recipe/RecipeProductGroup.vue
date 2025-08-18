@@ -232,9 +232,9 @@ const useProductCards = (productIndex: number) => {
         <ProductValuesSummary :product-index="productIndex" :product="getProductByPositions(productIndex, groupIndex)" />
       </div>
       <Button
-        variant="rounded"
-        size="iconSmall"
-        :icon="useProductCards(productIndex).isOpen.value ? 'ChevronDown' : 'ChevronRight'"
+        variant="outline"
+        size="icon"
+        :icon="useProductCards(productIndex).isOpen.value ? 'chevronDown' : 'chevronRight'"
         class="my-1"
         @click.prevent="useProductCards(productIndex).toggle()"
       />
@@ -274,7 +274,7 @@ const useProductCards = (productIndex: number) => {
         <Button
           size="icon"
           variant="outline"
-          icon="Remove"
+          icon="remove"
           :disabled="countedProducts === 1"
           @click.prevent="
             () => {
@@ -287,11 +287,11 @@ const useProductCards = (productIndex: number) => {
     </template>
   </div>
   <div class="flex justify-end mt-2 space-x-2">
-    <Button size="icon" variant="outline" icon="Add" @click.prevent="addNewProduct" />
+    <Button size="icon" variant="outline" icon="add" @click.prevent="addNewProduct" />
     <Button
       size="icon"
       variant="outline"
-      icon="Remove"
+      icon="remove"
       :disabled="countedProductGroups === 1"
       @click.prevent="
         () => {

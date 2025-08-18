@@ -3,7 +3,7 @@ export const routes = [
     path: "/",
     component: async () => await import("@/pages/page.vue"),
     children: [
-      { path: "/", component: async () => await import("@/pages/home.vue") },
+      { path: "/", name: "home", component: async () => await import("@/pages/home.vue") },
       { path: "/alexa", component: async () => await import("@/pages/alexa.vue") },
       {
         path: "/battery",

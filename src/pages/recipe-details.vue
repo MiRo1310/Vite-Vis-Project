@@ -4,7 +4,7 @@ import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
 import { onMounted, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { getRecipeById } from "@/api/query/getRecipeById";
-import { useRecipeStore } from "@/stores/recipeStore";
+import { useRecipeStore } from "@/store/recipeStore";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -24,7 +24,7 @@ const loadRecipeFromServer = async (): Promise<void> => {
 
 watch(
   () => props.recipeId,
-  () => loadRecipeFromServer()
+  () => loadRecipeFromServer(),
 );
 
 // const showImages = ref(false);

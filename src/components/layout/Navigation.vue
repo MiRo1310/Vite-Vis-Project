@@ -8,8 +8,7 @@ interface NavigationButtons {
 }
 
 const buttons: NavigationButtons[] = [
-  { label: "VIS", name: "http://192.168.1.10", externalLink: true },
-  { label: "Dashboard", name: "dashboard" },
+  { label: "VIS", name: "home" },
   { label: "Rezepte", name: "recipe" },
   { label: "Rezept erstellen", name: "new-recipe" },
   { label: "Produkte", name: "products" },

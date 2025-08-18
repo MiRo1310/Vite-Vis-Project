@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Input } from "@/components/ui/input";
+import Input from "@/components/ui/input/InputShadcn.vue";
 import ProductAddCategory from "@/components/section/products/ProductAddCategory.vue";
 import ProductRenameCategory from "@/components/section/products/ProductRenameCategory.vue";
 import ProductDeleteCategory from "@/components/section/products/ProductDeleteCategory.vue";

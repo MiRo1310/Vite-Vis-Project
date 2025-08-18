@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@vue/apollo-composable";
 import { productCategories } from "@/api/query/products";
 import { computed, onMounted } from "vue";
-import { getSelectableOptions } from "@/composable/querys/options";
+import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
 import { SelectOption } from "@/types/types";
 

@@ -1,7 +1,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { products } from "@/api/query/products";
 import { computed } from "vue";
-import { getSelectableOptions } from "@/composable/querys/options";
+import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById, getResultById } from "@/components/section/new-recipe/utils";
 import { SelectOption } from "@/types/types";
 import { ProductsQuery } from "@/api/gql/graphql";
