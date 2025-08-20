@@ -29,6 +29,6 @@ defineProps<{ descriptions: DescriptionType }>();
 }
 .recipe__text-description {
   @apply w-full h-auto whitespace-pre-wrap;
-  @apply 2xl:text-lg xl:text-base;
+  @apply 2xl:text-xl xl:text-base;
 }
 </style>

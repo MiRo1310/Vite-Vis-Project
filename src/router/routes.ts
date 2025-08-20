@@ -42,7 +42,6 @@ export const routes = [
       { path: "/pv", component: async () => await import("@/pages/pv.vue") },
     ],
   },
-
   {
     path: "/recipe-app",
     redirectTo: "/recipe",
@@ -66,6 +65,14 @@ export const routes = [
       { path: "/neues_rezepte/:id?", name: "new-recipe", params: true, component: () => import("@/pages/new-recipe.vue") },
     ],
   },
+  {
+    path: "/finance",
+    name: "finance",
+    component: async () => await import("@/pages/finance/listing.vue"),
+  },
+
+  { path: "/adressen", name: "addresses", component: async () => await import("@/pages/finance/addresses.vue") },
+  { path: "/beschreibung", name: "descriptions", component: async () => await import("@/pages/finance/description.vue") },
 
   {
     path: "/:pathMatch(.*)",

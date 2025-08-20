@@ -13,7 +13,7 @@ const props = defineProps<{ options: InputOptions[]; data: NonNullable<ProductsQ
 
 const { mutate } = useMutation(removeProductUnit);
 
-const unitVariants = defineModel<Units>("unitVariants", { default: [] });
+const unitVariants = defineModel<ProductUnitCreateOrUpdateDtoInput[]>("unitVariants", { default: [] });
 
 const variants = ref<Units>([]);
 

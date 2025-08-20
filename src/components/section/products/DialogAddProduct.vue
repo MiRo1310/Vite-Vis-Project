@@ -137,16 +137,17 @@ onMounted(() => load());
 const getOptions = computed(
   (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? [],
 );
-type Units = NonNullable<ProductsQuery["products"][number]>["productUnits"];
-const unitVariants = ref<Units>([]);
+const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
 const amount = ref<number | undefined | null>(props.data?.amount);
 const unit = ref<string | undefined | null>(props.data?.unit);
+
 watch(
   () => props.data?.unit,
   () => {
     unit.value = props.data?.unit;
   },
 );
+
 watch(
   () => props.data?.amount,
   () => {

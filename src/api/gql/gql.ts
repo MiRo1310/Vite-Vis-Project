@@ -33,6 +33,20 @@ type Documents = {
     "\n  query Units {\n    units {   \n      id\n      name\n    }\n  }\n": typeof types.UnitsDocument,
     "\n  query products {\n    products {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      amount\n      unit\n      productUnits {\n        defaultUnit\n        id\n        unit\n        amount\n      }\n    }\n  }\n": typeof types.ProductsDocument,
     "\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n": typeof types.ProductCategoriesDocument,
+    "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  ": typeof types.AddAddressDocument,
+    "\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  ": typeof types.AddDescriptionDocument,
+    "\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  ": typeof types.AddTravelCostDocument,
+    "\n    mutation RemoveAddress($id: UUID!) {\n      removeAddress(id: $id)\n    }\n  ": typeof types.RemoveAddressDocument,
+    "\n    mutation UpdateAddress($id: UUID!, $name: String!, $street: String!, $city: String!) {\n      updateAddress(dto: { name: $name, street: $street, city: $city, id: $id }) {\n        name\n        street\n        city\n        id\n      }\n    }\n  ": typeof types.UpdateAddressDocument,
+    "\n    query AddressListing {\n      addresses {\n        id\n        name\n      }\n    }\n  ": typeof types.AddressListingDocument,
+    "\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  ": typeof types.RemoveDescriptionDocument,
+    "\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  ": typeof types.UpdateDescriptionDocument,
+    "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": typeof types.DescriptionsListingDocument,
+    "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": typeof types.RemoveTravelCostDocument,
+    "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateTravelCostDocument,
+    "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
+    "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
+    "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  ": typeof types.TravelCostDocument,
 };
 const documents: Documents = {
     "\n  mutation addCategory($name: String!) {\n    createProductCategory(dto: { name: $name }) {\n      data {\n        id\n        name\n      }\n      errorCode\n      isError\n    }\n  }\n": types.AddCategoryDocument,
@@ -54,6 +68,20 @@ const documents: Documents = {
     "\n  query Units {\n    units {   \n      id\n      name\n    }\n  }\n": types.UnitsDocument,
     "\n  query products {\n    products {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      amount\n      unit\n      productUnits {\n        defaultUnit\n        id\n        unit\n        amount\n      }\n    }\n  }\n": types.ProductsDocument,
     "\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n": types.ProductCategoriesDocument,
+    "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  ": types.AddAddressDocument,
+    "\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  ": types.AddDescriptionDocument,
+    "\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  ": types.AddTravelCostDocument,
+    "\n    mutation RemoveAddress($id: UUID!) {\n      removeAddress(id: $id)\n    }\n  ": types.RemoveAddressDocument,
+    "\n    mutation UpdateAddress($id: UUID!, $name: String!, $street: String!, $city: String!) {\n      updateAddress(dto: { name: $name, street: $street, city: $city, id: $id }) {\n        name\n        street\n        city\n        id\n      }\n    }\n  ": types.UpdateAddressDocument,
+    "\n    query AddressListing {\n      addresses {\n        id\n        name\n      }\n    }\n  ": types.AddressListingDocument,
+    "\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  ": types.RemoveDescriptionDocument,
+    "\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  ": types.UpdateDescriptionDocument,
+    "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": types.DescriptionsListingDocument,
+    "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": types.RemoveTravelCostDocument,
+    "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateTravelCostDocument,
+    "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
+    "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
+    "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  ": types.TravelCostDocument,
 };
 
 /**
@@ -146,6 +174,62 @@ export function graphql(source: "\n  query products {\n    products {\n      id\
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  "): (typeof documents)["\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  "): (typeof documents)["\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation RemoveAddress($id: UUID!) {\n      removeAddress(id: $id)\n    }\n  "): (typeof documents)["\n    mutation RemoveAddress($id: UUID!) {\n      removeAddress(id: $id)\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation UpdateAddress($id: UUID!, $name: String!, $street: String!, $city: String!) {\n      updateAddress(dto: { name: $name, street: $street, city: $city, id: $id }) {\n        name\n        street\n        city\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateAddress($id: UUID!, $name: String!, $street: String!, $city: String!) {\n      updateAddress(dto: { name: $name, street: $street, city: $city, id: $id }) {\n        name\n        street\n        city\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query AddressListing {\n      addresses {\n        id\n        name\n      }\n    }\n  "): (typeof documents)["\n    query AddressListing {\n      addresses {\n        id\n        name\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  "): (typeof documents)["\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  "): (typeof documents)["\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  "): (typeof documents)["\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  "): (typeof documents)["\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  "): (typeof documents)["\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  "): (typeof documents)["\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
