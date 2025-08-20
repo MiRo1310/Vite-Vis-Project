@@ -4,6 +4,9 @@ import { ref } from "vue";
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
+import { useToast } from "@/components/ui/toast";
+
+const { toast } = useToast();
 
 const { mutate } = useMutation(
   graphql(`
@@ -26,9 +29,12 @@ const addDescriptionHandler = () => {
   if (!text.value) {
     return;
   }
-  console.log(text.value);
+
   mutate({
     text: text.value,
+  });
+  toast({
+    title: "Die Beschreibung wurde hinzugefügt",
   });
   clearInputs();
 };

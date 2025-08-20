@@ -4,6 +4,7 @@ import { loadScript } from "@/lib/connecter-to-iobroker.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { useTime } from "@/composables/time.ts";
 import { IOBROKER_ADMIN_PORT, IOBROKER_HOST } from "@/config/config.ts";
+import { Toaster } from "@/components/ui/toast";
 
 onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
@@ -15,5 +16,6 @@ onUnmounted(() => {
 });
 </script>
 <template>
+  <Toaster />
   <router-view />
 </template>

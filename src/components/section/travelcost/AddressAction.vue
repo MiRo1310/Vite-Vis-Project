@@ -76,6 +76,7 @@ const city = ref(props.row.original.city ?? "");
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
   <Dialog v-model:open="dialogUpdateOpen">
+    <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
         <Input type="text" placeholder="Name" v-model:model-value="name" />

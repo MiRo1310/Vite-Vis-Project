@@ -4,6 +4,9 @@ import { ref } from "vue";
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
+import { useToast } from "@/components/ui/toast";
+
+const { toast } = useToast();
 
 const { mutate } = useMutation(
   graphql(`
@@ -35,6 +38,9 @@ const addAddressHandler = () => {
     name: name.value ?? "",
     street: street.value ?? "",
     city: city.value ?? "",
+  });
+  toast({
+    title: "Die Adresse wurde zur Liste hinzugefügt",
   });
   clearInputs();
 };
