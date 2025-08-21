@@ -24,5 +24,5 @@ export const getSelectableOptions = <T extends { name?: string | null } | undefi
   }
   const selectedItems = options.value(array);
 
-  return selectedItems.sort((a, b) => a.label.localeCompare(b.label));
+  return selectedItems.sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0));
 };

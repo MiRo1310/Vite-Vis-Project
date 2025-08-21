@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
-import Select, { SelectOption } from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/select.vue";
 import { colors } from "@/config/colors.ts";
 import { Button } from "@/components/shared/button";
 import { Trash2 } from "lucide-vue-next";
+import { SelectOption } from "@/types/types.ts";
 
 const props = defineProps<{
   index: number;
@@ -27,7 +28,7 @@ function update() {
   <Select
     v-model:selected-obj="selected"
     :items="colors"
-    :selected="selected?.label || selected?.val"
+    :selected="selected?.label || selected?.value"
     :class="['w-36 rounded-lg', `${selected?.class}`]"
     :disbale-hover="true"
     @update:selected-obj="update"

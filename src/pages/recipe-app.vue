@@ -17,7 +17,6 @@ import Toaster from "@/components/ui/toast/Toaster.vue";
 
 <style scoped>
 .app__background {
-  background-image: url("/cook.jpg");
   @apply relative w-full h-screen bg-cover bg-center;
 }
 

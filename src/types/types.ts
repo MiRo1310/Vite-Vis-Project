@@ -319,7 +319,7 @@ export interface ProductObjType {
 }
 
 export interface SelectOption {
-  val: string;
+  value: string;
   label?: string;
   class?: HTMLAttributes["class"];
 }

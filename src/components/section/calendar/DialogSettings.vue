@@ -8,9 +8,9 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
-import { SelectOption } from "@/components/shared/select/select.vue";
 import { colors } from "@/config/colors.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { SelectOption } from "@/types/types.ts";
 
 const open = defineModel<boolean>("open");
 

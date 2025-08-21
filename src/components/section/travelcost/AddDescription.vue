@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Input } from "@/components/shared/input";
 import { ref } from "vue";
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";

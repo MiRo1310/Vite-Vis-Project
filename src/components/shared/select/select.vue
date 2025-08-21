@@ -16,7 +16,7 @@ const selectedObj = defineModel<SelectOption>("selectedObj");
 
 watchEffect(() => {
   if (selected.value) {
-    selectedObj.value = props.items.find((item) => item.val === selected.value);
+    selectedObj.value = props.items.find((item) => item.value === selected.value);
   }
 });
 
@@ -42,13 +42,13 @@ function getFocusClass(item: SelectOption) {
           <SelectItem
             v-for="(item, index) in items"
             :key="index"
-            :value="item.val"
+            :value="item.value"
             :class="{
               [`${item?.class} border-${item?.class || 'accent'}`]: true,
               [`${getFocusClass(item)} focus:border-black focus:border-2`]: disbaleHover,
             }"
           >
-            {{ item.label || item.val }}
+            {{ item.label || item.value }}
           </SelectItem>
         </SelectGroup>
       </SelectContent>

@@ -5,7 +5,6 @@ import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { Input } from "@/components/shared/input";
 import { DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
 import { Textarea } from "@/components/ui/textarea";

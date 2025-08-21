@@ -39,7 +39,7 @@ const selectOptions = computed((): SelectOption[] => {
   return descriptions.map((d) => {
     return {
       label: d.text,
-      val: d.text,
+      value: d.text,
     };
   });
 });
