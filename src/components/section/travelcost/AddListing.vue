@@ -7,6 +7,7 @@ import { graphql } from "@/api/gql";
 import AddressOptions from "@/components/section/travelcost/AddressOptions.vue";
 import DescriptionOptions from "@/components/section/travelcost/DescriptionOptions.vue";
 import { useToast } from "@/components/ui/toast/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 const { toast } = useToast();
 
@@ -57,7 +58,8 @@ const addListingHandler = () => {
 <template>
   <div class="add-listing">
     <Input type="date" placeholder="Datum" v-model:model-value="date" class="add-listing__input-date" />
-    <DescriptionOptions v-model:model-value="description" class="add-listing__input" />
+    <DescriptionOptions v-model:model-value="description" :as-select="true" />
+    <Textarea placeholder="Beschreibung" v-model:model-value="description" />
     <Input type="number" placeholder="Betrag" v-model:model-value="price" class="add-listing__input" />
     <AddressOptions v-model:address-id="addressId" v-model:model-value="selectedName" />
     <Button icon="add" variant="outline" size="icon" @click="addListingHandler" />

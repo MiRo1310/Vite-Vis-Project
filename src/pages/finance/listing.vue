@@ -5,9 +5,11 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { graphql } from "@/api/gql";
 import { useQuery } from "@vue/apollo-composable";
 import AddListing from "@/components/section/travelcost/AddListing.vue";
-import TravelCostAction from "@/components/section/travelcost/TravelCostAction.vue";
+import ListingAction from "@/components/section/travelcost/ListingAction.vue";
 import { computed } from "vue";
 import Navigation from "@/components/section/travelcost/Navigation.vue";
+import ListingAddress from "@/components/section/travelcost/ListingAddress.vue";
+import DescriptionColumn from "@/components/section/travelcost/DescriptionColumn.vue";
 
 const { result } = useQuery(
   graphql(`
@@ -34,20 +36,16 @@ const columns: DatatableColumns[] = [
     labelKey: "Datum",
   },
   {
-    source: "address.name",
-    labelKey: "Name",
-  },
-  {
-    source: "address.street",
-    labelKey: "Straße",
-  },
-  {
     source: "address.city",
-    labelKey: "Ort",
+    labelKey: "Adresse",
+    type: "component",
+    component: ListingAddress,
   },
   {
     source: "description",
     labelKey: "Beschreibung",
+    type: "component",
+    component: DescriptionColumn,
   },
   {
     source: "price",
@@ -61,7 +59,7 @@ const columns: DatatableColumns[] = [
     labelKey: "Aktionen",
     className: "text-right",
     type: "component",
-    component: TravelCostAction,
+    component: ListingAction,
   },
 ];
 

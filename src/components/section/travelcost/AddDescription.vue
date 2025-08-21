@@ -5,6 +5,7 @@ import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";
+import { Textarea } from "@/components/ui/textarea";
 
 const { toast } = useToast();
 
@@ -42,8 +43,7 @@ const addDescriptionHandler = () => {
 
 <template>
   <div class="add-description">
-    <Input type="text" placeholder="Beschreibung" v-model:model-value="text" class="add-description__input" />
-
+    <Textarea placeholder="Beschreibung" v-model:model-value="text" class="add-description__textarea" />
     <Button icon="add" variant="outline" size="icon" @click="addDescriptionHandler" />
   </div>
 </template>
@@ -54,6 +54,10 @@ const addDescriptionHandler = () => {
 
   &__input {
     @apply w-[40rem];
+  }
+
+  &__textarea {
+    @apply h-24;
   }
 }
 </style>

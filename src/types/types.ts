@@ -244,7 +244,6 @@ export interface IobrokerState {
 }
 
 export type IobrokerStateValue = string | number | boolean;
-export type NullableState = null | IobrokerStateValue;
 
 export interface CalendarDayType {
   date: string;
@@ -290,6 +289,7 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 
 import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
+import { HTMLAttributes } from "vue";
 
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
@@ -318,18 +318,10 @@ export interface ProductObjType {
   id?: string;
 }
 
-export interface FormNewRecipeType {
-  name?: string;
-  portions?: number;
-  headers?: TextPositionType[];
-  textAreas?: TextPositionType[];
-  headersProductArray?: TextPositionType[];
-  productArray?: ProductObjType[];
-}
-
 export interface SelectOption {
-  value: string;
-  label: string;
+  val: string;
+  label?: string;
+  class?: HTMLAttributes["class"];
 }
 
 export interface HasOptionalNameAndId {
@@ -344,12 +336,6 @@ export interface FileData {
   url: string;
 }
 
-export interface ProductUnitVariants {
-  unit: string;
-  amount: number;
-  id?: string | null;
-}
-
 export interface TranslationObj {
   [key: string]: string | TranslationObj;
 }
@@ -360,3 +346,10 @@ export type Path<T> = T extends object
     }[keyof T]
   : "";
 type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
+
+export interface TableColumnProps<Value, RowType, CustomValue = string> {
+  value: Value;
+  row: RowType;
+  customValue: CustomValue;
+  source: string;
+}

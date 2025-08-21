@@ -9,6 +9,7 @@ import { Input } from "@/components/shared/input";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
 import AddressOptions from "@/components/section/travelcost/AddressOptions.vue";
+import { Textarea } from "@/components/ui/textarea";
 
 const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; customValue: unknown; source: string }>();
 const { mutate } = useMutation(
@@ -97,7 +98,7 @@ const modelValue = ref("");
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
         <Input type="date" placeholder="Datum" v-model:model-value="date" />
-        <Input type="text" placeholder="Beschreibung" v-model:model-value="description" />
+        <Textarea placeholder="Beschreibung" v-model:model-value="description" />
         <Input type="number" placeholder="Betrag" v-model:model-value="price" />
         <AddressOptions v-model:model-value="modelValue" :address-id />
       </div>

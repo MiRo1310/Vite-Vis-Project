@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { Input } from "@/components/shared/input";
 import { useQuery } from "@vue/apollo-composable";
-import { computed } from "vue";
+import { computed, watch, ref } from "vue";
 import { InputOptions } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
+import Select from "@/components/shared/select/select.vue";
+import { SelectOption } from "@/types/types.ts";
+
+defineProps<{ asSelect?: boolean }>();
 
 const { result } = useQuery(
   graphql(`
@@ -29,11 +33,38 @@ const options = computed((): InputOptions[] => {
   });
 });
 
+const selectOptions = computed((): SelectOption[] => {
+  const descriptions = result.value?.description ?? [];
+
+  return descriptions.map((d) => {
+    return {
+      label: d.text,
+      val: d.text,
+    };
+  });
+});
+
 const modelValue = defineModel<string>();
+
+watch(modelValue, () => {
+  if (modelValue.value === "") {
+    selected.value = "";
+  }
+});
+const selected = ref("");
 </script>
 
 <template>
+  <Select
+    v-if="asSelect"
+    :items="selectOptions"
+    @update:selected="modelValue = $event"
+    placeholder="Wähle eine Beschreibung"
+    :selected
+    class="w-48"
+  />
   <Input
+    v-else
     type="text"
     placeholder="Beschreibung"
     class="add-listing__input"
@@ -44,4 +75,8 @@ const modelValue = defineModel<string>();
   />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.select {
+  @apply w-16;
+}
+</style>

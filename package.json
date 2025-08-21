@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "build-production": "vue-tsc && vite build --mode production",
     "codegen": "graphql-codegen --config codegen.ts",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,.vue src --fix ",

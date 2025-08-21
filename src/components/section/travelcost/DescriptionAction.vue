@@ -8,6 +8,7 @@ import { ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
+import { Textarea } from "@/components/ui/textarea";
 
 const props = defineProps<{ value: string; row: Row<DescriptionsQuery["description"][number]>; customValue: unknown; source: string }>();
 const { mutate } = useMutation(
@@ -86,7 +87,7 @@ const description = ref(props.row.original.text ?? "");
     <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
-        <Input type="text" placeholder="Beschreibung" v-model:model-value="description" />
+        <Textarea placeholder="Beschreibung" v-model:model-value="description" class="textarea" />
       </div>
       <div class="flex gap-4 justify-end">
         <Button variant="outline" @click="update">Aktualisieren</Button>
@@ -96,4 +97,8 @@ const description = ref(props.row.original.text ?? "");
   </Dialog>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.textarea {
+  @apply h-40;
+}
+</style>
