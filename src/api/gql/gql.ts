@@ -46,7 +46,7 @@ type Documents = {
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateTravelCostDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
-    "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  ": typeof types.TravelCostDocument,
+    "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": typeof types.TravelCostDocument,
 };
 const documents: Documents = {
     "\n  mutation addCategory($name: String!) {\n    createProductCategory(dto: { name: $name }) {\n      data {\n        id\n        name\n      }\n      errorCode\n      isError\n    }\n  }\n": types.AddCategoryDocument,
@@ -81,7 +81,7 @@ const documents: Documents = {
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateTravelCostDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
-    "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  ": types.TravelCostDocument,
+    "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": types.TravelCostDocument,
 };
 
 /**
@@ -229,7 +229,7 @@ export function graphql(source: "\n    query Descriptions {\n      description {
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  "): (typeof documents)["\n    query TravelCost {\n      travelCost(order: { date: DESC }) {\n        id\n        addressId\n        date\n        description\n        price\n        address {\n          name\n          street\n          city\n        }\n      }\n    }\n  "];
+export function graphql(source: "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n"): (typeof documents)["\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

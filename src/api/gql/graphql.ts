@@ -40,6 +40,18 @@ export type AddressCreateDtoInput = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AddressFilterInput = {
+  and?: InputMaybe<Array<AddressFilterInput>>;
+  city?: InputMaybe<StringOperationFilterInput>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<AddressFilterInput>>;
+  street?: InputMaybe<StringOperationFilterInput>;
+  travelCost?: InputMaybe<ListFilterInputTypeOfTravelCostFilterInput>;
+};
+
 export type AddressSortInput = {
   city?: InputMaybe<SortEnumType>;
   createdAt?: InputMaybe<SortEnumType>;
@@ -56,6 +68,36 @@ export type AddressUpdateDtoInput = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type DateTimeOperationFilterInput = {
+  eq?: InputMaybe<Scalars['DateTime']['input']>;
+  gt?: InputMaybe<Scalars['DateTime']['input']>;
+  gte?: InputMaybe<Scalars['DateTime']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  lt?: InputMaybe<Scalars['DateTime']['input']>;
+  lte?: InputMaybe<Scalars['DateTime']['input']>;
+  neq?: InputMaybe<Scalars['DateTime']['input']>;
+  ngt?: InputMaybe<Scalars['DateTime']['input']>;
+  ngte?: InputMaybe<Scalars['DateTime']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  nlt?: InputMaybe<Scalars['DateTime']['input']>;
+  nlte?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type DecimalOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Decimal']['input']>;
+  gt?: InputMaybe<Scalars['Decimal']['input']>;
+  gte?: InputMaybe<Scalars['Decimal']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  lt?: InputMaybe<Scalars['Decimal']['input']>;
+  lte?: InputMaybe<Scalars['Decimal']['input']>;
+  neq?: InputMaybe<Scalars['Decimal']['input']>;
+  ngt?: InputMaybe<Scalars['Decimal']['input']>;
+  ngte?: InputMaybe<Scalars['Decimal']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  nlt?: InputMaybe<Scalars['Decimal']['input']>;
+  nlte?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
 export type Description = {
   __typename?: 'Description';
   id: Scalars['UUID']['output'];
@@ -67,6 +109,28 @@ export enum ErrorCode {
   NotFound = 'NOT_FOUND',
   Success = 'SUCCESS'
 }
+
+export type ListFilterInputTypeOfTravelCostFilterInput = {
+  all?: InputMaybe<TravelCostFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<TravelCostFilterInput>;
+  some?: InputMaybe<TravelCostFilterInput>;
+};
+
+export type LocalDateOperationFilterInput = {
+  eq?: InputMaybe<Scalars['LocalDate']['input']>;
+  gt?: InputMaybe<Scalars['LocalDate']['input']>;
+  gte?: InputMaybe<Scalars['LocalDate']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
+  lt?: InputMaybe<Scalars['LocalDate']['input']>;
+  lte?: InputMaybe<Scalars['LocalDate']['input']>;
+  neq?: InputMaybe<Scalars['LocalDate']['input']>;
+  ngt?: InputMaybe<Scalars['LocalDate']['input']>;
+  ngte?: InputMaybe<Scalars['LocalDate']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
+  nlt?: InputMaybe<Scalars['LocalDate']['input']>;
+  nlte?: InputMaybe<Scalars['LocalDate']['input']>;
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -346,6 +410,7 @@ export type QueryRecipeArgs = {
 
 export type QueryTravelCostArgs = {
   order?: InputMaybe<Array<TravelCostSortInput>>;
+  where?: InputMaybe<TravelCostFilterInput>;
 };
 
 
@@ -465,6 +530,21 @@ export enum SortEnumType {
   Desc = 'DESC'
 }
 
+export type StringOperationFilterInput = {
+  and?: InputMaybe<Array<StringOperationFilterInput>>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  endsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  ncontains?: InputMaybe<Scalars['String']['input']>;
+  nendsWith?: InputMaybe<Scalars['String']['input']>;
+  neq?: InputMaybe<Scalars['String']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  nstartsWith?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<StringOperationFilterInput>>;
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type TravelCost = {
   __typename?: 'TravelCost';
   address: Address;
@@ -482,6 +562,19 @@ export type TravelCostCreateDtoInput = {
   date?: InputMaybe<Scalars['LocalDate']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type TravelCostFilterInput = {
+  address?: InputMaybe<AddressFilterInput>;
+  addressId?: InputMaybe<UuidOperationFilterInput>;
+  and?: InputMaybe<Array<TravelCostFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  date?: InputMaybe<LocalDateOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<TravelCostFilterInput>>;
+  price?: InputMaybe<DecimalOperationFilterInput>;
 };
 
 export type TravelCostSortInput = {
@@ -518,6 +611,21 @@ export type UnitCreateDtoInput = {
 export type UnitUpdateDtoInput = {
   id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
+};
+
+export type UuidOperationFilterInput = {
+  eq?: InputMaybe<Scalars['UUID']['input']>;
+  gt?: InputMaybe<Scalars['UUID']['input']>;
+  gte?: InputMaybe<Scalars['UUID']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
+  lt?: InputMaybe<Scalars['UUID']['input']>;
+  lte?: InputMaybe<Scalars['UUID']['input']>;
+  neq?: InputMaybe<Scalars['UUID']['input']>;
+  ngt?: InputMaybe<Scalars['UUID']['input']>;
+  ngte?: InputMaybe<Scalars['UUID']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
+  nlt?: InputMaybe<Scalars['UUID']['input']>;
+  nlte?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 export type AddCategoryMutationVariables = Exact<{
@@ -740,7 +848,10 @@ export type DescriptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type DescriptionsQuery = { __typename?: 'Query', description: Array<{ __typename?: 'Description', text: string, id: string }> };
 
-export type TravelCostQueryVariables = Exact<{ [key: string]: never; }>;
+export type TravelCostQueryVariables = Exact<{
+  where?: InputMaybe<TravelCostFilterInput>;
+  order?: InputMaybe<Array<TravelCostSortInput> | TravelCostSortInput>;
+}>;
 
 
 export type TravelCostQuery = { __typename?: 'Query', travelCost: Array<{ __typename?: 'TravelCost', id: string, addressId?: string | null, date?: any | null, description?: string | null, price?: number | null, address: { __typename?: 'Address', name?: string | null, street?: string | null, city?: string | null } }> };
@@ -778,4 +889,4 @@ export const RemoveTravelCostDocument = {"kind":"Document","definitions":[{"kind
 export const UpdateTravelCostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTravelCost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"price"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Decimal"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"addressId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"date"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"LocalDate"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateTravelCost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"price"},"value":{"kind":"Variable","name":{"kind":"Name","value":"price"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"addressId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"addressId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"Variable","name":{"kind":"Name","value":"date"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateTravelCostMutation, UpdateTravelCostMutationVariables>;
 export const AddressesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AddressesQuery, AddressesQueryVariables>;
 export const DescriptionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DescriptionsQuery, DescriptionsQueryVariables>;
-export const TravelCostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TravelCost"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"travelCost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"date"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"addressId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}}]}}]}}]} as unknown as DocumentNode<TravelCostQuery, TravelCostQueryVariables>;
+export const TravelCostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TravelCost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TravelCostFilterInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TravelCostSortInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"travelCost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"addressId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}}]}}]}}]} as unknown as DocumentNode<TravelCostQuery, TravelCostQueryVariables>;
