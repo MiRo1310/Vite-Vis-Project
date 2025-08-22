@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import Select, { SelectOption } from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/select.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { SelectOption } from "@/types/types.ts";
 
 const { heatingControl } = useIobrokerStore();
 
@@ -13,19 +14,19 @@ const items = computed((): SelectOption[] => {
   return heatingControl.profileText?.val?.split(";").map((item: string, index: number) => {
     return {
       label: item,
-      val: heatingControl.profileValue?.val?.split(";")[index] || "",
+      value: heatingControl.profileValue?.val?.split(";")[index] || "",
     };
   });
 });
 
-const roomItems = computed((): { val: string; label: string }[] => {
+const roomItems = computed((): SelectOption[] => {
   if (!heatingControl.usedRoom?.val) {
     return [];
   }
   return heatingControl.usedRoom?.val?.split(";").map((item: string) => {
     return {
       label: item,
-      val: item,
+      value: item,
     };
   });
 });

@@ -6,8 +6,9 @@ const props = withDefaults(
     value: string | number | undefined;
     class?: HTMLAttributes["class"];
     size?: keyof typeof sizeClass;
+    unit?: string | null;
   }>(),
-  { class: "", size: "small" },
+  { class: "", size: "small", unit: "" },
 );
 
 const sizeClass = {
@@ -24,6 +25,6 @@ const sizeClass = {
       sizeClass[props.size as keyof typeof sizeClass],
     ]"
   >
-    {{ value }}
+    {{ value }} {{ unit }}
   </span>
 </template>

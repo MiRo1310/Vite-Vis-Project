@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { Primitive, type PrimitiveProps } from "radix-vue";
 
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
-import { buttonDefaults, buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
+import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
 
 interface Props extends PrimitiveProps, ButtonVariantProps {
   variant?: keyof typeof variants.variant;
@@ -15,7 +15,11 @@ interface Props extends PrimitiveProps, ButtonVariantProps {
 const props = withDefaults(defineProps<Props>(), {
   as: "button",
   class: "",
-  ...buttonDefaults,
+  variant: "outline",
+  size: "default",
+  action: "default",
+  text: "default",
+  icon: "default",
 });
 
 export type ButtonVariants = typeof variants;
@@ -51,6 +55,11 @@ const variants = {
     default: "",
     power: "power",
     powerOff: "powerOff",
+    add: "add",
+    chevronDown: "chevronDown",
+    chevronRight: "chevronRight",
+    edit: "edit",
+    remove: "remove",
   },
 };
 </script>

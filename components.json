@@ -4,13 +4,17 @@
   "typescript": true,
   "tailwind": {
     "config": "tailwind.config.js",
-    "css": "src/style.css",
-    "baseColor": "gray",
-    "cssVariables": true
+    "css": "src/assets/css/style.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
   },
-  "framework": "vite",
   "aliases": {
-    "components": "src/components",
-    "utils": "@/lib/utils"
-  }
+    "components": "@/components",
+    "composables": "@/composables",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib"
+  },
+  "iconLibrary": "lucide"
 }

@@ -1,18 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/ui/button/Button.vue";
-import {
-  BatteryFull,
-  CalendarDays,
-  ChartSpline,
-  CircleDot,
-  Heater,
-  Home,
-  Info,
-  LampCeiling,
-  Logs,
-  PlugZap,
-  Utensils,
-} from "lucide-vue-next";
+import { BatteryFull, CalendarDays, ChartSpline, CircleDot, Heater, Home, Info, LampCeiling, Logs, PlugZap, Utensils } from "lucide-vue-next";
 import NavActions from "@/components/layout/NavActions.vue";
 import { FunctionalComponent } from "vue";
 
@@ -77,8 +65,7 @@ const buttons: Buttons[] = [
   {
     icon: Utensils,
     text: "Rezepte",
-    link: "http://192.168.1.13/",
-    externalLink: true,
+    link: "/rezepte",
   },
 ];
 </script>

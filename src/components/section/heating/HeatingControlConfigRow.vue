@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { Checkbox } from "@/components/ui/checkbox";
-import Select, { SelectOption } from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/select.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { InputShadcn } from "@/components/ui/input";
+import { SelectOption } from "@/types/types.ts";
 
 export interface RowHeatingConfig {
   checkbox: { id: string | undefined; val: boolean | undefined };
