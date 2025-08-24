@@ -5,11 +5,11 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { InputOptions } from "@/components/shared/input/Input.vue";
 import { removeProductUnit } from "@/api/mutation/removeProductUnit";
 import { useMutation } from "@vue/apollo-composable";
-import { ProductsQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
+import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 
 type Units = ProductUnitCreateOrUpdateDtoInput[];
 
-const props = defineProps<{ options: InputOptions[]; data: NonNullable<ProductsQuery["products"][number]>["productUnits"]; defaultUnit: string }>();
+const props = defineProps<{ options: InputOptions[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
 
 const { mutate } = useMutation(removeProductUnit);
 
@@ -20,13 +20,13 @@ const variants = ref<Units>([]);
 onMounted(() => {
   if (props.data.length > 0) {
     variants.value = props.data
-      .filter((variant) => !variant.defaultUnit)
-      .map((variant) => ({ id: variant.id, unit: variant.unit, amount: variant.amount, defaultUnit: 0 })) as ProductUnitCreateOrUpdateDtoInput[];
+      .filter((variant) => !variant.isDefault)
+      .map((variant) => ({ id: variant.id, unit: variant.unit, amount: variant.amount })) as ProductUnitCreateOrUpdateDtoInput[];
   }
 });
 
 const addVariant = () => {
-  variants.value.push({ unit: "", amount: 0, defaultUnit: 0 });
+  variants.value.push({ unit: "", amount: 0 });
 };
 
 const updateValue = (index: number, param: "amount" | "unit", val?: string | number) => {
@@ -79,7 +79,13 @@ const deleteVariant = async ({ id, index }: { id?: string | null; index: number 
         options-id="units"
         @update:model-value="updateValue(index, 'unit', $event)"
       />
-      <Button icon="remove" size="icon" variant="outline" class="mt-4" @click.prevent="deleteVariant({ id: unitVariant?.id, index: index })" />
+      <Button
+        icon="remove"
+        size="icon"
+        variant="outline"
+        :class="{ 'mt-3': index === 0, '-mt-2': index }"
+        @click.prevent="deleteVariant({ id: unitVariant?.id, index: index })"
+      />
     </div>
   </div>
 </template>

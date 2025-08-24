@@ -5,7 +5,7 @@ import ProductAddCategory from "@/components/section/products/ProductAddCategory
 import ProductRenameCategory from "@/components/section/products/ProductRenameCategory.vue";
 import ProductDeleteCategory from "@/components/section/products/ProductDeleteCategory.vue";
 
-withDefaults(defineProps<{ id?: string }>(), { id: "" });
+withDefaults(defineProps<{ id?: string; width?: string }>(), { id: "", width: "w-80" });
 const emits = defineEmits(["update:removeCategory"]);
 
 const newCategory = ref("");
@@ -19,9 +19,10 @@ const categoryExists = ref(false);
       <div>
         <Input
           v-model:model-value="newCategory"
-          :class="{ 'border-2  border-accent w-80 ': true, 'border-destructive': categoryExists }"
+          :class="['border-2 border-accent', width, { 'border-destructive': categoryExists }]"
           placeholder="Kategorie hinzu oder ändern"
           @update:model-value="categoryExists = false"
+          type="text"
         />
         <p v-if="categoryExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
       </div>

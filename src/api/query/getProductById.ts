@@ -12,16 +12,14 @@ export const getProductById = graphql(`
       protein
       salt
       sugar
-      unit
-      amount
-        productUnits {      
+      productUnits {
         modifiedAt
         createdAt
         id
         productId
         amount
         unit
-        defaultUnit
+        isDefault
       }
     }
   }

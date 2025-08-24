@@ -12,6 +12,7 @@ const buttons: NavigationButtons[] = [
   { label: "Rezepte", name: "recipe" },
   { label: "Rezept erstellen", name: "new-recipe" },
   { label: "Produkte", name: "products" },
+  { label: "Einheiten", name: "units" },
 ];
 </script>
 

@@ -25,19 +25,21 @@ const result = computed((): ProductsQuery["products"][number] => {
 
 const calculatedKcal = computed(() => {
   const product = result.value;
-  if (product.kcal && product.amount) {
-    const kcal = (product.kcal / product.amount) * (props.ingredient.factor || 1) * Number(calculatedAmount.value);
-    updateVal(kcal);
-    return kcal;
+  // if (product.kcal && product.amount) {
+  if (product.kcal) {
+    //   const kcal = (product.kcal / product.amount) * (props.ingredient.factor || 1) * Number(calculatedAmount.value);
+    //   updateVal(kcal);
+    //    return kcal;
+    return 0;
   }
   return "N/A";
 });
 
-const updateVal = (kcal: number): void => {
-  calcKcal.value = kcal;
-};
+// const updateVal = (kcal: number): void => {
+//   calcKcal.value = kcal;
+// };
 
-const calcKcal = defineModel<number>("calcKcal");
+// const calcKcal = defineModel<number>("calcKcal");
 </script>
 
 <template>

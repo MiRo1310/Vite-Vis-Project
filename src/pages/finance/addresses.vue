@@ -3,10 +3,10 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
-import AddAddress from "@/components/section/travelcost/AddAddress.vue";
+import AddAddress from "@/components/section/finance/AddAddress.vue";
 import { Card } from "@/components/shared/card";
-import AddressAction from "@/components/section/travelcost/AddressAction.vue";
-import Navigation from "@/components/section/travelcost/Navigation.vue";
+import AddressAction from "@/components/section/finance/AddressAction.vue";
+import Navigation from "@/components/section/finance/Navigation.vue";
 
 const { result } = useQuery(
   graphql(`

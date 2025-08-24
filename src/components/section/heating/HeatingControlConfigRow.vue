@@ -24,7 +24,7 @@ export interface RowHeatingConfig {
 
 defineProps<{ row: RowHeatingConfig }>();
 
-const updateData = (val: string | number | boolean, id: string | undefined) => {
+const updateData = (val: string | number | boolean | undefined, id: string | undefined) => {
   if (!id) {
     return;
   }

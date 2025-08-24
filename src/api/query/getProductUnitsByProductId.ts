@@ -9,7 +9,6 @@ export const GetProductUnitsByProductId = graphql(`
       productId
       modifiedAt
       createdAt
-      defaultUnit
     }
   }
 `);

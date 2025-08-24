@@ -12,13 +12,12 @@ export const products = graphql(`
       protein
       salt
       sugar
-      amount
-      unit
       productUnits {
-        defaultUnit
         id
         unit
         amount
+        isDefault
+        faktor
       }
     }
   }

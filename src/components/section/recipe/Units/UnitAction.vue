@@ -4,35 +4,36 @@ import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { Input } from "@/components/shared/input";
-import { TravelCostQuery } from "@/api/gql/graphql.ts";
+import { GetUnitsQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
-import AddressOptions from "@/components/section/travelcost/AddressOptions.vue";
-import { Textarea } from "@/components/ui/textarea";
+import description from "@/pages/finance/description.vue";
+import { TableColumnProps } from "@/types/types.ts";
 
-const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; customValue: unknown; source: string }>();
+const props = defineProps<TableColumnProps<string, Row<GetUnitsQuery["units"][number]>>>();
+
 const { mutate } = useMutation(
   graphql(`
-    mutation RemoveTravelCost($id: UUID!) {
-      removeTravelCost(id: $id)
+    mutation DeleteUnit($id: UUID!) {
+      deleteUnit(id: $id)
     }
   `),
   {
-    refetchQueries: ["TravelCost"],
+    refetchQueries: ["GetUnits"],
   },
 );
 
 const { mutate: updateMutation } = useMutation(
   graphql(`
-    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {
-      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {
+    mutation UpdateUnit($id: UUID!, $name: String!) {
+      updateUnit(dto: { name: $name, id: $id }) {
         id
       }
     }
   `),
   {
-    refetchQueries: ["TravelCost"],
+    refetchQueries: ["GetUnits"],
   },
 );
 
@@ -40,51 +41,37 @@ const remove = () => {
   mutate(
     { id: props.value },
     {
-      refetchQueries: ["TravelCost"],
+      refetchQueries: ["GetUnits"],
     },
   );
 };
 
 const update = () => {
   dialogUpdateOpen.value = false;
-  if (!addressId.value) {
+  if (!props.value) {
     return;
   }
   updateMutation(
     {
       id: props.value,
-      date: date.value,
-      description: description.value,
-      price: Number(String(price.value)) ?? 0,
-      addressId: addressId.value,
+      name: name.value,
     },
     {
-      refetchQueries: ["TravelCost"],
+      refetchQueries: ["GetUnits"],
     },
   );
   clear();
 };
 
 const clear = () => {
-  date.value = "";
+  name.value = "";
   description.value = "";
-  price.value = "";
-  addressId.value = null;
-  modelValue.value = "";
 };
-
-onMounted(() => {
-  modelValue.value = props.row.original.address.name ?? "";
-});
 
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
-const date = ref(props.row.original.date ?? "");
-const description = ref(props.row.original.description ?? "");
-const price = ref(props.row.original.price ?? "");
-const addressId = ref<string | null>(props.row.original.addressId ?? null);
-const modelValue = ref("");
+const name = ref(props.row.original.name ?? "");
 </script>
 
 <template>
@@ -97,10 +84,7 @@ const modelValue = ref("");
     <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
-        <Input type="date" placeholder="Datum" v-model:model-value="date" />
-        <Textarea placeholder="Beschreibung" v-model:model-value="description" />
-        <Input type="number" placeholder="Betrag" v-model:model-value="price" />
-        <AddressOptions v-model:model-value="modelValue" :address-id />
+        <Input type="text" placeholder="Einheit" v-model:model-value="name" />
       </div>
       <div class="flex gap-4 justify-end">
         <Button variant="outline" @click="update">Aktualisieren</Button>

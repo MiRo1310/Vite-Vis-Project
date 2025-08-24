@@ -45,24 +45,24 @@ export const routes = [
   {
     path: "/recipe-app",
     redirectTo: "/recipe",
-    component: async () => await import("@/pages/recipe-app.vue"),
+    component: async () => await import("@/pages/recipe/recipe-app.vue"),
     children: [
-      { path: "/produkte", name: "products", component: () => import("@/pages/products.vue") },
-
+      { path: "/produkte", name: "products", component: () => import("@/pages/recipe/products.vue") },
+      { path: "/einheiten", name: "units", component: () => import("@/pages/recipe/units.vue") },
       {
         path: "/rezepte",
         name: "recipe",
-        component: () => import("@/pages/recipe.vue"),
+        component: () => import("@/pages/recipe/recipe.vue"),
         children: [
           {
             path: "/:recipeId",
             name: "recipe-details",
-            component: () => import("@/pages/recipe-details.vue"),
+            component: () => import("@/pages/recipe/recipe-details.vue"),
             props: true,
           },
         ],
       },
-      { path: "/neues_rezepte/:id?", name: "new-recipe", params: true, component: () => import("@/pages/new-recipe.vue") },
+      { path: "/neues_rezepte/:id?", name: "new-recipe", params: true, component: () => import("@/pages/recipe/new-recipe.vue") },
     ],
   },
   {

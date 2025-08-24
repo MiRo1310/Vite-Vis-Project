@@ -38,7 +38,7 @@ const information = computed((): { name: string; value?: string | number | null;
     { name: "Protein", value: product.protein },
     { name: "Salz", value: product.salt },
     { name: "Zucker", value: product.sugar },
-    { name: "pro", value: `${String(product.amount)} ${String(product.unit)}`, classCell: "bg-blue-300 px-2 pb-1 rounded-md" },
+    // { name: "pro", value: `${String(product.amount)} ${String(product.unit)}`, classCell: "bg-blue-300 px-2 pb-1 rounded-md" },
   ];
 });
 </script>

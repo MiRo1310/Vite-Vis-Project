@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { OnResult, TableCellTypes } from "@/types/types";
-import { GetProductByIdQuery, ProductsQuery } from "@/api/gql/graphql";
+import { GetProductByIdQuery } from "@/api/gql/graphql";
 import { Button } from "@/components/shared/button";
 import { ref } from "vue";
 import DialogAddProduct from "@/components/section/products/DialogAddProduct.vue";
 import { getProductById } from "@/api/query/getProductById";
 import { useLazyQuery } from "@vue/apollo-composable";
 
-type Product = ProductsQuery["products"][number];
+type Product = GetProductByIdQuery["product"];
 
 const props = defineProps<TableCellTypes<string, Product>>();
 

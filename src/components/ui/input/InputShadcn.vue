@@ -10,36 +10,38 @@ const props = withDefaults(
     defaultValue?: string | number;
     class?: HTMLAttributes["class"];
     type?: InputType;
+    placeholder?: string;
   }>(),
   {
     defaultValue: 0,
     class: "",
     type: "number",
+    placeholder: "",
   },
 );
 
-const modelValue = defineModel<string | number>("modelValue", {
-  default: 0,
-});
+const modelValue = defineModel<string | number>("modelValue");
 const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + 1);
 const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - 1);
 </script>
 
 <template>
-  <input
-    v-model="modelValue"
-    :type
-    :class="
-      twMerge([
-        'flex h-9 w-full border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input',
-        $props.class,
-      ])
-    "
-  />
-  <span v-if="props.type === 'number'" class="mr-1">
-    <ChevronUp class="icon" @click="countUp" />
-    <ChevronDown class="icon" @click="countDown" />
-  </span>
+  <div :class="['relative', props.class]">
+    <input
+      v-model="modelValue"
+      :type
+      :placeholder
+      :class="
+        twMerge([
+          'flex h-9 w-full border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input relative',
+        ])
+      "
+    />
+    <span v-if="props.type === 'number'" class="mr-1 absolute right-1 top-2">
+      <ChevronUp class="icon" @click="countUp" />
+      <ChevronDown class="icon" @click="countDown" />
+    </span>
+  </div>
 </template>
 
 <style scoped lang="scss">

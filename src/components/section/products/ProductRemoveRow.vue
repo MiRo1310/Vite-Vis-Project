@@ -6,12 +6,18 @@ import { Trash } from "lucide-vue-next";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";
-import { products } from "@/api/query/products";
-import { removeProduct } from "@/api/mutation/removeProduct";
+import { graphql } from "@/api/gql";
 
 const props = defineProps<TableCellTypes<string, ProductsQuery>>();
 
-const { mutate } = useMutation(removeProduct, { refetchQueries: [products] });
+const { mutate } = useMutation(
+  graphql(`
+    mutation removeProduct($id: UUID!) {
+      removeProduct(id: $id)
+    }
+  `),
+  { refetchQueries: ["GetProducts"] },
+);
 
 const remove = async () => {
   if (!props.value) return;

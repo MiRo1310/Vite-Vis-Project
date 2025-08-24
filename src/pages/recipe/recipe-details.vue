@@ -3,8 +3,8 @@ import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
 import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
 import { onMounted, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
-import { getRecipeById } from "@/api/query/getRecipeById";
-import { useRecipeStore } from "@/store/recipeStore";
+import { getRecipeById } from "@/api/query/getRecipeById.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 
 const props = defineProps<{ recipeId?: string }>();
 

@@ -22,8 +22,4 @@ export const translationObject = {
       productProperties: "Produkt Eigenschaften",
     },
   },
-  products: {
-    title: "Produkte",
-    description: "{length} Produkte sind in der Datenbank",
-  },
 };

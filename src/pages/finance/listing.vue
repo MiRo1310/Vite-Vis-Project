@@ -4,13 +4,13 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { graphql } from "@/api/gql";
 import { useLazyQuery } from "@vue/apollo-composable";
-import AddListing from "@/components/section/travelcost/AddListing.vue";
-import ListingAction from "@/components/section/travelcost/ListingAction.vue";
+import AddListing from "@/components/section/finance/AddListing.vue";
+import ListingAction from "@/components/section/finance/ListingAction.vue";
 import { computed, onMounted, ref } from "vue";
-import Navigation from "@/components/section/travelcost/Navigation.vue";
-import ListingAddress from "@/components/section/travelcost/ListingAddress.vue";
-import DescriptionColumn from "@/components/section/travelcost/DescriptionColumn.vue";
-import ListingFilter from "@/components/section/travelcost/ListingFilter.vue";
+import Navigation from "@/components/section/finance/Navigation.vue";
+import ListingAddress from "@/components/section/finance/ListingAddress.vue";
+import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
+import ListingFilter from "@/components/section/finance/ListingFilter.vue";
 import { SortEnumType, TravelCostFilterInput } from "@/api/gql/graphql.ts";
 
 const filter = computed((): TravelCostFilterInput => {
