@@ -100,6 +100,8 @@ const form = useForm({
   validationSchema: formSchema,
 });
 
+const activeUnit = ref<string>();
+
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
 
@@ -109,9 +111,10 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
     recipeProducts: values.productArray,
+    activeUnit: activeUnit.value,
   };
 
-  if (props.recipeId == "new") {
+  if (props.recipeId == "new" || props.recipeId === "undefined" || !props.recipeId) {
     const result = await mutate({ dto });
 
     const recipeId = result?.data?.createRecipe.id;
@@ -250,6 +253,7 @@ const addDescription = () => {
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
+              v-model:active-unit="activeUnit"
               :recipe="loadedRecipe"
               :group-index="index"
             />

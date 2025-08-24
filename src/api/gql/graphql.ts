@@ -331,6 +331,7 @@ export type ProductCreateDtoInput = {
 
 export type ProductUnit = {
   __typename?: 'ProductUnit';
+  active: Scalars['Boolean']['output'];
   amount?: Maybe<Scalars['Decimal']['output']>;
   createdAt: Scalars['DateTime']['output'];
   faktor: Scalars['Decimal']['output'];
@@ -430,6 +431,7 @@ export type Recipe = {
 };
 
 export type RecipeCreateDtoInput = {
+  activeUnit: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
   portions: Scalars['Int']['input'];
   recipeDescriptions?: InputMaybe<Array<InputMaybe<RecipeDescriptionCreateOrUpdateDtoInput>>>;
@@ -508,6 +510,7 @@ export type RecipeProductsCreateDtoInput = {
 };
 
 export type RecipeUpdateDtoInput = {
+  activeUnit: Scalars['UUID']['input'];
   id: Scalars['UUID']['input'];
   name?: InputMaybe<Scalars['String']['input']>;
   portions?: InputMaybe<Scalars['Int']['input']>;

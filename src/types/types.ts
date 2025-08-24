@@ -316,6 +316,7 @@ export interface ProductObjType {
   productPosition: number;
   groupPosition: number;
   id?: string;
+  activeUnit: string;
 }
 
 export interface SelectOption {

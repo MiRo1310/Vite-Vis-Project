@@ -21,13 +21,14 @@ const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["rec
 const countedProductGroups = defineModel<number>("countedProductGroups");
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
+const activeUnit = defineModel<string>("activeUnit");
 
 const { mutate: mutationRemoveRecipeProduct } = useMutation(removeRecipeProduct);
 const { mutate } = useMutation(removeProductGroupMutation);
 
 const { result: productUnits } = useQuery(GetProductUnits);
 
-const getProductByPositions = (productIndex: number, groupIndex: number) =>
+const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType =>
   productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === groupIndex);
 
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
@@ -42,12 +43,16 @@ const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<Produ
       unit: "",
       productPosition: productIndex,
       groupPosition: props.groupIndex,
+      activeUnit: "",
       factor: null,
       unitVariants: null,
     };
     saveValToItem(newItem, target, val);
     productArray.value.push(newItem);
     return;
+  }
+  if (target === "unit") {
+    activeUnit.value = selectableOptions.value(productIndex).find((variant) => variant.value === val).id;
   }
   saveValToItem(obj, target, val);
 };
@@ -176,6 +181,7 @@ const selectableOptions = computed(() => (index: number): SelectOption[] => {
     unitVariants?.map((variant) => ({
       value: variant.unit,
       label: variant.unit,
+      id: variant.id,
     })) ?? []
   );
 });
@@ -259,7 +265,6 @@ const useProductCards = (productIndex: number) => {
             :name="`amount-${groupIndex}-${productIndex}`"
             @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: productIndex })"
           />
-
           <FormSelect
             v-if="selectableOptions(productIndex).length"
             label=""

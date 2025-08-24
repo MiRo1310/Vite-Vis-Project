@@ -19,7 +19,6 @@ const updateName = (value?: string) => {
   if (item && value) {
     item.productId = value;
     const product = result.value?.find((product) => product?.id === getValue.value(props.productIndex, "productId"));
-    item.unit = product?.unit ?? "";
   }
 };
 
