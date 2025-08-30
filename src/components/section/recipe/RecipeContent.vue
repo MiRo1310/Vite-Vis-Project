@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { GetRecipeByIdQuery } from "@/api/gql/graphql";
+import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import RecipeTexts from "@/components/section/recipe/RecipeTexts.vue";
 import RecipeIngredients from "@/components/section/recipe/RecipeIngredients.vue";
 
-defineProps<{ resultRecipeById?: GetRecipeByIdQuery }>();
+defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"] }>();
 </script>
 
 <template>
-  <PageSection v-if="resultRecipeById?.recipe" class="recipe__content-wrapper">
-    <RecipeTexts :descriptions="resultRecipeById?.recipe?.recipeDescriptions || []" />
-    <RecipeIngredients
-      :ingredients="resultRecipeById.recipe.recipeProducts || []"
-      :headers="resultRecipeById.recipe.recipeHeaderProducts || []"
-      :portions="resultRecipeById.recipe.portions || 1"
-    />
+  <PageSection v-if="recipe" class="recipe__content-wrapper">
+    <RecipeTexts :descriptions="recipe?.recipeDescriptions || []" />
+    <RecipeIngredients :recipe />
   </PageSection>
 </template>
 

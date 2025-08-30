@@ -20,6 +20,8 @@ import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
 import { translation } from "@/lib/translation";
 
+type RecipeType = GetRecipeByIdQuery["recipe"];
+
 const router = useRouter();
 const props = defineProps<{ recipeId?: string }>();
 
@@ -28,6 +30,15 @@ const { mutate } = useMutation(addRecipe);
 const { mutate: updateMutate } = useMutation(updateRecipe);
 
 const { load, onResult } = useLazyQuery(getRecipeById);
+
+onResult((result: OnResult<GetRecipeByIdQuery>) => {
+  if (!result.data?.recipe) return;
+  const response = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
+
+  recipe.value = response;
+  setValuesToForm(response);
+  updateValue.value = true;
+});
 
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
@@ -45,20 +56,13 @@ onMounted(async () => {
   }
 });
 
-const getRecipeProductObj = (recipe?: RecipeType): Omit<RecipeCreateDtoInput, "portions"> & { portions?: number } => {
-  if (recipe) {
-    return {
-      name: recipe.name,
-      portions: recipe.portions ?? 0,
-      recipeDescriptions: recipe.recipeDescriptions,
-      recipeHeaderProducts: recipe.recipeHeaderProducts,
-      recipeProducts: recipe.recipeProducts,
-    };
-  }
-  return {
-    name: "",
-  };
-};
+const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => ({
+  name: recipe?.name ?? "",
+  portions: recipe?.portions ?? 1,
+  recipeDescriptions: recipe?.recipeDescriptions ?? [],
+  recipeHeaderProducts: recipe?.recipeHeaderProducts ?? [],
+  recipeProducts: recipe?.recipeProducts ?? [],
+});
 
 const setValuesToForm = (recipe?: RecipeType) => {
   if (!recipe) return;
@@ -67,30 +71,19 @@ const setValuesToForm = (recipe?: RecipeType) => {
   descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
   headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
 
-  productArray.value = recipe.recipeProducts.map((item) => {
-    return {
-      amount: item.amount || 0,
-      description: item.description,
-      groupPosition: item.groupPosition,
-      productId: item.productId,
-      productPosition: item.productPosition,
-      unit: item.unit,
-      id: item.id,
-    };
-  });
+  productArray.value = recipe.recipeProducts.map((item) => ({
+    amount: item.amount || 0,
+    description: item.description,
+    groupPosition: item.groupPosition,
+    productId: item.productId,
+    productPosition: item.productPosition,
+    unit: item.unit,
+    id: item.id,
+    activeUnitId: item.activeUnitId ?? "",
+  }));
 };
-type RecipeType = GetRecipeByIdQuery["recipe"];
 
-const loadedRecipe = ref<RecipeType>();
-
-onResult((result: OnResult<GetRecipeByIdQuery>) => {
-  if (!result.data?.recipe) return;
-  const recipe: RecipeType | undefined = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
-
-  loadedRecipe.value = recipe;
-  setValuesToForm(recipe);
-  updateValue.value = true;
-});
+const recipe = ref<RecipeType>();
 
 const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
@@ -100,18 +93,14 @@ const form = useForm({
   validationSchema: formSchema,
 });
 
-const activeUnit = ref<string>();
-
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
-
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
     recipeProducts: values.productArray,
-    activeUnit: activeUnit.value,
   };
 
   if (props.recipeId == "new" || props.recipeId === "undefined" || !props.recipeId) {
@@ -156,23 +145,24 @@ const goBack = async (id: string) => {
   }
 };
 
+const defaultProduct: ProductObjType = {
+  productId: "",
+  description: "",
+  amount: 0,
+  unit: "",
+  productPosition: 1,
+  groupPosition: 1,
+  id: undefined,
+  activeUnitId: "",
+};
+
 const resetForm = () => {
   form.resetForm();
   form.setValues(getRecipeProductObj());
   resetRecipeInStore();
   descriptions.value = [{ position: 1, text: "", header: "" }];
   headersProductArray.value = [];
-  productArray.value = [
-    {
-      productId: "",
-      description: "",
-      amount: 0,
-      unit: "",
-      productPosition: 1,
-      groupPosition: 1,
-      id: undefined,
-    },
-  ];
+  productArray.value = [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -186,17 +176,7 @@ const enterPress = async () => {
 
 const descriptions = ref<RecipeDescriptionCreateOrUpdateDtoInput[]>([]);
 const headersProductArray = ref<TextPositionType[]>([]);
-const productArray = ref<ProductObjType[]>([
-  {
-    productId: "",
-    description: "",
-    amount: 0,
-    unit: "",
-    productPosition: 1,
-    groupPosition: 1,
-    id: undefined,
-  },
-]);
+const productArray = ref<ProductObjType[]>([defaultProduct]);
 
 watch(
   descriptions,
@@ -235,6 +215,8 @@ const addDescription = () => {
 
 <template>
   <div class="new-recipe">
+    {{ form.errors }}
+    {{ productArray }}
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
       <div class="new-recipe__form-inner">
         <div class="new-recipe__left-col">
@@ -253,8 +235,7 @@ const addDescription = () => {
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
-              v-model:active-unit="activeUnit"
-              :recipe="loadedRecipe"
+              :recipe="recipe"
               :group-index="index"
             />
           </div>

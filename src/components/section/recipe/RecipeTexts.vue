@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { GetRecipeByIdQuery } from "@/api/gql/graphql";
+import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import { getElementByPosition } from "@/components/section/new-recipe/utils";
 
-type DescriptionType = NonNullable<GetRecipeByIdQuery["recipe"]>["recipeDescriptions"];
+type DescriptionType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeDescriptions"];
 
 defineProps<{ descriptions: DescriptionType }>();
 </script>

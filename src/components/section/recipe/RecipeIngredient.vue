@@ -1,45 +1,22 @@
 <script setup lang="ts">
-import { useProducts } from "@/composables/querys/products";
 import RecipeProductProperties from "@/components/section/recipe/RecipeProductProperties.vue";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { translation } from "@/lib/translation";
-import { GetRecipeByIdQuery, ProductsQuery } from "@/api/gql/graphql";
+import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 
-type Ingredient = NonNullable<GetRecipeByIdQuery["recipe"]>["recipeProducts"][number];
+type Ingredient = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number];
 
 const props = defineProps<{ ingredient: Ingredient; customPortions: number; portions: number }>();
 
-const { getProductResultById, getProductNameById } = useProducts();
+const faktor = computed(() => props.customPortions / props.portions);
 
 const calculatedAmount = computed(() => {
-  return props.ingredient.amount ? ((props.ingredient.amount / props.portions) * props.customPortions).toFixed(2) : 0;
-});
-
-const result = computed((): ProductsQuery["products"][number] => {
-  if (props.ingredient.productId) {
-    return getProductResultById(props.ingredient.productId) ?? ({} as ProductsQuery["products"][number]);
-  }
-  return {} as ProductsQuery["products"][number];
+  return props.ingredient.amount ? (props.ingredient.amount * faktor.value).toFixed(2) : 0;
 });
 
 const calculatedKcal = computed(() => {
-  const product = result.value;
-  // if (product.kcal && product.amount) {
-  if (product.kcal) {
-    //   const kcal = (product.kcal / product.amount) * (props.ingredient.factor || 1) * Number(calculatedAmount.value);
-    //   updateVal(kcal);
-    //    return kcal;
-    return 0;
-  }
-  return "N/A";
+  return props.ingredient.kcal ? (props.ingredient.kcal * faktor.value).toFixed(0) : 0;
 });
-
-// const updateVal = (kcal: number): void => {
-//   calcKcal.value = kcal;
-// };
-
-// const calcKcal = defineModel<number>("calcKcal");
 </script>
 
 <template>
@@ -47,17 +24,13 @@ const calculatedKcal = computed(() => {
     <div class="ingredient__row-header">
       <div class="ingredient__section">
         <div class="ingredient__text">
-          <p v-if="result?.id" class="ingredient__name">{{ getProductNameById(result.id) }}</p>
+          <p class="ingredient__name">{{ ingredient?.product?.name }}</p>
           <p class="ingredient__description">{{ ingredient?.description }}</p>
         </div>
         <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
       </div>
       <div>
-        <Badge
-          :value="typeof calculatedKcal === 'number' ? calculatedKcal.toFixed(2) : calculatedKcal"
-          :unit="translation('recipe.ingredient.badgeUnit2')"
-          class="ingredient__badge"
-        />
+        <Badge :value="calculatedKcal" unit="kcal" class="ingredient__badge" />
       </div>
     </div>
 

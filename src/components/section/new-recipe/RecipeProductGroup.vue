@@ -21,14 +21,13 @@ const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["rec
 const countedProductGroups = defineModel<number>("countedProductGroups");
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
-const activeUnit = defineModel<string>("activeUnit");
 
 const { mutate: mutationRemoveRecipeProduct } = useMutation(removeRecipeProduct);
 const { mutate } = useMutation(removeProductGroupMutation);
 
 const { result: productUnits } = useQuery(GetProductUnits);
 
-const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType =>
+const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType | undefined =>
   productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === groupIndex);
 
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
@@ -43,16 +42,26 @@ const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<Produ
       unit: "",
       productPosition: productIndex,
       groupPosition: props.groupIndex,
-      activeUnit: "",
       factor: null,
       unitVariants: null,
+      activeUnitId: "",
     };
+    if (target === "unit") {
+      const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
+      if (id) {
+        saveValToItem(newItem, "activeUnitId", id);
+      }
+    }
     saveValToItem(newItem, target, val);
     productArray.value.push(newItem);
     return;
   }
+
   if (target === "unit") {
-    activeUnit.value = selectableOptions.value(productIndex).find((variant) => variant.value === val).id;
+    const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
+    if (id) {
+      saveValToItem(obj, "activeUnitId", id);
+    }
   }
   saveValToItem(obj, target, val);
 };
@@ -156,6 +165,7 @@ const addNewProduct = () => {
     unit: "",
     productPosition: countedProducts.value + 1,
     groupPosition: props.groupIndex,
+    activeUnitId: "",
   });
 
   // ProductIndex is not needed here

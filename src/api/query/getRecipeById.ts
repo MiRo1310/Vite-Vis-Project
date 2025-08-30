@@ -16,6 +16,11 @@ export const getRecipeById = graphql(`
         productPosition
         unit
         id
+        kcal
+        activeUnitId
+        product {
+          name
+        }
       }
       recipeDescriptions {
         position

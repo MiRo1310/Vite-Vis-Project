@@ -12,6 +12,7 @@ export const products = graphql(`
       protein
       salt
       sugar
+      kcal
       productUnits {
         id
         unit
