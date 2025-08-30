@@ -48,7 +48,14 @@ const columns: DatatableColumns[] = [
   { source: "protein", labelKey: "Protein", type: "number" },
   { source: "salt", labelKey: "Salz", type: "number" },
   { source: "sugar", labelKey: "Zucker", type: "number", unit: "g" },
-  { source: "id", labelKey: "", accessorKey: "remove", type: "component", component: ProductEditRow, headerClass: "w-10" },
+  {
+    source: "id",
+    labelKey: "",
+    accessorKey: "remove",
+    type: "component",
+    component: ProductEditRow,
+    headerClass: "w-10",
+  },
   { source: "id", labelKey: "", accessorKey: "remove", type: "component", component: ProductRemoveRow, headerClass: "w-10" },
 ];
 

@@ -46,7 +46,7 @@ const information = computed((): { name: string; value?: string | number | null;
 <template>
   <CollapsibleShared v-model:open="isOpen" :class="{ 'product-properties__collapsible--close': !isOpen }">
     <template #trigger>
-      <Button as="div" size="icon" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
+      <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
     </template>
     <template #content>
       <p class="product-properties__title">{{ translation("recipe.ingredient.productProperties") }}</p>
@@ -60,25 +60,35 @@ const information = computed((): { name: string; value?: string | number | null;
   </CollapsibleShared>
 </template>
 
-<style scoped>
-.product-properties__trigger {
-  @apply absolute right-2 top-1;
-}
-.product-properties__title {
-  @apply my-2;
-}
-.product-properties__info-wrapper {
-  @apply flex space-x-6 bg-accent p-2;
-}
-.product-properties__info-name {
-  @apply font-bold text-sm text-muted-foreground min-h-8;
-}
-.product-properties__info-value {
-  @apply whitespace-nowrap;
+<style scoped lang="scss">
+.product-properties {
+  &__trigger {
+    @apply z-10 absolute left-[1px] top-[1px];
+  }
+
+  &__title {
+    @apply my-2 ml-1;
+  }
+
+  &__info-wrapper {
+    @apply flex space-x-6 bg-accent p-2 mx-1;
+  }
+
+  &__info-name {
+    @apply font-bold text-sm text-muted-foreground min-h-8;
+  }
+
+  &__info-value {
+    @apply whitespace-nowrap;
+  }
 }
 </style>
-<style>
-.product-properties__collapsible--close {
-  @apply h-0;
+<style lang="scss">
+.product-properties {
+  &__collapsible {
+    &--close {
+      @apply h-0;
+    }
+  }
 }
 </style>

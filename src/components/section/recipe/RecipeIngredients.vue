@@ -11,19 +11,6 @@ type RecipeType = GetRecipeDetailsQuery["recipe"];
 
 const props = defineProps<{ recipe: RecipeType }>();
 
-const calcKcal = ref<Record<number, number[] | undefined>>({});
-
-const updateKcal = ({ kcal, index, i }: { kcal?: number; index: number; i: number }) => {
-  if (!calcKcal.value[index]) {
-    calcKcal.value[index] = [];
-  }
-  if (!kcal) {
-    return;
-  }
-
-  calcKcal.value[index][i] = kcal;
-};
-
 const customPortions = ref(props.recipe?.portions ?? 1);
 const portions = ref(props.recipe?.portions ?? 1);
 
@@ -36,7 +23,12 @@ const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / customPort
 const getTotalKcalForSection = computed(
   () =>
     (index: number): number =>
-      calcKcal.value[index]?.reduce((acc, curr) => acc + curr, 0) ?? 0,
+      props.recipe?.recipeProducts.reduce((acc, curr) => {
+        if (curr.groupPosition == index + 1) {
+          return acc + (curr.kcal ?? 0);
+        }
+        return acc;
+      }, 0) ?? 0,
 );
 
 const getIngredientGroupLength = computed(() => {
@@ -67,20 +59,10 @@ const getIngredientGroupLength = computed(() => {
         <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">
           {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
         </p>
-        <Badge
-          v-if="getTotalKcalForSection(index) > 0"
-          :value="(getTotalKcalForSection(index) / customPortions).toFixed(2)"
-          :unit="translation('recipe.ingredient.badgeUnit')"
-        />
+        <Badge :value="(getTotalKcalForSection(index) * (customPortions / portions)).toFixed(2)" :unit="translation('recipe.ingredient.badgeUnit')" />
       </div>
       <div v-for="(ingredient, i) in filteredIngredients(index)" :key="i">
-        <RecipeIngredient
-          v-if="ingredient"
-          :ingredient
-          :custom-portions
-          :portions
-          @update:calc-kcal="updateKcal({ kcal: $event, index: index, i: i })"
-        />
+        <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />
       </div>
     </div>
   </div>
@@ -94,7 +76,7 @@ const getIngredientGroupLength = computed(() => {
   @apply font-bold text-xl;
 }
 .ingredients__header {
-  @apply flex items-center justify-between mt-2 mr-2;
+  @apply flex items-center justify-between mt-2 mr-1;
 }
 .ingredients__header-badge-label {
   @apply mr-2;
@@ -106,7 +88,7 @@ const getIngredientGroupLength = computed(() => {
   @apply bg-white w-16;
 }
 .ingredients__section {
-  @apply mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-2 py-1;
+  @apply mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-1 py-1;
 }
 .ingredients__section-title {
   @apply font-semibold underline;

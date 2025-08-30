@@ -27,9 +27,9 @@ const calculatedKcal = computed(() => {
           <p class="ingredient__name">{{ ingredient?.product?.name }}</p>
           <p class="ingredient__description">{{ ingredient?.description }}</p>
         </div>
-        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
       </div>
-      <div>
+      <div class="ingredient__badge-section">
+        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
         <Badge :value="calculatedKcal" unit="kcal" class="ingredient__badge" />
       </div>
     </div>
@@ -41,7 +41,7 @@ const calculatedKcal = computed(() => {
 <style scoped lang="scss">
 .ingredient {
   &__row {
-    @apply p-[2px] relative rounded-none m-0 bg-white;
+    @apply py-[2px] relative rounded-none m-0 bg-white;
     @apply border border-accent;
   }
 
@@ -54,7 +54,7 @@ const calculatedKcal = computed(() => {
   }
 
   &__text {
-    @apply flex items-baseline space-x-4 min-w-80;
+    @apply ml-6 flex items-baseline space-x-4 min-w-80;
   }
 
   &__name {
@@ -65,8 +65,8 @@ const calculatedKcal = computed(() => {
     @apply text-xs;
   }
 
-  &__badge {
-    @apply mr-10;
+  &__badge-section {
+    @apply flex items-center gap-2 mr-1;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Primitive, type PrimitiveProps } from "radix-vue";
-
+import { ref, onMounted } from "vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
 
@@ -39,6 +39,7 @@ const variants = {
     sm: "h-8 rounded-md px-3 text-xs",
     lg: "h-10 rounded-md px-8",
     icon: "h-9 w-9",
+    iconRow: "h-5 w-5 p-[2px]",
     square: "h-28 w-28 rounded-md",
   },
   action: {
@@ -62,12 +63,20 @@ const variants = {
     remove: "remove",
   },
 };
+
+const buttonChild = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  if (props.size === "iconRow" && buttonChild.value) {
+    buttonChild.value.closest("td")?.querySelector("div")?.classList.add("btn__row-center");
+  }
+});
 </script>
 
 <template>
   <Primitive :as="as" :as-child="asChild" :class="['btn', getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']), props.class]">
     <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
-    <span :class="variants.text[props.text]">
+    <span ref="buttonChild" :class="variants.text[props.text]">
       <slot />
     </span>
   </Primitive>
@@ -82,5 +91,11 @@ const variants = {
   &__multiline {
     @apply text-xs text-muted-foreground text-wrap;
   }
+}
+</style>
+
+<style lang="scss">
+.btn__row-center {
+  @apply flex items-center justify-end my-[1px] w-full;
 }
 </style>
