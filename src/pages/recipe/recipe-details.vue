@@ -14,6 +14,7 @@ const recipeDetailsQuery = graphql(`
       id
       name
       portions
+      totalKcal
       recipeProducts {
         amount
         description

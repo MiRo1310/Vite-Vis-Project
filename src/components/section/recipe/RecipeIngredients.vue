@@ -7,7 +7,9 @@ import { computed, ref } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { translation } from "@/lib/translation";
 
-const props = defineProps<{ recipe: GetRecipeDetailsQuery["recipe"] }>();
+type RecipeType = GetRecipeDetailsQuery["recipe"];
+
+const props = defineProps<{ recipe: RecipeType }>();
 
 const calcKcal = ref<Record<number, number[] | undefined>>({});
 
@@ -25,20 +27,11 @@ const updateKcal = ({ kcal, index, i }: { kcal?: number; index: number; i: numbe
 const customPortions = ref(props.recipe?.portions ?? 1);
 const portions = ref(props.recipe?.portions ?? 1);
 
-const filteredIngredients = computed(() => (index: number) => {
-  return props.recipe?.recipeProducts.filter((ingredient) => ingredient.groupPosition === index + 1);
-});
+const filteredIngredients = computed(
+  () => (index: number) => props.recipe?.recipeProducts.filter((ingredient) => ingredient.groupPosition === index + 1),
+);
 
-const getTotalKcal = computed(() => {
-  return (
-    Object.values(calcKcal.value).reduce((kcal, value) => {
-      if (value?.length) {
-        return kcal + value.reduce((acc, item) => acc + item, 0);
-      }
-      return kcal;
-    }, 0) / customPortions.value
-  ).toFixed(2);
-});
+const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / customPortions.value).toFixed(2));
 
 const getTotalKcalForSection = computed(
   () =>
@@ -58,20 +51,22 @@ const getIngredientGroupLength = computed(() => {
 
 <template>
   <div class="ingredients">
-    <h2 class="ingredients__title">{{ translation("recipe.ingredient.title", { portions }) }}</h2>
+    <h2 class="ingredients__title">Zutaten für {{ portions }} Portionen</h2>
     <div class="ingredients__header">
       <div class="ingredients__input-wrapper">
         <Input v-model:model-value="customPortions" class="ingredients__portion-input" type="number" />
-        <label>{{ translation("recipe.ingredient.inputLabel") }}</label>
+        <label>Portionen anpassen</label>
       </div>
       <div>
-        <label class="ingredients__header-badge-label">{{ translation("recipe.ingredient.badgeLabel") }}</label>
-        <Badge :value="getTotalKcal" unit="kcal/p" />
+        <label class="ingredients__header-badge-label">Gesamt Kalorien pro Portion</label>
+        <Badge :value="getTotalKcal" unit="kcal" />
       </div>
     </div>
     <div v-for="(_, index) in getIngredientGroupLength" :key="index">
       <div class="ingredients__section">
-        <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">{{ sortedHeaders(recipe?.recipeHeaderProducts)?.[index]?.text }}</p>
+        <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">
+          {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
+        </p>
         <Badge
           v-if="getTotalKcalForSection(index) > 0"
           :value="(getTotalKcalForSection(index) / customPortions).toFixed(2)"
@@ -111,7 +106,7 @@ const getIngredientGroupLength = computed(() => {
   @apply bg-white w-16;
 }
 .ingredients__section {
-  @apply mt-2 mb-1 flex items-center justify-between bg-white/70 px-2 py-1;
+  @apply mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-2 py-1;
 }
 .ingredients__section-title {
   @apply font-semibold underline;
