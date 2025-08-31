@@ -30,6 +30,8 @@ type Documents = {
     "\n  query Units {\n    units {   \n      id\n      name\n    }\n  }\n": typeof types.UnitsDocument,
     "\n  query products {\n    products {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      kcal\n      productUnits {\n        id\n        unit\n        amount\n        isDefault\n        faktor\n      }\n    }\n  }\n": typeof types.ProductsDocument,
     "\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n": typeof types.ProductCategoriesDocument,
+    "\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id)\n    }\n  ": typeof types.DeleteCategoryDocument,
+    "\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateProductCategoryDocument,
     "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  ": typeof types.AddAddressDocument,
     "\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  ": typeof types.AddDescriptionDocument,
     "\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  ": typeof types.AddTravelCostDocument,
@@ -51,6 +53,7 @@ type Documents = {
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": typeof types.TravelCostDocument,
+    "\n    query GetCategories {\n      productCategories {\n        name\n        id\n      }\n    }\n  ": typeof types.GetCategoriesDocument,
     "\n    query GetProducts {\n      products {\n        id\n        carbs\n        category\n        fat\n        kcal\n        name\n        protein\n        salt\n        sugar\n        unit\n        productUnits {\n          id\n          amount\n          unit\n          isDefault\n          faktor\n        }\n      }\n    }\n  ": typeof types.GetProductsDocument,
     "\n  query getRecipeDetails($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      portions\n      totalKcal\n      recipeProducts {\n        amount\n        description\n        groupPosition\n        productPosition\n        unit\n        kcal\n        activeUnitId\n        productId\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        header\n      }\n      recipeHeaderProducts {\n        position\n        text\n      }\n    }\n  }\n": typeof types.GetRecipeDetailsDocument,
     "\n    query GetUnits {\n      units {\n        name\n        id\n      }\n    }\n  ": typeof types.GetUnitsDocument,
@@ -72,6 +75,8 @@ const documents: Documents = {
     "\n  query Units {\n    units {   \n      id\n      name\n    }\n  }\n": types.UnitsDocument,
     "\n  query products {\n    products {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      kcal\n      productUnits {\n        id\n        unit\n        amount\n        isDefault\n        faktor\n      }\n    }\n  }\n": types.ProductsDocument,
     "\n  query productCategories {\n    productCategories {\n      id\n      name\n    }\n  }\n": types.ProductCategoriesDocument,
+    "\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id)\n    }\n  ": types.DeleteCategoryDocument,
+    "\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateProductCategoryDocument,
     "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  ": types.AddAddressDocument,
     "\n    mutation AddDescription($text: String!) {\n      createDescription(text: $text) {\n        text\n      }\n    }\n  ": types.AddDescriptionDocument,
     "\n    mutation AddTravelCost($price: Decimal, $description: String, $date: LocalDate, $addressId: UUID) {\n      createTravelCost(dto: { price: $price, description: $description, date: $date, addressId: $addressId }) {\n        id\n      }\n    }\n  ": types.AddTravelCostDocument,
@@ -93,6 +98,7 @@ const documents: Documents = {
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": types.TravelCostDocument,
+    "\n    query GetCategories {\n      productCategories {\n        name\n        id\n      }\n    }\n  ": types.GetCategoriesDocument,
     "\n    query GetProducts {\n      products {\n        id\n        carbs\n        category\n        fat\n        kcal\n        name\n        protein\n        salt\n        sugar\n        unit\n        productUnits {\n          id\n          amount\n          unit\n          isDefault\n          faktor\n        }\n      }\n    }\n  ": types.GetProductsDocument,
     "\n  query getRecipeDetails($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      portions\n      totalKcal\n      recipeProducts {\n        amount\n        description\n        groupPosition\n        productPosition\n        unit\n        kcal\n        activeUnitId\n        productId\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        header\n      }\n      recipeHeaderProducts {\n        position\n        text\n      }\n    }\n  }\n": types.GetRecipeDetailsDocument,
     "\n    query GetUnits {\n      units {\n        name\n        id\n      }\n    }\n  ": types.GetUnitsDocument,
@@ -179,6 +185,14 @@ export function graphql(source: "\n  query productCategories {\n    productCateg
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id)\n    }\n  "): (typeof documents)["\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id)\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  "): (typeof documents)["\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -260,6 +274,10 @@ export function graphql(source: "\n    query Descriptions {\n      description {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n"): (typeof documents)["\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetCategories {\n      productCategories {\n        name\n        id\n      }\n    }\n  "): (typeof documents)["\n    query GetCategories {\n      productCategories {\n        name\n        id\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

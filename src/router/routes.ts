@@ -49,6 +49,7 @@ export const routes = [
     children: [
       { path: "/produkte", name: "products", component: () => import("@/pages/recipe/products.vue") },
       { path: "/einheiten", name: "units", component: () => import("@/pages/recipe/units.vue") },
+      { path: "/kategorien", name: "categories", component: () => import("@/pages/recipe/categories.vue") },
       {
         path: "/rezepte",
         name: "recipe",

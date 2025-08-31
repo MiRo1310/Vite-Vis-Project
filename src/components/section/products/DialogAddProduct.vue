@@ -9,7 +9,6 @@ import Form from "@/components/shared/form/Form.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import ProductCategories from "@/components/section/products/ProductCategories.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { getUnits } from "@/api/query/getUnits";
 import { InputOptions } from "@/components/shared/input/Input.vue";
@@ -167,7 +166,6 @@ const defaultUnitVariant = computed(() => {
 
       <div class="min-w-full h-28 flex gap-2">
         <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" width="w-40" />
-        <ProductCategories :id="form.values.category" width="w-40" />
       </div>
       <FormInput label="Kalorien" name="kcal" type="number" :step="0.1" :model-value="props.data?.kcal?.toString()" />
       <FormInput label="Fett" name="fat" type="number" :step="0.1" :model-value="props.data?.fat?.toString()" />

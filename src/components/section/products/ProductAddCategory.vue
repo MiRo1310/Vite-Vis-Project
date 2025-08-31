@@ -3,11 +3,11 @@ import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useMutation } from "@vue/apollo-composable";
 import { addCategory } from "@/api/mutation/addCategory";
-import { productCategories } from "@/api/query/products";
 import { ErrorCode } from "@/api/gql/graphql";
+import { computed } from "vue";
 
-const { mutate } = useMutation(addCategory, { refetchQueries: [productCategories] });
-const categoryExists = defineModel<boolean>("categoryExists");
+const { mutate } = useMutation(addCategory, { refetchQueries: ["GetCategories"] });
+const categoryExists = defineModel<boolean>("categoryExists", { default: false });
 const newCategory = defineModel<string>("newCategory");
 
 async function addNewCategory() {
@@ -23,10 +23,12 @@ async function addNewCategory() {
     categoryExists.value = true;
   }
 }
+
+const disabled = computed((): boolean => newCategory.value === "" || categoryExists.value);
 </script>
 
 <template>
-  <Button variant="outline" size="icon" :disabled="newCategory === ''" @click.prevent="addNewCategory">
+  <Button variant="outline" size="icon" :disabled @click.prevent="addNewCategory">
     <Plus />
   </Button>
 </template>
