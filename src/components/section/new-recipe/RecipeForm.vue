@@ -19,6 +19,7 @@ import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpda
 import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
 import { translation } from "@/lib/translation";
+import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -124,7 +125,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       id: props.recipeId,
       ...dto,
     };
-    await updateMutate({ dto: dtoUpdate });
+    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
     toast({
       title: "Das Rezept wurde aktualisiert",
@@ -220,8 +221,9 @@ const addDescription = () => {
         <div class="new-recipe__left-col">
           <FormInput :placeholder="translation('addRecipe.recipeName')" name="name" :model-value="form.values.name" />
           <FormInput :placeholder="translation('addRecipe.portions')" name="portions" type="number" :model-value="String(form.values.portions)" />
-          <div v-for="index in descriptions.length" :key="index" class="new-recipe__form-textarea">
-            <RecipeDescriptionGroup v-model:descriptions="descriptions" :index />
+          <div v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)" :key="index" class="new-recipe__form-textarea">
+            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
+            <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
           </div>
           <div class="new-recipe__left-col-button">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
@@ -270,7 +272,7 @@ const addDescription = () => {
   }
 
   &__left-col-button {
-    @apply flex justify-end mt-2;
+    @apply flex justify-end mt-2 gap-2;
   }
 
   &__right-col {

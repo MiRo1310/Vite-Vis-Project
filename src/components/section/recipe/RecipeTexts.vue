@@ -10,25 +10,28 @@ defineProps<{ descriptions: DescriptionType }>();
 <template>
   <div class="recipe__text-wrapper">
     <template v-for="(_, index) in descriptions" :key="index">
-      <p class="recipe__text-header">{{ getElementByPosition(index + 1, descriptions)?.header }}</p>
-      <p class="recipe__text-description">{{ getElementByPosition(index + 1, descriptions)?.text }}</p>
+      <p class="recipe__header">{{ getElementByPosition(index + 1, descriptions)?.header }}</p>
+      <p class="recipe__description">{{ getElementByPosition(index + 1, descriptions)?.text }}</p>
     </template>
   </div>
 </template>
 
-<style scoped>
-.recipe__text-wrapper {
-  @apply w-[50%] border border-accent mb-4 p-2 rounded-lg;
-}
-.recipe__text-header {
-  @apply font-bold text-accent-foreground mb-2 mt-2;
-  @apply 2xl:text-2xl text-xl;
-}
-.recipe__text-header:first-child {
-  @apply mt-0;
-}
-.recipe__text-description {
-  @apply w-full h-auto whitespace-pre-wrap;
-  @apply 2xl:text-xl xl:text-base;
+<style scoped lang="scss">
+.recipe {
+  &__text-wrapper {
+    @apply w-[50%] border border-accent mb-4 p-2 rounded-lg bg-accent;
+  }
+
+  &__header {
+    @apply font-bold text-accent-foreground mb-2 mt-2;
+    @apply 2xl:text-2xl text-xl;
+
+    @apply first:mt-0;
+  }
+
+  &__description {
+    @apply w-full h-auto whitespace-pre-wrap;
+    @apply text-base;
+  }
 }
 </style>
