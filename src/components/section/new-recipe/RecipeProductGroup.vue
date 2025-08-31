@@ -279,7 +279,7 @@ const useProductCards = (productIndex: number) => {
             label=""
             class="w-full"
             :selected="getValue(productIndex, 'unit')?.toString()"
-            :placeholder="translation('addRecipe.chooseProduct')"
+            placeholder="Wähle eine Einheit"
             :name="`name-${groupIndex}-${productIndex}`"
             :select-options="selectableOptions(productIndex)"
             @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: productIndex })"

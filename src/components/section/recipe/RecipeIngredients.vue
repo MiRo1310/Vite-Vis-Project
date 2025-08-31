@@ -18,7 +18,7 @@ const filteredIngredients = computed(
   () => (index: number) => props.recipe?.recipeProducts.filter((ingredient) => ingredient.groupPosition === index + 1),
 );
 
-const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / customPortions.value).toFixed(2));
+const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / portions.value).toFixed(2));
 
 const getTotalKcalForSection = computed(
   () =>
@@ -59,7 +59,7 @@ const getIngredientGroupLength = computed(() => {
         <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">
           {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
         </p>
-        <Badge :value="(getTotalKcalForSection(index) * (customPortions / portions)).toFixed(2)" :unit="translation('recipe.ingredient.badgeUnit')" />
+        <Badge :value="(getTotalKcalForSection(index) / portions).toFixed(2)" :unit="translation('recipe.ingredient.badgeUnit')" />
       </div>
       <div v-for="(ingredient, i) in filteredIngredients(index)" :key="i">
         <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />

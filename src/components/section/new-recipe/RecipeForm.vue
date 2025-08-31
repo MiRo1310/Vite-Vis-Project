@@ -219,8 +219,8 @@ const addDescription = () => {
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
       <div class="new-recipe__form-inner">
         <div class="new-recipe__left-col">
-          <FormInput :placeholder="translation('addRecipe.recipeName')" name="name" :model-value="form.values.name" />
-          <FormInput :placeholder="translation('addRecipe.portions')" name="portions" type="number" :model-value="String(form.values.portions)" />
+          <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
+          <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
           <div v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)" :key="index" class="new-recipe__form-textarea">
             <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
             <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
