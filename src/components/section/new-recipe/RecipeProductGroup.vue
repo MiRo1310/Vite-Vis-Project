@@ -85,6 +85,7 @@ const removeProduct = async (productIndex: number | null) => {
   }
 
   if (productIndex) {
+    useProductCards(productIndex).remove();
     await removeProductInDB(productIndex);
 
     productArray.value = filterByTargetAndDecrement(productArray.value, "productPosition", productIndex, "groupPosition", props.groupIndex);
@@ -212,10 +213,10 @@ const useProductCards = (productIndex: number) => {
 
   return {
     toggle: () => (isProductOpen[groupIndex][productIndex] = !isProductOpen[groupIndex][productIndex]),
-    setVal: (val: boolean) => (isProductOpen[groupIndex][productIndex] = val),
     add: () => (isProductOpen[groupIndex][groupLength] = true),
     isOpen: computed(() => isProductOpen[groupIndex][productIndex]),
     closeGroup: () => isProductOpen[groupIndex].fill(false),
+    remove: () => isProductOpen[groupIndex].splice(productIndex, 1),
   };
 };
 </script>

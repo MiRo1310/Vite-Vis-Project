@@ -230,6 +230,10 @@ const addDescription = () => {
           </div>
         </div>
         <div class="new-recipe__right-col">
+          <div class="w-full flex justify-stretch gap-2 mb-2">
+            <Button class="w-full" type="submit" variant="outline">Speichern</Button>
+            <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
+          </div>
           <div v-for="index in countedProductGroups" :key="index" class="new-recipe__product-groups">
             <RecipeProductGroup
               v-model:product-array="productArray"
@@ -257,7 +261,7 @@ const addDescription = () => {
 
 <style scoped lang="scss">
 .new-recipe {
-  @apply p-2 rounded-lg max-h-full overflow-auto;
+  @apply px-2 rounded-lg max-h-full overflow-auto;
 
   &__form-inner {
     @apply flex w-full h-full pl-2;

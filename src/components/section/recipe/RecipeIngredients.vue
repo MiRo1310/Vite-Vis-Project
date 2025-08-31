@@ -51,7 +51,7 @@ const getIngredientGroupLength = computed(() => {
       </div>
       <div>
         <label class="ingredients__header-badge-label">Gesamt Kalorien pro Portion</label>
-        <Badge :value="getTotalKcal" unit="kcal" />
+        <Badge :value="getTotalKcal" unit="kcal/p" />
       </div>
     </div>
     <div v-for="(_, index) in getIngredientGroupLength" :key="index">
