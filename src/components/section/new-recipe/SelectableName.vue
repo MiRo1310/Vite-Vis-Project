@@ -2,7 +2,6 @@
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { ProductObjType } from "@/types/types";
 import { computed, ref, watchEffect, onMounted } from "vue";
-import { translation } from "@/lib/translation";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
@@ -53,7 +52,7 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
   <FormSelect
     v-model:selected="selected"
     label=""
-    :placeholder="translation('addRecipe.chooseProduct')"
+    placeholder="Produkt wählen"
     :name="`name-${groupIndex}-${productIndex}`"
     :select-options="selectableOptions"
     @update:selected="updateName($event)"

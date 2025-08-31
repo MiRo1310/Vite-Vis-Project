@@ -18,7 +18,6 @@ import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpdateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
-import { translation } from "@/lib/translation";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];

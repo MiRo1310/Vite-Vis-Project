@@ -5,7 +5,6 @@ import { computed, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { getProductById } from "@/api/query/getProductById";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import { translation } from "@/lib/translation";
 
 const props = defineProps<{ productId: string }>();
 
@@ -38,7 +37,6 @@ const information = computed((): { name: string; value?: string | number | null;
     { name: "Protein", value: product.protein },
     { name: "Salz", value: product.salt },
     { name: "Zucker", value: product.sugar },
-    // { name: "pro", value: `${String(product.amount)} ${String(product.unit)}`, classCell: "bg-blue-300 px-2 pb-1 rounded-md" },
   ];
 });
 </script>
@@ -49,7 +47,7 @@ const information = computed((): { name: string; value?: string | number | null;
       <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
     </template>
     <template #content>
-      <p class="product-properties__title">{{ translation("recipe.ingredient.productProperties") }}</p>
+      <p class="product-properties__title">Produkt Eigenschaften</p>
       <div v-if="result?.product" class="product-properties__info-wrapper">
         <div v-for="info in information" :key="info.name">
           <p class="product-properties__info-name">{{ info.name }}</p>

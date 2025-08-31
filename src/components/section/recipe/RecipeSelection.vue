@@ -4,7 +4,6 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { recipes } from "@/api/query/getRecipes";
 import { computed, HTMLAttributes, onMounted, watchEffect } from "vue";
 import { SelectOption } from "@/types/types";
-import { translation } from "@/lib/translation";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 
@@ -47,10 +46,5 @@ watchEffect(() => {
 });
 </script>
 <template>
-  <SelectCard
-    v-model:model-value="selected"
-    :options
-    :placeholder="translation('recipe.placeholderSelect')"
-    :class="['recipe__select', $props.class]"
-  />
+  <SelectCard v-model:model-value="selected" :options placeholder="Wähle ein Rezept aus" :class="['recipe__select', $props.class]" />
 </template>

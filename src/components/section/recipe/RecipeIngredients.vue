@@ -5,7 +5,6 @@ import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
 import Input from "@/components/ui/input/InputShadcn.vue";
 import { computed, ref } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { translation } from "@/lib/translation";
 
 type RecipeType = GetRecipeDetailsQuery["recipe"];
 
@@ -59,7 +58,7 @@ const getIngredientGroupLength = computed(() => {
         <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">
           {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
         </p>
-        <Badge :value="(getTotalKcalForSection(index) / portions).toFixed(2)" :unit="translation('recipe.ingredient.badgeUnit')" />
+        <Badge :value="(getTotalKcalForSection(index) / portions).toFixed(2)" unit="kcal/p" />
       </div>
       <div v-for="(ingredient, i) in filteredIngredients(index)" :key="i">
         <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />

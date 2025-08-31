@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
-import { translation } from "@/lib/translation";
 import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 
 const props = defineProps<{ description: RecipeDescriptionCreateOrUpdateDtoInput }>();
@@ -20,14 +19,14 @@ const updateValue = (val: string | undefined, target: "header" | "text") => {
   <FormInput
     v-if="description"
     :model-value="description?.header ?? ''"
-    :placeholder="translation('addRecipe.headerTextarea')"
+    placeholder="Hier kannst du eine Überschrift hinzufügen"
     :name="`header-${description.position}`"
     @update:model-value="updateValue($event, 'header')"
   />
   <FormTextarea
     v-if="description"
     :model-value="description?.text"
-    :placeholder="translation('addRecipe.textarea')"
+    placeholder="Hier kannst du Text hinzufügen"
     :name="`textarea-${description.position}`"
     onfocus="textareaFocus = true"
     onfocusout="textareaFocus=false"

@@ -8,7 +8,6 @@ import SelectableName from "@/components/section/new-recipe/SelectableName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { removeRecipeProduct } from "@/api/mutation/removeRecipeProduct";
-import { translation } from "@/lib/translation";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { GetProductUnits } from "@/api/query/getProductUnits";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
@@ -225,7 +224,7 @@ const useProductCards = (productIndex: number) => {
   <FormInput
     v-if="headersProductArray"
     :model-value="getNameFromNameIdArray(groupIndex, headersProductArray)"
-    :placeholder="translation('addRecipe.productHeader')"
+    placeholder="Überschrift z.B. Soße"
     class-input="rounded-none rounded-t-md"
     class="space-y-0 border-b-2 border-black"
     :name="`header-${groupIndex}`"
@@ -259,7 +258,7 @@ const useProductCards = (productIndex: number) => {
       <FormInput
         v-if="productArray"
         :model-value="getValue(productIndex, 'description')?.toString()"
-        :placeholder="translation('addRecipe.productDescription')"
+        placeholder="Beschreibung"
         :name="`description-${groupIndex}-3`"
         @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: productIndex })"
       />
