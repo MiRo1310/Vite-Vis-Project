@@ -144,7 +144,15 @@ const getSelected = computed(() => {
 
 const { load, result } = useLazyQuery(getUnits);
 
-onMounted(() => load());
+onMounted(() => {
+  load();
+  initFormData();
+});
+
+const initFormData = () => {
+  form.values.name = props.data?.name ?? "";
+  form.values.category = props.data?.category ?? "";
+};
 
 const getOptions = computed(
   (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? [],
@@ -160,12 +168,10 @@ const defaultUnitVariant = computed(() => {
 <template>
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
-      <div class="min-w-full h-28">
-        <FormInput label="Produkt" :model-value="props.data?.name as string" name="name" class="w-[30rem]" />
-      </div>
+      <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="w-[30rem] ml-2" />
 
-      <div class="min-w-full h-28 flex gap-2">
-        <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" width="w-40" />
+      <div class="min-w-full flex gap-2">
+        <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
       </div>
       <FormInput label="Kalorien" name="kcal" type="number" :step="0.1" :model-value="props.data?.kcal?.toString()" />
       <FormInput label="Fett" name="fat" type="number" :step="0.1" :model-value="props.data?.fat?.toString()" />
@@ -180,10 +186,10 @@ const defaultUnitVariant = computed(() => {
       </div>
 
       <AddVariantUnits
-        v-if="defaultUnitVariant.amount && defaultUnitVariant.unit"
+        v-if="(defaultUnitVariant.amount || form.values.amount) && (defaultUnitVariant.unit || form.values.unit)"
         :options="getOptions"
         :data="props.data?.productUnits ?? []"
-        :default-unit="defaultUnitVariant.unit"
+        :default-unit="defaultUnitVariant.unit ?? form.values.unit"
         @update:unit-variants="unitVariants = $event"
       />
 

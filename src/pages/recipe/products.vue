@@ -54,9 +54,9 @@ const columns: DatatableColumns[] = [
     accessorKey: "remove",
     type: "component",
     component: ProductEditRow,
-    headerClass: "w-10",
+    headerClass: "w-6",
   },
-  { source: "id", labelKey: "", accessorKey: "remove", type: "component", component: ProductRemoveRow, headerClass: "w-10" },
+  { source: "id", labelKey: "", accessorKey: "remove", type: "component", component: ProductRemoveRow, headerClass: "w-6" },
 ];
 
 const dialogOpen = ref(false);
