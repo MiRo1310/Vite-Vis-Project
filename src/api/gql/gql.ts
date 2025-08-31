@@ -41,6 +41,7 @@ type Documents = {
     "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": typeof types.DescriptionsListingDocument,
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": typeof types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateTravelCostDocument,
+    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": typeof types.GetProductsForSelectDocument,
     "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": typeof types.AddProductDocument,
     "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": typeof types.UpdateProductDocument,
     "\n    mutation removeProduct($id: UUID!) {\n      removeProduct(id: $id)\n    }\n  ": typeof types.RemoveProductDocument,
@@ -82,6 +83,7 @@ const documents: Documents = {
     "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": types.DescriptionsListingDocument,
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateTravelCostDocument,
+    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": types.GetProductsForSelectDocument,
     "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": types.AddProductDocument,
     "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": types.UpdateProductDocument,
     "\n    mutation removeProduct($id: UUID!) {\n      removeProduct(id: $id)\n    }\n  ": types.RemoveProductDocument,
@@ -218,6 +220,10 @@ export function graphql(source: "\n    mutation RemoveTravelCost($id: UUID!) {\n
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  "): (typeof documents)["\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

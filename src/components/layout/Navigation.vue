@@ -33,10 +33,10 @@ const buttons: NavigationButtons[] = [
 
 <style scoped lang="scss">
 .navigation__container {
-  @apply fixed top-0 border-b-2 border-accent flex p-2 space-x-2 flex-wrap w-full z-50 bg-primary-brown-lightest h-12;
+  @apply fixed top-0 border-b border-black flex p-2 space-x-2 flex-wrap w-full z-50 h-12;
 }
 
 .router-link-active button {
-  @apply bg-primary-brown-dark;
+  @apply bg-blue-900 text-white;
 }
 </style>

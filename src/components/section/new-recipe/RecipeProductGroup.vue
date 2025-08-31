@@ -201,7 +201,6 @@ const isProductOpen = reactive<boolean[][]>([]);
 const useProductCards = (productIndex: number) => {
   const groupIndex = props.groupIndex - 1;
   productIndex = productIndex - 1;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!isProductOpen[groupIndex]) {
     if (groupIndex === 0) {
       isProductOpen[groupIndex] = [];

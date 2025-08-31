@@ -51,13 +51,10 @@ const variants = {
   <div :class="['input-with-unit', { 'input-with-unit__input--not-ack': !state?.ack }]">
     <InputShadcn
       :type
-      :class="[
-        'h-6 border-2 border-transparent shadow-none focus:border-none active:border-none ring-0 text-right focus:ring-0',
-        getVariantsClasses(variants, props),
-        { 'mr-4': type === 'number' },
-      ]"
+      :class="[getVariantsClasses(variants, props)]"
       v-model:model-value="modelValue"
       @update:model-value="debounceFn"
+      border="none"
     />
     <span class="input-with-unit__unit">{{ unit }}</span>
   </div>
@@ -65,7 +62,7 @@ const variants = {
 
 <style scoped lang="scss">
 .input-with-unit {
-  @apply relative flex items-center border-b-color__default border-b-2 w-20;
+  @apply relative flex items-center border-b-color__default border-b-2 w-[4.5rem] h-6 pb-1;
 
   &__input {
     &--not-ack {
@@ -75,7 +72,7 @@ const variants = {
 
   &__unit {
     @apply ml-1 pr-1 text-accent-foreground/50 font-bold text-xs;
-    @apply absolute right-4;
+    @apply absolute right-5 top-[1px];
   }
 }
 </style>

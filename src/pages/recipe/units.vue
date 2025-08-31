@@ -27,6 +27,8 @@ const columns: DatatableColumns[] = [
 
 <template>
   <Header title="Einheiten" />
-  <AddUnit />
-  <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" />
+  <div class="px-2">
+    <AddUnit />
+    <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" />
+  </div>
 </template>

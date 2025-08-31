@@ -3,6 +3,7 @@ import type { HTMLAttributes } from "vue";
 import { twMerge } from "tailwind-merge";
 
 import { ChevronDown, ChevronUp } from "lucide-vue-next";
+import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 export type InputType = "number" | "text" | "time";
 const props = withDefaults(
@@ -11,18 +12,27 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
     type?: InputType;
     placeholder?: string;
+    border?: keyof typeof variants.border;
   }>(),
   {
     defaultValue: 0,
     class: "",
     type: "number",
     placeholder: "",
+    border: "default",
   },
 );
 
 const modelValue = defineModel<string | number>("modelValue");
 const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + 1);
 const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - 1);
+
+const variants = {
+  border: {
+    default: "",
+    none: "border-2 border-transparent shadow-none ring-0 focus:ring-0",
+  },
+};
 </script>
 
 <template>
@@ -33,11 +43,13 @@ const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) -
       :placeholder
       :class="
         twMerge([
-          'flex h-9 w-full border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input relative',
+          'flex h-9 w-full bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input relative',
+          'border border-input',
+          getVariantsClasses(variants, props),
         ])
       "
     />
-    <span v-if="props.type === 'number'" class="mr-1 absolute right-1 top-2">
+    <span v-if="props.type === 'number'" class="absolute right-1 top-2">
       <ChevronUp class="icon" @click="countUp" />
       <ChevronDown class="icon" @click="countDown" />
     </span>

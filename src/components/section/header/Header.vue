@@ -20,7 +20,7 @@ defineProps<{ title: string }>();
 
 <style scoped lang="scss">
 .header {
-  @apply flex justify-between items-center bg-gray-200 p-2 rounded-xl;
+  @apply flex justify-between items-center p-2 rounded-xl;
 
   &__title {
     @apply text-2xl font-bold;

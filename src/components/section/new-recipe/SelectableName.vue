@@ -1,24 +1,38 @@
 <script setup lang="ts">
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { ProductObjType } from "@/types/types";
-import { computed, ref, watchEffect } from "vue";
-import { useProducts } from "@/composables/querys/products";
+import { computed, ref, watchEffect, onMounted } from "vue";
 import { translation } from "@/lib/translation";
+import { useQuery } from "@vue/apollo-composable";
+import { graphql } from "@/api/gql";
+import { getSelectableOptions } from "@/composables/querys/options.ts";
 
 const props = defineProps<{ productIndex: number; groupIndex: number }>();
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
-const { selectableOptions, result } = useProducts();
 
-const getValue = computed(
-  () => (productIndex: number, target: keyof ProductObjType) =>
-    productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === props.groupIndex)?.[target],
+const { result } = useQuery(
+  graphql(`
+    query GetProductsForSelect {
+      products {
+        id
+        name
+      }
+    }
+  `),
 );
 
+const product = ref<ProductObjType | null | undefined>(null);
+
+onMounted(() => {
+  product.value = getProductsByIds();
+});
+
+const getProductsByIds = () =>
+  productArray.value.find((product) => product.productPosition === props.productIndex && product.groupPosition === props.groupIndex);
+
 const updateName = (value?: string) => {
-  const item = productArray.value.find((product) => product.productPosition === props.productIndex && product.groupPosition === props.groupIndex);
-  if (item && value) {
-    item.productId = value;
-    const product = result.value?.find((product) => product?.id === getValue.value(props.productIndex, "productId"));
+  if (product.value && value) {
+    product.value.productId = value;
   }
 };
 
@@ -27,10 +41,12 @@ const mounting = ref(false);
 
 watchEffect(() => {
   if (!mounting.value) {
-    selected.value = String(getValue.value(props.productIndex, "productId"));
+    selected.value = String(product.value?.productId ?? "");
   }
   mounting.value = false;
 });
+
+const selectableOptions = computed(() => getSelectableOptions(result.value?.products));
 </script>
 
 <template>

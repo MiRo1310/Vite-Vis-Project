@@ -18,7 +18,7 @@ defineProps<{ descriptions: DescriptionType }>();
 
 <style scoped>
 .recipe__text-wrapper {
-  @apply w-[50%] border border-muted-foreground mb-4 p-2 rounded-lg;
+  @apply w-[50%] border border-accent mb-4 p-2 rounded-lg;
 }
 .recipe__text-header {
   @apply font-bold text-accent-foreground mb-2 mt-2;

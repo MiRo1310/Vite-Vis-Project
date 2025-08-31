@@ -6,7 +6,6 @@ function isHasOptionalNameAndId<T>(item: T): item is T & HasOptionalNameAndId {
   return isDefined((item as HasOptionalNameAndId).name) && isDefined((item as HasOptionalNameAndId).id);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 const options = computed(() => <T>(array: T[]): SelectOption[] => {
   return array
     .filter(isHasOptionalNameAndId)
@@ -17,7 +16,6 @@ const options = computed(() => <T>(array: T[]): SelectOption[] => {
     .filter((category) => category.label !== "" && category.value !== "");
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export const getSelectableOptions = <T extends { name?: string | null } | undefined | null>(array?: T[] | null): SelectOption[] => {
   if (!array) {
     return [];

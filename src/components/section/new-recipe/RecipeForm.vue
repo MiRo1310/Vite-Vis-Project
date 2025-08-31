@@ -215,8 +215,6 @@ const addDescription = () => {
 
 <template>
   <div class="new-recipe">
-    {{ form.errors }}
-    {{ productArray }}
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
       <div class="new-recipe__form-inner">
         <div class="new-recipe__left-col">
@@ -257,7 +255,7 @@ const addDescription = () => {
 
 <style scoped lang="scss">
 .new-recipe {
-  @apply bg-primary-brown-lightest/70 p-2 rounded-lg max-h-full overflow-auto;
+  @apply p-2 rounded-lg max-h-full overflow-auto;
 
   &__form-inner {
     @apply flex w-full h-full pl-2;

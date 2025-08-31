@@ -2,7 +2,6 @@
 import { TableCellTypes } from "@/types/types";
 import { ProductsQuery } from "@/api/gql/graphql";
 import { Button } from "@/components/shared/button";
-import { Trash } from "lucide-vue-next";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
 import { useMutation } from "@vue/apollo-composable";

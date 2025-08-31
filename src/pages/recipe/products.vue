@@ -65,9 +65,6 @@ const dialogOpen = ref(false);
 <template>
   <div class="products">
     <Header title="Produkte">
-      <template #description>
-        <p class="products__header-label">{{ result?.products.length ?? 0 }} Produkte sind in der Datenbank</p>
-      </template>
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
     <PageSection class="products__page-section">
@@ -84,7 +81,7 @@ const dialogOpen = ref(false);
   }
 
   &__page-section {
-    @apply flex flex-col bg-white/80 rounded-lg p-2 max-h-[calc(100vh-9.5rem)] overflow-auto;
+    @apply flex flex-col rounded-lg p-2 max-h-[calc(100vh-9.5rem)] overflow-auto;
   }
 }
 </style>
