@@ -48,22 +48,9 @@ const updateYear = (y: number) => {
 };
 
 const columns: DatatableColumns[] = [
-  {
-    source: "date",
-    labelKey: "Datum",
-  },
-  {
-    source: "address.city",
-    labelKey: "Adresse",
-    type: "component",
-    component: ListingAddress,
-  },
-  {
-    source: "description",
-    labelKey: "Beschreibung",
-    type: "component",
-    component: DescriptionColumn,
-  },
+  { source: "date", labelKey: "Datum", type: "date" },
+  { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress },
+  { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn },
   {
     source: "price",
     labelKey: "Betrag",
