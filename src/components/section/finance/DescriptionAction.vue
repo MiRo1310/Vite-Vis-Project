@@ -78,8 +78,8 @@ const description = ref(props.row.original.text ?? "");
 
 <template>
   <div class="py-2 flex gap-2 justify-end print-none">
-    <Button size="icon" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
-    <Button size="icon" icon="remove" variant="outline" @click="dialogOpen = true" />
+    <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
+    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
   <Dialog v-model:open="dialogUpdateOpen">
