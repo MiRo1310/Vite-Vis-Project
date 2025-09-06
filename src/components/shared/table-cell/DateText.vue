@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <span class="text-muted-foreground">
-    {{ value ? new Date(value.toString()) : "-" }}
+  <span v-if="value" class="text-muted-foreground">
+    {{ value ? new Date(value.toString()).toLocaleDateString() : "-" }}
   </span>
 </template>

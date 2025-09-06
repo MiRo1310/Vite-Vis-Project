@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { PropType } from "vue";
+import { computed, PropType } from "vue";
+import { isDefined } from "@vueuse/core";
 
-defineProps({
+const props = defineProps({
   value: {
     type: [Number, String] as PropType<number | string | undefined>,
     default: null,
@@ -11,8 +12,10 @@ defineProps({
     default: "",
   },
 });
+
+const val = computed(() => (isDefined(props.value) ? String(parseFloat(String(props.value)).toFixed(2)).replace(".", ",") : 0.0));
 </script>
 
 <template>
-  <p v-if="!!value">{{ value }} {{ unit }}</p>
+  <p>{{ val }} {{ unit }}</p>
 </template>
