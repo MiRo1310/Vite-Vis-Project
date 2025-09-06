@@ -3,12 +3,45 @@ import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
 import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
 import { onMounted, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
-import { getRecipeById } from "@/api/query/getRecipeById";
-import { useRecipeStore } from "@/store/recipeStore";
+import { useRecipeStore } from "@/store/recipeStore.ts";
+import { graphql } from "@/api/gql";
 
 const props = defineProps<{ recipeId?: string }>();
 
-const { load, result, refetch } = useLazyQuery(getRecipeById);
+const recipeDetailsQuery = graphql(`
+  query getRecipeDetails($id: UUID!) {
+    recipe(id: $id) {
+      id
+      name
+      portions
+      totalKcal
+      recipeProducts {
+        amount
+        description
+        groupPosition
+        productPosition
+        unit
+        kcal
+        activeUnitId
+        productId
+        product {
+          name
+        }
+      }
+      recipeDescriptions {
+        position
+        text
+        header
+      }
+      recipeHeaderProducts {
+        position
+        text
+      }
+    }
+  }
+`);
+
+const { load, result, refetch } = useLazyQuery(recipeDetailsQuery);
 const recipeStore = useRecipeStore();
 
 const saveOpenedRecipe = recipeStore.saveOpenedRecipe.bind(recipeStore);
@@ -18,7 +51,7 @@ const loadRecipeFromServer = async (): Promise<void> => {
   if (!recipeId) return;
 
   saveOpenedRecipe({ id: recipeId });
-  await load(getRecipeById, { id: recipeId });
+  await load(recipeDetailsQuery, { id: recipeId });
   await refetch({ id: recipeId });
 };
 
@@ -27,7 +60,6 @@ watch(
   () => loadRecipeFromServer(),
 );
 
-// const showImages = ref(false);
 const isRecipeElementPresent = ref(false);
 
 onMounted(async () => {
@@ -50,7 +82,7 @@ onMounted(async () => {
       <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
     </div>
   </Teleport>
-  <RecipeContent :result-recipe-by-id="result" />
+  <RecipeContent :recipe="result?.recipe" />
 </template>
 
 <style scoped>

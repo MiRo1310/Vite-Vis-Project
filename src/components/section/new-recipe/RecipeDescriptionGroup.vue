@@ -1,25 +1,16 @@
 <script setup lang="ts">
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
-import { translation } from "@/lib/translation";
 import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
-import { getElementByPosition } from "@/components/section/new-recipe/utils";
-import { computed } from "vue";
 
-const props = defineProps<{ index: number }>();
+const props = defineProps<{ description: RecipeDescriptionCreateOrUpdateDtoInput }>();
 
 const descriptions = defineModel<RecipeDescriptionCreateOrUpdateDtoInput[]>("descriptions", { default: [] });
 
-const description = computed((): RecipeDescriptionCreateOrUpdateDtoInput | undefined => getElementByPosition(props.index, descriptions.value));
-
-const updateValue = (val: string | undefined, target: keyof RecipeDescriptionCreateOrUpdateDtoInput) => {
-  const el = getElementByPosition(props.index, descriptions.value);
-  if (el && val) {
-    if (target === "header") {
-      el.header = val;
-    } else if (target === "text") {
-      el.text = val;
-    }
+const updateValue = (val: string | undefined, target: "header" | "text") => {
+  const updateDescription = descriptions.value.find((el) => el.position === props.description.position);
+  if (updateDescription && val) {
+    updateDescription[target] = val;
   }
 };
 </script>
@@ -28,15 +19,15 @@ const updateValue = (val: string | undefined, target: keyof RecipeDescriptionCre
   <FormInput
     v-if="description"
     :model-value="description?.header ?? ''"
-    :placeholder="translation('addRecipe.headerTextarea')"
-    :name="`header-${index}`"
+    placeholder="Hier kannst du eine Überschrift hinzufügen"
+    :name="`header-${description.position}`"
     @update:model-value="updateValue($event, 'header')"
   />
   <FormTextarea
     v-if="description"
     :model-value="description?.text"
-    :placeholder="translation('addRecipe.textarea')"
-    :name="`textarea-${index}`"
+    placeholder="Hier kannst du Text hinzufügen"
+    :name="`textarea-${description.position}`"
     onfocus="textareaFocus = true"
     onfocusout="textareaFocus=false"
     class-text-area="h-32"

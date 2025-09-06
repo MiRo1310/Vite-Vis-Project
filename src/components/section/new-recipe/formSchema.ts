@@ -17,6 +17,7 @@ const productObj = z.object({
   productPosition: z.number(),
   groupPosition: z.number(),
   id: z.string().optional(),
+  activeUnitId: z.uuidv4(),
 });
 
 export const fields = {

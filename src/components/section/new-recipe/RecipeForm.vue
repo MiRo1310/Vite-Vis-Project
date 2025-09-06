@@ -18,7 +18,9 @@ import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpdateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
-import { translation } from "@/lib/translation";
+import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
+
+type RecipeType = GetRecipeByIdQuery["recipe"];
 
 const router = useRouter();
 const props = defineProps<{ recipeId?: string }>();
@@ -28,6 +30,15 @@ const { mutate } = useMutation(addRecipe);
 const { mutate: updateMutate } = useMutation(updateRecipe);
 
 const { load, onResult } = useLazyQuery(getRecipeById);
+
+onResult((result: OnResult<GetRecipeByIdQuery>) => {
+  if (!result.data?.recipe) return;
+  const response = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
+
+  recipe.value = response;
+  setValuesToForm(response);
+  updateValue.value = true;
+});
 
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
@@ -45,20 +56,13 @@ onMounted(async () => {
   }
 });
 
-const getRecipeProductObj = (recipe?: RecipeType): Omit<RecipeCreateDtoInput, "portions"> & { portions?: number } => {
-  if (recipe) {
-    return {
-      name: recipe.name,
-      portions: recipe.portions ?? 0,
-      recipeDescriptions: recipe.recipeDescriptions,
-      recipeHeaderProducts: recipe.recipeHeaderProducts,
-      recipeProducts: recipe.recipeProducts,
-    };
-  }
-  return {
-    name: "",
-  };
-};
+const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => ({
+  name: recipe?.name ?? "",
+  portions: recipe?.portions ?? 1,
+  recipeDescriptions: recipe?.recipeDescriptions ?? [],
+  recipeHeaderProducts: recipe?.recipeHeaderProducts ?? [],
+  recipeProducts: recipe?.recipeProducts ?? [],
+});
 
 const setValuesToForm = (recipe?: RecipeType) => {
   if (!recipe) return;
@@ -67,30 +71,19 @@ const setValuesToForm = (recipe?: RecipeType) => {
   descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
   headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
 
-  productArray.value = recipe.recipeProducts.map((item) => {
-    return {
-      amount: item.amount || 0,
-      description: item.description,
-      groupPosition: item.groupPosition,
-      productId: item.productId,
-      productPosition: item.productPosition,
-      unit: item.unit,
-      id: item.id,
-    };
-  });
+  productArray.value = recipe.recipeProducts.map((item) => ({
+    amount: item.amount || 0,
+    description: item.description,
+    groupPosition: item.groupPosition,
+    productId: item.productId,
+    productPosition: item.productPosition,
+    unit: item.unit,
+    id: item.id,
+    activeUnitId: item.activeUnitId ?? "",
+  }));
 };
-type RecipeType = GetRecipeByIdQuery["recipe"];
 
-const loadedRecipe = ref<RecipeType>();
-
-onResult((result: OnResult<GetRecipeByIdQuery>) => {
-  if (!result.data?.recipe) return;
-  const recipe: RecipeType | undefined = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
-
-  loadedRecipe.value = recipe;
-  setValuesToForm(recipe);
-  updateValue.value = true;
-});
+const recipe = ref<RecipeType>();
 
 const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
@@ -102,7 +95,6 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
-
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
@@ -111,7 +103,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeProducts: values.productArray,
   };
 
-  if (props.recipeId == "new") {
+  if (props.recipeId == "new" || props.recipeId === "undefined" || !props.recipeId) {
     const result = await mutate({ dto });
 
     const recipeId = result?.data?.createRecipe.id;
@@ -132,7 +124,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       id: props.recipeId,
       ...dto,
     };
-    await updateMutate({ dto: dtoUpdate });
+    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
     toast({
       title: "Das Rezept wurde aktualisiert",
@@ -153,23 +145,24 @@ const goBack = async (id: string) => {
   }
 };
 
+const defaultProduct: ProductObjType = {
+  productId: "",
+  description: "",
+  amount: 0,
+  unit: "",
+  productPosition: 1,
+  groupPosition: 1,
+  id: undefined,
+  activeUnitId: "",
+};
+
 const resetForm = () => {
   form.resetForm();
   form.setValues(getRecipeProductObj());
   resetRecipeInStore();
   descriptions.value = [{ position: 1, text: "", header: "" }];
   headersProductArray.value = [];
-  productArray.value = [
-    {
-      productId: "",
-      description: "",
-      amount: 0,
-      unit: "",
-      productPosition: 1,
-      groupPosition: 1,
-      id: undefined,
-    },
-  ];
+  productArray.value = [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -183,17 +176,7 @@ const enterPress = async () => {
 
 const descriptions = ref<RecipeDescriptionCreateOrUpdateDtoInput[]>([]);
 const headersProductArray = ref<TextPositionType[]>([]);
-const productArray = ref<ProductObjType[]>([
-  {
-    productId: "",
-    description: "",
-    amount: 0,
-    unit: "",
-    productPosition: 1,
-    groupPosition: 1,
-    id: undefined,
-  },
-]);
+const productArray = ref<ProductObjType[]>([defaultProduct]);
 
 watch(
   descriptions,
@@ -235,22 +218,27 @@ const addDescription = () => {
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
       <div class="new-recipe__form-inner">
         <div class="new-recipe__left-col">
-          <FormInput :placeholder="translation('addRecipe.recipeName')" name="name" :model-value="form.values.name" />
-          <FormInput :placeholder="translation('addRecipe.portions')" name="portions" type="number" :model-value="String(form.values.portions)" />
-          <div v-for="index in descriptions.length" :key="index" class="new-recipe__form-textarea">
-            <RecipeDescriptionGroup v-model:descriptions="descriptions" :index />
+          <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
+          <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
+          <div v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)" :key="index" class="new-recipe__form-textarea">
+            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
+            <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
           </div>
           <div class="new-recipe__left-col-button">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
         <div class="new-recipe__right-col">
+          <div class="w-full flex justify-stretch gap-2 mb-2">
+            <Button class="w-full" type="submit" variant="outline">Speichern</Button>
+            <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
+          </div>
           <div v-for="index in countedProductGroups" :key="index" class="new-recipe__product-groups">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
-              :recipe="loadedRecipe"
+              :recipe="recipe"
               :group-index="index"
             />
           </div>
@@ -272,7 +260,7 @@ const addDescription = () => {
 
 <style scoped lang="scss">
 .new-recipe {
-  @apply bg-primary-brown-lightest/70 p-2 rounded-lg max-h-full overflow-auto;
+  @apply px-2 rounded-lg max-h-full overflow-auto;
 
   &__form-inner {
     @apply flex w-full h-full pl-2;
@@ -287,7 +275,7 @@ const addDescription = () => {
   }
 
   &__left-col-button {
-    @apply flex justify-end mt-2;
+    @apply flex justify-end mt-2 gap-2;
   }
 
   &__right-col {

@@ -8,7 +8,6 @@ import SelectableName from "@/components/section/new-recipe/SelectableName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import { removeRecipeProduct } from "@/api/mutation/removeRecipeProduct";
-import { translation } from "@/lib/translation";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { GetProductUnits } from "@/api/query/getProductUnits";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
@@ -27,7 +26,7 @@ const { mutate } = useMutation(removeProductGroupMutation);
 
 const { result: productUnits } = useQuery(GetProductUnits);
 
-const getProductByPositions = (productIndex: number, groupIndex: number) =>
+const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType | undefined =>
   productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === groupIndex);
 
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
@@ -44,10 +43,24 @@ const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<Produ
       groupPosition: props.groupIndex,
       factor: null,
       unitVariants: null,
+      activeUnitId: "",
     };
+    if (target === "unit") {
+      const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
+      if (id) {
+        saveValToItem(newItem, "activeUnitId", id);
+      }
+    }
     saveValToItem(newItem, target, val);
     productArray.value.push(newItem);
     return;
+  }
+
+  if (target === "unit") {
+    const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
+    if (id) {
+      saveValToItem(obj, "activeUnitId", id);
+    }
   }
   saveValToItem(obj, target, val);
 };
@@ -71,6 +84,7 @@ const removeProduct = async (productIndex: number | null) => {
   }
 
   if (productIndex) {
+    useProductCards(productIndex).remove();
     await removeProductInDB(productIndex);
 
     productArray.value = filterByTargetAndDecrement(productArray.value, "productPosition", productIndex, "groupPosition", props.groupIndex);
@@ -151,6 +165,7 @@ const addNewProduct = () => {
     unit: "",
     productPosition: countedProducts.value + 1,
     groupPosition: props.groupIndex,
+    activeUnitId: "",
   });
 
   // ProductIndex is not needed here
@@ -176,6 +191,7 @@ const selectableOptions = computed(() => (index: number): SelectOption[] => {
     unitVariants?.map((variant) => ({
       value: variant.unit,
       label: variant.unit,
+      id: variant.id,
     })) ?? []
   );
 });
@@ -185,7 +201,6 @@ const isProductOpen = reactive<boolean[][]>([]);
 const useProductCards = (productIndex: number) => {
   const groupIndex = props.groupIndex - 1;
   productIndex = productIndex - 1;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!isProductOpen[groupIndex]) {
     if (groupIndex === 0) {
       isProductOpen[groupIndex] = [];
@@ -197,10 +212,10 @@ const useProductCards = (productIndex: number) => {
 
   return {
     toggle: () => (isProductOpen[groupIndex][productIndex] = !isProductOpen[groupIndex][productIndex]),
-    setVal: (val: boolean) => (isProductOpen[groupIndex][productIndex] = val),
     add: () => (isProductOpen[groupIndex][groupLength] = true),
     isOpen: computed(() => isProductOpen[groupIndex][productIndex]),
     closeGroup: () => isProductOpen[groupIndex].fill(false),
+    remove: () => isProductOpen[groupIndex].splice(productIndex, 1),
   };
 };
 </script>
@@ -209,7 +224,7 @@ const useProductCards = (productIndex: number) => {
   <FormInput
     v-if="headersProductArray"
     :model-value="getNameFromNameIdArray(groupIndex, headersProductArray)"
-    :placeholder="translation('addRecipe.productHeader')"
+    placeholder="Überschrift z.B. Soße"
     class-input="rounded-none rounded-t-md"
     class="space-y-0 border-b-2 border-black"
     :name="`header-${groupIndex}`"
@@ -243,7 +258,7 @@ const useProductCards = (productIndex: number) => {
       <FormInput
         v-if="productArray"
         :model-value="getValue(productIndex, 'description')?.toString()"
-        :placeholder="translation('addRecipe.productDescription')"
+        placeholder="Beschreibung"
         :name="`description-${groupIndex}-3`"
         @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: productIndex })"
       />
@@ -259,13 +274,12 @@ const useProductCards = (productIndex: number) => {
             :name="`amount-${groupIndex}-${productIndex}`"
             @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: productIndex })"
           />
-
           <FormSelect
             v-if="selectableOptions(productIndex).length"
             label=""
             class="w-full"
             :selected="getValue(productIndex, 'unit')?.toString()"
-            :placeholder="translation('addRecipe.chooseProduct')"
+            placeholder="Wähle eine Einheit"
             :name="`name-${groupIndex}-${productIndex}`"
             :select-options="selectableOptions(productIndex)"
             @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: productIndex })"

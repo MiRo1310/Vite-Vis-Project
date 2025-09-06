@@ -4,8 +4,8 @@ import { ref } from "vue";
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
-import AddressOptions from "@/components/section/travelcost/AddressOptions.vue";
-import DescriptionOptions from "@/components/section/travelcost/DescriptionOptions.vue";
+import AddressOptions from "@/components/section/finance/AddressOptions.vue";
+import DescriptionOptions from "@/components/section/finance/DescriptionOptions.vue";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 

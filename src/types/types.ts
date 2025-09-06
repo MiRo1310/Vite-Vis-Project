@@ -316,11 +316,13 @@ export interface ProductObjType {
   productPosition: number;
   groupPosition: number;
   id?: string;
+  activeUnitId: string;
 }
 
 export interface SelectOption {
   value: string;
   label?: string;
+  id?: string;
   class?: HTMLAttributes["class"];
 }
 

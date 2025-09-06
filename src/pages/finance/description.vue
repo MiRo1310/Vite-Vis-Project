@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card } from "@/components/shared/card";
-import Navigation from "@/components/section/travelcost/Navigation.vue";
+import Navigation from "@/components/section/finance/Navigation.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
-import AddDescription from "@/components/section/travelcost/AddDescription.vue";
-import DescriptionAction from "@/components/section/travelcost/DescriptionAction.vue";
-import DescriptionColumn from "@/components/section/travelcost/DescriptionColumn.vue";
+import AddDescription from "@/components/section/finance/AddDescription.vue";
+import DescriptionAction from "@/components/section/finance/DescriptionAction.vue";
+import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 
 const { result } = useQuery(
   graphql(`

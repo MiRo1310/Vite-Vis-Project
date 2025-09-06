@@ -12,13 +12,15 @@ withDefaults(
     class?: HTMLAttributes["class"];
     selectOptions?: SelectOption[];
     defaultVal?: string;
+    width?: string;
   }>(),
   {
     placeholder: "",
     class: "",
     selectOptions: () => [],
     defaultVal: "",
-  }
+    width: undefined,
+  },
 );
 
 const selected = defineModel<string>("selected");
@@ -29,7 +31,7 @@ const selected = defineModel<string>("selected");
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
       <FormControl>
-        <SelectCard v-bind="componentField" v-model:model-value="selected" :options="selectOptions" :placeholder :default-val />
+        <SelectCard v-bind="componentField" v-model:model-value="selected" :options="selectOptions" :placeholder :default-val :width />
       </FormControl>
       <FormDescription />
       <FormMessage />

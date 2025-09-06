@@ -5,7 +5,6 @@ import { computed, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { getProductById } from "@/api/query/getProductById";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import { translation } from "@/lib/translation";
 
 const props = defineProps<{ productId: string }>();
 
@@ -38,7 +37,6 @@ const information = computed((): { name: string; value?: string | number | null;
     { name: "Protein", value: product.protein },
     { name: "Salz", value: product.salt },
     { name: "Zucker", value: product.sugar },
-    { name: "pro", value: `${String(product.amount)} ${String(product.unit)}`, classCell: "bg-blue-300 px-2 pb-1 rounded-md" },
   ];
 });
 </script>
@@ -46,10 +44,10 @@ const information = computed((): { name: string; value?: string | number | null;
 <template>
   <CollapsibleShared v-model:open="isOpen" :class="{ 'product-properties__collapsible--close': !isOpen }">
     <template #trigger>
-      <Button as="div" size="icon" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
+      <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="product-properties__trigger" />
     </template>
     <template #content>
-      <p class="product-properties__title">{{ translation("recipe.ingredient.productProperties") }}</p>
+      <p class="product-properties__title">Produkt Eigenschaften</p>
       <div v-if="result?.product" class="product-properties__info-wrapper">
         <div v-for="info in information" :key="info.name">
           <p class="product-properties__info-name">{{ info.name }}</p>
@@ -60,25 +58,35 @@ const information = computed((): { name: string; value?: string | number | null;
   </CollapsibleShared>
 </template>
 
-<style scoped>
-.product-properties__trigger {
-  @apply absolute right-2 top-1;
-}
-.product-properties__title {
-  @apply my-2;
-}
-.product-properties__info-wrapper {
-  @apply flex space-x-6 bg-accent p-2;
-}
-.product-properties__info-name {
-  @apply font-bold text-sm text-muted-foreground min-h-8;
-}
-.product-properties__info-value {
-  @apply whitespace-nowrap;
+<style scoped lang="scss">
+.product-properties {
+  &__trigger {
+    @apply z-10 absolute left-[1px] top-[1px];
+  }
+
+  &__title {
+    @apply my-2 ml-1;
+  }
+
+  &__info-wrapper {
+    @apply flex space-x-6 bg-accent p-2 mx-1;
+  }
+
+  &__info-name {
+    @apply font-bold text-sm text-muted-foreground min-h-8;
+  }
+
+  &__info-value {
+    @apply whitespace-nowrap;
+  }
 }
 </style>
-<style>
-.product-properties__collapsible--close {
-  @apply h-0;
+<style lang="scss">
+.product-properties {
+  &__collapsible {
+    &--close {
+      @apply h-0;
+    }
+  }
 }
 </style>

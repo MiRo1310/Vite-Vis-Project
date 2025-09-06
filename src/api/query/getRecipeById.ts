@@ -16,14 +16,10 @@ export const getRecipeById = graphql(`
         productPosition
         unit
         id
-        factor
-        productUnits {
-          defaultUnit
-          unit
-          amount
-          id
-          createdAt
-          modifiedAt
+        kcal
+        activeUnitId
+        product {
+          name
         }
       }
       recipeDescriptions {

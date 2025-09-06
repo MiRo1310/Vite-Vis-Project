@@ -15,6 +15,7 @@ const addNewProductGroup = () => {
     unit: "",
     productPosition: 1,
     groupPosition: productGroupLength + 1,
+    activeUnitId: "",
   });
   headersProductArray.value.push({
     position: productGroupLength + 1,

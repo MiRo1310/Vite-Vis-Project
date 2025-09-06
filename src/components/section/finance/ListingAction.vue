@@ -8,7 +8,7 @@ import { onMounted, ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
-import AddressOptions from "@/components/section/travelcost/AddressOptions.vue";
+import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { Textarea } from "@/components/ui/textarea";
 
 const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; customValue: unknown; source: string }>();

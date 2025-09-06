@@ -2,7 +2,7 @@
 import RecipeSelection from "@/components/section/recipe/RecipeSelection.vue";
 import RecipeAddNew from "@/components/section/recipe/RecipeAddNew.vue";
 import { onMounted, ref } from "vue";
-import { useRecipeStore } from "@/store/recipeStore";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 
