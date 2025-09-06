@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button";
 
-const startYear = 2024;
+const startYear = 2025;
 const countYearButtons = ref(1);
 const activeYear = defineModel<number>("activeYear", { default: new Date().getFullYear() });
 
