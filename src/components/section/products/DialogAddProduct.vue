@@ -2,20 +2,21 @@
 import DialogShared from "@/components/shared/dialog/DialogShared.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
-import { useLazyQuery, useMutation } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
 import { GetProductByIdQuery, ProductCreateDtoInput, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
+import { useUnits } from "@/composables/querys/units.ts";
+import { formSchemaProduct } from "@/components/section/products/schema.ts";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
+
+const { getOptions } = useUnits();
 
 const { selectableOptions } = useProductCategories();
 const { mutate } = useMutation(
@@ -44,23 +45,8 @@ const { mutate: updateProductMutate } = useMutation(
 
 const dialogOpen = defineModel<boolean>("dialogOpen");
 
-const formSchema = toTypedSchema(
-  z.object({
-    name: z.string().min(2).max(50),
-    category: z.string().min(2),
-    carbs: z.number().optional(),
-    fat: z.number().optional(),
-    kcal: z.number().optional(),
-    protein: z.number().optional(),
-    salt: z.number().optional(),
-    sugar: z.number().optional(),
-    amount: z.number().optional(),
-    unit: z.string().optional(),
-  }),
-);
-
 const form = useForm({
-  validationSchema: formSchema,
+  validationSchema: formSchemaProduct,
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
@@ -141,19 +127,7 @@ const getSelected = computed(() => {
   return props.data.category;
 });
 
-const { load, result } = useLazyQuery(
-  graphql(`
-    query Units {
-      units {
-        id
-        name
-      }
-    }
-  `),
-);
-
 onMounted(() => {
-  load();
   initFormData();
 });
 
@@ -161,9 +135,6 @@ const initFormData = () => {
   form.setValues({ name: props.data?.name ?? "", category: props.data?.category ?? "" });
 };
 
-const getOptions = computed(
-  (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? [],
-);
 const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
 
 const defaultUnitVariant = computed(() => {
