@@ -30,6 +30,7 @@ const productCategoriesComposable = () => {
   onMounted(async () => {
     await load();
   });
+
   const selectableOptions = computed((): SelectOption[] => getSelectableOptions(result.value?.productCategories));
 
   const isResult = computed(() => result.value?.productCategories?.length && result.value.productCategories.length > 0);

@@ -338,11 +338,7 @@ export interface FileData {
   url: string;
 }
 
-export interface TranslationObj {
-  [key: string]: string | TranslationObj;
-}
-
-export type Path<T> = T extends object
+export type Pathes<T> = T extends object
   ? {
       [K in keyof T]-?: K extends string | number ? `${K}` | Join<K, Path<T[K]>> : never;
     }[keyof T]

@@ -3,8 +3,10 @@ import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useMutation } from "@vue/apollo-composable";
 import { ErrorCode } from "@/api/gql/graphql";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { graphql } from "@/api/gql";
+
+const update = defineModel<boolean>("update", { default: false });
 
 const { mutate } = useMutation(
   graphql(`
@@ -21,6 +23,13 @@ const { mutate } = useMutation(
   `),
   { refetchQueries: ["GetCategories", "productCategories"] },
 );
+
+watch(update, (newVal) => {
+  if (newVal) {
+    update.value = false;
+    addNewCategory();
+  }
+});
 
 const categoryExists = defineModel<boolean>("categoryExists", { default: false });
 const newCategory = defineModel<string>("newCategory");
