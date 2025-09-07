@@ -2,13 +2,22 @@
 import { Button } from "@/components/shared/button";
 import { Pencil } from "lucide-vue-next";
 import { useMutation } from "@vue/apollo-composable";
-import { renameCategory } from "@/api/mutation/renameCategory";
-import { productCategories } from "@/api/query/products";
 import { computed } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
+import { graphql } from "@/api/gql";
 
 const props = defineProps<{ id?: string }>();
-const { mutate } = useMutation(renameCategory, { refetchQueries: [productCategories] });
+const { mutate } = useMutation(
+  graphql(`
+    mutation renameCategory($name: String!, $id: UUID!) {
+      updateProductCategory(dto: { id: $id, name: $name }) {
+        name
+        id
+      }
+    }
+  `),
+  { refetchQueries: ["productCategories"] },
+);
 const newCategory = defineModel<string>("newCategory");
 const { getCategoryIdByName } = useProductCategories();
 

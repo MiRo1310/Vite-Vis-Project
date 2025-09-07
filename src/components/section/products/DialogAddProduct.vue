@@ -10,7 +10,6 @@ import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
-import { getUnits } from "@/api/query/getUnits";
 import { InputOptions } from "@/components/shared/input/Input.vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
 import { GetProductByIdQuery, ProductCreateDtoInput, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
@@ -142,7 +141,16 @@ const getSelected = computed(() => {
   return props.data.category;
 });
 
-const { load, result } = useLazyQuery(getUnits);
+const { load, result } = useLazyQuery(
+  graphql(`
+    query Units {
+      units {
+        id
+        name
+      }
+    }
+  `),
+);
 
 onMounted(() => {
   load();
@@ -173,12 +181,12 @@ const defaultUnitVariant = computed(() => {
       <div class="min-w-full flex gap-2">
         <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
       </div>
-      <FormInput label="Kalorien" name="kcal" type="number" :step="0.1" :model-value="props.data?.kcal?.toString()" />
-      <FormInput label="Fett" name="fat" type="number" :step="0.1" :model-value="props.data?.fat?.toString()" />
-      <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.1" :model-value="props.data?.carbs?.toString()" />
-      <FormInput label="Zucker" name="sugar" type="number" :step="0.1" :model-value="props.data?.sugar?.toString()" />
-      <FormInput label="Salz" name="salt" type="number" :step="0.1" :model-value="props.data?.salt?.toString()" />
-      <FormInput label="Protein" name="protein" type="number" :step="0.1" :model-value="props.data?.protein?.toString()" />
+      <FormInput label="Kalorien" name="kcal" type="number" :step="1" :model-value="props.data?.kcal?.toString()" />
+      <FormInput label="Fett" name="fat" type="number" :step="0.01" :model-value="props.data?.fat?.toString()" />
+      <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" :model-value="props.data?.carbs?.toString()" />
+      <FormInput label="Zucker" name="sugar" type="number" :step="0.01" :model-value="props.data?.sugar?.toString()" />
+      <FormInput label="Salz" name="salt" type="number" :step="0.01" :model-value="props.data?.salt?.toString()" />
+      <FormInput label="Protein" name="protein" type="number" :step="0.01" :model-value="props.data?.protein?.toString()" />
       <p class="w-full font-bold mb-4 mt-6">Bezogen auf diese Menge</p>
       <div class="flex w-full space-x-2">
         <FormInput label="Menge" name="amount" type="number" :step="0.1" :model-value="defaultUnitVariant.amount.toString()" />

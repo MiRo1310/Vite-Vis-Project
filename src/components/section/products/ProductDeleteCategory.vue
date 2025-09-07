@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useMutation } from "@vue/apollo-composable";
-import { removeCategory } from "@/api/mutation/removeCategory";
-import { productCategories } from "@/api/query/products";
 import { Trash } from "lucide-vue-next";
 import { Button } from "@/components/shared/button";
 import { useProductCategories } from "@/composables/querys/productCategories";
+import { graphql } from "@/api/gql";
 
 const props = defineProps<{ id?: string }>();
 const emits = defineEmits(["update:removeCategory"]);
 
-const { mutate } = useMutation(removeCategory, { refetchQueries: [productCategories] });
+const { mutate } = useMutation(
+  graphql(`
+    mutation removeCategory($id: UUID!) {
+      removeProductCategory(id: $id)
+    }
+  `),
+  { refetchQueries: ["productCategories"] },
+);
 const { getCategoryIdByName } = useProductCategories();
 
 async function removeCategoryById() {

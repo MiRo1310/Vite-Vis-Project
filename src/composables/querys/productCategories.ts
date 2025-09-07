@@ -1,9 +1,10 @@
 import { useLazyQuery } from "@vue/apollo-composable";
-import { productCategories } from "@/api/query/products";
+
 import { computed, onMounted } from "vue";
 import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
 import { SelectOption } from "@/types/types";
+import { graphql } from "@/api/gql";
 
 let productCategoriesFunction: null | ReturnType<typeof productCategoriesComposable> = null;
 
@@ -15,7 +16,16 @@ export const useProductCategories = () => {
 };
 
 const productCategoriesComposable = () => {
-  const { load, result } = useLazyQuery(productCategories);
+  const { load, result } = useLazyQuery(
+    graphql(`
+      query productCategories {
+        productCategories {
+          id
+          name
+        }
+      }
+    `),
+  );
 
   onMounted(async () => {
     await load();

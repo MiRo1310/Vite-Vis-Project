@@ -2,11 +2,26 @@
 import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useMutation } from "@vue/apollo-composable";
-import { addCategory } from "@/api/mutation/addCategory";
 import { ErrorCode } from "@/api/gql/graphql";
 import { computed } from "vue";
+import { graphql } from "@/api/gql";
 
-const { mutate } = useMutation(addCategory, { refetchQueries: ["GetCategories"] });
+const { mutate } = useMutation(
+  graphql(`
+    mutation addCategory($name: String!) {
+      createProductCategory(dto: { name: $name }) {
+        data {
+          id
+          name
+        }
+        errorCode
+        isError
+      }
+    }
+  `),
+  { refetchQueries: ["GetCategories", "productCategories"] },
+);
+
 const categoryExists = defineModel<boolean>("categoryExists", { default: false });
 const newCategory = defineModel<string>("newCategory");
 

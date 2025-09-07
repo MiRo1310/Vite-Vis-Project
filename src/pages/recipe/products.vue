@@ -26,6 +26,7 @@ const { result } = useQuery(
         salt
         sugar
         unit
+        amount
         productUnits {
           id
           amount
@@ -42,6 +43,7 @@ const columns: DatatableColumns[] = [
   { source: "name", labelKey: "Name" },
   { source: "category", labelKey: "Kategorie", type: "component", component: ProductTableCellCategoryName },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
+  { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
   { source: "carbs", labelKey: "Kohlenhydrate", type: "number" },
   { source: "fat", labelKey: "Fett", type: "number" },

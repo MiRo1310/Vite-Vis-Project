@@ -2,7 +2,7 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: "http://localhost:5095/graphql",
-  documents: ["src/api/**/*.ts", "src/**/*.vue"],
+  documents: ["src/api/**/*.ts", "src/**/*.vue", "src/composables/querys/**/*.ts"],
   generates: {
     "./src/api/gql/": {
       preset: "client",

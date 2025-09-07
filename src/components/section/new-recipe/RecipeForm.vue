@@ -5,20 +5,18 @@ import Form from "@/components/shared/form/Form.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
-import { addRecipe } from "@/api/mutation/addRecipe";
-import { updateRecipe } from "@/api/mutation/updateRecipe";
 import RecipeDescriptionGroup from "@/components/section/new-recipe/RecipeDescriptionGroup.vue";
 import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
 import AddNewGroup from "@/components/section/new-recipe/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { getRecipeById } from "@/api/query/getRecipeById";
 import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpdateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
+import { graphql } from "@/api/gql";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -26,10 +24,64 @@ const router = useRouter();
 const props = defineProps<{ recipeId?: string }>();
 
 const { toast } = useToast();
-const { mutate } = useMutation(addRecipe);
-const { mutate: updateMutate } = useMutation(updateRecipe);
+const { mutate } = useMutation(
+  graphql(`
+    mutation addRecipe($dto: RecipeCreateDtoInput!) {
+      createRecipe(dto: $dto) {
+        id
+      }
+    }
+  `),
+);
+const { mutate: updateMutate } = useMutation(
+  graphql(`
+    mutation updateRecipe($dto: RecipeUpdateDtoInput!) {
+      updateRecipe(dto: $dto) {
+        id
+      }
+    }
+  `),
+);
 
-const { load, onResult } = useLazyQuery(getRecipeById);
+const getRecipeByIdQuery = graphql(`
+  query getRecipeById($id: UUID!) {
+    recipe(id: $id) {
+      id
+      name
+      createdAt
+      modifiedAt
+      portions
+      recipeProducts {
+        amount
+        description
+        productId
+        groupPosition
+        productPosition
+        unit
+        id
+        kcal
+        activeUnitId
+        product {
+          name
+        }
+      }
+      recipeDescriptions {
+        position
+        text
+        id
+        header
+      }
+      recipeHeaderProducts {
+        id
+        position
+        recipeId
+        text
+      }
+    }
+  }
+`);
+
+const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
 
 onResult((result: OnResult<GetRecipeByIdQuery>) => {
   if (!result.data?.recipe) return;
@@ -52,7 +104,7 @@ onMounted(async () => {
   }
 
   if (props.recipeId && props.recipeId !== "undefined") {
-    await load(getRecipeById, { id: props.recipeId });
+    await load(getRecipeByIdQuery, { id: props.recipeId });
   }
 });
 
