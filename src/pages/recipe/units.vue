@@ -6,6 +6,7 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import Header from "@/components/section/header/Header.vue";
 import AddUnit from "@/components/section/recipe/Units/AddUnit.vue";
 import UnitAction from "@/components/section/recipe/Units/UnitAction.vue";
+import { GetUnitsQuery } from "@/api/gql/graphql.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -18,7 +19,7 @@ const { result } = useQuery(
   `),
 );
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<GetUnitsQuery["units"][number]>[] = [
   { source: "name", labelKey: "Name" },
   { source: "id", labelKey: "ID" },
   { source: "id", labelKey: "", type: "component", component: UnitAction },
@@ -28,7 +29,7 @@ const columns: DatatableColumns[] = [
 <template>
   <Header title="Einheiten" />
   <div class="px-2">
-    <AddUnit />
+    <AddUnit :units="result?.units ?? []" />
     <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" />
   </div>
 </template>
