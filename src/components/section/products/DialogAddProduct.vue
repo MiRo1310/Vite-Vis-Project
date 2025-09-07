@@ -158,8 +158,7 @@ onMounted(() => {
 });
 
 const initFormData = () => {
-  form.values.name = props.data?.name ?? "";
-  form.values.category = props.data?.category ?? "";
+  form.setValues({ name: props.data?.name ?? "", category: props.data?.category ?? "" });
 };
 
 const getOptions = computed(
