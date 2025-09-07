@@ -8,6 +8,7 @@ import { graphql } from "@/api/gql";
 import AddDescription from "@/components/section/finance/AddDescription.vue";
 import DescriptionAction from "@/components/section/finance/DescriptionAction.vue";
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
+import { DescriptionsQuery } from "@/api/gql/graphql.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -20,7 +21,7 @@ const { result } = useQuery(
   `),
 );
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
   {
     source: "text",
     labelKey: "Beschreibung",

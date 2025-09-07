@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -23,7 +18,7 @@ interface NewsFeed {
 }
 
 const { infos } = useIobrokerStore();
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<NewsFeed>[] = [
   { source: "title.de", labelKey: "Title", accessorKey: "title", type: "text" },
   {
     source: "content.de",
@@ -38,9 +33,7 @@ const columns: DatatableColumns[] = [
     type: "datetime",
   },
 ];
-const json = computed(() =>
-  stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]"),
-);
+const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]"));
 </script>
 
 <template>

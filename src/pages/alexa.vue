@@ -16,6 +16,13 @@ const { alexaAction: alexaActionStore } = useIobrokerStore();
 
 export interface AlexaDotAction {
   name: string;
+  speak: string;
+  bell?: boolean;
+  bellVolume?: number;
+  washer?: boolean;
+  washerVolume?: number;
+  tel?: boolean;
+  telVolume?: number;
 }
 
 export interface AlexaAction {
@@ -30,14 +37,14 @@ const alexaAction: IdToSubscribe<AlexaAction> = {
 useDynamicSubscribe(alexaAction);
 
 const loading = ref(false);
-const alexaNames = ref<AlexaDotAction[]>([]);
+const alexaData = ref<AlexaDotAction[]>([]);
 
 async function getAlexaEnum(): Promise<any[]> {
   const res = await adminConnection?.getObject("enum.functions.alexa");
   return res ? (res.common.members as string[]) : [];
 }
 
-const getAlexInfos = async (id: string) => {
+const getAlexInfos = async (id: string): Promise<{ name: string | undefined; speak: string }> => {
   const res = await adminConnection?.getObject(id);
   return { name: res?.common.name, speak: `${res._id}.Commands.speak` };
 };
@@ -54,7 +61,7 @@ async function loadAlexaObject() {
       if (typeof data === "object") {
         obj = { ...obj, ...(data as object) };
       }
-      alexaNames.value.push(obj);
+      alexaData.value.push(obj);
     }
   }
   loading.value = false;
@@ -71,7 +78,7 @@ function getMoreInfos(name: string) {
 }
 
 watchEffect(() => {
-  if (adminConnection && alexaNames.value.length === 0) {
+  if (adminConnection && alexaData.value.length === 0) {
     loading.value = true;
     loadAlexaObject();
   }
@@ -92,7 +99,7 @@ function callback(params: Record<string, any>) {
   adminConnection?.setState(id, JSONToString(actions.value), true);
 }
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<AlexaDotAction>[] = [
   {
     source: "name",
     type: "component",
@@ -163,7 +170,7 @@ const columns: DatatableColumns[] = [
     </CardHeader>
     <CardContent>
       <div class="default_card">
-        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaNames" />
+        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
       </div>
     </CardContent>
   </Card>

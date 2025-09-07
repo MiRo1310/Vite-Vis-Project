@@ -11,6 +11,7 @@ import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
+import { GetProductsQuery } from "@/api/gql/graphql.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -39,16 +40,16 @@ const { result } = useQuery(
   `),
 );
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<GetProductsQuery["products"][number]>[] = [
   { source: "name", labelKey: "Name" },
   { source: "category", labelKey: "Kategorie", type: "component", component: ProductTableCellCategoryName },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
-  { source: "carbs", labelKey: "Kohlenhydrate", type: "number" },
-  { source: "fat", labelKey: "Fett", type: "number" },
-  { source: "protein", labelKey: "Protein", type: "number" },
-  { source: "salt", labelKey: "Salz", type: "number" },
+  { source: "carbs", labelKey: "Kohlenhydrate", type: "number", unit: "g" },
+  { source: "fat", labelKey: "Fett", type: "number", unit: "g" },
+  { source: "protein", labelKey: "Protein", type: "number", unit: "g" },
+  { source: "salt", labelKey: "Salz", type: "number", unit: "g" },
   { source: "sugar", labelKey: "Zucker", type: "number", unit: "g" },
   {
     source: "id",
