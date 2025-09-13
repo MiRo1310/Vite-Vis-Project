@@ -4,21 +4,46 @@ import { GetProductByIdQuery } from "@/api/gql/graphql";
 import { Button } from "@/components/shared/button";
 import { ref } from "vue";
 import DialogAddProduct from "@/components/section/products/DialogAddProduct.vue";
-import { getProductById } from "@/api/query/getProductById";
 import { useLazyQuery } from "@vue/apollo-composable";
+import { graphql } from "@/api/gql";
 
 type Product = GetProductByIdQuery["product"];
 
 const props = defineProps<TableCellTypes<string, Product>>();
 
-const { load, onResult, refetch } = useLazyQuery(getProductById);
+const getProductByIdQuery = graphql(`
+  query getProductById($id: UUID!) {
+    product(id: $id) {
+      id
+      carbs
+      category
+      fat
+      kcal
+      name
+      protein
+      salt
+      sugar
+      productUnits {
+        modifiedAt
+        createdAt
+        id
+        productId
+        amount
+        unit
+        isDefault
+      }
+    }
+  }
+`);
+
+const { load, onResult, refetch } = useLazyQuery(getProductByIdQuery);
 
 const dialogOpen = ref(false);
 
 const productById = async () => {
   if (!props.value) return;
 
-  await load(getProductById, { id: props.value });
+  await load(getProductByIdQuery, { id: props.value });
   await refetch({ id: props.value });
 };
 

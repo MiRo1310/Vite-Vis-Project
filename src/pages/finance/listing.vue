@@ -11,7 +11,7 @@ import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
-import { SortEnumType, TravelCostFilterInput } from "@/api/gql/graphql.ts";
+import { SortEnumType, TravelCostFilterInput, TravelCostQuery } from "@/api/gql/graphql.ts";
 
 const filter = computed((): TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
@@ -47,7 +47,7 @@ const updateYear = (y: number) => {
   load(query, { order, where: filter.value }, { fetchPolicy: "network-only" });
 };
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<TravelCostQuery["travelCost"][number]>[] = [
   { source: "date", labelKey: "Datum", type: "date" },
   { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress },
   { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn },

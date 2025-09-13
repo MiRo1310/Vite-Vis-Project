@@ -12,7 +12,7 @@ const { batteries } = useIobrokerStore();
 
 useDynamicSubscribe([batteryIds]);
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<BatteryTableData>[] = [
   { source: "name", labelKey: "Name", type: "text", accessorKey: "name" },
   {
     source: "percent",

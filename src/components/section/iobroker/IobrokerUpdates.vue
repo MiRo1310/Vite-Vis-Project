@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
@@ -23,17 +18,17 @@ interface AdapterUpdate {
   installedVersion: string;
 }
 
-interface UpdatesArray extends AdapterUpdate {
+interface UpdatesType extends AdapterUpdate {
   name: string;
 }
 
-const availableUpdates = computed((): UpdatesArray[] => {
+const availableUpdates = computed((): UpdatesType[] => {
   if (!infos.updatesJson?.val) {
     return [];
   }
   const json = stringToJSON<UpdatesAsJSON>(infos.updatesJson?.val);
 
-  const jsonArray: UpdatesArray[] = [];
+  const jsonArray: UpdatesType[] = [];
   if (json) {
     Object.keys(json).forEach((key) => {
       jsonArray.push({
@@ -46,7 +41,7 @@ const availableUpdates = computed((): UpdatesArray[] => {
   return jsonArray;
 });
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<UpdatesType>[] = [
   {
     source: "name",
     labelKey: "Name",

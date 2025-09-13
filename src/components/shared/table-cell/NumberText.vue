@@ -1,21 +1,12 @@
 <script setup lang="ts">
-import { computed, PropType } from "vue";
+import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 
-const props = defineProps({
-  value: {
-    type: [Number, String] as PropType<number | string | undefined>,
-    default: null,
-  },
-  unit: {
-    type: String,
-    default: "",
-  },
-});
+const props = defineProps<{ value?: string | number; unit?: string }>();
 
-const val = computed(() => (isDefined(props.value) ? String(parseFloat(String(props.value)).toFixed(2)).replace(".", ",") : 0.0));
+const val = computed(() => (isDefined(props.value) ? String(parseFloat(String(props.value)).toFixed(2)).replace(".", ",") : ""));
 </script>
 
 <template>
-  <p>{{ val }} {{ unit }}</p>
+  <p>{{ val }} {{ value ? unit : "" }}</p>
 </template>

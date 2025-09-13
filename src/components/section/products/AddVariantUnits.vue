@@ -3,15 +3,21 @@ import Button from "@/components/shared/button/Button.vue";
 import { onMounted, ref } from "vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { InputOptions } from "@/components/shared/input/Input.vue";
-import { removeProductUnit } from "@/api/mutation/removeProductUnit";
 import { useMutation } from "@vue/apollo-composable";
 import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
+import { graphql } from "@/api/gql";
 
 type Units = ProductUnitCreateOrUpdateDtoInput[];
 
 const props = defineProps<{ options: InputOptions[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
 
-const { mutate } = useMutation(removeProductUnit);
+const { mutate } = useMutation(
+  graphql(`
+    mutation removeProductUnit($id: UUID!) {
+      removeProductUnit(id: $id)
+    }
+  `),
+);
 
 const unitVariants = defineModel<ProductUnitCreateOrUpdateDtoInput[]>("unitVariants", { default: [] });
 

@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import TableCell from "@/components/shared/table-cell/TableCell.vue";
 import { Checkbox } from "@/components/ui/checkbox";
 import { clsx } from "clsx";
+import { Pathes } from "@/types/types.ts";
 
-export interface DatatableColumns {
+export interface DatatableColumns<T> {
   accessorKey?: string;
   headerClass?: string;
-  source: string;
+  source: Pathes<T>;
   labelKey: string;
   defaultVisibility?: boolean;
   unit?: string;
@@ -24,8 +25,8 @@ export interface DatatableColumns {
 
 export type CustomValue = string | number | boolean | undefined | object;
 
-export const getColumns = (columns: DatatableColumns[]) => {
-  return columns.map((column: DatatableColumns) => {
+export const getColumns = (columns: DatatableColumns<any>[]) => {
+  return columns.map((column: DatatableColumns<any>) => {
     return {
       accessorKey: column.accessorKey || column.labelKey || column.source,
       headerClass: column.headerClass,

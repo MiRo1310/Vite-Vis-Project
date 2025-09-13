@@ -7,6 +7,7 @@ import AddAddress from "@/components/section/finance/AddAddress.vue";
 import { Card } from "@/components/shared/card";
 import AddressAction from "@/components/section/finance/AddressAction.vue";
 import Navigation from "@/components/section/finance/Navigation.vue";
+import { AddressesQuery } from "@/api/gql/graphql.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -21,7 +22,7 @@ const { result } = useQuery(
   `),
 );
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
   {
     source: "name",
     labelKey: "Name",

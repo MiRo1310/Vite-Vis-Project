@@ -2,8 +2,12 @@
 import { InputShadcn } from "@/components/ui/input";
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";
+import { GetUnitsQuery } from "@/api/gql/graphql.ts";
+import { isDefined } from "@vueuse/core";
+
+const props = defineProps<{ units: GetUnitsQuery["units"] }>();
 
 const { mutate } = useMutation(
   graphql(`
@@ -17,27 +21,41 @@ const { mutate } = useMutation(
 );
 
 const addUnit = () => {
-  if (!unit.value) return;
-  mutate({ name: unit.value });
-  unit.value = "";
-};
+  if (!newUnit.value || unitExists) {
+    return;
+  }
 
-const unit = ref("");
+  mutate({ name: newUnit.value });
+  newUnit.value = "";
+};
+const unitExists = computed(() => isDefined(props.units?.find((c) => c.name === newUnit.value)));
+const newUnit = ref("");
 </script>
 
 <template>
   <div class="add-unit">
-    <InputShadcn type="text" placeholder="Gib eine Einheit ein" class="add-unit__input" v-model:model-value="unit" />
+    <div class="add-unit__input-wrapper">
+      <InputShadcn type="text" @keydown.enter="addUnit" placeholder="Gib eine Einheit ein" class="add-unit__input" v-model:model-value="newUnit" />
+      <p v-if="unitExists" class="add-unit__warning">Die Einheit existiert schon</p>
+    </div>
     <Button variant="outline" size="icon" icon="add" @click="addUnit" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .add-unit {
-  @apply mt-4 flex gap-2;
+  @apply flex gap-2;
 
   &__input {
     @apply w-60;
+  }
+
+  &__input-wrapper {
+    @apply flex flex-col;
+  }
+
+  &__warning {
+    @apply text-[0.8rem] font-medium text-destructive mt-2;
   }
 }
 </style>

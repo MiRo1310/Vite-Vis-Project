@@ -1,31 +1,19 @@
 <script setup lang="ts">
 import CollapsibleShared from "@/components/shared/collapsible/CollapsibleShared.vue";
 import { Button } from "@/components/shared/button";
-import { computed, ref, watch } from "vue";
-import { useLazyQuery } from "@vue/apollo-composable";
-import { getProductById } from "@/api/query/getProductById";
+import { computed, ref } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
+import { GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";
 
-const props = defineProps<{ productId: string }>();
+type ProductType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number]["product"];
+const props = defineProps<{ product: ProductType }>();
 
 const { getCategoryNameById } = useProductCategories();
-
-const { load, result } = useLazyQuery(getProductById);
-
-watch(
-  () => props.productId,
-  async () => {
-    if (props.productId) {
-      await load(getProductById, { id: props.productId });
-    }
-  },
-  { immediate: true },
-);
 
 const isOpen = ref(false);
 
 const information = computed((): { name: string; value?: string | number | null; classCell?: string }[] => {
-  const product = result.value?.product;
+  const product = props.product;
 
   if (!product) return [];
 
@@ -48,7 +36,7 @@ const information = computed((): { name: string; value?: string | number | null;
     </template>
     <template #content>
       <p class="product-properties__title">Produkt Eigenschaften</p>
-      <div v-if="result?.product" class="product-properties__info-wrapper">
+      <div v-if="product" class="product-properties__info-wrapper">
         <div v-for="info in information" :key="info.name">
           <p class="product-properties__info-name">{{ info.name }}</p>
           <p :class="['product-properties__info-value', info?.classCell]">{{ info.value }}</p>

@@ -7,13 +7,11 @@ import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import SelectableName from "@/components/section/new-recipe/SelectableName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import { removeRecipeProduct } from "@/api/mutation/removeRecipeProduct";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
-import { GetProductUnits } from "@/api/query/getProductUnits";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
-import { removeProductGroupMutation } from "@/api/mutation/removeProductGroup";
 import { isDefined } from "@vueuse/core";
+import { graphql } from "@/api/gql";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -21,10 +19,35 @@ const countedProductGroups = defineModel<number>("countedProductGroups");
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
 
-const { mutate: mutationRemoveRecipeProduct } = useMutation(removeRecipeProduct);
-const { mutate } = useMutation(removeProductGroupMutation);
+const { mutate: mutationRemoveRecipeProduct } = useMutation(
+  graphql(`
+    mutation removeRecipeProduct($id: UUID!) {
+      removeRecipeProduct(id: $id)
+    }
+  `),
+);
+const { mutate } = useMutation(
+  graphql(`
+    mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {
+      removeProductGroup(dto: $dto)
+    }
+  `),
+);
 
-const { result: productUnits } = useQuery(GetProductUnits);
+const { result: productUnits } = useQuery(
+  graphql(`
+    query getProductUnits {
+      productUnits {
+        id
+        createdAt
+        modifiedAt
+        productId
+        amount
+        unit
+      }
+    }
+  `),
+);
 
 const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType | undefined =>
   productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === groupIndex);

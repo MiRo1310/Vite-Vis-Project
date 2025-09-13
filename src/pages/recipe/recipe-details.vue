@@ -26,6 +26,13 @@ const recipeDetailsQuery = graphql(`
         productId
         product {
           name
+          category
+          carbs
+          fat
+          kcal
+          protein
+          salt
+          sugar
         }
       }
       recipeDescriptions {

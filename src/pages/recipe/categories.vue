@@ -4,10 +4,11 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { graphql } from "@/api/gql";
 import { useQuery } from "@vue/apollo-composable";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import ProductAddCategory from "@/components/section/products/ProductAddCategory.vue";
-import Input from "../../components/ui/input/InputShadcn.vue";
-import { computed, ref } from "vue";
-import CategorieAction from "@/components/section/categories/CategorieAction.vue";
+import AddCategory from "@/components/section/products/AddCategory.vue";
+import { ref } from "vue";
+import CategoryUpdate from "@/components/section/categories/CategoryUpdate.vue";
+import { GetCategoriesQuery } from "@/api/gql/graphql.ts";
+import CategoryRemove from "@/components/section/categories/CategoryRemove.vue";
 
 const { result } = useQuery(
   graphql(`
@@ -20,33 +21,35 @@ const { result } = useQuery(
   `),
 );
 
-const columns: DatatableColumns[] = [
+const columns: DatatableColumns<GetCategoriesQuery["productCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },
   { source: "id", labelKey: "ID" },
-  { source: "id", labelKey: "", type: "component", component: CategorieAction },
+  { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryUpdate },
+  { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryRemove },
 ];
-const category = ref("");
 
-const categoryExists = computed(() => result.value?.productCategories?.find((c) => c.name === category.value) !== undefined);
+const updateByPressEnter = ref(false);
 </script>
 
 <template>
-  <div class="flex items-start gap-2">
-    <div class="flex flex-col">
-      <Input
-        v-model:model-value="category"
-        :class="['w-60', { 'border-destructive': categoryExists }]"
-        placeholder="Kategorie hinzu oder ändern"
-        @update:model-value="categoryExists = false"
-        type="text"
-      />
-      <p v-if="categoryExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
-    </div>
-    <ProductAddCategory v-model:category-exists="categoryExists" v-model:new-category="category" />
+  <Header title="Kategorien" />
+  <div class="categories__section">
+    <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
   </div>
 
-  <Header title="Kategorien" />
-  <div class="px-2">
+  <div class="categories__table-wrapper">
     <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.categories {
+  &__section {
+    @apply flex items-center gap-2;
+  }
+
+  &__table-wrapper {
+    @apply px-2;
+  }
+}
+</style>

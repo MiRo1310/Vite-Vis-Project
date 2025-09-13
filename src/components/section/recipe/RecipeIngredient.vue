@@ -34,7 +34,7 @@ const calculatedKcal = computed(() => {
       </div>
     </div>
 
-    <RecipeProductProperties v-if="ingredient.productId" :product-id="ingredient.productId" />
+    <RecipeProductProperties v-if="ingredient.product" :product="ingredient.product" />
   </div>
 </template>
 
