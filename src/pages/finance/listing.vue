@@ -79,7 +79,7 @@ const total = computed(() => {
 <template>
   <div class="listing">
     <div class="print-none">
-      <h1 class="listing__title">Listing</h1>
+      <h1 class="listing__title">Auflistung</h1>
       <Navigation>
         <Button @click="printPage" variant="default">Drucken</Button>
       </Navigation>

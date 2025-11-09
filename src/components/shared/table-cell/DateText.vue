@@ -11,6 +11,6 @@ defineProps({
 
 <template>
   <span v-if="value" class="text-muted-foreground">
-    {{ value ? new Date(value.toString()).toLocaleDateString() : "-" }}
+    {{ value ? new Date(value.toString()).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }) : "-" }}
   </span>
 </template>
