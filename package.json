@@ -59,14 +59,14 @@
     "zod": "^4.0.17"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.0",
-    "@eslint/js": "^9.32.0",
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.1",
     "@graphql-codegen/client-preset": "4.8.3",
     "@graphql-codegen/introspection": "^4.0.3",
     "@types/apollo-upload-client": "^18.0.0",
     "@types/node": "^24.10.1",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "@vue/language-server": "^3.0.6",
+    "@vitejs/plugin-vue": "^6.0.2",
+    "@vue/language-server": "^3.1.5",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.1",
