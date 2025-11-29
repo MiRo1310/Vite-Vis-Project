@@ -6,6 +6,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/appStore.ts";
+import { Timer, Timers } from "@/types/types.ts";
 
 const appStore = useAppStore();
 const iobrokerStore = useIobrokerStore();
@@ -16,14 +17,8 @@ const closeWindow = () => {
   appStore.toggleTimerVisibility();
 };
 
-const timersArray = ["timer1", "timer2", "timer3", "timer4"];
-
 const stopTimer = (index: number) => {
-  if (adminConnection)
-    adminConnection.setState(
-      `alexa-timer-vis.0.${timersArray[index]}.Reset`,
-      true,
-    );
+  if (adminConnection) adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);
 };
 </script>
 
@@ -36,50 +31,42 @@ const stopTimer = (index: number) => {
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="flex flex-wrap px-3 pt-0 pb-3">
-      <div
-        v-for="(singleTimer, i) in timersArray"
-        :key="i"
-        class="card__timer default_card"
-      >
+      <div v-for="i of 4" :key="i" class="card__timer default_card">
         <Button class="w-6 h-6 p-0 absolute right-2" @click="stopTimer(i)">
           <X />
         </Button>
         <div class="w-full">
-          <h1 class="text-xl text-gray-500 h-8 line">Timer {{ i + 1 }}</h1>
+          <h1 class="text-xl text-gray-500 h-8 line">Timer {{ i }}</h1>
           <div class="flex-between mt-2 text-xs">
             <div class="flex-between w-1/2 mr-6">
               <p>Startzeit:</p>
               <p class="">
-                {{
-                  timer[(singleTimer + "TimeStart") as keyof typeof timer]?.val
-                }}
+                {{ (timer[i as keyof Timers] as Timer).timeStart?.val }}
               </p>
             </div>
             <div class="flex-between w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{
-                  timer[(singleTimer + "TimeEnd") as keyof typeof timer]?.val
-                }}
+                {{ (timer[i as keyof Timers] as Timer).timeEnd?.val }}
               </p>
             </div>
           </div>
           <div class="flex-between mt-2">
             <p>Name:</p>
             <p>
-              {{ timer[(singleTimer + "Name") as keyof typeof timer]?.val }}
+              {{ (timer[i as keyof Timers] as Timer).name?.val }}
             </p>
           </div>
           <div class="flex-between">
             <p>Gerät:</p>
             <p>
-              {{ timer[(singleTimer + "Device") as keyof typeof timer]?.val }}
+              {{ (timer[i as keyof Timers] as Timer).device?.val }}
             </p>
           </div>
           <div class="flex-between">
             <p>Restdauer:</p>
             <p>
-              {{ timer[(singleTimer + "String") as keyof typeof timer]?.val }}
+              {{ (timer[i as keyof Timers] as Timer).timeString?.val }}
             </p>
           </div>
         </div>
