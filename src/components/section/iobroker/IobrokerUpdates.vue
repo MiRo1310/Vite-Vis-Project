@@ -64,7 +64,7 @@ const columns: DatatableColumns<UpdatesType>[] = [
 </script>
 
 <template>
-  <Card :class="['inline-block', $props.class]" styling="light">
+  <Card class="inline-block" styling="light">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between items-center">

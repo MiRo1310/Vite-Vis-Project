@@ -3,7 +3,7 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <div :class="['header', $props.class]">
+  <div class="header">
     <div class="header__left-col">
       <div class="header__first-row">
         <h1 class="header__title">{{ title }}</h1>
