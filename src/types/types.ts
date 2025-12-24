@@ -32,6 +32,7 @@ export interface Timer {
   timeStart: StoreValue<string>;
   percent: StoreValue<number>;
   name: StoreValue<string>;
+  initialTimer: StoreValue<string>;
 }
 
 export interface Timers {

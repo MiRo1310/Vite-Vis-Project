@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { computed, HTMLAttributes } from "vue";
+import { HTMLAttributes } from "vue";
 import { useAppStore } from "@/store/appStore.ts";
 import { Timer, Timers } from "@/types/types.ts";
 
@@ -11,13 +11,6 @@ defineProps<{ class: HTMLAttributes["class"] }>();
 const iobrokerStore = useIobrokerStore();
 
 const { timer } = storeToRefs(iobrokerStore);
-
-const totalTime = computed(() => (i: number) => {
-  const endTime = (timer.value[i as keyof Timers] as Timer).timeEnd?.val;
-  const startTime = (timer.value[i as keyof Timers] as Timer).timeStart?.val;
-  if (!endTime || !startTime) return "-";
-  return Math.floor((new Date(`1970-01-01T${endTime}Z`).getTime() - new Date(`1970-01-01T${startTime}Z`).getTime()) / 60000) + " Min";
-});
 </script>
 
 <template>
@@ -35,7 +28,7 @@ const totalTime = computed(() => (i: number) => {
             <span> {{ (timer[i as keyof Timers] as Timer).timeString?.val }}</span>
           </h1>
           <div class="w-full text-xs">
-            <div class="timer__label">
+            <div class="timer__label text-base">
               <p>Name:</p>
               <p class="flex-1 text-right">
                 {{ (timer[i as keyof Timers] as Timer).name?.val }}
@@ -48,9 +41,9 @@ const totalTime = computed(() => (i: number) => {
               </p>
             </div>
             <div class="timer__label">
-              <p>Gesamtzeit:</p>
+              <p>Länge:</p>
               <p class="flex-1 text-right">
-                {{ totalTime(i) }}
+                {{ (timer[i as keyof Timers] as Timer).initialTimer?.val }}
               </p>
             </div>
           </div>
