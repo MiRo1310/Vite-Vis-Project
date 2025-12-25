@@ -14,7 +14,7 @@ export const shutterAutoUpTime: IdToSubscribe<Shutter> = {
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",
-      key: "wohnzimmerMittigAutoUpTime",
+      key: "wohnzimmerMitteAutoUpTime",
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch",

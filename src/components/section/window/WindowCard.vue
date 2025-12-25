@@ -1,52 +1,24 @@
 <script setup lang="ts">
 import { computed, HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
-import WindowCardButtons from "@/components/section/window/WindowCardButtons.vue";
+import WindowShutterPositionBtns from "@/components/section/window/WindowShutterPositionBtns.vue";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
-import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { storeToRefs } from "pinia";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { blinds0, blinds10, blinds100, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70, blinds80, blinds90 } from "@/public";
-import { WindowType } from "@/types/types.ts";
+import { WindowObject } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { isDefined } from "@vueuse/core";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
-const iobrokerStore = useIobrokerStore();
-const { fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(iobrokerStore);
-
 const props = defineProps<{
-  shutter: boolean;
-  title: string;
-  id: keyof WindowType;
-  id2?: keyof WindowType;
   class?: HTMLAttributes["class"];
-  door: boolean;
+  window: WindowObject;
 }>();
 
-const getIsWindowOpen = computed(() => (id: keyof WindowType) => fenster.value[id]?.val ?? false);
-
-const getShutterPosition = computed(() => {
-  const value = rolladen.value[(props.id + "Position") as keyof typeof rolladen.value]?.val;
-
-  return isDefined(value) ? value : "n/a";
-});
-
-type SubKey = "Auto" | "AutoUp" | "AutoUpTime" | "Delay";
-
-const values = computed(() => <T,>(subKey: SubKey, obj: any): StoreValue<T> => {
-  const id = useDefaultLivingRoom(props.id);
-  return obj[(id + subKey) as keyof typeof obj];
-});
-
-function useDefaultLivingRoom(param: string) {
-  return param.includes("wohnzimmer") ? "wohnzimmerEcke" : param;
-}
-
 const getShutterImage = computed(() => {
-  const position = getShutterPosition.value;
+  const position = props.window.shutterPosition;
   if (typeof position !== "number") return blinds0;
 
   if (position === 0) return blinds100;
@@ -70,55 +42,53 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </script>
 <template>
   <Card class="window__card" :class="`${props.class}`" styling="light">
-    <span class="text-lg text-muted-foreground line ml-2">{{ title }}</span>
+    <span class="text-lg text-muted-foreground line ml-2">{{ window.name }}</span>
 
     <CardContent class="px-2 pb-2">
       <div class="flex items-center">
         <div class="flex">
-          <WindowImage :is-open="getIsWindowOpen(id)" />
-          <WindowImage v-if="id2" :is-open="getIsWindowOpen(id2)" />
+          <WindowImage :is-open="window.isOpenStatus" />
+          <WindowImage v-if="isDefined(window.isOpenStatus2)" :is-open="window.isOpenStatus2" />
         </div>
-        <WindowCardOpenCloseText :window-open="id2 ? getIsWindowOpen(id) || getIsWindowOpen(id2) : getIsWindowOpen(id)" :door />
+        <WindowCardOpenCloseText
+          :window-open="isDefined(window.isOpenStatus2) ? window.isOpenStatus || window.isOpenStatus2 : window.isOpenStatus"
+          :door="window.door ?? false"
+        />
       </div>
-      <div v-if="shutter">
+      <div v-if="window.shutter">
         <div class="flex items-center">
           <img class="window--img" :src="getShutterImage" alt="FensterRollade" />
           <div class="w-full">
-            <ShutterLabel :get-shutter-position="getShutterPosition" />
+            <ShutterLabel :get-shutter-position="window.shutterPosition ?? 'n/a'" />
 
             <div class="absolute top-2 right-2">
               <div class="flex items-center justify-between">
                 <div class="w-11">
-                  <Switch
-                    :checked="values<boolean>('Auto', shutterAutoDownTime)?.val"
-                    @update:checked="updateHandler($event, values<boolean>('Auto', shutterAutoDownTime)?.id || '')"
-                  />
+                  <Switch :checked="window.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, window.shutterAutoDown?.id ?? '')" />
                   <p class="text-[0.5rem]">Auto runter</p>
                 </div>
 
-                <InputIobroker :state="values<number>('Delay', shutterAutoDownTime)" unit="min" :ack="true" />
+                <InputIobroker :state="window.shutterAutoDownDelay" unit="min" :ack="true" />
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
-                  <Switch
-                    :checked="values<boolean>('AutoUp', shutterAutoUp)?.val"
-                    @update:checked="updateHandler($event, values<boolean>('AutoUp', shutterAutoUp)?.id || '')"
-                  />
+                  <Switch :checked="window.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, window.shutterAutoUp?.id ?? '')" />
                   <p class="text-[0.5rem]">Auto hoch</p>
                 </div>
-                <InputIobroker :state="values<number>('AutoUpTime', shutterAutoUp)" type="time" :ack="true" />
+                <InputIobroker :state="window.shutterAutoUpTime" type="time" :ack="true" />
               </div>
             </div>
           </div>
         </div>
-        <WindowCardButtons :id="id" />
+
+        <WindowShutterPositionBtns v-if="window.idShutterPosition" :idShutterPosition="window.idShutterPosition" />
       </div>
     </CardContent>
   </Card>
 </template>
 
 <style lang="scss" scoped>
-input-shadcn {
+.input-shadcn {
   @apply w-[5.2rem] pr-8 border-none shadow-none;
 }
 

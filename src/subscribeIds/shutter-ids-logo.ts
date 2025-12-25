@@ -5,7 +5,7 @@ export const shutterIdsLogo: IdToSubscribe<Shutter> = {
   value: [
     {
       id: "s7.1.DBs.DB1.B150",
-      key: "wohnzimmerMittigPosition",
+      key: "wohnzimmerMittePosition",
     },
     {
       id: "s7.1.DBs.DB1.B152",

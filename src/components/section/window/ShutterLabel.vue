@@ -10,20 +10,12 @@ const text = {
 </script>
 
 <template>
-  <p
-    :class="[
-      'text text__container',
-      getShutterPosition === 'n/a' ? 'text-bounce' : '',
-    ]"
-  >
-    {{
-      text[getShutterPosition as keyof typeof text] ||
-      `Rollade ${getShutterPosition}% offen`
-    }}
+  <p :class="['text text__container', getShutterPosition === 'n/a' ? 'text-bounce' : '']">
+    {{ text[getShutterPosition as keyof typeof text] || `Rollade ${getShutterPosition}% offen` }}
   </p>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .text {
   @apply text-[0.68rem] mt-1 ml-1 font-bold;
 }

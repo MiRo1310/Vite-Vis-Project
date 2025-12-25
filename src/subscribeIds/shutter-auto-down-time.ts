@@ -38,7 +38,7 @@ export const shutterAutoDownTime: IdToSubscribe<Shutter> = {
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
-      key: "wohnzimmerMittigDelay",
+      key: "wohnzimmerMitteDelay",
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang",
