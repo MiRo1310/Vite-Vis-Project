@@ -40,6 +40,32 @@ const updateHandler = (value: number | string | boolean, id: string) => {
   }
 };
 </script>
+<style lang="scss" scoped>
+.input-shadcn {
+  @apply w-[5.2rem] pr-8 border-none shadow-none;
+}
+
+.window__card {
+  @apply min-w-[32.5%] flex-1 relative bg-white;
+}
+
+.window__card:first-child {
+  @apply mt-1 ml-1;
+}
+
+.window--img {
+  @apply w-8 h-12;
+}
+
+.window--img-openClose {
+  @apply w-8 h-6 mt-1;
+}
+
+.text {
+  @apply text-[0.68rem] mt-1 ml-1 font-bold;
+}
+</style>
+
 <template>
   <Card class="window__card" :class="`${props.class}`" styling="light">
     <span class="text-lg text-muted-foreground line ml-2">{{ window.name }}</span>
@@ -86,29 +112,3 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     </CardContent>
   </Card>
 </template>
-
-<style lang="scss" scoped>
-.input-shadcn {
-  @apply w-[5.2rem] pr-8 border-none shadow-none;
-}
-
-.window__card {
-  @apply min-w-[32.5%] flex-1 relative bg-white;
-}
-
-.window__card:first-child {
-  @apply mt-1 ml-1;
-}
-
-.window--img {
-  @apply w-8 h-12;
-}
-
-.window--img-openClose {
-  @apply w-8 h-6 mt-1;
-}
-
-.text {
-  @apply text-[0.68rem] mt-1 ml-1 font-bold;
-}
-</style>

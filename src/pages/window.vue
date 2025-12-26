@@ -55,8 +55,8 @@ const windows = computed((): WindowObject[] => {
       idShutterPosition: wohnzimmer.shutterPositionCorner,
       isOpenStatus: fenster.value.wohnzimmerEcke?.val ?? false,
       shutterPosition: rolladen.value.wohnzimmerEckePosition?.val,
-      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
       shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
+      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
       shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
       shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerEckeDelay,
     },
@@ -66,10 +66,10 @@ const windows = computed((): WindowObject[] => {
       idShutterPosition: wohnzimmer.shutterPositionLeft,
       isOpenStatus: fenster.value.wohnzimmerLinks?.val ?? false,
       shutterPosition: rolladen.value.wohnzimmerLinksPosition?.val,
-      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerLinksAutoUpTime,
-      shutterAutoUp: shutterAutoUp.value.wohnzimmerLinksAutoUp,
-      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerLinksAuto,
-      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerLinksDelay,
+      shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
+      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
+      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
+      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerEckeDelay,
     },
     {
       name: "Wohnzimmer mitte",
@@ -77,10 +77,10 @@ const windows = computed((): WindowObject[] => {
       idShutterPosition: wohnzimmer.shutterPositionCenter,
       isOpenStatus: fenster.value.wohnzimmerMitte?.val ?? false,
       shutterPosition: rolladen.value.wohnzimmerMittePosition?.val,
-      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerMitteAutoUpTime,
-      shutterAutoUp: shutterAutoUp.value.wohnzimmerMitteAutoUp,
-      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerMitteAuto,
-      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerMitteDelay,
+      shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
+      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
+      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
+      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerEckeDelay,
     },
     {
       name: "Wohnzimmer rechts",
@@ -88,10 +88,10 @@ const windows = computed((): WindowObject[] => {
       idShutterPosition: wohnzimmer.shutterPositionRight,
       isOpenStatus: fenster.value.wohnzimmerRechts?.val ?? false,
       shutterPosition: rolladen.value.wohnzimmerRechtsPosition?.val,
-      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerRechtsAutoUpTime,
-      shutterAutoUp: shutterAutoUp.value.wohnzimmerRechtsAutoUp,
-      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerRechtsAuto,
-      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerRechtsDelay,
+      shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
+      shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
+      shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
+      shutterAutoDownDelay: shutterAutoDownTime.value.wohnzimmerEckeDelay,
     },
 
     {
@@ -211,7 +211,7 @@ const windows = computed((): WindowObject[] => {
     </Card>
   </div>
   <div class="windows__window-cards">
-    <WindowCard v-for="card in windows" :window="card" :key="card.name" />
+    <WindowCard v-for="window in windows" :window :key="window.name" />
   </div>
 </template>
 
