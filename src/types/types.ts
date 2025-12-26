@@ -45,41 +45,47 @@ export interface Timers {
 export interface WindowObject {
   name: string;
   shutter: boolean;
-  id: keyof WindowType;
-  id2?: keyof WindowType;
+  idShutterPosition?: string;
+  isOpenStatus: boolean;
+  isOpenStatus2?: boolean;
   door?: boolean;
+  shutterPosition?: number;
+  shutterAutoDown?: StoreValue<boolean>;
+  shutterAutoUp?: StoreValue<boolean>;
+  shutterAutoUpTime?: StoreValue<number>;
+  shutterAutoDownDelay?: StoreValue<number>;
 }
 
 export interface Shutter {
-  wohnzimmerMittigAuto: StoreValue<number>;
-  wohnzimmerEckeAuto: StoreValue<number>;
-  wohnzimmerLinksAuto: StoreValue<number>;
-  wohnzimmerRechtsAuto: StoreValue<number>;
+  wohnzimmerMitteAuto: StoreValue<boolean>;
+  wohnzimmerEckeAuto: StoreValue<boolean>;
+  wohnzimmerLinksAuto: StoreValue<boolean>;
+  wohnzimmerRechtsAuto: StoreValue<boolean>;
 
-  wohnzimmerMittigPosition: StoreValue<number>;
+  wohnzimmerMittePosition: StoreValue<number>;
   wohnzimmerEckePosition: StoreValue<number>;
   wohnzimmerLinksPosition: StoreValue<number>;
   wohnzimmerRechtsPosition: StoreValue<number>;
 
-  wohnzimmerMittigAutoUp: StoreValue<number>;
-  wohnzimmerEckeAutoUp: StoreValue<number>;
-  wohnzimmerLinksAutoUp: StoreValue<number>;
-  wohnzimmerRechtsAutoUp: StoreValue<number>;
+  wohnzimmerMitteAutoUp: StoreValue<boolean>;
+  wohnzimmerEckeAutoUp: StoreValue<boolean>;
+  wohnzimmerLinksAutoUp: StoreValue<boolean>;
+  wohnzimmerRechtsAutoUp: StoreValue<boolean>;
 
-  wohnzimmerMittigAutoUpTime: StoreValue<number>;
+  wohnzimmerMitteAutoUpTime: StoreValue<number>;
   wohnzimmerEckeAutoUpTime: StoreValue<number>;
   wohnzimmerLinksAutoUpTime: StoreValue<number>;
   wohnzimmerRechtsAutoUpTime: StoreValue<number>;
 
-  wohnzimmerMittigDelay: StoreValue<number>;
+  wohnzimmerMitteDelay: StoreValue<number>;
   wohnzimmerEckeDelay: StoreValue<number>;
   wohnzimmerLinksDelay: StoreValue<number>;
   wohnzimmerRechtsDelay: StoreValue<number>;
 
-  kuecheTuerAuto: StoreValue<number>;
-  kuecheFensterAuto: StoreValue<number>;
-  kuecheTuerAutoUp: StoreValue<number>;
-  kuecheFensterAutoUp: StoreValue<number>;
+  kuecheTuerAuto: StoreValue<boolean>;
+  kuecheFensterAuto: StoreValue<boolean>;
+  kuecheTuerAutoUp: StoreValue<boolean>;
+  kuecheFensterAutoUp: StoreValue<boolean>;
   kuecheTuerAutoUpTime: StoreValue<number>;
   kuecheFensterAutoUpTime: StoreValue<number>;
   kuecheTuerDelay: StoreValue<number>;
@@ -87,28 +93,28 @@ export interface Shutter {
   kuecheTuerPosition: StoreValue<number>;
   kuecheFensterPosition: StoreValue<number>;
 
-  esszimmerLinksAuto: StoreValue<number>;
-  esszimmerLinksAutoUp: StoreValue<number>;
+  esszimmerLinksAuto: StoreValue<boolean>;
+  esszimmerLinksAutoUp: StoreValue<boolean>;
   esszimmerLinksAutoUpTime: StoreValue<number>;
   esszimmerLinksDelay: StoreValue<number>;
   esszimmerLinksPosition: StoreValue<number>;
 
-  kinderzimmerFensterAuto: StoreValue<number>;
-  kinderzimmerFensterAutoUp: StoreValue<number>;
+  kinderzimmerFensterAuto: StoreValue<boolean>;
+  kinderzimmerFensterAutoUp: StoreValue<boolean>;
   kinderzimmerFensterAutoUpTime: StoreValue<number>;
   kinderzimmerFensterDelay: StoreValue<number>;
   kinderzimmerFensterPosition: StoreValue<number>;
 
-  gaestezimmerFensterAuto: StoreValue<number>;
-  gaestezimmerFensterAutoUp: StoreValue<number>;
+  gaestezimmerFensterAuto: StoreValue<boolean>;
+  gaestezimmerFensterAutoUp: StoreValue<boolean>;
   gaestezimmerFensterAutoUpTime: StoreValue<number>;
   gaestezimmerFensterDelay: StoreValue<number>;
   gaestezimmerFensterPosition: StoreValue<number>;
 
-  schlafenTuerAuto: StoreValue<number>;
-  schlafenFensterAuto: StoreValue<number>;
-  schlafenTuerAutoUp: StoreValue<number>;
-  schlafenFensterAutoUp: StoreValue<number>;
+  schlafenTuerAuto: StoreValue<boolean>;
+  schlafenFensterAuto: StoreValue<boolean>;
+  schlafenTuerAutoUp: StoreValue<boolean>;
+  schlafenFensterAutoUp: StoreValue<boolean>;
   schlafenTuerAutoUpTime: StoreValue<number>;
   schlafenFensterAutoUpTime: StoreValue<number>;
   schlafenTuerDelay: StoreValue<number>;
@@ -116,16 +122,16 @@ export interface Shutter {
   schlafenTuerPosition: StoreValue<number>;
   schlafenFensterPosition: StoreValue<number>;
 
-  badFensterAuto: StoreValue<number>;
-  badFensterAutoUp: StoreValue<number>;
+  badFensterAuto: StoreValue<boolean>;
+  badFensterAutoUp: StoreValue<boolean>;
   badFensterAutoUpTime: StoreValue<number>;
   badFensterDelay: StoreValue<number>;
   badFensterPosition: StoreValue<number>;
 
-  abstellraumOgLinksAuto: StoreValue<number>;
-  abstellraumOgRechtsAuto: StoreValue<number>;
-  abstellraumOgLinksAutoUp: StoreValue<number>;
-  abstellraumOgRechtsAutoUp: StoreValue<number>;
+  abstellraumOgLinksAuto: StoreValue<boolean>;
+  abstellraumOgRechtsAuto: StoreValue<boolean>;
+  abstellraumOgLinksAutoUp: StoreValue<boolean>;
+  abstellraumOgRechtsAutoUp: StoreValue<boolean>;
   abstellraumOgLinksAutoUpTime: StoreValue<number>;
   abstellraumOgRechtsAutoUpTime: StoreValue<number>;
   abstellraumOgLinksDelay: StoreValue<number>;
@@ -137,7 +143,7 @@ export interface Shutter {
 export interface WindowType {
   haustuer: StoreValue<boolean>;
   wohnzimmerEcke: StoreValue<boolean>;
-  wohnzimmerMittig: StoreValue<boolean>;
+  wohnzimmerMitte: StoreValue<boolean>;
   wohnzimmerLinks: StoreValue<boolean>;
   wohnzimmerRechts: StoreValue<boolean>;
   kuecheTuer: StoreValue<boolean>;
@@ -191,29 +197,9 @@ export interface IdsToControl {
 }
 
 export type Esszimmer = "links" | "rechts";
-export type Wohnzimmer = "mittig" | "ecke" | "links" | "rechts";
 export type Kinderzimmer = "fenster";
-export type Kueche = "tuer" | "fenster";
-export type Schlafen = "tuer" | "fenster";
 export type Bad = "fenster";
 export type Abstellraum = "fenster";
-export type Abstellraumog = "links" | "rechts";
-export type Gaestezimmer = "fenster";
-
-export type NotSubscribedIds = {
-  wohnzimmer: { [key in Wohnzimmer]: ShutterPosition };
-  kueche: { [key in Kueche]: ShutterPosition };
-  esszimmer: { [key in Esszimmer]?: ShutterPosition };
-  kinderzimmer: { [key in Kinderzimmer]: ShutterPosition };
-  gaestezimmer: { [key in Gaestezimmer]: ShutterPosition };
-  schlafen: { [key in Schlafen]: ShutterPosition };
-  bad: { [key in Bad]: ShutterPosition };
-  abstellraumog: { [key in Abstellraumog]: ShutterPosition };
-};
-
-export interface ShutterPosition {
-  shutterPosition: string;
-}
 
 export interface IobrokerState {
   val: IobrokerStateValue;

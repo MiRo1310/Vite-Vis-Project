@@ -42,7 +42,7 @@ export const shutterAutoDown: IdToSubscribe<Shutter> = {
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",
-      key: "wohnzimmerMittigAuto",
+      key: "wohnzimmerMitteAuto",
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung",

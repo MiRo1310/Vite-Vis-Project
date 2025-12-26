@@ -25,15 +25,8 @@ watch(
 <template>
   <p v-if="!!noValue" class="no_value">No Value</p>
   <div v-else>
-    <p
-      v-show="isWindowOpen"
-      class="text-destructive text__container bg-destructive"
-    >
-      {{ door ? "Die Tür" : "Das Fenster" }} ist offen
-    </p>
-    <p v-show="!isWindowOpen" class="text__container bg-green-600">
-      {{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen
-    </p>
+    <p v-show="isWindowOpen" class="text-destructive text__container bg-destructive">{{ door ? "Die Tür" : "Das Fenster" }} ist offen</p>
+    <p v-show="!isWindowOpen" class="text__container bg-green-600">{{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen</p>
   </div>
 </template>
 <style scoped lang="postcss">

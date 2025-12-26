@@ -54,7 +54,7 @@ export const shutterAutoUp: IdToSubscribe<Shutter> = {
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch",
-      key: "wohnzimmerMittigAutoUp",
+      key: "wohnzimmerMitteAutoUp",
     },
     {
       id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch",

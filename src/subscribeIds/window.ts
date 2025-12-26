@@ -21,7 +21,7 @@ export const windowOpenClose: IdToSubscribe<WindowType> = {
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL",
-      key: "wohnzimmerMittig",
+      key: "wohnzimmerMitte",
     },
     {
       id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL",
