@@ -27,11 +27,11 @@ interface NameId {
   id?: string | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+ 
 export const getNameById = <T extends NameId | null>(id?: string, array?: T[] | null): string => array?.find((item) => item?.id === id)?.name || "";
 
 export const getResultById = <T extends NameId | null>(id?: string, array?: T[] | null): T | undefined => array?.find((item) => item?.id === id);
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+ 
 export const getIdByName = <T extends NameId | null>(name?: string, array?: T[] | null): string =>
   array?.find((item) => item?.name === name)?.id || "";

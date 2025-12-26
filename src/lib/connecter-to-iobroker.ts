@@ -21,7 +21,7 @@ export function loadScript(src: string) {
 
 export async function init() {
   adminConnection = new AdminConnection({
-    protocol: "ws",
+    protocol: "ws:",
     host: IOBROKER_HOST,
     port: IOBROKER_WS_PORT,
     admin5only: false,

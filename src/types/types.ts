@@ -21,44 +21,25 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export interface TimerObject extends Timer1, Timer2, Timer3, Timer4 {
+export interface TimerObject extends Timers {
   timerAlive: StoreValue<boolean>;
 }
 
-export interface Timer1 {
-  timer1String: StoreValue<string>;
-  timer1Device: StoreValue<string>;
-  timer1TimeEnd: StoreValue<string>;
-  timer1TimeStart: StoreValue<string>;
-  timer1Percent: StoreValue<number>;
-  timer1Name: StoreValue<string>;
+export interface Timer {
+  timeString: StoreValue<string>;
+  device: StoreValue<string>;
+  timeEnd: StoreValue<string>;
+  timeStart: StoreValue<string>;
+  percent: StoreValue<number>;
+  name: StoreValue<string>;
+  initialTimer: StoreValue<string>;
 }
 
-export interface Timer2 {
-  timer2String: StoreValue<string>;
-  timer2Device: StoreValue<string>;
-  timer2TimeEnd: StoreValue<string>;
-  timer2TimeStart: StoreValue<string>;
-  timer2Percent: StoreValue<number>;
-  timer2Name: StoreValue<string>;
-}
-
-export interface Timer3 {
-  timer3String: StoreValue<string>;
-  timer3Device: StoreValue<string>;
-  timer3TimeEnd: StoreValue<string>;
-  timer3TimeStart: StoreValue<string>;
-  timer3Percent: StoreValue<number>;
-  timer3Name: StoreValue<string>;
-}
-
-export interface Timer4 {
-  timer4String: StoreValue<string>;
-  timer4Device: StoreValue<string>;
-  timer4TimeEnd: StoreValue<string>;
-  timer4TimeStart: StoreValue<string>;
-  timer4Percent: StoreValue<number>;
-  timer4Name: StoreValue<string>;
+export interface Timers {
+  1: Timer;
+  2: Timer;
+  3: Timer;
+  4: Timer;
 }
 
 export interface WindowObject {
@@ -193,15 +174,15 @@ export interface Pv {
   savedMoney: StoreValue<number>;
 }
 
-export interface IdToSubscribe<TData> {
-  value: Ids<TData>[];
+export interface IdToSubscribe<TData, SubKey = string> {
+  value: Ids<TData, SubKey>[];
   storeFolder: IoBrokerStates;
 }
 
-export interface Ids<TData> {
+export interface Ids<TData, SubKey = string> {
   id: string;
   key: keyof TData;
-  subKey?: string;
+  subKey?: SubKey;
   invertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 
