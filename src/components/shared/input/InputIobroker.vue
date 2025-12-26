@@ -56,7 +56,7 @@ const variants = {
       @update:model-value="debounceFn"
       border="none"
     />
-    <span class="input-with-unit__unit">{{ unit }}</span>
+    <span v-if="unit" class="input-with-unit__unit">{{ unit }}</span>
   </div>
 </template>
 
@@ -71,7 +71,7 @@ const variants = {
   }
 
   &__unit {
-    @apply ml-1 pr-1 text-accent-foreground/50 font-bold text-xs;
+    @apply text-accent-foreground/50 font-bold text-xs;
     @apply absolute right-5 top-[1px];
   }
 }

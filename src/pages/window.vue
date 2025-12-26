@@ -189,10 +189,10 @@ const windows = computed((): WindowObject[] => {
 </script>
 
 <template>
-  <div class="windows__header">
+  <div class="windows">
     <Card styling="light">
-      <CardHeader class="p-1">
-        <CardTitle class="flex justify-between">
+      <CardHeader class="windows__header">
+        <CardTitle class="windows__title">
           <p>Fensterstatus</p>
           <p v-show="getOpenWindows === 1" class="text-muted-foreground">
             Ein Fenster oder eine Tür ist
@@ -210,18 +210,24 @@ const windows = computed((): WindowObject[] => {
       </CardHeader>
     </Card>
   </div>
-  <div class="windows__window-cards">
+  <div class="windows__cards">
     <WindowCard v-for="window in windows" :window :key="window.name" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .windows {
+  @apply lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50;
+
   &__header {
-    @apply lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50;
+    @apply p-1;
   }
 
-  &__window-cards {
+  &__title {
+    @apply flex justify-between;
+  }
+
+  &__cards {
     @apply flex flex-wrap space-x-1 space-y-1 pt-8 -ml-1 z-10 overflow-auto max-h-full;
   }
 
