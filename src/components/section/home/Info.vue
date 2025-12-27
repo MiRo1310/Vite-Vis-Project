@@ -11,6 +11,7 @@ import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard from "@/components/section/home/InfoCard.vue";
 import { useRouter } from "vue-router";
 import { getOpenWindows } from "@/composables/windows.ts";
+import { InfoType } from "@/types/types.ts";
 
 const router = useRouter();
 
@@ -28,31 +29,30 @@ const isTimeToWarn = computed(() => {
   return hour.value >= 20 || hour.value <= 6;
 });
 
-const infos = computed(() => [
-  [
-    {
-      title: "Aussentemperatur",
-      value: wetter.value.Aussentemperatur?.val,
-      unit: "°C",
+const info = computed((): InfoType[] => [
+  {
+    title: "Aussentemperatur",
+    value: wetter.value.Aussentemperatur?.val,
+    unit: "°C",
+  },
+  {
+    title: "Luftfeuchtigkeit",
+    value: wetter.value.Luftfeuchtigkeit?.val,
+    unit: "%",
+  },
+  { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
+]);
+
+const info2 = computed((): InfoType[] => [
+  {
+    title: getOpenWindows.value ? "Fenster offen" : "Alle Fenster sind zu ",
+    value: getOpenWindows.value ? getOpenWindows.value : "",
+    bounce: true,
+    class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
+    callback: () => {
+      router.push({ path: "/fenster" });
     },
-    {
-      title: "Luftfeuchtigkeit",
-      value: wetter.value.Luftfeuchtigkeit?.val,
-      unit: "%",
-    },
-    { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
-  ],
-  [
-    {
-      title: "Fenster offen",
-      value: getOpenWindows.value,
-      bounce: true,
-      class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
-      callback: () => {
-        router.push({ path: "/fenster" });
-      },
-    },
-  ],
+  },
 ]);
 </script>
 <template>
@@ -68,13 +68,8 @@ const infos = computed(() => [
     <CardContent class="text-xs">
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
 
-      <InfoCard
-        v-for="(info, i) in infos"
-        :key="i"
-        :get-open-windows="getOpenWindows"
-        :infos="info"
-        :is-time-to-warn="isTimeToWarn"
-      />
+      <InfoCard :infos="info" />
+      <InfoCard :get-open-windows="getOpenWindows" :infos="info2" :is-time-to-warn="isTimeToWarn" />
     </CardContent>
   </Card>
 </template>

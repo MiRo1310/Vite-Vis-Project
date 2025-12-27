@@ -318,3 +318,12 @@ export interface TableColumnProps<Value, RowType, CustomValue = string> {
   customValue: CustomValue;
   source: string;
 }
+
+export interface InfoType {
+  title: string;
+  value: string | number | undefined;
+  unit?: string;
+  bounce?: boolean;
+  class?: string;
+  callback?: () => void;
+}

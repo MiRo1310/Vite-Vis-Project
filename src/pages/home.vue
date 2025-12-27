@@ -9,7 +9,6 @@ import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import AirConditioners from "@/components/section/home/AirConditioners.vue";
-import Settings from "@/components/section/home/Settings.vue";
 </script>
 
 <template>
@@ -25,7 +24,6 @@ import Settings from "@/components/section/home/Settings.vue";
     <Pool class="home__pool" />
     <LawnMover class="home__lawn-mover" />
     <Calendar class="home__calendar" />
-    <Settings class="col-span-3" />
     <Timer class="home__timer" />
   </div>
 </template>
@@ -67,7 +65,7 @@ import Settings from "@/components/section/home/Settings.vue";
   }
 
   &__calendar {
-    @apply col-span-3;
+    @apply col-span-6;
   }
 
   &__timer {
