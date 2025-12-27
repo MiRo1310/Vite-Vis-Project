@@ -60,7 +60,7 @@ const info2 = computed((): InfoType[] => [
     :class="{
       'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0,
     }"
-    styling="light"
+    styling="info"
   >
     <CardHeader>
       <CardTitle>Infos</CardTitle>

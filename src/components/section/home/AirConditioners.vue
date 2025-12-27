@@ -8,7 +8,7 @@ const { airConditioners } = storeToRefs(useIobrokerStore());
 </script>
 
 <template>
-  <Card styling="light">
+  <Card styling="info">
     <CardHeader>
       <CardTitle>Klimageräte</CardTitle>
       <AirConditioner

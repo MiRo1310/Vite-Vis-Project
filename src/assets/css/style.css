@@ -23,7 +23,7 @@
 
 @tailwind components;
 .default_card {
-    @apply bg-white p-2 shadow-lg;
+    @apply bg-cardCustom-info p-2 shadow-lg;
 }
 
 @tailwind utilities;
@@ -32,7 +32,7 @@
 }
 
 .line {
-    @apply border-b-color__default border-b-2 pb-[2px];
+    @apply border-b-cardCustom-border/40 border-b-2 pb-[2px];
 }
 
 @layer base {

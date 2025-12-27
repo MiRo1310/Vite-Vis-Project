@@ -39,7 +39,7 @@ defineProps<{
   @apply border border-accent;
 
   &__description {
-    @apply text-xs text-muted-foreground min-w-40 bg-white p-1 flex justify-between items-center;
+    @apply text-xs text-muted-foreground min-w-40 bg-cardCustom-info p-1 flex justify-between items-center;
   }
 
   &__row {
@@ -47,7 +47,7 @@ defineProps<{
   }
 
   &__content {
-    @apply p-1 text-xs text-muted-foreground bg-white flex flex-col items-end w-full;
+    @apply p-1 text-xs text-muted-foreground bg-cardCustom-info flex flex-col items-end w-full;
   }
 }
 </style>

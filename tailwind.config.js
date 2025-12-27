@@ -57,6 +57,7 @@ module.exports = {
           DEFAULT: "#01021c",
           foreground: "#527e9a",
           border: "#527e9a" /*Use /40*/,
+          info: "#e1edf5",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

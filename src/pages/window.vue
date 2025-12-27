@@ -7,6 +7,7 @@ import WindowCard from "@/components/section/window/WindowCard.vue";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.ts";
 import { computed } from "vue";
+import IndexButton from "@/components/layout/IndexButton.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { windowGlobal, time, fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(iobrokerStore);
@@ -189,6 +190,7 @@ const windows = computed((): WindowObject[] => {
 </script>
 
 <template>
+  <IndexButton />
   <div class="windows">
     <Card styling="light">
       <CardHeader class="windows__header">
@@ -217,7 +219,7 @@ const windows = computed((): WindowObject[] => {
 
 <style scoped lang="scss">
 .windows {
-  @apply lg:fixed right-1 left-1 top-0 border-t-4 border-t-backgroundColor z-50;
+  @apply lg:fixed right-1 left-1 top-[4.5rem] border-t-4 border-t-backgroundColor z-50;
 
   &__header {
     @apply p-1;

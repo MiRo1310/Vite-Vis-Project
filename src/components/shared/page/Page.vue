@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import IndexButton from "@/components/layout/IndexButton.vue";
+
 defineProps<{ title: string }>();
 </script>
 
 <template>
+  <IndexButton />
   <div class="page">
     <div class="page__title">
       {{ title }}
@@ -18,11 +21,11 @@ defineProps<{ title: string }>();
 
 <style scoped lang="scss">
 .page {
-  @apply border bg-gray-200 text-card-foreground shadow overflow-hidden h-full p-2;
+  @apply border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow overflow-hidden h-full p-2;
   @apply flex flex-col;
 
   &__title {
-    @apply text-color__default text-base font-bold bg-accent px-2;
+    @apply text-cardCustom-foreground text-base font-bold;
   }
 
   &__header {

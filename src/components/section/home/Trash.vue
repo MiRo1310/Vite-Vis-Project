@@ -41,12 +41,12 @@ const getColor = (name: string) => {
 };
 </script>
 <template>
-  <Card styling="light">
+  <Card styling="info">
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-2">
-      <div v-for="(event, index) in trashEvents" :key="index" class="default_card">
+      <div v-for="(event, index) in trashEvents" :key="index" class="bg-cardCustom-info p-2 shadow-lg">
         <div class="flex justify-between line">
           <p class="text-accent-foreground/40 font-bold">
             {{ event.name }}
@@ -62,4 +62,3 @@ const getColor = (name: string) => {
     </CardContent>
   </Card>
 </template>
-```

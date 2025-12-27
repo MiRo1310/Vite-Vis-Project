@@ -71,7 +71,7 @@ const getDaysInMonth = (): number => {
       <Button size="icon" @click="changeMonth(-1)">
         <ChevronLeft />
       </Button>
-      <span class="w-36 text-center">{{ getCurrentMonthName }}</span>
+      <span class="w-36 text-center text-cardCustom-foreground">{{ getCurrentMonthName }}</span>
       <Button size="icon" @click="changeMonth(1)">
         <ChevronRight />
       </Button>

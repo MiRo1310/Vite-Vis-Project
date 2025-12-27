@@ -23,7 +23,7 @@ function isNotAllDayEvent(event: CalendarDayType) {
 
 <style scoped lang="scss">
 .calendar-day {
-  @apply bg-white p-2 shadow-lg;
+  @apply bg-cardCustom-info p-2 shadow-lg;
 
   &__title {
     @apply text-accent-foreground/70 text-xs font-bold mb-2;

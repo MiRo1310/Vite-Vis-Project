@@ -16,6 +16,7 @@ const style = {
   default: "rounded-xl border bg-card text-card-foreground shadow",
   blue: "card-blue",
   blueDark: "blue-dark",
+  info: "info",
   light: "border bg-gray-200 text-card-foreground shadow",
 };
 
@@ -40,6 +41,9 @@ const variants = {
 }
 
 .blue-dark {
+  @apply bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/40;
+}
+.info {
   @apply bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/40;
 }
 </style>

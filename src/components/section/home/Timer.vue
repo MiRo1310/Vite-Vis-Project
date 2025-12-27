@@ -19,7 +19,7 @@ const nameByIndex = computed(() => (index: number) => {
 </script>
 
 <template>
-  <Card :class="$props.class" styling="light" @click="useAppStore().toggleTimerVisibility()">
+  <Card :class="$props.class" styling="info" @click="useAppStore().toggleTimerVisibility()">
     <CardHeader>
       <CardTitle>
         <p>Alexa Timer</p>

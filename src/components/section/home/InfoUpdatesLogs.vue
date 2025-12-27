@@ -32,6 +32,6 @@ const router = useRouter();
 }
 
 .card__shadow {
-  @apply bg-white p-2 shadow-lg;
+  @apply bg-cardCustom-info p-2 shadow-lg;
 }
 </style>

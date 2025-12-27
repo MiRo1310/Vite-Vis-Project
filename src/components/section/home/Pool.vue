@@ -90,7 +90,7 @@ const getMode = (mode: string) => {
 </script>
 
 <template>
-  <Card styling="light">
+  <Card styling="info">
     <CardHeader>
       <CardTitle>
         <div class="pool__title">
@@ -122,7 +122,7 @@ const getMode = (mode: string) => {
   }
 
   &__content {
-    @apply bg-white p-2 shadow-lg mx-2 mb-2;
+    @apply bg-cardCustom-info p-2 shadow-lg mx-2 mb-2;
   }
 }
 </style>

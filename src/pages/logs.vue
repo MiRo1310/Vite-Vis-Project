@@ -2,7 +2,7 @@
 import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { CardContent, CardHeader } from "@/components/shared/card";
 import CardDescription from "@/components/ui/card/CardDescription.vue";
 import { computed, HTMLAttributes, onMounted, ref } from "vue";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { toLocaleTime } from "../lib/time.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
-import IndexButton from "@/components/layout/IndexButton.vue";
+import Page from "@/components/shared/page/Page.vue";
 
 const { getParsedLogs } = useIobrokerStore();
 const { logReset } = storeToRefs(useIobrokerStore());
@@ -94,12 +94,9 @@ function reset() {
 </script>
 
 <template>
-  <div class="relative">
-    <Card styling="light">
-      <IndexButton />
+  <Page title="Logs">
+    <div class="relative">
       <CardHeader>
-        <CardTitle>Logs</CardTitle>
-
         <div class="flex-between flex-wrap space-x-2">
           <CardDescription>{{ firstLetterToUpperCase(selected) }} Logs </CardDescription>
           <div>
@@ -128,6 +125,6 @@ function reset() {
           </div>
         </div>
       </CardContent>
-    </Card>
-  </div>
+    </div>
+  </Page>
 </template>

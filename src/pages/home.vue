@@ -16,8 +16,7 @@ import IndexButton from "@/components/layout/IndexButton.vue";
   <IndexButton />
   <div class="home">
     <div class="home__first">
-      <Time />
-      <Caller class="home__caller" />
+      <Time> <Caller class="home__caller" /></Time>
     </div>
     <Info class="home__info" />
     <Trash class="home__trash" />
@@ -32,7 +31,7 @@ import IndexButton from "@/components/layout/IndexButton.vue";
 
 <style scoped lang="scss">
 .home {
-  @apply grid grid-cols-11 gap-1 h-full;
+  @apply grid grid-cols-11 gap-1 mt-1 h-[calc(100%-74px)]; // Header is 74px high
 
   &__first {
     @apply col-span-2 flex flex-col;

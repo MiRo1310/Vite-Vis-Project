@@ -7,6 +7,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import PageContent from "@/components/shared/page/PageContent.vue";
 import Page from "@/components/shared/page/Page.vue";
+import IndexButton from "@/components/layout/IndexButton.vue";
 
 const { batteries } = useIobrokerStore();
 

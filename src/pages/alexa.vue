@@ -11,6 +11,7 @@ import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { JSONToString, stringToJSON } from "@/lib/string.ts";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
+import Page from "@/components/shared/page/Page.vue";
 
 const { alexaAction: alexaActionStore } = useIobrokerStore();
 
@@ -162,16 +163,9 @@ const columns: DatatableColumns<AlexaDotAction>[] = [
 </script>
 
 <template>
-  <Card styling="light" class="h-full">
-    <CardHeader>
-      <CardTitle>
-        <p>Alexa Dots</p>
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div class="default_card">
-        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
-      </div>
-    </CardContent>
-  </Card>
+  <Page title="Alexa Dots">
+    <div class="default_card">
+      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
+    </div>
+  </Page>
 </template>
