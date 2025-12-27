@@ -256,7 +256,7 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 
 import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
-import { HTMLAttributes } from "vue";
+import { FunctionalComponent, HTMLAttributes } from "vue";
 
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
@@ -326,4 +326,11 @@ export interface InfoType {
   bounce?: boolean;
   class?: string;
   callback?: () => void;
+}
+
+export interface NavigationType {
+  icon: FunctionalComponent;
+  text: string;
+  link: string;
+  externalLink?: boolean;
 }

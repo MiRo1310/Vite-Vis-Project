@@ -9,9 +9,11 @@ import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import AirConditioners from "@/components/section/home/AirConditioners.vue";
+import IndexButton from "@/components/layout/IndexButton.vue";
 </script>
 
 <template>
+  <IndexButton />
   <div class="home">
     <div class="home__first">
       <Time />

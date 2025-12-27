@@ -11,6 +11,7 @@ import { toLocaleTime } from "../lib/time.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
+import IndexButton from "@/components/layout/IndexButton.vue";
 
 const { getParsedLogs } = useIobrokerStore();
 const { logReset } = storeToRefs(useIobrokerStore());
@@ -95,6 +96,7 @@ function reset() {
 <template>
   <div class="relative">
     <Card styling="light">
+      <IndexButton />
       <CardHeader>
         <CardTitle>Logs</CardTitle>
 

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Nav from "@/components/layout/Nav.vue";
 import AlexaTimer from "@/components/section/app/AlexaTimer.vue";
 </script>
 
@@ -9,8 +8,6 @@ import AlexaTimer from "@/components/section/app/AlexaTimer.vue";
     <main class="app__content">
       <RouterView />
     </main>
-
-    <Nav />
   </div>
 </template>
 

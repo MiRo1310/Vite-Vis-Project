@@ -41,7 +41,7 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
-        backgroundColor: "hsl(var(--background-color))",
+        backgroundColor: "#010217",
         color__default: "hsl(var(--background-cards))",
         backgroundHeader: "hsl(var(--background-header))",
         foreground: "hsl(var(--foreground))",
@@ -52,6 +52,11 @@ module.exports = {
             lightest: "hsl(var(--brown-lightest), <alpha-value>)",
             dark: "hsl(var(--brown-dark))",
           },
+        },
+        cardCustom: {
+          DEFAULT: "#01021c",
+          foreground: "#527e9a",
+          border: "#527e9a" /*Use /40*/,
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

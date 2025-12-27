@@ -4,7 +4,7 @@ import { HTMLAttributes } from "vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 interface StyleProps {
-  style?: keyof (typeof variantsCardTitle)["style"];
+  styling?: keyof (typeof variantsCardTitle)["style"];
 }
 
 const props = withDefaults(
@@ -13,7 +13,7 @@ const props = withDefaults(
       class?: HTMLAttributes["class"];
     } & StyleProps
   >(),
-  { style: "default", class: "" },
+  { styling: "default", class: "" },
 );
 
 const variantsCardTitle = {
