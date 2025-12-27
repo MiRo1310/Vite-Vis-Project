@@ -6,6 +6,7 @@ import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
+import CardTitle from "../../shared/card/CardTitle.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
 
@@ -92,6 +93,11 @@ const error = {
 };
 const infos = computed(() => [
   {
+    title: `Firmware`,
+    value: landroid.value.firmware?.val,
+    unit: "",
+  },
+  {
     title: `Akku ${landroid.value.batteryCharging?.val ? " läd" : " ist geladen"}`,
     value: landroid.value.battery?.val,
     unit: "%",
@@ -124,15 +130,14 @@ const infos = computed(() => [
 <template>
   <Card styling="info">
     <CardHeader>
-      <div class="flex justify-between">
-        <div class="w-12">
-          <img :src="landroidVision" alt="vision" />
+      <CardTitle>
+        <div class="flex justify-between">
+          <div class="w-12">Rasenmäher</div>
+          <div>
+            <OnlineOffline :status="landroid.online?.val" />
+          </div>
         </div>
-        <div>
-          <OnlineOffline :status="landroid.online?.val" />
-          <p class="text-accent-foreground/50 text-xs font-bold text-right">v.{{ landroid.firmware?.val }}</p>
-        </div>
-      </div>
+      </CardTitle>
     </CardHeader>
     <CardContent class="text-accent-foreground/50 text-xs font-bold bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
       <div
