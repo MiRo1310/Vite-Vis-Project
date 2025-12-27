@@ -14,7 +14,7 @@ const props = withDefaults(
 
 const style = {
   default: "rounded-xl border bg-card text-card-foreground shadow",
-  blue: "bg-color__default",
+  blue: "card-blue",
   light: "border bg-gray-200 text-card-foreground shadow",
 };
 
@@ -32,3 +32,9 @@ const variants = {
     <slot :styling="$props.styling" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.card-blue {
+  background-color: #0f148e;
+}
+</style>

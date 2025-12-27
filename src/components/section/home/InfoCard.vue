@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{ isTimeToWarn: boolean; getOpenWindows: number; infos: any }>();
+import { InfoType } from "@/types/types.ts";
+
+defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[] }>();
 </script>
 <template>
   <div class="card__shadow mt-2">
@@ -9,7 +11,7 @@ defineProps<{ isTimeToWarn: boolean; getOpenWindows: number; infos: any }>();
       :class="{
         info__row: true,
         [`${info.class}`]: info.class,
-        'animate-bounce': isTimeToWarn && getOpenWindows > 0 && info.bounce,
+        'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0 && info.bounce,
         'cursor-pointer': info?.callback,
       }"
       @click="info?.callback ? info.callback() : null"

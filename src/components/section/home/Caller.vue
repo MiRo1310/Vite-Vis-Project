@@ -27,14 +27,6 @@ const lastCallDuration = computed(() => {
   <Card styling="light" :class="[$props.class, isCalling]">
     <CardContent>
       <div class="callee__container">
-        <p class="line">Anrufer:</p>
-        <div v-if="phone.ringing?.val" class="caller">
-          <p>{{ phone.callerName?.val }}</p>
-          <p>{{ phone.caller?.val }}</p>
-          <p>{{ phone.callerTimestamp?.val }}</p>
-        </div>
-      </div>
-      <div class="callee__container">
         <p class="line">Letzter Anruf von:</p>
         <div class="caller">
           <p>{{ phone.lastCallerName?.val }}</p>
@@ -49,7 +41,7 @@ const lastCallDuration = computed(() => {
 
 <style scoped lang="postcss">
 .callee__container {
-  @apply text-xs mt-2 min-h-20 p-1 text-accent-foreground/50 bg-white p-2 shadow-lg;
+  @apply text-xs mt-2 min-h-20 text-accent-foreground/50 bg-white p-2 shadow-lg;
 }
 
 .caller {
