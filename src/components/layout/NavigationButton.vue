@@ -28,6 +28,10 @@ defineProps<{ navigation: NavigationType }>();
 .navigation {
   &__card {
     @apply col-span-1;
+
+    &:hover {
+      @apply bg-cardCustom/70 border-cardCustom-border;
+    }
   }
 
   &__title-inner {

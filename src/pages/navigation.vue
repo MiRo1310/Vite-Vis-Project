@@ -44,7 +44,7 @@ const navigations = computed((): NavigationType[] => [
     link: "/battery",
     badge: {
       value: batteryList.value.reduce(
-        (prev, curr) => prev + (curr.lowBat || (curr?.timestamp && curr?.timestamp < new Date().getTime() - 24 * 60 * 60 * 1000) ? 1 : 0),
+        (prev, curr) => prev + (curr.lowBat || (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000) ? 1 : 0),
         0,
       ),
       color: "red",

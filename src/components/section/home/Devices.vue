@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, CardHeader, CardTitle } from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
@@ -11,12 +11,12 @@ const { airConditioners, pool, landroid } = storeToRefs(useIobrokerStore());
 const status = computed(() => {
   return [
     {
-      name: "Schlafzimmer",
+      name: "Schlafzimmer Klima",
       online: airConditioners?.value?.schlafenOnline?.val ?? false,
       power: airConditioners?.value?.schlafenPowerStatus?.val ?? false,
     },
     {
-      name: "Kinderzimmer",
+      name: "Kinderzimmer Klima",
       online: airConditioners?.value?.childOnline?.val ?? false,
       power: airConditioners?.value?.childPowerStatus?.val ?? false,
     },
@@ -38,14 +38,17 @@ const status = computed(() => {
   <Card styling="info">
     <CardHeader>
       <CardTitle>Geräte</CardTitle>
-
-      <Button v-for="s in status" :key="s.name" variant="outlineDark">
-        <div class="flex justify-between w-full items-center">
-          <span class="text-sm">{{ s.name }}</span>
-
-          <OnlineOffline :status="s.online" :power="s.power" />
-        </div>
-      </Button>
     </CardHeader>
+    <CardContent>
+      <div class="flex flex-col gap-2">
+        <Button v-for="s in status" :key="s.name" variant="outlineDark">
+          <div class="flex justify-between w-full items-center">
+            <span class="text-sm">{{ s.name }}</span>
+
+            <OnlineOffline :status="s.online ?? null" :power="s.power" />
+          </div>
+        </Button>
+      </div>
+    </CardContent>
   </Card>
 </template>

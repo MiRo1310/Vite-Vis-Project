@@ -341,3 +341,19 @@ export interface NavigationType {
     color: Badge["color"];
   };
 }
+
+export interface Log {
+  date: string;
+  severity: string;
+  message: string;
+  from: string;
+  ts: number;
+}
+
+export type Level = "info" | "warn" | "error";
+
+export interface LogReset {
+  error: StoreValue<boolean>;
+  warn: StoreValue<boolean>;
+  info: StoreValue<boolean>;
+}

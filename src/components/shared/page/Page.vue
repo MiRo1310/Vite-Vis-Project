@@ -22,7 +22,7 @@ defineProps<{ title: string }>();
 
 <style scoped lang="scss">
 .page {
-  @apply border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow overflow-hidden h-[calc(100%-48px)] p-2;
+  @apply border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow overflow-hidden h-[calc(100%-74px)] p-2;
   @apply flex flex-col;
 
   &__title {
