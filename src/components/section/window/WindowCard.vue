@@ -1,38 +1,24 @@
 <script setup lang="ts">
-import { computed, HTMLAttributes } from "vue";
+import { HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
 import WindowShutterPositionBtns from "@/components/section/window/WindowShutterPositionBtns.vue";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { blinds0, blinds10, blinds100, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70, blinds80, blinds90 } from "@/public";
 import { WindowObject } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { isDefined } from "@vueuse/core";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import { getShutterImageByPosition } from "@/composables/windows.ts";
+import { Button } from "@/components/shared/button";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"];
   window: WindowObject;
 }>();
 
-const getShutterImage = computed(() => {
-  const position = props.window.shutterPosition;
-  if (typeof position !== "number") return blinds0;
-
-  if (position === 0) return blinds100;
-  if (position <= 10) return blinds90;
-  if (position <= 20) return blinds80;
-  if (position <= 30) return blinds70;
-  if (position <= 40) return blinds60;
-  if (position <= 50) return blinds50;
-  if (position <= 60) return blinds40;
-  if (position <= 70) return blinds30;
-  if (position <= 80) return blinds20;
-  if (position <= 90) return blinds10;
-  return blinds0;
-});
+const emits = defineEmits(["clickBack"]);
 
 const updateHandler = (value: number | string | boolean, id: string) => {
   if (adminConnection) {
@@ -43,9 +29,8 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 
 <template>
   <Card class="window" :class="`${props.class}`" styling="light">
-    <span class="text-lg text-muted-foreground line ml-2">{{ window.name }}</span>
-
     <CardContent class="px-2 pb-2">
+      <Button variant="outline" @click="emits('clickBack')">Backkk</Button>
       <div class="flex items-center">
         <div class="flex">
           <WindowImage :is-open="window.isOpenStatus" />
@@ -58,7 +43,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       </div>
       <div v-if="window.shutter">
         <div class="flex items-center">
-          <img class="window--img" :src="getShutterImage" alt="FensterRollade" />
+          <img class="window--img" :src="getShutterImageByPosition(window.shutterPosition ?? null)" alt="FensterRollade" />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="window.shutterPosition ?? 'n/a'" />
 

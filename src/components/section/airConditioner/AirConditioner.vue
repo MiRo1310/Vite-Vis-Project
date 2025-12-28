@@ -36,8 +36,6 @@ defineProps<{
 
 <style scoped lang="scss">
 .air-conditioner {
-  @apply border border-accent;
-
   &__description {
     @apply text-xs text-muted-foreground min-w-40 bg-cardCustom-info p-1 flex justify-between items-center;
   }

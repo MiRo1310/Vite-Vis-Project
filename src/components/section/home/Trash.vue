@@ -34,10 +34,10 @@ const getAnimation = (days: number) => {
 };
 
 const getColor = (name: string) => {
-  if (name === "Papier Tonne") return `bg-trashPapier/50`;
-  if (name === "Restmüll Tonne") return `text-black bg-accent-foreground/50`;
-  if (name === "Biotonne") return `bg-trashBio/50 `;
-  if (name === "Gelbe Tonne") return `bg-trashGelb/50 `;
+  if (name === "Papier Tonne") return `bg-trashPapier/50 text-black`;
+  if (name === "Restmüll Tonne") return `text-cardCustom-text/70 bg-black`;
+  if (name === "Biotonne") return `bg-trashBio/50 text-black`;
+  if (name === "Gelbe Tonne") return `bg-trashGelb/50 text-black`;
 };
 </script>
 <template>
@@ -48,14 +48,14 @@ const getColor = (name: string) => {
     <CardContent class="grid grid-cols-2 gap-2">
       <div v-for="(event, index) in trashEvents" :key="index" class="bg-cardCustom-info p-2 shadow-lg">
         <div class="flex justify-between line">
-          <p class="text-accent-foreground/40 font-bold">
+          <p class="text-cardCustom-text font-bold">
             {{ event.name }}
           </p>
           <Trash2 :class="['inline-block mb-1 ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]" />
         </div>
-        <p class="text-xs text-accent-foreground font-bold">in {{ event.daysLeft }} Tagen</p>
-        <p class="text-xs text-accent-foreground/40 font-bold">am {{ transformDate(event.nextDate) }}</p>
-        <p class="text-xs text-accent-foreground/40 font-bold">
+        <p class="text-xs text-cardCustom-text/70 font-bold">in {{ event.daysLeft }} Tagen</p>
+        <p class="text-xs text-cardCustom-text/70 font-bold">am {{ transformDate(event.nextDate) }}</p>
+        <p class="text-xs text-cardCustom-text/70 font-bold">
           {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
         </p>
       </div>

@@ -16,10 +16,12 @@ defineProps<{ infos: InfoTypes[] }>();
     <div
       v-for="(info, index) in infos"
       :key="index"
-      :class="{
-        info__row: true,
-        [info?.class]: info.class,
-      }"
+      :class="[
+        'info__row',
+        {
+          [info?.class]: info.class,
+        },
+      ]"
     >
       <p>{{ info.title }}</p>
       <p :class="['ml-3 mr-4', info?.valueClass]">
@@ -31,7 +33,7 @@ defineProps<{ infos: InfoTypes[] }>();
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-[2px] text-xs -mx-1 px-1;
+  @apply flex justify-between items-center text-cardCustom-text/70 font-bold space-y-[2px] text-xs -mx-1 px-1;
 }
 
 .card__shadow {

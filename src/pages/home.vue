@@ -8,22 +8,24 @@ import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
-import AirConditioners from "@/components/section/home/AirConditioners.vue";
 import IndexButton from "@/components/layout/IndexButton.vue";
+import Devices from "@/components/section/home/Devices.vue";
 </script>
 
 <template>
   <IndexButton />
   <div class="home">
     <div class="home__first">
-      <Time> <Caller class="home__caller" /></Time>
+      <Time>
+        <Caller class="home__caller" />
+      </Time>
     </div>
     <Info class="home__info" />
     <Trash class="home__trash" />
     <Pv class="home__pv" />
-    <AirConditioners class="home__air-conditioner" />
-    <Pool class="home__pool" />
-    <LawnMover class="home__lawn-mover" />
+    <Devices class="home__air-conditioner" />
+    <!--    <Pool class="home__pool" />-->
+    <!--    <LawnMover class="home__lawn-mover" />-->
     <Calendar class="home__calendar" />
     <Timer class="home__timer" />
   </div>

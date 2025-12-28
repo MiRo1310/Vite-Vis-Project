@@ -28,7 +28,7 @@ const router = useRouter();
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold space-y-1 cursor-pointer;
+  @apply flex justify-between items-center text-cardCustom-text/70 font-bold space-y-1 cursor-pointer;
 }
 
 .card__shadow {

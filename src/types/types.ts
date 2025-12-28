@@ -45,15 +45,17 @@ export interface Timers {
 export interface WindowObject {
   name: string;
   shutter: boolean;
-  idShutterPosition?: string;
-  isOpenStatus: boolean;
-  isOpenStatus2?: boolean;
-  door?: boolean;
-  shutterPosition?: number;
-  shutterAutoDown?: StoreValue<boolean>;
-  shutterAutoUp?: StoreValue<boolean>;
-  shutterAutoUpTime?: StoreValue<number>;
-  shutterAutoDownDelay?: StoreValue<number>;
+  windows: {
+    name: string;
+    idShutterPosition?: string;
+    isOpenStatus: boolean;
+    door?: boolean;
+    shutterPosition?: number;
+    shutterAutoDown?: StoreValue<boolean>;
+    shutterAutoUp?: StoreValue<boolean>;
+    shutterAutoUpTime?: StoreValue<number>;
+    shutterAutoDownDelay?: StoreValue<number>;
+  }[];
 }
 
 export interface Shutter {
@@ -257,6 +259,7 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
 import { FunctionalComponent, HTMLAttributes } from "vue";
+import { Badge } from "@/components/shared/badge";
 
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
@@ -333,4 +336,8 @@ export interface NavigationType {
   text: string;
   link: string;
   externalLink?: boolean;
+  badge?: {
+    value: number;
+    color: Badge["color"];
+  };
 }

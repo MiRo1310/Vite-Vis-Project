@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import IndexButton from "@/components/layout/IndexButton.vue";
+import Page from "@/components/shared/page/Page.vue";
 </script>
 
 <template>
-  <IndexButton />
-  <span class="text-white"> Coming soon </span>
+  <Page title="Listen">
+    <span class="text-white"> Coming soon </span>
+  </Page>
 </template>
 
 <style scoped lang="scss"></style>

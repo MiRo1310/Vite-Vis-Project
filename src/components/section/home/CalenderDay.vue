@@ -26,11 +26,11 @@ function isNotAllDayEvent(event: CalendarDayType) {
   @apply bg-cardCustom-info p-2 shadow-lg;
 
   &__title {
-    @apply text-accent-foreground/70 text-xs font-bold mb-2;
+    @apply text-cardCustom-text text-xs font-bold mb-2;
   }
 
   &__event-wrapper {
-    @apply text-accent-foreground/50 text-xs font-bold flex justify-between;
+    @apply text-cardCustom-text/70 text-xs font-bold flex justify-between;
   }
 
   &__event {

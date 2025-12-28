@@ -10,7 +10,7 @@ defineProps<{ isOpen: boolean }>();
   <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" />
 </template>
 
-<style scoped lang="postcss">
+<style scoped lang="scss">
 img {
   @apply w-8 h-6 mt-1;
 }

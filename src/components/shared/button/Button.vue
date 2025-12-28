@@ -29,6 +29,8 @@ const variants = {
     default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
     destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
     outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+    outlineDark:
+      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-sm hover:bg-cardCustom-foreground hover:text-accent-foreground",
     save: "border border-input bg-color__default shadow-sm hover:border-black hover:text-accent-foreground",
     secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
     ghost: "hover:bg-accent hover:text-accent-foreground",
@@ -75,10 +77,10 @@ onMounted(() => {
 
 <template>
   <Primitive :as="as" :as-child="asChild" :class="['btn', getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']), props.class]">
-    <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
-    <span ref="buttonChild" :class="variants.text[props.text]">
+    <div ref="buttonChild" :class="[variants.text[props.text], 'w-full flex items-center justify-center']">
+      <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
       <slot />
-    </span>
+    </div>
   </Primitive>
 </template>
 

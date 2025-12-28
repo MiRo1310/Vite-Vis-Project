@@ -28,7 +28,7 @@ defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[]
 
 <style scoped lang="postcss">
 .info__row {
-  @apply flex justify-between items-center text-accent-foreground/50 font-bold -mx-1 px-1;
+  @apply flex justify-between items-center text-cardCustom-text/70 font-bold -mx-1 px-1;
 }
 
 .card__shadow {

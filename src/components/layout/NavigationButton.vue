@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Card, CardHeader, CardTitle } from "@/components/shared/card";
 import { NavigationType } from "@/types/types.ts";
+import Badge from "@/components/shared/badge/Badge.vue";
 
 defineProps<{ navigation: NavigationType }>();
 </script>
@@ -12,7 +13,10 @@ defineProps<{ navigation: NavigationType }>();
         <CardTitle styling="shadcn">
           <div class="navigation__title-inner">
             <span>{{ navigation.text }}</span>
-            <Component :is="navigation.icon" class="navigation__icon" />
+            <span class="relative">
+              <Badge v-if="navigation.badge?.value" :value="navigation.badge.value" :color="navigation.badge.color" class="absolute right-0" />
+              <Component :is="navigation.icon" class="navigation__icon" />
+            </span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -30,8 +34,16 @@ defineProps<{ navigation: NavigationType }>();
     @apply flex justify-between;
   }
 
+  &__icon-wrapper {
+    @apply relative;
+  }
+
   &__icon {
     @apply w-12 h-12;
+  }
+
+  &__badge {
+    @apply absolute right-0;
   }
 }
 </style>

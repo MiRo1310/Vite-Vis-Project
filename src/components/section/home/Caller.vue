@@ -29,10 +29,10 @@ const lastCallDuration = computed(() => {
 
 <style scoped lang="postcss">
 .callee__container {
-  @apply text-xs mt-2 min-h-20 text-accent-foreground/50 bg-cardCustom-info p-2 shadow;
+  @apply text-base mt-2 min-h-20 text-cardCustom-text bg-cardCustom-info p-2 shadow;
 }
 
 .caller {
-  @apply ml-2 text-2xs text-black;
+  @apply text-2xs text-cardCustom-text/70;
 }
 </style>

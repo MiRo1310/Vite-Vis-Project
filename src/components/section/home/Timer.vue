@@ -13,7 +13,7 @@ const iobrokerStore = useIobrokerStore();
 const { timer } = storeToRefs(iobrokerStore);
 
 const nameByIndex = computed(() => (index: number) => {
-  const timerName = (timer.value[index as keyof Timers] as Timer).name?.val;
+  const timerName = (timer.value[index as keyof Timers] as Timer)?.name?.val;
   return timerName != "Timer" ? timerName : null;
 });
 </script>
@@ -26,7 +26,7 @@ const nameByIndex = computed(() => (index: number) => {
       </CardTitle>
     </CardHeader>
     <CardContent class="timer__content">
-      <div v-for="i in 4" :key="i" class="timer__section default_card">
+      <div v-for="i in 4" :key="i" class="timer__section">
         <div class="timer__section-inner">
           <h1 class="timer__sub-title line">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
@@ -55,11 +55,12 @@ const nameByIndex = computed(() => (index: number) => {
 <style scoped lang="scss">
 .timer {
   &__content {
-    @apply flex flex-wrap -mx-1 min-w-[400px];
+    @apply flex flex-wrap min-w-[400px] gap-2;
   }
 
   &__section {
-    @apply min-w-[180px] flex-1 max-w-[50%] m-1 flex px-2;
+    @apply min-w-[180px] flex-1 max-w-[50%] flex px-2;
+    @apply bg-cardCustom-info p-2 shadow-lg;
   }
 
   &__section-inner {
@@ -67,12 +68,12 @@ const nameByIndex = computed(() => (index: number) => {
   }
 
   &__sub-title {
-    @apply text-gray-500 text-xl;
+    @apply text-cardCustom-text text-xl;
     @apply flex justify-between;
   }
 
   &__label {
-    @apply text-accent-foreground/50 font-bold;
+    @apply text-cardCustom-text/70 font-bold;
     @apply flex justify-between;
   }
 

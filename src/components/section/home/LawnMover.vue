@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import { landroidVision } from "@/public";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";

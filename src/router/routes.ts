@@ -23,7 +23,7 @@ export const routes = [
       },
       {
         path: "/fenster",
-        component: async () => await import("@/pages/window.vue"),
+        component: async () => await import("@/pages/rooms.vue"),
       },
       {
         path: "/heating",

@@ -8,7 +8,8 @@ defineProps<{ title: string }>();
   <IndexButton />
   <div class="page">
     <div class="page__title">
-      {{ title }}
+      <span>{{ title }}</span>
+      <slot name="title" />
     </div>
     <div class="page__header">
       <slot name="header" />
@@ -21,11 +22,11 @@ defineProps<{ title: string }>();
 
 <style scoped lang="scss">
 .page {
-  @apply border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow overflow-hidden h-full p-2;
+  @apply border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow overflow-hidden h-[calc(100%-48px)] p-2;
   @apply flex flex-col;
 
   &__title {
-    @apply text-cardCustom-foreground text-base font-bold;
+    @apply text-cardCustom-foreground text-base font-bold flex justify-between items-center;
   }
 
   &__header {

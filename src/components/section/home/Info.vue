@@ -42,18 +42,6 @@ const info = computed((): InfoType[] => [
   },
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
 ]);
-
-const info2 = computed((): InfoType[] => [
-  {
-    title: getOpenWindows.value ? "Fenster offen" : "Alle Fenster sind zu ",
-    value: getOpenWindows.value ? getOpenWindows.value : "",
-    bounce: true,
-    class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
-    callback: () => {
-      router.push({ path: "/fenster" });
-    },
-  },
-]);
 </script>
 <template>
   <Card
@@ -69,7 +57,25 @@ const info2 = computed((): InfoType[] => [
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
 
       <InfoCard :infos="info" />
-      <InfoCard :get-open-windows="getOpenWindows" :infos="info2" :is-time-to-warn="isTimeToWarn" />
+      <!--      <InfoCard :get-open-windows="getOpenWindows" :infos="info2" :is-time-to-warn="isTimeToWarn" />-->
+      <div
+        :class="[
+          'flex justify-between mt-2 px-2 text-accent-foreground font-bold',
+          [`${getOpenWindows > 0 ? 'bg-red-100' : 'bg-green-100'}`],
+          {
+            'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0,
+            'cursor-pointer': true,
+          },
+        ]"
+        @click="router.push({ path: '/fenster' })"
+      >
+        <p>{{ getOpenWindows ? "Fenster offen" : "Alle Fenster sind zu " }}</p>
+        <p class="ml-3 mr-4">
+          {{ getOpenWindows ?? "" }}
+          <span />
+          <span class="w-1 inline-block">{{ info.unit }} </span>
+        </p>
+      </div>
     </CardContent>
   </Card>
 </template>
