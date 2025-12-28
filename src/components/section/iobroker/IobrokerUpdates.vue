@@ -64,11 +64,11 @@ const columns: DatatableColumns<UpdatesType>[] = [
 </script>
 
 <template>
-  <Card class="inline-block" styling="light">
+  <Card class="inline-block" styling="blueDark">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between items-center">
-          <p>ioBroker Updates</p>
+          <p>Updates</p>
           <Badge :value="availableUpdates.length" />
         </div>
       </CardTitle>

@@ -3,15 +3,18 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { infoStates } from "@/subscribeIds/info.ts";
 import IobrokerUpdates from "@/components/section/iobroker/IobrokerUpdates.vue";
 import IobrokerNews from "@/components/section/iobroker/IobrokerNews.vue";
+import Page from "@/components/shared/page/Page.vue";
 
 useDynamicSubscribe(infoStates);
 </script>
 
 <template>
-  <div class="iobroker-info">
-    <IobrokerUpdates class="iobroker-info__updates" />
-    <IobrokerNews />
-  </div>
+  <Page title="IoBroker">
+    <div class="iobroker-info">
+      <IobrokerUpdates class="iobroker-info__updates" />
+      <IobrokerNews />
+    </div>
+  </Page>
 </template>
 
 <style scoped lang="scss">

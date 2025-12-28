@@ -37,7 +37,7 @@ const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]
 </script>
 
 <template>
-  <Card class="flex-1" styling="light">
+  <Card class="flex-1" styling="blueDark">
     <CardHeader>
       <CardTitle> News </CardTitle>
     </CardHeader>

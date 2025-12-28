@@ -4,11 +4,10 @@ import { storeToRefs } from "pinia";
 import { WindowObject } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.ts";
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
 import Room from "@/components/section/window/Room.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
-import { Button } from "@/components/shared/button";
 
 const iobrokerStore = useIobrokerStore();
 const { windowGlobal, time, fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(iobrokerStore);

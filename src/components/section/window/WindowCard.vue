@@ -30,44 +30,40 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 <template>
   <Card class="window" :class="`${props.class}`" styling="light">
     <CardContent class="px-2 pb-2">
-      <Button variant="outline" @click="emits('clickBack')">Backkk</Button>
+      <Button variant="outlineDark" @click="emits('clickBack')">Zurück</Button>
       <div class="flex items-center">
-        <div class="flex">
-          <WindowImage :is-open="window.isOpenStatus" />
-          <WindowImage v-if="isDefined(window.isOpenStatus2)" :is-open="window.isOpenStatus2" />
+        <div v-for="(w, i) in window.windows" class="flex" :key="i">
+          <WindowImage :is-open="w.isOpenStatus" />
         </div>
-        <WindowCardOpenCloseText
-          :window-open="isDefined(window.isOpenStatus2) ? window.isOpenStatus || window.isOpenStatus2 : window.isOpenStatus"
-          :door="window.door ?? false"
-        />
+        <WindowCardOpenCloseText :window-open="window.windows.some((w) => w.isOpenStatus)" :door="false" />
       </div>
       <div v-if="window.shutter">
-        <div class="flex items-center">
-          <img class="window--img" :src="getShutterImageByPosition(window.shutterPosition ?? null)" alt="FensterRollade" />
+        <div v-for="(w, i2) in window.windows" class="flex items-center" :key="i2">
+          <img class="window--img" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
           <div class="w-full">
-            <ShutterLabel :get-shutter-position="window.shutterPosition ?? 'n/a'" />
+            <ShutterLabel :get-shutter-position="w.shutterPosition ?? 'n/a'" />
 
             <div class="absolute top-2 right-2">
               <div class="flex items-center justify-between">
                 <div class="w-11">
-                  <Switch :checked="window.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, window.shutterAutoDown?.id ?? '')" />
+                  <Switch :checked="w.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoDown?.id ?? '')" />
                   <p class="text-[0.5rem]">Auto runter</p>
                 </div>
 
-                <InputIobroker :state="window.shutterAutoDownDelay" unit="min" :ack="true" />
+                <InputIobroker :state="w.shutterAutoDownDelay" unit="min" :ack="true" />
               </div>
               <div class="flex items-center space-x-2 mt-2">
                 <div class="w-11">
-                  <Switch :checked="window.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, window.shutterAutoUp?.id ?? '')" />
+                  <Switch :checked="w.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoUp?.id ?? '')" />
                   <p class="text-[0.5rem]">Auto hoch</p>
                 </div>
-                <InputIobroker :state="window.shutterAutoUpTime" type="time" :ack="true" />
+                <InputIobroker :state="w.shutterAutoUpTime" type="time" :ack="true" />
               </div>
             </div>
           </div>
         </div>
 
-        <WindowShutterPositionBtns v-if="window.idShutterPosition" :idShutterPosition="window.idShutterPosition" />
+        <!--        <WindowShutterPositionBtns v-if="window.idShutterPosition" :idShutterPosition="window.idShutterPosition" />-->
       </div>
     </CardContent>
   </Card>
