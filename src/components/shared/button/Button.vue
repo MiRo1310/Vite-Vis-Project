@@ -30,7 +30,7 @@ const variants = {
     destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
     outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
     outlineDark:
-      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-sm hover:bg-cardCustom-foreground hover:text-accent-foreground",
+      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-sm hover:bg-cardCustom-foreground/50 hover:text-accent-foreground",
     save: "border border-input bg-color__default shadow-sm hover:border-black hover:text-accent-foreground",
     secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
     ghost: "hover:bg-accent hover:text-accent-foreground",

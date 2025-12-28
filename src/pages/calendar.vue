@@ -8,7 +8,6 @@ import DialogSettings from "@/components/section/calendar/DialogSettings.vue";
 import PageContent from "@/components/shared/page/PageContent.vue";
 import Page from "@/components/shared/page/Page.vue";
 import { weekdays } from "@/defaultValues/defaultValues.ts";
-import IndexButton from "@/components/layout/IndexButton.vue";
 
 const daysInMonth = ref(0);
 const month = ref(0);
@@ -55,11 +54,11 @@ const open = ref(false);
   }
 
   &__weekdays {
-    @apply h-6 text-xs m-[2px] flex items-center p-2 shadow-lg;
+    @apply h-6 text-xs m-[2px] flex items-center p-2 shadow-lg text-cardCustom-text;
   }
 
   &__day {
-    @apply col-span-1 pt-0 max-h-[7rem] m-[2px] flex  p-2 shadow-lg;
+    @apply col-span-1 pt-0 max-h-[7rem] m-[2px] flex p-2 shadow-lg bg-white;
 
     &--active {
       @apply border-cardCustom-border border-2;
