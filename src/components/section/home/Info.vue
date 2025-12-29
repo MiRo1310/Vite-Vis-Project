@@ -48,7 +48,7 @@ const info = computed((): InfoType[] => [
     :class="{
       'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0,
     }"
-    styling="info"
+    styling="blueDark"
   >
     <CardHeader>
       <CardTitle>Infos</CardTitle>
@@ -73,7 +73,7 @@ const info = computed((): InfoType[] => [
         <p class="ml-3 mr-4">
           {{ getOpenWindows ?? "" }}
           <span />
-          <span class="w-1 inline-block">{{ info.unit }} </span>
+          <span class="w-1 inline-block" />
         </p>
       </div>
     </CardContent>

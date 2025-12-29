@@ -9,7 +9,7 @@ defineProps<ButtonVariantProps>();
 <template>
   <Dialog class-content="w-full max-w-full p-0 pt-7 ">
     <template #trigger>
-      <Button v-bind="$props" class="h-full">
+      <Button v-bind="$props" class="h-full" variant="outlineDark">
         <div class="flex justify-center mb-2">
           <slot />
         </div>

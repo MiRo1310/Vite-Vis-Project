@@ -41,7 +41,7 @@ const getColor = (name: string) => {
 };
 </script>
 <template>
-  <Card styling="info">
+  <Card styling="blueDark">
     <CardHeader>
       <CardTitle>Müllabfuhr</CardTitle>
     </CardHeader>

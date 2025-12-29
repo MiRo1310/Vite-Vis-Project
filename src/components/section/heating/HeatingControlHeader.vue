@@ -3,7 +3,8 @@ import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import Select from "@/components/shared/select/select.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { SelectOption } from "@/types/types.ts";
+import { RoomItems, SelectOption } from "@/types/types.ts";
+import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 
 const { heatingControl } = useIobrokerStore();
 
@@ -59,7 +60,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
         placeholder="Wähle einen Raum"
         :items="roomItems"
         class="w-[150px] header__select"
-        @update:selected="updateSelected($event, heatingControl.room?.id)"
+        @update:selected="updateRoomInHeatingControl(($event as RoomItems) ?? null)"
       />
     </div>
   </div>

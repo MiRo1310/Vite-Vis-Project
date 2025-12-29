@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
-import { WindowObject } from "@/types/types.ts";
+import { RoomItems, RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.ts";
 import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
-import Room from "@/components/section/window/Room.vue";
+import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
+import { roomNames, updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 
 const iobrokerStore = useIobrokerStore();
 const { windowGlobal, time, fenster, rolladen, shutterAutoDownTime, shutterAutoUp } = storeToRefs(iobrokerStore);
 
-const rooms = computed((): WindowObject[] => {
+const rooms = computed((): RoomType[] => {
   const { kueche, esszimmer, wohnzimmer, schlafen, bad, abstellraumog, kinderzimmer, gaestezimmer } = notSubscribedIds;
   return [
     {
@@ -244,6 +245,14 @@ const rooms = computed((): WindowObject[] => {
 const selectedName = ref<string | null>(null);
 
 const selectedRoom = computed(() => rooms.value.find((room) => room.name === selectedName.value));
+
+const clickRoom = (roomName: string) => {
+  selectedName.value = roomName;
+
+  if (roomNames.includes(roomName as RoomItems)) {
+    updateRoomInHeatingControl(roomName as RoomItems);
+  }
+};
 </script>
 
 <template>
@@ -263,7 +272,7 @@ const selectedRoom = computed(() => rooms.value.find((room) => room.name === sel
       <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
     </template>
     <div class="windows__cards">
-      <Room v-for="room in rooms" :room :key="room.name" @click-room="selectedName = $event" />
+      <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
     </div>
   </Page>
 

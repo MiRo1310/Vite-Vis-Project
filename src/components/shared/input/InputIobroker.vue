@@ -42,6 +42,7 @@ const setState = () => {
 const variants = {
   color: {
     default: "",
+    dark: "bg-cardCustom-info/70 text-cardCustom-foreground",
     white: "bg-white",
   },
 };
@@ -62,7 +63,7 @@ const variants = {
 
 <style scoped lang="scss">
 .input-with-unit {
-  @apply relative flex items-center border-b-color__default border-b-2 w-[4.5rem] h-6 pb-1;
+  @apply relative flex items-center border-b-color__default border-b-2 h-6 pb-1;
 
   &__input {
     &--not-ack {

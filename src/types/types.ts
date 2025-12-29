@@ -42,7 +42,7 @@ export interface Timers {
   4: Timer;
 }
 
-export interface WindowObject {
+export interface RoomType {
   name: string;
   shutter: boolean;
   windows: {
@@ -357,3 +357,16 @@ export interface LogReset {
   warn: StoreValue<boolean>;
   info: StoreValue<boolean>;
 }
+
+export type RoomItems =
+  | "Esszimmer"
+  | "Gäste WC"
+  | "Bad"
+  | "Flur"
+  | "Gästezimmer"
+  | "Kinderzimmer"
+  | "Küche"
+  | "Schlafzimmer"
+  | "Wohnzimmer"
+  | "Keller Michael"
+  | "Keller Waschen";

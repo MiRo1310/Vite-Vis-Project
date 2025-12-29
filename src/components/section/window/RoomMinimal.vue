@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
-import { WindowObject } from "@/types/types.ts";
+import { RoomType } from "@/types/types.ts";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { getShutterImageByPosition } from "@/composables/windows.ts";
 
-const props = defineProps<{
-  class?: HTMLAttributes["class"];
-  room: WindowObject;
-}>();
+defineProps<{ room: RoomType }>();
 
 const emits = defineEmits(["clickRoom"]);
 </script>
 
 <template>
-  <Card class="window" :class="`${props.class}`" styling="light" @click="emits('clickRoom', room.name)">
+  <Card
+    :class="['window', room.windows.some((w) => w.isOpenStatus) ? 'border--destructive' : 'border-cardCustom-border/70']"
+    styling="info"
+    @click="emits('clickRoom', room.name)"
+  >
     <span class="text-lg text-muted-foreground line ml-2">{{ room.name }}</span>
 
     <CardContent class="px-2 pb-2">
@@ -39,7 +39,15 @@ const emits = defineEmits(["clickRoom"]);
 }
 
 .window {
-  @apply relative border-gray-300;
+  @apply relative;
+
+  &:hover {
+    @apply bg-cardCustom-info/70 border-cardCustom-border cursor-pointer;
+  }
+}
+
+.border--destructive {
+  @apply border-destructive #{!important};
 }
 
 .window--img {

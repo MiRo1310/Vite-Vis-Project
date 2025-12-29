@@ -38,7 +38,7 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [
 useDynamicSubscribe(states);
 
 const activeClass = computed(() => (i: number) => {
-  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "bg-white";
+  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "bg-cardCustom-info/70 text-cardCustom-foreground";
 });
 </script>
 <template>
@@ -54,45 +54,48 @@ const activeClass = computed(() => (i: number) => {
             v-for="i in 5"
             :key="i"
             type="time"
-            color="white"
+            color="dark"
             :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
           />
         </div>
       </div>
       <div>
         <p class="day__section-label">°C</p>
-        <Select
-          v-for="i in 5"
-          :key="i"
-          :items="tempArray()"
-          :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
-          :class="['p-0', activeClass(i)]"
-          @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
-        />
+        <div class="day__input-wrapper">
+          <Select
+            v-for="i in 5"
+            :key="i"
+            :items="tempArray()"
+            :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
+            :class="['h-6', activeClass(i)]"
+            @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .day {
   &__container {
-    @apply bg-color__default pt-2 flex-1 mb-1;
+    @apply bg-cardCustom pt-2 flex-1 mb-1;
   }
 
   &__label {
-    @apply text-center mb-1 bg-white mx-2;
+    @apply text-center text-cardCustom-foreground mx-2;
   }
 
   &__content {
-    @apply flex justify-center mb-1 space-x-1;
+    @apply flex justify-center gap-1;
   }
 
   &__section-label {
-    @apply text-center mb-1;
+    @apply text-center mb-1 text-cardCustom-text/70;
   }
 
   &__input-wrapper {
-    @apply flex flex-col gap-[2px];
+    @apply flex flex-col gap-[5px] h-full;
   }
 }
 

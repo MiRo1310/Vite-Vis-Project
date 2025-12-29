@@ -5,17 +5,18 @@ import WindowShutterPositionBtns from "@/components/section/window/WindowShutter
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { WindowObject } from "@/types/types.ts";
+import { RoomType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import { isDefined } from "@vueuse/core";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { getShutterImageByPosition } from "@/composables/windows.ts";
 import { Button } from "@/components/shared/button";
+import HeatingControlPeriod from "@/components/section/heating/HeatingControlPeriod.vue";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"];
-  window: WindowObject;
+  window: RoomType;
 }>();
 
 const emits = defineEmits(["clickBack"]);
@@ -28,7 +29,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </script>
 
 <template>
-  <Card class="window" :class="`${props.class}`" styling="light">
+  <Card class="window" :class="`${props.class}`" styling="info">
     <CardContent class="px-2 pb-2">
       <Button variant="outlineDark" @click="emits('clickBack')">Zurück</Button>
       <div class="flex items-center">
@@ -65,6 +66,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 
         <!--        <WindowShutterPositionBtns v-if="window.idShutterPosition" :idShutterPosition="window.idShutterPosition" />-->
       </div>
+      <HeatingControlPeriod />
     </CardContent>
   </Card>
 </template>
@@ -75,7 +77,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 }
 
 .window {
-  @apply min-w-[32.5%] flex-1 relative bg-white;
+  @apply min-w-[32.5%] flex-1 relative;
 }
 
 .window:first-child {

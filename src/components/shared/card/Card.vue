@@ -41,9 +41,10 @@ const variants = {
 }
 
 .blue-dark {
-  @apply bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/40;
+  @apply bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/70;
 }
+
 .info {
-  @apply bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/40;
+  @apply bg-cardCustom-info/70 text-cardCustom-foreground border border-cardCustom-border/70;
 }
 </style>

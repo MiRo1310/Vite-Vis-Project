@@ -34,7 +34,7 @@ const infos = computed((): InfoTypes[][] => [
 </script>
 
 <template>
-  <Card styling="info" class="flex-row">
+  <Card styling="blueDark" class="flex-row">
     <CardHeader>
       <CardTitle> PV</CardTitle>
     </CardHeader>

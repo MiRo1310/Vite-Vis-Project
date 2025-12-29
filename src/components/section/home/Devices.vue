@@ -35,7 +35,7 @@ const status = computed(() => {
 </script>
 
 <template>
-  <Card styling="info">
+  <Card styling="blueDark">
     <CardHeader>
       <CardTitle>Geräte</CardTitle>
     </CardHeader>
