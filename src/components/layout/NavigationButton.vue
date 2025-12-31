@@ -7,15 +7,15 @@ defineProps<{ navigation: NavigationType }>();
 </script>
 
 <template>
-  <Card styling="blueDark" class="navigation__card">
+  <Card styling="blueDark" class="col-span-1 hover:bg-cardCustom/70 hover:border-cardCustom-border">
     <RouterLink :to="navigation.link">
       <CardHeader>
         <CardTitle styling="shadcn">
-          <div class="navigation__title-inner">
+          <div class="flex justify-between">
             <span>{{ navigation.text }}</span>
             <span class="relative">
               <Badge v-if="navigation.badge?.value" :value="navigation.badge.value" :color="navigation.badge.color" class="absolute right-0" />
-              <Component :is="navigation.icon" class="navigation__icon" />
+              <Component :is="navigation.icon" class="w-12 h-12" />
             </span>
           </div>
         </CardTitle>
@@ -23,31 +23,3 @@ defineProps<{ navigation: NavigationType }>();
     </RouterLink>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.navigation {
-  &__card {
-    @apply col-span-1;
-
-    &:hover {
-      @apply bg-cardCustom/70 border-cardCustom-border;
-    }
-  }
-
-  &__title-inner {
-    @apply flex justify-between;
-  }
-
-  &__icon-wrapper {
-    @apply relative;
-  }
-
-  &__icon {
-    @apply w-12 h-12;
-  }
-
-  &__badge {
-    @apply absolute right-0;
-  }
-}
-</style>

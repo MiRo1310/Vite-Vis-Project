@@ -70,7 +70,7 @@ module.exports = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         warning: {
-          DEFAULT: "#e3a30a",
+          DEFAULT: "#161616",
           foreground: "#fff",
         },
         muted: {

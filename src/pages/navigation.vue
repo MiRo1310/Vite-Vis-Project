@@ -94,15 +94,9 @@ const navigations = computed((): NavigationType[] => [
 </script>
 
 <template>
-  <div class="navigation">
+  <div class="navigation grid grid-cols-3 gap-1">
     <template v-for="navigation in navigations" :key="navigation.link">
       <NavigationButton :navigation />
     </template>
   </div>
 </template>
-
-<style scoped lang="scss">
-.navigation {
-  @apply grid grid-cols-3 gap-1;
-}
-</style>

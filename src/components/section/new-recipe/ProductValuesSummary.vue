@@ -48,9 +48,3 @@ const productLabel = computed(() => selectableProducts.value.find((option) => op
     <span v-if="product?.unit" class="font-semibold">{{ product?.amount }} {{ product.unit }}</span>
   </div>
 </template>
-
-<style>
-.product__group input {
-  @apply bg-white text-xs py-0;
-}
-</style>

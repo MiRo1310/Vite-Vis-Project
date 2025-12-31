@@ -25,15 +25,10 @@ const selected = ref("");
 </script>
 
 <template>
-  <div class="recipe">
-    <div class="recipe__header">
-      <div class="recipe__header-left-col">
-        <RecipeSelection
-          v-model:selected="selected"
-          v-model:selected-name="selectedName"
-          class="recipe__header-recipe-selection"
-          @update:selected="updateSelect"
-        />
+  <div class="flex flex-col space-y-2 overflow-hidden h-full">
+    <div class="flex justify-between items-center space-x-2">
+      <div class="flex space-x-2 items-center">
+        <RecipeSelection v-model:selected="selected" v-model:selected-name="selectedName" class="w-80" @update:selected="updateSelect" />
         <RecipeAddNew />
       </div>
       <div id="recipe" />
@@ -41,21 +36,3 @@ const selected = ref("");
     <router-view />
   </div>
 </template>
-
-<style scoped lang="scss">
-.recipe {
-  @apply flex flex-col space-y-2 overflow-hidden h-full;
-
-  &__header {
-    @apply flex justify-between items-center space-x-2;
-  }
-
-  &__header-left-col {
-    @apply flex space-x-2 items-center;
-  }
-
-  &__header-recipe-selection {
-    @apply w-80;
-  }
-}
-</style>

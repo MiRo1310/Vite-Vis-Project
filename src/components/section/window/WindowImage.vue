@@ -6,12 +6,6 @@ defineProps<{ isOpen: boolean }>();
 </script>
 
 <template>
-  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" />
-  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" />
+  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" class="w-8 h-6 mt-1" />
+  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" class="w-8 h-6 mt-1" />
 </template>
-
-<style scoped lang="scss">
-img {
-  @apply w-8 h-6 mt-1;
-}
-</style>

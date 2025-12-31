@@ -260,18 +260,18 @@ const clickRoom = (roomName: string) => {
     <template #title>
       <p v-show="getOpenWindows === 1" class="text-muted-foreground">
         Ein Fenster oder eine Tür ist
-        <span :class="windowGlobal.fensterOffen ? 'windows__notification' : ''" class="ml-1">offen </span>
+        <span :class="windowGlobal.fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
       </p>
 
       <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
         {{ getOpenWindows ? getOpenWindows : "Alle" }}
         Fenster / Türen sind
-        <span :class="{ window__notification: windowGlobal.fensterOffen }">{{ windowGlobal.fensterOffen ? "offen" : "geschlossen" }}</span>
+        <span :class="{ 'text-red-500 animate-pulse': windowGlobal.fensterOffen }">{{ windowGlobal.fensterOffen ? "offen" : "geschlossen" }}</span>
       </p>
 
       <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
     </template>
-    <div class="windows__cards">
+    <div class="grid grid-cols-3 gap-1">
       <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
     </div>
   </Page>
@@ -280,25 +280,3 @@ const clickRoom = (roomName: string) => {
     <WindowCard :window="selectedRoom" @click-back="selectedName = null" />
   </Page>
 </template>
-
-<style scoped lang="scss">
-.windows {
-  @apply lg:fixed right-1 left-1 top-[4rem] border-t-4 border-t-backgroundColor z-50;
-
-  &__header {
-    @apply p-1;
-  }
-
-  &__title {
-    @apply flex justify-between;
-  }
-
-  &__cards {
-    @apply grid grid-cols-3 gap-1;
-  }
-
-  &__notification {
-    @apply text-red-500 animate-pulse;
-  }
-}
-</style>

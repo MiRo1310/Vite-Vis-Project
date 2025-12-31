@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ status: boolean | null; power?: boolean }>();
+defineProps<{ status: boolean; power?: boolean }>();
 </script>
 
 <template>

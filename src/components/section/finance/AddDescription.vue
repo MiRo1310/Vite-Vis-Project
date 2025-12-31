@@ -41,22 +41,8 @@ const addDescriptionHandler = () => {
 </script>
 
 <template>
-  <div class="add-description">
-    <Textarea placeholder="Beschreibung" v-model:model-value="text" class="add-description__textarea" />
+  <div class="my-4 flex gap-4 flex-wrap">
+    <Textarea placeholder="Beschreibung" v-model:model-value="text" class="h-24" />
     <Button icon="add" variant="outline" size="icon" @click="addDescriptionHandler" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.add-description {
-  @apply my-4 flex gap-4 flex-wrap;
-
-  &__input {
-    @apply w-[40rem];
-  }
-
-  &__textarea {
-    @apply h-24;
-  }
-}
-</style>

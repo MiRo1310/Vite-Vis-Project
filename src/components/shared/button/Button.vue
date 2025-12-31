@@ -77,28 +77,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <Primitive :as="as" :as-child="asChild" :class="['btn', getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']), props.class]">
+  <Primitive
+    :as="as"
+    :as-child="asChild"
+    :class="[
+      'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+      getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']),
+      props.class,
+    ]"
+  >
     <div ref="buttonChild" :class="[variants.text[props.text], 'w-full flex items-center justify-center']">
       <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
       <slot />
     </div>
   </Primitive>
 </template>
-
-<style scoped lang="scss">
-.btn {
-  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors;
-  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
-  @apply disabled:pointer-events-none disabled:opacity-50;
-
-  &__multiline {
-    @apply text-xs text-muted-foreground text-wrap;
-  }
-}
-</style>
-
-<style lang="scss">
-.btn__row-center {
-  @apply flex items-center justify-end my-[1px] w-full;
-}
-</style>

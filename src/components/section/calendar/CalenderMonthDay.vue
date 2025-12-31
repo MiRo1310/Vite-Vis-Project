@@ -6,6 +6,7 @@ import { CalendarDayType } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 import { stringToJSON } from "@/lib/string.ts";
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
+import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{
@@ -78,16 +79,19 @@ const open = ref(false);
 </script>
 <template>
   <div class="flex-1 max-w-full" @click="open = !open">
-    <p class="line block">
+    <p class="block">
       <span
-        :class="{
-          'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs': true,
-          'bg-blue-300 text-xs': isToday,
-        }"
+        :class="[
+          'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs',
+          {
+            'bg-blue-300 text-xs': isToday,
+          },
+        ]"
       >
         {{ dayIndex || dayIndex === 0 ? dayIndex + 1 : "" }}
       </span>
     </p>
+    <TextSeparator />
     <div class="overflow-auto max-h-[calc(6rem-22px)]">
       <div v-for="(event, index) in getDayValue" :key="index" class="text-xs">
         <p :class="[[getColor(event)], 'mb-[2px] px-2 mt-[1px] block truncate']">

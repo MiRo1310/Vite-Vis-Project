@@ -86,7 +86,7 @@ const description = ref(props.row.original.text ?? "");
     <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
-        <Textarea placeholder="Beschreibung" v-model:model-value="description" class="textarea" />
+        <Textarea placeholder="Beschreibung" v-model:model-value="description" class="h-40" />
       </div>
       <div class="flex gap-4 justify-end">
         <Button variant="outline" @click="update">Aktualisieren</Button>
@@ -95,9 +95,3 @@ const description = ref(props.row.original.text ?? "");
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss">
-.textarea {
-  @apply h-40;
-}
-</style>

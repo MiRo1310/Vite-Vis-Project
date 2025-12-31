@@ -14,8 +14,8 @@ const props = defineProps<{
     <CardHeader>
       <CardTitle>{{ title }}</CardTitle>
     </CardHeader>
-    <CardContent class="default_card mx-2 mb-2">
-      <div v-for="(entry, i) in entries" :key="i" class="flex-between text-cardCustom-text/70 font-bold text-xs">
+    <CardContent class="bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
+      <div v-for="(entry, i) in entries" :key="i" class="flex justify-between items-center text-cardCustom-text/70 font-bold text-xs">
         <div>
           <p>{{ entry.title }}</p>
         </div>

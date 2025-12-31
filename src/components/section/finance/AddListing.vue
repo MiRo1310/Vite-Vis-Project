@@ -56,22 +56,12 @@ const addListingHandler = () => {
 </script>
 
 <template>
-  <div class="add-listing">
-    <Input type="date" placeholder="Datum" v-model:model-value="date" class="add-listing__input-date" />
+  <div class="my-4 flex gap-4 flex-wrap">
+    <Input type="date" placeholder="Datum" v-model:model-value="date" />
     <DescriptionOptions v-model:model-value="description" :as-select="true" />
     <Textarea placeholder="Beschreibung" v-model:model-value="description" />
-    <Input type="number" placeholder="Betrag" v-model:model-value="price" class="add-listing__input" />
+    <Input type="number" placeholder="Betrag" v-model:model-value="price" class="w-[30rem]" />
     <AddressOptions v-model:address-id="addressId" v-model:model-value="selectedName" />
     <Button icon="add" variant="outline" size="icon" @click="addListingHandler" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.add-listing {
-  @apply my-4 flex gap-4 flex-wrap;
-
-  &__input {
-    @apply w-[30rem];
-  }
-}
-</style>

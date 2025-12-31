@@ -49,7 +49,7 @@ const variants = {
 </script>
 
 <template>
-  <div :class="['input-with-unit', { 'input-with-unit__input--not-ack': !state?.ack }]">
+  <div :class="['relative flex items-center border-b-color__default border-b-2 h-6 pb-1', { 'border-red-500': !state?.ack }]">
     <InputShadcn
       :type
       :class="[getVariantsClasses(variants, props)]"
@@ -57,23 +57,6 @@ const variants = {
       @update:model-value="debounceFn"
       border="none"
     />
-    <span v-if="unit" class="input-with-unit__unit">{{ unit }}</span>
+    <span v-if="unit" class="text-accent-foreground/50 font-bold text-xs absolute right-5 top-[1px]">{{ unit }}</span>
   </div>
 </template>
-
-<style scoped lang="scss">
-.input-with-unit {
-  @apply relative flex items-center border-b-color__default border-b-2 h-6 pb-1;
-
-  &__input {
-    &--not-ack {
-      @apply border-red-500;
-    }
-  }
-
-  &__unit {
-    @apply text-accent-foreground/50 font-bold text-xs;
-    @apply absolute right-5 top-[1px];
-  }
-}
-</style>

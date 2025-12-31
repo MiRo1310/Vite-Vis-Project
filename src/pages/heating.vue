@@ -8,11 +8,12 @@ import Page from "@/components/shared/page/Page.vue";
 import PageContent from "@/components/shared/page/PageContent.vue";
 import HeatingControl from "@/components/section/heating/HeatingControl.vue";
 </script>
+
 <template>
   <Page title="Heizung">
     <template #default>
       <PageContent>
-        <div class="heating__cards">
+        <div class="flex flex-wrap gap-1">
           <HeatingStatus />
           <HeatingTemperature />
           <HeatingWarning />
@@ -25,11 +26,3 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
     </template>
   </Page>
 </template>
-
-<style scoped lang="scss">
-.heating {
-  &__cards {
-    @apply flex flex-wrap gap-1;
-  }
-}
-</style>

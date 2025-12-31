@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { HTMLAttributes } from "vue";
 import { Card, CardContent } from "@/components/shared/card";
-import WindowShutterPositionBtns from "@/components/section/window/WindowShutterPositionBtns.vue";
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { RoomType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
-import { isDefined } from "@vueuse/core";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { getShutterImageByPosition } from "@/composables/windows.ts";
 import { Button } from "@/components/shared/button";
@@ -29,7 +27,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 </script>
 
 <template>
-  <Card class="window" :class="`${props.class}`" styling="info">
+  <Card class="min-w-[32.5%] flex-1 relative first:mt-1 first:ml-1" :class="`${props.class}`" styling="info">
     <CardContent class="px-2 pb-2">
       <Button variant="outlineDark" @click="emits('clickBack')">Zurück</Button>
       <div class="flex items-center">
@@ -40,7 +38,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       </div>
       <div v-if="window.shutter">
         <div v-for="(w, i2) in window.windows" class="flex items-center" :key="i2">
-          <img class="window--img" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
+          <img class="w-8 h-12" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="w.shutterPosition ?? 'n/a'" />
 
@@ -70,29 +68,3 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     </CardContent>
   </Card>
 </template>
-
-<style lang="scss" scoped>
-.input-shadcn {
-  @apply w-[5.2rem] pr-8 border-none shadow-none;
-}
-
-.window {
-  @apply min-w-[32.5%] flex-1 relative;
-}
-
-.window:first-child {
-  @apply mt-1 ml-1;
-}
-
-.window--img {
-  @apply w-8 h-12;
-}
-
-.window--img-openClose {
-  @apply w-8 h-6 mt-1;
-}
-
-.text {
-  @apply text-[0.68rem] mt-1 ml-1 font-bold;
-}
-</style>

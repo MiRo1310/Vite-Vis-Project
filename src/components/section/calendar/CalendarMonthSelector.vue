@@ -67,7 +67,7 @@ const getDaysInMonth = (): number => {
 };
 </script>
 <template>
-  <div class="flex-between">
+  <div class="flex justify-between items-center">
     <div class="flex items-center space-x-2">
       <Button size="icon" @click="changeMonth(-1)" variant="outlineDark">
         <ChevronLeft />

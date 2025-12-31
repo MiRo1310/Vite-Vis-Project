@@ -34,12 +34,6 @@ const getAction = computed<keyof ButtonVariants["action"]>(() => {
 
 <template>
   <Button :variant :size :icon @click="handleClick" :action="getAction">
-    <span class="button__label">{{ label }} <slot /></span>
+    <span class="text-sm text-muted-foreground">{{ label }} <slot /></span>
   </Button>
 </template>
-
-<style scoped lang="scss">
-.button__label {
-  @apply text-sm text-muted-foreground;
-}
-</style>

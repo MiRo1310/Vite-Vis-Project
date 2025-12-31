@@ -7,14 +7,8 @@ defineProps<TableColumnProps<string, Row<TravelCostQuery["travelCost"][number]>,
 </script>
 
 <template>
-  <div class="listing-address">
+  <div class="text-muted-foreground">
     <p>{{ row.original.address.name }}</p>
     <p>{{ row.original.address.street }} , {{ row.original.address.city }}</p>
   </div>
 </template>
-
-<style scoped lang="scss">
-.listing-address {
-  @apply text-muted-foreground;
-}
-</style>

@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { Days, days } from "@/defaultValues/defaultValues.ts";
+import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { trash } = storeToRefs(iobrokerStore);
@@ -47,12 +48,13 @@ const getColor = (name: string) => {
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-2">
       <div v-for="(event, index) in trashEvents" :key="index" class="bg-cardCustom-info p-2 shadow-lg">
-        <div class="flex justify-between line">
+        <div class="flex justify-between">
           <p class="text-cardCustom-text font-bold">
             {{ event.name }}
           </p>
           <Trash2 :class="['inline-block mb-1 ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]" />
         </div>
+        <TextSeparator />
         <p class="text-xs text-cardCustom-text/70 font-bold">in {{ event.daysLeft }} Tagen</p>
         <p class="text-xs text-cardCustom-text/70 font-bold">am {{ transformDate(event.nextDate) }}</p>
         <p class="text-xs text-cardCustom-text/70 font-bold">

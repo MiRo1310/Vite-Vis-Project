@@ -85,15 +85,9 @@ onMounted(async () => {
 
 <template>
   <Teleport v-if="isRecipeElementPresent" to="#recipe">
-    <div class="recipe-detail-button-wrapper">
+    <div class="flex items-center space-x-2">
       <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
     </div>
   </Teleport>
   <RecipeContent :recipe="result?.recipe" />
 </template>
-
-<style scoped>
-.recipe-detail-button-wrapper {
-  @apply flex items-center space-x-2;
-}
-</style>

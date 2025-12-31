@@ -24,6 +24,10 @@ const dialogOpen = defineModel<boolean>("dialogOpen");
 
 <style scoped lang="postcss">
 :global(.dialog__content) {
-  @apply w-[90vw] max-w-[90vw] h-[90vh] flex flex-col;
+  width: 90vw;
+  max-width: 90vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>

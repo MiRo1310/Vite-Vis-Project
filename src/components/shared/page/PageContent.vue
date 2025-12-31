@@ -1,11 +1,5 @@
 <template>
-  <div class="card-simple">
+  <div class="bg-cardCustom-info p-2 shadow-lg h-full">
     <slot />
   </div>
 </template>
-
-<style scoped lang="scss">
-.card-simple {
-  @apply bg-cardCustom-info p-2 shadow-lg h-full;
-}
-</style>

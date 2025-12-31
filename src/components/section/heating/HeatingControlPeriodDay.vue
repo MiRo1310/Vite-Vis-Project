@@ -42,14 +42,14 @@ const activeClass = computed(() => (i: number) => {
 });
 </script>
 <template>
-  <div class="day__container">
-    <p class="day__label">
+  <div class="bg-cardCustom pt-2 flex-1 mb-1">
+    <p class="text-center text-cardCustom-foreground mx-2">
       {{ day.label }}
     </p>
-    <div class="day__content">
+    <div class="flex justify-center gap-1">
       <div>
-        <p class="day__section-label">ab</p>
-        <div class="day__input-wrapper">
+        <p class="text-center mb-1 text-cardCustom-text/70">ab</p>
+        <div class="flex flex-col gap-[5px] h-full">
           <InputIobroker
             v-for="i in 5"
             :key="i"
@@ -60,8 +60,8 @@ const activeClass = computed(() => (i: number) => {
         </div>
       </div>
       <div>
-        <p class="day__section-label">°C</p>
-        <div class="day__input-wrapper">
+        <p class="text-center mb-1 text-cardCustom-text/70">°C</p>
+        <div class="flex flex-col gap-[5px] h-full">
           <Select
             v-for="i in 5"
             :key="i"
@@ -77,29 +77,13 @@ const activeClass = computed(() => (i: number) => {
 </template>
 
 <style scoped lang="scss">
-.day {
-  &__container {
-    @apply bg-cardCustom pt-2 flex-1 mb-1;
-  }
-
-  &__label {
-    @apply text-center text-cardCustom-foreground mx-2;
-  }
-
-  &__content {
-    @apply flex justify-center gap-1;
-  }
-
-  &__section-label {
-    @apply text-center mb-1 text-cardCustom-text/70;
-  }
-
-  &__input-wrapper {
-    @apply flex flex-col gap-[5px] h-full;
-  }
-}
-
 :deep(button[role="combobox"]) {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] mt-1;
+  height: 1.5rem;
+  box-shadow: none;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  border-radius: 0;
+  min-width: 4rem;
+  margin-top: 0.25rem;
 }
 </style>

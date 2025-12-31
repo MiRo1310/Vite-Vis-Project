@@ -3,6 +3,7 @@ import { InputShadcn } from "@/components/ui/input";
 import { Row } from "@tanstack/vue-table";
 import { AlexaDotAction } from "@/pages/alexa.vue";
 import { ref, watchEffect } from "vue";
+import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const props = defineProps<{
   value: string | number;
@@ -36,16 +37,15 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="line">
-    <InputShadcn
-      class="border-none shadow-none w-full"
-      :model-value="value"
-      type="number"
-      :step="props.customValue.step"
-      :min="props.customValue.min"
-      :default-value="props.customValue.defaultValue"
-      :max="props.customValue.max"
-      @update:model-value="update($event)"
-    />
-  </div>
+  <InputShadcn
+    class="border-none shadow-none w-full"
+    :model-value="value"
+    type="number"
+    :step="props.customValue.step"
+    :min="props.customValue.min"
+    :default-value="props.customValue.defaultValue"
+    :max="props.customValue.max"
+    @update:model-value="update($event)"
+  />
+  <TextSeparator />
 </template>

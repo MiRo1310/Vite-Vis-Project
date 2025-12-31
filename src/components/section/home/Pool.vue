@@ -93,13 +93,13 @@ const getMode = (mode: string) => {
   <Card styling="info">
     <CardHeader>
       <CardTitle>
-        <div class="pool__title">
+        <div class="flex justify-between items-center">
           <span>Pool Wärmepumpe</span>
-          <OnlineOffline :status="pool.status?.val" />
+          <OnlineOffline :status="pool.status?.val ?? false" />
         </div>
       </CardTitle>
     </CardHeader>
-    <CardContent class="pool__content">
+    <CardContent class="bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
       <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
         <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
@@ -114,15 +114,3 @@ const getMode = (mode: string) => {
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.pool {
-  &__title {
-    @apply flex justify-between items-center;
-  }
-
-  &__content {
-    @apply bg-cardCustom-info p-2 shadow-lg mx-2 mb-2;
-  }
-}
-</style>

@@ -68,15 +68,8 @@ const selected = ref("");
     type="text"
     placeholder="Beschreibung"
     class="add-listing__input"
-    name="Test"
     :options
     options-id="description"
     v-model:model-value="modelValue"
   />
 </template>
-
-<style scoped lang="scss">
-.select {
-  @apply w-16;
-}
-</style>

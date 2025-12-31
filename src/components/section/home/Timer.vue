@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { computed, HTMLAttributes } from "vue";
 import { useAppStore } from "@/store/appStore.ts";
 import { Timer, Timers } from "@/types/types.ts";
+import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 defineProps<{ class: HTMLAttributes["class"] }>();
 
@@ -25,23 +26,24 @@ const nameByIndex = computed(() => (index: number) => {
         <p>Alexa Timer</p>
       </CardTitle>
     </CardHeader>
-    <CardContent class="timer__content">
-      <div v-for="i in 4" :key="i" class="timer__section">
-        <div class="timer__section-inner">
-          <h1 class="timer__sub-title line">
+    <CardContent class="flex flex-wrap min-w-[400px] gap-2">
+      <div v-for="i in 4" :key="i" class="min-w-[180px] flex-1 max-w-[50%] flex px-2 bg-cardCustom-info p-2 shadow-lg">
+        <div class="w-full">
+          <h1 class="text-cardCustom-text text-xl flex justify-between">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
             <span> {{ (timer[i as keyof Timers] as Timer).timeString?.val }}</span>
           </h1>
-          <div class="timer__values">
-            <div class="timer__label">
+          <TextSeparator />
+          <div class="w-full text-xs">
+            <div class="text-cardCustom-text/70 font-bold flex justify-between">
               <p>Gerät:</p>
-              <p class="timer__value">
+              <p class="flex-1 text-right">
                 {{ (timer[i as keyof Timers] as Timer).device?.val }}
               </p>
             </div>
-            <div class="timer__label">
+            <div class="text-cardCustom-text/70 font-bold flex justify-between">
               <p>Länge:</p>
-              <p class="timer__value">
+              <p class="flex-1 text-right">
                 {{ (timer[i as keyof Timers] as Timer).initialTimer?.val }}
               </p>
             </div>
@@ -51,38 +53,3 @@ const nameByIndex = computed(() => (index: number) => {
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.timer {
-  &__content {
-    @apply flex flex-wrap min-w-[400px] gap-2;
-  }
-
-  &__section {
-    @apply min-w-[180px] flex-1 max-w-[50%] flex px-2;
-    @apply bg-cardCustom-info p-2 shadow-lg;
-  }
-
-  &__section-inner {
-    @apply w-full;
-  }
-
-  &__sub-title {
-    @apply text-cardCustom-text text-xl;
-    @apply flex justify-between;
-  }
-
-  &__label {
-    @apply text-cardCustom-text/70 font-bold;
-    @apply flex justify-between;
-  }
-
-  &__values {
-    @apply w-full text-xs;
-  }
-
-  &__value {
-    @apply flex-1 text-right;
-  }
-}
-</style>

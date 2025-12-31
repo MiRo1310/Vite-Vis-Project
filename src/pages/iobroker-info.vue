@@ -10,19 +10,9 @@ useDynamicSubscribe(infoStates);
 
 <template>
   <Page title="IoBroker">
-    <div class="iobroker-info">
-      <IobrokerUpdates class="iobroker-info__updates" />
+    <div class="flex flex-wrap gap-1">
+      <IobrokerUpdates class="mt-1 ml-1" />
       <IobrokerNews />
     </div>
   </Page>
 </template>
-
-<style scoped lang="scss">
-.iobroker-info {
-  @apply flex flex-wrap space-x-1 space-y-1 -mt-1 -ml-1;
-
-  &__updates {
-    @apply mt-1 ml-1;
-  }
-}
-</style>

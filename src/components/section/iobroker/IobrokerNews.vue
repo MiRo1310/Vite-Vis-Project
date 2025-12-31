@@ -42,7 +42,7 @@ const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]
       <CardTitle> News </CardTitle>
     </CardHeader>
     <CardContent class="max-h-full overflow-auto">
-      <div class="default_card">
+      <div class="bg-cardCustom-info p-2 shadow-lg">
         <TableBasic :columns="getColumns(columns)" :data="json" />
       </div>
     </CardContent>

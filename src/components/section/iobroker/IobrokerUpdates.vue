@@ -74,7 +74,7 @@ const columns: DatatableColumns<UpdatesType>[] = [
       </CardTitle>
     </CardHeader>
     <CardContent>
-      <div class="default_card">
+      <div class="bg-cardCustom-info p-2 shadow-lg">
         <TableBasic :columns="getColumns(columns)" :data="availableUpdates" />
       </div>
     </CardContent>

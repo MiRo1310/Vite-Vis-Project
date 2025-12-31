@@ -22,18 +22,8 @@
 }
 
 @tailwind components;
-.default_card {
-    @apply bg-cardCustom-info p-2 shadow-lg;
-}
 
 @tailwind utilities;
-.flex-between {
-    @apply flex justify-between items-center;
-}
-
-.line {
-    @apply border-b-cardCustom-border/40 border-b-2 pb-[2px];
-}
 
 @layer base {
     :root {
@@ -85,15 +75,5 @@
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 210 20% 98%;
         --ring: 216 12.2% 83.9%;
-    }
-}
-
-@layer base {
-    * {
-        @apply border-border;
-    }
-
-    body {
-        @apply bg-background text-foreground;
     }
 }

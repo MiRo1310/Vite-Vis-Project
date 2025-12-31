@@ -5,22 +5,12 @@ import Toaster from "../../components/ui/toast/Toaster.vue";
 
 <template>
   <Suspense>
-    <div class="app__background">
+    <div class="relative w-full h-screen bg-cover bg-center">
       <Navigation />
-      <div class="app__content">
+      <div class="pt-[calc(48px+8px)] h-[calc(100vh-8px)] overflow-hidden w-full inline-block px-2">
         <router-view />
       </div>
     </div>
   </Suspense>
   <Toaster />
 </template>
-
-<style scoped>
-.app__background {
-  @apply relative w-full h-screen bg-cover bg-center;
-}
-
-.app__content {
-  @apply pt-[calc(48px+8px)] h-[calc(100vh-8px)] overflow-hidden w-full inline-block px-2;
-}
-</style>

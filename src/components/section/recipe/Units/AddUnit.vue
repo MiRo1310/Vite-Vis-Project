@@ -33,29 +33,11 @@ const newUnit = ref("");
 </script>
 
 <template>
-  <div class="add-unit">
-    <div class="add-unit__input-wrapper">
-      <InputShadcn type="text" @keydown.enter="addUnit" placeholder="Gib eine Einheit ein" class="add-unit__input" v-model:model-value="newUnit" />
-      <p v-if="unitExists" class="add-unit__warning">Die Einheit existiert schon</p>
+  <div class="flex gap-2">
+    <div class="flex flex-col">
+      <InputShadcn type="text" @keydown.enter="addUnit" placeholder="Gib eine Einheit ein" class="w-60" v-model:model-value="newUnit" />
+      <p v-if="unitExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Einheit existiert schon</p>
     </div>
     <Button variant="outline" size="icon" icon="add" @click="addUnit" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.add-unit {
-  @apply flex gap-2;
-
-  &__input {
-    @apply w-60;
-  }
-
-  &__input-wrapper {
-    @apply flex flex-col;
-  }
-
-  &__warning {
-    @apply text-[0.8rem] font-medium text-destructive mt-2;
-  }
-}
-</style>

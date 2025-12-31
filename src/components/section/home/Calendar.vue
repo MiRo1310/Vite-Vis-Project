@@ -49,17 +49,9 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>
-    <CardContent class="calendar__content">
+    <CardContent class="flex flex-col gap-2">
       <CalendarDay :data="today" title="Heute" />
       <CalendarDay :data="tomorrow" title="Morgen" />
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.calendar {
-  &__content {
-    @apply flex flex-col gap-2;
-  }
-}
-</style>

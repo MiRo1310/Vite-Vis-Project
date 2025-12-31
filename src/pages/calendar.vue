@@ -31,13 +31,17 @@ const open = ref(false);
 
     <template #default>
       <PageContent>
-        <div class="calendar__grid">
-          <div v-for="i in 7" :key="i" class="calendar__weekdays">
+        <div class="grid grid-cols-7 mt-2 -mx-1">
+          <div v-for="i in 7" :key="i" class="h-6 text-xs m-[2px] flex items-center p-2 shadow-lg text-cardCustom-text">
             {{ weekdays[i - 1] }}
           </div>
           <CalendarAdjustDayOrder :month :year />
 
-          <div v-for="i in daysInMonth" :key="i" :class="['calendar__day', { 'calendar__day--active': isToday(i) }]">
+          <div
+            v-for="i in daysInMonth"
+            :key="i"
+            :class="['col-span-1 pt-0 max-h-[7rem] m-[2px] flex p-2 shadow-lg bg-white', { 'border-cardCustom-border border-2': isToday(i) }]"
+          >
             <CalenderMonthDay :day-index="i - 1" :month :year :is-today="isToday(i)" />
           </div>
         </div>
@@ -46,23 +50,3 @@ const open = ref(false);
   </Page>
   <DialogSettings v-model:open="open" />
 </template>
-
-<style scoped lang="scss">
-.calendar {
-  &__grid {
-    @apply grid grid-cols-7 mt-2 -mx-1;
-  }
-
-  &__weekdays {
-    @apply h-6 text-xs m-[2px] flex items-center p-2 shadow-lg text-cardCustom-text;
-  }
-
-  &__day {
-    @apply col-span-1 pt-0 max-h-[7rem] m-[2px] flex p-2 shadow-lg bg-white;
-
-    &--active {
-      @apply border-cardCustom-border border-2;
-    }
-  }
-}
-</style>

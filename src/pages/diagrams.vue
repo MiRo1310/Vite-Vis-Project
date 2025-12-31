@@ -29,7 +29,7 @@ const clickHandler = (direction: number) => {
     <template #default>
       <PageContent>
         <div class="flex flex-col h-full">
-          <div class="diagrams">
+          <div class="flex gap-2 items-center mb-2">
             <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
             <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
           </div>
@@ -41,9 +41,3 @@ const clickHandler = (direction: number) => {
     </template>
   </Page>
 </template>
-
-<style scoped lang="scss">
-.diagrams {
-  @apply flex gap-2 items-center mb-2;
-}
-</style>

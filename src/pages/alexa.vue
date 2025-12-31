@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -164,7 +163,7 @@ const columns: DatatableColumns<AlexaDotAction>[] = [
 
 <template>
   <Page title="Alexa Dots">
-    <div class="default_card">
+    <div class="bg-cardCustom-info p-2 shadow-lg">
       <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
     </div>
   </Page>

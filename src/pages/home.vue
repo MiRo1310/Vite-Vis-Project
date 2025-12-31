@@ -12,65 +12,17 @@ import Devices from "@/components/section/home/Devices.vue";
 
 <template>
   <IndexButton />
-  <div class="home">
-    <div class="home__first">
+  <div class="grid grid-cols-11 gap-1 mt-1 h-[calc(100%-74px)]">
+    <div class="col-span-2 flex flex-col">
       <Time>
-        <Caller class="home__caller" />
+        <Caller class="flex-1" />
       </Time>
     </div>
-    <Info class="home__info" />
-    <Trash class="home__trash" />
-    <Pv class="home__pv" />
-    <Devices class="home__air-conditioner" />
-    <!--    <Pool class="home__pool" />-->
-    <!--    <LawnMover class="home__lawn-mover" />-->
-    <Calendar class="home__calendar" />
-    <Timer class="home__timer" />
+    <Info class="col-span-2" />
+    <Trash class="col-span-3" />
+    <Pv class="col-span-2" />
+    <Devices class="col-span-2" />
+    <Calendar class="col-span-6" />
+    <Timer class="col-span-11" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.home {
-  @apply grid grid-cols-11 gap-1 mt-1 h-[calc(100%-74px)]; // Header is 74px high
-
-  &__first {
-    @apply col-span-2 flex flex-col;
-  }
-
-  &__caller {
-    @apply flex-1;
-  }
-
-  &__info {
-    @apply col-span-2;
-  }
-
-  &__trash {
-    @apply col-span-3;
-  }
-
-  &__pv {
-    @apply col-span-2;
-  }
-
-  &__air-conditioner {
-    @apply col-span-2;
-  }
-
-  &__pool {
-    @apply col-span-3;
-  }
-
-  &__lawn-mover {
-    @apply col-span-2;
-  }
-
-  &__calendar {
-    @apply col-span-6;
-  }
-
-  &__timer {
-    @apply col-span-11;
-  }
-}
-</style>

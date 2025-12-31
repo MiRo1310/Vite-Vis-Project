@@ -7,16 +7,19 @@ const { heatingControl } = useIobrokerStore();
   <div class="w-full bg-color__default p-1 my-1 mr-1 container__table" v-html="heatingControl.visRoomStates?.val" />
 </template>
 
-<style lang="postcss">
+<style lang="scss">
 .container__table table {
-  @apply w-full text-sm;
+  width: 100%;
+  font-size: 0.8rem;
 }
 
 .mdui-green-bg {
-  @apply bg-green-600 text-white;
+  color: white;
+  background-color: #16a34a;
 }
 
 .mdui-red-bg {
-  @apply bg-red-600 text-white;
+  color: white;
+  background-color: #dc2626;
 }
 </style>

@@ -10,19 +10,16 @@ const handleClick = (i: number) => {
 </script>
 
 <template>
-  <div class="shutter-controls">
-    <Button v-for="i in 6" :key="i" class="shutter-controls__button" variant="outline" :size="'sm'" @click="handleClick(i)">
+  <div class="flex gap-1">
+    <Button
+      v-for="i in 6"
+      :key="i"
+      class="w-10 h-6 text-xs bg-accent-foreground/10 rounded-none"
+      variant="outline"
+      :size="'sm'"
+      @click="handleClick(i)"
+    >
       {{ 100 - (i - 1) * 20 }}%
     </Button>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.shutter-controls {
-  @apply flex gap-1;
-
-  &__button {
-    @apply w-10 h-6 text-xs bg-accent-foreground/10 rounded-none;
-  }
-}
-</style>

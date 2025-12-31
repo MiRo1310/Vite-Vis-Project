@@ -6,8 +6,8 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="navigation">
-    <div class="navigation__links">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-2">
       <RouterLink :to="{ name: 'finance' }">
         <Button as="div" :variant="route.name === 'finance' ? 'default' : 'outline'">Hauptseite</Button>
       </RouterLink>
@@ -21,13 +21,3 @@ const route = useRoute();
     <slot />
   </div>
 </template>
-
-<style scoped lang="scss">
-.navigation {
-  @apply flex justify-between items-center;
-
-  &__links {
-    @apply flex items-center gap-2;
-  }
-}
-</style>

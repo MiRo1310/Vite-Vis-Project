@@ -47,20 +47,10 @@ const addAddressHandler = () => {
 </script>
 
 <template>
-  <div class="add-address">
-    <Input type="text" placeholder="Name" v-model:model-value="name" class="add-address__input" />
-    <Input type="text" placeholder="Straße" v-model:model-value="street" class="add-address__input" />
-    <Input type="text" placeholder="City" v-model:model-value="city" class="add-address__input" />
+  <div class="my-4 flex gap-4 flex-wrap">
+    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-[30rem]" />
+    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-[30rem]" />
+    <Input type="text" placeholder="City" v-model:model-value="city" class="w-[30rem]" />
     <Button icon="add" variant="outline" size="icon" @click="addAddressHandler" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.add-address {
-  @apply my-4 flex gap-4 flex-wrap;
-
-  &__input {
-    @apply w-[30rem];
-  }
-}
-</style>

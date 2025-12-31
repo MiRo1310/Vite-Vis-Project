@@ -9,9 +9,3 @@ const modelValue = defineModel<string>("modelValue");
 <template>
   <FormInput v-model:model-value="modelValue" :label :name :disabled="true" />
 </template>
-
-<style lang="postcss">
-.product__group input {
-  @apply bg-white;
-}
-</style>

@@ -4,12 +4,12 @@ import { InfoType } from "@/types/types.ts";
 defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[] }>();
 </script>
 <template>
-  <div class="card__shadow mt-2">
+  <div class="bg-cardCustom-info p-2 shadow-lg mt-2">
     <div
       v-for="(info, index) in infos"
       :key="index"
       :class="{
-        info__row: true,
+        'flex justify-between items-center text-cardCustom-text/70 font-bold -mx-1 px-1': true,
         [`${info.class}`]: info.class,
         'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0 && info.bounce,
         'cursor-pointer': info?.callback,
@@ -25,13 +25,3 @@ defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[]
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.info__row {
-  @apply flex justify-between items-center text-cardCustom-text/70 font-bold -mx-1 px-1;
-}
-
-.card__shadow {
-  @apply bg-cardCustom-info p-2 shadow-lg;
-}
-</style>

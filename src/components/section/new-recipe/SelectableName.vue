@@ -58,9 +58,3 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
     @update:selected="updateName($event)"
   />
 </template>
-
-<style>
-.product__group input {
-  @apply bg-white;
-}
-</style>

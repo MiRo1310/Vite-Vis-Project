@@ -10,14 +10,17 @@ defineProps<{ info: Infos; getParsedLogs: ParsedLogs }>();
 const router = useRouter();
 </script>
 <template>
-  <div class="card__shadow">
-    <div class="info__row" @click="router.push({ path: '/iobroker-info' })">
+  <div class="bg-cardCustom-info p-2 shadow-lg">
+    <div
+      class="flex justify-between items-center text-cardCustom-text/70 font-bold space-y-1 cursor-pointer"
+      @click="router.push({ path: '/iobroker-info' })"
+    >
       <p>Updates</p>
       <p>
         <Badge :value="info.updatesNumber?.val" />
       </p>
     </div>
-    <div class="info__row" @click="router.push({ path: '/logs' })">
+    <div class="flex justify-between items-center text-cardCustom-text/70 font-bold space-y-1 cursor-pointer" @click="router.push({ path: '/logs' })">
       <p>Logs</p>
       <p class="flex">
         <Badges :get-parsed-logs="getParsedLogs" />
@@ -25,13 +28,3 @@ const router = useRouter();
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.info__row {
-  @apply flex justify-between items-center text-cardCustom-text/70 font-bold space-y-1 cursor-pointer;
-}
-
-.card__shadow {
-  @apply bg-cardCustom-info p-2 shadow-lg;
-}
-</style>

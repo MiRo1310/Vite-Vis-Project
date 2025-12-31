@@ -77,42 +77,28 @@ const total = computed(() => {
 </script>
 
 <template>
-  <div class="listing">
+  <div class="m-4">
     <div class="print-none">
-      <h1 class="listing__title">Auflistung</h1>
+      <h1 class="text-2xl font-bold mb-4">Auflistung</h1>
       <Navigation>
         <Button @click="printPage" variant="default">Drucken</Button>
       </Navigation>
       <AddListing />
       <ListingFilter @update:active-year="updateYear" />
     </div>
-    <p class="linting__header">Außerordentliche Aufwendungen - Krankheitskosten {{ year }}</p>
+    <p class="font-semibold mb-4 mt-4">Außerordentliche Aufwendungen - Krankheitskosten {{ year }}</p>
     <TableBasic :columns="getColumns(columns)" :data="result?.travelCost ?? []" />
     <div v-if="total" class="text-muted-foreground flex justify-end mt-4">Gesamtbetrag: {{ total }} €</div>
   </div>
 </template>
 
-<style scoped lang="scss">
-.listing {
-  @apply m-4;
-
-  &__title {
-    @apply text-2xl font-bold mb-4;
-  }
-
-  &__header {
-    @apply font-semibold mb-4 mt-4;
-  }
-}
-</style>
-
 <style lang="scss">
 @media print {
   .print-none {
-    @apply hidden;
+    display: none;
   }
   table th:last-child {
-    @apply hidden;
+    display: none;
   }
 }
 </style>

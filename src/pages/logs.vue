@@ -52,7 +52,7 @@ function reset() {
 
 <template>
   <Page title="Logs">
-    <div class="flex-between flex-wrap gap-2 relative">
+    <div class="flex justify-between items-center flex-wrap gap-2 relative">
       <p class="text-cardCustom-text">{{ firstLetterToUpperCase(selected) }} Logs</p>
       <div>
         <Button variant="outlineDark" size="sm" class="mr-5" @click="reset"> Zurücksetzen </Button>
@@ -71,7 +71,7 @@ function reset() {
       </div>
     </div>
 
-    <div class="content">
+    <div class="bg-cardCustom-info p-2 shadow-lg overflow-auto mt-2 text-cardCustom-text/70">
       <div v-if="!getParsedLogs[selected]?.length">Es sind keine Logs vorhanden</div>
       <div v-for="(log, index) in getParsedLogs[selected] as Log[]" :key="index" class="text-2xs">
         <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
@@ -81,9 +81,3 @@ function reset() {
     </div>
   </Page>
 </template>
-
-<style scoped lang="scss">
-.content {
-  @apply bg-cardCustom-info p-2 shadow-lg overflow-auto mt-2 text-cardCustom-text/70;
-}
-</style>

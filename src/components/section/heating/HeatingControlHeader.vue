@@ -44,14 +44,14 @@ function updateSelected(val: string | undefined, id: string | undefined) {
 </script>
 
 <template>
-  <div class="header__container">
+  <div class="bg-backgroundColor absolute top-0 left-0 w-full h-12">
     <div class="mt-1 mx-1 p-1 bg-backgroundHeader flex flex-wrap items-center space-x-4">
-      <p class="header__label">Aktives Profil</p>
+      <p class="text-sm font-semibold text-black">Aktives Profil</p>
       <Select
         v-model:selected="selected"
         placeholder="Wähle ein Profil aus"
         :items="items"
-        class="w-[100px] header__select"
+        class="w-[100px] bg-white"
         @update:selected="updateSelected($event, heatingControl.profile?.id)"
       />
       <p class="header__label">Raum:</p>
@@ -59,23 +59,9 @@ function updateSelected(val: string | undefined, id: string | undefined) {
         v-model:selected="room"
         placeholder="Wähle einen Raum"
         :items="roomItems"
-        class="w-[150px] header__select"
+        class="w-[150px] bg-white"
         @update:selected="updateRoomInHeatingControl(($event as RoomItems) ?? null)"
       />
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.header__container {
-  @apply bg-backgroundColor absolute top-0 left-0  w-full h-12;
-}
-
-.header__label {
-  @apply text-sm font-semibold text-black;
-}
-
-.header__select {
-  @apply bg-white;
-}
-</style>

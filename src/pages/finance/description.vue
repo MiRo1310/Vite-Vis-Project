@@ -39,8 +39,8 @@ const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
 </script>
 
 <template>
-  <div class="description">
-    <h1 class="description__title">Beschreibungen</h1>
+  <div class="m-4">
+    <h1 class="text-2xl font-bold mb-4">Beschreibungen</h1>
     <Navigation />
     <AddDescription />
     <Card class="p-4">
@@ -48,13 +48,3 @@ const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
     </Card>
   </div>
 </template>
-
-<style scoped lang="scss">
-.description {
-  @apply m-4;
-
-  &__title {
-    @apply text-2xl font-bold mb-4;
-  }
-}
-</style>

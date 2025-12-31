@@ -12,12 +12,12 @@ export interface InfoTypes {
 defineProps<{ infos: InfoTypes[] }>();
 </script>
 <template>
-  <div class="card__shadow mt-2">
+  <div class="bg-cardCustom-info p-2 shadow-lg mt-2">
     <div
       v-for="(info, index) in infos"
       :key="index"
       :class="[
-        'info__row',
+        'flex justify-between items-center text-cardCustom-text/70 font-bold space-y-[2px] text-xs -mx-1 px-1',
         {
           [info?.class]: info.class,
         },
@@ -30,13 +30,3 @@ defineProps<{ infos: InfoTypes[] }>();
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.info__row {
-  @apply flex justify-between items-center text-cardCustom-text/70 font-bold space-y-[2px] text-xs -mx-1 px-1;
-}
-
-.card__shadow {
-  @apply bg-cardCustom-info p-2 shadow-lg;
-}
-</style>

@@ -266,26 +266,30 @@ const addDescription = () => {
 </script>
 
 <template>
-  <div class="new-recipe">
+  <div class="px-2 rounded-lg max-h-full overflow-auto">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
-      <div class="new-recipe__form-inner">
-        <div class="new-recipe__left-col">
+      <div class="flex w-full h-full pl-2">
+        <div class="flex-col flex-1 mr-2 h-full">
           <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
           <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
-          <div v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)" :key="index" class="new-recipe__form-textarea">
+          <div
+            v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)"
+            :key="index"
+            class="bg-accent rounded-lg p-2 mt-2"
+          >
             <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
             <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
           </div>
-          <div class="new-recipe__left-col-button">
+          <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
-        <div class="new-recipe__right-col">
+        <div class="w-[30rem]">
           <div class="w-full flex justify-stretch gap-2 mb-2">
             <Button class="w-full" type="submit" variant="outline">Speichern</Button>
             <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
           </div>
-          <div v-for="index in countedProductGroups" :key="index" class="new-recipe__product-groups">
+          <div v-for="index in countedProductGroups" :key="index" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
@@ -309,41 +313,3 @@ const addDescription = () => {
     </Form>
   </div>
 </template>
-
-<style scoped lang="scss">
-.new-recipe {
-  @apply px-2 rounded-lg max-h-full overflow-auto;
-
-  &__form-inner {
-    @apply flex w-full h-full pl-2;
-  }
-
-  &__left-col {
-    @apply flex-col flex-1 mr-2 h-full;
-  }
-
-  &__form-textarea {
-    @apply bg-accent rounded-lg p-2 mt-2;
-  }
-
-  &__left-col-button {
-    @apply flex justify-end mt-2 gap-2;
-  }
-
-  &__right-col {
-    @apply w-[30rem];
-  }
-
-  &__product-groups {
-    @apply mb-2;
-  }
-}
-
-.form input {
-  @apply bg-white;
-}
-
-.form label span {
-  @apply text-[0.7rem];
-}
-</style>
