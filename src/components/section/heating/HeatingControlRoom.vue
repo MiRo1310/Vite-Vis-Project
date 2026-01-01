@@ -39,6 +39,6 @@ function resetStatus() {
 
     <Button class="w-full my-2" @click="resetStatus"> Aktueller Status: {{ heatingControl.roomState?.val }} </Button>
 
-    <div class="text-xs border-2 p-1 overflow-auto h-[21rem]" v-html="heatingControl.statusRoom?.val" />
+    <div class="text-xs border-2 p-1 overflow-auto h-84" v-html="heatingControl.statusRoom?.val" />
   </div>
 </template>

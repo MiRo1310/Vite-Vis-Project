@@ -82,7 +82,7 @@ const open = ref(false);
     <p class="block">
       <span
         :class="[
-          'ml-1 pb-[1px] px-1 rounded-md inline-block text-xs',
+          'ml-1 pb-px px-1 rounded-md inline-block text-xs',
           {
             'bg-blue-300 text-xs': isToday,
           },
@@ -94,7 +94,7 @@ const open = ref(false);
     <TextSeparator />
     <div class="overflow-auto max-h-[calc(6rem-22px)]">
       <div v-for="(event, index) in getDayValue" :key="index" class="text-xs">
-        <p :class="[[getColor(event)], 'mb-[2px] px-2 mt-[1px] block truncate']">
+        <p :class="[[getColor(event)], 'mb-[2px] px-2 mt-px block truncate']">
           {{ event.event }}
         </p>
       </div>

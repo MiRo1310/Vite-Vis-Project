@@ -148,7 +148,7 @@ const infos = computed(() => [
         }"
       >
         <p>{{ info.title }}</p>
-        <p class="flex justify-end ml-4 text-right w-[6.5rem]">
+        <p class="flex justify-end ml-4 text-right w-26">
           <BoolIcon v-if="info.type === 'bool'" :value="info.value || false" class="mr-5" />
           <span v-else>
             <span>{{ info.value }}</span>

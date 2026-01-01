@@ -48,9 +48,9 @@ const addAddressHandler = () => {
 
 <template>
   <div class="my-4 flex gap-4 flex-wrap">
-    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-[30rem]" />
-    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-[30rem]" />
-    <Input type="text" placeholder="City" v-model:model-value="city" class="w-[30rem]" />
+    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-120" />
+    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-120" />
+    <Input type="text" placeholder="City" v-model:model-value="city" class="w-120" />
     <Button icon="add" variant="outline" size="icon" @click="addAddressHandler" />
   </div>
 </template>

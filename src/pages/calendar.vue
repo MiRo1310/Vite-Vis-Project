@@ -40,7 +40,7 @@ const open = ref(false);
           <div
             v-for="i in daysInMonth"
             :key="i"
-            :class="['col-span-1 pt-0 max-h-[7rem] m-[2px] flex p-2 shadow-lg bg-white', { 'border-cardCustom-border border-2': isToday(i) }]"
+            :class="['col-span-1 pt-0 max-h-28 m-[2px] flex p-2 shadow-lg bg-white', { 'border-cardCustom-border border-2': isToday(i) }]"
           >
             <CalenderMonthDay :day-index="i - 1" :month :year :is-today="isToday(i)" />
           </div>

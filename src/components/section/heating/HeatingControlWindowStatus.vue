@@ -17,7 +17,7 @@ onMounted(() => {
 <template>
   <div class="mx-1 p-1 bg-color__default flex-1">
     <p>Fensterstatus</p>
-    <div class="h-[14rem] overflow-auto">
+    <div class="h-56 overflow-auto">
       <span v-if="heatingControl.openWindowCount?.val" :class="{ bg__animation: heatingControl.openWindowCount?.val }">
         {{ heatingControl.openWindowCount?.val }} Fenster offen
       </span>

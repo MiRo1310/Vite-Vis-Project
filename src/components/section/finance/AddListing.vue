@@ -60,7 +60,7 @@ const addListingHandler = () => {
     <Input type="date" placeholder="Datum" v-model:model-value="date" />
     <DescriptionOptions v-model:model-value="description" :as-select="true" />
     <Textarea placeholder="Beschreibung" v-model:model-value="description" />
-    <Input type="number" placeholder="Betrag" v-model:model-value="price" class="w-[30rem]" />
+    <Input type="number" placeholder="Betrag" v-model:model-value="price" class="w-120" />
     <AddressOptions v-model:address-id="addressId" v-model:model-value="selectedName" />
     <Button icon="add" variant="outline" size="icon" @click="addListingHandler" />
   </div>

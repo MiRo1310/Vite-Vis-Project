@@ -70,7 +70,7 @@ watch(page, (newVal) => {
 <template>
   <table class="w-full">
     <thead>
-      <tr class="first:bg-[--neutral-90]">
+      <tr class="first:bg-(--neutral-90)">
         <th v-for="(head, index) in header" :key="index" :class="`${head.align} text-xl px-4 py-2`">
           {{ head.title }}
         </th>
@@ -89,7 +89,7 @@ watch(page, (newVal) => {
       </tr>
     </tbody>
   </table>
-  <div class="text-right pr-4 py-2 bg-[--neutral-90]">
+  <div class="text-right pr-4 py-2 bg-(--neutral-90)">
     <span class="table--page">{{ pageItems }}</span>
     <span> von </span>
     <span>{{ totalItems }}</span>

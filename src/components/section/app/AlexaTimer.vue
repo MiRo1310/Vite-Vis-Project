@@ -35,7 +35,7 @@ const timerLabel = computed(() => (i: number): string => {
 <template>
   <Card
     v-if="appStore.showTimer"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent w-3/5 max-w-[60rem]"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent w-3/5 max-w-240"
   >
     <Button class="absolute w-4 h-4 p-0 top-4 right-4 z-20" @click="closeWindow">
       <X />

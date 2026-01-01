@@ -32,7 +32,7 @@ const information = computed((): { name: string; value?: string | number | null;
 <template>
   <CollapsibleShared v-model:open="isOpen" :class="{ 'h-0': !isOpen }">
     <template #trigger>
-      <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="z-10 absolute left-[1px] top-[1px]" />
+      <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="z-10 absolute left-px top-px" />
     </template>
     <template #content>
       <p class="my-2 ml-1">Produkt Eigenschaften</p>

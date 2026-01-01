@@ -13,11 +13,11 @@ const props = withDefaults(
 );
 
 const style = {
-  default: "rounded-xl border bg-card text-card-foreground shadow",
+  default: "rounded-xl border bg-card text-card-foreground shadow-sm",
   blue: "bg-[#0f148e]",
   blueDark: "bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/70",
   info: "bg-cardCustom-info/70 text-cardCustom-foreground border border-cardCustom-border/70",
-  light: "border bg-gray-200 text-card-foreground shadow",
+  light: "border bg-gray-200 text-card-foreground shadow-sm",
 };
 
 const variants = {

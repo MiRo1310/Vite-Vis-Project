@@ -9,13 +9,13 @@ const route = useRoute();
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-2">
       <RouterLink :to="{ name: 'finance' }">
-        <Button as="div" :variant="route.name === 'finance' ? 'default' : 'outline'">Hauptseite</Button>
+        <Button as="div" :variant="route.name === 'finance' ? 'default' : 'outline-solid'">Hauptseite</Button>
       </RouterLink>
       <RouterLink :to="{ name: 'addresses' }">
-        <Button as="div" :variant="route.name === 'addresses' ? 'default' : 'outline'">Adressen</Button>
+        <Button as="div" :variant="route.name === 'addresses' ? 'default' : 'outline-solid'">Adressen</Button>
       </RouterLink>
       <RouterLink :to="{ name: 'descriptions' }">
-        <Button as="div" :variant="route.name === 'descriptions' ? 'default' : 'outline'">Beschreibung</Button>
+        <Button as="div" :variant="route.name === 'descriptions' ? 'default' : 'outline-solid'">Beschreibung</Button>
       </RouterLink>
     </div>
     <slot />

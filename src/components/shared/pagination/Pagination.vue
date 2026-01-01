@@ -80,7 +80,7 @@ const updateHandler = (page: number) => {
         >
           <Button
             class="w-10 h-10 p-0"
-            :variant="item.value === activePage ? 'secondary' : 'outline'"
+            :variant="item.value === activePage ? 'secondary' : 'outline-solid'"
           >
             {{ item.value }}
           </Button>

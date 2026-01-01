@@ -26,14 +26,14 @@ export type ButtonVariants = typeof variants;
 
 const variants = {
   variant: {
-    default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-    destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-    warning: "bg-warning text-warning-foreground shadow-sm hover:bg-warning/90",
-    outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+    default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+    destructive: "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
+    warning: "bg-warning text-warning-foreground shadow-xs hover:bg-warning/90",
+    outline: "border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
     outlineDark:
-      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-sm hover:bg-cardCustom-foreground/50 hover:text-accent-foreground",
-    save: "border border-input bg-color__default shadow-sm hover:border-black hover:text-accent-foreground",
-    secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-xs hover:bg-cardCustom-foreground/50 hover:text-accent-foreground",
+    save: "border border-input bg-color__default shadow-xs hover:border-black hover:text-accent-foreground",
+    secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
     ghost: "hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",
   },
@@ -81,7 +81,7 @@ onMounted(() => {
     :as="as"
     :as-child="asChild"
     :class="[
-      'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+      'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
       getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']),
       props.class,
     ]"

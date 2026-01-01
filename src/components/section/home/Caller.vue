@@ -17,7 +17,7 @@ const lastCallDuration = computed(() => {
 </script>
 
 <template>
-  <div class="text-base mt-2 min-h-20 text-cardCustom-text bg-cardCustom-info p-2 shadow">
+  <div class="text-base mt-2 min-h-20 text-cardCustom-text bg-cardCustom-info p-2 shadow-sm">
     <p>Letzter Anruf von:</p>
     <TextSeparator />
     <div class="text-2xs text-cardCustom-text/70">

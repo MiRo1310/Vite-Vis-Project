@@ -57,6 +57,6 @@ const variants = {
       @update:model-value="debounceFn"
       border="none"
     />
-    <span v-if="unit" class="text-accent-foreground/50 font-bold text-xs absolute right-5 top-[1px]">{{ unit }}</span>
+    <span v-if="unit" class="text-accent-foreground/50 font-bold text-xs absolute right-5 top-px">{{ unit }}</span>
   </div>
 </template>

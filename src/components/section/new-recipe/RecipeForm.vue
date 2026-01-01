@@ -284,7 +284,7 @@ const addDescription = () => {
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
-        <div class="w-[30rem]">
+        <div class="w-120">
           <div class="w-full flex justify-stretch gap-2 mb-2">
             <Button class="w-full" type="submit" variant="outline">Speichern</Button>
             <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>

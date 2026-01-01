@@ -85,7 +85,7 @@ function deleteRow(index: number) {
       <Button size="icon" @click="addNewRow">
         <Plus />
       </Button>
-      <div class="h-[20rem] overflow-auto">
+      <div class="h-80 overflow-auto">
         <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-[2px]">
           <InputComponent
             :input-value="item.name"

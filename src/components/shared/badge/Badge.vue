@@ -17,7 +17,7 @@ const props = withDefaults(
 <template>
   <span
     :class="[
-      'border-[1px] border-accent-foreground/50 rounded-full text-center align-middle leading-4 flex justify-center items-center',
+      'border border-accent-foreground/50 rounded-full text-center align-middle leading-4 flex justify-center items-center',
       $props.class,
       getVariantsClasses(badgeVariants, props),
     ]"
