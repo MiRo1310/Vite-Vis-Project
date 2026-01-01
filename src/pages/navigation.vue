@@ -19,6 +19,7 @@ import { NavigationType } from "@/types/types.ts";
 import { batteryList } from "@/composables/battery.ts";
 import { computed } from "vue";
 import { getOpenWindows } from "@/composables/windows.ts";
+import DarkMode from "@/components/layout/DarkMode.vue";
 
 const navigations = computed((): NavigationType[] => [
   { icon: Home, text: "Home", link: "/" },
@@ -94,7 +95,8 @@ const navigations = computed((): NavigationType[] => [
 </script>
 
 <template>
-  <div class="navigation grid grid-cols-3 gap-1">
+  <DarkMode />
+  <div class="navigation grid grid-cols-3 gap-2 mt-2">
     <template v-for="navigation in navigations" :key="navigation.link">
       <NavigationButton :navigation />
     </template>

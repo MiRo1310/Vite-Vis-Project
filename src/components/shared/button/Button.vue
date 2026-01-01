@@ -26,15 +26,12 @@ export type ButtonVariants = typeof variants;
 
 const variants = {
   variant: {
-    default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
-    destructive: "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
-    warning: "bg-warning text-warning-foreground shadow-xs hover:bg-warning/90",
-    outline: "border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
-    outlineDark:
-      "border border-input bg-cardCustom-info text-cardCustom-text/70 shadow-xs hover:bg-cardCustom-foreground/50 hover:text-accent-foreground",
-    save: "border border-input bg-color__default shadow-xs hover:border-black hover:text-accent-foreground",
-    secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-    ghost: "hover:bg-accent hover:text-accent-foreground",
+    default: "bg-primary text-primary-foreground hover:bg-primary/90",
+    destructive:
+      "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+    outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+    secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+    ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
     link: "text-primary underline-offset-4 hover:underline",
   },
   size: {
@@ -44,6 +41,8 @@ const variants = {
     icon: "h-9 w-9",
     iconRow: "h-5 w-5 p-[2px]",
     square: "h-28 w-28 rounded-md",
+    full: "w-full px-4 py-2",
+    iconLg: "h-14 w-14",
   },
   action: {
     default: "",

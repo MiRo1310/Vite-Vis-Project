@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import IndexButton from "@/components/layout/IndexButton.vue";
+import PageHeader from "@/components/layout/PageHeader.vue";
 
 defineProps<{ title: string }>();
 </script>
 
 <template>
-  <IndexButton />
+  <PageHeader>
   <div
     class="border border-cardCustom-border/40 mt-1 bg-cardCustom text-card-foreground shadow-sm overflow-hidden h-[calc(100%-74px)] p-2 flex flex-col"
   >
