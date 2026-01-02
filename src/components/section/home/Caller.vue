@@ -5,6 +5,7 @@ import { phoneStates } from "@/subscribeIds/phone.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 useDynamicSubscribe(phoneStates);
@@ -17,7 +18,7 @@ const lastCallDuration = computed(() => {
 </script>
 
 <template>
-  <div class="text-base mt-2 min-h-20 text-cardCustom-text bg-cardCustom-info p-2 shadow-sm">
+  <CardSubcard>
     <p>Letzter Anruf von:</p>
     <TextSeparator />
     <div class="text-2xs text-cardCustom-text/70">
@@ -26,5 +27,5 @@ const lastCallDuration = computed(() => {
       <p>{{ phone.lastCallTimestamp?.val }}</p>
       <p>{{ lastCallDuration }}</p>
     </div>
-  </div>
+  </CardSubcard>
 </template>

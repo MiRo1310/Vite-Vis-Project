@@ -6,6 +6,7 @@ import { computed, HTMLAttributes } from "vue";
 import { useAppStore } from "@/store/appStore.ts";
 import { Timer, Timers } from "@/types/types.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 defineProps<{ class: HTMLAttributes["class"] }>();
 
@@ -20,14 +21,14 @@ const nameByIndex = computed(() => (index: number) => {
 </script>
 
 <template>
-  <Card :class="$props.class" styling="blueDark" @click="useAppStore().toggleTimerVisibility()">
+  <Card :class="$props.class" styling="small" color="primary" @click="useAppStore().toggleTimerVisibility()">
     <CardHeader>
       <CardTitle>
         <p>Alexa Timer</p>
       </CardTitle>
     </CardHeader>
-    <CardContent class="flex flex-wrap min-w-[400px] gap-2">
-      <div v-for="i in 4" :key="i" class="min-w-[180px] flex-1 max-w-[50%] flex px-2 bg-cardCustom-info p-2 shadow-lg">
+    <CardContent class="flex flex-wrap min-w-100 gap-2">
+      <CardSubcard v-for="i in 4" :key="i" class="min-w-45 flex-1 max-w-[50%] flex">
         <div class="w-full">
           <h1 class="text-cardCustom-text text-xl flex justify-between">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
@@ -49,7 +50,7 @@ const nameByIndex = computed(() => (index: number) => {
             </div>
           </div>
         </div>
-      </div>
+      </CardSubcard>
     </CardContent>
   </Card>
 </template>

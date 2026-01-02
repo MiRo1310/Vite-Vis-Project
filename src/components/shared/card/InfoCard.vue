@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { HTMLAttributes } from "vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import ValueWithUnit from "@/components/shared/ValueWithUnit.vue";
 
 export interface InfoTypes {
   title: string;
@@ -9,24 +11,13 @@ export interface InfoTypes {
   class?: HTMLAttributes["class"];
 }
 
-defineProps<{ infos: InfoTypes[] }>();
+defineProps<{ class: HTMLAttributes["class"]; infos: InfoTypes[] }>();
 </script>
 <template>
-  <div class="bg-cardCustom-info p-2 shadow-lg mt-2">
-    <div
-      v-for="(info, index) in infos"
-      :key="index"
-      :class="[
-        'flex justify-between items-center text-cardCustom-text/70 font-bold space-y-[2px] text-xs -mx-1 px-1',
-        {
-          [info?.class]: info.class,
-        },
-      ]"
-    >
+  <CardSubcard :class="$props.class">
+    <div v-for="(info, index) in infos" :key="index" :class="['flex justify-between items-center text-xs', info.class]">
       <p>{{ info.title }}</p>
-      <p :class="['ml-3 mr-4', info?.valueClass]">
-        {{ info.value }} <span class="w-1 inline-block">{{ info.unit }} </span>
-      </p>
+      <ValueWithUnit :value="info.value" :unit="info.unit" :class="info.valueClass" />
     </div>
-  </div>
+  </CardSubcard>
 </template>

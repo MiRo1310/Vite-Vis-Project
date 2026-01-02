@@ -10,6 +10,7 @@ import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
 import Page from "@/components/shared/page/Page.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 const { getParsedLogs } = useIobrokerStore();
 const { logReset } = storeToRefs(useIobrokerStore());
@@ -55,12 +56,12 @@ function reset() {
     <div class="flex justify-between items-center flex-wrap gap-2 relative">
       <p class="text-cardCustom-text">{{ firstLetterToUpperCase(selected) }} Logs</p>
       <div>
-        <Button variant="outlineDark" size="sm" class="mr-5" @click="reset"> Zurücksetzen </Button>
-        <Button variant="outlineDark" size="sm" class="w-24 relative ml-2" @click="selected = 'info'">
+        <Button variant="outline" size="sm" class="mr-5" @click="reset"> Zurücksetzen </Button>
+        <Button variant="outline" size="sm" class="w-24 relative ml-2" @click="selected = 'info'">
           Info
           <Badge :value="getParsedLogs.info?.length ?? 0" class="absolute right-[0.1rem] top-[0.1rem]" />
         </Button>
-        <Button variant="warning" size="sm" class="w-24 relative ml-2" @click="selected = 'warn'">
+        <Button variant="outline" size="sm" class="w-24 relative ml-2" @click="selected = 'warn'">
           Warning
           <Badge :value="getParsedLogs.warn?.length ?? 0" class="absolute right-[0.1rem] top-[0.1rem]" />
         </Button>
@@ -71,13 +72,13 @@ function reset() {
       </div>
     </div>
 
-    <div class="bg-cardCustom-info p-2 shadow-lg overflow-auto mt-2 text-cardCustom-text/70">
+    <CardSubcard class="overflow-auto mt-2">
       <div v-if="!getParsedLogs[selected]?.length">Es sind keine Logs vorhanden</div>
       <div v-for="(log, index) in getParsedLogs[selected] as Log[]" :key="index" class="text-2xs">
         <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
         <span class="inline-block w-24">{{ log.from }}</span>
         {{ log.message }}
       </div>
-    </div>
+    </CardSubcard>
   </Page>
 </template>

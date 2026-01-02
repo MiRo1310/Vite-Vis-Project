@@ -8,12 +8,14 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
     styling?: keyof typeof style;
     variant?: keyof (typeof variants)["variant"];
+    color?: keyof (typeof variants)["color"];
   }>(),
-  { styling: "default", class: "", variant: "default" },
+  { styling: "default", class: "", variant: "default", color: "default" },
 );
 
 const style = {
-  default: "rounded-xl border bg-card text-card-foreground shadow-sm",
+  default: "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+  small: "bg-card text-card-foreground flex flex-col gap-4 rounded-xl border p-4 shadow-sm",
   blue: "bg-[#0f148e]",
   blueDark: "bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/70",
   info: "bg-cardCustom-info/70 text-cardCustom-foreground border border-cardCustom-border/70",
@@ -25,6 +27,10 @@ const variants = {
   variant: {
     default: "",
     contentScrollable: "overflow-hidden h-full",
+  },
+  color: {
+    default: "",
+    primary: "border-card-border text-card-title",
   },
 };
 </script>

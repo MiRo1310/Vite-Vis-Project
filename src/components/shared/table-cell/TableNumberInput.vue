@@ -38,8 +38,8 @@ watchEffect(() => {
 
 <template>
   <InputShadcn
-    class="border-none shadow-none w-full"
     :model-value="value"
+    border="none"
     type="number"
     :step="props.customValue.step"
     :min="props.customValue.min"

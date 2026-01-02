@@ -16,15 +16,15 @@ const infos = computed((): InfoTypes[][] => [
       title: (pv?.feedIn?.val || 0) < 0 ? "Bezug" : "Einspeisung",
       value: (pv?.feedIn?.val || 0) < 0 ? (pv?.feedIn?.val || 0) * -1 : pv?.feedIn?.val,
       unit: "W",
-      valueClass: (pv?.feedIn?.val || 0) < 0 ? "text-red-500" : "text-green-400",
+      valueClass: (pv?.feedIn?.val || 0) < 0 ? "text-destructive" : "text-successas",
     },
     { title: "Aktives Laden", value: pv?.activeCharging?.val, unit: "W" },
     { title: "Ladezustand", value: pv?.batteryCharging?.val, unit: "%" },
   ],
   [
-    { title: "Berechneter Gewinn", value: pv?.profit?.val, unit: "€" },
+    { title: "Verkauft", value: pv?.profit?.val, unit: "€" },
     {
-      title: "Genutzter Strom",
+      title: "Genutzt",
       value: ((pv?.savedMoney?.val || 0) - (pv?.profit?.val || 0)).toFixed(2),
       unit: "€",
     },
@@ -34,14 +34,12 @@ const infos = computed((): InfoTypes[][] => [
 </script>
 
 <template>
-  <Card styling="blueDark" class="flex-row">
+  <Card styling="small" color="primary">
     <CardHeader>
       <CardTitle> PV</CardTitle>
     </CardHeader>
     <CardContent>
-      <div class="-mt-2">
-        <InfoCard v-for="(info, i) in infos" :key="i" :infos="info" />
-      </div>
+      <InfoCard v-for="(info, i) in infos" :key="i" :infos="info" class="mt-2 first:mt-0" />
     </CardContent>
   </Card>
 </template>

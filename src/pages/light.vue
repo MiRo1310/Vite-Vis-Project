@@ -4,6 +4,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { lightStates } from "@/subscribeIds/light.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import Page from "@/components/shared/page/Page.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 useDynamicSubscribe(lightStates);
 
@@ -12,7 +13,7 @@ const { lights, lightsAdditive } = useIobrokerStore();
 
 <template>
   <Page title="Licht">
-    <div class="p-2 flex flex-wrap gap-1">
+    <CardSubcard class="p-2 flex flex-wrap gap-1">
       <LightCard
         v-for="(light, i) in Object.keys(lights)"
         :key="i"
@@ -20,6 +21,6 @@ const { lights, lightsAdditive } = useIobrokerStore();
         :value-additive="lightsAdditive[light as keyof typeof lightsAdditive]?.val"
         :name="light"
       />
-    </div>
+    </CardSubcard>
   </Page>
 </template>

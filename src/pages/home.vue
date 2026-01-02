@@ -12,7 +12,7 @@ import PageHeader from "@/components/layout/PageHeader.vue";
 
 <template>
   <PageHeader />
-  <div class="grid grid-cols-11 gap-1 mt-1 h-[calc(100%-74px)]">
+  <div class="grid grid-cols-11 gap-2 mt-2 h-[calc(100%-74px)]">
     <div class="col-span-2 flex flex-col">
       <Time>
         <Caller class="flex-1" />

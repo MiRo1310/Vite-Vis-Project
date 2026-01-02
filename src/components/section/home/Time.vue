@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { useTime } from "@/composables/time.ts";
-import { Card, CardContent } from "@/components/shared/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 
 const { date, time } = useTime();
 </script>
 <template>
-  <Card styling="blueDark" class="flex-1">
-    <CardContent class="text-left font-bold pt-1 text-xs">
-      <p>{{ date }}</p>
-      <span>
-        {{ time }}
-      </span>
+  <Card class="flex-1" styling="small" color="primary">
+    <CardHeader>
+      <CardTitle>
+        <p>{{ date }}</p>
+        <span class="text-xs">
+          {{ time }}
+        </span>
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
       <slot />
     </CardContent>
   </Card>

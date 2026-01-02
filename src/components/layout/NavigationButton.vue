@@ -13,7 +13,7 @@ defineProps<{ navigation: NavigationType }>();
         <span>{{ navigation.text }}</span>
         <span class="relative">
           <Badge v-if="navigation.badge?.value" :value="navigation.badge.value" :color="navigation.badge.color" class="absolute right-0" />
-          <Component :is="navigation.icon" class="w-10 h-10" />
+          <Component :is="navigation.icon" class="w-10 h-10 mr-2" />
         </span>
       </div>
     </Button>

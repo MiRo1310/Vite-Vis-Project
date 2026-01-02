@@ -10,8 +10,8 @@ useDynamicSubscribe(infoStates);
 
 <template>
   <Page title="IoBroker">
-    <div class="flex flex-wrap gap-1">
-      <IobrokerUpdates class="mt-1 ml-1" />
+    <div class="flex flex-wrap gap-2">
+      <IobrokerUpdates />
       <IobrokerNews />
     </div>
   </Page>

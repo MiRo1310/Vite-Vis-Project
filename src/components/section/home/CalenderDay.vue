@@ -2,6 +2,7 @@
 import { CalendarDayType } from "@/types/types.ts";
 import { getLocalTimeString } from "@/lib/date.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 defineProps<{ data: CalendarDayType[]; title: string }>();
 
@@ -11,7 +12,7 @@ function isNotAllDayEvent(event: CalendarDayType) {
 </script>
 
 <template>
-  <div class="bg-cardCustom-info p-2 shadow-lg">
+  <CardSubcard>
     <p class="text-cardCustom-text text-xs font-bold">{{ title }}</p>
     <TextSeparator />
     <p v-for="(event, index) in data" :key="index" class="text-cardCustom-text/70 text-xs font-bold flex justify-between">
@@ -20,5 +21,5 @@ function isNotAllDayEvent(event: CalendarDayType) {
         >{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span
       >
     </p>
-  </div>
+  </CardSubcard>
 </template>

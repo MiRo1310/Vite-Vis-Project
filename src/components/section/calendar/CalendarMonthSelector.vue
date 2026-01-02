@@ -68,15 +68,15 @@ const getDaysInMonth = (): number => {
 </script>
 <template>
   <div class="flex justify-between items-center">
-    <div class="flex items-center space-x-2">
-      <Button size="icon" @click="changeMonth(-1)" variant="outlineDark">
+    <div class="flex items-center gap-2">
+      <Button size="icon" @click="changeMonth(-1)" variant="outline">
         <ChevronLeft />
       </Button>
       <span class="w-36 text-center text-cardCustom-foreground">{{ getCurrentMonthName }}</span>
-      <Button size="icon" @click="changeMonth(1)" variant="outlineDark">
+      <Button size="icon" @click="changeMonth(1)" variant="outline">
         <ChevronRight />
       </Button>
-      <Button @click="resetMonth" variant="outlineDark"> Heute</Button>
+      <Button @click="resetMonth" variant="outline"> Heute</Button>
     </div>
     <slot />
   </div>

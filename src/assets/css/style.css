@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-@tailwind base;
 @tailwind utilities;
 
 @config "../../../tailwind.config.js";
@@ -108,6 +107,14 @@
     --color-cardCustom-info: var(--cardCustom-info);
     --color-cardCustom-button: var(--cardCustom-button);
     --color-cardCustom-text: var(--cardCustom-text);
+    
+    --color-cardSubcard: var(--input);
+    --color-cardSubcard-foreground: var(--cardSubcard-foreground);
+    
+    --color-card-border: var(--cardBorder);
+    --color-card-title: var(--cardTitle);
+    
+    --color-success: var(--success);
 }
 
 :root {
@@ -118,9 +125,16 @@
     --cardCustom:  #0a0a0a;
     --cardCustom-foreground: #527e9a;
     --cardCustom-border: #527e9a; /*Use /40*/
-    --cardCustom-info: #151515;
+    --cardCustom-info: #131313;
     --cardCustom-button: #191919;
     --cardCustom-text: #ddd /*Header and text is /70 */;
+    
+    --cardSubcard:#131313;
+    --cardSubcard-foreground: #ddd;
+    --cardBorder: #527e9a; /*Use /40*/
+    --cardTitle:  #527e9a;
+    
+    --success: oklch(0.538 0.211 136.016);
     
     --radius: 0.625rem;
     --background: oklch(1 0 0);
