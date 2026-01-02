@@ -36,7 +36,7 @@ const updateYear = (year: number) => {
     <Button
       v-for="i in countYearButtons"
       :key="i"
-      :variant="activeYear === startYear + i - 1 ? 'default' : 'outline-solid'"
+      :variant="activeYear === startYear + i - 1 ? 'default' : 'outline'"
       @click="updateYear(startYear + i - 1)"
     >
       {{ startYear + i - 1 }}

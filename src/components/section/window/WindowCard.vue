@@ -29,7 +29,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 <template>
   <Card class="min-w-[32.5%] flex-1 relative first:mt-1 first:ml-1" :class="`${props.class}`" styling="info">
     <CardContent class="px-2 pb-2">
-      <Button variant="outlineDark" @click="emits('clickBack')">Zurück</Button>
+      <Button variant="outline" @click="emits('clickBack')">Zurück</Button>
       <div class="flex items-center">
         <div v-for="(w, i) in window.windows" class="flex" :key="i">
           <WindowImage :is-open="w.isOpenStatus" />

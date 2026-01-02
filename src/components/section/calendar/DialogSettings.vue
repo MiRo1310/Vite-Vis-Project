@@ -98,8 +98,8 @@ function deleteRow(index: number) {
       </div>
     </template>
     <template #footer>
-      <Button variant="outline" @click="reset"> Schließen</Button>
-      <Button variant="save" @click="updateToIobroker"> Speichern</Button>
+      <Button variant="default" @click="reset"> Schließen</Button>
+      <Button variant="outline" @click="updateToIobroker"> Speichern</Button>
     </template>
   </Dialog>
 </template>

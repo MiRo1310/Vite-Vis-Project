@@ -1,11 +1,10 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, IobrokerState, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
 import { Calendar } from "@/subscribeIds/calendar.ts";
 import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
-import { Log, LogReset } from "@/pages/logs.vue";
 import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
