@@ -27,10 +27,12 @@ const navigations = computed((): NavigationType[] => [
     icon: Blinds,
     text: "Räume",
     link: "/fenster",
-    badge: {
-      value: getOpenWindows.value,
-      color: "yellow",
-    },
+    badges: [
+      {
+        value: getOpenWindows.value,
+        color: "yellow",
+      },
+    ],
   },
   { icon: ScrollText, text: "Listen", link: "/listen" },
 
@@ -43,13 +45,20 @@ const navigations = computed((): NavigationType[] => [
     icon: BatteryFull,
     text: "Batterie",
     link: "/battery",
-    badge: {
-      value: batteryList.value.reduce(
-        (prev, curr) => prev + (curr.lowBat || (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000) ? 1 : 0),
-        0,
-      ),
-      color: "red",
-    },
+    badges: [
+      {
+        value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0),
+        color: "orange",
+      },
+      {
+        value: batteryList.value.reduce(
+          (prev, curr) => prev + (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
+          0,
+        ),
+        color: "red",
+        class: "animate-pulse",
+      },
+    ],
   },
   {
     icon: LampCeiling,

@@ -257,20 +257,21 @@ const clickRoom = (roomName: string) => {
 
 <template>
   <Page v-if="!selectedRoom" title="Räume">
-    <template #title>
+    <div class="flex justify-between items-center mb-4">
       <p v-show="getOpenWindows === 1" class="text-muted-foreground">
         Ein Fenster oder eine Tür ist
         <span :class="windowGlobal.fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
       </p>
 
-      <p v-show="getOpenWindows !== 1" class="text-muted-foreground">
-        {{ getOpenWindows ? getOpenWindows : "Alle" }}
+      <p v-show="getOpenWindows !== 1" class="text-foreground">
         Fenster / Türen sind
-        <span :class="{ 'text-red-500 animate-pulse': windowGlobal.fensterOffen }">{{ windowGlobal.fensterOffen ? "offen" : "geschlossen" }}</span>
+        <span :class="{ 'text-red-500 animate-pulse': windowGlobal.fensterOffen?.val }">{{
+          windowGlobal.fensterOffen?.val ? "offen" : "geschlossen"
+        }}</span>
       </p>
 
       <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
-    </template>
+    </div>
     <div class="grid grid-cols-3 gap-1">
       <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
     </div>

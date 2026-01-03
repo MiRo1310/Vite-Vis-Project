@@ -41,8 +41,9 @@ const variants = {
     icon: "h-9 w-9",
     iconRow: "h-5 w-5 p-[2px]",
     square: "h-28 w-28 rounded-md",
-    full: "w-full px-4 py-2",
-    iconLg: "h-14 w-14",
+    full: "w-full h-9 px-4 py-2",
+    fullXxl: "w-full px-4 py-2",
+    iconLg: "h-15 w-15",
   },
   action: {
     default: "",

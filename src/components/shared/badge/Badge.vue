@@ -18,8 +18,8 @@ const props = withDefaults(
   <span
     :class="[
       'border border-accent-foreground/50 rounded-full text-center align-middle leading-4 flex justify-center items-center',
-      $props.class,
       getVariantsClasses(badgeVariants, props),
+      $props.class,
     ]"
   >
     {{ value }} {{ unit }}

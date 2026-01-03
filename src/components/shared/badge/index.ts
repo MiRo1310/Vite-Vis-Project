@@ -15,7 +15,7 @@ export const badgeVariants = {
     blue: "border-blue-500 bg-blue-200 text-blue-900",
     gray: "border-gray-500 bg-gray-200 text-gray-900",
     green: "border-success bg-success/40 text-white",
-    red: "border-destructive bg-destructive/50 text-white",
+    red: "border-destructive bg-destructive/70 text-black",
     yellow: "border-yellow-500 bg-yellow-200 text-yellow-900",
     purple: "border-purple-500 bg-purple-200 text-purple-900",
     pink: "border-pink-500 bg-pink-200 text-pink-900",

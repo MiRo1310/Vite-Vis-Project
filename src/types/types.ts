@@ -336,10 +336,11 @@ export interface NavigationType {
   text: string;
   link: string;
   externalLink?: boolean;
-  badge?: {
+  badges?: {
     value: number;
     color: Badge["color"];
-  };
+    class?: HTMLAttributes["class"];
+  }[];
 }
 
 export interface Log {
