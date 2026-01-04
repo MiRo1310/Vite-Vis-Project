@@ -6,23 +6,20 @@ import HeatingTemperature from "@/components/section/heating/HeatingTemperature.
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
 import Page from "@/components/shared/page/Page.vue";
 import HeatingControl from "@/components/section/heating/HeatingControl.vue";
-import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 </script>
 
 <template>
   <Page title="Heizung">
     <template #default>
-      <CardSubcard>
-        <div class="flex flex-wrap gap-1">
-          <HeatingStatus />
-          <HeatingTemperature />
-          <HeatingWarning />
-          <HeatingPump />
-          <HeatingConfig />
-          <HeatingControl />
-          <iframe src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1" width="100%" height="400" />
-        </div>
-      </CardSubcard>
+      <div class="flex flex-wrap gap-2">
+        <HeatingStatus />
+        <HeatingTemperature />
+        <HeatingWarning />
+        <HeatingPump />
+        <HeatingConfig />
+        <HeatingControl />
+        <iframe src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1" width="100%" height="400" />
+      </div>
     </template>
   </Page>
 </template>

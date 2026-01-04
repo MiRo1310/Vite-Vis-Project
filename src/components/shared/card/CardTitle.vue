@@ -4,7 +4,7 @@ import { HTMLAttributes } from "vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 interface StyleProps {
-  styling?: keyof (typeof variantsCardTitle)["style"];
+  style?: keyof (typeof variantsCardTitle)["style"];
 }
 
 const props = withDefaults(
@@ -13,13 +13,13 @@ const props = withDefaults(
       class?: HTMLAttributes["class"];
     } & StyleProps
   >(),
-  { styling: "default", class: "" },
+  { style: "default", class: "" },
 );
 
 const variantsCardTitle = {
   style: {
     shadcn: "text-accent-foreground/50 text-lg font-bold",
-    default: "text-color__default text-lg font-bold bg-accent px-2 shadow-lg",
+    default: "text-accent-foreground/50 text-lg font-bold ",
   },
 };
 </script>

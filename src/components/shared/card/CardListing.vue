@@ -10,11 +10,11 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-  <Card styling="blueDark" :class="[props.class, 'inline-block']">
+  <Card :class="[props.class, 'p-2']">
     <CardHeader>
-      <CardTitle>{{ title }}</CardTitle>
+      <CardTitle styling="default">{{ title }}</CardTitle>
     </CardHeader>
-    <CardContent class="bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
+    <CardContent>
       <div v-for="(entry, i) in entries" :key="i" class="flex justify-between items-center text-cardCustom-text/70 font-bold text-xs">
         <div>
           <p>{{ entry.title }}</p>
