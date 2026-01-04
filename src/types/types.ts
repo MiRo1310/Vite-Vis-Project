@@ -45,6 +45,8 @@ export interface Timers {
 export interface RoomType {
   name: string;
   shutter: boolean;
+  batteryHeating?: StoreValue<boolean>[];
+  bellStatus?: StoreValue<boolean>;
   windows: {
     name: string;
     idShutterPosition?: string;
@@ -55,6 +57,7 @@ export interface RoomType {
     shutterAutoUp?: StoreValue<boolean>;
     shutterAutoUpTime?: StoreValue<number>;
     shutterAutoDownDelay?: StoreValue<number>;
+    windowSensorReachable: StoreValue<boolean>;
   }[];
 }
 

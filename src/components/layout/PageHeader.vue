@@ -6,10 +6,10 @@ import NavigationButton from "@/components/layout/NavigationButton.vue";
 
 <template>
   <div class="flex gap-2 mb-2">
+    <slot />
     <div class="flex-1 w-80">
       <NavigationButton :navigation="homeNavigation" small />
     </div>
     <DarkMode small />
   </div>
-  <slot />
 </template>

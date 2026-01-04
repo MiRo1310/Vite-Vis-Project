@@ -22,23 +22,29 @@ const emits = defineEmits(["clickRoom"]);
     @click="emits('clickRoom', room.name)"
   >
     <div class="flex justify-between items-center">
-      <span class="text-lg text-muted-foreground">{{ room.name }}</span
-      ><span>20°C</span>
+      <span class="text-lg text-muted-foreground">{{ room.name }}</span>
+      <div v-if="room.bellStatus" class="text-xs flex items-center gap-2">
+        <span>Klingel</span>
+        <Circle :color="room.bellStatus.val ? 'green' : 'red'" />
+      </div>
+      <div class="text-xs flex items-center gap-2">
+        <span>Battriestatus</span>
+        <Circle v-for="(h, index) in room.batteryHeating" :color="h?.val ? 'yellow' : 'green'" :key="index" />
+      </div>
+      20°C
     </div>
     <TextSeparator />
     <CardContent>
       <div class="flex items-start gap-4">
         <div class="flex gap-2">
-          <div v-for="(window, i) in room.windows" :key="i">
-            <p class="text-xs text-foreground">{{ window.name }}</p>
-            <WindowImage :is-open="window.isOpenStatus" :class="window.isOpenStatus ? 'bg-red-200' : 'bg-green-200'" />
+          <div v-for="(w, i) in room.windows" :key="i">
+            <p class="text-xs text-foreground"><Circle :color="w.windowSensorReachable?.val ? 'green' : 'red'" /> {{ w.name }}</p>
+
+            <WindowImage :is-open="w.isOpenStatus" :class="w.isOpenStatus ? 'bg-red-200' : 'bg-green-200'" />
             <div v-if="room.shutter">
-              <img class="w-8 h-12 img--white" :src="getShutterImageByPosition(window.shutterPosition ?? null)" alt="FensterRollade" />
+              <img class="w-8 h-12 img--white" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
             </div>
           </div>
-        </div>
-        <div>
-          <p class="text-xs flex items-center gap-2">Fenster Sensor <Circle color="green" /></p>
         </div>
       </div>
     </CardContent>

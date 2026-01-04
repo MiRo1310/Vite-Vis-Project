@@ -53,7 +53,7 @@ export interface BatteriesType {
   "Xioami Fensterkontakt Wohnzimmer links": XiaomiWindowSensor;
   "Xioami Fensterkontakt Wohnzimmer klein": XiaomiWindowSensor;
   "Xioami Fensterkontakt Badezimmer": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Gästezimmer": XiaomiWindowSensor;
+  xioami_fensterkontakt_gaestezimmer: XiaomiWindowSensor;
   "Xioami Fensterkontakt Schlafen Tür": XiaomiWindowSensor;
   "Xioami Fensterkontakt Schlafen Fenster": XiaomiWindowSensor;
   "Xioami Fensterkontakt Kinderzimmer": XiaomiWindowSensor;
@@ -167,7 +167,7 @@ const zigbeeWindowDevices: { name: keyof BatteriesType; id: string }[] = [
   },
   { name: "Xioami Fensterkontakt Badezimmer", id: "zigbee.0.00158d00047d0d78" },
   {
-    name: "Xioami Fensterkontakt Gästezimmer",
+    name: "xioami_fensterkontakt_gaestezimmer",
     id: "zigbee.0.00158d0004772546",
   },
   {

@@ -1,9 +1,6 @@
 import { computed } from "vue";
-import { batteryIds, HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
+import { HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-
-useDynamicSubscribe([batteryIds]);
 
 export interface BatteryTableData {
   name: string;

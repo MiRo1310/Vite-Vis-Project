@@ -29,7 +29,6 @@ const updateHandler = (value: number | string | boolean, id: string) => {
 <template>
   <Card class="min-w-[32.5%] flex-1 relative first:mt-1 first:ml-1" :class="`${props.class}`" styling="info">
     <CardContent class="px-2 pb-2">
-      <Button variant="outline" @click="emits('clickBack')">Zurück</Button>
       <div class="flex items-center">
         <div v-for="(w, i) in window.windows" class="flex" :key="i">
           <WindowImage :is-open="w.isOpenStatus" />
@@ -38,7 +37,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       </div>
       <div v-if="window.shutter">
         <div v-for="(w, i2) in window.windows" class="flex items-center" :key="i2">
-          <img class="w-8 h-12" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
+          <img class="w-8 h-12 img--white" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="w.shutterPosition ?? 'n/a'" />
 
@@ -68,3 +67,12 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     </CardContent>
   </Card>
 </template>
+
+<style scoped lang="scss">
+.dark {
+  .img--white {
+    filter: brightness(0) invert(1);
+    -webkit-filter: brightness(0) invert(1);
+  }
+}
+</style>
