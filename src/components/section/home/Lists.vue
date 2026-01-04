@@ -1,25 +1,38 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/subscribeIds/info.ts";
-import { useRouter } from "vue-router";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import NavActionsShoppingCard from "@/components/section/home/NavActionsShopping.vue";
+import NavActionsMichaelsTodos from "@/components/section/home/NavActionsMichaelsTodos.vue";
+import { UserRoundSearch } from "lucide-vue-next";
+import ButtonCard from "@/components/shared/ButtonCard.vue";
+import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { computed } from "vue";
+import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { Button } from "@/components/shared/button";
 
-const router = useRouter();
+const iobrokerStore = useIobrokerStore();
 
-useDynamicSubscribe(infoStates);
+const handleHolidayClick = () => {
+  adminConnection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobrokerStore.holiday.urlaubAktiv);
+};
 
-const ioBrokerStore = useIobrokerStore();
+const getHoliday = computed(() => {
+  if (iobrokerStore.holiday.urlaubAktiv) return "Urlaub";
+  return "Kein Urlaub";
+});
 </script>
+
 <template>
   <Card color="primary" styling="small">
     <CardHeader>
       <CardTitle>Listen</CardTitle>
     </CardHeader>
     <CardContent class="text-xs">
-      <CardSubcard class="mt-2"> </CardSubcard>
+      <CardSubcard class="mt-2">
+        <NavActionsShoppingCard />
+        <NavActionsMichaelsTodos />
+        <Button class="text-accent-foreground/70" class-card=" ml-1" @click="handleHolidayClick"><UserRoundSearch /> {{ getHoliday }}</Button>
+      </CardSubcard>
     </CardContent>
   </Card>
 </template>

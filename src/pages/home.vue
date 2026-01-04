@@ -9,10 +9,22 @@ import Timer from "@/components/section/home/Timer.vue";
 import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
 import Lists from "@/components/section/home/Lists.vue";
+import { Hourglass } from "lucide-vue-next";
+
+import { useAppStore } from "@/store/appStore.ts";
+import { Button } from "@/components/shared/button";
+import Shutter from "@/components/section/home/Shutter.vue";
+import Empty from "@/components/section/home/Empty.vue";
+const appStore = useAppStore();
 </script>
 
 <template>
-  <PageHeader />
+  <PageHeader>
+    <template #after>
+      <Button size="icon" class="text-accent-foreground/70" class-card="ml-1" @click="appStore.toggleTimerVisibility"><Hourglass /></Button>
+      <Shutter />
+    </template>
+  </PageHeader>
   <div class="grid grid-cols-11 gap-2 mt-2 h-[calc(100%-44px)]">
     <div class="col-span-2 flex flex-col">
       <Time>
@@ -25,6 +37,7 @@ import Lists from "@/components/section/home/Lists.vue";
     <Devices class="col-span-2" />
     <Calendar class="col-span-6" />
     <Lists class="col-span-2" />
+    <Empty class="col-span-3" />
     <Timer class="col-span-11" />
   </div>
 </template>

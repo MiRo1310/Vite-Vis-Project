@@ -11,12 +11,12 @@ const { airConditioners, pool, landroid } = storeToRefs(useIobrokerStore());
 const status = computed(() => {
   return [
     {
-      name: "Schlafen Klima",
+      name: "Klima Schlafen",
       online: airConditioners?.value?.schlafenOnline?.val ?? false,
       power: airConditioners?.value?.schlafenPowerStatus?.val ?? false,
     },
     {
-      name: "Kinderzimmer K.",
+      name: "Klima Kind",
       online: airConditioners?.value?.childOnline?.val ?? false,
       power: airConditioners?.value?.childPowerStatus?.val ?? false,
     },

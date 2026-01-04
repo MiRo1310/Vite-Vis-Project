@@ -10,6 +10,9 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
 
 <template>
   <Page title="Heizung">
+    <template #header>
+      <HeatingControl />
+    </template>
     <template #default>
       <div class="flex flex-wrap gap-2">
         <HeatingStatus />
@@ -17,9 +20,13 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
         <HeatingWarning />
         <HeatingPump />
         <HeatingConfig />
-        <HeatingControl />
-        <iframe src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1" width="100%" height="400" />
       </div>
+      <iframe
+        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
+        width="100%"
+        height="400"
+        class="mt-2 rounded-md"
+      />
     </template>
   </Page>
 </template>

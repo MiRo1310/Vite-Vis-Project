@@ -50,7 +50,7 @@ const getColor = (name: string) => {
     <CardContent class="grid grid-cols-2 gap-2">
       <CardSubcard v-for="(event, index) in trashEvents" :key="index">
         <div class="flex justify-between">
-          <p class="text-cardCustom-text font-bold">
+          <p class="text-cardCustom-text font-bold text-xs">
             {{ event.name }}
           </p>
           <Trash2 :class="['inline-block ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]" />
