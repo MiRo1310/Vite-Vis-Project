@@ -30,19 +30,19 @@ const nameByIndex = computed(() => (index: number) => {
     <CardContent class="flex flex-wrap min-w-100 gap-2">
       <CardSubcard v-for="i in 4" :key="i" class="min-w-45 flex-1 max-w-[50%] flex">
         <div class="w-full">
-          <h1 class="text-cardCustom-text text-xl flex justify-between">
+          <h1 class="text-xl flex justify-between">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
             <span> {{ (timer[i as keyof Timers] as Timer).timeString?.val }}</span>
           </h1>
           <TextSeparator />
-          <div class="w-full text-xs">
-            <div class="text-cardCustom-text/70 font-bold flex justify-between">
+          <div class="w-full">
+            <div class="flex justify-between">
               <p>Gerät:</p>
               <p class="flex-1 text-right">
                 {{ (timer[i as keyof Timers] as Timer).device?.val }}
               </p>
             </div>
-            <div class="text-cardCustom-text/70 font-bold flex justify-between">
+            <div class="flex justify-between">
               <p>Länge:</p>
               <p class="flex-1 text-right">
                 {{ (timer[i as keyof Timers] as Timer).initialTimer?.val }}

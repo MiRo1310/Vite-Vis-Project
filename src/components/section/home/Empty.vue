@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import Holiday from "@/components/section/home/Holiday.vue";
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
     </CardHeader>
     <CardContent class="text-xs">
       <!--      <CardSubcard class="mt-2"> </CardSubcard>-->
+      <Holiday />
     </CardContent>
   </Card>
 </template>

@@ -5,7 +5,7 @@ defineProps<{ class?: HTMLAttributes["class"] }>();
 </script>
 
 <template>
-  <div :class="['text-foreground/50 bg-cardSubcard/30 p-2 shadow-sm rounded-md text-xs font-bold', $props.class]">
+  <div :class="['text-foreground/70 text-base', $props.class]">
     <slot />
   </div>
 </template>

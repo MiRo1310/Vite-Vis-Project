@@ -38,7 +38,7 @@ const states: IdToSubscribe<HeatingTimeSlot>[] = [
 useDynamicSubscribe(states);
 
 const activeClass = computed(() => (i: number) => {
-  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "bg-cardCustom-info/70 text-cardCustom-foreground";
+  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100 text-black" : "";
 });
 </script>
 
@@ -49,29 +49,25 @@ const activeClass = computed(() => (i: number) => {
     </p>
     <div class="flex justify-center gap-1">
       <div>
-        <p class="text-center mb-1 text-xs">ab</p>
-        <div class="flex flex-col gap-1.25 h-full mt-3">
-          <InputIobroker
-            v-for="i in 5"
-            :key="i"
-            type="time"
-            :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
-          />
+        <div class="text-center mb-1 text-xs flex text-cardCustom-text/70 justify-between px-6">
+          <p>ab</p>
+          <p>°C</p>
+        </div>
+        <div v-for="i in 5" :key="i" class="flex justify-center items-center gap-2">
+          <div class="flex flex-col gap-1.25 bg-background/50">
+            <InputIobroker type="time" :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>" />
+          </div>
+          <div class="flex flex-col gap-1.25 bg-background/50">
+            <Select
+              :items="tempArray()"
+              :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
+              :class="[activeClass(i)]"
+              @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
+            />
+          </div>
         </div>
       </div>
-      <div>
-        <p class="text-center mb-1 text-cardCustom-text/70">°C</p>
-        <div class="flex flex-col gap-1.25 h-full">
-          <Select
-            v-for="i in 5"
-            :key="i"
-            :items="tempArray()"
-            :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
-            :class="['h-6', activeClass(i)]"
-            @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
-          />
-        </div>
-      </div>
+      <div></div>
     </div>
   </div>
 </template>

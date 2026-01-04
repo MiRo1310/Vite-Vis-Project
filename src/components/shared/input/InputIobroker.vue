@@ -49,7 +49,7 @@ const variants = {
 </script>
 
 <template>
-  <div :class="['relative flex items-center border-b-color__default border-b-2 h-6 pb-1', { 'border-red-500': !state?.ack }]">
+  <div :class="['relative flex items-center h-6', { 'border-red-500': !state?.ack }]">
     <InputShadcn
       :type
       :class="[getVariantsClasses(variants, props)]"

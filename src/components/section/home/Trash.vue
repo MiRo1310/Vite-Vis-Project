@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { Days, days } from "@/defaultValues/defaultValues.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";
 
 const iobrokerStore = useIobrokerStore();
 const { trash } = storeToRefs(iobrokerStore);
@@ -50,17 +51,19 @@ const getColor = (name: string) => {
     <CardContent class="grid grid-cols-2 gap-2">
       <CardSubcard v-for="(event, index) in trashEvents" :key="index">
         <div class="flex justify-between">
-          <p class="text-cardCustom-text font-bold text-xs">
+          <CardSubcardHeader class="font-bold text-xs">
             {{ event.name }}
-          </p>
+          </CardSubcardHeader>
           <Trash2 :class="['inline-block ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]" />
         </div>
         <TextSeparator />
-        <p class="text-xs text-cardCustom-text/70 font-bold">in {{ event.daysLeft }} Tagen</p>
-        <p class="text-xs text-cardCustom-text/70 font-bold">am {{ transformDate(event.nextDate) }}</p>
-        <p class="text-xs text-cardCustom-text/70 font-bold">
-          {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
-        </p>
+        <div>
+          <p>in {{ event.daysLeft }} Tagen</p>
+          <p>am {{ transformDate(event.nextDate) }}</p>
+          <p>
+            {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
+          </p>
+        </div>
       </CardSubcard>
     </CardContent>
   </Card>

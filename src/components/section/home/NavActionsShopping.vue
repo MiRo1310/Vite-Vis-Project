@@ -19,8 +19,9 @@ const createShoppinglist = computed((): any[] => {
   <Sheet :show-footer="false">
     <template #trigger>
       <Button class="relative">
-        <ShoppingBag />
-        <Badge color="green" :value="createShoppinglist?.length" />
+        Einkaufsliste
+        <ShoppingBag class="ml-2" />
+        <Badge color="green" class="ml-2" :value="createShoppinglist?.length" />
       </Button>
     </template>
     <template #title>

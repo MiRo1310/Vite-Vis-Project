@@ -13,9 +13,9 @@ function isNotAllDayEvent(event: CalendarDayType) {
 
 <template>
   <CardSubcard>
-    <p class="text-cardCustom-text text-xs font-bold">{{ title }}</p>
+    <p class="text-xs font-bold">{{ title }}</p>
     <TextSeparator />
-    <p v-for="(event, index) in data" :key="index" class="text-cardCustom-text/70 text-xs font-bold flex justify-between">
+    <p v-for="(event, index) in data" :key="index" class="text-xs font-bold flex justify-between">
       <span>{{ event._object.summary }}</span>
       <span v-if="isNotAllDayEvent(event)" class="ml-2"
         >{{ getLocalTimeString(event._object.start) }} bis {{ getLocalTimeString(event._object.end) }}</span

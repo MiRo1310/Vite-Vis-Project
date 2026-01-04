@@ -12,7 +12,7 @@ defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[]
       v-for="(info, index) in infos"
       :key="index"
       :class="[
-        'flex justify-between items-center text-cardCustom-text/70 font-bold -mx-1 px-1',
+        'flex justify-between items-center text-foreground/50 -mx-1 px-1',
         info.class,
         {
           'cursor-pointer': info?.callback,

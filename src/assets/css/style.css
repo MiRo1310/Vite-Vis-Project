@@ -108,8 +108,8 @@
     --color-cardCustom-button: var(--cardCustom-button);
     --color-cardCustom-text: var(--cardCustom-text);
     
-    --color-cardSubcard: var(--input);
-    --color-cardSubcard-foreground: var(--cardSubcard-foreground);
+    --color-cardSubcard: #bbb;
+    --color-cardSubcard-foreground: var(--accent-foreground);
     
     --color-card-border: var(--cardBorder);
     --color-card-title: var(--cardTitle);
@@ -218,6 +218,9 @@
     --code-number: oklch(0.72 0 0);
     --selection: oklch(0.922 0 0);
     --selection-foreground: oklch(0.205 0 0);
+
+    --color-cardSubcard: var(--input);
+    --color-cardSubcard-foreground: var(--cardSubcard-foreground);
 }
 
 @layer base {
@@ -268,7 +271,7 @@
 }
 
 @utility section-soft {
-    @apply from-background to-surface/40 dark:bg-background 3xl:fixed:bg-none bg-gradient-to-b;
+    @apply from-background to-surface/40 dark:bg-background 3xl:fixed:bg-none bg-linear-to-b;
 }
 
 @utility theme-container {
@@ -280,7 +283,7 @@
 }
 
 @utility container {
-    @apply 3xl:max-w-screen-2xl mx-auto max-w-[1400px] px-4 lg:px-8;
+    @apply 3xl:max-w-screen-2xl mx-auto max-w-350 px-4 lg:px-8;
 }
 
 @utility no-scrollbar {
@@ -315,19 +318,19 @@
 @layer components {
     .steps {
         &:first-child {
-            @apply !mt-0;
+            @apply mt-0!;
         }
 
         &:first-child > h3:first-child {
-            @apply !mt-0;
+            @apply mt-0!;
         }
 
         > h3 {
-            @apply !mt-16;
+            @apply mt-16!;
         }
 
         > h3 + p {
-            @apply !mt-2;
+            @apply mt-2!;
         }
     }
 

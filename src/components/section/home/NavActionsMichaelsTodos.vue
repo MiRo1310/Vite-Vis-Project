@@ -19,14 +19,15 @@ const totoList = computed(() => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <Button class="text-accent-foreground/70"
-        ><Pickaxe />
+      <Button>
+        Michis Todos
+        <Pickaxe class="ml-2" />
 
-        <Badge :value="totoList?.length" />
+        <Badge class="ml-2" :value="totoList?.length" />
       </Button>
     </template>
     <template #title>
-      <p>Michaels Todos</p>
+      <p>Michis Todos</p>
     </template>
     <template #content>
       <NavActionsShoppingList :list="totoList" />

@@ -14,7 +14,7 @@ const props = withDefaults(
 );
 
 const style = {
-  default: "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
+  default: "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border p-6 shadow-sm",
   small: "bg-card text-card-foreground flex flex-col gap-4 rounded-xl border p-4 shadow-sm",
   blue: "bg-[#0f148e]",
   blueDark: "bg-cardCustom text-cardCustom-foreground border border-cardCustom-border/70",

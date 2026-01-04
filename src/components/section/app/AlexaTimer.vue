@@ -35,26 +35,28 @@ const timerLabel = computed(() => (i: number): string => {
 <template>
   <Card
     v-if="appStore.showTimer"
-    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 border-4 shadow-2xl border-accent-foreground/70 bg-accent w-3/5 max-w-240"
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 border-2 shadow-2xl border-accent-foreground/70 bg-accent w-4/5 max-w-300"
   >
-    <Button class="absolute w-4 h-4 p-0 top-4 right-4 z-20" @click="closeWindow">
+    <Button class="absolute top-6 right-6 z-20" variant="outline" size="icon" @click="closeWindow">
       <X />
     </Button>
-    <CardHeader class="text-center relative px-4">
+    <CardHeader class="text-center text-xl relative px-4">
       <p>Alexa Timer</p>
     </CardHeader>
-    <CardContent class="flex flex-wrap px-3 pt-0 pb-3">
-      <div v-for="i of 4" :key="i" class="min-w-[40%] flex-1 max-w-[50%] m-1 flex relative bg-cardCustom-info p-2 shadow-lg">
-        <Button class="w-6 h-6 p-0 absolute right-2" @click="stopTimer(i)">
-          <X />
-        </Button>
+    <CardContent class="flex flex-wrap gap-6">
+      <div v-for="i of 4" :key="i" class="min-w-[40%] flex-1 max-w-[50%] flex relative bg-background/70 p-2 shadow-lg rounded-md">
         <div class="w-full">
-          <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
-            <span>{{ timerLabel(i) }} </span>
-            <span>
-              {{ (timer[i as keyof Timers] as Timer).timeString?.val }}
-            </span>
-          </h1>
+          <div class="flex justify-between items-center mb-2">
+            <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
+              <span class="text-cardCustom-foreground">{{ timerLabel(i) }} </span>
+              <span>
+                {{ (timer[i as keyof Timers] as Timer).timeString?.val }}
+              </span>
+            </h1>
+            <Button variant="outline" size="icon" @click="stopTimer(i)">
+              <X />
+            </Button>
+          </div>
           <TextSeparator />
           <div class="flex justify-between items-center mt-2 text-xs gap-6">
             <div class="flex justify-between items-center w-1/2">

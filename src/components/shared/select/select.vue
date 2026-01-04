@@ -32,7 +32,7 @@ function getFocusClass(item: SelectOption) {
 const variants = {
   border: {
     default: "",
-    bottom: "h-6 min-w-16 rounded-none border-0 border-b-2  border-b-accent focus:border-b-2 focus:border-b-black shadow-none ring-0 focus:ring-0",
+    bottom: "h-6 min-w-16 rounded-none border-0 border-b-2 border-b-accent focus:border-b-2 focus:border-b-black shadow-none ring-0 focus:ring-0",
   },
 };
 </script>
