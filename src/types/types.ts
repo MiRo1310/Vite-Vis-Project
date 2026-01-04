@@ -47,6 +47,7 @@ export interface RoomType {
   shutter: boolean;
   batteryHeating?: StoreValue<boolean>[];
   bellStatus?: StoreValue<boolean>;
+  temp?: (number | undefined)[];
   windows: {
     name: string;
     idShutterPosition?: string;

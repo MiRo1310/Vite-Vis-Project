@@ -8,16 +8,13 @@ import { RoomType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import { getShutterImageByPosition } from "@/composables/windows.ts";
-import { Button } from "@/components/shared/button";
 import HeatingControlPeriod from "@/components/section/heating/HeatingControlPeriod.vue";
+import ShutterImage from "@/components/section/window/ShutterImage.vue";
 
 const props = defineProps<{
   class?: HTMLAttributes["class"];
   window: RoomType;
 }>();
-
-const emits = defineEmits(["clickBack"]);
 
 const updateHandler = (value: number | string | boolean, id: string) => {
   if (adminConnection) {
@@ -37,7 +34,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
       </div>
       <div v-if="window.shutter">
         <div v-for="(w, i2) in window.windows" class="flex items-center" :key="i2">
-          <img class="w-8 h-12 img--white" :src="getShutterImageByPosition(w.shutterPosition ?? null)" alt="FensterRollade" />
+          <ShutterImage :position="w.shutterPosition" />
           <div class="w-full">
             <ShutterLabel :get-shutter-position="w.shutterPosition ?? 'n/a'" />
 
@@ -67,12 +64,3 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.dark {
-  .img--white {
-    filter: brightness(0) invert(1);
-    -webkit-filter: brightness(0) invert(1);
-  }
-}
-</style>
