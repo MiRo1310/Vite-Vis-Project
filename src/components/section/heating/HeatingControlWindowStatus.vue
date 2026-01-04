@@ -15,13 +15,12 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="mx-1 p-1 bg-color__default flex-1">
+  <div class="p-2 pt-1 bg-color__default flex-1 bg-cardSubcard/30 border">
     <p>Fensterstatus</p>
-    <div class="h-[14rem] overflow-auto">
+    <div class="h-56 overflow-auto">
       <span v-if="heatingControl.openWindowCount?.val" :class="{ bg__animation: heatingControl.openWindowCount?.val }">
         {{ heatingControl.openWindowCount?.val }} Fenster offen
       </span>
-      //
       <div v-html="heatingControl.windowOpenHtmlTable?.val" />
     </div>
   </div>
@@ -47,14 +46,21 @@ onMounted(() => {
 }
 
 :deep(img) {
-  @apply w-12 h-8 p-1 px-3 bg-white;
+  width: 3rem;
+  height: 2rem;
+  padding: 0.25rem 0.75rem;
+  background-color: white;
 }
 
 :deep(.mdui-listitem) {
-  @apply flex items-center text-xs space-x-2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
 }
 
 :deep(.mdui-red-bg) {
-  @apply bg-red-600 text-white;
+  color: white;
+  background-color: #dc2626;
 }
 </style>

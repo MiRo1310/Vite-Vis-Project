@@ -256,7 +256,7 @@ const useProductCards = (productIndex: number) => {
   <div
     v-for="productIndex in countedProducts"
     :key="productIndex"
-    :class="['product__group', productIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
+    :class="['flex flex-col px-2 bg-accent border-black', productIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex">
       <SelectableName
@@ -354,15 +354,3 @@ const useProductCards = (productIndex: number) => {
     "
   />
 </template>
-
-<style>
-.product__group input {
-  @apply bg-white text-xs py-0;
-}
-</style>
-
-<style scoped>
-.product__group {
-  @apply flex flex-col px-2 bg-accent border-black;
-}
-</style>

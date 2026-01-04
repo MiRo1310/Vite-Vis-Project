@@ -57,8 +57,8 @@ const categoryExists = computed(() => isDefined(props.result?.find((c) => c.name
 </script>
 
 <template>
-  <div class="add-category">
-    <div class="add-category__input-wrapper">
+  <div class="flex items-start gap-2">
+    <div class="flex flex-col">
       <Input
         v-model:model-value="newCategory"
         :class="['w-60', { 'border-destructive': categoryExists || existInDb }]"
@@ -67,22 +67,8 @@ const categoryExists = computed(() => isDefined(props.result?.find((c) => c.name
         @keyup.enter="addNewCategory"
         type="text"
       />
-      <p v-if="categoryExists" class="add-category__warning">Die Kategorie existiert schon</p>
+      <p v-if="categoryExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
     </div>
     <Button variant="outline" size="icon" icon="add" :disabled @click.prevent="addNewCategory" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.add-category {
-  @apply flex items-start gap-2;
-
-  &__input-wrapper {
-    @apply flex flex-col;
-  }
-
-  &__warning {
-    @apply text-[0.8rem] font-medium text-destructive mt-2;
-  }
-}
-</style>

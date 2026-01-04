@@ -58,7 +58,7 @@ const loadImage = () => {
 <template>
   <div
     :class="{
-      image__container: true,
+      'w-full h-full flex justify-center items-center': true,
       'cursor-pointer': useLightbox,
       [props.class]: true,
     }"
@@ -68,28 +68,10 @@ const loadImage = () => {
       v-if="!shouldLoadFallBack"
       :alt="alt as string"
       :src="src as string"
-      :class="[imgClass, 'image__main']"
+      :class="[imgClass, 'w-auto h-auto max-w-full max-h-full']"
       @error="errorHandler"
       @load="loadImage"
     />
-    <img
-      v-if="shouldLoadFallBack"
-      alt="fallback_image"
-      :src="fallback"
-      :class="['image-fallback', fallbackImgClass]"
-    />
+    <img v-if="shouldLoadFallBack" alt="fallback_image" :src="fallback" :class="['cursor-default w-3/4 h-auto', fallbackImgClass]" />
   </div>
 </template>
-<style scoped lang="postcss">
-.image__container {
-  @apply w-full h-full flex justify-center items-center;
-}
-
-.image__main {
-  @apply w-auto h-auto max-w-full max-h-full;
-}
-
-.image-fallback {
-  @apply cursor-default w-3/4 h-auto;
-}
-</style>

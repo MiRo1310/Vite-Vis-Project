@@ -21,10 +21,10 @@ const fileList = defineModel<FileList>("fileList", { default: [] });
 </template>
 <style lang="postcss">
 .form input {
-  @apply bg-white;
+  background-color: white;
 }
 
 .form label span {
-  @apply text-[0.7rem];
+  font-size: 0.7rem;
 }
 </style>

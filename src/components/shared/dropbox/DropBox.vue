@@ -41,19 +41,15 @@ const fileList = defineModel<FileList>("fileList", { default: [] });
 </script>
 
 <template>
-  <Card :class="[props.class, 'drop-zone__card']">
-    <div :class="['drop-zone']" @drop.prevent="handleDrop" @dragover.prevent @click="triggerFileInput">
+  <Card :class="[props.class, ' h-40 inline-block']">
+    <div
+      class="flex items-center justify-center w-full h-full rounded-lg cursor-pointer"
+      @drop.prevent="handleDrop"
+      @dragover.prevent
+      @click="triggerFileInput"
+    >
       <p>{{ label }}</p>
       <input ref="fileInput" type="file" hidden accept=".jpg, .png" @change="handleFileChange" />
     </div>
   </Card>
 </template>
-
-<style scoped lang="postcss">
-.drop-zone__card {
-  @apply h-40 inline-block;
-}
-.drop-zone {
-  @apply flex items-center justify-center w-full h-full rounded-lg cursor-pointer;
-}
-</style>

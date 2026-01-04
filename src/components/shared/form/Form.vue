@@ -6,24 +6,12 @@ defineProps<{ classContent?: HTMLAttributes["class"] }>();
 </script>
 
 <template>
-  <form class="form" @submit.prevent="emits('update:onSubmit')">
-    <div class="form__content-wrapper">
-      <div :class="['form__content', classContent]">
+  <form class="h-full flex flex-col -ml-2" @submit.prevent="emits('update:onSubmit')">
+    <div class="flex-1 h-full">
+      <div :class="['flex space-x-2 flex-wrap', classContent]">
         <slot name="default" />
       </div>
     </div>
     <slot name="footer" />
   </form>
 </template>
-
-<style scoped>
-.form {
-  @apply h-full flex flex-col -ml-2;
-}
-.form__content-wrapper {
-  @apply flex-1 h-full;
-}
-.form__content {
-  @apply flex space-x-2 flex-wrap;
-}
-</style>

@@ -42,18 +42,24 @@ export interface Timers {
   4: Timer;
 }
 
-export interface WindowObject {
+export interface RoomType {
   name: string;
   shutter: boolean;
-  idShutterPosition?: string;
-  isOpenStatus: boolean;
-  isOpenStatus2?: boolean;
-  door?: boolean;
-  shutterPosition?: number;
-  shutterAutoDown?: StoreValue<boolean>;
-  shutterAutoUp?: StoreValue<boolean>;
-  shutterAutoUpTime?: StoreValue<number>;
-  shutterAutoDownDelay?: StoreValue<number>;
+  batteryHeating?: StoreValue<boolean>[];
+  bellStatus?: StoreValue<boolean>;
+  temp?: (number | undefined)[];
+  windows: {
+    name: string;
+    idShutterPosition?: string;
+    isOpenStatus: boolean;
+    door?: boolean;
+    shutterPosition?: number;
+    shutterAutoDown?: StoreValue<boolean>;
+    shutterAutoUp?: StoreValue<boolean>;
+    shutterAutoUpTime?: StoreValue<number>;
+    shutterAutoDownDelay?: StoreValue<number>;
+    windowSensorReachable: StoreValue<boolean>;
+  }[];
 }
 
 export interface Shutter {
@@ -256,7 +262,8 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 
 import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
-import { HTMLAttributes } from "vue";
+import { FunctionalComponent, HTMLAttributes } from "vue";
+import { Badge } from "@/components/shared/badge";
 
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
@@ -327,3 +334,44 @@ export interface InfoType {
   class?: string;
   callback?: () => void;
 }
+
+export interface NavigationType {
+  icon: FunctionalComponent;
+  text: string;
+  link: string;
+  externalLink?: boolean;
+  badges?: {
+    value: number;
+    color: Badge["color"];
+    class?: HTMLAttributes["class"];
+  }[];
+}
+
+export interface Log {
+  date: string;
+  severity: string;
+  message: string;
+  from: string;
+  ts: number;
+}
+
+export type Level = "info" | "warn" | "error";
+
+export interface LogReset {
+  error: StoreValue<boolean>;
+  warn: StoreValue<boolean>;
+  info: StoreValue<boolean>;
+}
+
+export type RoomItems =
+  | "Esszimmer"
+  | "Gäste WC"
+  | "Bad"
+  | "Flur"
+  | "Gästezimmer"
+  | "Kinderzimmer"
+  | "Küche"
+  | "Schlafzimmer"
+  | "Wohnzimmer"
+  | "Keller Michael"
+  | "Keller Waschen";

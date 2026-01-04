@@ -18,14 +18,8 @@ const variants = {
 </script>
 
 <template>
-  <div class="dialog-footer-actions">
+  <div class="flex gap-4 justify-end">
     <Button variant="outline" @click="emit('update')">{{ variants[variant].action }}</Button>
     <Button variant="default" @click="emit('close')">{{ variants[variant].close }}</Button>
   </div>
 </template>
-
-<style scoped lang="scss">
-.dialog-footer-actions {
-  @apply flex gap-4 justify-end;
-}
-</style>

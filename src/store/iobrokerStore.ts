@@ -1,11 +1,10 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, IobrokerState, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
 import { Calendar } from "@/subscribeIds/calendar.ts";
 import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
-import { Log, LogReset } from "@/pages/logs.vue";
 import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
@@ -19,11 +18,13 @@ import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";
 import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
 import { AirConditioners } from "@/subscribeIds/air-conditioners.ts";
+import { Hmip } from "@/subscribeIds/hmip.ts";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
   wetter: Wetter;
+  hmip: Hmip;
   idsToControl: IdsToControl;
   shutterAutoUp: Shutter;
   shutterAutoDownTime: Shutter;
@@ -94,7 +95,6 @@ export type IoBrokerStates = keyof IoBrokerStoreState;
 export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
-
     alexaAction: {} as AlexaAction,
     airConditioners: {} as AirConditioners,
     batteries: {} as BatteriesType,
@@ -127,6 +127,7 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     trash: {} as TrashStates,
     wetter: {} as Wetter,
     windowGlobal: {} as WindowGlobalStates,
+    hmip: {} as Hmip,
   }),
   getters: {
     isAdminConnected(state) {

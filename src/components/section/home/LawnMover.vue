@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import { landroidVision } from "@/public";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { computed } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
+import CardTitle from "../../shared/card/CardTitle.vue";
 
 const { landroid } = storeToRefs(useIobrokerStore());
 
@@ -92,6 +92,11 @@ const error = {
 };
 const infos = computed(() => [
   {
+    title: `Firmware`,
+    value: landroid.value.firmware?.val,
+    unit: "",
+  },
+  {
     title: `Akku ${landroid.value.batteryCharging?.val ? " läd" : " ist geladen"}`,
     value: landroid.value.battery?.val,
     unit: "%",
@@ -122,23 +127,18 @@ const infos = computed(() => [
 </script>
 
 <template>
-  <Card styling="light">
+  <Card styling="info">
     <CardHeader>
-      <div class="flex justify-between">
-        <div class="w-12">
-          <img :src="landroidVision" alt="vision" />
+      <CardTitle>
+        <div class="flex justify-between">
+          <div class="w-12">Rasenmäher</div>
+          <div>
+            <OnlineOffline :status="landroid.online?.val" />
+          </div>
         </div>
-        <div>
-          <OnlineOffline :status="landroid.online?.val" />
-          <p class="text-accent-foreground/50 text-xs font-bold text-right">
-            v.{{ landroid.firmware?.val }}
-          </p>
-        </div>
-      </div>
+      </CardTitle>
     </CardHeader>
-    <CardContent
-      class="text-accent-foreground/50 text-xs font-bold bg-white p-2 shadow-lg mx-2 mb-2"
-    >
+    <CardContent class="text-accent-foreground/50 text-xs font-bold bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
       <div
         v-for="(info, index) in infos"
         :key="index"
@@ -148,17 +148,11 @@ const infos = computed(() => [
         }"
       >
         <p>{{ info.title }}</p>
-        <p class="flex justify-end ml-4 text-right w-[6.5rem]">
-          <BoolIcon
-            v-if="info.type === 'bool'"
-            :value="info.value || false"
-            class="mr-5"
-          />
+        <p class="flex justify-end ml-4 text-right w-26">
+          <BoolIcon v-if="info.type === 'bool'" :value="info.value || false" class="mr-5" />
           <span v-else>
             <span>{{ info.value }}</span>
-            <span class="w-5 inline-block text-left ml-1"
-              >{{ info.unit }}
-            </span>
+            <span class="w-5 inline-block text-left ml-1">{{ info.unit }} </span>
           </span>
         </p>
       </div>

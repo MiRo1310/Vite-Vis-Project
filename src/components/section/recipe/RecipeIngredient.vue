@@ -20,15 +20,15 @@ const calculatedKcal = computed(() => {
 </script>
 
 <template>
-  <div class="ingredient__row">
-    <div class="ingredient__row-header">
-      <div class="ingredient__section">
-        <div class="ingredient__text">
-          <p class="ingredient__name">{{ ingredient?.product?.name }}</p>
-          <p class="ingredient__description">{{ ingredient?.description }}</p>
+  <div class="py-[2px] relative rounded-none m-0 bg-white border border-accent">
+    <div class="flex justify-between">
+      <div class="flex items-baseline space-x-4">
+        <div class="ml-6 flex items-baseline space-x-4 min-w-80">
+          <p class="text-muted-foreground text-sm">{{ ingredient?.product?.name }}</p>
+          <p class="text-xs">{{ ingredient?.description }}</p>
         </div>
       </div>
-      <div class="ingredient__badge-section">
+      <div class="flex items-baseline space-x-4">
         <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
         <Badge :value="calculatedKcal" unit="kcal" class="ingredient__badge" />
       </div>
@@ -37,36 +37,3 @@ const calculatedKcal = computed(() => {
     <RecipeProductProperties v-if="ingredient.product" :product="ingredient.product" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.ingredient {
-  &__row {
-    @apply py-[2px] relative rounded-none m-0 bg-white;
-    @apply border border-accent;
-  }
-
-  &__row-header {
-    @apply flex justify-between;
-  }
-
-  &__section {
-    @apply flex items-baseline space-x-4;
-  }
-
-  &__text {
-    @apply ml-6 flex items-baseline space-x-4 min-w-80;
-  }
-
-  &__name {
-    @apply text-muted-foreground text-sm;
-  }
-
-  &__description {
-    @apply text-xs;
-  }
-
-  &__badge-section {
-    @apply flex items-center gap-2 mr-1;
-  }
-}
-</style>

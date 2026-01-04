@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Button } from "@/components/shared/button";
-import PageContent from "@/components/shared/page/PageContent.vue";
 import Page from "@/components/shared/page/Page.vue";
 
 const diagrams: string[] = [
@@ -27,23 +26,15 @@ const clickHandler = (direction: number) => {
 <template>
   <Page title="Diagramme">
     <template #default>
-      <PageContent>
-        <div class="flex flex-col h-full">
-          <div class="diagrams">
-            <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
-            <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
-          </div>
-          <div class="flex-1">
-            <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" />
-          </div>
+      <div class="flex gap-2 items-center mb-2">
+        <Button variant="outline" @click="clickHandler(1)"> Zurück</Button>
+        <Button variant="outline" @click="clickHandler(-1)"> Vor</Button>
+      </div>
+      <div class="flex flex-col h-full">
+        <div class="flex-1">
+          <iframe :src="diagrams[diagramIndex]" width="100%" height="100%" class="rounded-md" />
         </div>
-      </PageContent>
+      </div>
     </template>
   </Page>
 </template>
-
-<style scoped lang="scss">
-.diagrams {
-  @apply flex gap-2 items-center mb-2;
-}
-</style>

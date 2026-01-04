@@ -12,36 +12,22 @@ const props = defineProps<{
   valueAdditive?: boolean | undefined;
 }>();
 
-const isActive = computed(() =>
-  props.valueAdditive !== undefined ? props.valueAdditive : props.light?.val,
-);
+const isActive = computed(() => (props.valueAdditive !== undefined ? props.valueAdditive : props.light?.val));
 
 function handleClickLight() {
   const id = props.light?.id;
   if (!id) return;
-  adminConnection?.setState(
-    id,
-    props.valueAdditive !== undefined ? true : !isActive.value,
-  );
+  adminConnection?.setState(id, props.valueAdditive !== undefined ? true : !isActive.value);
 }
 </script>
 
 <template>
-  <Card
-    styling="default"
-    :class="['rounded-none p-0 w-60 flex-1 min-w-[16rem]', props.class]"
-    @click="handleClickLight"
-  >
+  <Card styling="default" :class="['rounded-none p-0 w-60 flex-1 min-w-[16rem]', props.class]" @click="handleClickLight">
     <div class="flex">
       <div class="w-1/2 flex justify-center py-2">
-        <Svg
-          :name="isActive ? 'lightOn' : 'lightOff'"
-          :class="['light__svg', isActive ? 'light__on' : '']"
-        />
+        <Svg :name="isActive ? 'lightOn' : 'lightOff'" :class="['w-12 h-12', isActive ? 'animate-pulse text-yellow-400' : '']" />
       </div>
-      <div
-        class="w-1/2 border-l-2 border-color__default text-color__default p-2 my-2 text-sm min-h-[55px]"
-      >
+      <div class="w-1/2 border-l-2 border-color__default text-color__default p-2 my-2 text-sm min-h-[55px]">
         {{ name.replace(/_/g, " ") }}
       </div>
     </div>
@@ -58,13 +44,3 @@ function handleClickLight() {
     </div>
   </Card>
 </template>
-
-<style scoped lang="postcss">
-.light__svg {
-  @apply w-12 h-12;
-}
-
-.light__on {
-  @apply animate-pulse text-yellow-400;
-}
-</style>

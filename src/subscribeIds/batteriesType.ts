@@ -34,33 +34,33 @@ export interface BatteriesType {
   "HMIP Schlafzimmer": HMIPDevice;
   "HMIP Kinderzimmer": HMIPDevice;
   "HMIP Gaestezimmer": HMIPDevice;
-  "Xioami Fensterkontakt Keller Tür": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Kellertreppe Flur": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Büro": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Haustür": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Flur rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Flur links": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Gäste WC links": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Gäste WC rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Küche Klingel": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Küche Fenster": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Küche Tür": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Abstellraum": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Esszimmer rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Esszimmer links": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Wohnzimmer rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Wohnzimmer mitte": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Wohnzimmer links": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Wohnzimmer klein": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Badezimmer": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Gästezimmer": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Schlafen Tür": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Schlafen Fenster": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Kinderzimmer": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Abstellraum OG rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Abstellraum OG links": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Dachboden rechts": XiaomiWindowSensor;
-  "Xioami Fensterkontakt Dachboden links": XiaomiWindowSensor;
+  xioami_cellar_door: XiaomiWindowSensor;
+  xioami_cellar_stair_window: XiaomiWindowSensor;
+  xioami_office_window: XiaomiWindowSensor;
+  xioami_housedoor_right: XiaomiWindowSensor;
+  xioami_floor_right: XiaomiWindowSensor;
+  xioami_floor_left: XiaomiWindowSensor;
+  xioami_guest_toilet_left: XiaomiWindowSensor;
+  xioami_guest_toilet_right: XiaomiWindowSensor;
+  xioami_fensterkontakt_kueche_klingel: XiaomiWindowSensor;
+  xioami_kitchen_window: XiaomiWindowSensor;
+  xioami_kitchen_door: XiaomiWindowSensor;
+  xioami_store_window: XiaomiWindowSensor;
+  xioami_diner_window_right: XiaomiWindowSensor;
+  xioami_diner_window_left: XiaomiWindowSensor;
+  xioami_living_right: XiaomiWindowSensor;
+  xioami_living_center: XiaomiWindowSensor;
+  xioami_living_left: XiaomiWindowSensor;
+  xioami_living_small: XiaomiWindowSensor;
+  xioami_bath_window: XiaomiWindowSensor;
+  xioami_guest_window: XiaomiWindowSensor;
+  xioami_sleeping_door: XiaomiWindowSensor;
+  xioami_sleeping_window: XiaomiWindowSensor;
+  xioami_children_window: XiaomiWindowSensor;
+  xioami_store_og_right: XiaomiWindowSensor;
+  xioami_store_og_left: XiaomiWindowSensor;
+  xioami_attic_right: XiaomiWindowSensor;
+  xioami_attic_left: XiaomiWindowSensor;
 }
 
 const batteryIds: IdToSubscribe<BatteriesType> = {
@@ -108,94 +108,94 @@ const HMIP: { name: keyof BatteriesType; id: string }[] = [
 ];
 
 const zigbeeWindowDevices: { name: keyof BatteriesType; id: string }[] = [
-  { name: "Xioami Fensterkontakt Keller Tür", id: "zigbee.0.00158d00045efc35" },
+  { name: "xioami_cellar_door", id: "zigbee.0.00158d00045efc35" },
   {
-    name: "Xioami Fensterkontakt Kellertreppe Flur",
+    name: "xioami_cellar_stair_window",
     id: "zigbee.0.00158d0002e3425d",
   },
-  { name: "Xioami Fensterkontakt Büro", id: "zigbee.0.00158d0003cb431e" },
-  { name: "Xioami Fensterkontakt Haustür", id: "zigbee.0.00158d00049fd9ee" },
+  { name: "xioami_office_window", id: "zigbee.0.00158d0003cb431e" },
+  { name: "xioami_housedoor_right", id: "zigbee.0.00158d00049fd9ee" },
   {
-    name: "Xioami Fensterkontakt Flur rechts",
+    name: "xioami_floor_right",
     id: "zigbee.0.00158d000477309a",
   },
-  { name: "Xioami Fensterkontakt Flur links", id: "zigbee.0.00158d00047e796c" },
+  { name: "xioami_floor_left", id: "zigbee.0.00158d00047e796c" },
   {
-    name: "Xioami Fensterkontakt Gäste WC links",
+    name: "xioami_guest_toilet_left",
     id: "zigbee.0.00158d00047e7a16",
   },
   {
-    name: "Xioami Fensterkontakt Gäste WC rechts",
+    name: "xioami_guest_toilet_right",
     id: "zigbee.0.00158d0004a03d10",
   },
   {
-    name: "Xioami Fensterkontakt Küche Klingel",
+    name: "xioami_fensterkontakt_kueche_klingel",
     id: "zigbee.0.00158d0002ec5554",
   },
   {
-    name: "Xioami Fensterkontakt Küche Fenster",
+    name: "xioami_kitchen_window",
     id: "zigbee.0.00158d000431445a",
   },
-  { name: "Xioami Fensterkontakt Küche Tür", id: "zigbee.0.00158d00047d0bcc" },
+  { name: "xioami_kitchen_door", id: "zigbee.0.00158d00047d0bcc" },
   {
-    name: "Xioami Fensterkontakt Abstellraum",
+    name: "xioami_store_window",
     id: "zigbee.0.00158d0004773713",
   },
   {
-    name: "Xioami Fensterkontakt Esszimmer rechts",
+    name: "xioami_diner_window_right",
     id: "zigbee.0.00158d0002e3376c",
   },
   {
-    name: "Xioami Fensterkontakt Esszimmer links",
+    name: "xioami_diner_window_left",
     id: "zigbee.0.00158d000477238b",
   },
   {
-    name: "Xioami Fensterkontakt Wohnzimmer rechts",
+    name: "xioami_living_right",
     id: "zigbee.0.00158d00047c617c",
   },
   {
-    name: "Xioami Fensterkontakt Wohnzimmer mitte",
+    name: "xioami_living_center",
     id: "zigbee.0.00158d00047ebffb",
   },
   {
-    name: "Xioami Fensterkontakt Wohnzimmer links",
+    name: "xioami_living_left",
     id: "zigbee.0.00158d00047d480e",
   },
   {
-    name: "Xioami Fensterkontakt Wohnzimmer klein",
+    name: "xioami_living_small",
     id: "zigbee.0.00158d0004a02290",
   },
-  { name: "Xioami Fensterkontakt Badezimmer", id: "zigbee.0.00158d00047d0d78" },
+  { name: "xioami_bath_window", id: "zigbee.0.00158d00047d0d78" },
   {
-    name: "Xioami Fensterkontakt Gästezimmer",
+    name: "xioami_guest_window",
     id: "zigbee.0.00158d0004772546",
   },
   {
-    name: "Xioami Fensterkontakt Schlafen Tür",
+    name: "xioami_sleeping_door",
     id: "zigbee.0.00158d0004522184",
   },
   {
-    name: "Xioami Fensterkontakt Schlafen Fenster",
+    name: "xioami_sleeping_window",
     id: "zigbee.0.00158d0004a027ee",
   },
   {
-    name: "Xioami Fensterkontakt Kinderzimmer",
+    name: "xioami_children_window",
     id: "zigbee.0.00158d0004a0224b",
   },
   {
-    name: "Xioami Fensterkontakt Abstellraum OG rechts",
+    name: "xioami_store_og_right",
     id: "zigbee.0.00158d0004a0234e",
   },
   {
-    name: "Xioami Fensterkontakt Abstellraum OG links",
+    name: "xioami_store_og_left",
     id: "zigbee.0.00158d0004772531",
   },
   {
-    name: "Xioami Fensterkontakt Dachboden rechts",
+    name: "xioami_attic_right",
     id: "zigbee.0.00158d0004314104",
   },
   {
-    name: "Xioami Fensterkontakt Dachboden links",
+    name: "xioami_attic_left",
     id: "zigbee.0.00158d00047d0db9",
   },
 ];

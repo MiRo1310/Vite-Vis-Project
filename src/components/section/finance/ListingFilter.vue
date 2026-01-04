@@ -32,7 +32,7 @@ const updateYear = (year: number) => {
 </script>
 
 <template>
-  <div class="listing-filter">
+  <div class="flex flex-wrap gap-2 mb-2">
     <Button
       v-for="i in countYearButtons"
       :key="i"
@@ -43,9 +43,3 @@ const updateYear = (year: number) => {
     </Button>
   </div>
 </template>
-
-<style scoped lang="scss">
-.listing-filter {
-  @apply flex flex-wrap gap-2 mb-2;
-}
-</style>

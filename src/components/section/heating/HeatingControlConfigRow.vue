@@ -33,34 +33,30 @@ const updateData = (val: string | number | boolean | undefined, id: string | und
 </script>
 
 <template>
-  <span class="flex justify-between w-[24rem]">
-    <span class="flex items-center">
-      <Checkbox :checked="row.checkbox.val" class="bg-white" @update:checked="updateData($event, row.checkbox?.id)" />
-      <p class="ml-4">{{ row.titleCheckbox }}</p>
-    </span>
-    <span class="flex items-center">
+  <div class="flex justify-between w-[24rem]">
+    <div class="flex items-center">
+      <Checkbox :checked="row.checkbox.val" @update:checked="updateData($event, row.checkbox?.id)" />
+      <p class="ml-4 text-xs">{{ row.titleCheckbox }}</p>
+    </div>
+    <div class="flex items-center">
       <p class="mr-1 text-xs">{{ row.titleSelect }}</p>
       <span v-if="row.input" class="flex mr-1 items-center">
         <InputShadcn
           :model-value="row.input.val"
           type="time"
-          class="h-6 shadow-none border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 bg-white"
+          border="none"
+          class="h-6 border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 pb-7! mb-1"
           @update:model-value="updateData($event, row.input.id)"
         />
         <span class="ml-1 text-xs">{{ row.input.textBehind }}</span>
       </span>
       <Select
         :items="row.select.items"
+        border="bottom"
         :selected="row.select.selected"
         :placeholder="row.select.placeholder || ''"
         @update:selected="updateData(parseInt($event ?? ''), row.select.id)"
       />
-    </span>
-  </span>
+    </div>
+  </div>
 </template>
-
-<style scoped lang="postcss">
-:deep(button[role="combobox"]) {
-  @apply h-6 shadow-none border-2 border-t-0 border-x-0 rounded-none min-w-[4rem] bg-white;
-}
-</style>

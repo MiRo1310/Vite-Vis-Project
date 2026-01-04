@@ -1,14 +1,17 @@
 <script setup lang="ts">
-defineProps<{ status: boolean | undefined }>();
+defineProps<{ status?: boolean; power?: boolean }>();
 </script>
 
 <template>
   <span
-    :class="{
-      'text-accent-foreground/50 text-xs font-bold text-right px-1': true,
-      'bg-red-100 text-red-400': !status,
-      'bg-green-100 text-green-400': status,
-    }"
+    :class="[
+      'text-accent-foreground/50 text-xs font-bold text-right px-1 py-[0.1rem] rounded-md',
+      {
+        'bg-destructive/10 text-destructive': !status,
+        'bg-success/10 text-success': status,
+        'border-success border-4 border-double': power,
+      },
+    ]"
   >
     {{ status ? "Online" : "Offline" }}
   </span>

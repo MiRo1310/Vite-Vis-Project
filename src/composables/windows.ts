@@ -5,12 +5,9 @@ import { storeToRefs } from "pinia";
 const { fenster } = storeToRefs(useIobrokerStore());
 
 export const getOpenWindows = computed(() => {
-  let countedOpenWindows = 0;
   const windows = fenster.value;
-  Object.keys(windows).forEach((key) => {
-    if (windows[key as keyof typeof windows]?.val) {
-      countedOpenWindows++;
-    }
-  });
-  return countedOpenWindows;
+  return Object.keys(windows).reduce((prev, current) => {
+    prev += windows[current as keyof typeof windows]?.val === true ? 1 : 0;
+    return prev;
+  }, 0);
 });

@@ -25,5 +25,5 @@ function update() {
 </script>
 
 <template>
-  <Switch v-model:checked="checked" @click="update" />
+  <Switch v-model:checked="checked" @click="update" class="ml-4" />
 </template>

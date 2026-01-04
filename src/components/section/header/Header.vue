@@ -3,11 +3,11 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <div class="header">
-    <div class="header__left-col">
-      <div class="header__first-row">
-        <h1 class="header__title">{{ title }}</h1>
-        <div class="header__title-right">
+  <div class="flex justify-between items-center p-2 rounded-xl">
+    <div class="w-full">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">{{ title }}</h1>
+        <div class="flex space-x-2 items-center">
           <slot name="titleRight" />
         </div>
       </div>
@@ -17,25 +17,3 @@ defineProps<{ title: string }>();
     <slot />
   </div>
 </template>
-
-<style scoped lang="scss">
-.header {
-  @apply flex justify-between items-center p-2 rounded-xl;
-
-  &__title {
-    @apply text-2xl font-bold;
-  }
-
-  &__left-col {
-    @apply w-full;
-  }
-
-  &__first-row {
-    @apply flex items-center justify-between;
-  }
-
-  &__title-right {
-    @apply flex space-x-2 items-center;
-  }
-}
-</style>

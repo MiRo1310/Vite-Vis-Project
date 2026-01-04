@@ -3,7 +3,8 @@ export const routes = [
     path: "/",
     component: async () => await import("@/pages/page.vue"),
     children: [
-      { path: "/", name: "home", component: async () => await import("@/pages/home.vue") },
+      { path: "", name: "home", component: async () => await import("@/pages/home.vue") },
+      { path: "/index", name: "index", component: async () => await import("@/pages/navigation.vue") },
       { path: "/alexa", component: async () => await import("@/pages/alexa.vue") },
       {
         path: "/battery",
@@ -16,8 +17,13 @@ export const routes = [
         component: async () => await import("@/pages/diagrams.vue"),
       },
       {
+        path: "/listen",
+        name: "lists",
+        component: async () => await import("@/pages/lists.vue"),
+      },
+      {
         path: "/fenster",
-        component: async () => await import("@/pages/window.vue"),
+        component: async () => await import("@/pages/rooms.vue"),
       },
       {
         path: "/heating",
@@ -44,7 +50,7 @@ export const routes = [
   },
   {
     path: "/recipe-app",
-    redirectTo: "/recipe",
+    redirect: { name: "recipe" },
     component: async () => await import("@/pages/recipe/recipe-app.vue"),
     children: [
       { path: "/produkte", name: "products", component: () => import("@/pages/recipe/products.vue") },
@@ -56,14 +62,14 @@ export const routes = [
         component: () => import("@/pages/recipe/recipe.vue"),
         children: [
           {
-            path: "/:recipeId",
+            path: "/rezepte/:recipeId",
             name: "recipe-details",
             component: () => import("@/pages/recipe/recipe-details.vue"),
             props: true,
           },
         ],
       },
-      { path: "/neues_rezepte/:id?", name: "new-recipe", params: true, component: () => import("@/pages/recipe/new-recipe.vue") },
+      { path: "/neues_rezepte/:id?", name: "new-recipe", props: true, component: () => import("@/pages/recipe/new-recipe.vue") },
     ],
   },
   {
@@ -74,9 +80,8 @@ export const routes = [
 
   { path: "/adressen", name: "addresses", component: async () => await import("@/pages/finance/addresses.vue") },
   { path: "/beschreibung", name: "descriptions", component: async () => await import("@/pages/finance/description.vue") },
-
   {
-    path: "/:pathMatch(.*)",
+    path: "/:pathMatch(.*)*",
     component: async () => await import("@/pages/error-page-not-found.vue"),
   },
 ];

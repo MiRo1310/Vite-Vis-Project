@@ -9,12 +9,12 @@ defineProps<ButtonVariantProps>();
 <template>
   <Dialog class-content="w-full max-w-full p-0 pt-7 ">
     <template #trigger>
-      <Button v-bind="$props" class="h-full">
-        <div class="flex justify-center mb-2">
+      <Button v-bind="$props" variant="outline">
+        <div class="flex justify-center">
           <slot />
         </div>
 
-        Thermostat Steuerung
+        Heating Control
       </Button>
     </template>
     <template #content>
@@ -22,5 +22,3 @@ defineProps<ButtonVariantProps>();
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss"></style>

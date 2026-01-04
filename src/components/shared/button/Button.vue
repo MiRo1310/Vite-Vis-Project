@@ -26,12 +26,12 @@ export type ButtonVariants = typeof variants;
 
 const variants = {
   variant: {
-    default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-    destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-    outline: "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-    save: "border border-input bg-color__default shadow-sm hover:border-black hover:text-accent-foreground",
-    secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-    ghost: "hover:bg-accent hover:text-accent-foreground",
+    default: "bg-primary text-primary-foreground hover:bg-primary/90",
+    destructive:
+      "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+    outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+    secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+    ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
     link: "text-primary underline-offset-4 hover:underline",
   },
   size: {
@@ -41,6 +41,9 @@ const variants = {
     icon: "h-9 w-9",
     iconRow: "h-5 w-5 p-[2px]",
     square: "h-28 w-28 rounded-md",
+    full: "w-full h-9 px-4 py-2",
+    fullXxl: "w-full px-4 py-2",
+    iconLg: "h-15 w-15",
   },
   action: {
     default: "",
@@ -74,28 +77,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <Primitive :as="as" :as-child="asChild" :class="['btn', getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']), props.class]">
-    <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
-    <span ref="buttonChild" :class="variants.text[props.text]">
+  <Primitive
+    :as="as"
+    :as-child="asChild"
+    :class="[
+      'inline-flex items-center cursor-pointer justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+      getVariantsClasses<typeof variants>(variants, props, ['icons', 'text']),
+      props.class,
+    ]"
+  >
+    <div ref="buttonChild" :class="[variants.text[props.text], 'w-full flex items-center justify-center']">
+      <Component v-if="props.icon" :is="buttonIcons[variants.icons[props.icon] as keyof typeof buttonIcons]" />
       <slot />
-    </span>
+    </div>
   </Primitive>
 </template>
-
-<style scoped lang="scss">
-.btn {
-  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors;
-  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
-  @apply disabled:pointer-events-none disabled:opacity-50;
-
-  &__multiline {
-    @apply text-xs text-muted-foreground text-wrap;
-  }
-}
-</style>
-
-<style lang="scss">
-.btn__row-center {
-  @apply flex items-center justify-end my-[1px] w-full;
-}
-</style>

@@ -26,7 +26,7 @@ const variants = {
   <td
     :class="
       cn(
-        'align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-0.5',
+        'align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
         props.class,
         getVariantsClasses(variants, props),
       )

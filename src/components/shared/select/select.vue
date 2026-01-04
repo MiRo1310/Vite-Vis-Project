@@ -2,13 +2,15 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { HTMLAttributes, watchEffect } from "vue";
 import { SelectOption } from "@/types/types.ts";
+import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 const props = defineProps<{
   placeholder?: string;
   items: SelectOption[];
   label?: string;
   class?: HTMLAttributes["class"];
-  disbaleHover?: boolean;
+  disableHover?: boolean;
+  border?: keyof (typeof variants)["border"];
 }>();
 
 const selected = defineModel<string>("selected");
@@ -26,12 +28,19 @@ function getFocusClass(item: SelectOption) {
 
   return string;
 }
+
+const variants = {
+  border: {
+    default: "",
+    bottom: "h-6 min-w-16 rounded-none border-0 border-b-2 border-b-accent focus:border-b-2 focus:border-b-black shadow-none ring-0 focus:ring-0",
+  },
+};
 </script>
 
 <template>
   <div :class="$props.class">
     <Select v-model:model-value="selected">
-      <SelectTrigger>
+      <SelectTrigger :class="getVariantsClasses(variants, props)">
         <SelectValue :placeholder="placeholder" />
       </SelectTrigger>
       <SelectContent>
@@ -45,7 +54,7 @@ function getFocusClass(item: SelectOption) {
             :value="item.value"
             :class="{
               [`${item?.class} border-${item?.class || 'accent'}`]: true,
-              [`${getFocusClass(item)} focus:border-black focus:border-2`]: disbaleHover,
+              [`${getFocusClass(item)} focus:border-black focus:border-2`]: disableHover,
             }"
           >
             {{ item.label || item.value }}

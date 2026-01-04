@@ -74,21 +74,9 @@ const dialogOpen = ref(false);
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
-    <PageSection class="products__page-section">
+    <PageSection class="flex flex-col rounded-lg p-2 max-h-[calc(100vh-9.5rem)] overflow-auto">
       <TableBasic :data="result?.products || []" :columns="getColumns(columns)" />
     </PageSection>
     <DialogAddProduct v-model:dialog-open="dialogOpen" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.products {
-  &__header-label {
-    @apply font-bold text-xl text-muted-foreground;
-  }
-
-  &__page-section {
-    @apply flex flex-col rounded-lg p-2 max-h-[calc(100vh-9.5rem)] overflow-auto;
-  }
-}
-</style>

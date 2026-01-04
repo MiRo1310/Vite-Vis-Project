@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
@@ -12,6 +11,8 @@ import InfoCard from "@/components/section/home/InfoCard.vue";
 import { useRouter } from "vue-router";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { InfoType } from "@/types/types.ts";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import Badge from "@/components/shared/badge/Badge.vue";
 
 const router = useRouter();
 
@@ -42,25 +43,14 @@ const info = computed((): InfoType[] => [
   },
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
 ]);
-
-const info2 = computed((): InfoType[] => [
-  {
-    title: getOpenWindows.value ? "Fenster offen" : "Alle Fenster sind zu ",
-    value: getOpenWindows.value ? getOpenWindows.value : "",
-    bounce: true,
-    class: getOpenWindows.value > 0 ? "bg-red-100" : "bg-green-100",
-    callback: () => {
-      router.push({ path: "/fenster" });
-    },
-  },
-]);
 </script>
 <template>
   <Card
+    color="primary"
+    styling="small"
     :class="{
       'border-4 border-destructive': isTimeToWarn && getOpenWindows > 0,
     }"
-    styling="light"
   >
     <CardHeader>
       <CardTitle>Infos</CardTitle>
@@ -69,7 +59,18 @@ const info2 = computed((): InfoType[] => [
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
 
       <InfoCard :infos="info" />
-      <InfoCard :get-open-windows="getOpenWindows" :infos="info2" :is-time-to-warn="isTimeToWarn" />
+
+      <CardSubcard class="mt-2">
+        <div
+          :class="['flex justify-between cursor-pointer', { 'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0 }]"
+          @click="router.push({ path: '/fenster' })"
+        >
+          <p>{{ getOpenWindows ? "Fenster offen" : "Alle Fenster sind zu " }}</p>
+          <div>
+            <Badge color="orange" :value="getOpenWindows ?? ''" />
+          </div>
+        </div>
+      </CardSubcard>
     </CardContent>
   </Card>
 </template>

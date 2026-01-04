@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shared/button";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import { computed, onMounted, ref } from "vue";
 import { months } from "@/defaultValues/defaultValues.ts";
@@ -58,6 +58,7 @@ function sendMonth() {
 function resetMonth() {
   monthModifikator.value = 0;
   yearAdder = 0;
+  sendMonth();
 }
 
 const getDaysInMonth = (): number => {
@@ -66,16 +67,16 @@ const getDaysInMonth = (): number => {
 };
 </script>
 <template>
-  <div class="flex-between">
-    <div class="flex items-center space-x-2">
-      <Button size="icon" @click="changeMonth(-1)">
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <Button size="icon" @click="changeMonth(-1)" variant="outline">
         <ChevronLeft />
       </Button>
-      <span class="w-36 text-center">{{ getCurrentMonthName }}</span>
-      <Button size="icon" @click="changeMonth(1)">
+      <span class="w-36 text-center text-cardCustom-foreground">{{ getCurrentMonthName }}</span>
+      <Button size="icon" @click="changeMonth(1)" variant="outline">
         <ChevronRight />
       </Button>
-      <Button @click="resetMonth"> Heute</Button>
+      <Button @click="resetMonth" variant="outline"> Heute</Button>
     </div>
     <slot />
   </div>

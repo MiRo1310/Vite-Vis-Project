@@ -8,14 +8,6 @@ defineProps<TableColumnProps<string, Row<DescriptionsQuery["description"][number
 
 <template>
   <div class="description-colum">
-    <pre><code>{{value}}</code></pre>
+    <pre><code class="text-muted-foreground font-sans">{{value}}</code></pre>
   </div>
 </template>
-
-<style scoped lang="scss">
-.description-colum {
-  code {
-    @apply text-muted-foreground font-sans;
-  }
-}
-</style>

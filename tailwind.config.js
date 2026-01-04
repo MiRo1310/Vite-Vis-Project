@@ -32,59 +32,6 @@ module.exports = {
         smarthome1: "url(/public/smart-home-3395993_1280.jpg)",
         smarthome2: "url(/public/smart-home-5575122_1280.jpg)",
       },
-      colors: {
-        trashPapier: "#2e12cc",
-        trashBio: "#734d29",
-        trashGelb: "#eaed1c",
-        trashRest: "#000000",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        backgroundColor: "hsl(var(--background-color))",
-        color__default: "hsl(var(--background-cards))",
-        backgroundHeader: "hsl(var(--background-header))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-          brown: {
-            lightest: "hsl(var(--brown-lightest), <alpha-value>)",
-            dark: "hsl(var(--brown-dark))",
-          },
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))",
-        },
-      },
       borderRadius: {
         xl: "calc(var(--radius) + 4px)",
         lg: "var(--radius)",

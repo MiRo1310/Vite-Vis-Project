@@ -85,8 +85,8 @@ function deleteRow(index: number) {
       <Button size="icon" @click="addNewRow">
         <Plus />
       </Button>
-      <div class="h-[20rem] overflow-auto">
-        <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-[2px]">
+      <div class="h-80 overflow-auto">
+        <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-0.5">
           <InputComponent
             :input-value="item.name"
             :selected="colors.find((e) => e.class === item.color)"
@@ -98,8 +98,8 @@ function deleteRow(index: number) {
       </div>
     </template>
     <template #footer>
-      <Button variant="outline" @click="reset"> Schließen</Button>
-      <Button variant="save" @click="updateToIobroker"> Speichern</Button>
+      <Button variant="default" @click="reset"> Schließen</Button>
+      <Button variant="outline" @click="updateToIobroker"> Speichern</Button>
     </template>
   </Dialog>
 </template>

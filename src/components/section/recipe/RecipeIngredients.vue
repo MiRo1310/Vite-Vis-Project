@@ -41,21 +41,21 @@ const getIngredientGroupLength = computed(() => {
 </script>
 
 <template>
-  <div class="ingredients">
-    <h2 class="ingredients__title">Zutaten für {{ portions }} Portionen</h2>
-    <div class="ingredients__header">
-      <div class="ingredients__input-wrapper">
-        <Input v-model:model-value="customPortions" class="ingredients__portion-input" type="number" />
+  <div class="flex-1 max-w-full overflow-y-auto">
+    <h2 class="font-bold text-xl">Zutaten für {{ portions }} Portionen</h2>
+    <div class="flex items-center justify-between mt-2 mr-1">
+      <div class="flex items-center space-x-2">
+        <Input v-model:model-value="customPortions" class="bg-white w-16" type="number" />
         <label>Portionen anpassen</label>
       </div>
       <div>
-        <label class="ingredients__header-badge-label">Gesamt Kalorien pro Portion</label>
+        <label class="mr-2">Gesamt Kalorien pro Portion</label>
         <Badge :value="getTotalKcal" unit="kcal/p" />
       </div>
     </div>
     <div v-for="(_, index) in getIngredientGroupLength" :key="index">
-      <div class="ingredients__section">
-        <p v-if="recipe?.recipeHeaderProducts" class="ingredients__section-title">
+      <div class="mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-1 py-1">
+        <p v-if="recipe?.recipeHeaderProducts" class="font-semibold underline">
           {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
         </p>
         <Badge :value="(getTotalKcalForSection(index) / portions).toFixed(2)" unit="kcal/p" />
@@ -66,30 +66,3 @@ const getIngredientGroupLength = computed(() => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.ingredients {
-  @apply flex-1 max-w-full overflow-y-auto;
-}
-.ingredients__title {
-  @apply font-bold text-xl;
-}
-.ingredients__header {
-  @apply flex items-center justify-between mt-2 mr-1;
-}
-.ingredients__header-badge-label {
-  @apply mr-2;
-}
-.ingredients__input-wrapper {
-  @apply flex items-center space-x-2;
-}
-.ingredients__portion-input {
-  @apply bg-white w-16;
-}
-.ingredients__section {
-  @apply mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-1 py-1;
-}
-.ingredients__section-title {
-  @apply font-semibold underline;
-}
-</style>

@@ -33,23 +33,11 @@ const updateByPressEnter = ref(false);
 
 <template>
   <Header title="Kategorien" />
-  <div class="categories__section">
+  <div class="flex items-center gap-2">
     <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
   </div>
 
-  <div class="categories__table-wrapper">
+  <div class="px-2">
     <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.categories {
-  &__section {
-    @apply flex items-center gap-2;
-  }
-
-  &__table-wrapper {
-    @apply px-2;
-  }
-}
-</style>

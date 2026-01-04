@@ -5,14 +5,8 @@ const emits = defineEmits(["update:close"]);
 </script>
 
 <template>
-  <div class="form__footer_wrapper">
+  <div class="flex justify-end space-x-2">
     <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')">Abbrechen</Button>
     <Button type="submit">Speichern</Button>
   </div>
 </template>
-
-<style scoped lang="postcss">
-.form__footer_wrapper {
-  @apply flex justify-end space-x-2;
-}
-</style>

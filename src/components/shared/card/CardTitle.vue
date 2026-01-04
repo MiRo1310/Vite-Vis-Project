@@ -19,7 +19,7 @@ const props = withDefaults(
 const variantsCardTitle = {
   style: {
     shadcn: "text-accent-foreground/50 text-lg font-bold",
-    default: "text-color__default text-lg font-bold bg-accent px-2 shadow-lg",
+    default: "text-accent-foreground/50 text-lg font-bold ",
   },
 };
 </script>

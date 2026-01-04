@@ -13,18 +13,8 @@ defineProps<{
 </script>
 
 <template>
-  <p class="container">
-    <img src="@/public/echo_dot3.png" alt="Echo Dot" />
+  <p class="flex items-end">
+    <img src="@/public/echo_dot3.png" alt="Echo Dot" class="w-14" />
     <span>{{ value }}</span>
   </p>
 </template>
-
-<style scoped lang="postcss">
-img {
-  @apply w-14;
-}
-
-.container {
-  @apply flex items-end;
-}
-</style>

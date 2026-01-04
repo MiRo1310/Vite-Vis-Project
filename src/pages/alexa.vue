@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -11,6 +10,8 @@ import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
 import { JSONToString, stringToJSON } from "@/lib/string.ts";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
+import Page from "@/components/shared/page/Page.vue";
+import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 const { alexaAction: alexaActionStore } = useIobrokerStore();
 
@@ -162,16 +163,9 @@ const columns: DatatableColumns<AlexaDotAction>[] = [
 </script>
 
 <template>
-  <Card styling="light" class="h-full">
-    <CardHeader>
-      <CardTitle>
-        <p>Alexa Dots</p>
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div class="default_card">
-        <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
-      </div>
-    </CardContent>
-  </Card>
+  <Page title="Alexa Dots">
+    <CardSubcard>
+      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
+    </CardSubcard>
+  </Page>
 </template>

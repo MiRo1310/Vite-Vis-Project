@@ -16,38 +16,20 @@ defineProps<{
 
 <template>
   <div class="air-conditioner">
-    <p class="air-conditioner__description">
+    <p class="text-xs text-muted-foreground min-w-40 bg-cardCustom-info p-1 flex justify-between items-center">
       <span>{{ title }}</span>
 
       <OnlineOffline :status="online" />
     </p>
-    <div class="air-conditioner__content">
-      <div class="air-conditioner__row">
+    <div class="p-1 text-xs text-muted-foreground bg-cardCustom-info flex flex-col items-end w-full">
+      <div class="flex justify-between items-center w-full">
         <p>{{ online ? powerWh : "0.00" }} W</p>
         <p>Ist: {{ tempIs }} °C</p>
       </div>
-      <div class="air-conditioner__row">
+      <div class="flex justify-between items-center w-full">
         <ButtonIobroker variant="outline" size="icon" :state="power" icon="power" />
         <InputIobroker :state="tempSet" unit="°C" />
       </div>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.air-conditioner {
-  @apply border border-accent;
-
-  &__description {
-    @apply text-xs text-muted-foreground min-w-40 bg-white p-1 flex justify-between items-center;
-  }
-
-  &__row {
-    @apply flex justify-between items-center w-full;
-  }
-
-  &__content {
-    @apply p-1 text-xs text-muted-foreground bg-white flex flex-col items-end w-full;
-  }
-}
-</style>

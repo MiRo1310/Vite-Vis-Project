@@ -23,18 +23,13 @@ watch(
 );
 </script>
 <template>
-  <p v-if="!!noValue" class="no_value">No Value</p>
+  <p v-if="!!noValue" class="text-destructive ml-3 animate-bounce">No Value</p>
   <div v-else>
-    <p v-show="isWindowOpen" class="text-destructive text__container bg-destructive">{{ door ? "Die Tür" : "Das Fenster" }} ist offen</p>
-    <p v-show="!isWindowOpen" class="text__container bg-green-600">{{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen</p>
+    <p v-show="isWindowOpen" class="text-destructive text-white text-xs inline-block px-1 rounded-sm ml-1 bg-destructive">
+      {{ door ? "Die Tür" : "Das Fenster" }} ist offen
+    </p>
+    <p v-show="!isWindowOpen" class="text-white text-xs inline-block px-1 rounded-sm ml-1 bg-green-600">
+      {{ door ? "Die Tür" : "Das Fenster" }} ist geschlossen
+    </p>
   </div>
 </template>
-<style scoped lang="postcss">
-.no_value {
-  @apply text-destructive ml-3 animate-bounce;
-}
-
-.text__container {
-  @apply text-white text-xs inline-block px-1 rounded-sm ml-1;
-}
-</style>

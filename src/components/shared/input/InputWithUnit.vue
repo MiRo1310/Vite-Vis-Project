@@ -16,26 +16,8 @@ const modelValue = defineModel<string | number>();
 </script>
 
 <template>
-  <div :class="['input-with-unit', { 'input-with-unit--not-ack': !ack }]">
-    <InputShadcn :type :class="[props.class, 'input-with-unit__input']" v-model:model-value="modelValue" />
-    <span class="input-with-unit__unit">{{ unit }}</span>
+  <div :class="['flex items-center border-2 border-transparent', { 'border-red-500': !ack }]">
+    <InputShadcn :type :class="[props.class, 'h-6']" v-model:model-value="modelValue" />
+    <span class="ml-1 pr-1 text-accent-foreground/50 font-bold text-xs">{{ unit }}</span>
   </div>
 </template>
-
-<style scoped lang="scss">
-.input-with-unit {
-  @apply flex items-center border-2 border-transparent;
-
-  &--not-ack {
-    @apply border-red-500;
-  }
-
-  .input-with-unit__input {
-    @apply h-6;
-  }
-
-  .input-with-unit__unit {
-    @apply ml-1 pr-1 text-accent-foreground/50 font-bold text-xs;
-  }
-}
-</style>

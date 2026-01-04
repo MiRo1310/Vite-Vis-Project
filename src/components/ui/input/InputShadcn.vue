@@ -43,35 +43,27 @@ const variants = {
       :placeholder
       :class="
         twMerge([
-          'flex h-9 w-full bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 input relative',
-          'border border-input',
+          'flex h-9 w-full bg-transparent px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
+          'border border-input focus:outline-hidden focus:ring-0',
           getVariantsClasses(variants, props),
         ])
       "
     />
     <span v-if="props.type === 'number'" class="absolute right-1 top-2">
-      <ChevronUp class="icon" @click="countUp" />
-      <ChevronDown class="icon" @click="countDown" />
+      <ChevronUp class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countUp" />
+      <ChevronDown class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countDown" />
     </span>
   </div>
 </template>
 
 <style scoped lang="scss">
-.input {
+input {
   appearance: textfield;
   -moz-appearance: textfield;
-
-  &:focus {
-    @apply outline-none ring-0;
-  }
 }
 
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-}
-
-.icon {
-  @apply w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer;
 }
 </style>

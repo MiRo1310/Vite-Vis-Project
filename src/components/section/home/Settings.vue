@@ -17,7 +17,7 @@ const { heatingControl: control } = useIobrokerStore();
     <CardHeader>
       <CardTitle>Einstellungen</CardTitle>
     </CardHeader>
-    <CardContent class="settings__content">
+    <CardContent class="flex gap-2 flex-wrap">
       <HeatingControl :size="'square'" text="multiline">
         <ThermometerSun />
       </HeatingControl>
@@ -26,11 +26,3 @@ const { heatingControl: control } = useIobrokerStore();
     </CardContent>
   </Card>
 </template>
-
-<style scoped lang="scss">
-.settings {
-  &__content {
-    @apply flex gap-2 flex-wrap;
-  }
-}
-</style>

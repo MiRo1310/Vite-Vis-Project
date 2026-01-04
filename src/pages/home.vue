@@ -2,74 +2,42 @@
 import Info from "@/components/section/home/Info.vue";
 import Time from "@/components/section/home/Time.vue";
 import Trash from "@/components/section/home/Trash.vue";
-import LawnMover from "@/components/section/home/LawnMover.vue";
-import Pool from "@/components/section/home/Pool.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
-import AirConditioners from "@/components/section/home/AirConditioners.vue";
+import Devices from "@/components/section/home/Devices.vue";
+import PageHeader from "@/components/layout/PageHeader.vue";
+import Lists from "@/components/section/home/Lists.vue";
+import { Hourglass } from "lucide-vue-next";
+
+import { useAppStore } from "@/store/appStore.ts";
+import { Button } from "@/components/shared/button";
+import Shutter from "@/components/section/home/Shutter.vue";
+import Empty from "@/components/section/home/Empty.vue";
+const appStore = useAppStore();
 </script>
 
 <template>
-  <div class="home">
-    <div class="home__first">
-      <Time />
-      <Caller class="home__caller" />
+  <PageHeader>
+    <template #after>
+      <Button size="icon" class="text-accent-foreground/70" class-card="ml-1" @click="appStore.toggleTimerVisibility"><Hourglass /></Button>
+      <Shutter />
+    </template>
+  </PageHeader>
+  <div class="grid grid-cols-11 gap-2 mt-2 h-[calc(100%-44px)]">
+    <div class="col-span-2 flex flex-col">
+      <Time>
+        <Caller class="flex-1" />
+      </Time>
     </div>
-    <Info class="home__info" />
-    <Trash class="home__trash" />
-    <Pv class="home__pv" />
-    <AirConditioners class="home__air-conditioner" />
-    <Pool class="home__pool" />
-    <LawnMover class="home__lawn-mover" />
-    <Calendar class="home__calendar" />
-    <Timer class="home__timer" />
+    <Info class="col-span-2" />
+    <Trash class="col-span-3" />
+    <Pv class="col-span-2" />
+    <Devices class="col-span-2" />
+    <Calendar class="col-span-6" />
+    <Lists class="col-span-2" />
+    <Empty class="col-span-3" />
+    <Timer class="col-span-11" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.home {
-  @apply grid grid-cols-11 gap-1 h-full;
-
-  &__first {
-    @apply col-span-2 flex flex-col;
-  }
-
-  &__caller {
-    @apply flex-1;
-  }
-
-  &__info {
-    @apply col-span-2;
-  }
-
-  &__trash {
-    @apply col-span-3;
-  }
-
-  &__pv {
-    @apply col-span-2;
-  }
-
-  &__air-conditioner {
-    @apply col-span-2;
-  }
-
-  &__pool {
-    @apply col-span-3;
-  }
-
-  &__lawn-mover {
-    @apply col-span-2;
-  }
-
-  &__calendar {
-    @apply col-span-6;
-  }
-
-  &__timer {
-    @apply col-span-11;
-  }
-}
-</style>

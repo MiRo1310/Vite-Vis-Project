@@ -54,18 +54,10 @@ const name = ref(props.row.original.name ?? "");
   <Dialog v-model:open="dialogUpdateOpen">
     <template #title>Aktualisieren</template>
     <template #content>
-      <div class="dialog__input-wrapper">
+      <div class="mt-4 flex flex-col gap-4">
         <Input type="text" placeholder="Einheit" v-model:model-value="name" />
       </div>
       <DialogFooterActions variant="update" @close="dialogUpdateOpen = false" @update="update" />
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss">
-.dialog {
-  &__input-wrapper {
-    @apply mt-4 flex flex-col gap-4;
-  }
-}
-</style>

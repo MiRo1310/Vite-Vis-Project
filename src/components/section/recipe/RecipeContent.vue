@@ -10,15 +10,9 @@ defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"] }>();
 
 <template>
   <Card>
-    <PageSection v-if="recipe" class="recipe__content-wrapper">
+    <PageSection v-if="recipe" class="flex w-full space-x-2 p-2 min-h-24 rounded-lg">
       <RecipeTexts :descriptions="recipe?.recipeDescriptions || []" />
       <RecipeIngredients :recipe />
     </PageSection>
   </Card>
 </template>
-
-<style scoped>
-.recipe__content-wrapper {
-  @apply flex w-full space-x-2 p-2 min-h-24 rounded-lg;
-}
-</style>

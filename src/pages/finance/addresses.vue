@@ -46,8 +46,8 @@ const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
 </script>
 
 <template>
-  <div class="addresses">
-    <h1 class="addresses__title">Adressen</h1>
+  <div class="m-4">
+    <h1 class="text-2xl font-bold mb-4">Adressen</h1>
     <Navigation />
     <AddAddress />
     <Card class="p-4">
@@ -55,13 +55,3 @@ const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
     </Card>
   </div>
 </template>
-
-<style scoped lang="scss">
-.addresses {
-  @apply m-4;
-
-  &__title {
-    @apply text-2xl font-bold mb-4;
-  }
-}
-</style>

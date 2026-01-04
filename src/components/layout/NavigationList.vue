@@ -18,7 +18,7 @@ const buttons: NavigationButtons[] = [
 </script>
 
 <template>
-  <div class="navigation__container">
+  <div class="fixed top-0 border-b border-black flex p-2 space-x-2 flex-wrap w-full z-50 h-12">
     <div v-for="(button, index) in buttons" :key="index">
       <RouterLink v-if="!button.externalLink" :to="{ name: button.name }">
         <Button variant="outline">{{ button.label }}</Button>
@@ -31,13 +31,3 @@ const buttons: NavigationButtons[] = [
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.navigation__container {
-  @apply fixed top-0 border-b border-black flex p-2 space-x-2 flex-wrap w-full z-50 h-12;
-}
-
-.router-link-active button {
-  @apply bg-blue-900 text-white;
-}
-</style>

@@ -16,7 +16,7 @@ function resetStatus() {
 }
 </script>
 <template>
-  <div :class="['inline-block p-1 w-full relative', $props.class]">
+  <div :class="['bg-cardSubcard/30 border inline-block p-2 w-full relative', $props.class]">
     <div>
       <p>{{ heatingControl.room?.val }}</p>
       <p class="flex mt-2">
@@ -39,6 +39,6 @@ function resetStatus() {
 
     <Button class="w-full my-2" @click="resetStatus"> Aktueller Status: {{ heatingControl.roomState?.val }} </Button>
 
-    <div class="text-xs border-2 p-1 overflow-auto h-[21rem]" v-html="heatingControl.statusRoom?.val" />
+    <div class="text-xs border-2 p-1 overflow-auto h-84" v-html="heatingControl.statusRoom?.val" />
   </div>
 </template>
