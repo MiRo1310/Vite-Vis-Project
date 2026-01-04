@@ -41,27 +41,27 @@ const activeClass = computed(() => (i: number) => {
   return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100" : "bg-cardCustom-info/70 text-cardCustom-foreground";
 });
 </script>
+
 <template>
-  <div class="bg-cardCustom pt-2 flex-1 mb-1">
+  <div class="mt-2 flex-1 bg-popover">
     <p class="text-center text-cardCustom-foreground mx-2">
       {{ day.label }}
     </p>
     <div class="flex justify-center gap-1">
       <div>
-        <p class="text-center mb-1 text-cardCustom-text/70">ab</p>
-        <div class="flex flex-col gap-[5px] h-full">
+        <p class="text-center mb-1 text-xs">ab</p>
+        <div class="flex flex-col gap-1.25 h-full mt-3">
           <InputIobroker
             v-for="i in 5"
             :key="i"
             type="time"
-            color="dark"
             :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>"
           />
         </div>
       </div>
       <div>
         <p class="text-center mb-1 text-cardCustom-text/70">°C</p>
-        <div class="flex flex-col gap-[5px] h-full">
+        <div class="flex flex-col gap-1.25 h-full">
           <Select
             v-for="i in 5"
             :key="i"

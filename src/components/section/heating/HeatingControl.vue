@@ -14,7 +14,7 @@ defineProps<ButtonVariantProps>();
           <slot />
         </div>
 
-        Thermostat Steuerung
+        Heating Control
       </Button>
     </template>
     <template #content>

@@ -16,7 +16,7 @@ function resetStatus() {
 }
 </script>
 <template>
-  <div :class="['inline-block p-1 w-full relative', $props.class]">
+  <div :class="['bg-cardSubcard/30 border inline-block p-2 w-full relative', $props.class]">
     <div>
       <p>{{ heatingControl.room?.val }}</p>
       <p class="flex mt-2">

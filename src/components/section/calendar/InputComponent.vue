@@ -30,7 +30,7 @@ function update() {
     :items="colors"
     :selected="selected?.label || selected?.value"
     :class="['w-36 rounded-lg', `${selected?.class} text-black`]"
-    :disbale-hover="true"
+    :disable-hover="true"
     @update:selected-obj="update"
   />
   <Button variant="outline" size="icon" @click="emit('update:delete', index)">

@@ -35,8 +35,8 @@ const updateData = (val: string | number | boolean | undefined, id: string | und
 <template>
   <div class="flex justify-between w-[24rem]">
     <div class="flex items-center">
-      <Checkbox :checked="row.checkbox.val" class="bg-white" @update:checked="updateData($event, row.checkbox?.id)" />
-      <p class="ml-4">{{ row.titleCheckbox }}</p>
+      <Checkbox :checked="row.checkbox.val" @update:checked="updateData($event, row.checkbox?.id)" />
+      <p class="ml-4 text-xs">{{ row.titleCheckbox }}</p>
     </div>
     <div class="flex items-center">
       <p class="mr-1 text-xs">{{ row.titleSelect }}</p>
@@ -44,13 +44,15 @@ const updateData = (val: string | number | boolean | undefined, id: string | und
         <InputShadcn
           :model-value="row.input.val"
           type="time"
-          class="h-6 shadow-none border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 bg-white"
+          border="none"
+          class="h-6 border-2 border-t-0 text-xs border-x-0 rounded-none w-16 px-1 pb-7! mb-1"
           @update:model-value="updateData($event, row.input.id)"
         />
         <span class="ml-1 text-xs">{{ row.input.textBehind }}</span>
       </span>
       <Select
         :items="row.select.items"
+        border="bottom"
         :selected="row.select.selected"
         :placeholder="row.select.placeholder || ''"
         @update:selected="updateData(parseInt($event ?? ''), row.select.id)"
@@ -58,15 +60,3 @@ const updateData = (val: string | number | boolean | undefined, id: string | und
     </div>
   </div>
 </template>
-
-<style scoped lang="postcss">
-:deep(button[role="combobox"]) {
-  height: 1.5rem;
-  box-shadow: none;
-  border-width: 0 0 2px 0;
-  border-style: solid;
-  border-radius: 0;
-  min-width: 4rem;
-  background-color: #ffffff;
-}
-</style>

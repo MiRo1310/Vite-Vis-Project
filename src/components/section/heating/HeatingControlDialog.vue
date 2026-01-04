@@ -8,15 +8,15 @@ import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
 </script>
 
 <template>
-  <div class="bg-backgroundColor p-0 m-0 w-full px-1">
+  <div class="w-full p-2">
     <HeatingControlHeader />
     <div class="grid grid-cols-12">
-      <div class="col-span-8 mt-6 flex flex-wrap">
+      <div class="col-span-8 mt-4 flex flex-wrap gap-2">
         <HeatingControlConfig />
         <HeatingControlWindowStatus />
         <HeatingControlRoomStatus />
       </div>
-      <HeatingControlRoom class="mt-6 col-span-4 bg-color__default mb-1" />
+      <HeatingControlRoom class="mt-4 col-span-4 ml-2" />
     </div>
     <HeatingControlPeriod />
   </div>

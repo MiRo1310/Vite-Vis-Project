@@ -15,7 +15,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="mx-1 p-1 bg-color__default flex-1">
+  <div class="p-2 pt-1 bg-color__default flex-1 bg-cardSubcard/30 border">
     <p>Fensterstatus</p>
     <div class="h-56 overflow-auto">
       <span v-if="heatingControl.openWindowCount?.val" :class="{ bg__animation: heatingControl.openWindowCount?.val }">
