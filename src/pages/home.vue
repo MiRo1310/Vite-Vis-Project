@@ -8,6 +8,7 @@ import Pv from "@/components/section/home/PV.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
+import Lists from "@/components/section/home/Lists.vue";
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import PageHeader from "@/components/layout/PageHeader.vue";
     <Pv class="col-span-2" />
     <Devices class="col-span-2" />
     <Calendar class="col-span-6" />
+    <Lists class="col-span-2" />
     <Timer class="col-span-11" />
   </div>
 </template>
