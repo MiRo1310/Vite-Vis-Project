@@ -24,12 +24,12 @@ function update() {
 </script>
 
 <template>
-  <InputShadcn v-model:model-value="inputValue" placeholder="Suche nach diesem Text" @update:model-value="update" />
+  <InputShadcn v-model:model-value="inputValue" placeholder="Suche nach diesem Text" @update:model-value="update" type="text" />
   <Select
     v-model:selected-obj="selected"
     :items="colors"
     :selected="selected?.label || selected?.value"
-    :class="['w-36 rounded-lg', `${selected?.class}`]"
+    :class="['w-36 rounded-lg', `${selected?.class} text-black`]"
     :disbale-hover="true"
     @update:selected-obj="update"
   />

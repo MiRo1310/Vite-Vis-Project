@@ -86,7 +86,7 @@ function deleteRow(index: number) {
         <Plus />
       </Button>
       <div class="h-80 overflow-auto">
-        <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-[2px]">
+        <div v-for="(item, i) in modifiedObj || json" :key="i" class="flex space-x-2 space-y-0.5">
           <InputComponent
             :input-value="item.name"
             :selected="colors.find((e) => e.class === item.color)"
