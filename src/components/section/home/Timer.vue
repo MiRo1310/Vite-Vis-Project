@@ -27,8 +27,8 @@ const nameByIndex = computed(() => (index: number) => {
         <p>Alexa Timer</p>
       </CardTitle>
     </CardHeader>
-    <CardContent class="flex flex-wrap min-w-100 gap-2">
-      <CardSubcard v-for="i in 4" :key="i" class="min-w-45 flex-1 max-w-[50%] flex">
+    <CardContent class="flex flex-wrap gap-2 w-full">
+      <CardSubcard v-for="i in 4" :key="i" class="min-w-60 flex-1 flex">
         <div class="w-full">
           <h1 class="text-xl flex justify-between">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
