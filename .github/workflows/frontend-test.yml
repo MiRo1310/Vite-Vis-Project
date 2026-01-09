@@ -27,5 +27,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: yarn install --frozen-lockfile
+      
+    - name: Audit dependencies (Warn only)
+      run: yarn audit
+      continue-on-error: true
     - run: yarn run build && yarn run lint
     # - run: npm test
