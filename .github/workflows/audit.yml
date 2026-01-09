@@ -20,4 +20,4 @@ jobs:
       - name: Audit dependencies
         run: |
           yarn audit || echo "::warning::yarn audit hat Probleme gefunden"
-        continue-on-error: true
+        continue-on-error: false
