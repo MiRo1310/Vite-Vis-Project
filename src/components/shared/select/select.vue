@@ -13,12 +13,12 @@ const props = defineProps<{
   border?: keyof (typeof variants)["border"];
 }>();
 
-const selected = defineModel<string>("selected");
+const modelValue = defineModel<string>("modelValue");
 const selectedObj = defineModel<SelectOption>("selectedObj");
 
 watchEffect(() => {
-  if (selected.value) {
-    selectedObj.value = props.items.find((item) => item.value === selected.value);
+  if (modelValue.value) {
+    selectedObj.value = props.items.find((item) => item.value === modelValue.value);
   }
 });
 
@@ -39,7 +39,7 @@ const variants = {
 
 <template>
   <div :class="$props.class">
-    <Select v-model:model-value="selected">
+    <Select v-model="modelValue">
       <SelectTrigger :class="getVariantsClasses(variants, props)">
         <SelectValue :placeholder="placeholder" />
       </SelectTrigger>
