@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GlobalObject } from "@/types/types.ts";
-import { computed, defineEmits, defineProps, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps({
   tableData: {
