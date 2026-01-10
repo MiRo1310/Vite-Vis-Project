@@ -47,7 +47,6 @@ const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
 
 <template>
   <div class="m-4">
-    <h1 class="text-2xl font-bold mb-4">Adressen</h1>
     <Navigation />
     <AddAddress />
     <Card class="p-4">

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import SelectCard from "@/components/shared/select/SelectCard.vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { computed, HTMLAttributes, onMounted, watchEffect } from "vue";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
+import Select from "@/components/shared/select/select.vue";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 
@@ -55,5 +55,5 @@ watchEffect(() => {
 });
 </script>
 <template>
-  <SelectCard v-model:model-value="selected" :options placeholder="Wähle ein Rezept aus" :class="['recipe__select', $props.class]" />
+  <Select v-model:model-value="selected" :items="options" placeholder="Wähle ein Rezept aus" />
 </template>

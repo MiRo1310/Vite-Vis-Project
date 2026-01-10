@@ -7,6 +7,6 @@ const emits = defineEmits(["update:close"]);
 <template>
   <div class="flex justify-end space-x-2">
     <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')">Abbrechen</Button>
-    <Button type="submit">Speichern</Button>
+    <Button type="submit" variant="default">Speichern</Button>
   </div>
 </template>

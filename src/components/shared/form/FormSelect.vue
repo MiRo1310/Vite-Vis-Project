@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { HTMLAttributes } from "vue";
-import SelectCard from "@/components/shared/select/SelectCard.vue";
 import { SelectOption } from "@/types/types";
+import Select from "@/components/shared/select/select.vue";
 
 withDefaults(
   defineProps<{
@@ -31,7 +31,7 @@ const selected = defineModel<string>("selected");
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
       <FormControl>
-        <SelectCard v-bind="componentField" v-model:model-value="selected" :options="selectOptions" :placeholder :default-val :width />
+        <Select v-bind="componentField" v-model:model-value="selected" :items="selectOptions" :placeholder :default-val :width />
       </FormControl>
       <FormDescription />
       <FormMessage />

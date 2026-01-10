@@ -266,10 +266,10 @@ const addDescription = () => {
 </script>
 
 <template>
-  <div class="px-2 rounded-lg max-h-full overflow-auto">
-    <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
-      <div class="flex w-full h-full pl-2">
-        <div class="flex-col flex-1 mr-2 h-full">
+  <div class="max-h-full overflow-auto">
+    <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
+      <div class="flex w-full h-full gap-2">
+        <div class="flex-col flex-1 h-full">
           <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
           <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
           <div

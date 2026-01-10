@@ -7,7 +7,7 @@ const dialogOpen = defineModel<boolean>("dialogOpen");
 
 <template>
   <Dialog v-model:open="dialogOpen">
-    <DialogContent class="dialog__content">
+    <DialogContent class="w-[90vw] max-w-[90vw] h-[90vh] flex flex-col">
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
         <DialogDescription v-if="description">
@@ -21,13 +21,3 @@ const dialogOpen = defineModel<boolean>("dialogOpen");
     </DialogContent>
   </Dialog>
 </template>
-
-<style scoped lang="postcss">
-:global(.dialog__content) {
-  width: 90vw;
-  max-width: 90vw;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-}
-</style>

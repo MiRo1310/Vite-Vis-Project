@@ -40,7 +40,6 @@ const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
 
 <template>
   <div class="m-4">
-    <h1 class="text-2xl font-bold mb-4">Beschreibungen</h1>
     <Navigation />
     <AddDescription />
     <Card class="p-4">

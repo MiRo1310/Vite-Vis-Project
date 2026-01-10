@@ -85,7 +85,7 @@ onMounted(async () => {
 
 <template>
   <Teleport v-if="isRecipeElementPresent" to="#recipe">
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center gap-2">
       <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
     </div>
   </Teleport>

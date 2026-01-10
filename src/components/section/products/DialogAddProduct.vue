@@ -146,7 +146,7 @@ const defaultUnitVariant = computed(() => {
 <template>
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
-      <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="w-120 ml-2" />
+      <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="w-120" />
 
       <div class="min-w-full flex gap-2">
         <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
