@@ -7,7 +7,7 @@ import Toaster from "../../components/ui/toast/Toaster.vue";
   <Suspense>
     <div class="relative w-full h-screen bg-cover bg-center">
       <NavigationList />
-      <div class="pt-[calc(48px+8px)] h-[calc(100vh-8px)] overflow-hidden w-full inline-block px-2">
+      <div class="pt-13.25 h-[calc(100vh-53px)] overflow-hidden w-full inline-block px-2">
         <router-view />
       </div>
     </div>

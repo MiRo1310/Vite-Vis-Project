@@ -79,7 +79,6 @@ const total = computed(() => {
 <template>
   <div class="m-4">
     <div class="print-none">
-      <h1 class="text-2xl font-bold mb-4">Auflistung</h1>
       <Navigation>
         <Button @click="printPage" variant="default">Drucken</Button>
       </Navigation>

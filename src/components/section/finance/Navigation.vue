@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useRoute } from "vue-router";
+import DarkMode from "@/components/layout/DarkMode.vue";
 
 const route = useRoute();
 </script>
@@ -17,7 +18,9 @@ const route = useRoute();
       <RouterLink :to="{ name: 'descriptions' }">
         <Button as="div" :variant="route.name === 'descriptions' ? 'default' : 'outline'">Beschreibung</Button>
       </RouterLink>
+      <DarkMode small />
     </div>
+
     <slot />
   </div>
 </template>

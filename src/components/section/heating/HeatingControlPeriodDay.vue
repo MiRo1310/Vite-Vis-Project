@@ -60,9 +60,9 @@ const activeClass = computed(() => (i: number) => {
           <div class="flex flex-col gap-1.25 bg-background/50">
             <Select
               :items="tempArray()"
-              :selected="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
+              :model-value="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
               :class="[activeClass(i)]"
-              @update:selected="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
+              @update:model-value="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
             />
           </div>
         </div>

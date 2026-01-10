@@ -53,9 +53,9 @@ const updateData = (val: string | number | boolean | undefined, id: string | und
       <Select
         :items="row.select.items"
         border="bottom"
-        :selected="row.select.selected"
+        :model-value="row.select.selected"
         :placeholder="row.select.placeholder || ''"
-        @update:selected="updateData(parseInt($event ?? ''), row.select.id)"
+        @update:model-value="updateData(parseInt($event ?? ''), row.select.id)"
       />
     </div>
   </div>

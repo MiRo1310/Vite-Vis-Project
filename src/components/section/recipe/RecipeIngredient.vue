@@ -20,7 +20,7 @@ const calculatedKcal = computed(() => {
 </script>
 
 <template>
-  <div class="py-[2px] relative rounded-none m-0 bg-white border border-accent">
+  <div class="py-0.5 relative rounded-none m-0 border border-accent">
     <div class="flex justify-between">
       <div class="flex items-baseline space-x-4">
         <div class="ml-6 flex items-baseline space-x-4 min-w-80">

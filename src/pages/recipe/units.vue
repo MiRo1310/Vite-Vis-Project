@@ -21,7 +21,6 @@ const { result } = useQuery(
 
 const columns: DatatableColumns<GetUnitsQuery["units"][number]>[] = [
   { source: "name", labelKey: "Name" },
-  { source: "id", labelKey: "ID" },
   { source: "id", labelKey: "", type: "component", component: UnitAction },
 ];
 </script>

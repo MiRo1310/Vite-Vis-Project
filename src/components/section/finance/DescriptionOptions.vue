@@ -55,14 +55,7 @@ const selected = ref("");
 </script>
 
 <template>
-  <Select
-    v-if="asSelect"
-    :items="selectOptions"
-    @update:selected="modelValue = $event"
-    placeholder="Wähle eine Beschreibung"
-    :selected
-    class="w-48"
-  />
+  <Select v-if="asSelect" :items="selectOptions" v-model="modelValue" placeholder="Wähle eine Beschreibung" :selected class="w-48" />
   <Input
     v-else
     type="text"

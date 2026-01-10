@@ -23,7 +23,6 @@ const { result } = useQuery(
 
 const columns: DatatableColumns<GetCategoriesQuery["productCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },
-  { source: "id", labelKey: "ID" },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryUpdate },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryRemove },
 ];

@@ -25,9 +25,9 @@ const selected = ref("");
 </script>
 
 <template>
-  <div class="flex flex-col space-y-2 overflow-hidden h-full">
-    <div class="flex justify-between items-center space-x-2">
-      <div class="flex space-x-2 items-center">
+  <div class="flex flex-col overflow-hidden h-full">
+    <div class="flex justify-between items-center gap-2">
+      <div class="flex gap-2 items-center">
         <RecipeSelection v-model:selected="selected" v-model:selected-name="selectedName" class="w-80" @update:selected="updateSelect" />
         <RecipeAddNew />
       </div>

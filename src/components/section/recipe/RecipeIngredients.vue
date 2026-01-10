@@ -2,7 +2,7 @@
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import { sortedHeaders } from "@/lib/object";
 import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
-import Input from "@/components/ui/input/InputShadcn.vue";
+import Input from "@/components/shared/input/Input.vue";
 import { computed, ref } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 
@@ -45,7 +45,7 @@ const getIngredientGroupLength = computed(() => {
     <h2 class="font-bold text-xl">Zutaten für {{ portions }} Portionen</h2>
     <div class="flex items-center justify-between mt-2 mr-1">
       <div class="flex items-center space-x-2">
-        <Input v-model:model-value="customPortions" class="bg-white w-16" type="number" />
+        <Input v-model:model-value="customPortions" class="w-16" type="number" />
         <label>Portionen anpassen</label>
       </div>
       <div>
@@ -53,8 +53,8 @@ const getIngredientGroupLength = computed(() => {
         <Badge :value="getTotalKcal" unit="kcal/p" />
       </div>
     </div>
-    <div v-for="(_, index) in getIngredientGroupLength" :key="index">
-      <div class="mt-2 mb-1 h-8 flex items-center justify-between bg-white/70 px-1 py-1">
+    <div v-for="index in getIngredientGroupLength" :key="index">
+      <div class="mt-2 mb-1 h-8 flex items-center justify-between bg-popover px-1 py-1">
         <p v-if="recipe?.recipeHeaderProducts" class="font-semibold underline">
           {{ sortedHeaders(recipe.recipeHeaderProducts)?.[index]?.text }}
         </p>

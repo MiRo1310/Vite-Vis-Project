@@ -5,7 +5,7 @@ const props = defineProps<{ value?: string | number; unit?: string; class?: HTML
 </script>
 
 <template>
-  <p :class="['mr-4', props.class]" data-component="ValueWithUnit">
+  <p :class="['mr-4', props.class]" data-component="valueWithUnit">
     {{ value }}
     <span class="w-1 inline-block">{{ unit }} </span>
   </p>
