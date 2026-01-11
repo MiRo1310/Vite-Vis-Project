@@ -51,4 +51,17 @@ jobs:
       - name: Audit dependencies
         run: |
           yarn audit || echo "::warning::yarn audit hat Probleme gefunden"
+        continue-on-error: false 
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - run: yarn install --frozen-lockfile
+      - name: Vitest tests
+        run: yarn run test
         continue-on-error: false
