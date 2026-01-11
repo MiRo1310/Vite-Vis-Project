@@ -46,6 +46,14 @@ export default defineConfig([
       "vue/multi-word-component-names": "off",
       "vue/no-unused-components": "warn",
       "vue/no-mutating-props": "error",
+      "vue/no-unused-properties": [
+        "error",
+        {
+          groups: ["props"],
+          deepData: false,
+          ignorePublicMembers: false,
+        },
+      ],
       complexity: ["error", 10],
     },
     languageOptions: {

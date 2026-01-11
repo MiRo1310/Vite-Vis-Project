@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useLazyQuery } from "@vue/apollo-composable";
-import { computed, HTMLAttributes, onMounted, watchEffect } from "vue";
+import { computed, onMounted, watchEffect } from "vue";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
 import Select from "@/components/shared/select/Select.vue";
-
-defineProps<{ class?: HTMLAttributes["class"] }>();
 
 const { result, load, refetch } = useLazyQuery(
   graphql(`

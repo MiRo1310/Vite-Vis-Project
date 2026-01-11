@@ -14,6 +14,7 @@ const props = withDefaults(
     state: StoreValue<string | number>;
     debounce?: number;
     ack?: boolean;
+    // eslint-disable-next-line vue/no-unused-properties
     color?: keyof typeof variants.color;
   }>(),
   { type: "number", unit: undefined, debounce: 1000, color: "default" },

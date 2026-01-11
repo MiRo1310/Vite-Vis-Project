@@ -9,7 +9,7 @@ import { DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
 import { Textarea } from "@/components/ui/textarea";
 
-const props = defineProps<{ value: string; row: Row<DescriptionsQuery["description"][number]>; customValue: unknown; source: string }>();
+const props = defineProps<{ value: string; row: Row<DescriptionsQuery["description"][number]> }>();
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveDescription($id: UUID!) {

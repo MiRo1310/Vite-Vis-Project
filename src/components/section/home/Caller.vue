@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, HTMLAttributes } from "vue";
+import { computed } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { phoneStates } from "@/subscribeIds/phone.ts";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
@@ -8,7 +8,6 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";
 
-defineProps<{ class?: HTMLAttributes["class"] }>();
 useDynamicSubscribe(phoneStates);
 
 const { phone } = useIobrokerStore();

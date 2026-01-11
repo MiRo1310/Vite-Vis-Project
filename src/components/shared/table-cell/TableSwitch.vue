@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Row } from "@tanstack/vue-table";
-import { CustomValue } from "@/lib/table.ts";
 import { AlexaDotAction } from "@/pages/alexa.vue";
 import { Switch } from "@/components/ui/switch";
 import { ref } from "vue";
@@ -9,7 +8,6 @@ const props = defineProps<{
   value: boolean | undefined;
   row: Row<AlexaDotAction>;
   source: string;
-  customValue: CustomValue;
   callback: (params: Record<string, any>) => void;
 }>();
 

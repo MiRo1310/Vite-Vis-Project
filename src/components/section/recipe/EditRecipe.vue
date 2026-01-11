@@ -2,7 +2,7 @@
 import { Button } from "@/components/shared/button";
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 
-defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"]; selectedName?: string }>();
+defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"] }>();
 </script>
 
 <template>

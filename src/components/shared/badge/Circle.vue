@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<{ color: keyof typeof variants.color }>();
 
 const variants = {

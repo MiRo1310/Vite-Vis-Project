@@ -4,6 +4,7 @@ import { HTMLAttributes } from "vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 interface StyleProps {
+  // eslint-disable-next-line vue/no-unused-properties
   style?: keyof (typeof variantsCardTitle)["style"];
 }
 

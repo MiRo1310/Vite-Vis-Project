@@ -9,7 +9,7 @@ import { Input } from "@/components/shared/input";
 import { AddressesQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
 
-const props = defineProps<{ value: string; row: Row<AddressesQuery["addresses"][number]>; customValue: unknown; source: string }>();
+const props = defineProps<{ value: string; row: Row<AddressesQuery["addresses"][number]> }>();
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveAddress($id: UUID!) {

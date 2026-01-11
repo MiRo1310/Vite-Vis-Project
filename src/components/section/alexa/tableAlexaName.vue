@@ -5,9 +5,13 @@ import { AlexaDotAction } from "@/pages/alexa.vue";
 
 defineProps<{
   value: string;
+  // eslint-disable-next-line vue/no-unused-properties
   row: Row<AlexaDotAction>;
+  // eslint-disable-next-line vue/no-unused-properties
   source: string;
+  // eslint-disable-next-line vue/no-unused-properties
   customValue: CustomValue;
+  // eslint-disable-next-line vue/no-unused-properties
   callback?: () => void;
 }>();
 </script>
