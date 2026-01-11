@@ -14,7 +14,7 @@ export function stringToJSON<T>(string: string | undefined): T {
       return json as T;
     }
   } catch (e) {
-    logging(e as string);
+    logging({ e });
   }
   return {} as T;
 }
@@ -26,7 +26,7 @@ export function JSONToString(json: object | undefined): string {
   try {
     return JSON.stringify(json, null, 2);
   } catch (e) {
-    logging(e as string);
+    logging({ e });
   }
   return "";
 }

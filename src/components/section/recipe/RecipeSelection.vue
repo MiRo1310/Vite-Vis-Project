@@ -3,7 +3,7 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { computed, HTMLAttributes, onMounted, watchEffect } from "vue";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
-import Select from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/Select.vue";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 

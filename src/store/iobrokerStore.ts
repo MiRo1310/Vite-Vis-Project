@@ -54,7 +54,7 @@ export interface IoBrokerStoreState {
   time: TimeStates;
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
-  airConditioners?: AirConditioners;
+  airConditioners: AirConditioners;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;

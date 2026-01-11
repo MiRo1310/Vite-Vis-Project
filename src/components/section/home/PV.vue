@@ -3,32 +3,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { computed } from "vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { getValNumber } from "@/lib/object.ts";
 
 const { pv } = useIobrokerStore();
 
 const infos = computed((): InfoTypes[][] => [
   [
-    { title: "Grosse PV", value: pv?.pvGross?.val, unit: "Wh" },
-    { title: "Kleine PV", value: pv?.smallPv?.val, unit: "Wh" },
+    { title: "Grosse PV", value: getValNumber(pv.pvGross), unit: "Wh" },
+    { title: "Kleine PV", value: getValNumber(pv.smallPv), unit: "Wh" },
   ],
   [
     {
-      title: (pv?.feedIn?.val || 0) < 0 ? "Bezug" : "Einspeisung",
-      value: (pv?.feedIn?.val || 0) < 0 ? (pv?.feedIn?.val || 0) * -1 : pv?.feedIn?.val,
+      title: getValNumber(pv.feedIn) < 0 ? "Bezug" : "Einspeisung",
+      value: getValNumber(pv.feedIn) < 0 ? getValNumber(pv.feedIn) * -1 : getValNumber(pv.feedIn),
       unit: "W",
-      valueClass: (pv?.feedIn?.val || 0) < 0 ? "text-destructive" : "text-successas",
+      valueClass: getValNumber(pv.feedIn) < 0 ? "text-destructive" : "text-success",
     },
-    { title: "Aktives Laden", value: pv?.activeCharging?.val, unit: "W" },
-    { title: "Ladezustand", value: pv?.batteryCharging?.val, unit: "%" },
+    { title: "Aktives Laden", value: getValNumber(pv.activeCharging), unit: "W" },
+    { title: "Ladezustand", value: getValNumber(pv.batteryCharging), unit: "%" },
   ],
   [
-    { title: "Verkauft", value: pv?.profit?.val, unit: "€" },
+    { title: "Verkauft", value: getValNumber(pv.profit), unit: "€" },
     {
       title: "Genutzt",
-      value: ((pv?.savedMoney?.val || 0) - (pv?.profit?.val || 0)).toFixed(2),
+      value: (getValNumber(pv.savedMoney) - getValNumber(pv.profit)).toFixed(2),
       unit: "€",
     },
-    { title: "Ersparnis", value: pv?.savedMoney?.val, unit: "€" },
+    { title: "Ersparnis", value: getValNumber(pv.savedMoney), unit: "€" },
   ],
 ]);
 </script>

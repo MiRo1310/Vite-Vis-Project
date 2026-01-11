@@ -9,6 +9,7 @@ import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import { getValBoolean, getValNumber, getValString } from "@/lib/object.ts";
 
 const { pool } = storeToRefs(useIobrokerStore());
 
@@ -23,50 +24,51 @@ interface Items {
 }
 
 const items = computed(() => {
+  const status = getValBoolean(pool.value.status);
   const items: Items[] = [
     {
       title: "Heizung aktiv",
       type: "bool",
-      value: (pool.value.consumption?.val ?? 0) > 30,
+      value: getValNumber(pool.value.consumption) > 30,
     },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
-      value: pool.value.heaterState?.val ?? false,
+      value: pool.value.heaterState?.val ?? "false",
     },
     {
       title: "Modus",
       type: "text",
-      value: getMode(pool.value.mode?.val ?? ""),
+      value: getMode(getValString(pool.value.mode)),
     },
     {
       title: "Verbrauch",
       type: "number",
-      value: pool.value.status?.val ? (pool.value.consumption?.val ?? 0) : 0,
+      value: status ? getValNumber(pool.value.consumption) : 0,
       unit: "W",
     },
     {
       title: "Wunschtemperatur",
       type: "input",
-      value: pool.value.tempSet?.val ?? 0,
+      value: getValNumber(pool.value.tempSet),
       unit: "°C",
     },
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: pool.value.status?.val ? (pool.value.tempIn?.val ?? 0) : 0,
+      value: status ? getValNumber(pool.value.tempIn) : 0,
       unit: "°C",
     },
     {
       title: "Temperatur Ausgang",
       type: "text",
-      value: pool.value.status?.val ? pool.value.tempOut?.val || 0 : 0,
+      value: status ? getValNumber(pool.value.tempOut) : 0,
       unit: "°C",
     },
     {
       title: "Lüfterdrehzahl",
       type: "text",
-      value: pool.value.rotor?.val || 0,
+      value: getValNumber(pool.value.rotor),
       unit: "Rpm",
     },
   ];
