@@ -20,7 +20,7 @@ const { mutate } = useMutation(
 const { getCategoryIdByName } = useProductCategories();
 
 async function removeCategoryById() {
-  if (!props.id) return;
+  if (!props.id) {return;}
 
   await mutate({ id: props.id });
   emits("update:removeCategory");

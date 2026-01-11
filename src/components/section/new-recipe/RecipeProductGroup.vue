@@ -55,9 +55,9 @@ const getProductByPositions = (productIndex: number, groupIndex: number): Produc
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
   const obj = getProductByPositions(productIndex, props.groupIndex);
 
-  if (!val) return;
+  if (!val) {return;}
   if (!obj) {
-    let newItem = {
+    const newItem = {
       productId: "",
       description: "",
       amount: 0,
@@ -97,7 +97,7 @@ const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
 };
 
 const removeProduct = async (productIndex: number | null) => {
-  if (disableDelete()) return;
+  if (disableDelete()) {return;}
 
   if (countedProducts.value === 1) {
     const recipeId = props.recipe?.id;
@@ -116,7 +116,7 @@ const removeProduct = async (productIndex: number | null) => {
 
 const removeProductGroupInDB = async () => {
   const groupId = headersProductArray.value.find((header) => header.position === props.groupIndex)?.id;
-  if (!groupId) return true; // if no id is found, the group is not saved in the db
+  if (!groupId) {return true;} // if no id is found, the group is not saved in the db
 
   const recipeId = props.recipe?.id;
   if (!recipeId) {
@@ -137,7 +137,7 @@ const removeProductInDB = async (productIndex: number): Promise<boolean | undefi
 };
 
 const removeProductGroup = async () => {
-  if (disableDelete()) return;
+  if (disableDelete()) {return;}
 
   const success = await removeProductGroupInDB();
   if (!success) {
@@ -206,7 +206,7 @@ const confirmProductDelete = (productIndex: number) => {
 };
 
 const selectableOptions = computed(() => (index: number): SelectOption[] => {
-  let productId = productArray.value.find((product) => product.productPosition === index && product.groupPosition === props.groupIndex)?.productId;
+  const productId = productArray.value.find((product) => product.productPosition === index && product.groupPosition === props.groupIndex)?.productId;
 
   const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === productId);
 

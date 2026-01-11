@@ -41,7 +41,7 @@ const { load, onResult, refetch } = useLazyQuery(getProductByIdQuery);
 const dialogOpen = ref(false);
 
 const productById = async () => {
-  if (!props.value) return;
+  if (!props.value) {return;}
 
   await load(getProductByIdQuery, { id: props.value });
   await refetch({ id: props.value });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore";
 import { storeToRefs } from "pinia";
 import { RoomItems, RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
@@ -16,6 +16,10 @@ const iobrokerStore = useIobrokerStore();
 
 const { windowGlobal, time, fenster, rolladen, shutterAutoDownTime, shutterAutoUp, batteries, hmip } = storeToRefs(iobrokerStore);
 
+const getVal = <T,>(storeValue: StoreValue<T>): T | undefined => {
+  return storeValue?.val;
+};
+
 const rooms = computed((): RoomType[] => {
   const { kueche, esszimmer, wohnzimmer, schlafen, bad, abstellraumog, kinderzimmer, gaestezimmer } = notSubscribedIds;
   const batterie: BatteriesType = batteries.value;
@@ -24,14 +28,14 @@ const rooms = computed((): RoomType[] => {
       name: "Küche",
       shutter: true,
       batteryHeating: [batterie["HMIP Kueche"]?.lowBat],
-      bellStatus: batterie.xioami_fensterkontakt_kueche_klingel?.available,
-      temp: [hmip.value.kitchen_valveActualTemp?.val],
+      bellStatus: batterie.xioami_fensterkontakt_kueche_klingel.available,
+      temp: [getVal(hmip.value.kitchen_valveActualTemp)],
       windows: [
         {
           name: "Tür",
           door: true,
-          isOpenStatus: fenster.value.kuecheTuer?.val ?? false,
-          shutterPosition: rolladen.value.kuecheTuerPosition?.val,
+          isOpenStatus: getVal(fenster.value.kuecheTuer),
+          shutterPosition: getVal(rolladen.value.kuecheTuerPosition),
           shutterAutoDown: shutterAutoDownTime.value.kuecheTuerAuto,
           shutterAutoUpTime: shutterAutoUp.value.kuecheTuerAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.kuecheTuerAutoUp,
@@ -46,8 +50,8 @@ const rooms = computed((): RoomType[] => {
           shutterAutoUp: shutterAutoUp.value.kuecheFensterAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.kuecheFensterAuto,
           shutterAutoDownDelay: shutterAutoDownTime.value.kuecheFensterDelay,
-          isOpenStatus: fenster.value.kuecheFenster?.val ?? false,
-          shutterPosition: rolladen.value.kuecheFensterPosition?.val,
+          isOpenStatus: getVal(fenster.value.kuecheFenster),
+          shutterPosition: getVal(rolladen.value.kuecheFensterPosition),
           windowSensorReachable: batterie.xioami_kitchen_window?.available,
         },
       ],
@@ -56,13 +60,13 @@ const rooms = computed((): RoomType[] => {
       name: "Esszimmer",
       shutter: true,
       batteryHeating: [batterie["HMIP Esszimmer"]?.lowBat],
-      temp: [hmip.value.dining_valveActualTemp?.val],
+      temp: [getVal(hmip.value.dining_valveActualTemp)],
       windows: [
         {
           name: "links",
           idShutterPosition: esszimmer.shutterPosition,
-          isOpenStatus: fenster.value.esszimmerLinks?.val ?? false,
-          shutterPosition: rolladen.value.esszimmerLinksPosition?.val,
+          isOpenStatus: getVal(fenster.value.esszimmerLinks),
+          shutterPosition: getVal(rolladen.value.esszimmerLinksPosition),
           shutterAutoUpTime: shutterAutoUp.value.esszimmerLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.esszimmerLinksAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.esszimmerLinksAuto,
@@ -72,7 +76,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "rechts",
           idShutterPosition: esszimmer.shutterPosition,
-          isOpenStatus: fenster.value.esszimmerRechts?.val ?? false,
+          isOpenStatus: fenster.value.esszimmerRechts?.val,
           shutterPosition: rolladen.value.esszimmerLinksPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.esszimmerLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.esszimmerLinksAutoUp,
@@ -91,7 +95,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "Ecke",
           idShutterPosition: wohnzimmer.shutterPositionCorner,
-          isOpenStatus: fenster.value.wohnzimmerEcke?.val ?? false,
+          isOpenStatus: fenster.value.wohnzimmerEcke?.val,
           shutterPosition: rolladen.value.wohnzimmerEckePosition?.val,
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
@@ -102,7 +106,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "links",
           idShutterPosition: wohnzimmer.shutterPositionLeft,
-          isOpenStatus: fenster.value.wohnzimmerLinks?.val ?? false,
+          isOpenStatus: fenster.value.wohnzimmerLinks?.val,
           shutterPosition: rolladen.value.wohnzimmerLinksPosition?.val,
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
@@ -113,7 +117,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "mitte",
           idShutterPosition: wohnzimmer.shutterPositionCenter,
-          isOpenStatus: fenster.value.wohnzimmerMitte?.val ?? false,
+          isOpenStatus: fenster.value.wohnzimmerMitte?.val,
           shutterPosition: rolladen.value.wohnzimmerMittePosition?.val,
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
@@ -124,7 +128,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "rechts",
           idShutterPosition: wohnzimmer.shutterPositionRight,
-          isOpenStatus: fenster.value.wohnzimmerRechts?.val ?? false,
+          isOpenStatus: fenster.value.wohnzimmerRechts?.val,
           shutterPosition: rolladen.value.wohnzimmerRechtsPosition?.val,
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
@@ -144,7 +148,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "Fenster",
           idShutterPosition: schlafen.shutterPositionWindow,
-          isOpenStatus: fenster.value.schlafenFenster?.val ?? false,
+          isOpenStatus: fenster.value.schlafenFenster?.val,
           shutterPosition: rolladen.value.schlafenFensterPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.schlafenFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.schlafenFensterAutoUp,
@@ -156,7 +160,7 @@ const rooms = computed((): RoomType[] => {
           name: "Tür",
           idShutterPosition: schlafen.shutterPositionDoor,
           door: true,
-          isOpenStatus: fenster.value.schlafenTuer?.val ?? false,
+          isOpenStatus: fenster.value.schlafenTuer?.val,
           shutterPosition: rolladen.value.schlafenTuerPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.schlafenTuerAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.schlafenTuerAutoUp,
@@ -176,7 +180,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           idShutterPosition: kinderzimmer.shutterPosition,
-          isOpenStatus: fenster.value.kinderzimmerFenster?.val ?? false,
+          isOpenStatus: fenster.value.kinderzimmerFenster?.val,
           shutterPosition: rolladen.value.kinderzimmerFensterPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.kinderzimmerFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.kinderzimmerFensterAutoUp,
@@ -195,7 +199,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           idShutterPosition: bad.shutterPosition,
-          isOpenStatus: fenster.value.badFenster?.val ?? false,
+          isOpenStatus: fenster.value.badFenster?.val,
           shutterPosition: rolladen.value.badFensterPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.badFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.badFensterAutoUp,
@@ -214,7 +218,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           idShutterPosition: gaestezimmer.shutterPosition,
-          isOpenStatus: fenster.value.gaestezimmerFenster?.val ?? false,
+          isOpenStatus: fenster.value.gaestezimmerFenster?.val,
           shutterPosition: rolladen.value.gaestezimmerFensterPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.gaestezimmerFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.gaestezimmerFensterAutoUp,
@@ -231,7 +235,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "links",
           idShutterPosition: abstellraumog.shutterPositionLeft,
-          isOpenStatus: fenster.value.abstellraumOgLinks?.val ?? false,
+          isOpenStatus: fenster.value.abstellraumOgLinks?.val,
           shutterPosition: rolladen.value.abstellraumOgLinksPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.abstellraumOgLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.abstellraumOgLinksAutoUp,
@@ -242,7 +246,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "rechts",
           idShutterPosition: abstellraumog.shutterPositionRight,
-          isOpenStatus: fenster.value.abstellraumOgRechts?.val ?? false,
+          isOpenStatus: fenster.value.abstellraumOgRechts?.val,
           shutterPosition: rolladen.value.abstellraumOgRechtsPosition?.val,
           shutterAutoUpTime: shutterAutoUp.value.abstellraumOgRechtsAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.abstellraumOgRechtsAutoUp,
@@ -259,7 +263,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "Haustür",
           door: true,
-          isOpenStatus: fenster.value.haustuer?.val ?? false,
+          isOpenStatus: fenster.value.haustuer?.val,
           windowSensorReachable: batterie.xioami_housedoor_right?.available,
         },
       ],
@@ -271,7 +275,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           door: true,
-          isOpenStatus: fenster.value.kellerTuer?.val ?? false,
+          isOpenStatus: fenster.value.kellerTuer?.val,
           windowSensorReachable: batterie.xioami_cellar_door?.available,
         },
       ],
@@ -283,7 +287,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           door: true,
-          isOpenStatus: fenster.value.kellerFlurFenster?.val ?? false,
+          isOpenStatus: fenster.value.kellerFlurFenster?.val,
           windowSensorReachable: batterie.xioami_cellar_stair_window?.available,
         },
       ],
@@ -295,7 +299,7 @@ const rooms = computed((): RoomType[] => {
         {
           name: "",
           door: true,
-          isOpenStatus: fenster.value.bueroFenster?.val ?? false,
+          isOpenStatus: fenster.value.bueroFenster?.val,
           windowSensorReachable: batterie.xioami_office_window?.available,
         },
       ],
@@ -308,13 +312,13 @@ const rooms = computed((): RoomType[] => {
         {
           name: "links",
           door: true,
-          isOpenStatus: fenster.value.gaesteWcLinks?.val ?? false,
+          isOpenStatus: fenster.value.gaesteWcLinks?.val,
           windowSensorReachable: batterie.xioami_guest_toilet_left?.available,
         },
         {
           name: "rechts",
           door: true,
-          isOpenStatus: fenster.value.gaesteWcRechts?.val ?? false,
+          isOpenStatus: fenster.value.gaesteWcRechts?.val,
           windowSensorReachable: batterie.xioami_guest_toilet_right?.available,
         },
       ],
@@ -325,12 +329,12 @@ const rooms = computed((): RoomType[] => {
       windows: [
         {
           name: "links",
-          isOpenStatus: fenster.value.flurLinks?.val ?? false,
+          isOpenStatus: fenster.value.flurLinks?.val,
           windowSensorReachable: batterie.xioami_floor_left?.available,
         },
         {
           name: "rechts",
-          isOpenStatus: fenster.value.flurRechts?.val ?? false,
+          isOpenStatus: fenster.value.flurRechts?.val,
           windowSensorReachable: batterie.xioami_floor_right?.available,
         },
       ],
@@ -341,7 +345,7 @@ const rooms = computed((): RoomType[] => {
       windows: [
         {
           name: "",
-          isOpenStatus: fenster.value.abstellraumFenster?.val ?? false,
+          isOpenStatus: fenster.value.abstellraumFenster?.val,
           windowSensorReachable: batterie.xioami_store_window?.available,
         },
       ],
@@ -352,12 +356,12 @@ const rooms = computed((): RoomType[] => {
       windows: [
         {
           name: "left",
-          isOpenStatus: fenster.value.dachbodenLinks?.val ?? false,
+          isOpenStatus: fenster.value.dachbodenLinks?.val,
           windowSensorReachable: batterie.xioami_attic_left?.available,
         },
         {
           name: "rechts",
-          isOpenStatus: fenster.value.dachbodenRechts?.val ?? false,
+          isOpenStatus: fenster.value.dachbodenRechts?.val,
           windowSensorReachable: batterie.xioami_attic_right?.available,
         },
       ],

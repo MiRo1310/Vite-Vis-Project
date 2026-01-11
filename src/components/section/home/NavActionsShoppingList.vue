@@ -9,7 +9,7 @@ import { AlexaList } from "@/types/types.ts";
 defineProps<{ list: AlexaList[] }>();
 
 const removeItem = (id: string) => {
-  if (adminConnection) adminConnection.setState(id, true);
+  if (adminConnection) {adminConnection.setState(id, true);}
 };
 </script>
 <template>

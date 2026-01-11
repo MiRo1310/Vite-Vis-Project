@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
-import Select from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/Select.vue";
 import { colors } from "@/config/colors.ts";
 import { Button } from "@/components/shared/button";
 import { Trash2 } from "lucide-vue-next";

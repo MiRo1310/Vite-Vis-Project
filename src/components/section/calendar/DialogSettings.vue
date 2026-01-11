@@ -30,7 +30,7 @@ const json = computed((): JSONStyle[] => {
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
 function updateHandler(val: { input: string; select: SelectOption; index: number }) {
-  if (val.select?.class == "" || !val.input || (val?.input as string) == "") {
+  if (val.select?.class === "" || !val.input || (val?.input as string) === "") {
     return;
   }
 
@@ -54,10 +54,14 @@ function addValueToObj(obj: JSONStyle, val: { input: string; select: SelectOptio
 }
 
 function updateToIobroker() {
-  if (!modifiedObj.value) return;
+  if (!modifiedObj.value) {
+    return;
+  }
 
   const id = styling?.calendarStyle?.id;
-  if (!id) return;
+  if (!id) {
+    return;
+  }
   adminConnection?.setState(id, JSON.stringify(modifiedObj.value));
 }
 

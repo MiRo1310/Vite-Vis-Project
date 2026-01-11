@@ -13,7 +13,7 @@ const handleWindowClick = () => {
 };
 
 const getWindowStyle = computed(() => {
-  if (iobrokerStore.windowGlobal.fensterOffen?.val) return "text-yellow-500";
+  if (iobrokerStore.windowGlobal.fensterOffen?.val) {return "text-yellow-500";}
   return "text-green-500";
 });
 </script>

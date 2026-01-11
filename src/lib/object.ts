@@ -1,9 +1,9 @@
 import { computed } from "vue";
 import { SelectOption } from "@/types/types.ts";
 export const sortedHeaders = computed(() => <T extends { position: number }>(array: (T | null)[]): T[] => {
-  if (!Array.isArray(array)) return [] as T[];
+  if (!Array.isArray(array)) {return [] as T[];}
   return ([...array] as { position: number }[]).sort((a, b) => {
-    if (!a.position || !b.position) return 0;
+    if (!a.position || !b.position) {return 0;}
     return a.position - b.position;
   }) as T[];
 });

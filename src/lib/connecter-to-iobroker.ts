@@ -4,6 +4,7 @@ import { idToSubscribeOnAppStart } from "../subscribeIds/ids-to-subscribe.ts";
 import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { isDefined } from "@vueuse/core";
+import { logging } from "@/lib/logging.ts";
 
 let iobrokerStore: any;
 document.addEventListener("DOMContentLoaded", () => {
@@ -71,12 +72,10 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               });
             })
             .catch((e) => {
-              console.error(`Error subscribing to ${stateId.id}`);
-              console.error(e);
+              logging({ e, title: `Error subscribing to ${stateId.id}` });
             });
         } catch (e) {
-          console.error(`Error subscribing to ${stateId.id}`);
-          console.error(e);
+          logging({ e, title: `Error subscribing to ${stateId.id}` });
         }
 
         iobrokerStore.addIdToSubscribedIds(stateId.id);

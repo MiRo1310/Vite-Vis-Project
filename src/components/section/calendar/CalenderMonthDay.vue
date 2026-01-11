@@ -7,6 +7,7 @@ import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthD
 import { stringToJSON } from "@/lib/string.ts";
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
+import { logging } from "@/lib/logging.ts";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{
@@ -25,8 +26,8 @@ const getDayValue = computed(() => {
     return cal.filter((day) => {
       return isDateBetween(day);
     });
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    logging({ e });
   }
   return [];
 });
@@ -100,7 +101,7 @@ const dialogHandler = () => {
       </span>
     </p>
     <TextSeparator />
-    <div class="overflow-auto max-h-[calc(6rem-22px)]">
+    <div class="overflow-auto max-h-18.5">
       <div v-for="(event, index) in getDayValue" :key="index" class="text-xs">
         <p :class="[[getColor(event)], 'mb-0.5 px-2 mt-px block truncate']">
           {{ event.event }}

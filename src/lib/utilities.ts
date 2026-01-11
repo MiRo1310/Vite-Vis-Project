@@ -1,5 +1,5 @@
 export const stringToObject = (str: string) => {
-  if (str === "" || !str) return {};
+  if (str === "" || !str) {return {};}
 
   return JSON.parse(str);
 };

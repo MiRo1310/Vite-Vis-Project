@@ -16,7 +16,7 @@ const { timer } = storeToRefs(iobrokerStore);
 
 const nameByIndex = computed(() => (index: number) => {
   const timerName = (timer.value[index as keyof Timers] as Timer)?.name?.val;
-  return timerName != "Timer" ? timerName : null;
+  return timerName !== "Timer" ? timerName : null;
 });
 </script>
 

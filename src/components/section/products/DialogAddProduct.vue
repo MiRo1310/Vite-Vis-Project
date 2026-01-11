@@ -50,7 +50,7 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  if (!values.unit) return;
+  if (!values.unit) {return;}
   const dto: ProductCreateDtoInput = {
     name: values.name,
     category: values.category,
@@ -86,7 +86,7 @@ const closeDialog = () => {
 watch(
   () => dialogOpen.value,
   () => {
-    if (updateValue.value) return;
+    if (updateValue.value) {return;}
     form.resetForm();
   },
 );

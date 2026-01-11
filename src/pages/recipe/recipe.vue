@@ -11,7 +11,7 @@ const { openedRecipe } = storeToRefs(useRecipeStore());
 const router = useRouter();
 
 onMounted(async () => {
-  if (!openedRecipe.value?.id) return;
+  if (!openedRecipe.value?.id) {return;}
   selected.value = openedRecipe.value.id;
   await updateSelect();
 });

@@ -16,7 +16,7 @@ const isActive = computed(() => (props.valueAdditive !== undefined ? props.value
 
 function handleClickLight() {
   const id = props.light?.id;
-  if (!id) return;
+  if (!id) {return;}
   adminConnection?.setState(id, props.valueAdditive !== undefined ? true : !isActive.value);
 }
 </script>

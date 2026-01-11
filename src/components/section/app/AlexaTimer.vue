@@ -20,7 +20,7 @@ const closeWindow = () => {
 };
 
 const stopTimer = (index: number) => {
-  if (adminConnection) adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);
+  if (adminConnection) {adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);}
 };
 
 const timerLabel = computed(() => (i: number): string => {

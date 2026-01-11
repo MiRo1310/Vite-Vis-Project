@@ -92,7 +92,7 @@ const error = {
 };
 const infos = computed(() => [
   {
-    title: `Firmware`,
+    title: "Firmware",
     value: landroid.value.firmware?.val,
     unit: "",
   },

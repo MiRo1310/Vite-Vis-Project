@@ -22,7 +22,7 @@ const newCategory = defineModel<string>("newCategory");
 const { getCategoryIdByName } = useProductCategories();
 
 const rename = async () => {
-  if (disabled.value) return;
+  if (disabled.value) {return;}
 
   await mutate({ id: props.id || "", name: newCategory.value || "" });
   newCategory.value = "";

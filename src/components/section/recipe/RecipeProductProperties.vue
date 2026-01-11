@@ -15,7 +15,7 @@ const isOpen = ref(false);
 const information = computed((): { name: string; value?: string | number | null; classCell?: string }[] => {
   const product = props.product;
 
-  if (!product) return [];
+  if (!product) {return [];}
 
   return [
     { name: "Kategorie", value: getCategoryNameById(product.category || "") },
