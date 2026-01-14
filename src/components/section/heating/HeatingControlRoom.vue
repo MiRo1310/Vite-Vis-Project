@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/ui/button";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";

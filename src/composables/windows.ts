@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 
 const { fenster } = storeToRefs(useIobrokerStore());

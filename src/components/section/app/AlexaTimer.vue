@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { X } from "lucide-vue-next";
 import Button from "../../ui/button/Button.vue";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/appStore.ts";
@@ -20,7 +20,9 @@ const closeWindow = () => {
 };
 
 const stopTimer = (index: number) => {
-  if (adminConnection) {adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);}
+  if (adminConnection) {
+    adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);
+  }
 };
 
 const timerLabel = computed(() => (i: number): string => {

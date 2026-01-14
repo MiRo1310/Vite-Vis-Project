@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { RoomItems, RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";

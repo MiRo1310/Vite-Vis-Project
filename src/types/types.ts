@@ -1,4 +1,4 @@
-import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore.ts";
+import { IoBrokerStates, StoreValue } from "@/store/ioBrokerStore.ts";
 
 export interface AlexaList {
   name: string;

@@ -1,4 +1,14 @@
-import { blinds0, blinds10, blinds100, blinds20, blinds30, blinds40, blinds50, blinds60, blinds70, blinds80, blinds90 } from "@/public";
+import blinds0 from "@/public/blinds2_double_0.png";
+import blinds10 from "@/public/blinds2_double_10.png";
+import blinds20 from "@/public/blinds2_double_20.png";
+import blinds30 from "@/public/blinds2_double_30.png";
+import blinds40 from "@/public/blinds2_double_40.png";
+import blinds50 from "@/public/blinds2_double_50.png";
+import blinds60 from "@/public/blinds2_double_60.png";
+import blinds70 from "@/public/blinds2_double_70.png";
+import blinds80 from "@/public/blinds2_double_80.png";
+import blinds90 from "@/public/blinds2_double_90.png";
+import blinds100 from "@/public/blinds2_double_100.png";
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 

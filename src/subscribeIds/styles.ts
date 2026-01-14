@@ -1,5 +1,5 @@
 import { IdToSubscribe } from "@/types/types.ts";
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 
 export interface StylesType {
   calendarStyle: StoreValue<string>;

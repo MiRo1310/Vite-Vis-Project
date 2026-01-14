@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card } from "@/components/shared/card";
 import Svg from "@/components/shared/image/Svg.vue";
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { computed, HTMLAttributes } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 
@@ -16,7 +16,9 @@ const isActive = computed(() => (props.valueAdditive !== undefined ? props.value
 
 function handleClickLight() {
   const id = props.light?.id;
-  if (!id) {return;}
+  if (!id) {
+    return;
+  }
   adminConnection?.setState(id, props.valueAdditive !== undefined ? true : !isActive.value);
 }
 </script>

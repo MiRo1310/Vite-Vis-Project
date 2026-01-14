@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { useDebounceFn } from "@vueuse/core";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { watch } from "vue";

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IdToSubscribe, Level, Log, LogReset } from "@/types/types.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button";

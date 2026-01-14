@@ -2,7 +2,7 @@
 import LightCard from "@/components/section/light/LightCard.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { lightStates } from "@/subscribeIds/light.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 

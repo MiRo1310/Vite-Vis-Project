@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Select from "@/components/shared/select/Select.vue";
-import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { StoreValue, useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";

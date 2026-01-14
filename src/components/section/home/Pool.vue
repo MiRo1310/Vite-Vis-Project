@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import { BoolText, poolIds } from "@/subscribeIds/pool.ts";
 import { computed } from "vue";

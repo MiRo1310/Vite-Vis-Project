@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 const { heatingControl } = useIobrokerStore();
 </script>

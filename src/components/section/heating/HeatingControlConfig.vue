@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import HeatingControlConfigRow, { RowHeatingConfig } from "./HeatingControlConfigRow.vue";
 import { getValBoolean, getValId, getValNumber, tempArray } from "@/lib/object.ts";

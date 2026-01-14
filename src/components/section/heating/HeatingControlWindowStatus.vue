@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
-import { window_close, window_open } from "@/public";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import window_close from "@/public/window_closed.png";
+import window_open from "@/public/window_open.png";
 import { onMounted } from "vue";
 
 const { heatingControl } = useIobrokerStore();
@@ -26,7 +27,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped lang="postcss">
+<style scoped lang="scss">
 @keyframes backgroundAnimation {
   0% {
     background-color: white;

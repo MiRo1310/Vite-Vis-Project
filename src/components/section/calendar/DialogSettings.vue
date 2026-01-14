@@ -4,7 +4,7 @@ import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { styles } from "@/subscribeIds/styles.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";

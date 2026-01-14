@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";

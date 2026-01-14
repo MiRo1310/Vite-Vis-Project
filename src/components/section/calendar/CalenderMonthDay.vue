@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { CalendarDayType } from "@/types/types.ts";

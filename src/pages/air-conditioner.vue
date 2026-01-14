@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import AirConditioner from "@/components/section/airConditioner/AirConditioner.vue";
 
 const { airConditioners } = storeToRefs(useIobrokerStore());

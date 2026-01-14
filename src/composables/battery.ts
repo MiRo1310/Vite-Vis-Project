@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 export interface BatteryTableData {
   name: string;

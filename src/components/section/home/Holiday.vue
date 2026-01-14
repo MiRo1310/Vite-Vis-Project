@@ -3,7 +3,7 @@ import { Button } from "@/components/shared/button";
 import { UserRoundSearch } from "lucide-vue-next";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { computed } from "vue";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 const iobrokerStore = useIobrokerStore();
 

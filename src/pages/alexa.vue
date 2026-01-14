@@ -7,7 +7,7 @@ import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
-import { StoreValue, useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { StoreValue, useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { JSONToString, stringToJSON } from "@/lib/string.ts";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 import Page from "@/components/shared/page/Page.vue";
@@ -56,7 +56,9 @@ async function loadAlexaObject() {
   if (ids) {
     for (const id of ids) {
       const { name, speak } = await getAlexInfos(id);
-      if (!name) {continue;}
+      if (!name) {
+        continue;
+      }
       let obj = { name, speak };
       const data = getMoreInfos(name);
       if (typeof data === "object") {
@@ -72,9 +74,13 @@ const actions = ref();
 
 function getMoreInfos(name: string) {
   const obj = stringToJSON(alexaActionStore.alexaSpeak?.val);
-  if (!obj) {return;}
+  if (!obj) {
+    return;
+  }
   actions.value = obj;
-  if (typeof obj === "object" && obj[name as keyof typeof obj]) {return obj[name as keyof typeof obj];}
+  if (typeof obj === "object" && obj[name as keyof typeof obj]) {
+    return obj[name as keyof typeof obj];
+  }
   return;
 }
 
@@ -96,7 +102,9 @@ function callback(params: Record<string, any>) {
   }
   actions.value[name][params.source] = params.checked || params.value;
   const id = alexaActionStore.alexaSpeak?.id;
-  if (!id) {return;}
+  if (!id) {
+    return;
+  }
   adminConnection?.setState(id, JSONToString(actions.value), true);
 }
 

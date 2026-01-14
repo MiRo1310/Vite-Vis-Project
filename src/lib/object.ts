@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { SelectOption } from "@/types/types.ts";
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 
 export const sortedHeaders = computed(() => <T extends { position: number }>(array: (T | null)[]): T[] => {
   if (!Array.isArray(array)) {

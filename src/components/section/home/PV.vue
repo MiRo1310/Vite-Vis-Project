@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { computed } from "vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getValNumber } from "@/lib/object.ts";
 
 const { pv } = useIobrokerStore();

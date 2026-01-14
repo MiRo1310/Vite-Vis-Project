@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { heatingControl } from "@/subscribeIds/heating.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import HeatingControl from "@/components/section/heating/HeatingControl.vue";
 import { ThermometerSun } from "lucide-vue-next";
 
