@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
@@ -33,14 +33,24 @@ const trashEvents = computed<TrashType[]>(() => {
 });
 
 const getAnimation = (days: number) => {
-  if (days <= 1) return `animate-pulse`;
+  if (days <= 1) {
+    return "animate-pulse";
+  }
 };
 
 const getColor = (name: string) => {
-  if (name === "Papier Tonne") return `bg-trashPapier/50 text-black`;
-  if (name === "Restmüll Tonne") return `text-cardCustom-text/70 bg-black`;
-  if (name === "Biotonne") return `bg-trashBio/50 text-black`;
-  if (name === "Gelbe Tonne") return `bg-trashGelb/50 text-black`;
+  if (name === "Papier Tonne") {
+    return "bg-trashPapier/50 text-black";
+  }
+  if (name === "Restmüll Tonne") {
+    return "text-cardCustom-text/70 bg-black";
+  }
+  if (name === "Biotonne") {
+    return "bg-trashBio/50 text-black";
+  }
+  if (name === "Gelbe Tonne") {
+    return "bg-trashGelb/50 text-black";
+  }
 };
 </script>
 <template>

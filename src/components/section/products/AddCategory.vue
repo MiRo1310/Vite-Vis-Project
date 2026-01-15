@@ -38,7 +38,9 @@ const newCategory = ref("");
 const existInDb = ref(false);
 
 async function addNewCategory() {
-  if (!newCategory.value) return;
+  if (!newCategory.value) {
+    return;
+  }
   const result = await mutate({ name: newCategory.value });
 
   if (result?.data) {
@@ -46,7 +48,7 @@ async function addNewCategory() {
     existInDb.value = false;
   }
 
-  if (result?.data?.createProductCategory.errorCode == ErrorCode.Exist) {
+  if (result?.data?.createProductCategory.errorCode === ErrorCode.Exist) {
     existInDb.value = true;
   }
 }

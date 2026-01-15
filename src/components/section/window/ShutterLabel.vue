@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { StoreValueType } from "@/store/iobrokerStore.ts";
+import { StoreValueType } from "@/store/ioBrokerStore.ts";
 
 defineProps<{ getShutterPosition: "n/a" | number | StoreValueType<number> }>();
 

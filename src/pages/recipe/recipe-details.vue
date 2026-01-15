@@ -55,7 +55,7 @@ const saveOpenedRecipe = recipeStore.saveOpenedRecipe.bind(recipeStore);
 
 const loadRecipeFromServer = async (): Promise<void> => {
   const recipeId = props.recipeId;
-  if (!recipeId) return;
+  if (!recipeId) {return;}
 
   saveOpenedRecipe({ id: recipeId });
   await load(recipeDetailsQuery, { id: recipeId });

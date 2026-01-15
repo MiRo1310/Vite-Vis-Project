@@ -19,7 +19,7 @@ const { mutate } = useMutation(
 );
 
 const remove = async () => {
-  if (!props.value) return;
+  if (!props.value) {return;}
   await mutate({ id: props.value });
 };
 

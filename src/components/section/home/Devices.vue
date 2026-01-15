@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import { computed } from "vue";
 import { Button } from "@/components/shared/button";
+import { getValBoolean } from "@/lib/object.ts";
 
 const { airConditioners, pool, landroid } = storeToRefs(useIobrokerStore());
 
@@ -12,22 +13,22 @@ const status = computed(() => {
   return [
     {
       name: "Klima Schlafen",
-      online: airConditioners?.value?.schlafenOnline?.val ?? false,
-      power: airConditioners?.value?.schlafenPowerStatus?.val ?? false,
+      online: getValBoolean(airConditioners.value.schlafenOnline),
+      power: getValBoolean(airConditioners.value.schlafenPowerStatus),
     },
     {
       name: "Klima Kind",
-      online: airConditioners?.value?.childOnline?.val ?? false,
-      power: airConditioners?.value?.childPowerStatus?.val ?? false,
+      online: getValBoolean(airConditioners.value.childOnline),
+      power: getValBoolean(airConditioners.value.childPowerStatus),
     },
     {
       name: "Wärmepumpe",
-      online: pool.value.status?.val,
+      online: getValBoolean(pool.value.status),
       power: (pool.value.consumption?.val ?? 0) > 30,
     },
     {
       name: "Rasenmäher",
-      online: landroid.value.online?.val,
+      online: getValBoolean(landroid.value.online),
       power: landroid.value.status?.val !== 1,
     },
   ];

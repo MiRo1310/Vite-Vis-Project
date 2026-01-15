@@ -28,7 +28,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     <CardContent class="px-2 pb-2">
       <div class="flex items-center">
         <div v-for="(w, i) in window.windows" class="flex" :key="i">
-          <WindowImage :is-open="w.isOpenStatus" />
+          <WindowImage :is-open="w.isOpenStatus ?? false" />
         </div>
         <WindowCardOpenCloseText :window-open="window.windows.some((w) => w.isOpenStatus)" :door="false" />
       </div>

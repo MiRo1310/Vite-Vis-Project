@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Checkbox } from "@/components/ui/checkbox";
-import Select from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/Select.vue";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { InputShadcn } from "@/components/ui/input";
 import { SelectOption } from "@/types/types.ts";

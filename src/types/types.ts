@@ -1,4 +1,4 @@
-import { IoBrokerStates, StoreValue } from "@/store/iobrokerStore.ts";
+import { IoBrokerStates, StoreValue } from "@/store/ioBrokerStore.ts";
 
 export interface AlexaList {
   name: string;
@@ -51,7 +51,7 @@ export interface RoomType {
   windows: {
     name: string;
     idShutterPosition?: string;
-    isOpenStatus: boolean;
+    isOpenStatus?: boolean;
     door?: boolean;
     shutterPosition?: number;
     shutterAutoDown?: StoreValue<boolean>;

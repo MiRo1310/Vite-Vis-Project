@@ -5,7 +5,7 @@ import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 const props = defineProps<{ idShutterPosition: string }>();
 
 const handleClick = (i: number) => {
-  if (adminConnection) adminConnection.setState(props.idShutterPosition, 100 - (i - 1) * 20);
+  if (adminConnection) {adminConnection.setState(props.idShutterPosition, 100 - (i - 1) * 20);}
 };
 </script>
 

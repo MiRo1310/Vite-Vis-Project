@@ -10,6 +10,7 @@ const props = defineProps<{
   label?: string;
   class?: HTMLAttributes["class"];
   disableHover?: boolean;
+  // eslint-disable-next-line vue/no-unused-properties
   border?: keyof (typeof variants)["border"];
 }>();
 

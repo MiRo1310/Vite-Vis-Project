@@ -1,12 +1,12 @@
 import { Pool } from "@/subscribeIds/pool.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
-import { defineStore } from "pinia";
+import { defineStore, Store, StoreDefinition } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
 import { Calendar } from "@/subscribeIds/calendar.ts";
 import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
 import { LogStates } from "@/subscribeIds/logs.ts";
-import { computed } from "vue";
+import { computed, ComputedRef } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { Infos } from "@/subscribeIds/info.ts";
 import { stringToJSON } from "@/lib/string.ts";
@@ -54,7 +54,7 @@ export interface IoBrokerStoreState {
   time: TimeStates;
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
-  airConditioners?: AirConditioners;
+  airConditioners: AirConditioners;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
@@ -82,7 +82,7 @@ export interface ParsedLogs {
 
 interface SetValues {
   storeFolder: keyof IoBrokerStoreState;
-  val: string | number | boolean | object;
+  val: string | number | boolean | object | null;
   id: string;
   key: string;
   subKey?: string;
@@ -92,7 +92,27 @@ interface SetValues {
 
 export type IoBrokerStates = keyof IoBrokerStoreState;
 
-export const useIobrokerStore = defineStore("iobrokerStore", {
+interface IoBrokerStoreActions {
+  setAdminConnection(val: boolean): void;
+  resetIdsToSubscribe(): void;
+  addIdToSubscribedIds(id: string): void;
+  removeIdFromSubscribedIds(id: string): void;
+  setValues(params: SetValues): void;
+}
+
+interface IoBrokerStoreGetters {
+  isAdminConnected(state: IoBrokerStoreState): boolean;
+  getTrash(state: IoBrokerStoreState): TrashStates;
+  getShoppinglist(state: IoBrokerStoreState): AlexaListStates;
+  getState(state: IoBrokerStoreState): IoBrokerStoreState;
+  getIdsToControl(state: IoBrokerStoreState): IdsToControl;
+  getParsedLogs(state: IoBrokerStoreState): ComputedRef<ParsedLogs>;
+}
+
+type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
+export type IoBrokerStore = Store<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
+
+export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
     alexaAction: {} as AlexaAction,
@@ -130,22 +150,22 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     hmip: {} as Hmip,
   }),
   getters: {
-    isAdminConnected(state) {
+    isAdminConnected(state: IoBrokerStoreState) {
       return state.adminConnectionEstablished;
     },
-    getTrash(state) {
+    getTrash(state: IoBrokerStoreState) {
       return state.trash;
     },
-    getShoppinglist(state) {
+    getShoppinglist(state: IoBrokerStoreState) {
       return state.alexaLists;
     },
-    getState(state) {
+    getState(state: IoBrokerStoreState) {
       return state;
     },
-    getIdsToControl(state) {
+    getIdsToControl(state: IoBrokerStoreState) {
       return state.idsToControl;
     },
-    getParsedLogs(state) {
+    getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
           error: stringToJSON<Log[]>(state.logs.error?.val as string),
@@ -195,7 +215,7 @@ const getSubValue = ({
   obj: any;
   key: string;
   subKey?: string;
-  val: string | number | boolean | object;
+  val: string | number | boolean | object | null;
   storeFolder: string;
   id: string;
   timestamp?: boolean;

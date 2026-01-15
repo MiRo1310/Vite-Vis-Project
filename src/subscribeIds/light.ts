@@ -1,11 +1,11 @@
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 
 export interface LightTypes extends LightTypesAdditive {
   Wohnzimmer: StoreValue<boolean>;
   Weihnachtsbaum: StoreValue<boolean>;
-  Büro_Schreibtisch: StoreValue<boolean>;
-  Büro: StoreValue<boolean>;
+  Buero_Schreibtisch: StoreValue<boolean>;
+  Buero: StoreValue<boolean>;
   Dachboden: StoreValue<boolean>;
   Abstellraum_OG: StoreValue<boolean>;
 }
@@ -26,8 +26,8 @@ export const lightStates: IdToSubscribe<LightTypes>[] = [
         id: "sonoff.0.Sonoff_OG_Abstellraum.POWER",
         key: "Abstellraum_OG",
       },
-      { id: "sonoff.0.Sonoff_Keller_Michi.POWER", key: "Büro" },
-      { id: "tuya.0.bfec013e9034a47a12o5so.20", key: "Büro_Schreibtisch" },
+      { id: "sonoff.0.Sonoff_Keller_Michi.POWER", key: "Buero" },
+      { id: "tuya.0.bfec013e9034a47a12o5so.20", key: "Buero_Schreibtisch" },
     ],
   },
   {

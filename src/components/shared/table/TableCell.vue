@@ -6,6 +6,7 @@ import { getVariantsClasses } from "@/composables/variants-classes.ts";
 const props = withDefaults(
   defineProps<{
     class?: HTMLAttributes["class"];
+    // eslint-disable-next-line vue/no-unused-properties
     size?: TableCellSize;
   }>(),
   { size: "default" },
@@ -23,15 +24,7 @@ const variants = {
 </script>
 
 <template>
-  <td
-    :class="
-      cn(
-        'align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
-        props.class,
-        getVariantsClasses(variants, props),
-      )
-    "
-  >
+  <td :class="cn('align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5', props.class, getVariantsClasses(variants, props))">
     <slot />
   </td>
 </template>

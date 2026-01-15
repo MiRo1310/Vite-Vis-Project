@@ -11,7 +11,7 @@ import { Row } from "@tanstack/vue-table";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { Textarea } from "@/components/ui/textarea";
 
-const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; customValue: unknown; source: string }>();
+const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]> }>();
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveTravelCost($id: UUID!) {

@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 export interface BatteryTableData {
   name: string;
@@ -14,19 +14,30 @@ export interface BatteryTableData {
 
 const { batteries } = useIobrokerStore();
 
+const getTimestamp = (item: { percent?: { ts?: number }; lowBat?: { ts?: number } }): number =>
+  "percent" in item ? (item.percent?.ts ?? 0) : "lowBat" in item ? (item.lowBat?.ts ?? 0) : 0;
+
+const getFirmware = (item: ShellyPlusSmoke): boolean => item?.firmware?.val ?? false;
+
+const getXioamiValues = (item: XiaomiWindowSensor): { available: boolean; percent: number; voltage: number } => ({
+  available: item?.available?.val ?? false,
+  percent: item?.percent?.val ?? 0,
+  voltage: item?.voltage?.val ?? 0,
+});
+
 export const batteryList = computed(() => {
   const data: BatteryTableData[] = [];
   Object.keys(batteries).forEach((key) => {
     const item = batteries[key as keyof typeof batteries];
-    const timestamp = "percent" in item ? item.percent?.ts : "lowBat" in item ? item.lowBat?.ts : 0;
+    const { available, percent, voltage } = getXioamiValues(item as XiaomiWindowSensor);
     data.push({
       name: key,
-      firmware: (item as ShellyPlusSmoke)?.firmware?.val ?? false,
-      timestamp,
+      firmware: getFirmware(item as ShellyPlusSmoke),
+      timestamp: getTimestamp(item),
       lowBat: (item as HMIPDevice)?.lowBat?.val ?? false,
-      available: (item as XiaomiWindowSensor)?.available?.val ?? false,
-      percent: (item as XiaomiWindowSensor)?.percent?.val ?? 0,
-      voltage: (item as XiaomiWindowSensor)?.voltage?.val ?? 0,
+      available,
+      percent,
+      voltage,
     });
   });
   return data;

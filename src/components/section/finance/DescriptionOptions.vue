@@ -4,7 +4,7 @@ import { useQuery } from "@vue/apollo-composable";
 import { computed, watch, ref } from "vue";
 import { InputOptions } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
-import Select from "@/components/shared/select/select.vue";
+import Select from "@/components/shared/select/Select.vue";
 import { SelectOption } from "@/types/types.ts";
 
 defineProps<{ asSelect?: boolean }>();

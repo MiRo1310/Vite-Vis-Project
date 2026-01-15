@@ -1,3 +1,5 @@
+import { logging } from "@/lib/logging.ts";
+
 export function firstLetterToUpperCase(name: string): string {
   return name.slice(0, 1).toUpperCase() + name.slice(1);
 }
@@ -12,7 +14,7 @@ export function stringToJSON<T>(string: string | undefined): T {
       return json as T;
     }
   } catch (e) {
-    console.log(e);
+    logging({ e });
   }
   return {} as T;
 }
@@ -24,7 +26,7 @@ export function JSONToString(json: object | undefined): string {
   try {
     return JSON.stringify(json, null, 2);
   } catch (e) {
-    console.log(e);
+    logging({ e });
   }
   return "";
 }

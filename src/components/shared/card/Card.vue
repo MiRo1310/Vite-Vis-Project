@@ -7,7 +7,9 @@ const props = withDefaults(
   defineProps<{
     class?: HTMLAttributes["class"];
     styling?: keyof typeof style;
+    // eslint-disable-next-line vue/no-unused-properties
     variant?: keyof (typeof variants)["variant"];
+    // eslint-disable-next-line vue/no-unused-properties
     color?: keyof (typeof variants)["color"];
   }>(),
   { styling: "default", class: "", variant: "default", color: "default" },

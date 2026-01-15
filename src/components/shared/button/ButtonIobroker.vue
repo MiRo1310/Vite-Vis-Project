@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button, { ButtonVariants } from "@/components/shared/button/Button.vue";
-import { StoreValue } from "@/store/iobrokerStore.ts";
+import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { computed } from "vue";
 import { ButtonVariantProps } from "@/components/shared/button/index.ts";

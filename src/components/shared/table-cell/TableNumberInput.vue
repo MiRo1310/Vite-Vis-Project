@@ -21,7 +21,7 @@ const value = ref(Number(props.value));
 
 function update(event?: string | number) {
   value.value = Number(event);
-  if (isNaN(Number(event))) return;
+  if (isNaN(Number(event))) {return;}
   props.callback({
     value: Number(event),
     row: props.row,

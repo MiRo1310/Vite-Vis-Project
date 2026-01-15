@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";

@@ -1,4 +1,4 @@
-import { StoreValue, StoreValueWithTimestamp } from "@/store/iobrokerStore.ts";
+import { StoreValue, StoreValueWithTimestamp } from "@/store/ioBrokerStore.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 
 export type BoolText = "true" | "false" | true | false;

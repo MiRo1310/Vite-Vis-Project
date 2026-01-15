@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed, HTMLAttributes } from "vue";
 import { useAppStore } from "@/store/appStore.ts";
@@ -16,7 +16,7 @@ const { timer } = storeToRefs(iobrokerStore);
 
 const nameByIndex = computed(() => (index: number) => {
   const timerName = (timer.value[index as keyof Timers] as Timer)?.name?.val;
-  return timerName != "Timer" ? timerName : null;
+  return timerName !== "Timer" ? timerName : null;
 });
 </script>
 
@@ -32,20 +32,20 @@ const nameByIndex = computed(() => (index: number) => {
         <div class="w-full">
           <h1 class="text-xl flex justify-between">
             <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
-            <span> {{ (timer[i as keyof Timers] as Timer).timeString?.val }}</span>
+            <span> {{ (timer[i as keyof Timers] as Timer)?.timeString?.val }}</span>
           </h1>
           <TextSeparator />
           <div class="w-full">
             <div class="flex justify-between">
               <p>Gerät:</p>
               <p class="flex-1 text-right">
-                {{ (timer[i as keyof Timers] as Timer).device?.val }}
+                {{ (timer[i as keyof Timers] as Timer)?.device?.val }}
               </p>
             </div>
             <div class="flex justify-between">
               <p>Länge:</p>
               <p class="flex-1 text-right">
-                {{ (timer[i as keyof Timers] as Timer).initialTimer?.val }}
+                {{ (timer[i as keyof Timers] as Timer)?.initialTimer?.val }}
               </p>
             </div>
           </div>

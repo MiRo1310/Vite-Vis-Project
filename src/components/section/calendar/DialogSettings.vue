@@ -4,7 +4,7 @@ import { Button } from "@/components/shared/button";
 import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { styles } from "@/subscribeIds/styles.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { stringToJSON } from "@/lib/string.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
@@ -30,7 +30,7 @@ const json = computed((): JSONStyle[] => {
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
 function updateHandler(val: { input: string; select: SelectOption; index: number }) {
-  if (val.select?.class == "" || !val.input || (val?.input as string) == "") {
+  if (val.select?.class === "" || !val.input || (val?.input as string) === "") {
     return;
   }
 
@@ -54,10 +54,14 @@ function addValueToObj(obj: JSONStyle, val: { input: string; select: SelectOptio
 }
 
 function updateToIobroker() {
-  if (!modifiedObj.value) return;
+  if (!modifiedObj.value) {
+    return;
+  }
 
   const id = styling?.calendarStyle?.id;
-  if (!id) return;
+  if (!id) {
+    return;
+  }
   adminConnection?.setState(id, JSON.stringify(modifiedObj.value));
 }
 

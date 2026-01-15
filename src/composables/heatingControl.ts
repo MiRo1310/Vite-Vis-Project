@@ -1,5 +1,5 @@
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { RoomItems } from "@/types/types.ts";
 
 const { heatingControl } = useIobrokerStore();

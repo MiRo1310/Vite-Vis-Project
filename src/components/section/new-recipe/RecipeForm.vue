@@ -84,7 +84,9 @@ const getRecipeByIdQuery = graphql(`
 const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
 
 onResult((result: OnResult<GetRecipeByIdQuery>) => {
-  if (!result.data?.recipe) return;
+  if (!result.data?.recipe) {
+    return;
+  }
   const response = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
 
   recipe.value = response;
@@ -108,16 +110,24 @@ onMounted(async () => {
   }
 });
 
-const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => ({
-  name: recipe?.name ?? "",
-  portions: recipe?.portions ?? 1,
-  recipeDescriptions: recipe?.recipeDescriptions ?? [],
-  recipeHeaderProducts: recipe?.recipeHeaderProducts ?? [],
-  recipeProducts: recipe?.recipeProducts ?? [],
-});
+const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
+  if (!recipe) {
+    return {
+      name: "",
+      portions: 1,
+      recipeDescriptions: [],
+      recipeHeaderProducts: [],
+      recipeProducts: [],
+    };
+  }
+  const { name, recipeDescriptions, recipeHeaderProducts, recipeProducts } = recipe;
+  return { name, portions: recipe.portions ?? 1, recipeDescriptions, recipeHeaderProducts, recipeProducts };
+};
 
 const setValuesToForm = (recipe?: RecipeType) => {
-  if (!recipe) return;
+  if (!recipe) {
+    return;
+  }
   form.setValues(getRecipeProductObj(recipe));
 
   descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
@@ -155,7 +165,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeProducts: values.productArray,
   };
 
-  if (props.recipeId == "new" || props.recipeId === "undefined" || !props.recipeId) {
+  if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
     const result = await mutate({ dto });
 
     const recipeId = result?.data?.createRecipe.id;

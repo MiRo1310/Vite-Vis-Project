@@ -2,7 +2,7 @@
 import Sheet from "@/components/shared/Sheet.vue";
 import NavActionsShoppingList from "@/components/section/home/NavActionsShoppingList.vue";
 import { Pickaxe } from "lucide-vue-next";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";

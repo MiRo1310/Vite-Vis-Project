@@ -23,7 +23,7 @@ const getTotalKcalForSection = computed(
   () =>
     (index: number): number =>
       props.recipe?.recipeProducts.reduce((acc, curr) => {
-        if (curr.groupPosition == index + 1) {
+        if (curr.groupPosition === index + 1) {
           return acc + (curr.kcal ?? 0);
         }
         return acc;

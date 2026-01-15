@@ -10,6 +10,20 @@ on:
     branches: [ "*" ]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 22.x, 24.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: yarn install --frozen-lockfile  && yarn lint
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -23,7 +37,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: yarn install --frozen-lockfile        
+      - run: yarn install --frozen-lockfile  && yarn build      
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -37,4 +51,17 @@ jobs:
       - name: Audit dependencies
         run: |
           yarn audit || echo "::warning::yarn audit hat Probleme gefunden"
+        continue-on-error: false 
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - run: yarn install --frozen-lockfile
+      - name: Vitest tests
+        run: yarn run test
         continue-on-error: false

@@ -6,6 +6,7 @@ import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
 
 interface Props extends PrimitiveProps, ButtonVariantProps {
+  // eslint-disable-next-line vue/no-unused-properties
   variant?: keyof typeof variants.variant;
   size?: keyof typeof variants.size;
   as?: string;

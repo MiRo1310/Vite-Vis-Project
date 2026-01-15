@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Badge from "@/components/shared/badge/Badge.vue";
-import { ParsedLogs } from "@/store/iobrokerStore.ts";
+import { ParsedLogs } from "@/store/ioBrokerStore.ts";
 import { Infos } from "@/subscribeIds/info.ts";
 import { useRouter } from "vue-router";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";

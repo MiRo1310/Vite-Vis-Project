@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
-import { useIobrokerStore } from "@/store/iobrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
@@ -92,7 +92,7 @@ const error = {
 };
 const infos = computed(() => [
   {
-    title: `Firmware`,
+    title: "Firmware",
     value: landroid.value.firmware?.val,
     unit: "",
   },

@@ -3,7 +3,7 @@ import { InfoType } from "@/types/types.ts";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import ValueWithUnit from "@/components/shared/ValueWithUnit.vue";
 
-defineProps<{ isTimeToWarn?: boolean; getOpenWindows?: number; infos: InfoType[] }>();
+defineProps<{ infos: InfoType[] }>();
 </script>
 
 <template>

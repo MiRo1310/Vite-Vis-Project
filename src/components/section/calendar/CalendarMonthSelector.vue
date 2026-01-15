@@ -30,7 +30,7 @@ function getYearMonth() {
     }
     month = (12 + (month % 12)) % 12;
   }
-  let year = new Date().getFullYear() + yearAdder;
+  const year = new Date().getFullYear() + yearAdder;
 
   return { month, year };
 }

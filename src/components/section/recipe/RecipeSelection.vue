@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useLazyQuery } from "@vue/apollo-composable";
-import { computed, HTMLAttributes, onMounted, watchEffect } from "vue";
+import { computed, onMounted, watchEffect } from "vue";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
-import Select from "@/components/shared/select/select.vue";
-
-defineProps<{ class?: HTMLAttributes["class"] }>();
+import Select from "@/components/shared/select/Select.vue";
 
 const { result, load, refetch } = useLazyQuery(
   graphql(`
@@ -22,21 +20,22 @@ const selected = defineModel<string>("selected");
 const selectedName = defineModel<string | undefined>("selectedName");
 
 const options = computed((): SelectOption[] => {
-  if (result.value?.recipes) {
-    return result.value.recipes
-      .map((recipe) => {
-        if (recipe.name && recipe.id) {
-          return {
-            label: recipe.name,
-            value: recipe.id,
-          };
-        }
-        return { label: "", value: "" };
-      })
-      .filter((recipe) => recipe.label !== "")
-      .sort((a, b) => a.label.localeCompare(b.label));
+  const recipes = result.value?.recipes;
+  if (!recipes) {
+    return [] as SelectOption[];
   }
-  return [] as SelectOption[];
+  return recipes
+    .map((recipe) => {
+      if (recipe.name && recipe.id) {
+        return {
+          label: recipe.name,
+          value: recipe.id,
+        };
+      }
+      return { label: "", value: "" };
+    })
+    .filter((recipe) => recipe.label !== "")
+    .sort((a, b) => a.label.localeCompare(b.label));
 });
 
 onMounted(async () => {

@@ -7,7 +7,9 @@ const props = withDefaults(
   defineProps<{
     value: string | number | undefined;
     class?: HTMLAttributes["class"];
+    // eslint-disable-next-line vue/no-unused-properties
     size?: Badge["size"];
+    // eslint-disable-next-line vue/no-unused-properties
     color?: Badge["color"];
     unit?: string | null;
   }>(),
