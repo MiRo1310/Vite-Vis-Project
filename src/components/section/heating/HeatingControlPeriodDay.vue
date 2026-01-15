@@ -54,10 +54,10 @@ const activeClass = computed(() => (i: number) => {
           <p>°C</p>
         </div>
         <div v-for="i in 5" :key="i" class="flex justify-center items-center gap-2">
-          <div class="flex flex-col gap-1.25 bg-background/50">
+          <div class="flex flex-col gap-1 bg-background/50">
             <InputIobroker type="time" :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>" />
           </div>
-          <div class="flex flex-col gap-1.25 bg-background/50">
+          <div class="flex flex-col gap-1 bg-background/50">
             <Select
               :items="tempArray()"
               :model-value="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"

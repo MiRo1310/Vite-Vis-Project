@@ -9,6 +9,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { batteryIds } from "@/subscribeIds/batteriesType.ts";
 import { hmipIds } from "@/subscribeIds/hmip.ts";
 import { useColorMode } from "@vueuse/core";
+import { lightStates } from "@/subscribeIds/light.ts";
 
 useColorMode();
 
@@ -16,7 +17,7 @@ onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
   loadScript(socketIo);
 
-  useDynamicSubscribe([batteryIds, hmipIds]);
+  useDynamicSubscribe([batteryIds, hmipIds, ...lightStates]);
 });
 
 onUnmounted(() => {

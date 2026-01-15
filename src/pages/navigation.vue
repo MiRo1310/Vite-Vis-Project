@@ -20,6 +20,7 @@ import { batteryList } from "@/composables/battery.ts";
 import { computed } from "vue";
 import { getOpenWindows } from "@/composables/windows.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
+import { getActiveLights } from "@/composables/lights.ts";
 
 const navigations = computed((): NavigationType[] => [
   { icon: Home, text: "Home", link: "/" },
@@ -64,6 +65,12 @@ const navigations = computed((): NavigationType[] => [
     icon: LampCeiling,
     text: "Licht",
     link: "/light",
+    badges: [
+      {
+        value: getActiveLights.value,
+        color: "yellow",
+      },
+    ],
   },
   {
     icon: CircleDot,

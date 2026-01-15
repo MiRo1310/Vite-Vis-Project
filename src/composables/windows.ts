@@ -4,6 +4,8 @@ import { storeToRefs } from "pinia";
 
 const { fenster } = storeToRefs(useIobrokerStore());
 
+//TODO Test schreiben
+
 export const getOpenWindows = computed(() => {
   const windows = fenster.value;
   return Object.keys(windows).reduce((prev, current) => {
