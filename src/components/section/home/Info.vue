@@ -13,6 +13,7 @@ import { getOpenWindows } from "@/composables/windows.ts";
 import { InfoType } from "@/types/types.ts";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
+import { getActiveLights } from "@/composables/lights.ts";
 
 const router = useRouter();
 
@@ -44,6 +45,7 @@ const info = computed((): InfoType[] => [
   { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
 ]);
 </script>
+
 <template>
   <Card
     color="primary"
@@ -67,7 +69,15 @@ const info = computed((): InfoType[] => [
         >
           <p>{{ getOpenWindows ? "Fenster offen" : "Alle Fenster sind zu " }}</p>
           <div>
-            <Badge color="orange" :value="getOpenWindows ?? ''" />
+            <Badge :color="getOpenWindows === 0 ? 'green' : 'orange'" :value="getOpenWindows ?? ''" />
+          </div>
+        </div>
+      </CardSubcard>
+      <CardSubcard class="mt-2">
+        <div :class="['flex justify-between cursor-pointer']" @click="router.push({ path: '/light' })">
+          <p>{{ getActiveLights ? "Licht ist an" : "Licht ist aus" }}</p>
+          <div>
+            <Badge :color="getActiveLights === 0 ? 'green' : 'orange'" :value="getActiveLights ?? ''" />
           </div>
         </div>
       </CardSubcard>

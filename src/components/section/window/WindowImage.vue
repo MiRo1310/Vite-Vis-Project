@@ -7,6 +7,15 @@ defineProps<{ isOpen: boolean; class?: HTMLAttributes["class"] }>();
 </script>
 
 <template>
-  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" :class="['w-8 h-6 mt-1 img--white', $props.class]" />
-  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" :class="['w-8 h-6 mt-1 img--white', $props.class]" />
+  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
+  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
 </template>
+
+<style scoped lang="scss">
+.dark {
+  .img--white {
+    filter: brightness(0) invert(1);
+    -webkit-filter: brightness(0) invert(1);
+  }
+}
+</style>
