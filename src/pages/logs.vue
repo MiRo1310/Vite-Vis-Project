@@ -4,13 +4,13 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button";
-import { firstLetterToUpperCase } from "../lib/string.ts";
 import { toLocaleTime } from "../lib/time.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import { getValId } from "@/lib/object.ts";
 
 const { getParsedLogs } = useIobrokerStore();
 const { logReset } = storeToRefs(useIobrokerStore());
@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 function reset() {
-  const id = logReset.value[selected.value]?.id;
+  const id = getValId(logReset.value[selected.value]);
   if (!id) {
     return;
   }
@@ -54,7 +54,7 @@ function reset() {
 <template>
   <Page title="Logs">
     <div class="flex justify-between items-center flex-wrap gap-2 relative">
-      <p class="text-cardCustom-text">{{ firstLetterToUpperCase(selected) }} Logs</p>
+      <p class="text-cardCustom-text">{{ selected.mrFirstLetterToUpperCase() }} Logs</p>
       <div>
         <Button variant="outline" size="sm" class="mr-5" @click="reset"> Zurücksetzen </Button>
         <Button variant="outline" size="sm" class="w-24 relative ml-2" @click="selected = 'info'">

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import { stringToJSON } from "@/lib/string.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { IobrokerLanguages } from "@/types/types.ts";
 import { computed } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import { getValString } from "@/lib/object.ts";
+import { toJSON } from "@michaelroling/ts-library";
 
 interface NewsFeed {
   title: Record<IobrokerLanguages, string>;
@@ -33,7 +34,7 @@ const columns: DatatableColumns<NewsFeed>[] = [
     type: "datetime",
   },
 ];
-const json = computed(() => stringToJSON<NewsFeed[]>(infos.newsFeeds?.val || "[]"));
+const json = computed(() => toJSON<NewsFeed[]>(getValString(infos.newsFeeds)).json ?? []);
 </script>
 
 <template>

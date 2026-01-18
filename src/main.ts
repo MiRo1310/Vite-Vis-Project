@@ -6,6 +6,7 @@ import "@/assets/css/style.css";
 import App from "@/App.vue";
 import apolloClient from "@/apolloClient.ts";
 import { DefaultApolloClient } from "@vue/apollo-composable";
+import "@michaelroling/ts-library";
 
 const router = createRouter({
   history: createWebHistory(),
