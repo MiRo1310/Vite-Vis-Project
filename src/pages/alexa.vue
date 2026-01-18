@@ -11,7 +11,7 @@ import { StoreValue, useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { toJSON, toJsonString } from "@michaelroling/ts-library/dist/types/json";
+import { toJSON, toJsonString } from "@michaelroling/ts-library";
 
 const { alexaAction: alexaActionStore } = useIobrokerStore();
 

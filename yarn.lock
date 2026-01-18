@@ -1977,10 +1977,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@michaelroling/ts-library@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@michaelroling/ts-library/-/ts-library-1.0.3.tgz#ff4c6da8349aefff6b0d49685a52e629f0a5d295"
-  integrity sha512-dqVGKy4cEv2yizDgsBbvyIb4yJ8uOlqmEKWmm5ZCmpbKn0WLX5b9OUZIjuOuLx5ZBhmTItycrZn1VPCoYzqveg==
+"@michaelroling/ts-library@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@michaelroling/ts-library/-/ts-library-1.0.6.tgz#175092eaa3bed34f85c999fa7a64a235620bdd7d"
+  integrity sha512-znBAooODmnVSM/fM5KE+DoKmtoFoDr/2C5i6+hEKFnIWs1OhKkW+ClGoXC86R/WgTuoNflecE3Iz/tAramtbnQ==
   dependencies:
     chai "^6.2.2"
     esbuild "^0.27.2"

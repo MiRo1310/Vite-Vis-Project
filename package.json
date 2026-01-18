@@ -23,7 +23,7 @@
     "@headlessui/vue": "^1.7.23",
     "@iobroker/socket-client": "^5.0.3",
     "@iobroker/types": "^7.1.0",
-    "@michaelroling/ts-library": "^1.0.3",
+    "@michaelroling/ts-library": "^1.0.6",
     "@radix-icons/vue": "^1.0.0",
     "@rushstack/eslint-patch": "^1.15.0",
     "@tailwindcss/forms": "^0.5.11",

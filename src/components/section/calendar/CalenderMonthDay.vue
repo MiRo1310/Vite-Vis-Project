@@ -7,7 +7,7 @@ import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthD
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import { logging } from "@/lib/logging.ts";
-import { toJSON } from "@michaelroling/ts-library/dist/types/json";
+import { toJSON } from "@michaelroling/ts-library";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{
