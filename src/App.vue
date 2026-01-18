@@ -19,7 +19,6 @@ onMounted(async () => {
 
   useDynamicSubscribe([batteryIds, hmipIds, ...lightStates]);
 });
-
 onUnmounted(() => {
   useTime().clear();
 });

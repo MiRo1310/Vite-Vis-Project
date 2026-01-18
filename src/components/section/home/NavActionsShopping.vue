@@ -6,13 +6,15 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { stringToJSON } from "@/lib/string.ts";
 import { Button } from "@/components/shared/button";
+import { getValString } from "@/lib/object.ts";
+import { toJSON } from "@michaelroling/ts-library";
+import { AlexaList } from "@/types/types.ts";
 
 const { alexaLists } = storeToRefs(useIobrokerStore());
 
-const createShoppinglist = computed((): any[] => {
-  return stringToJSON(alexaLists.value.shoppingListActive?.val);
+const createShoppinglist = computed((): AlexaList[] => {
+  return toJSON<AlexaList[]>(getValString(alexaLists.value.shoppingListActive)).json ?? [];
 });
 </script>
 <template>

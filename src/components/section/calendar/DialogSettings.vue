@@ -5,12 +5,13 @@ import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { styles } from "@/subscribeIds/styles.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { stringToJSON } from "@/lib/string.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { colors } from "@/config/colors.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import { SelectOption } from "@/types/types.ts";
+import { toJSON } from "@michaelroling/ts-library";
+import { getValString } from "@/lib/object.ts";
 
 const open = defineModel<boolean>("open");
 
@@ -24,7 +25,7 @@ export interface JSONStyle {
 }
 
 const json = computed((): JSONStyle[] => {
-  return stringToJSON(styling?.calendarStyle?.val);
+  return toJSON<JSONStyle[]>(getValString(styling.calendarStyle)).json ?? [];
 });
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);

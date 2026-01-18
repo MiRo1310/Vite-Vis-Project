@@ -3,9 +3,10 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import { stringToJSON } from "@/lib/string.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import { getValString } from "@/lib/object.ts";
+import { toJSON } from "@michaelroling/ts-library";
 
 const { infos } = useIobrokerStore();
 
@@ -26,7 +27,7 @@ const availableUpdates = computed((): UpdatesType[] => {
   if (!infos.updatesJson?.val) {
     return [];
   }
-  const json = stringToJSON<UpdatesAsJSON>(infos.updatesJson?.val);
+  const json = toJSON<UpdatesAsJSON>(getValString(infos.updatesJson)).json ?? {};
 
   const jsonArray: UpdatesType[] = [];
   if (json) {

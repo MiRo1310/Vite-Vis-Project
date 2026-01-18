@@ -9,7 +9,6 @@ import { LogStates } from "@/subscribeIds/logs.ts";
 import { computed, ComputedRef } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { Infos } from "@/subscribeIds/info.ts";
-import { stringToJSON } from "@/lib/string.ts";
 import { PhoneStates } from "@/subscribeIds/phone.ts";
 import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
 import { AlexaAction } from "@/pages/alexa.vue";
@@ -19,6 +18,8 @@ import { PresenceType } from "@/subscribeIds/presence.ts";
 import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
 import { AirConditioners } from "@/subscribeIds/air-conditioners.ts";
 import { Hmip } from "@/subscribeIds/hmip.ts";
+import { getValString } from "@/lib/object.ts";
+import { toJSON } from "@michaelroling/ts-library";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
@@ -168,9 +169,9 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
-          error: stringToJSON<Log[]>(state.logs.error?.val as string),
-          warn: stringToJSON<Log[]>(state.logs.warning?.val as string),
-          info: stringToJSON<Log[]>(state.logs.info?.val as string),
+          error: toJSON<Log[]>(getValString(state.logs.error)).json ?? [],
+          warn: toJSON<Log[]>(getValString(state.logs.warning)).json ?? [],
+          info: toJSON<Log[]>(getValString(state.logs.info)).json ?? [],
         };
       });
     },

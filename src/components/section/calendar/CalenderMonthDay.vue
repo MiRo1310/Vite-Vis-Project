@@ -4,10 +4,10 @@ import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { CalendarDayType } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
-import { stringToJSON } from "@/lib/string.ts";
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import { logging } from "@/lib/logging.ts";
+import { toJSON } from "@michaelroling/ts-library";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
 const props = defineProps<{
@@ -63,12 +63,13 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 }
 
 const getColor = computed(() => (event: CalendarDayType): string => {
-  let keys = stringToJSON(styles.value?.calendarStyle?.val) as JSONStyle[];
-  if (!Array.isArray(keys)) {
-    keys = [];
+  const jsonResponse = toJSON<JSONStyle[]>(styles.value?.calendarStyle?.val ?? null);
+  const json = jsonResponse.json;
+  if (!Array.isArray(json)) {
+    return "";
   }
 
-  for (const key of keys) {
+  for (const key of json) {
     if (event.event.includes(key.name)) {
       return `${key.color} text-black/90 font-bold text-xs`;
     }

@@ -2,17 +2,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { computed, Ref } from "vue";
+import { computed } from "vue";
 import { CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
-import { stringToJSON } from "@/lib/string.ts";
 import CalendarDay from "@/components/section/home/CalenderDay.vue";
+import { toJSON } from "@michaelroling/ts-library";
+import { getValString } from "@/lib/object.ts";
 
 const { calendar } = storeToRefs(useIobrokerStore());
 const router = useRouter();
 
-const data: Ref<CalendarDayType[]> = computed(() => {
-  return stringToJSON(calendar.value.table?.val || "[]");
+const data = computed((): CalendarDayType[] => {
+  return toJSON<CalendarDayType[]>(getValString(calendar.value.table)).json ?? [];
 });
 
 const today = computed(() => {
