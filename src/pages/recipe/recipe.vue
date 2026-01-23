@@ -5,19 +5,22 @@ import { onMounted, ref } from "vue";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import { routes } from "@/router/routes.ts";
 
 const { openedRecipe } = storeToRefs(useRecipeStore());
 
 const router = useRouter();
 
 onMounted(async () => {
-  if (!openedRecipe.value?.id) {return;}
+  if (!openedRecipe.value?.id) {
+    return;
+  }
   selected.value = openedRecipe.value.id;
   await updateSelect();
 });
 
 const updateSelect = async () => {
-  await router.push({ name: "recipe-details", params: { recipeId: selected.value } });
+  await router.push({ name: routes.recipeDetails.name, params: { recipeId: selected.value } });
 };
 
 const selectedName = ref("");

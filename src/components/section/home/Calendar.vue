@@ -8,6 +8,7 @@ import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/CalenderDay.vue";
 import { toJSON } from "@michaelroling/ts-library";
 import { getValString } from "@/lib/object.ts";
+import { routes } from "@/router/routes.ts";
 
 const { calendar } = storeToRefs(useIobrokerStore());
 const router = useRouter();
@@ -46,7 +47,7 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
 </script>
 
 <template>
-  <Card styling="small" color="primary" @click="router.push({ name: 'calendar' })">
+  <Card styling="small" color="primary" @click="router.push({ name: routes.calender.name })">
     <CardHeader>
       <CardTitle>Familien Kalendar</CardTitle>
     </CardHeader>

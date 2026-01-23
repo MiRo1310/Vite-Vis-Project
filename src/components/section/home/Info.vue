@@ -14,6 +14,7 @@ import { InfoType } from "@/types/types.ts";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { getActiveLights } from "@/composables/lights.ts";
+import { routes } from "@/router/routes.ts";
 
 const router = useRouter();
 
@@ -65,7 +66,7 @@ const info = computed((): InfoType[] => [
       <CardSubcard class="mt-2">
         <div
           :class="['flex justify-between cursor-pointer', { 'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0 }]"
-          @click="router.push({ path: '/fenster' })"
+          @click="router.push({ name: routes.window.name })"
         >
           <p>{{ getOpenWindows ? "Fenster offen" : "Alle Fenster sind zu " }}</p>
           <div>
@@ -74,7 +75,7 @@ const info = computed((): InfoType[] => [
         </div>
       </CardSubcard>
       <CardSubcard class="mt-2">
-        <div :class="['flex justify-between cursor-pointer']" @click="router.push({ path: '/light' })">
+        <div :class="['flex justify-between cursor-pointer']" @click="router.push({ path: routes.light.path })">
           <p>{{ getActiveLights ? "Licht ist an" : "Licht ist aus" }}</p>
           <div>
             <Badge :color="getActiveLights === 0 ? 'green' : 'orange'" :value="getActiveLights ?? ''" />
