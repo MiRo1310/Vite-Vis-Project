@@ -25,19 +25,21 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  <div class="grid grid-cols-11 gap-2 mt-2 h-[calc(100%-44px)]">
-    <div class="col-span-2 flex flex-col">
-      <Time>
-        <Caller class="flex-1" />
-      </Time>
+  <div class="overflow-auto max-h-[calc(100%-44px)]">
+    <div class="grid grid-cols-11 gap-2">
+      <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">
+        <Time>
+          <Caller class="flex-1" />
+        </Time>
+      </div>
+      <Info class="lg:col-span-2 md:col-span-6 col-span-11" />
+      <Trash class="lg:col-span-3 md:col-span-5 col-span-11" />
+      <Pv class="lg:col-span-2 md:col-span-3 col-span-11" />
+      <Devices class="lg:col-span-2 md:col-span-3 col-span-11" />
+      <Calendar class="lg:col-span-6 md:col-span-8 col-span-11" />
+      <Lists class="lg:col-span-2 md:col-span-3 col-span-11" />
+      <Empty class="lg:col-span-3 md:col-span-11 col-span-11" />
+      <Timer class="col-span-11" />
     </div>
-    <Info class="col-span-2" />
-    <Trash class="col-span-3" />
-    <Pv class="col-span-2" />
-    <Devices class="col-span-2" />
-    <Calendar class="col-span-6" />
-    <Lists class="col-span-2" />
-    <Empty class="col-span-3" />
-    <Timer class="col-span-11" />
   </div>
 </template>

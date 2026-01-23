@@ -401,7 +401,7 @@ const clickRoom = (roomName: string) => {
 
       <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
     </div>
-    <div class="grid grid-cols-3 gap-1">
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-1">
       <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
     </div>
   </Page>

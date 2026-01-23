@@ -7,7 +7,7 @@ defineProps<{ title: string }>();
 
 <template>
   <Card styling="small" color="primary" class="overflow-hidden h-full flex flex-col">
-    <div class="text-cardCustom-foreground text-base font-bold flex justify-between items-center">
+    <div class="text-cardCustom-foreground text-base font-bold flex justify-between items-center flex-wrap">
       <span>{{ title }}</span>
 
       <PageHeader>
