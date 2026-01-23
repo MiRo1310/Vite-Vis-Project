@@ -21,13 +21,14 @@ import { computed } from "vue";
 import { getOpenWindows } from "@/composables/windows.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { getActiveLights } from "@/composables/lights.ts";
+import { routes } from "@/router/routes.ts";
 
 const navigations = computed((): NavigationType[] => [
-  { icon: Home, text: "Home", link: "/" },
+  { icon: Home, text: "Home", to: routes.home.path },
   {
     icon: Blinds,
     text: "Räume",
-    link: "/fenster",
+    to: routes.window.path,
     badges: [
       {
         value: getOpenWindows.value,
@@ -35,17 +36,17 @@ const navigations = computed((): NavigationType[] => [
       },
     ],
   },
-  { icon: ScrollText, text: "Listen", link: "/listen" },
+  { icon: ScrollText, text: "Listen", to: routes.lists.path },
 
   {
     icon: CalendarDays,
     text: "Kalendar",
-    link: "/kalendar",
+    to: routes.calender.path,
   },
   {
     icon: BatteryFull,
     text: "Batterie",
-    link: "/battery",
+    to: routes.battery.path,
     badges: [
       {
         value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0),
@@ -64,7 +65,7 @@ const navigations = computed((): NavigationType[] => [
   {
     icon: LampCeiling,
     text: "Licht",
-    link: "/light",
+    to: routes.light.path,
     badges: [
       {
         value: getActiveLights.value,
@@ -75,37 +76,37 @@ const navigations = computed((): NavigationType[] => [
   {
     icon: CircleDot,
     text: "Alexa",
-    link: "/alexa",
+    to: routes.alexa.path,
   },
   {
     icon: Heater,
     text: "Heizung",
-    link: "/heating",
+    to: routes.heating.path,
   },
   {
     icon: PlugZap,
     text: "PV",
-    link: "/pv",
+    to: routes.pv.path,
   },
   {
     icon: Info,
     text: "Iobroker Info",
-    link: "/iobroker-info",
+    to: routes.iobrokerInfo.path,
   },
   {
     icon: Logs,
     text: "Logs",
-    link: "/logs",
+    to: routes.logs.path,
   },
   {
     icon: ChartSpline,
     text: "Diagramme",
-    link: "/diagrams",
+    to: routes.diagrams.path,
   },
   {
     icon: Utensils,
     text: "Rezepte",
-    link: "/rezepte",
+    to: routes.recipe.path,
   },
 ]);
 </script>
@@ -113,7 +114,7 @@ const navigations = computed((): NavigationType[] => [
 <template>
   <DarkMode />
   <div class="navigation grid grid-cols-3 gap-2 mt-2">
-    <template v-for="navigation in navigations" :key="navigation.link">
+    <template v-for="navigation in navigations" :key="navigation.to">
       <NavigationButton :navigation />
     </template>
   </div>

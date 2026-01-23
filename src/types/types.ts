@@ -338,7 +338,7 @@ export interface InfoType {
 export interface NavigationType {
   icon: FunctionalComponent;
   text: string;
-  link: string;
+  to: string;
   externalLink?: boolean;
   badges?: {
     value: number;
