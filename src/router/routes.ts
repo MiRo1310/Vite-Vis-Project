@@ -1,4 +1,4 @@
-const routing = {
+export const routes = {
   home: { path: "", name: "home" },
   navigation: { path: "/index", name: "index" },
   alexa: { path: "/alexa", name: "alexa" },
@@ -24,46 +24,46 @@ const routing = {
   description: { path: "/beschreibung", name: "descriptions" },
 };
 
-export const routes = [
+export const routing = [
   {
     path: "/",
     component: async () => await import("@/pages/page.vue"),
     children: [
-      { component: async () => await import("@/pages/home.vue"), ...routing.home },
-      { component: async () => await import("@/pages/navigation.vue"), ...routing.navigation },
-      { component: async () => await import("@/pages/alexa.vue"), ...routing.alexa },
-      { component: async () => await import("@/pages/battery.vue"), ...routing.battery },
-      { component: async () => await import("@/pages/diagrams.vue"), ...routing.diagrams },
-      { component: async () => await import("@/pages/lists.vue"), ...routing.lists },
-      { component: async () => await import("@/pages/rooms.vue"), ...routing.window },
-      { component: async () => await import("@/pages/heating.vue"), ...routing.heating },
-      { component: async () => await import("@/pages/iobroker-info.vue"), ...routing.iobrokerInfo },
-      { component: async () => await import("@/pages/calendar.vue"), ...routing.calender },
-      { component: async () => await import("@/pages/light.vue"), ...routing.light },
-      { component: async () => await import("@/pages/logs.vue"), ...routing.logs },
-      { component: async () => await import("@/pages/pv.vue"), ...routing.pv },
+      { component: async () => await import("@/pages/home.vue"), ...routes.home },
+      { component: async () => await import("@/pages/navigation.vue"), ...routes.navigation },
+      { component: async () => await import("@/pages/alexa.vue"), ...routes.alexa },
+      { component: async () => await import("@/pages/battery.vue"), ...routes.battery },
+      { component: async () => await import("@/pages/diagrams.vue"), ...routes.diagrams },
+      { component: async () => await import("@/pages/lists.vue"), ...routes.lists },
+      { component: async () => await import("@/pages/rooms.vue"), ...routes.window },
+      { component: async () => await import("@/pages/heating.vue"), ...routes.heating },
+      { component: async () => await import("@/pages/iobroker-info.vue"), ...routes.iobrokerInfo },
+      { component: async () => await import("@/pages/calendar.vue"), ...routes.calender },
+      { component: async () => await import("@/pages/light.vue"), ...routes.light },
+      { component: async () => await import("@/pages/logs.vue"), ...routes.logs },
+      { component: async () => await import("@/pages/pv.vue"), ...routes.pv },
     ],
   },
   {
-    redirect: { name: routing.recipe.name },
+    redirect: { name: routes.recipe.name },
     component: async () => await import("@/pages/recipe/recipe-app.vue"),
-    ...routing.recipeApp,
+    ...routes.recipeApp,
     children: [
-      { component: () => import("@/pages/recipe/products.vue"), ...routing.recipeProducts },
-      { component: () => import("@/pages/recipe/units.vue"), ...routing.recipeUnits },
-      { component: () => import("@/pages/recipe/categories.vue"), ...routing.recipeCategories },
+      { component: () => import("@/pages/recipe/products.vue"), ...routes.recipeProducts },
+      { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
+      { component: () => import("@/pages/recipe/categories.vue"), ...routes.recipeCategories },
       {
         component: () => import("@/pages/recipe/recipe.vue"),
-        children: [{ component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routing.recipeDetails }],
-        ...routing.recipe,
+        children: [{ component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routes.recipeDetails }],
+        ...routes.recipe,
       },
-      { props: true, component: () => import("@/pages/recipe/new-recipe.vue"), ...routing.newRecipe },
+      { props: true, component: () => import("@/pages/recipe/new-recipe.vue"), ...routes.newRecipe },
     ],
   },
-  { component: async () => await import("@/pages/finance/listing.vue"), ...routing.finance },
+  { component: async () => await import("@/pages/finance/listing.vue"), ...routes.finance },
 
-  { component: async () => await import("@/pages/finance/addresses.vue"), ...routing.addresses },
-  { component: async () => await import("@/pages/finance/description.vue"), ...routing.description },
+  { component: async () => await import("@/pages/finance/addresses.vue"), ...routes.addresses },
+  { component: async () => await import("@/pages/finance/description.vue"), ...routes.description },
   {
     path: "/:pathMatch(.*)*",
     component: async () => await import("@/pages/error-page-not-found.vue"),

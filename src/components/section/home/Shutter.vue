@@ -4,12 +4,13 @@ import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useRouter } from "vue-router";
 import { Button } from "@/components/shared/button";
+import { routes } from "@/router/routes.ts";
 
 const iobrokerStore = useIobrokerStore();
 const router = useRouter();
 
 const handleWindowClick = () => {
-  router.push({ path: "/fenster" });
+  router.push({ path: routes.window.path });
 };
 
 const getWindowStyle = computed(() => {

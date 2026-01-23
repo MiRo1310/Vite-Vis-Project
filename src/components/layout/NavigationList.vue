@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import DarkMode from "@/components/layout/DarkMode.vue";
+import { routes } from "@/router/routes.ts";
 
 interface NavigationButtons {
   label: string;
@@ -9,12 +10,12 @@ interface NavigationButtons {
 }
 
 const buttons: NavigationButtons[] = [
-  { label: "VIS", name: "home" },
-  { label: "Rezepte", name: "recipe" },
-  { label: "Rezept erstellen", name: "new-recipe" },
-  { label: "Produkte", name: "products" },
-  { label: "Einheiten", name: "units" },
-  { label: "Kategorien", name: "categories" },
+  { label: "VIS", name: routes.home.name },
+  { label: "Rezepte", name: routes.recipe.name },
+  { label: "Rezept erstellen", name: routes.newRecipe.name },
+  { label: "Produkte", name: routes.recipeProducts.name },
+  { label: "Einheiten", name: routes.recipeUnits.name },
+  { label: "Kategorien", name: routes.recipeCategories.name },
 ];
 </script>
 

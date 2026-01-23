@@ -4,6 +4,7 @@ import { ParsedLogs } from "@/store/ioBrokerStore.ts";
 import { Infos } from "@/subscribeIds/info.ts";
 import { useRouter } from "vue-router";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import { routes } from "@/router/routes.ts";
 
 defineProps<{ info: Infos; getParsedLogs: ParsedLogs }>();
 
@@ -11,13 +12,13 @@ const router = useRouter();
 </script>
 <template>
   <CardSubcard>
-    <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: '/iobroker-info' })">
+    <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: routes.iobrokerInfo.path })">
       <p>Updates</p>
       <p>
         <Badge :value="info.updatesNumber?.val" />
       </p>
     </div>
-    <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: '/logs' })">
+    <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: routes.logs.path })">
       <p>Logs</p>
       <div class="flex gap-1">
         <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info?.length" color="blue" />

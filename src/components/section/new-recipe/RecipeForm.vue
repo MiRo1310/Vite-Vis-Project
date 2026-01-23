@@ -17,6 +17,7 @@ import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
+import { routes } from "@/router/routes.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -203,7 +204,7 @@ const goBack = async (id: string) => {
   if (backToRecipe.value) {
     resetForm();
     backToRecipe.value = false;
-    await router.push({ name: "recipe-details", params: { recipeId: id } });
+    await router.push({ name: routes.recipeDetails.name, params: { recipeId: id } });
   }
 };
 
