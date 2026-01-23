@@ -15,6 +15,8 @@ import { useAppStore } from "@/store/appStore.ts";
 import { Button } from "@/components/shared/button";
 import Shutter from "@/components/section/home/Shutter.vue";
 import Empty from "@/components/section/home/Empty.vue";
+import "@/lib/influxDB.ts";
+
 const appStore = useAppStore();
 </script>
 
