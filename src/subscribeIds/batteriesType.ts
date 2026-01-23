@@ -9,7 +9,7 @@ export interface XiaomiWindowSensor {
 }
 
 export interface HMIPDevice {
-  lowBat: StoreValue<boolean>;
+  lowBat?: StoreValue<boolean>;
   available: StoreValue<boolean>;
   ts: number;
 }
