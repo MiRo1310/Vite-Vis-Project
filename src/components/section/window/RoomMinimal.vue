@@ -38,9 +38,12 @@ const emits = defineEmits(["clickRoom"]);
       <div class="flex items-start gap-4">
         <div class="flex gap-2">
           <div v-for="(w, i) in room.windows" :key="i">
-            <p class="text-xs text-foreground"><Circle :color="w.windowSensorReachable?.val ? 'green' : 'red'" /> {{ w.name }}</p>
+            <p class="text-xs text-foreground">
+              <Circle :color="w.windowSensorReachable?.val ? 'green' : 'red'" />
+              {{ w.name }}
+            </p>
 
-            <WindowImage :is-open="w.isOpenStatus ?? false" :class="w.isOpenStatus ? 'bg-red-200' : 'bg-green-200'" />
+            <WindowImage :is-open="w.isOpenStatus ?? false" />
             <ShutterImage v-if="room.shutter" :position="w.shutterPosition" />
           </div>
         </div>

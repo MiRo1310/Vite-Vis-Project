@@ -7,8 +7,10 @@ defineProps<{ isOpen: boolean; class?: HTMLAttributes["class"] }>();
 </script>
 
 <template>
-  <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
-  <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
+  <div :class="{ 'inline-block border p-1 border-amber-500': isOpen }">
+    <img v-show="isOpen" :src="windowOpen" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
+    <img v-show="!isOpen" :src="windowClosed" alt="FensterAufZu" :class="['w-8 h-6 img--white', $props.class]" />
+  </div>
 </template>
 
 <style scoped lang="scss">
