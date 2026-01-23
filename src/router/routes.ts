@@ -1,6 +1,6 @@
 export const routes = {
-  home: { path: "", name: "home" },
-  navigation: { path: "/index", name: "index" },
+  home: { path: "/", name: "home" },
+  navigation: { path: "/navigation", name: "navigation" },
   alexa: { path: "/alexa", name: "alexa" },
   battery: { path: "/battery", name: "battery" },
   diagrams: { path: "/diagrams", name: "diagrams" },
@@ -61,7 +61,6 @@ export const routing = [
     ],
   },
   { component: async () => await import("@/pages/finance/listing.vue"), ...routes.finance },
-
   { component: async () => await import("@/pages/finance/addresses.vue"), ...routes.addresses },
   { component: async () => await import("@/pages/finance/description.vue"), ...routes.description },
   {

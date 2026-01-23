@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import NavigationButton from "@/components/layout/NavigationButton.vue";
-import {
-  BatteryFull,
-  Blinds,
-  CalendarDays,
-  ChartSpline,
-  CircleDot,
-  Heater,
-  Home,
-  Info,
-  LampCeiling,
-  Logs,
-  PlugZap,
-  ScrollText,
-  Utensils,
-} from "lucide-vue-next";
+import { BatteryFull, Blinds, CalendarDays, ChartSpline, CircleDot, Heater, Info, LampCeiling, Logs, PlugZap, Utensils } from "lucide-vue-next";
 import { NavigationType } from "@/types/types.ts";
 import { batteryList } from "@/composables/battery.ts";
 import { computed } from "vue";
@@ -22,9 +8,10 @@ import { getOpenWindows } from "@/composables/windows.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
+import { mainPages } from "@/config/mainPages.ts";
 
 const navigations = computed((): NavigationType[] => [
-  { icon: Home, text: "Home", to: routes.home.path },
+  { ...mainPages.home },
   {
     icon: Blinds,
     text: "Räume",
@@ -36,8 +23,7 @@ const navigations = computed((): NavigationType[] => [
       },
     ],
   },
-  { icon: ScrollText, text: "Listen", to: routes.lists.path },
-
+  { ...mainPages.lists },
   {
     icon: CalendarDays,
     text: "Kalendar",
