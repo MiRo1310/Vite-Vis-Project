@@ -16,10 +16,7 @@ import { Button } from "@/components/shared/button";
 import Shutter from "@/components/section/home/Shutter.vue";
 import Empty from "@/components/section/home/Empty.vue";
 import "@/composables/influxDB.ts";
-import { InfluxDBClient } from "@/composables/influxDB.ts";
 
-const client = new InfluxDBClient("FörderSpirale", { type: "boolean", intervall: 30, rangeSec: 120000 });
-const result = client.get();
 const appStore = useAppStore();
 </script>
 
