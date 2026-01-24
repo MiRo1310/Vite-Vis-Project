@@ -6,7 +6,7 @@ import HeatingTemperature from "@/components/section/heating/HeatingTemperature.
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
 import Page from "@/components/shared/page/Page.vue";
 import { routes } from "@/router/routes.ts";
-import LineChart from "@/components/shared/chart/lineChart.vue";
+import LineChartStep from "@/components/section/heating/LineChartStep.vue";
 </script>
 
 <template>
@@ -15,20 +15,22 @@ import LineChart from "@/components/shared/chart/lineChart.vue";
       <RouterLink :to="routes.heatingControl.path" />
     </template>
     <template #default>
-      <div class="flex flex-wrap gap-2">
-        <HeatingStatus />
-        <HeatingTemperature />
-        <HeatingWarning />
-        <HeatingPump />
-        <HeatingConfig />
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-wrap gap-2">
+          <HeatingStatus />
+          <HeatingTemperature />
+          <HeatingWarning />
+          <HeatingPump />
+          <HeatingConfig />
+        </div>
+        <!--      <iframe-->
+        <!--        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"-->
+        <!--        width="100%"-->
+        <!--        height="400"-->
+        <!--        class="mt-2 rounded-md"-->
+        <!--      />-->
+        <LineChartStep />
       </div>
-      <!--      <iframe-->
-      <!--        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"-->
-      <!--        width="100%"-->
-      <!--        height="400"-->
-      <!--        class="mt-2 rounded-md"-->
-      <!--      />-->
-      <LineChart />
     </template>
   </Page>
 </template>

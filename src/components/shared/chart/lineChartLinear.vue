@@ -2,20 +2,19 @@
 import { CurveType } from "@unovis/ts";
 
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
-import { TrendingUp } from "lucide-vue-next";
-import { ChartConfig, ChartContainer, ChartTooltipContent, componentToString, ChartCrosshair, ChartTooltip } from "@/components/ui/chart";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/shared/card";
+import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed } from "vue";
 
-const client = new InfluxDBClient("FörderSpirale", { type: "boolean", intervall: 30, rangeSec: 120000 });
+const client = new InfluxDBClient(["FörderSpirale"], { type: "boolean", intervall: 30, rangeSec: 120000 });
 const result = client.get();
 
 const chartData = computed(() => {
   return result.value.map((item) => {
     return {
       date: new Date(item.time),
-      desktop: item.value ? 1 : 0,
+      heater: item.value ? 1 : 0,
     };
   });
 });
@@ -23,7 +22,7 @@ const chartData = computed(() => {
 type Data = (typeof chartData.value)[number];
 
 const chartConfig = {
-  desktop: {
+  heater: {
     label: "Test",
     color: "var(--chart-1)",
   },
