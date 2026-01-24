@@ -16,10 +16,7 @@ import { Button } from "@/components/shared/button";
 import Shutter from "@/components/section/home/Shutter.vue";
 import Empty from "@/components/section/home/Empty.vue";
 import "@/composables/influxDB.ts";
-import { InfluxDBClient } from "@/composables/influxDB.ts";
 
-const client = new InfluxDBClient("FörderSpirale", { type: "boolean", intervall: 30, rangeSec: 120000 });
-const result = client.get();
 const appStore = useAppStore();
 </script>
 
@@ -30,8 +27,6 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  {{ result.length }}
-  {{ result }}
   <div class="overflow-auto max-h-[calc(100%-44px)]">
     <div class="grid grid-cols-11 gap-2">
       <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">

@@ -6,6 +6,7 @@ import HeatingTemperature from "@/components/section/heating/HeatingTemperature.
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
 import Page from "@/components/shared/page/Page.vue";
 import HeatingControl from "@/components/section/heating/HeatingControl.vue";
+import LineChart from "@/components/shared/chart/lineChart.vue";
 </script>
 
 <template>
@@ -21,12 +22,13 @@ import HeatingControl from "@/components/section/heating/HeatingControl.vue";
         <HeatingPump />
         <HeatingConfig />
       </div>
-      <iframe
-        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
-        width="100%"
-        height="400"
-        class="mt-2 rounded-md"
-      />
+      <!--      <iframe-->
+      <!--        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"-->
+      <!--        width="100%"-->
+      <!--        height="400"-->
+      <!--        class="mt-2 rounded-md"-->
+      <!--      />-->
+      <LineChart />
     </template>
   </Page>
 </template>
