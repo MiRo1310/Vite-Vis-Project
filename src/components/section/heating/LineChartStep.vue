@@ -1,3 +1,4 @@
+// `src/components/section/heating/LineChartStep.vue`
 <script setup lang="ts">
 import { CurveType } from "@unovis/ts";
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
@@ -11,7 +12,8 @@ import { isDefined } from "@vueuse/core";
 
 const actualRange = range.last6h;
 
-const measurements = ["Heizung Schnecke", "FörderSpirale"];
+// Reihenfolge so, dass chartData (desktop) => Förderspirale, chartDataSpirale (value) => Heizung Schnecke
+const measurements = ["FörderSpirale", "Heizung Schnecke"];
 const intervall = 30;
 
 const client = new InfluxDBClient(measurements, { type: "boolean", intervall, rangeSec: actualRange.rangeSec });
@@ -20,35 +22,46 @@ const result = client.get();
 const chartData = computed(() => {
   const key = measurements[0];
 
-  return (
+  const res =
     result.value
       .filter((item) => isDefined(item[key]))
-      .map((item) => {
-        return {
-          date: new Date(item.time),
-          desktop: item[key] ? 1 : 0,
-        };
-      }) ?? []
-  );
+      .map((item) => ({
+        date: new Date(item.time),
+        desktop: item[key] ? 1 : 0,
+      })) ?? [];
+
+  // nach Zeit sortieren
+  return res.sort((a, b) => a.date.getTime() - b.date.getTime());
 });
 
-const chartDataSpirale = computed(() => {
-  const key = measurements[1] as string;
+const chartDataHeating = computed(() => {
+  const key = measurements[1];
 
-  return (
+  const res =
     result.value
       .filter((item) => isDefined(item[key]))
-      .map((item) => {
-        return {
-          date: new Date(item.time),
-          value: item[key] ? 1 : 0,
-        };
-      }) ?? []
-  );
+      .map((item) => ({
+        date: new Date(item.time),
+        value: item[key] ? 1 : 0,
+      })) ?? [];
+
+  return res.sort((a, b) => a.date.getTime() - b.date.getTime());
+});
+
+// gemeinsame X-Domain aus beiden Datensätzen (synchronisiert die Zeitachse)
+const xDomain = computed(() => {
+  const all = [...chartData.value, ...chartDataHeating.value];
+  if (!all.length) {
+    return undefined;
+  }
+  const times = all.map((d) => d.date.getTime());
+  const min = Math.min(...times);
+  const max = Math.max(...times);
+  return [new Date(min), new Date(max)];
 });
 
 type Data = (typeof chartData.value)[number];
-type Data2 = (typeof chartDataSpirale.value)[number];
+type Data2 = (typeof chartDataHeating.value)[number];
 
 const chartConfig = {
   desktop: {
@@ -70,7 +83,7 @@ const chartConfig = {
     </CardHeader>
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]">
+        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomain">
           <VisLine :x="(d: Data) => d.date" :y="(d: Data) => d.desktop" :color="chartConfig.desktop.color" :curve-type="CurveType.Step" />
           <VisAxis
             type="x"
@@ -95,8 +108,7 @@ const chartConfig = {
 
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        {{ chartDataSpirale }}
-        <VisXYContainer :data="chartDataSpirale" :margin="{ left: -24 }" :y-domain="[0, 1]">
+        <VisXYContainer :data="chartDataHeating" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomain">
           <VisLine :x="(d: Data2) => d.date" :y="(d: Data2) => d.value" :color="chartConfig.value.color" :curve-type="CurveType.Step" />
           <VisAxis
             type="x"
