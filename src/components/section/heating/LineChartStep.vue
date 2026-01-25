@@ -2,43 +2,49 @@
 import { CurveType } from "@unovis/ts";
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
 import { TrendingUp } from "lucide-vue-next";
-import { ChartConfig, ChartContainer, ChartTooltipContent, componentToString, ChartTooltip, ChartCrosshair } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed } from "vue";
 import { range } from "@/lib/time.ts";
 import { isDefined } from "@vueuse/core";
 
-const actualRange = range.last1h;
+const actualRange = range.last6h;
 
-const measurements = ["FörderSpirale", "Heizung Schnecke"];
+const measurements = ["Heizung Schnecke", "FörderSpirale"];
 const intervall = 30;
 
 const client = new InfluxDBClient(measurements, { type: "boolean", intervall, rangeSec: actualRange.rangeSec });
 const result = client.get();
 
 const chartData = computed(() => {
-  const key = measurements.mrNth(1) as string;
-  return result.value
-    .filter((item) => isDefined(item[key]))
-    .map((item) => {
-      return {
-        date: new Date(item.time),
-        desktop: item[key] ? 1 : 0,
-      };
-    });
+  const key = measurements[0];
+
+  return (
+    result.value
+      .filter((item) => isDefined(item[key]))
+      .map((item) => {
+        return {
+          date: new Date(item.time),
+          desktop: item[key] ? 1 : 0,
+        };
+      }) ?? []
+  );
 });
 
 const chartDataSpirale = computed(() => {
-  const key = measurements.mrFirst() as string;
-  return result.value
-    .filter((item) => isDefined(item[key]))
-    .map((item) => {
-      return {
-        date: new Date(item.time),
-        value: item[key] ? 1 : 0,
-      };
-    });
+  const key = measurements[1] as string;
+
+  return (
+    result.value
+      .filter((item) => isDefined(item[key]))
+      .map((item) => {
+        return {
+          date: new Date(item.time),
+          value: item[key] ? 1 : 0,
+        };
+      }) ?? []
+  );
 });
 
 type Data = (typeof chartData.value)[number];
@@ -64,7 +70,7 @@ const chartConfig = {
     </CardHeader>
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, undefined]">
+        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]">
           <VisLine :x="(d: Data) => d.date" :y="(d: Data) => d.desktop" :color="chartConfig.desktop.color" :curve-type="CurveType.Step" />
           <VisAxis
             type="x"
@@ -75,12 +81,10 @@ const chartConfig = {
             :num-ticks="6"
             :tick-format="
               (d: number) => {
-                console.log(d);
                 const date = new Date(d);
-                return date.toLocaleDateString('de-DE', { hour: 'numeric', minute: 'numeric' });
+                return date.toLocaleTimeString('de-DE', { hour: 'numeric', minute: 'numeric' });
               }
             "
-            :tick-values="chartData.map((d) => d.date)"
           />
           <VisAxis type="y" :num-ticks="3" :tick-line="false" :domain-line="false" />
           <ChartTooltip />
@@ -91,7 +95,8 @@ const chartConfig = {
 
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartDataSpirale" :margin="{ left: -24 }" :y-domain="[0, undefined]">
+        {{ chartDataSpirale }}
+        <VisXYContainer :data="chartDataSpirale" :margin="{ left: -24 }" :y-domain="[0, 1]">
           <VisLine :x="(d: Data2) => d.date" :y="(d: Data2) => d.value" :color="chartConfig.value.color" :curve-type="CurveType.Step" />
           <VisAxis
             type="x"
@@ -103,12 +108,9 @@ const chartConfig = {
             :tick-format="
               (d: number) => {
                 const date = new Date(d);
-                return date.toLocaleDateString('en-US', {
-                  month: 'short',
-                });
+                return date.toLocaleTimeString('de-DE', { hour: 'numeric', minute: 'numeric' });
               }
             "
-            :tick-values="chartData.map((d) => d.date)"
           />
           <VisAxis type="y" :num-ticks="3" :tick-line="false" :domain-line="false" />
           <ChartTooltip />
