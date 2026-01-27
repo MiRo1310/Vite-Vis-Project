@@ -2,17 +2,16 @@
 <script setup lang="ts">
 import { CurveType } from "@unovis/ts";
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
-import { TrendingUp } from "lucide-vue-next";
 import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/shared/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed } from "vue";
 import { range } from "@/lib/time.ts";
 import { isDefined } from "@vueuse/core";
+import { xDomainSynchronized } from "@/composables/charts.ts";
 
-const actualRange = range.last6h;
+const actualRange = range.last7d;
 
-// Reihenfolge so, dass chartData (desktop) => Förderspirale, chartDataSpirale (value) => Heizung Schnecke
 const measurements = ["FörderSpirale", "Heizung Schnecke"];
 const intervall = 30;
 
@@ -22,42 +21,27 @@ const result = client.get();
 const chartData = computed(() => {
   const key = measurements[0];
 
-  const res =
+  return (
     result.value
       .filter((item) => isDefined(item[key]))
       .map((item) => ({
         date: new Date(item.time),
         desktop: item[key] ? 1 : 0,
-      })) ?? [];
-
-  // nach Zeit sortieren
-  return res.sort((a, b) => a.date.getTime() - b.date.getTime());
+      })) ?? []
+  );
 });
 
 const chartDataHeating = computed(() => {
   const key = measurements[1];
 
-  const res =
+  return (
     result.value
       .filter((item) => isDefined(item[key]))
       .map((item) => ({
         date: new Date(item.time),
         value: item[key] ? 1 : 0,
-      })) ?? [];
-
-  return res.sort((a, b) => a.date.getTime() - b.date.getTime());
-});
-
-// gemeinsame X-Domain aus beiden Datensätzen (synchronisiert die Zeitachse)
-const xDomain = computed(() => {
-  const all = [...chartData.value, ...chartDataHeating.value];
-  if (!all.length) {
-    return undefined;
-  }
-  const times = all.map((d) => d.date.getTime());
-  const min = Math.min(...times);
-  const max = Math.max(...times);
-  return [new Date(min), new Date(max)];
+      })) ?? []
+  );
 });
 
 type Data = (typeof chartData.value)[number];
@@ -83,8 +67,8 @@ const chartConfig = {
     </CardHeader>
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomain">
-          <VisLine :x="(d: Data) => d.date" :y="(d: Data) => d.desktop" :color="chartConfig.desktop.color" :curve-type="CurveType.Step" />
+        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomainSynchronized([chartData, chartDataHeating])">
+          <VisLine :x="(d: Data) => d.date" :y="(d: Data) => d.desktop" :color="chartConfig.desktop.color" :curve-type="CurveType.StepAfter" />
           <VisAxis
             type="x"
             :x="(d: Data) => d.date"
@@ -108,8 +92,8 @@ const chartConfig = {
 
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartDataHeating" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomain">
-          <VisLine :x="(d: Data2) => d.date" :y="(d: Data2) => d.value" :color="chartConfig.value.color" :curve-type="CurveType.Step" />
+        <VisXYContainer :data="chartDataHeating" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomainSynchronized">
+          <VisLine :x="(d: Data2) => d.date" :y="(d: Data2) => d.value" :color="chartConfig.value.color" :curve-type="CurveType.StepAfter" />
           <VisAxis
             type="x"
             :x="(d: Data2) => d.date"
@@ -130,9 +114,5 @@ const chartConfig = {
         </VisXYContainer>
       </ChartContainer>
     </CardContent>
-    <CardFooter class="flex-col items-start gap-2 text-sm">
-      <div class="flex gap-2 font-medium leading-none">Trending up by 5.2% this month <TrendingUp class="h-4 w-4" /></div>
-      <div class="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
-    </CardFooter>
   </Card>
 </template>
