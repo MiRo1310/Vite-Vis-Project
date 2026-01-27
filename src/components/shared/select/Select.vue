@@ -39,29 +39,27 @@ const variants = {
 </script>
 
 <template>
-  <div :class="$props.class">
-    <Select v-model="modelValue">
-      <SelectTrigger :class="getVariantsClasses(variants, props)">
-        <SelectValue :placeholder="placeholder" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel v-if="label">
-            {{ label }}
-          </SelectLabel>
-          <SelectItem
-            v-for="(item, index) in items"
-            :key="index"
-            :value="item.value"
-            :class="{
-              [`${item?.class} border-${item?.class || 'accent'}`]: true,
-              [`${getFocusClass(item)} focus:border-black focus:border-2`]: disableHover,
-            }"
-          >
-            {{ item.label || item.value }}
-          </SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
-  </div>
+  <Select v-model="modelValue">
+    <SelectTrigger :class="[getVariantsClasses(variants, props), $props.class]">
+      <SelectValue :placeholder="placeholder" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectGroup>
+        <SelectLabel v-if="label">
+          {{ label }}
+        </SelectLabel>
+        <SelectItem
+          v-for="(item, index) in items"
+          :key="index"
+          :value="item.value"
+          :class="{
+            [`${item?.class} border-${item?.class || 'accent'}`]: true,
+            [`${getFocusClass(item)} focus:border-black focus:border-2`]: disableHover,
+          }"
+        >
+          {{ item.label || item.value }}
+        </SelectItem>
+      </SelectGroup>
+    </SelectContent>
+  </Select>
 </template>

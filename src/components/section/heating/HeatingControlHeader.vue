@@ -50,7 +50,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
       v-model:model-value="selected"
       placeholder="Wähle ein Profil aus"
       :items="items"
-      class="w-25"
+      class="w-auto"
       @update:model-value="updateSelected($event, heatingControl.profile?.id)"
     />
     <p class="header__label">Raum:</p>
@@ -58,7 +58,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
       v-model:model-value="room"
       placeholder="Wähle einen Raum"
       :items="roomItems"
-      class="w-37.5"
+      class="w-auto"
       @update:model-value="updateRoomInHeatingControl(($event as RoomItems) ?? null)"
     />
   </div>
