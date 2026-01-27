@@ -25,7 +25,7 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  <div class="overflow-auto max-h-[calc(100%-44px)]">
+  <div class="overflow-auto max-h-[calc(100%-44px)] mt-2">
     <div class="grid grid-cols-11 gap-2">
       <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">
         <Time>

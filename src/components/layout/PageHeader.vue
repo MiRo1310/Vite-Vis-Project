@@ -5,7 +5,7 @@ import NavigationButton from "@/components/layout/NavigationButton.vue";
 </script>
 
 <template>
-  <div class="flex gap-2 mb-2 flex-wrap">
+  <div class="flex gap-2 flex-wrap">
     <slot />
     <div class="flex-1 w-80">
       <NavigationButton :navigation="mainPages.navigation" small />
