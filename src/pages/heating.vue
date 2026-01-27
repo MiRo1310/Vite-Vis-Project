@@ -5,13 +5,13 @@ import HeatingStatus from "@/components/section/heating/HeatingStatus.vue";
 import HeatingTemperature from "@/components/section/heating/HeatingTemperature.vue";
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
 import Page from "@/components/shared/page/Page.vue";
-import HeatingControl from "@/components/section/heating/HeatingControl.vue";
+import { routes } from "@/router/routes.ts";
 </script>
 
 <template>
   <Page title="Heizung">
     <template #header>
-      <HeatingControl />
+      <RouterLink :to="routes.heatingControl.path" />
     </template>
     <template #default>
       <div class="flex flex-wrap gap-2">

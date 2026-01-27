@@ -1,24 +1,19 @@
-<script setup lang="ts">
-import Button from "../../shared/button/Button.vue";
-import HeatingControlDialog from "@/components/section/heating/HeatingControlDialog.vue";
-import Dialog from "@/components/shared/dialog/Dialog.vue";
-import { ButtonVariantProps } from "@/components/shared/button";
-
-defineProps<ButtonVariantProps>();
+<script lang="ts" setup>
+import HeatingControlConfig from "./HeatingControlConfig.vue";
+import HeatingControlPeriod from "./HeatingControlPeriod.vue";
+import HeatingControlRoom from "./HeatingControlRoom.vue";
+import HeatingControlRoomStatus from "./HeatingControlRoomStatus.vue";
+import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
 </script>
-<template>
-  <Dialog class-content="w-full max-w-full p-0 pt-7 ">
-    <template #trigger>
-      <Button v-bind="$props" variant="outline">
-        <div class="flex justify-center">
-          <slot />
-        </div>
 
-        Heating Control
-      </Button>
-    </template>
-    <template #content>
-      <HeatingControlDialog />
-    </template>
-  </Dialog>
+<template>
+  <div class="grid grid-cols-12">
+    <div class="col-span-8 flex flex-wrap gap-2">
+      <HeatingControlConfig />
+      <HeatingControlWindowStatus />
+      <HeatingControlRoomStatus />
+    </div>
+    <HeatingControlRoom class="col-span-4 ml-2" />
+  </div>
+  <HeatingControlPeriod />
 </template>
