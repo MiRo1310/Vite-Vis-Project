@@ -2,18 +2,19 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import CardListing from "@/components/shared/card/CardListing.vue";
 import { Entries } from "@/types/types.ts";
+import { storeToRefs } from "pinia";
 
-const { heating } = useIobrokerStore();
+const { heating } = storeToRefs(useIobrokerStore());
 
 const entries: Entries[] = [
   {
     title: "Automatik Heizung",
-    value: heating.automatic?.val,
+    value: heating.value.automatic?.val,
     type: "boolean",
   },
-  { title: "Heizung aktiv", value: heating.active?.val, type: "boolean" },
-  { title: "Brennstoff Füllstand", value: heating.level?.val, type: "boolean" },
-  { title: "Automatik Solar", value: heating.autoSolar?.val, type: "boolean" },
+  { title: "Heizung aktiv", value: heating.value.active?.val, type: "boolean" },
+  { title: "Brennstoff Füllstand", value: heating.value.level?.val, type: "boolean" },
+  { title: "Automatik Solar", value: heating.value.autoSolar?.val, type: "boolean" },
 ];
 </script>
 <template>
