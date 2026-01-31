@@ -14,7 +14,7 @@ import ChartTooltipContent from "@/components/shared/chart/ChartTooltipContent.v
 const actualRange = range.last7d;
 
 const measurements = ["FörderSpirale", "Heizung Schnecke"];
-const intervall = 30;
+const intervall = 60;
 
 const client = new InfluxDBClient(measurements, { type: "boolean", intervall, rangeSec: actualRange.rangeSec });
 const result = client.get();
@@ -22,14 +22,25 @@ const result = client.get();
 const chartData = computed(() => {
   const key = measurements[0];
 
-  return (
+  const res =
     result.value
       .filter((item) => isDefined(item[key]))
       .map((item) => ({
         date: new Date(item.time),
         desktop: item[key] ? 1 : 0,
-      })) ?? []
-  );
+      })) ?? [];
+
+  const aggregated = res.reduce((prev: { date: string; count: number }[], curr) => {
+    const newDate = new Date(curr.date).toLocaleDateString();
+
+    const el = prev.find((e) => e.date === newDate);
+    if (!el) {
+      prev.push({ date: newDate, count: curr.desktop });
+    } else {
+      return el.count + curr.desktop;
+    }
+  }, []);
+  return { res, aggregated };
 });
 
 const chartDataHeating = computed(() => {
@@ -45,7 +56,7 @@ const chartDataHeating = computed(() => {
   );
 });
 
-type Data = (typeof chartData.value)[number];
+type Data = (typeof chartData.value.res)[number];
 type Data2 = (typeof chartDataHeating.value)[number];
 
 const chartConfig = {
@@ -68,7 +79,12 @@ const chartConfig = {
     </CardHeader>
     <CardContent>
       <ChartContainer :config="chartConfig" class="h-40">
-        <VisXYContainer :data="chartData" :margin="{ left: -24 }" :y-domain="[0, 1]" :x-domain="xDomainSynchronized([chartData, chartDataHeating])">
+        <VisXYContainer
+          :data="chartData"
+          :margin="{ left: -24 }"
+          :y-domain="[0, 1]"
+          :x-domain="xDomainSynchronized([chartData.res, chartDataHeating])"
+        >
           <VisLine :x="(d: Data) => d.date" :y="(d: Data) => d.desktop" :color="chartConfig.desktop.color" :curve-type="CurveType.StepAfter" />
           <VisAxis
             type="x"
