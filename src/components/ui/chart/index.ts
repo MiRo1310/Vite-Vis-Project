@@ -2,6 +2,7 @@ export { default as ChartLegend } from "./ChartLegend.vue";
 export { default as ChartSingleTooltip } from "./ChartSingleTooltip.vue";
 export { default as ChartContainer } from "./ChartContainer.vue";
 export { default as ChartTooltipContent } from "./ChartTooltipContent.vue";
+export { default as ChartLegendContent } from "./ChartLegendContent.vue";
 
 export * from "./interface";
 import type { Component, Ref } from "vue";

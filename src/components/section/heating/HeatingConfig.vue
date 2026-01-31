@@ -2,49 +2,50 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import CardListing from "@/components/shared/card/CardListing.vue";
 import { Entries } from "@/types/types.ts";
+import { storeToRefs } from "pinia";
 
-const { heating } = useIobrokerStore();
+const { heating } = storeToRefs(useIobrokerStore());
 
 const entries: Entries[] = [
   {
     title: "Maximale Zeit zum befüllen",
-    value: heating.maxTimeToFill?.val,
+    value: heating.value.maxTimeToFill?.val,
     type: "number",
     unit: "s",
   },
   {
     title: "Nachlauf Spirale",
-    value: heating.offsetFilling?.val,
+    value: heating.value.offsetFilling?.val,
     type: "number",
     unit: "s",
   },
   {
     title: "Pumpe Heizung an, ab",
-    value: heating.tempPumpOn?.val,
+    value: heating.value.tempPumpOn?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Pumpe Heizung aus, ab",
-    value: heating.tempPumpOff?.val,
+    value: heating.value.tempPumpOff?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Differenz Solar/ Puffer",
-    value: heating.diffSolarBuffer?.val,
+    value: heating.value.diffSolarBuffer?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Min. Temp Solar zum Puffer füllen",
-    value: heating.minFillTemp?.val,
+    value: heating.value.minFillTemp?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Max. Temp des Puffer zum Solar füllen",
-    value: heating.maxFillTemp?.val,
+    value: heating.value.maxFillTemp?.val,
     type: "number",
     unit: "°C",
   },
