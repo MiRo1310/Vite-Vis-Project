@@ -10,6 +10,7 @@ import { batteryIds } from "@/subscribeIds/batteriesType.ts";
 import { hmipIds } from "@/subscribeIds/hmip.ts";
 import { useColorMode } from "@vueuse/core";
 import { lightStates } from "@/subscribeIds/light.ts";
+import { heating } from "@/subscribeIds/heating.ts";
 
 useColorMode();
 
@@ -17,7 +18,7 @@ onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
   loadScript(socketIo);
 
-  useDynamicSubscribe([batteryIds, hmipIds, ...lightStates]);
+  useDynamicSubscribe([batteryIds, hmipIds, ...lightStates, heating]);
 });
 onUnmounted(() => {
   useTime().clear();

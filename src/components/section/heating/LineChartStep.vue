@@ -2,13 +2,14 @@
 <script setup lang="ts">
 import { CurveType } from "@unovis/ts";
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
-import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, componentToString } from "@/components/ui/chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed } from "vue";
 import { range } from "@/lib/time.ts";
 import { isDefined } from "@vueuse/core";
 import { xDomainSynchronized } from "@/composables/charts.ts";
+import ChartTooltipContent from "@/components/shared/chart/ChartTooltipContent.vue";
 
 const actualRange = range.last7d;
 
