@@ -2,37 +2,38 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import CardListing from "../../shared/card/CardListing.vue";
 import { Entries } from "@/types/types.ts";
+import { storeToRefs } from "pinia";
 
-const { heating } = useIobrokerStore();
+const { heating } = storeToRefs(useIobrokerStore());
 
 const entries: Entries[] = [
   {
     title: "Heizung",
-    value: heating.heatingTemperature?.val,
+    value: heating.value.heatingTemperature?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Solar",
-    value: heating.heatingSolar?.val,
+    value: heating.value.heatingSolar?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Puffer",
-    value: heating.heatingBuffer?.val,
+    value: heating.value.heatingBuffer?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Solar Max heute",
-    value: heating.solarMaxToday?.val,
+    value: heating.value.solarMaxToday?.val,
     type: "number",
     unit: "°C",
   },
   {
     title: "Solar Max",
-    value: heating.solarMax?.val,
+    value: heating.value.solarMax?.val,
     type: "number",
     unit: "°C",
   },
