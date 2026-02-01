@@ -4,7 +4,6 @@ import { CurveType } from "@unovis/ts";
 import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, componentToString } from "@/components/ui/chart";
 import ChartTooltipContent from "@/components/shared/chart/ChartTooltipContent.vue";
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
-import { Ref } from "vue";
 
 interface ChartDataPoint {
   date: Date;

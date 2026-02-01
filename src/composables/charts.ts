@@ -11,28 +11,31 @@ export const xDomainSynchronized = computed(() => (dates: { date: Date }[][]): D
   return [new Date(min), new Date(max)];
 });
 
-export const aggregatePerDay = computed(() => <T extends { date: Date }, K extends keyof T>(data: T[], key: K) => {
-  return data.reduce(
-    (prev, curr) => {
-      const newDate = new Date(curr.date).toLocaleDateString();
+export interface AggregatedPerDay {
+  localeDateString: string;
+  count: number;
+  key: string;
+}
 
-      const el = prev.find((e) => e.date === newDate);
-      const value = curr[key];
-      let currentCount;
+export const aggregatePerDay = computed(() => <T extends { date: Date; key: string }, K extends keyof T>(data: T[], key: K) => {
+  return data.reduce((prev, curr) => {
+    const newDate = new Date(curr.date).toLocaleDateString();
 
-      if ((!typeof value as unknown) === "number") {
-        currentCount = 0;
-      } else {
-        currentCount = value as unknown as number;
-      }
+    const el = prev.find((e) => e.localeDateString === newDate);
+    const value = curr[key];
+    let currentCount;
 
-      if (!el) {
-        prev.push({ date: newDate, count: currentCount ?? 0 });
-      } else {
-        el.count += currentCount ?? 0;
-      }
-      return prev;
-    },
-    [] as { date: string; count: number }[],
-  );
+    if ((!typeof value as unknown) === "number") {
+      currentCount = 0;
+    } else {
+      currentCount = value as unknown as number;
+    }
+
+    if (!el) {
+      prev.push({ localeDateString: newDate, count: currentCount ?? 0, key: curr.key });
+    } else {
+      el.count += currentCount ?? 0;
+    }
+    return prev;
+  }, [] as AggregatedPerDay[]);
 });

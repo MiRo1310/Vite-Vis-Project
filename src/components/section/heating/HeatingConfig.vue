@@ -11,13 +11,13 @@ const entries: Entries[] = [
     title: "Maximale Zeit zum befüllen",
     value: heating.value.maxTimeToFill?.val,
     type: "number",
-    unit: "s",
+    unit: "sec",
   },
   {
     title: "Nachlauf Spirale",
     value: heating.value.offsetFilling?.val,
     type: "number",
-    unit: "s",
+    unit: "sec",
   },
   {
     title: "Pumpe Heizung an, ab",

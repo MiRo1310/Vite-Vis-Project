@@ -6,7 +6,7 @@ import HeatingTemperature from "@/components/section/heating/HeatingTemperature.
 import HeatingWarning from "@/components/section/heating/HeatingWarning.vue";
 import Page from "@/components/shared/page/Page.vue";
 import { routes } from "@/router/routes.ts";
-import LineChartStep from "@/components/section/heating/LineChartStep.vue";
+import HeatingCharts from "@/components/section/heating/HeatingCharts.vue";
 </script>
 
 <template>
@@ -29,7 +29,7 @@ import LineChartStep from "@/components/section/heating/LineChartStep.vue";
         <!--        height="400"-->
         <!--        class="mt-2 rounded-md"-->
         <!--      />-->
-        <LineChartStep />
+        <HeatingCharts />
       </div>
     </template>
   </Page>
