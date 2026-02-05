@@ -2108,10 +2108,10 @@
   resolved "https://registry.yarnpkg.com/@repeaterjs/repeater/-/repeater-3.0.6.tgz#be23df0143ceec3c69f8b6c2517971a5578fdaa2"
   integrity sha512-Javneu5lsuhwNCryN+pXH93VPQ8g0dBX7wItHFgYiwQmzE1sVdg5tWHiOgHywzL2W21XQopa7IwIEnNbmeUJYA==
 
-"@rolldown/pluginutils@1.0.0-beta.53":
-  version "1.0.0-beta.53"
-  resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.0-beta.53.tgz#c57a5234ae122671aff6fe72e673a7ed90f03f87"
-  integrity sha512-vENRlFU4YbrwVqNDZ7fLvy+JR1CRkyr01jhSiDpE1u6py3OMzQfztQU2jxykW3ALNxO4kSlqIDeYyD0Y9RcQeQ==
+"@rolldown/pluginutils@1.0.0-rc.2":
+  version "1.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.2.tgz#10324e74cb3396cb7b616042ea7e9e6aa7d8d458"
+  integrity sha512-izyXV/v+cHiRfozX62W9htOAvwMo4/bXKDrQ+vom1L1qRuexPock/7VZDAhnpHCLNejd3NJ6hiab+tO0D44Rgw==
 
 "@rollup/rollup-android-arm-eabi@4.53.3":
   version "4.53.3"
@@ -2825,12 +2825,12 @@
     type-fest "^4.8.3"
     vee-validate "4.15.1"
 
-"@vitejs/plugin-vue@^6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-6.0.3.tgz#b857c5dcbc5cfb30bf5d7f9d6e274afcca2d46d1"
-  integrity sha512-TlGPkLFLVOY3T7fZrwdvKpjprR3s4fxRln0ORDo1VQ7HHyxJwTlrjKU3kpVWTlaAjIEuCTokmjkZnr8Tpc925w==
+"@vitejs/plugin-vue@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-6.0.4.tgz#f571fe5aeb0be511e3bfdd43844d8eaa0738b28e"
+  integrity sha512-uM5iXipgYIn13UUQCZNdWkYk+sysBeA97d5mHsAoAt1u/wpN3+zxOmsVJWosuzX+IMGRzeYUNytztrYznboIkQ==
   dependencies:
-    "@rolldown/pluginutils" "1.0.0-beta.53"
+    "@rolldown/pluginutils" "1.0.0-rc.2"
 
 "@vitest/coverage-v8@4.0.17":
   version "4.0.17"
@@ -3114,19 +3114,6 @@
   dependencies:
     eslint-config-prettier "^10.0.1"
     eslint-plugin-prettier "^5.2.2"
-
-"@vue/language-core@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-3.2.3.tgz#e9d8765e202a4ab5bc72a6ac8807e8796c03404f"
-  integrity sha512-VpN/GnYDzGLh44AI6i1OB/WsLXo6vwnl0EWHBelGc4TyC0yEq6azwNaed/+Tgr8anFlSdWYnMEkyHJDPe7ii7A==
-  dependencies:
-    "@volar/language-core" "2.4.27"
-    "@vue/compiler-dom" "^3.5.0"
-    "@vue/shared" "^3.5.0"
-    alien-signals "^3.0.0"
-    muggle-string "^0.4.1"
-    path-browserify "^1.0.1"
-    picomatch "^4.0.2"
 
 "@vue/language-core@3.2.4":
   version "3.2.4"

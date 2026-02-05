@@ -71,7 +71,7 @@
     "@tailwindcss/postcss": "^4.1.18",
     "@types/apollo-upload-client": "^19.0.0",
     "@types/node": "^25.0.8",
-    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitejs/plugin-vue": "^6.0.4",
     "@vitest/coverage-v8": "4.0.17",
     "@vue/language-server": "^3.2.4",
     "eslint": "^9.39.2",
