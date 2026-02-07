@@ -18,7 +18,7 @@ export type TableCellSize = keyof Variants["size"];
 const variants = {
   size: {
     default: "p-2",
-    small: "p-0",
+    small: "py-0 px-1",
   },
 };
 </script>
