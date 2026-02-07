@@ -5,7 +5,7 @@ defineProps<{ status?: boolean; power?: boolean }>();
 <template>
   <span
     :class="[
-      'text-accent-foreground/50 text-xs font-bold text-right px-1 py-[0.1rem] rounded-md',
+      'text-accent-foreground/50 text-xs font-bold text-center px-1 py-[0.1rem] rounded-md w-14',
       {
         'bg-destructive/10 text-destructive': !status,
         'bg-success/10 text-success': status,

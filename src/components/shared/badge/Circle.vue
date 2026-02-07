@@ -16,5 +16,5 @@ const variants = {
 </script>
 
 <template>
-  <span :class="['size-3 rounded-full inline-block', getVariantsClasses(variants, props)]" />
+  <span :class="['size-2 rounded-full inline-block', getVariantsClasses(variants, props)]" />
 </template>
