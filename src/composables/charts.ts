@@ -23,12 +23,12 @@ export const aggregatePerDay = computed(() => <T extends { date: Date; key: stri
 
     const el = prev.find((e) => e.localeDateString === newDate);
     const value = curr[key];
-    let currentCount;
+    let currentCount: number;
 
-    if ((!typeof value as unknown) === "number") {
+    if (typeof value !== "number") {
       currentCount = 0;
     } else {
-      currentCount = value as unknown as number;
+      currentCount = value;
     }
 
     if (!el) {

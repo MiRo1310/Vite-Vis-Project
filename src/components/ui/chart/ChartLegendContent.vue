@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
 import { cn } from "@/lib/utils";
 import { useChart } from ".";
 
@@ -17,7 +17,7 @@ const props = withDefaults(
   },
 );
 
-const { id, config } = useChart();
+const { config } = useChart();
 
 const payload = computed(() =>
   Object.entries(config.value).map(([key, _value]) => {
@@ -27,15 +27,10 @@ const payload = computed(() =>
     };
   }),
 );
-
-const containerSelector = ref("");
-onMounted(() => {
-  containerSelector.value = `[data-chart="chart-${id}"]>[data-vis-xy-container]`;
-});
 </script>
 
 <template>
-  <div v-if="containerSelector" :class="cn('flex items-center justify-center gap-4', verticalAlign === 'top' ? 'pb-3' : 'pt-3', props.class)">
+  <div :class="cn('flex items-center justify-center gap-4', verticalAlign === 'top' ? 'pb-3' : 'pt-3', props.class)">
     <div
       v-for="{ key, itemConfig } in payload"
       :key="key"

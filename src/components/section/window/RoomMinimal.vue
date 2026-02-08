@@ -28,7 +28,7 @@ const emits = defineEmits(["clickRoom"]);
         <Circle :color="room.bellStatus.val ? 'green' : 'red'" />
       </div>
       <div v-if="room.batteryHeating" class="text-xs flex items-center gap-2">
-        <span>Batterie status</span>
+        <span>Batteriestatus</span>
         <Circle v-for="(h, index) in room.batteryHeating" :color="h?.val ? 'yellow' : 'green'" :key="index" />
       </div>
       <span v-if="room.temp">{{ room.temp }}°C</span>

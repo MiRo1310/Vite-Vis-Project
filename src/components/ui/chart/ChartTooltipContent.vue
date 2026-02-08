@@ -3,6 +3,7 @@ import type { HTMLAttributes } from "vue";
 import type { ChartConfig } from ".";
 import { computed } from "vue";
 import { cn } from "@/lib/utils";
+import { isDefined } from "@vueuse/core";
 
 const props = withDefaults(
   defineProps<{
@@ -51,9 +52,7 @@ const tooltipLabel = computed(() => {
 </script>
 
 <template>
-  <div
-    :class="cn('border-border/50 bg-background grid min-w-[8rem] items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl', props.class)"
-  >
+  <div :class="cn('border-border/50 bg-background grid min-w-32 items-start gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl', props.class)">
     <slot>
       <div v-if="!nestLabel && tooltipLabel" class="font-medium">
         {{ tooltipLabel }}
@@ -73,7 +72,7 @@ const tooltipLabel = computed(() => {
           <template v-else-if="!hideIndicator">
             <div
               :class="
-                cn('shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)', {
+                cn('shrink-0 rounded-[2px] border-border bg-(--color-bg)', {
                   'h-2.5 w-2.5': indicator === 'dot',
                   'w-1': indicator === 'line',
                   'w-0 border-[1.5px] border-dashed bg-transparent': indicator === 'dashed',
@@ -96,7 +95,7 @@ const tooltipLabel = computed(() => {
                 {{ itemConfig?.label || value }}
               </span>
             </div>
-            <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
+            <span v-if="isDefined(value)" class="text-foreground font-mono font-medium tabular-nums">
               {{ value.toLocaleString() }}
             </span>
           </div>
