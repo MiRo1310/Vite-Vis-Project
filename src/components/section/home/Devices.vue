@@ -7,10 +7,15 @@ import { computed } from "vue";
 import { Button } from "@/components/shared/button";
 import { getValBoolean } from "@/lib/object.ts";
 
-const { airConditioners, pool, landroid } = storeToRefs(useIobrokerStore());
+const { airConditioners, pool, landroid, heating } = storeToRefs(useIobrokerStore());
 
 const status = computed(() => {
   return [
+    {
+      name: "Heizung",
+      online: getValBoolean(heating.value.active),
+      power: getValBoolean(heating.value.automatic),
+    },
     {
       name: "Klima Schlafen",
       online: getValBoolean(airConditioners.value.schlafenOnline),

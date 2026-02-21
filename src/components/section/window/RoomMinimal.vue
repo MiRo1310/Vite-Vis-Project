@@ -28,7 +28,7 @@ const emits = defineEmits(["clickRoom"]);
         <Circle :color="room.bellStatus.val ? 'green' : 'red'" />
       </div>
       <div v-if="room.batteryHeating" class="text-xs flex items-center gap-2">
-        <span>Battriestatus</span>
+        <span>Batteriestatus</span>
         <Circle v-for="(h, index) in room.batteryHeating" :color="h?.val ? 'yellow' : 'green'" :key="index" />
       </div>
       <span v-if="room.temp">{{ room.temp }}°C</span>
@@ -39,8 +39,8 @@ const emits = defineEmits(["clickRoom"]);
         <div class="flex gap-2">
           <div v-for="(w, i) in room.windows" :key="i">
             <p class="text-xs text-foreground">
-              <Circle :color="w.windowSensorReachable?.val ? 'green' : 'red'" />
               {{ w.name }}
+              <Circle :color="w.windowSensorReachable?.val ? 'green' : 'red'" />
             </p>
 
             <WindowImage :is-open="w.isOpenStatus ?? false" />

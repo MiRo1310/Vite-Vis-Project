@@ -2,28 +2,29 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import CardListing from "../../shared/card/CardListing.vue";
 import { Entries } from "@/types/types.ts";
+import { storeToRefs } from "pinia";
 
-const { heating } = useIobrokerStore();
+const { heating } = storeToRefs(useIobrokerStore());
 
 const entries: Entries[] = [
   {
     title: "Brennstoff vorhanden",
-    value: !heating.pelletExist?.val,
+    value: !heating.value.pelletExist?.val,
     type: "boolean",
   },
   {
     title: "Überwachung Zugeber",
-    value: !heating.watcherAdmitter?.val,
+    value: !heating.value.watcherAdmitter?.val,
     type: "boolean",
   },
   {
     title: "Überwachung Brennstoffbehälter",
-    value: !heating.tempPelletBuffer?.val,
+    value: !heating.value.tempPelletBuffer?.val,
     type: "boolean",
   },
   {
     title: "Meldung quittiert",
-    value: !heating.confirmMessage?.val,
+    value: !heating.value.confirmMessage?.val,
     type: "boolean",
   },
 ];
