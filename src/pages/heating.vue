@@ -23,12 +23,12 @@ import HeatingCharts from "@/components/section/heating/HeatingCharts.vue";
           <HeatingPump />
           <HeatingConfig />
         </div>
-        <!--      <iframe-->
-        <!--        src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"-->
-        <!--        width="100%"-->
-        <!--        height="400"-->
-        <!--        class="mt-2 rounded-md"-->
-        <!--      />-->
+        <iframe
+          src="http://192.168.1.4:3000/d-solo/feobdyuntkhs0d/temperaturen?orgId=1&refresh=30s&panelId=1"
+          width="100%"
+          height="400"
+          class="mt-2 rounded-md"
+        />
         <HeatingCharts />
       </div>
     </template>
