@@ -31,7 +31,9 @@ const totoList = computed(() => {
       <p>Michis Todos</p>
     </template>
     <template #content>
-      <NavActionsShoppingList :list="totoList" />
+      <div class="h-[92vh] overflow-y-auto">
+        <NavActionsShoppingList :list="totoList" />
+      </div>
     </template>
   </Sheet>
 </template>

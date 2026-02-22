@@ -30,7 +30,9 @@ const createShoppinglist = computed((): AlexaList[] => {
       <p>Einkaufsliste</p>
     </template>
     <template #content>
-      <NavActionsShoppingList :list="createShoppinglist" />
+      <div class="h-[92vh] overflow-y-auto">
+        <NavActionsShoppingList :list="createShoppinglist" />
+      </div>
     </template>
   </Sheet>
 </template>
