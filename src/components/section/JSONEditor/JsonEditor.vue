@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { Content, createJSONEditor, JSONContent, JSONEditorPropsOptional, Mode, TextContent } from "vanilla-jsoneditor";
+import { Content, createJSONEditor, JSONContent, JSONEditorPropsOptional, TextContent } from "vanilla-jsoneditor";
 import { onMounted, ref } from "vue";
+
+const props = defineProps<Omit<JSONEditorPropsOptional, "content" | "onChange">>();
 
 const modelValue = defineModel<unknown>("modelValue", { required: false });
 
@@ -30,16 +32,7 @@ onMounted(() => {
     content.json = modelValue.value;
   }
 
-  const props: JSONEditorPropsOptional = {
-    statusBar: false,
-    mode: Mode.text,
-    mainMenuBar: false,
-    navigationBar: false,
-    readOnly: false,
-  };
-
   createJSONEditor({
-    target,
     props: {
       content,
       onChange: (updatedContent: Content) => {
@@ -52,6 +45,7 @@ onMounted(() => {
       },
       ...props,
     },
+    target,
   });
 });
 </script>
@@ -62,12 +56,16 @@ onMounted(() => {
 
 <style lang="scss">
 .dark .jse-main {
+  ::selection {
+    color: yellow !important;
+  }
+
   & > div {
-    border-color: red !important;
+    border-color: var(--accent) !important;
   }
 
   .jse-contents {
-    border-color: red !important;
+    border-color: var(--accent) !important;
   }
 
   .cm {
@@ -99,7 +97,7 @@ onMounted(() => {
 
     &-gutters {
       background-color: var(--popover) !important;
-      border-color: red !important;
+      border-color: var(--accent) !important;
     }
 
     &-content {
