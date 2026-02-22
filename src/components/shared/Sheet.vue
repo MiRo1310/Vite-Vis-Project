@@ -1,23 +1,11 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-withDefaults(
-  defineProps<{ styling?: keyof typeof style; showFooter?: boolean }>(),
-  {
-    styling: "default",
-    showFooter: true,
-  },
-);
+withDefaults(defineProps<{ styling?: keyof typeof style; showFooter?: boolean }>(), {
+  styling: "default",
+  showFooter: true,
+});
 
 const style = {
   default: "",
@@ -31,7 +19,7 @@ const style = {
     <SheetTrigger as-child>
       <slot name="trigger" />
     </SheetTrigger>
-    <SheetContent :class="[style[$props.styling as keyof typeof style]]">
+    <SheetContent :class="[style[$props.styling as keyof typeof style], 'h-screen']">
       <SheetHeader>
         <SheetTitle>
           <slot name="title" />
