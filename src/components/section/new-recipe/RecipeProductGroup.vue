@@ -4,7 +4,7 @@ import { Button } from "@/components/shared/button";
 import { computed, reactive, ref } from "vue";
 import { getNameFromNameIdArray, updateNameIdArray } from "@/components/section/new-recipe/utils";
 import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
-import SelectableName from "@/components/section/new-recipe/SelectableName.vue";
+import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
@@ -12,6 +12,7 @@ import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesS
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { isDefined } from "@vueuse/core";
 import { graphql } from "@/api/gql";
+import { Logger } from "@/lib/logger.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -55,7 +56,9 @@ const getProductByPositions = (productIndex: number, groupIndex: number): Produc
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
   const obj = getProductByPositions(productIndex, props.groupIndex);
 
-  if (!val) {return;}
+  if (!val) {
+    return;
+  }
   if (!obj) {
     const newItem = {
       productId: "",
@@ -97,7 +100,9 @@ const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
 };
 
 const removeProduct = async (productIndex: number | null) => {
-  if (disableDelete()) {return;}
+  if (disableDelete()) {
+    return;
+  }
 
   if (countedProducts.value === 1) {
     const recipeId = props.recipe?.id;
@@ -106,7 +111,7 @@ const removeProduct = async (productIndex: number | null) => {
     }
   }
 
-  if (productIndex) {
+  if (isDefined(productIndex)) {
     useProductCards(productIndex).remove();
     await removeProductInDB(productIndex);
 
@@ -116,7 +121,9 @@ const removeProduct = async (productIndex: number | null) => {
 
 const removeProductGroupInDB = async () => {
   const groupId = headersProductArray.value.find((header) => header.position === props.groupIndex)?.id;
-  if (!groupId) {return true;} // if no id is found, the group is not saved in the db
+  if (!groupId) {
+    return true;
+  } // if no id is found, the group is not saved in the db
 
   const recipeId = props.recipe?.id;
   if (!recipeId) {
@@ -137,7 +144,9 @@ const removeProductInDB = async (productIndex: number): Promise<boolean | undefi
 };
 
 const removeProductGroup = async () => {
-  if (disableDelete()) {return;}
+  if (disableDelete()) {
+    return;
+  }
 
   const success = await removeProductGroupInDB();
   if (!success) {
@@ -145,6 +154,7 @@ const removeProductGroup = async () => {
   }
 
   const groupToDelete = props.groupIndex;
+  Logger(`Remove group with index: ${groupToDelete}`);
   productArray.value = filterByTargetAndDecrement(productArray.value, "groupPosition", groupToDelete);
   headersProductArray.value = filterByTargetAndDecrement(headersProductArray.value, "position", groupToDelete);
 };
@@ -186,7 +196,7 @@ const addNewProduct = () => {
     description: "",
     amount: 0,
     unit: "",
-    productPosition: countedProducts.value + 1,
+    productPosition: countedProducts.value,
     groupPosition: props.groupIndex,
     activeUnitId: "",
   });
@@ -206,8 +216,9 @@ const confirmProductDelete = (productIndex: number) => {
 };
 
 const selectableOptions = computed(() => (index: number): SelectOption[] => {
-  const productId = productArray.value.find((product) => product.productPosition === index && product.groupPosition === props.groupIndex)?.productId;
-
+  const productId = productArray.value.find((product) => {
+    return product.productPosition === index && product.groupPosition === props.groupIndex;
+  })?.productId;
   const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === productId);
 
   return (
@@ -222,8 +233,8 @@ const selectableOptions = computed(() => (index: number): SelectOption[] => {
 const isProductOpen = reactive<boolean[][]>([]);
 
 const useProductCards = (productIndex: number) => {
-  const groupIndex = props.groupIndex - 1;
-  productIndex = productIndex - 1;
+  const groupIndex = props.groupIndex;
+
   if (!isProductOpen[groupIndex]) {
     if (groupIndex === 0) {
       isProductOpen[groupIndex] = [];
@@ -253,59 +264,60 @@ const useProductCards = (productIndex: number) => {
     :name="`header-${groupIndex}`"
     @update:model-value="updateNameIdArray(groupIndex, headersProductArray, $event)"
   />
+
   <div
     v-for="productIndex in countedProducts"
     :key="productIndex"
     :class="['flex flex-col px-2 bg-accent border-black', productIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
-    <div class="flex">
-      <SelectableName
-        v-if="productArray && useProductCards(productIndex).isOpen.value"
-        :product-index
+    <div class="flex mt-2">
+      <RecipeProductName
+        v-if="productArray && useProductCards(productIndex - 1).isOpen.value"
+        :product-index="productIndex - 1"
         :group-index="groupIndex"
         :product-array
         class="flex-1 mr-4"
       />
       <div v-else class="flex-1 mr-4">
-        <ProductValuesSummary :product-index="productIndex" :product="getProductByPositions(productIndex, groupIndex)" />
+        <ProductValuesSummary :product-index :product="getProductByPositions(productIndex - 1, groupIndex)" />
       </div>
       <Button
         variant="outline"
         size="icon"
-        :icon="useProductCards(productIndex).isOpen.value ? 'chevronDown' : 'chevronRight'"
-        class="my-1"
-        @click.prevent="useProductCards(productIndex).toggle()"
+        class="mb-2"
+        :icon="useProductCards(productIndex - 1).isOpen.value ? 'chevronDown' : 'chevronRight'"
+        @click.prevent="useProductCards(productIndex - 1).toggle()"
       />
     </div>
-    <template v-if="useProductCards(productIndex).isOpen.value">
+    <template v-if="useProductCards(productIndex - 1).isOpen.value">
       <FormInput
         v-if="productArray"
-        :model-value="getValue(productIndex, 'description')?.toString()"
+        :model-value="getValue(productIndex - 1, 'description')?.toString()"
         placeholder="Beschreibung"
         :name="`description-${groupIndex}-3`"
-        @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: productIndex })"
+        @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: productIndex - 1 })"
       />
-      <div class="flex space-x-2 justify-between">
+      <div class="flex justify-between">
         <div class="flex space-x-2 items-center -mt-2 w-full">
           <FormInput
             v-if="productArray"
             placeholder="Menge"
-            :model-value="getValue(productIndex, 'amount')?.toString()"
+            :model-value="getValue(productIndex - 1, 'amount')?.toString()"
             type="number"
             class="mt-2"
             :step="0.1"
-            :name="`amount-${groupIndex}-${productIndex}`"
-            @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: productIndex })"
+            :name="`amount-${groupIndex}-${productIndex - 1}`"
+            @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: productIndex - 1 })"
           />
           <FormSelect
-            v-if="selectableOptions(productIndex).length"
+            v-if="selectableOptions(productIndex - 1).length"
             label=""
             class="w-full"
-            :selected="getValue(productIndex, 'unit')?.toString()"
+            :selected="getValue(productIndex - 1, 'unit')?.toString()"
             placeholder="Wähle eine Einheit"
-            :name="`name-${groupIndex}-${productIndex}`"
-            :select-options="selectableOptions(productIndex)"
-            @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: productIndex })"
+            :name="`name-${groupIndex}-${productIndex - 1}`"
+            :select-options="selectableOptions(productIndex - 1)"
+            @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: productIndex - 1 })"
           />
         </div>
         <Button

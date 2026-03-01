@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { ProductObjType } from "@/types/types";
-import { computed, ref, watchEffect, onMounted } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
+import { Logger } from "@/lib/logger.ts";
 
 const props = defineProps<{ productIndex: number; groupIndex: number }>();
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
@@ -20,18 +21,12 @@ const { result } = useQuery(
   `),
 );
 
-const product = ref<ProductObjType | null | undefined>(null);
-
-onMounted(() => {
-  product.value = getProductsByIds();
-});
-
-const getProductsByIds = () =>
-  productArray.value.find((product) => product.productPosition === props.productIndex && product.groupPosition === props.groupIndex);
+const product = computed(() => productArray.value.find((p) => p.productPosition === props.productIndex && p.groupPosition === props.groupIndex));
 
 const updateName = (value?: string) => {
   if (product.value && value) {
     product.value.productId = value;
+    Logger(`Selected product id: ${value}`);
   }
 };
 

@@ -39,7 +39,7 @@ const selectableProducts = computed((): SelectOption[] => getSelectableOptions(r
 const productLabel = computed(() => selectableProducts.value.find((option) => option.value === props.product?.productId)?.label);
 </script>
 <template>
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center" data-component="product-summary">
     <div>
       <span>{{ productIndex }}.</span>
       <span class="ml-2">{{ productLabel }}</span>

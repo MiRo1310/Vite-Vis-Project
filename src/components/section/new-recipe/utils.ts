@@ -3,11 +3,12 @@ import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 
 export const getElementByPosition = (
   index: number,
-  array: RecipeDescriptionCreateOrUpdateDtoInput[]
+  array: RecipeDescriptionCreateOrUpdateDtoInput[],
 ): RecipeDescriptionCreateOrUpdateDtoInput | undefined => {
   const el = array.filter((element) => element.position === index);
   return el ? el[0] : undefined;
 };
+
 export const updateNameIdArray = (index: number, array: TextPositionType[], value?: string) => {
   const obj = array.find((element) => element.position === index);
 
@@ -27,11 +28,9 @@ interface NameId {
   id?: string | null;
 }
 
- 
 export const getNameById = <T extends NameId | null>(id?: string, array?: T[] | null): string => array?.find((item) => item?.id === id)?.name || "";
 
 export const getResultById = <T extends NameId | null>(id?: string, array?: T[] | null): T | undefined => array?.find((item) => item?.id === id);
 
- 
 export const getIdByName = <T extends NameId | null>(name?: string, array?: T[] | null): string =>
   array?.find((item) => item?.name === name)?.id || "";

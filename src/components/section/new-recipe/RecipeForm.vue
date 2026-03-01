@@ -213,8 +213,8 @@ const defaultProduct: ProductObjType = {
   description: "",
   amount: 0,
   unit: "",
-  productPosition: 1,
-  groupPosition: 1,
+  productPosition: 0,
+  groupPosition: 0,
   id: undefined,
   activeUnitId: "",
 };
@@ -277,7 +277,7 @@ const addDescription = () => {
 </script>
 
 <template>
-  <div class="max-h-full overflow-auto">
+  <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
         <div class="flex-col flex-1 h-full">
@@ -306,7 +306,7 @@ const addDescription = () => {
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
               :recipe="recipe"
-              :group-index="index"
+              :group-index="index - 1"
             />
           </div>
           <AddNewGroup

@@ -15,6 +15,12 @@ const router = createRouter({
 
 const app = createApp(App);
 
+app.directive("component", {
+  mounted(el: HTMLElement, binding) {
+    el.setAttribute("data-component", binding.value);
+  },
+});
+
 app.provide(DefaultApolloClient, apolloClient);
 app.use(router);
 app.use(createPinia());
