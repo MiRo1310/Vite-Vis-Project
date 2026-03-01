@@ -9,6 +9,7 @@ const descriptions = defineModel<RecipeDescriptionCreateOrUpdateDtoInput[]>("des
 
 const updateValue = (val: string | undefined, target: "header" | "text") => {
   const updateDescription = descriptions.value.find((el) => el.position === props.description.position);
+
   if (updateDescription && val) {
     updateDescription[target] = val;
   }
@@ -18,7 +19,6 @@ const updateValue = (val: string | undefined, target: "header" | "text") => {
 <template>
   <FormInput
     v-if="description"
-    :model-value="description?.header ?? ''"
     placeholder="Hier kannst du eine Überschrift hinzufügen"
     :name="`header-${description.position}`"
     @update:model-value="updateValue($event, 'header')"

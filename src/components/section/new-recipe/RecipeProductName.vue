@@ -5,7 +5,7 @@ import { computed, ref, watchEffect } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
-import { Logger } from "@/lib/logger.ts";
+import { args, Logger } from "@/lib/logger.ts";
 
 const props = defineProps<{ productIndex: number; groupIndex: number }>();
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
@@ -26,7 +26,8 @@ const product = computed(() => productArray.value.find((p) => p.productPosition 
 const updateName = (value?: string) => {
   if (product.value && value) {
     product.value.productId = value;
-    Logger(`Selected product id: ${value}`);
+    Logger(args("Selected product:", product.value));
+    Logger(args("Selected product id:", value));
   }
 };
 

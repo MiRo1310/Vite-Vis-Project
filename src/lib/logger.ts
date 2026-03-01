@@ -19,3 +19,17 @@ export const Logger = (t: string, options?: { e?: any; text?: string; type?: Con
     console.error(`Error object: ${options.e}`);
   }
 };
+
+export const args = (...args: any[]): string => {
+  let str = "";
+  args.forEach((arg) => {
+    if (typeof arg === "object") {
+      str += JSON.stringify(arg) + " ";
+    } else if (typeof arg === "string") {
+      str += arg + " ";
+    } else {
+      str += String(arg) + " ";
+    }
+  });
+  return str;
+};

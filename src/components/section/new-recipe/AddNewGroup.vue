@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { TextPositionType, ProductObjType } from "@/types/types";
+import { args, Logger } from "@/lib/logger.ts";
 
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
@@ -8,17 +9,18 @@ const countedProductGroups = defineModel<number>("countedProductGroups", { defau
 
 const addNewProductGroup = () => {
   const productGroupLength = countedProductGroups.value;
+  Logger(args("Adding new product group with position:", productGroupLength));
   productArray.value.push({
     productId: "",
     description: "",
     amount: 0,
     unit: "",
-    productPosition: 1,
-    groupPosition: productGroupLength + 1,
+    productPosition: 0,
+    groupPosition: productGroupLength,
     activeUnitId: "",
   });
   headersProductArray.value.push({
-    position: productGroupLength + 1,
+    position: productGroupLength,
     text: "",
   });
 };

@@ -2,7 +2,7 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { Button } from "@/components/shared/button";
 import { computed, reactive, ref } from "vue";
-import { getNameFromNameIdArray, updateNameIdArray } from "@/components/section/new-recipe/utils";
+import { updateTextByGroupPosition } from "@/components/section/new-recipe/utils";
 import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
@@ -13,6 +13,7 @@ import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { isDefined } from "@vueuse/core";
 import { graphql } from "@/api/gql";
 import { Logger } from "@/lib/logger.ts";
+import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -55,7 +56,7 @@ const getProductByPositions = (productIndex: number, groupIndex: number): Produc
 
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
   const obj = getProductByPositions(productIndex, props.groupIndex);
-
+  console.log(obj);
   if (!val) {
     return;
   }
@@ -257,67 +258,68 @@ const useProductCards = (productIndex: number) => {
 <template>
   <FormInput
     v-if="headersProductArray"
-    :model-value="getNameFromNameIdArray(groupIndex, headersProductArray)"
     placeholder="Überschrift z.B. Soße"
     class-input="rounded-none rounded-t-md"
     class="space-y-0 border-b-2 border-black"
     :name="`header-${groupIndex}`"
-    @update:model-value="updateNameIdArray(groupIndex, headersProductArray, $event)"
+    @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, $event)"
   />
 
   <div
-    v-for="productIndex in countedProducts"
-    :key="productIndex"
-    :class="['flex flex-col px-2 bg-accent border-black', productIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
+    v-for="oneBasedProductIndex in countedProducts"
+    :key="oneBasedProductIndex"
+    :class="['flex flex-col px-2 bg-accent border-black', oneBasedProductIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex mt-2">
       <RecipeProductName
-        v-if="productArray && useProductCards(productIndex - 1).isOpen.value"
-        :product-index="productIndex - 1"
+        v-if="productArray && useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value"
+        :product-index="toZeroBasedIndex(oneBasedProductIndex)"
         :group-index="groupIndex"
         :product-array
         class="flex-1 mr-4"
       />
       <div v-else class="flex-1 mr-4">
-        <ProductValuesSummary :product-index :product="getProductByPositions(productIndex - 1, groupIndex)" />
+        <ProductValuesSummary
+          :product-index="oneBasedProductIndex"
+          :product="getProductByPositions(toZeroBasedIndex(oneBasedProductIndex), groupIndex)"
+        />
       </div>
       <Button
         variant="outline"
-        size="icon"
+        :size="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value ? 'icon' : 'iconRow'"
         class="mb-2"
-        :icon="useProductCards(productIndex - 1).isOpen.value ? 'chevronDown' : 'chevronRight'"
-        @click.prevent="useProductCards(productIndex - 1).toggle()"
+        :icon="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value ? 'chevronDown' : 'chevronRight'"
+        @click.prevent="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).toggle()"
       />
     </div>
-    <template v-if="useProductCards(productIndex - 1).isOpen.value">
+    <template v-if="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value">
       <FormInput
         v-if="productArray"
-        :model-value="getValue(productIndex - 1, 'description')?.toString()"
+        :model-value="getValue(toZeroBasedIndex(oneBasedProductIndex), 'description')?.toString()"
         placeholder="Beschreibung"
         :name="`description-${groupIndex}-3`"
-        @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: productIndex - 1 })"
+        @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
       />
       <div class="flex justify-between">
-        <div class="flex space-x-2 items-center -mt-2 w-full">
+        <div class="flex gap-2 items-center flex-1">
           <FormInput
             v-if="productArray"
             placeholder="Menge"
-            :model-value="getValue(productIndex - 1, 'amount')?.toString()"
+            :model-value="getValue(toZeroBasedIndex(oneBasedProductIndex), 'amount')?.toString()"
             type="number"
-            class="mt-2"
             :step="0.1"
-            :name="`amount-${groupIndex}-${productIndex - 1}`"
-            @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: productIndex - 1 })"
+            :name="`amount-${groupIndex}-${toZeroBasedIndex(oneBasedProductIndex)}`"
+            @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
           />
           <FormSelect
-            v-if="selectableOptions(productIndex - 1).length"
+            v-if="selectableOptions(toZeroBasedIndex(oneBasedProductIndex)).length"
             label=""
             class="w-full"
-            :selected="getValue(productIndex - 1, 'unit')?.toString()"
+            :selected="getValue(toZeroBasedIndex(oneBasedProductIndex), 'unit')?.toString()"
             placeholder="Wähle eine Einheit"
-            :name="`name-${groupIndex}-${productIndex - 1}`"
-            :select-options="selectableOptions(productIndex - 1)"
-            @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: productIndex - 1 })"
+            :name="`name-${groupIndex}-${toZeroBasedIndex(oneBasedProductIndex)}`"
+            :select-options="selectableOptions(toZeroBasedIndex(oneBasedProductIndex))"
+            @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
           />
         </div>
         <Button
@@ -328,7 +330,7 @@ const useProductCards = (productIndex: number) => {
           @click.prevent="
             () => {
               if (disableDelete()) return;
-              confirmProductDelete(productIndex);
+              confirmProductDelete(toZeroBasedIndex(oneBasedProductIndex));
             }
           "
         />

@@ -18,11 +18,15 @@ import { useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
+import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
+import { args, Logger } from "@/lib/logger.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
 const router = useRouter();
-const props = defineProps<{ recipeId?: string }>();
+// TODO Woher kommt id ? Wird nicht gebraucht da es der gleiche Wert wie recipeId ist
+//eslint-disable-next-line vue/no-unused-properties
+const props = defineProps<{ recipeId?: string; id?: string }>();
 
 const { toast } = useToast();
 const { mutate } = useMutation(
@@ -158,6 +162,7 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
+  Logger(args("Submit values", values));
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
@@ -223,7 +228,7 @@ const resetForm = () => {
   form.resetForm();
   form.setValues(getRecipeProductObj());
   resetRecipeInStore();
-  descriptions.value = [{ position: 1, text: "", header: "" }];
+  descriptions.value = [{ position: 0, text: "", header: "" }];
   headersProductArray.value = [];
   productArray.value = [defaultProduct];
 };
@@ -232,6 +237,7 @@ const updateValue = ref(false);
 const textareaFocus = ref(false);
 
 const enterPress = async () => {
+  Logger(args("Submit values by enter press"));
   if (!textareaFocus.value) {
     await onSubmit();
   }
@@ -252,6 +258,7 @@ watch(
 watch(
   headersProductArray,
   (newValue) => {
+    Logger(args("Headers Array changed:", newValue));
     form.setFieldValue("headersProductArray", newValue);
   },
   { deep: true },
@@ -260,29 +267,35 @@ watch(
 watch(
   productArray,
   (newValue) => {
+    Logger(args("Product Array changed:", newValue));
+
     form.setFieldValue("productArray", newValue);
   },
   { deep: true },
 );
 
-const countedProductGroups = computed(() =>
-  productArray.value.reduce((acc, curr) => {
-    return curr.groupPosition > acc ? curr.groupPosition : acc;
-  }, 1),
+const countedProductGroups = computed(
+  () =>
+    productArray.value.reduce((acc, curr) => {
+      return curr.groupPosition > acc ? curr.groupPosition : acc;
+    }, 0) + 1,
 );
 
 const addDescription = () => {
-  descriptions.value.push({ position: descriptions.value.length + 1, text: "", header: "" });
+  descriptions.value.push({ position: descriptions.value.length, text: "", header: "" });
 };
 </script>
 
 <template>
+  {{ headersProductArray }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
         <div class="flex-col flex-1 h-full">
-          <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
-          <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
+          <div class="flex gap-2">
+            <FormInput label="Rezeptname" name="name" class="flex-1" />
+            <FormInput label="Portionen" name="portions" type="number" />
+          </div>
           <div
             v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)"
             :key="index"
@@ -300,13 +313,13 @@ const addDescription = () => {
             <Button class="w-full" type="submit" variant="outline">Speichern</Button>
             <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
           </div>
-          <div v-for="index in countedProductGroups" :key="index" class="mb-2">
+          <div v-for="oneBasedIndex in countedProductGroups" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
               :recipe="recipe"
-              :group-index="index - 1"
+              :group-index="toZeroBasedIndex(oneBasedIndex)"
             />
           </div>
           <AddNewGroup
