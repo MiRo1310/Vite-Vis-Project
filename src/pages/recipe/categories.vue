@@ -1,25 +1,15 @@
 <script setup lang="ts">
 import Header from "@/components/section/header/Header.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { graphql } from "@/api/gql";
-import { useQuery } from "@vue/apollo-composable";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import AddCategory from "@/components/section/products/AddCategory.vue";
 import { ref } from "vue";
 import CategoryUpdate from "@/components/section/categories/CategoryUpdate.vue";
 import { GetCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/categories/CategoryRemove.vue";
+import { useProductCategories } from "@/composables/querys/productCategories.ts";
 
-const { result } = useQuery(
-  graphql(`
-    query GetCategories {
-      productCategories {
-        name
-        id
-      }
-    }
-  `),
-);
+const { result } = useProductCategories();
 
 const columns: DatatableColumns<GetCategoriesQuery["productCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },

@@ -6,6 +6,9 @@ import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
 import { isDefined } from "@vueuse/core";
+import { useProductCategories } from "@/composables/querys/productCategories.ts";
+
+const { reload } = useProductCategories();
 
 const props = defineProps<{ result: GetCategoriesQuery["productCategories"] }>();
 
@@ -24,7 +27,7 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetCategories", "productCategories"] },
+  { refetchQueries: ["productCategories"], awaitRefetchQueries: true },
 );
 
 watch(update, (newVal) => {
@@ -42,6 +45,7 @@ async function addNewCategory() {
     return;
   }
   const result = await mutate({ name: newCategory.value });
+  await reload();
 
   if (result?.data) {
     newCategory.value = "";
@@ -65,11 +69,10 @@ const categoryExists = computed(() => isDefined(props.result?.find((c) => c.name
         v-model:model-value="newCategory"
         :class="['w-60', { 'border-destructive': categoryExists || existInDb }]"
         placeholder="Kategorie hinzu oder ändern"
-        @update:model-value="categoryExists = false"
         @keyup.enter="addNewCategory"
         type="text"
       />
-      <p v-if="categoryExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
+      <p v-if="categoryExists" class="text-sm font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
     </div>
     <Button variant="outline" size="icon" icon="add" :disabled @click.prevent="addNewCategory" />
   </div>

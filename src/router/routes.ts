@@ -17,6 +17,7 @@ export const routes = {
   recipe: { path: "/rezepte", name: "recipe" },
   recipeDetails: { path: "/rezepte/:recipeId", name: "recipe-details" },
   recipeProducts: { path: "/produkte", name: "products" },
+  product: { path: "/produkt/:id", name: "product" },
   recipeUnits: { path: "/einheiten", name: "units" },
   recipeCategories: { path: "/kategorien", name: "categories" },
   newRecipe: { path: "/neues_rezepte/:id?", name: "new-recipe" },
@@ -51,7 +52,11 @@ export const routing = [
     component: async () => await import("@/pages/recipe/recipe-app.vue"),
     ...routes.recipeApp,
     children: [
-      { component: () => import("@/pages/recipe/products.vue"), ...routes.recipeProducts },
+      {
+        component: () => import("@/pages/recipe/products.vue"),
+        ...routes.recipeProducts,
+      },
+      { component: () => import("@/pages/recipe/product.vue"), props: true, ...routes.product },
       { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
       { component: () => import("@/pages/recipe/categories.vue"), ...routes.recipeCategories },
       {

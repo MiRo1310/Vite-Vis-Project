@@ -7,7 +7,7 @@ import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import FormSelect from "@/components/shared/form/FormSelect.vue";
+import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { isDefined } from "@vueuse/core";
@@ -312,7 +312,7 @@ const useProductCards = (productIndex: number) => {
             :name="`amount-${groupIndex}-${toZeroBasedIndex(oneBasedProductIndex)}`"
             @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
           />
-          <FormSelect
+          <FormSelectDeprecated
             v-if="selectableOptions(toZeroBasedIndex(oneBasedProductIndex)).length"
             label=""
             class="w-full"

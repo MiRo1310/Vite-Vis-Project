@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FormSelect from "@/components/shared/form/FormSelect.vue";
+import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import { ProductObjType } from "@/types/types";
 import { computed, ref, watchEffect } from "vue";
 import { useQuery } from "@vue/apollo-composable";
@@ -45,7 +45,7 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
 </script>
 
 <template>
-  <FormSelect
+  <FormSelectDeprecated
     v-model:selected="selected"
     label=""
     placeholder="Produkt wählen"

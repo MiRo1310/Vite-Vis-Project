@@ -4,7 +4,7 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
-import FormSelect from "@/components/shared/form/FormSelect.vue";
+import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
@@ -50,7 +50,9 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  if (!values.unit) {return;}
+  if (!values.unit) {
+    return;
+  }
   const dto: ProductCreateDtoInput = {
     name: values.name,
     category: values.category,
@@ -86,7 +88,9 @@ const closeDialog = () => {
 watch(
   () => dialogOpen.value,
   () => {
-    if (updateValue.value) {return;}
+    if (updateValue.value) {
+      return;
+    }
     form.resetForm();
   },
 );
@@ -149,7 +153,7 @@ const defaultUnitVariant = computed(() => {
       <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="w-120" />
 
       <div class="min-w-full flex gap-2">
-        <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
+        <FormSelectDeprecated label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
       </div>
       <FormInput label="Kalorien" name="kcal" type="number" :step="1" :model-value="props.data?.kcal?.toString()" />
       <FormInput label="Fett" name="fat" type="number" :step="0.01" :model-value="props.data?.fat?.toString()" />

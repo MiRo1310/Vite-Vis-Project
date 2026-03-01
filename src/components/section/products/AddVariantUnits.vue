@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Button from "@/components/shared/button/Button.vue";
 import { onMounted, ref } from "vue";
-import FormInput from "@/components/shared/form/FormInput.vue";
 import { InputOptions } from "@/components/shared/input/Input.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
+import { Input } from "@/components/shared/input";
+import { Label } from "@/components/ui/label";
 
 type Units = ProductUnitCreateOrUpdateDtoInput[];
 
@@ -63,33 +64,24 @@ const deleteVariant = async ({ id, index }: { id?: string | null; index: number 
     <p>Eine Variante hinzufügen</p>
   </div>
   <div class="w-full items-center mt-2">
-    <div v-for="(unitVariant, index) in variants" :key="index" class="flex space-x-2 items-center">
-      <FormInput
-        :label="`${index === 0 ? 'Menge' : ''}`"
-        name="amountVariant"
-        type="number"
-        :step="0.1"
-        :model-value="unitVariant?.amount?.toString()"
-        @update:model-value="updateValue(index, 'amount', $event)"
-      />
+    <div v-for="(unitVariant, index) in variants" :key="index" class="flex gap-2 items-center">
+      <Label class="flex flex-col gap-2">
+        <span>{{ index === 0 ? "Menge" : "" }}</span>
+        <Input type="number" :step="0.1" :model-value="unitVariant?.amount?.toString()" @update:model-value="updateValue(index, 'amount', $event)" />
+      </Label>
       <span class="pr-4 font-bold">
         {{ defaultUnit }}
         <span class="text-xs font-normal">/ pro</span>
       </span>
-      <FormInput
-        :label="`${index === 0 ? 'Einheit' : ''}`"
-        name="unitVariant"
-        type="text"
-        :model-value="unitVariant?.unit?.toString()"
-        :options
-        options-id="units"
-        @update:model-value="updateValue(index, 'unit', $event)"
-      />
+      <Label class="flex flex-col gap-2">
+        <span class="mb-1">{{ index === 0 ? "Einheit" : "" }}</span>
+        <Input :model-value="unitVariant?.unit?.toString()" :options options-id="units" @update:model-value="updateValue(index, 'unit', $event)" />
+      </Label>
       <Button
         icon="remove"
         size="icon"
         variant="outline"
-        :class="{ 'mt-3': index === 0, '-mt-2': index }"
+        :class="index === 0 ? 'mt-6' : 'mt-3'"
         @click.prevent="deleteVariant({ id: unitVariant?.id, index: index })"
       />
     </div>
