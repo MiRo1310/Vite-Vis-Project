@@ -16,12 +16,12 @@ const props = withDefaults(
     options?: InputOptions[];
     optionsId?: string;
     step?: number;
-    type: keyof typeof HTMLInputTypesEnum;
+    type?: keyof typeof HTMLInputTypesEnum;
     class?: HTMLAttributes["class"];
     disabled?: boolean;
     placeholder?: string;
   }>(),
-  { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "" },
+  { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "", type: "text" },
 );
 
 const emits = defineEmits<(e: "update:modelValue", payload: string | number) => void>();

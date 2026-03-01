@@ -14,6 +14,7 @@ import { isDefined } from "@vueuse/core";
 import { graphql } from "@/api/gql";
 import { Logger } from "@/lib/logger.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
+import { Input } from "@/components/shared/input";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -256,13 +257,13 @@ const useProductCards = (productIndex: number) => {
 </script>
 
 <template>
-  <FormInput
+  <Input
     v-if="headersProductArray"
+    type="text"
     placeholder="Überschrift z.B. Soße"
-    class-input="rounded-none rounded-t-md"
-    class="space-y-0 border-b-2 border-black"
-    :name="`header-${groupIndex}`"
-    @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, $event)"
+    class="mb-2"
+    :model-value="headersProductArray.find((header) => header.position === groupIndex)?.text ?? ''"
+    @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, String($event))"
   />
 
   <div
@@ -293,14 +294,14 @@ const useProductCards = (productIndex: number) => {
       />
     </div>
     <template v-if="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value">
-      <FormInput
+      <Input
         v-if="productArray"
+        type="text"
         :model-value="getValue(toZeroBasedIndex(oneBasedProductIndex), 'description')?.toString()"
         placeholder="Beschreibung"
-        :name="`description-${groupIndex}-3`"
-        @update:model-value="updateProduct({ target: 'description', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
+        @update:model-value="updateProduct({ target: 'description', val: String($event), productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
       />
-      <div class="flex justify-between">
+      <div class="flex justify-between mt-2">
         <div class="flex gap-2 items-center flex-1">
           <FormInput
             v-if="productArray"

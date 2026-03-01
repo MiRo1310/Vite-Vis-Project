@@ -162,6 +162,7 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
+  console.log(values);
   Logger(args("Submit values", values));
   const dto: RecipeCreateDtoInput = {
     name: values.name,
@@ -250,6 +251,7 @@ const productArray = ref<ProductObjType[]>([defaultProduct]);
 watch(
   descriptions,
   (newValue) => {
+    Logger(args("Descriptions Array changed:", newValue));
     form.setFieldValue("descriptions", newValue);
   },
   { deep: true },
@@ -287,7 +289,6 @@ const addDescription = () => {
 </script>
 
 <template>
-  {{ headersProductArray }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
@@ -301,8 +302,8 @@ const addDescription = () => {
             :key="index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
-            <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
+            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description="description" :index />
+            <RecipeRemoveDescription v-model:descriptions="descriptions" :description="description" />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />

@@ -6,6 +6,7 @@ import Input from "@/components/shared/input/Input.vue";
 import { computed, ref } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
+import { isDefined } from "@vueuse/core";
 
 type RecipeType = GetRecipeDetailsQuery["recipe"];
 
@@ -32,12 +33,13 @@ const getTotalKcalForSection = computed(
 );
 
 const getIngredientGroupLength = computed(() => {
-  return props.recipe?.recipeProducts.reduce((acc, curr) => {
+  const length = props.recipe?.recipeProducts.reduce((acc, curr) => {
     if (curr.groupPosition && curr.groupPosition > acc) {
       return curr.groupPosition;
     }
     return acc;
   }, 0);
+  return isDefined(length) ? length + 1 : 0;
 });
 </script>
 
