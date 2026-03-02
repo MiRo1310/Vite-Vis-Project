@@ -4,7 +4,6 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import { onMounted, ref } from "vue";
 import DialogAddProduct from "@/components/section/products/DialogAddProduct.vue";
-import ProductRemove from "@/components/section/products/action/ProductRemove.vue";
 import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
@@ -22,20 +21,19 @@ onMounted(() => {
 const { result } = useQuery(
   graphql(`
     query GetProducts {
-      products {
-        id
-        carbs
-        category
-        fat
-        kcal
-        name
-        protein
-        salt
-        sugar
-        unit
-        amount
-        productCategory {
+      productsGrouped {
+        key
+        value {
+          id
+          carbs
+          fat
+          kcal
           name
+          protein
+          salt
+          sugar
+          unit
+          amount
         }
       }
     }
@@ -44,9 +42,8 @@ const { result } = useQuery(
   { fetchPolicy: "network-only" },
 );
 
-const columns: DatatableColumns<GetProductsQuery["products"][number]>[] = [
+const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
   { source: "name", labelKey: "Name", type: "component", component: TableCellNavigation, customValue: "id" },
-  { source: "productCategory.name", labelKey: "Kategorie" },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
@@ -65,8 +62,13 @@ const dialogOpen = ref(false);
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
-    <PageSection class="flex flex-col rounded-lg p-2 max-h-[calc(100vh-9.5rem)] overflow-auto">
-      <TableBasic :data="result?.products || []" :columns="getColumns(columns)" />
+    <PageSection class="flex flex-col rounded-lg max-h-[calc(100vh-9.5rem)] overflow-auto">
+      <div v-for="product in result?.productsGrouped" :key="product.key" class="grid grid-cols-12">
+        <div class="col-span-4">
+          {{ product.key }}
+          <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
+        </div>
+      </div>
       <DialogAddProduct v-model:dialog-open="dialogOpen" />
     </PageSection>
   </div>

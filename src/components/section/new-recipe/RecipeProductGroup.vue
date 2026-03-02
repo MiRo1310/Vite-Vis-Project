@@ -57,7 +57,6 @@ const getProductByPositions = (productIndex: number, groupIndex: number): Produc
 
 const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
   const obj = getProductByPositions(productIndex, props.groupIndex);
-  console.log(obj);
   if (!val) {
     return;
   }

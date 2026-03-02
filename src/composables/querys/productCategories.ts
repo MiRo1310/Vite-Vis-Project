@@ -44,7 +44,6 @@ const productCategoriesComposable = () => {
   const getCategoryIdByName = (name: string): string => computed(() => getIdByName(name, result.value?.productCategories)).value;
 
   const reload = async () => {
-    console.log("Reload productCategories");
     await invalidateCache();
     await load(null, null, { fetchPolicy: "network-only" });
 
