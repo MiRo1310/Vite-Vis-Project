@@ -28,7 +28,7 @@ withDefaults(
   <FormField v-slot="{ componentField }" :name>
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
-      <FormControl>
+      <FormControl class="mt-1">
         <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width />
       </FormControl>
       <FormDescription />

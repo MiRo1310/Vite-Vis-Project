@@ -20,7 +20,7 @@ const buttons: NavigationButtons[] = [
 </script>
 
 <template>
-  <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50">
+  <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50 border-b-2 border-accent">
     <div v-for="(button, index) in buttons" :key="index">
       <RouterLink v-if="!button.externalLink" :to="{ name: button.name }">
         <Button variant="outline">{{ button.label }}</Button>

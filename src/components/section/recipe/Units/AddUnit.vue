@@ -17,17 +17,31 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetUnits"] },
 );
 
 const addUnit = () => {
-  if (!newUnit.value || unitExists) {
+  if (!newUnit.value || unitExists.value) {
     return;
   }
+  const unitString = newUnit.value.trim();
+  if (unitString.includes(",")) {
+    const unitArray = unitString
+      .split(",")
+      .map((u) => u.trim())
+      .filter((u) => u);
 
-  mutate({ name: newUnit.value });
+    unitArray.forEach((unit, index) => {
+      if (props.units?.find((c) => c.name === unit)) {
+        return;
+      }
+      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: ["GetUnits"] } : undefined);
+    });
+  } else {
+    mutate({ name: newUnit.value }, { refetchQueries: ["GetUnits"] });
+  }
   newUnit.value = "";
 };
+
 const unitExists = computed(() => isDefined(props.units?.find((c) => c.name === newUnit.value)));
 const newUnit = ref("");
 </script>
@@ -35,8 +49,14 @@ const newUnit = ref("");
 <template>
   <div class="flex gap-2">
     <div class="flex flex-col">
-      <InputShadcn type="text" @keydown.enter="addUnit" placeholder="Gib eine Einheit ein" class="w-60" v-model:model-value="newUnit" />
-      <p v-if="unitExists" class="text-[0.8rem] font-medium text-destructive mt-2">Die Einheit existiert schon</p>
+      <InputShadcn
+        type="text"
+        @keydown.enter="addUnit"
+        placeholder="Gib eine Einheit ein, oder Komma separiert"
+        class="w-70"
+        v-model:model-value="newUnit"
+      />
+      <p v-if="unitExists" class="text-sm font-medium text-destructive mt-2">Die Einheit existiert schon</p>
     </div>
     <Button variant="outline" size="icon" icon="add" @click="addUnit" />
   </div>

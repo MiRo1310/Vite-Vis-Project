@@ -173,7 +173,7 @@ const valueChanged = computed(() => {
 </script>
 
 <template>
-  <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
+  <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit" v-component="'product'">
     <div class="flex justify-between">
       <FormInput label="Produkt" :model-value="result?.product?.name ?? ''" name="name" class="w-120" />
       <ProductRemove v-if="result?.product?.id" :id="result?.product?.id" />

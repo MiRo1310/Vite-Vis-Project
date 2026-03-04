@@ -62,10 +62,10 @@ const dialogOpen = ref(false);
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
-    <PageSection class="flex flex-col rounded-lg max-h-[calc(100vh-9.5rem)] overflow-auto">
-      <div v-for="product in result?.productsGrouped" :key="product.key" class="grid grid-cols-12">
-        <div class="col-span-4">
-          {{ product.key }}
+    <PageSection class="grid grid-cols-4 gap-4 rounded-lg max-h-[calc(100vh-9.5rem)] overflow-auto">
+      <div v-for="product in result?.productsGrouped" :key="product.key" class="col-span-2 rounded-md">
+        {{ product.key }}
+        <div class="bg-popover rounded-md px-2 pb-2 mt-1">
           <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
         </div>
       </div>
