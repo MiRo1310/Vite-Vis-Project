@@ -27,7 +27,7 @@ const getDayValue = computed(() => {
       return isDateBetween(day);
     });
   } catch (e) {
-    Logger({ e });
+    Logger("", { e, type: "error" });
   }
   return [];
 });

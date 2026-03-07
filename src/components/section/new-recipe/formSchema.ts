@@ -14,7 +14,6 @@ const productObj = z.object({
   description: z.string(),
   amount: z.number(),
   unit: z.string(),
-  productPosition: z.number(),
   groupPosition: z.number(),
   id: z.string().optional(),
   activeUnitId: z.uuidv4(),

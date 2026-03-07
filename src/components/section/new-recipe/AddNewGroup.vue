@@ -15,7 +15,6 @@ const addNewProductGroup = () => {
     description: "",
     amount: 0,
     unit: "",
-    productPosition: 0,
     groupPosition: productGroupLength,
     activeUnitId: "",
   });

@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
-import { sortedHeaders } from "@/lib/object";
 import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
 import Input from "@/components/shared/input/Input.vue";
 import { computed, ref } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
-import { isDefined } from "@vueuse/core";
 
 type RecipeType = GetRecipeDetailsQuery["recipe"];
 
@@ -15,31 +12,26 @@ const props = defineProps<{ recipe: RecipeType }>();
 const customPortions = ref(props.recipe?.portions ?? 1);
 const portions = ref(props.recipe?.portions ?? 1);
 
-const filteredIngredients = computed(
-  () => (index: number) => props.recipe?.recipeProducts.filter((ingredient) => ingredient.groupPosition === index),
-);
-
 const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / portions.value).toFixed(2));
 
 const getTotalKcalForSection = computed(
   () =>
-    (index: number): number =>
-      props.recipe?.recipeProducts.reduce((acc, curr) => {
-        if (curr.groupPosition === index) {
-          return acc + (curr.kcal ?? 0);
-        }
-        return acc;
+    (ingredients: NonNullable<RecipeType>["recipeProducts"]): number =>
+      ingredients.reduce((acc, curr) => {
+        return acc + (curr.kcal ?? 0);
       }, 0) ?? 0,
 );
 
-const getIngredientGroupLength = computed(() => {
-  const length = props.recipe?.recipeProducts.reduce((acc, curr) => {
-    if (curr.groupPosition && curr.groupPosition > acc) {
-      return curr.groupPosition;
+const groupByGroupPosition = computed(() => {
+  const groups: Record<number, NonNullable<RecipeType>["recipeProducts"]> = {};
+  props.recipe?.recipeProducts.forEach((ingredient) => {
+    const groupPosition = ingredient.groupPosition ?? 0;
+    if (!groups[groupPosition]) {
+      groups[groupPosition] = [];
     }
-    return acc;
-  }, 0);
-  return isDefined(length) ? length + 1 : 0;
+    groups[groupPosition].push(ingredient);
+  });
+  return groups;
 });
 </script>
 
@@ -56,14 +48,14 @@ const getIngredientGroupLength = computed(() => {
         <Badge :value="getTotalKcal" unit="kcal/p" />
       </div>
     </div>
-    <div v-for="oneBasedIndex in getIngredientGroupLength" :key="oneBasedIndex">
+    <div v-for="(ingredients, index) in Object.values(groupByGroupPosition)" :key="index">
       <div class="mt-2 mb-1 h-8 flex items-center justify-between bg-popover px-1 py-1">
         <p v-if="recipe?.recipeHeaderProducts" class="font-semibold underline">
-          {{ sortedHeaders(recipe.recipeHeaderProducts)?.[toZeroBasedIndex(oneBasedIndex)]?.text }}
+          {{ recipe.recipeHeaderProducts.find((h) => h.position === index)?.text }}
         </p>
-        <Badge :value="(getTotalKcalForSection(toZeroBasedIndex(oneBasedIndex)) / portions).toFixed(2)" unit="kcal/p" />
+        <Badge :value="getTotalKcalForSection(ingredients) / portions" unit="kcal/p" />
       </div>
-      <div v-for="(ingredient, i) in filteredIngredients(toZeroBasedIndex(oneBasedIndex))" :key="i">
+      <div v-for="(ingredient, i) in ingredients" :key="i">
         <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />
       </div>
     </div>

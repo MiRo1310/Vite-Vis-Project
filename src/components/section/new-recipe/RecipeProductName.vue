@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import { ProductObjType } from "@/types/types";
 import { computed, ref, watchEffect } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
 import { args, Logger } from "@/lib/logger.ts";
+import Select from "@/components/shared/select/Select.vue";
 
-const props = defineProps<{ productIndex: number; groupIndex: number }>();
+const props = defineProps<{ product: ProductObjType }>();
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
 
 const { result } = useQuery(
@@ -21,14 +21,14 @@ const { result } = useQuery(
   `),
 );
 
-const product = computed(() => productArray.value.find((p) => p.productPosition === props.productIndex && p.groupPosition === props.groupIndex));
-
-const updateName = (value?: string) => {
-  if (product.value && value) {
-    product.value.productId = value;
-    Logger(args("Selected product:", product.value));
-    Logger(args("Selected product id:", value));
-  }
+const updateName = () => {
+  Logger(args("Selected product id:", selected.value));
+  productArray.value = productArray.value.map((product) => {
+    if (product.id === props.product.id) {
+      return { ...product, productId: selected.value };
+    }
+    return product;
+  });
 };
 
 const selected = ref("");
@@ -36,7 +36,7 @@ const mounting = ref(false);
 
 watchEffect(() => {
   if (!mounting.value) {
-    selected.value = String(product.value?.productId ?? "");
+    selected.value = String(props.product.productId);
   }
   mounting.value = false;
 });
@@ -45,12 +45,12 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
 </script>
 
 <template>
-  <FormSelectDeprecated
-    v-model:selected="selected"
+  <Select
+    v-model:model-value="selected"
     label=""
     placeholder="Produkt wählen"
-    :name="`name-${groupIndex}-${productIndex}`"
-    :select-options="selectableOptions"
-    @update:selected="updateName($event)"
+    :name="`name-${product.id}`"
+    @update:model-value="updateName()"
+    :items="selectableOptions"
   />
 </template>

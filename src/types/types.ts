@@ -287,7 +287,6 @@ export interface ProductObjType {
   description: string;
   amount: number;
   unit: string;
-  productPosition: number;
   groupPosition: number;
   id?: string;
   activeUnitId: string;
@@ -297,7 +296,7 @@ export interface SelectOption {
   value: string;
   label?: string;
   id?: string;
-  class?: HTMLAttributes["class"];
+  class?: string;
 }
 
 export interface HasOptionalNameAndId {

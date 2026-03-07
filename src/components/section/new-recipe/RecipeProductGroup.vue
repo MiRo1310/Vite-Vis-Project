@@ -7,14 +7,14 @@ import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { useMutation, useQuery } from "@vue/apollo-composable";
-import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { isDefined } from "@vueuse/core";
 import { graphql } from "@/api/gql";
 import { Logger } from "@/lib/logger.ts";
-import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Input } from "@/components/shared/input";
+import Select from "@/components/shared/select/Select.vue";
+import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -52,44 +52,43 @@ const { result: productUnits } = useQuery(
   `),
 );
 
-const getProductByPositions = (productIndex: number, groupIndex: number): ProductObjType | undefined =>
-  productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === groupIndex);
-
-const updateProduct = ({ target, val, productIndex }: { target: keyof Omit<ProductObjType, "id">; val?: string; productIndex: number }) => {
-  const obj = getProductByPositions(productIndex, props.groupIndex);
+const updateProduct = ({ target, val, product }: { target: keyof Omit<ProductObjType, "id">; val?: string; product: ProductObjType }) => {
   if (!val) {
     return;
   }
-  if (!obj) {
-    const newItem = {
-      productId: "",
-      description: "",
-      amount: 0,
-      unit: "",
-      productPosition: productIndex,
-      groupPosition: props.groupIndex,
-      factor: null,
-      unitVariants: null,
-      activeUnitId: "",
-    };
-    if (target === "unit") {
-      const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
-      if (id) {
-        saveValToItem(newItem, "activeUnitId", id);
-      }
-    }
-    saveValToItem(newItem, target, val);
-    productArray.value.push(newItem);
-    return;
-  }
+  // console.log(target, val, product);
+  // if (!product.id) {
+  //   const newItem = {
+  //     productId: "",
+  //     description: "",
+  //     amount: 0,
+  //     unit: "",
+  //     groupPosition: props.groupIndex,
+  //     factor: null,
+  //     unitVariants: null,
+  //     activeUnitId: "",
+  //   };
+  //   console.log(target);
+  //   if (target === "unit" && product.id) {
+  //     const id = selectableOptions.value(product.id).find((variant) => variant.value === val)?.id;
+  //     console.log("id", id);
+  //     if (id) {
+  //       saveValToItem(newItem, "activeUnitId", id);
+  //     }
+  //   }
+  //   saveValToItem(newItem, target, val);
+  //   productArray.value.push(newItem);
+  //   return;
+  // }
 
   if (target === "unit") {
-    const id = selectableOptions.value(productIndex).find((variant) => variant.value === val)?.id;
+    const id = selectableUnitOptions.value(product.productId).find((variant) => variant.value === val)?.id;
+    Logger("Unit id to set:", { obj: id });
     if (id) {
-      saveValToItem(obj, "activeUnitId", id);
+      saveValToItem(product, "activeUnitId", id);
     }
   }
-  saveValToItem(obj, target, val);
+  saveValToItem(product, target, val);
 };
 
 const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
@@ -100,23 +99,21 @@ const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
   ((obj as ProductObjType)[target as keyof ProductObjType] as string) = val.toString();
 };
 
-const removeProduct = async (productIndex: number | null) => {
+const removeProduct = async (id: string | null) => {
   if (deleteBtnIsDisabled()) {
     return;
   }
 
   if (countedProducts.value === 1) {
     const recipeId = props.recipe?.id;
-    if (recipeId && isDefined(productIndex)) {
+    if (recipeId) {
       await mutate({ dto: { position: props.groupIndex, recipeId } });
     }
   }
 
-  if (isDefined(productIndex)) {
-    useProductCards(productIndex).remove();
-    await removeProductInDB(productIndex);
-
-    productArray.value = filterByTargetAndDecrement(productArray.value, "productPosition", productIndex, "groupPosition", props.groupIndex);
+  if (isDefined(id)) {
+    useProductCards(id).remove();
+    await removeProductInDB(id);
   }
 };
 
@@ -136,9 +133,7 @@ const removeProductGroupInDB = async () => {
 };
 
 // TODO Das darf erst passieren beim submit
-const removeProductInDB = async (productIndex: number): Promise<boolean | undefined> => {
-  const id = productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === props.groupIndex)?.id;
-
+const removeProductInDB = async (id: string): Promise<boolean | undefined> => {
   if (!id) {
     return false;
   }
@@ -187,11 +182,10 @@ const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: numbe
 
 const deleteBtnIsDisabled = () => countedProducts.value === 1 && countedProductGroups.value === 1;
 
-const getValue = computed(() => (productIndex: number, target: keyof ProductObjType) => {
-  return getProductByPositions(productIndex, props.groupIndex)?.[target];
-});
-
 const countedProducts = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
+
+let newProductIdCounter = 0;
+const newProductIdPlaceholder = computed(() => `${newIdPrefix}-${newProductIdCounter++}`);
 
 const addNewProduct = () => {
   productArray.value.push({
@@ -199,30 +193,26 @@ const addNewProduct = () => {
     description: "",
     amount: 0,
     unit: "",
-    productPosition: countedProducts.value,
     groupPosition: props.groupIndex,
     activeUnitId: "",
+    id: newProductIdPlaceholder.value,
   });
 
-  // ProductIndex is not needed here
-  useProductCards(0).closeGroup();
-  useProductCards(0).add();
+  useProductCards("").closeGroup();
+  useProductCards(newProductIdPlaceholder.value).add();
 };
 
 const dialogOpenGroup = ref(false);
 const dialogOpenProduct = ref(false);
-const dialogParam = ref<null | number>(null);
+const dialogParam = ref<null | string>(null);
 
-const confirmProductDelete = (productIndex: number) => {
-  dialogParam.value = productIndex;
+const confirmProductDelete = (id?: string) => {
+  dialogParam.value = id ?? null;
   dialogOpenProduct.value = true;
 };
 
-const selectableOptions = computed(() => (index: number): SelectOption[] => {
-  const productId = productArray.value.find((product) => {
-    return product.productPosition === index && product.groupPosition === props.groupIndex;
-  })?.productId;
-  const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === productId);
+const selectableUnitOptions = computed(() => (id: string): SelectOption[] => {
+  const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === id);
 
   return (
     unitVariants?.map((variant) => ({
@@ -233,26 +223,25 @@ const selectableOptions = computed(() => (index: number): SelectOption[] => {
   );
 });
 
-const isProductOpen = reactive<boolean[][]>([]);
+const isProductOpen = reactive<Record<string, boolean>[]>([]);
 
-const useProductCards = (productIndex: number) => {
+const useProductCards = (productId: string) => {
   const groupIndex = props.groupIndex;
 
   if (!isProductOpen[groupIndex]) {
     if (groupIndex === 0) {
-      isProductOpen[groupIndex] = [];
+      isProductOpen[groupIndex] = {};
     } else {
-      isProductOpen[groupIndex] = [true];
+      isProductOpen[groupIndex] = { [productId]: true };
     }
   }
-  const groupLength = isProductOpen[groupIndex].length;
 
   return {
-    toggle: () => (isProductOpen[groupIndex][productIndex] = !isProductOpen[groupIndex][productIndex]),
-    add: () => (isProductOpen[groupIndex][groupLength] = true),
-    isOpen: computed(() => isProductOpen[groupIndex][productIndex]),
-    closeGroup: () => isProductOpen[groupIndex].fill(false),
-    remove: () => isProductOpen[groupIndex].splice(productIndex, 1),
+    toggle: () => (isProductOpen[groupIndex][productId] = !isProductOpen[groupIndex][productId]),
+    add: () => (isProductOpen[groupIndex][productId] = true),
+    isOpen: computed(() => isProductOpen[groupIndex][productId]),
+    closeGroup: () => Object.keys(isProductOpen[groupIndex]).map((k) => (isProductOpen[groupIndex][k] = false)),
+    remove: () => delete isProductOpen[groupIndex][productId],
   };
 };
 </script>
@@ -266,62 +255,56 @@ const useProductCards = (productIndex: number) => {
     :model-value="headersProductArray.find((header) => header.position === groupIndex)?.text ?? ''"
     @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, String($event))"
   />
-
   <div
-    v-for="oneBasedProductIndex in countedProducts"
-    :key="oneBasedProductIndex"
-    :class="['flex flex-col px-2 bg-accent border-black', oneBasedProductIndex === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
+    v-for="(product, index) in productArray.filter((p) => p.groupPosition === props.groupIndex)"
+    :key="index"
+    :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex mt-2">
       <RecipeProductName
-        v-if="productArray && useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value"
-        :product-index="toZeroBasedIndex(oneBasedProductIndex)"
-        :group-index="groupIndex"
-        :product-array
+        v-if="productArray && useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value"
+        :product
+        v-model:product-array="productArray"
         class="flex-1 mr-4"
       />
       <div v-else class="flex-1 mr-4">
-        <ProductValuesSummary
-          :product-index="oneBasedProductIndex"
-          :product="getProductByPositions(toZeroBasedIndex(oneBasedProductIndex), groupIndex)"
-        />
+        <ProductValuesSummary :index :product />
       </div>
       <Button
         variant="outline"
-        :size="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value ? 'icon' : 'iconRow'"
+        :size="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value ? 'icon' : 'iconRow'"
         class="mb-2"
-        :icon="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value ? 'chevronDown' : 'chevronRight'"
-        @click.prevent="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).toggle()"
+        :icon="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value ? 'chevronDown' : 'chevronRight'"
+        @click.prevent="useProductCards(product.id ?? newProductIdPlaceholder).toggle()"
       />
     </div>
-    <template v-if="useProductCards(toZeroBasedIndex(oneBasedProductIndex)).isOpen.value">
+    <template v-if="product.id && useProductCards(product.id).isOpen.value">
       <Input
         v-if="productArray"
         type="text"
-        :model-value="getValue(toZeroBasedIndex(oneBasedProductIndex), 'description')?.toString()"
+        :model-value="product.description"
         placeholder="Beschreibung"
-        @update:model-value="updateProduct({ target: 'description', val: String($event), productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
+        @update:model-value="updateProduct({ target: 'description', val: String($event), product })"
       />
       <div class="flex justify-between mt-2">
-        <div class="flex gap-2 items-center flex-1">
+        <div class="flex gap-2 items-start flex-1 mr-2">
           <FormInput
             v-if="productArray"
             placeholder="Menge"
-            :model-value="getValue(toZeroBasedIndex(oneBasedProductIndex), 'amount')?.toString()"
+            :model-value="product.amount"
             type="number"
             :step="0.1"
-            :name="`amount-${groupIndex}-${toZeroBasedIndex(oneBasedProductIndex)}`"
-            @update:model-value="updateProduct({ target: 'amount', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
+            :name="`amount-${product.id}`"
+            @update:model-value="updateProduct({ target: 'amount', val: $event, product })"
           />
-          <FormSelectDeprecated
-            v-if="selectableOptions(toZeroBasedIndex(oneBasedProductIndex)).length"
+          <Select
             label=""
             class="w-full"
-            :selected="getValue(toZeroBasedIndex(oneBasedProductIndex), 'unit')?.toString()"
+            :model-value="product.unit"
             placeholder="Wähle eine Einheit"
-            :name="`name-${groupIndex}-${toZeroBasedIndex(oneBasedProductIndex)}`"
-            :select-options="selectableOptions(toZeroBasedIndex(oneBasedProductIndex))"
-            @update:selected="updateProduct({ target: 'unit', val: $event, productIndex: toZeroBasedIndex(oneBasedProductIndex) })"
+            :name="`name-${product.id}`"
+            :items="selectableUnitOptions(product.productId)"
+            @update:model-value="updateProduct({ target: 'unit', val: $event, product })"
           />
         </div>
         <Button
@@ -332,7 +315,7 @@ const useProductCards = (productIndex: number) => {
           @click.prevent="
             () => {
               if (deleteBtnIsDisabled()) return;
-              confirmProductDelete(toZeroBasedIndex(oneBasedProductIndex));
+              confirmProductDelete(product.id);
             }
           "
         />

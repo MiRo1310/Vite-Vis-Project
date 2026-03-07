@@ -25,8 +25,9 @@ watchEffect(() => {
 
 function getFocusClass(item: SelectOption) {
   let string = "";
-  item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
-
+  if (typeof item?.class === "string") {
+    item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
+  }
   return string;
 }
 

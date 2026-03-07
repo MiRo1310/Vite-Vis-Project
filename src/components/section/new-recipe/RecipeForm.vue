@@ -20,6 +20,10 @@ import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { args, Logger } from "@/lib/logger.ts";
+import { Writeable } from "zod/v3";
+import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
+import { $strip } from "zod/v4/core";
+import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -61,7 +65,6 @@ const getRecipeByIdQuery = graphql(`
         description
         productId
         groupPosition
-        productPosition
         unit
         id
         kcal
@@ -143,7 +146,6 @@ const setValuesToForm = (recipe?: RecipeType) => {
     description: item.description,
     groupPosition: item.groupPosition,
     productId: item.productId,
-    productPosition: item.productPosition,
     unit: item.unit,
     id: item.id,
     activeUnitId: item.activeUnitId ?? "",
@@ -160,17 +162,43 @@ const form = useForm({
   validationSchema: formSchema,
 });
 
+type ZodProductArrayType =
+  | output<
+      ZodObject<
+        Writeable<{
+          productId: ZodString;
+          description: ZodString;
+          amount: ZodNumber;
+          unit: ZodString;
+          groupPosition: ZodNumber;
+          id: ZodOptional<ZodString>;
+          activeUnitId: ZodUUID;
+        }>,
+        $strip
+      >
+    >[]
+  | undefined;
+
+const removeNewIdForMutate = (productArray?: ZodProductArrayType): ZodProductArrayType => {
+  return productArray?.map((product) => {
+    if (product.id?.startsWith(newIdPrefix)) {
+      return { ...product, id: undefined };
+    }
+    return product;
+  });
+};
+
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
-  console.log(values);
-  Logger(args("Submit values", values));
+
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
-    recipeProducts: values.productArray,
+    recipeProducts: removeNewIdForMutate(values.productArray),
   };
+  Logger("Submit dto", { obj: dto });
 
   if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
     const result = await mutate({ dto });
@@ -219,7 +247,6 @@ const defaultProduct: ProductObjType = {
   description: "",
   amount: 0,
   unit: "",
-  productPosition: 0,
   groupPosition: 0,
   id: undefined,
   activeUnitId: "",
@@ -260,7 +287,7 @@ watch(
 watch(
   headersProductArray,
   (newValue) => {
-    Logger(args("Headers Array changed:", newValue));
+    Logger("Headers Array changed:", { obj: newValue, useDebugMode: true });
     form.setFieldValue("headersProductArray", newValue);
   },
   { deep: true },
@@ -269,7 +296,7 @@ watch(
 watch(
   productArray,
   (newValue) => {
-    Logger(args("Product Array changed:", newValue));
+    Logger("Product Array changed:", { obj: newValue, useDebugMode: true });
 
     form.setFieldValue("productArray", newValue);
   },
@@ -289,6 +316,7 @@ const addDescription = () => {
 </script>
 
 <template>
+  {{ form.errors }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">

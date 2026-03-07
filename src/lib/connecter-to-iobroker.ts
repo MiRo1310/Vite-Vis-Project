@@ -74,11 +74,11 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             });
           })
           .catch((e) => {
-            Logger({ e, title: `Error subscribing to ${stateId.id}` });
+            Logger(`Error subscribing to ${stateId.id}`, { e });
           });
         iobrokerStore?.addIdToSubscribedIds(stateId.id);
       } catch (e) {
-        Logger({ e, title: `Error subscribing to ${stateId.id}` });
+        Logger(`Error subscribing to ${stateId.id}`, { e });
       }
     });
   });

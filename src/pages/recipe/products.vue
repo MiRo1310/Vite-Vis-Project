@@ -65,7 +65,7 @@ const dialogOpen = ref(false);
     <PageSection class="grid grid-cols-4 gap-4 rounded-lg max-h-[calc(100vh-9.5rem)] overflow-auto">
       <div v-for="product in result?.productsGrouped" :key="product.key" class="col-span-2 rounded-md">
         {{ product.key }}
-        <div class="bg-popover rounded-md px-2 pb-2 mt-1">
+        <div class="bg-accent rounded-md px-2 pb-2 mt-1">
           <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
         </div>
       </div>

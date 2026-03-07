@@ -6,7 +6,7 @@ import { useQuery } from "@vue/apollo-composable";
 
 import { graphql } from "@/api/gql";
 
-const props = defineProps<{ productIndex: number; product?: ProductObjType }>();
+const props = defineProps<{ index: number; product?: ProductObjType }>();
 
 const { result } = useQuery(
   graphql(`
@@ -41,7 +41,7 @@ const productLabel = computed(() => selectableProducts.value.find((option) => op
 <template>
   <div class="flex justify-between items-center" data-component="product-summary">
     <div>
-      <span>{{ productIndex }}.</span>
+      <span>{{ index + 1 }}.</span>
       <span class="ml-2">{{ productLabel }}</span>
       <span class="text-xs font-bold ml-2">{{ product?.description }}</span>
     </div>
