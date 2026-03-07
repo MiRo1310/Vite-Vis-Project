@@ -52,7 +52,7 @@ const newUnit = ref("");
       <InputShadcn
         type="text"
         @keydown.enter="addUnit"
-        placeholder="Gib eine Einheit ein, oder Komma separiert"
+        placeholder="Gib eine Einheit ein, Komma separiert"
         class="w-70"
         v-model:model-value="newUnit"
       />

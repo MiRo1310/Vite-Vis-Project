@@ -5,13 +5,13 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import AddCategory from "@/components/section/products/AddCategory.vue";
 import { ref } from "vue";
 import CategoryUpdate from "@/components/section/categories/CategoryUpdate.vue";
-import { GetCategoriesQuery } from "@/api/gql/graphql.ts";
+import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/categories/CategoryRemove.vue";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 
 const { result } = useProductCategories();
 
-const columns: DatatableColumns<GetCategoriesQuery["productCategories"][number]>[] = [
+const columns: DatatableColumns<ProductCategoriesQuery["productCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryUpdate },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryRemove },
@@ -26,7 +26,5 @@ const updateByPressEnter = ref(false);
     <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
   </div>
 
-  <div class="px-2">
-    <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" />
-  </div>
+  <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" />
 </template>

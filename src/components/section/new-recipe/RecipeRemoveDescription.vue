@@ -32,5 +32,3 @@ const removeDescription = () => {
 <template>
   <Button v-if="descriptions.length > 1" size="icon" variant="outline" icon="remove" @click.prevent="removeDescription" />
 </template>
-
-<style scoped lang="scss"></style>

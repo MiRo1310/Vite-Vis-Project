@@ -4,7 +4,6 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
-import FormSelectDeprecated from "@/components/shared/form/FormSelectDeprecated.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
@@ -124,14 +123,6 @@ const nullToUndefined = <T,>(val: T | null): T | undefined => {
   return val === null ? undefined : val;
 };
 
-const getSelected = computed(() => {
-  if (!props.data?.category) {
-    return;
-  }
-
-  return props.data.category;
-});
-
 onMounted(() => {
   initFormData();
 });
@@ -149,7 +140,7 @@ const defaultUnitVariant = computed(() => {
 </script>
 
 <template>
-  <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen" v-component="'addProduct'">
+  <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
       <div class="flex gap-2 items-baseline mb-4">
         <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="flex-1" />

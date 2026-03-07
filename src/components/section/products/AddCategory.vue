@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ErrorCode, GetCategoriesQuery } from "@/api/gql/graphql";
+import { ErrorCode, ProductCategoriesQuery } from "@/api/gql/graphql";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
@@ -10,7 +10,7 @@ import { useProductCategories } from "@/composables/querys/productCategories.ts"
 
 const { reload } = useProductCategories();
 
-const props = defineProps<{ result: GetCategoriesQuery["productCategories"] }>();
+const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] }>();
 
 const update = defineModel<boolean>("update", { default: false });
 
@@ -40,11 +40,22 @@ watch(update, (newVal) => {
 const newCategory = ref("");
 const existInDb = ref(false);
 
-async function addNewCategory() {
-  if (!newCategory.value) {
-    return;
+async function addNewCategory(): Promise<void> {
+  let result = null;
+  if (newCategory.value.includes(",")) {
+    const categoryArray = newCategory.value
+      .split(",")
+      .map((u) => u.trim())
+      .filter((u) => u);
+    for (const category of categoryArray) {
+      if (props.result?.find((c) => c.name === category)) {
+        continue;
+      }
+      result = await mutate({ name: category });
+    }
+  } else {
+    result = await mutate({ name: newCategory.value });
   }
-  const result = await mutate({ name: newCategory.value });
   await reload();
 
   if (result?.data) {
@@ -68,7 +79,7 @@ const categoryExists = computed(() => isDefined(props.result?.find((c) => c.name
       <Input
         v-model:model-value="newCategory"
         :class="['w-60', { 'border-destructive': categoryExists || existInDb }]"
-        placeholder="Kategorie hinzu oder ändern"
+        placeholder="Kategorie hinzu, Komma separiert"
         @keyup.enter="addNewCategory"
         type="text"
       />

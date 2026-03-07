@@ -101,7 +101,7 @@ const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
 };
 
 const removeProduct = async (productIndex: number | null) => {
-  if (disableDelete()) {
+  if (deleteBtnIsDisabled()) {
     return;
   }
 
@@ -120,6 +120,7 @@ const removeProduct = async (productIndex: number | null) => {
   }
 };
 
+//TODO Das darf erst passieren beim submit
 const removeProductGroupInDB = async () => {
   const groupId = headersProductArray.value.find((header) => header.position === props.groupIndex)?.id;
   if (!groupId) {
@@ -134,6 +135,7 @@ const removeProductGroupInDB = async () => {
   return result ?? false;
 };
 
+// TODO Das darf erst passieren beim submit
 const removeProductInDB = async (productIndex: number): Promise<boolean | undefined> => {
   const id = productArray.value.find((product) => product.productPosition === productIndex && product.groupPosition === props.groupIndex)?.id;
 
@@ -145,7 +147,7 @@ const removeProductInDB = async (productIndex: number): Promise<boolean | undefi
 };
 
 const removeProductGroup = async () => {
-  if (disableDelete()) {
+  if (deleteBtnIsDisabled()) {
     return;
   }
 
@@ -183,7 +185,7 @@ const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: numbe
       return item;
     });
 
-const disableDelete = () => countedProducts.value === 1 && countedProductGroups.value === 1;
+const deleteBtnIsDisabled = () => countedProducts.value === 1 && countedProductGroups.value === 1;
 
 const getValue = computed(() => (productIndex: number, target: keyof ProductObjType) => {
   return getProductByPositions(productIndex, props.groupIndex)?.[target];
@@ -329,7 +331,7 @@ const useProductCards = (productIndex: number) => {
           :disabled="countedProducts === 1"
           @click.prevent="
             () => {
-              if (disableDelete()) return;
+              if (deleteBtnIsDisabled()) return;
               confirmProductDelete(toZeroBasedIndex(oneBasedProductIndex));
             }
           "
@@ -346,7 +348,7 @@ const useProductCards = (productIndex: number) => {
       :disabled="countedProductGroups === 1"
       @click.prevent="
         () => {
-          if (disableDelete()) return;
+          if (deleteBtnIsDisabled()) return;
           dialogOpenGroup = true;
         }
       "
