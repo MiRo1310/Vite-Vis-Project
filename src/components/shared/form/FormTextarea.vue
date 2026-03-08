@@ -16,7 +16,7 @@ withDefaults(
     class: "",
     label: "",
     classTextArea: "",
-  }
+  },
 );
 
 const modelValue = defineModel<string>();
@@ -28,6 +28,7 @@ const handleEnterPress = ($event: KeyboardEvent) => {
 
 <template>
   <FormField v-slot="{ componentField }" :name="name">
+    {{ modelValue }}
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
       <FormControl>

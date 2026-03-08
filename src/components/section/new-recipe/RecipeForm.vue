@@ -12,7 +12,7 @@ import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
-import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpdateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
+import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
 import { useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
@@ -120,6 +120,16 @@ onMounted(async () => {
   if (props.recipeId && props.recipeId !== "undefined") {
     await load(getRecipeByIdQuery, { id: props.recipeId });
   }
+});
+
+// const productArray = computed({
+//   get: () => form.values.productArray ?? [defaultProduct],
+//   set: (val) => form.setFieldValue("productArray", val),
+// });
+
+const descriptions = computed({
+  get: () => form.values.descriptions ?? [{ position: 0, text: "", header: "" }],
+  set: (val) => form.setFieldValue("descriptions", val),
 });
 
 const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
@@ -282,18 +292,8 @@ const enterPress = async () => {
   }
 };
 
-const descriptions = ref<RecipeDescriptionCreateOrUpdateDtoInput[]>([]);
 const headersProductArray = ref<TextPositionType[]>([]);
 const productArray = ref<ProductObjType[]>([defaultProduct]);
-
-watch(
-  descriptions,
-  (newValue) => {
-    Logger(args("Descriptions Array changed:", newValue));
-    form.setFieldValue("descriptions", newValue);
-  },
-  { deep: true },
-);
 
 watch(
   headersProductArray,
@@ -314,12 +314,16 @@ watch(
   { deep: true },
 );
 
-const countedProductGroups = computed(
-  () =>
-    productArray.value.reduce((acc, curr) => {
+const countedProductGroups = computed(() => {
+  if (!productArray.value?.length) {
+    return 0;
+  }
+  return (
+    productArray.value?.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
-    }, 0) + 1,
-);
+    }, 0) + 1
+  );
+});
 
 const addDescription = () => {
   descriptions.value.push({ position: descriptions.value.length, text: "", header: "" });
@@ -335,18 +339,20 @@ const addDescription = () => {
             <FormInput label="Rezeptname" name="name" class="flex-1" />
             <FormInput label="Portionen" name="portions" type="number" />
           </div>
+
           <div
             v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)"
             :key="index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description="description" :index />
+            <RecipeDescriptionGroup :description="description" />
             <RecipeRemoveDescription v-model:descriptions="descriptions" v-model:descriptions-to-delete="descriptionsToDelete" :description />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
+
         <div class="w-120">
           <RecipeFormFooter @abort="resetForm" />
           <div v-for="oneBasedIndex in countedProductGroups" :key="oneBasedIndex" class="mb-2">

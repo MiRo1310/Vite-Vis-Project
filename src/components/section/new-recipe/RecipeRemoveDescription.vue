@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql.ts";
 
 import { Logger } from "@/lib/logger.ts";
+import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/new-recipe/index.ts";
 
-const props = defineProps<{ description: RecipeDescriptionCreateOrUpdateDtoInput }>();
+const props = defineProps<{ description: IRecipeDescriptionCreateOrUpdate }>();
 
-const descriptions = defineModel<RecipeDescriptionCreateOrUpdateDtoInput[]>("descriptions", { default: [] });
+const descriptions = defineModel<IRecipeDescriptionCreateOrUpdate[]>("descriptions", { default: [] });
 
 const descriptionsToDelete = defineModel<string[]>("descriptionsToDelete", { default: [] });
 
