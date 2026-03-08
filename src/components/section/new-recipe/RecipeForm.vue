@@ -24,6 +24,8 @@ import { Writeable } from "zod/v3";
 import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
 import { $strip } from "zod/v4/core";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { removeDescriptions } from "@/components/section/new-recipe/removeDescription.ts";
+import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -188,6 +190,8 @@ const removeNewIdForMutate = (productArray?: ZodProductArrayType): ZodProductArr
   });
 };
 
+const descriptionsToDelete = ref<string[]>([]);
+
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
 
@@ -198,7 +202,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeHeaderProducts: values.headersProductArray,
     recipeProducts: removeNewIdForMutate(values.productArray),
   };
-  Logger("Submit dto", { obj: dto });
+  Logger("Submit dto", { value: dto });
 
   if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
     const result = await mutate({ dto });
@@ -216,20 +220,24 @@ const onSubmit = form.handleSubmit(async (values) => {
     return;
   }
 
-  if (props.recipeId) {
-    const dtoUpdate: RecipeUpdateDtoInput = {
-      id: props.recipeId,
-      ...dto,
-    };
-    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
+  const dtoUpdate: RecipeUpdateDtoInput = {
+    id: props.recipeId,
+    ...dto,
+  };
 
-    toast({
-      title: "Das Rezept wurde aktualisiert",
-      description: values.name,
-    });
-    if (props.recipeId) {
-      await goBack(props.recipeId);
-    }
+  if (descriptionsToDelete.value.length) {
+    await updateMutate({ dto: dtoUpdate });
+
+    removeDescriptions(descriptionsToDelete.value);
+  } else {
+    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
+  }
+  toast({
+    title: "Das Rezept wurde aktualisiert",
+    description: values.name,
+  });
+  if (props.recipeId) {
+    await goBack(props.recipeId);
   }
 });
 
@@ -254,11 +262,11 @@ const defaultProduct: ProductObjType = {
 
 const resetForm = () => {
   form.resetForm();
-  form.setValues(getRecipeProductObj());
+  form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
-  descriptions.value = [{ position: 0, text: "", header: "" }];
-  headersProductArray.value = [];
-  productArray.value = [defaultProduct];
+  descriptions.value = recipe.value?.recipeDescriptions ?? [{ position: 0, text: "", header: "" }];
+  headersProductArray.value = recipe.value?.recipeHeaderProducts ?? [];
+  productArray.value = recipe.value?.recipeProducts ?? [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -287,7 +295,7 @@ watch(
 watch(
   headersProductArray,
   (newValue) => {
-    Logger("Headers Array changed:", { obj: newValue, useDebugMode: true });
+    Logger("Headers Array changed:", { value: newValue, useDebugMode: true });
     form.setFieldValue("headersProductArray", newValue);
   },
   { deep: true },
@@ -296,7 +304,7 @@ watch(
 watch(
   productArray,
   (newValue) => {
-    Logger("Product Array changed:", { obj: newValue, useDebugMode: true });
+    Logger("Product Array changed:", { value: newValue, useDebugMode: true });
 
     form.setFieldValue("productArray", newValue);
   },
@@ -316,7 +324,6 @@ const addDescription = () => {
 </script>
 
 <template>
-  {{ form.errors }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
@@ -331,17 +338,14 @@ const addDescription = () => {
             class="bg-accent rounded-lg p-2 mt-2"
           >
             <RecipeDescriptionGroup v-model:descriptions="descriptions" :description="description" :index />
-            <RecipeRemoveDescription v-model:descriptions="descriptions" :description="description" />
+            <RecipeRemoveDescription v-model:descriptions="descriptions" v-model:descriptions-to-delete="descriptionsToDelete" :description />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
         <div class="w-120">
-          <div class="w-full flex justify-stretch gap-2 mb-2">
-            <Button class="w-full" type="submit" variant="outline">Speichern</Button>
-            <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
-          </div>
+          <RecipeFormFooter @abort="resetForm" />
           <div v-for="oneBasedIndex in countedProductGroups" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
@@ -359,10 +363,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <div class="w-full flex justify-end mt-4 space-x-2">
-        <Button class="w-60" type="submit" variant="outline">Speichern</Button>
-        <Button class="w-60" type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
-      </div>
+      <RecipeFormFooter @abort="resetForm" class="mt-2" />
     </Form>
   </div>
 </template>

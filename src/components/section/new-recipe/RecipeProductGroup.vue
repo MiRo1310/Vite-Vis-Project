@@ -83,7 +83,7 @@ const updateProduct = ({ target, val, product }: { target: keyof Omit<ProductObj
 
   if (target === "unit") {
     const id = selectableUnitOptions.value(product.productId).find((variant) => variant.value === val)?.id;
-    Logger("Unit id to set:", { obj: id });
+    Logger("Unit id to set:", { value: id });
     if (id) {
       saveValToItem(product, "activeUnitId", id);
     }

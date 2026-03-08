@@ -1,30 +1,21 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql.ts";
-import { useMutation } from "@vue/apollo-composable";
-import { graphql } from "@/api/gql";
+
+import { Logger } from "@/lib/logger.ts";
 
 const props = defineProps<{ description: RecipeDescriptionCreateOrUpdateDtoInput }>();
 
 const descriptions = defineModel<RecipeDescriptionCreateOrUpdateDtoInput[]>("descriptions", { default: [] });
 
-const { mutate } = useMutation(
-  graphql(`
-    mutation RemoveTextArea($id: UUID!) {
-      removeTextArea(id: $id)
-    }
-  `),
-);
+const descriptionsToDelete = defineModel<string[]>("descriptionsToDelete", { default: [] });
 
 const removeDescription = () => {
-  const { id = null, position } = props.description;
+  const { id = null } = props.description;
   if (id) {
-    mutate({ id }, { refetchQueries: ["getRecipeById"] });
-  }
-
-  if (descriptions.value.length === position) {
-    descriptions.value.pop();
-    return;
+    Logger("Removing description with id:", { value: id, useDebugMode: false });
+    descriptionsToDelete.value.push(id);
+    descriptions.value = descriptions.value.filter((d) => d.id !== id);
   }
 };
 </script>

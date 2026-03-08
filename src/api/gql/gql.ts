@@ -35,7 +35,7 @@ type Documents = {
     "\n    mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {\n      removeProductGroup(dto: $dto)\n    }\n  ": typeof types.RemoveRecipeGroupDocument,
     "\n    query getProductUnits {\n      productUnits {\n        id\n        createdAt\n        modifiedAt\n        productId\n        amount\n        unit\n      }\n    }\n  ": typeof types.GetProductUnitsDocument,
     "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": typeof types.GetProductsForSelectDocument,
-    "\n    mutation RemoveTextArea($id: UUID!) {\n      removeTextArea(id: $id)\n    }\n  ": typeof types.RemoveTextAreaDocument,
+    "\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    ": typeof types.RemoveTextAreaDocument,
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": typeof types.AddCategoryDocument,
     "\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  ": typeof types.RemoveProductUnitDocument,
     "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": typeof types.AddProductDocument,
@@ -79,7 +79,7 @@ const documents: Documents = {
     "\n    mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {\n      removeProductGroup(dto: $dto)\n    }\n  ": types.RemoveRecipeGroupDocument,
     "\n    query getProductUnits {\n      productUnits {\n        id\n        createdAt\n        modifiedAt\n        productId\n        amount\n        unit\n      }\n    }\n  ": types.GetProductUnitsDocument,
     "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": types.GetProductsForSelectDocument,
-    "\n    mutation RemoveTextArea($id: UUID!) {\n      removeTextArea(id: $id)\n    }\n  ": types.RemoveTextAreaDocument,
+    "\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    ": types.RemoveTextAreaDocument,
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": types.AddCategoryDocument,
     "\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  ": types.RemoveProductUnitDocument,
     "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": types.AddProductDocument,
@@ -203,7 +203,7 @@ export function graphql(source: "\n    query GetProductsForSelect {\n      produ
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation RemoveTextArea($id: UUID!) {\n      removeTextArea(id: $id)\n    }\n  "): (typeof documents)["\n    mutation RemoveTextArea($id: UUID!) {\n      removeTextArea(id: $id)\n    }\n  "];
+export function graphql(source: "\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    "): (typeof documents)["\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

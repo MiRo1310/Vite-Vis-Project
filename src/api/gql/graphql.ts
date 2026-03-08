@@ -502,7 +502,7 @@ export type RecipeHeaderProductCreateOrUpdateDtoInput = {
 export type RecipeProduct = {
   __typename?: 'RecipeProduct';
   activeUnitId: Scalars['UUID']['output'];
-  amount?: Maybe<Scalars['Decimal']['output']>;
+  amount: Scalars['Decimal']['output'];
   createdAt: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   groupPosition: Scalars['Int']['output'];
@@ -522,21 +522,21 @@ export type RecipeProductHeader = {
   id: Scalars['UUID']['output'];
   modifiedAt?: Maybe<Scalars['DateTime']['output']>;
   position: Scalars['Int']['output'];
-  recipe: Recipe;
+  recipe?: Maybe<Recipe>;
   recipeId: Scalars['UUID']['output'];
   text: Scalars['String']['output'];
 };
 
 export type RecipeProductsCreateDtoInput = {
   activeUnitId: Scalars['UUID']['input'];
-  amount?: InputMaybe<Scalars['Decimal']['input']>;
+  amount: Scalars['Decimal']['input'];
   description?: InputMaybe<Scalars['String']['input']>;
   factor?: InputMaybe<Scalars['Decimal']['input']>;
   groupPosition: Scalars['Int']['input'];
   id?: InputMaybe<Scalars['UUID']['input']>;
   productId: Scalars['UUID']['input'];
   recipeId?: InputMaybe<Scalars['UUID']['input']>;
-  unit?: InputMaybe<Scalars['String']['input']>;
+  unit: Scalars['String']['input'];
 };
 
 export type RecipeUpdateDtoInput = {
@@ -799,7 +799,7 @@ export type GetRecipeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetRecipeByIdQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: string, name: string, createdAt: string, modifiedAt?: string | null, portions?: number | null, recipeProducts: Array<{ __typename?: 'RecipeProduct', amount?: number | null, description: string, productId: string, groupPosition: number, unit: string, id: string, kcal: number, activeUnitId: string, product?: { __typename?: 'Product', name: string } | null }>, recipeDescriptions: Array<{ __typename?: 'RecipeDescription', position: number, text: string, id: string, header: string }>, recipeHeaderProducts: Array<{ __typename?: 'RecipeProductHeader', id: string, position: number, recipeId: string, text: string }> } | null };
+export type GetRecipeByIdQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: string, name: string, createdAt: string, modifiedAt?: string | null, portions?: number | null, recipeProducts: Array<{ __typename?: 'RecipeProduct', amount: number, description: string, productId: string, groupPosition: number, unit: string, id: string, kcal: number, activeUnitId: string, product?: { __typename?: 'Product', name: string } | null }>, recipeDescriptions: Array<{ __typename?: 'RecipeDescription', position: number, text: string, id: string, header: string }>, recipeHeaderProducts: Array<{ __typename?: 'RecipeProductHeader', id: string, position: number, recipeId: string, text: string }> } | null };
 
 export type RemoveRecipeProductMutationVariables = Exact<{
   id: Scalars['UUID']['input'];
@@ -954,7 +954,7 @@ export type GetRecipeDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetRecipeDetailsQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: string, name: string, portions?: number | null, totalKcal: number, recipeProducts: Array<{ __typename?: 'RecipeProduct', amount?: number | null, description: string, groupPosition: number, unit: string, kcal: number, activeUnitId: string, productId: string, product?: { __typename?: 'Product', name: string, category?: string | null, carbs?: number | null, fat?: number | null, kcal?: number | null, protein?: number | null, salt?: number | null, sugar?: number | null } | null }>, recipeDescriptions: Array<{ __typename?: 'RecipeDescription', position: number, text: string, header: string }>, recipeHeaderProducts: Array<{ __typename?: 'RecipeProductHeader', position: number, text: string }> } | null };
+export type GetRecipeDetailsQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: string, name: string, portions?: number | null, totalKcal: number, recipeProducts: Array<{ __typename?: 'RecipeProduct', amount: number, description: string, groupPosition: number, unit: string, kcal: number, activeUnitId: string, productId: string, product?: { __typename?: 'Product', name: string, category?: string | null, carbs?: number | null, fat?: number | null, kcal?: number | null, protein?: number | null, salt?: number | null, sugar?: number | null } | null }>, recipeDescriptions: Array<{ __typename?: 'RecipeDescription', position: number, text: string, header: string }>, recipeHeaderProducts: Array<{ __typename?: 'RecipeProductHeader', position: number, text: string }> } | null };
 
 export type GetUnitsQueryVariables = Exact<{ [key: string]: never; }>;
 
