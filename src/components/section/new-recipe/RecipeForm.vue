@@ -23,7 +23,7 @@ import { args, Logger } from "@/lib/logger.ts";
 import { Writeable } from "zod/v3";
 import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
 import { $strip } from "zod/v4/core";
-import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
@@ -122,17 +122,18 @@ onMounted(async () => {
   }
 });
 
-// const productArray = computed({
-//   get: () => form.values.productArray ?? [defaultProduct],
-//   set: (val) => form.setFieldValue("productArray", val),
-// });
+const form = useForm({
+  validationSchema: formSchema,
+});
+const { values } = form;
 
-const descriptions = computed({
+// descriptions direkt als Proxy auf form.values.descriptions, mit Kopie im Getter
+const descriptions = computed<{ position: number; text: string; header?: string; id?: string | null }[]>({
   get: () => {
-    console.log(form.values.descriptions);
-    return form.values.descriptions ?? [];
+    const current = (values.descriptions as { position: number; text: string; header?: string; id?: string | null }[]) ?? [];
+    return [...current];
   },
-  set: (val) => form.setFieldValue("descriptions", val),
+  set: (v) => form.setFieldValue("descriptions", v),
 });
 
 const sortedDescriptions = computed(() => [...descriptions.value].sort((a, b) => a.position - b.position));
@@ -176,10 +177,6 @@ const recipe = ref<RecipeType>();
 const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
 };
-
-const form = useForm({
-  validationSchema: formSchema,
-});
 
 type ZodProductArrayType =
   | output<
@@ -331,7 +328,7 @@ const countedProductGroups = computed(() => {
 });
 
 const addDescription = () => {
-  descriptions.value.push({ position: descriptions.value.length, text: "", header: "" });
+  descriptions.value = [...descriptions.value, { position: descriptions.value.length, text: "", header: "" }];
 };
 </script>
 
@@ -345,9 +342,13 @@ const addDescription = () => {
             <FormInput label="Portionen" name="portions" type="number" />
           </div>
 
-          <div v-for="(description, index) in sortedDescriptions" :key="index" class="bg-accent rounded-lg p-2 mt-2">
-            <RecipeDescriptionGroup :description />
-            <RecipeRemoveDescription v-model:descriptions="descriptions" v-model:descriptions-to-delete="descriptionsToDelete" :description />
+          <div v-for="(description, index) in sortedDescriptions" :key="description.id ?? index" class="bg-accent rounded-lg p-2 mt-2">
+            <RecipeDescriptionGroup :description="description" />
+            <RecipeRemoveDescription
+              v-model:descriptions="descriptions"
+              v-model:descriptions-to-delete="descriptionsToDelete"
+              :description="description"
+            />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
