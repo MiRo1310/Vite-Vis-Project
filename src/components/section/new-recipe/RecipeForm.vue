@@ -23,7 +23,7 @@ import { args, Logger } from "@/lib/logger.ts";
 import { Writeable } from "zod/v3";
 import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
 import { $strip } from "zod/v4/core";
-import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
@@ -128,9 +128,14 @@ onMounted(async () => {
 // });
 
 const descriptions = computed({
-  get: () => form.values.descriptions ?? [{ position: 0, text: "", header: "" }],
+  get: () => {
+    console.log(form.values.descriptions);
+    return form.values.descriptions ?? [];
+  },
   set: (val) => form.setFieldValue("descriptions", val),
 });
+
+const sortedDescriptions = computed(() => [...descriptions.value].sort((a, b) => a.position - b.position));
 
 const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   if (!recipe) {
@@ -340,12 +345,8 @@ const addDescription = () => {
             <FormInput label="Portionen" name="portions" type="number" />
           </div>
 
-          <div
-            v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)"
-            :key="index"
-            class="bg-accent rounded-lg p-2 mt-2"
-          >
-            <RecipeDescriptionGroup :description="description" />
+          <div v-for="(description, index) in sortedDescriptions" :key="index" class="bg-accent rounded-lg p-2 mt-2">
+            <RecipeDescriptionGroup :description />
             <RecipeRemoveDescription v-model:descriptions="descriptions" v-model:descriptions-to-delete="descriptionsToDelete" :description />
           </div>
           <div class="flex justify-end mt-2 gap-2">
