@@ -2,6 +2,7 @@
 import { Button } from "@/components/shared/button";
 import { TextPositionType, ProductObjType } from "@/types/types";
 import { args, Logger } from "@/lib/logger.ts";
+import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
@@ -17,6 +18,7 @@ const addNewProductGroup = () => {
     unit: "",
     groupPosition: productGroupLength,
     activeUnitId: "",
+    id: newIdPrefix,
   });
   headersProductArray.value.push({
     position: productGroupLength,

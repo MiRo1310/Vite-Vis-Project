@@ -6,7 +6,7 @@ import { updateTextByGroupPosition } from "@/components/section/new-recipe/utils
 import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
-import { useMutation, useQuery } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable";
 import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { isDefined } from "@vueuse/core";
@@ -15,27 +15,15 @@ import { Logger } from "@/lib/logger.ts";
 import { Input } from "@/components/shared/input";
 import Select from "@/components/shared/select/Select.vue";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { IRecipeGroup } from "@/components/section/new-recipe/removeProductGroups.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
 const countedProductGroups = defineModel<number>("countedProductGroups");
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
-
-const { mutate: mutationRemoveRecipeProduct } = useMutation(
-  graphql(`
-    mutation removeRecipeProduct($id: UUID!) {
-      removeRecipeProduct(id: $id)
-    }
-  `),
-);
-const { mutate } = useMutation(
-  graphql(`
-    mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {
-      removeProductGroup(dto: $dto)
-    }
-  `),
-);
+const recipeProductIdsToDelete = defineModel<string[]>("recipeProductIdsToDelete", { default: [] });
+const recipeGroupIdsToDelete = defineModel<IRecipeGroup[]>("recipeGroupIdsToDelete", { default: [] });
 
 const { result: productUnits } = useQuery(
   graphql(`
@@ -56,31 +44,6 @@ const updateProduct = ({ target, val, product }: { target: keyof Omit<ProductObj
   if (!val) {
     return;
   }
-  // console.log(target, val, product);
-  // if (!product.id) {
-  //   const newItem = {
-  //     productId: "",
-  //     description: "",
-  //     amount: 0,
-  //     unit: "",
-  //     groupPosition: props.groupIndex,
-  //     factor: null,
-  //     unitVariants: null,
-  //     activeUnitId: "",
-  //   };
-  //   console.log(target);
-  //   if (target === "unit" && product.id) {
-  //     const id = selectableOptions.value(product.id).find((variant) => variant.value === val)?.id;
-  //     console.log("id", id);
-  //     if (id) {
-  //       saveValToItem(newItem, "activeUnitId", id);
-  //     }
-  //   }
-  //   saveValToItem(newItem, target, val);
-  //   productArray.value.push(newItem);
-  //   return;
-  // }
-
   if (target === "unit") {
     const id = selectableUnitOptions.value(product.productId).find((variant) => variant.value === val)?.id;
     Logger("Unit id to set:", { value: id });
@@ -107,38 +70,15 @@ const removeProduct = async (id: string | null) => {
   if (countedProducts.value === 1) {
     const recipeId = props.recipe?.id;
     if (recipeId) {
-      await mutate({ dto: { position: props.groupIndex, recipeId } });
+      recipeGroupIdsToDelete.value.push({ position: props.groupIndex, recipeId });
     }
   }
 
   if (isDefined(id)) {
     useProductCards(id).remove();
-    await removeProductInDB(id);
+    productArray.value = productArray.value.filter((p) => p.id !== id);
+    recipeProductIdsToDelete.value.push(id);
   }
-};
-
-//TODO Das darf erst passieren beim submit
-const removeProductGroupInDB = async () => {
-  const groupId = headersProductArray.value.find((header) => header.position === props.groupIndex)?.id;
-  if (!groupId) {
-    return true;
-  } // if no id is found, the group is not saved in the db
-
-  const recipeId = props.recipe?.id;
-  if (!recipeId) {
-    return false;
-  }
-  const result = await mutate({ dto: { position: props.groupIndex, recipeId: recipeId } });
-  return result ?? false;
-};
-
-// TODO Das darf erst passieren beim submit
-const removeProductInDB = async (id: string): Promise<boolean | undefined> => {
-  if (!id) {
-    return false;
-  }
-  const result = await mutationRemoveRecipeProduct({ id });
-  return result?.data?.removeRecipeProduct;
 };
 
 const removeProductGroup = async () => {
@@ -146,9 +86,9 @@ const removeProductGroup = async () => {
     return;
   }
 
-  const success = await removeProductGroupInDB();
-  if (!success) {
-    return;
+  const recipeId = props.recipe?.id;
+  if (recipeId) {
+    recipeGroupIdsToDelete.value.push({ position: props.groupIndex, recipeId });
   }
 
   const groupToDelete = props.groupIndex;
@@ -185,7 +125,7 @@ const deleteBtnIsDisabled = () => countedProducts.value === 1 && countedProductG
 const countedProducts = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
 
 let newProductIdCounter = 0;
-const newProductIdPlaceholder = computed(() => `${newIdPrefix}-${newProductIdCounter++}`);
+const newProductIdPlaceholder = computed(() => `${newIdPrefix}${newProductIdCounter++}`);
 
 const addNewProduct = () => {
   productArray.value.push({
@@ -289,7 +229,6 @@ const useProductCards = (productId: string) => {
       <div class="flex justify-between mt-2">
         <div class="flex gap-2 items-start flex-1 mr-2">
           <FormInput
-            v-if="productArray"
             placeholder="Menge"
             :model-value="product.amount"
             type="number"

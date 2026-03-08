@@ -7,7 +7,7 @@ import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescriptionGroup from "@/components/section/new-recipe/RecipeDescriptionGroup.vue";
 import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
-import AddNewGroup from "@/components/section/new-recipe/AddNewGroup.vue";
+import AddNewProductGroup from "@/components/section/new-recipe/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
@@ -24,8 +24,10 @@ import { Writeable } from "zod/v3";
 import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
 import { $strip } from "zod/v4/core";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
-import { removeDescriptions } from "@/components/section/new-recipe/removeDescription.ts";
+import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
+import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
+import { IRecipeGroup, removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -191,6 +193,8 @@ const removeNewIdForMutate = (productArray?: ZodProductArrayType): ZodProductArr
 };
 
 const descriptionsToDelete = ref<string[]>([]);
+const recipeProductIdsToDelete = ref<string[]>([]);
+const recipeGroupIdsToDelete = ref<IRecipeGroup[]>([]);
 
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
@@ -225,13 +229,12 @@ const onSubmit = form.handleSubmit(async (values) => {
     ...dto,
   };
 
-  if (descriptionsToDelete.value.length) {
-    await updateMutate({ dto: dtoUpdate });
+  removeDescriptions(descriptionsToDelete.value);
+  await removeProductGroups(recipeGroupIdsToDelete.value);
 
-    removeDescriptions(descriptionsToDelete.value);
-  } else {
-    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
-  }
+  await removeRecipeProducts(recipeProductIdsToDelete.value);
+  await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
+
   toast({
     title: "Das Rezept wurde aktualisiert",
     description: values.name,
@@ -351,11 +354,13 @@ const addDescription = () => {
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
               v-model:counted-product-groups="countedProductGroups"
+              v-model:recipe-product-ids-to-delete="recipeProductIdsToDelete"
+              v-model:recipe-group-ids-to-delete="recipeGroupIdsToDelete"
               :recipe="recipe"
               :group-index="toZeroBasedIndex(oneBasedIndex)"
             />
           </div>
-          <AddNewGroup
+          <AddNewProductGroup
             v-model:headers-product-array="headersProductArray"
             v-model:counted-product-groups="countedProductGroups"
             v-model:product-array="productArray"
