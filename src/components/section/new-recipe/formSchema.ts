@@ -10,12 +10,11 @@ const description = z.object({
 });
 
 const productObj = z.object({
-  productId: z.string(),
-  description: z.string(),
-  amount: z.number(),
-  unit: z.string(),
+  productId: z.string().min(2, { error: "Wähle ein Produkt" }),
+  description: z.string().default(""),
+  amount: z.number().min(0.1, { error: "Gib einen Wert ein" }),
   groupPosition: z.number(),
-  id: z.string().optional(),
+  id: z.string().nullable().optional(),
   activeUnitId: z.uuidv4(),
 });
 

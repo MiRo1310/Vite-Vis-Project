@@ -13,6 +13,7 @@ withDefaults(
     selectOptions?: SelectOption[];
     defaultVal?: string;
     width?: string;
+    disabled?: boolean;
   }>(),
   {
     placeholder: "",
@@ -28,8 +29,8 @@ withDefaults(
   <FormField v-slot="{ componentField }" :name>
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
-      <FormControl class="mt-1">
-        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width />
+      <FormControl>
+        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width :disabled />
       </FormControl>
       <FormDescription />
       <FormMessage />

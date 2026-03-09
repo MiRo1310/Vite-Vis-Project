@@ -5,7 +5,7 @@ import Form from "@/components/shared/form/Form.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
-import RecipeDescriptionGroup from "@/components/section/new-recipe/RecipeDescriptionGroup.vue";
+import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
 import AddNewProductGroup from "@/components/section/new-recipe/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
@@ -23,7 +23,7 @@ import { args, Logger } from "@/lib/logger.ts";
 import { Writeable } from "zod/v3";
 import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
 import { $strip } from "zod/v4/core";
-import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
@@ -127,13 +127,20 @@ const form = useForm({
 });
 const { values } = form;
 
-// descriptions direkt als Proxy auf form.values.descriptions, mit Kopie im Getter
-const descriptions = computed<{ position: number; text: string; header?: string; id?: string | null }[]>({
+const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
   get: () => {
-    const current = (values.descriptions as { position: number; text: string; header?: string; id?: string | null }[]) ?? [];
+    const current = (values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
     return [...current];
   },
   set: (v) => form.setFieldValue("descriptions", v),
+});
+
+const productArray = computed<ProductObjType[]>({
+  get: () => {
+    const current = (values.productArray as ProductObjType[]) ?? [];
+    return [...current];
+  },
+  set: (v) => form.setFieldValue("productArray", v),
 });
 
 const sortedDescriptions = computed(() => [...descriptions.value].sort((a, b) => a.position - b.position));
@@ -185,7 +192,6 @@ type ZodProductArrayType =
           productId: ZodString;
           description: ZodString;
           amount: ZodNumber;
-          unit: ZodString;
           groupPosition: ZodNumber;
           id: ZodOptional<ZodString>;
           activeUnitId: ZodUUID;
@@ -269,7 +275,6 @@ const defaultProduct: ProductObjType = {
   productId: "",
   description: "",
   amount: 0,
-  unit: "",
   groupPosition: 0,
   id: undefined,
   activeUnitId: "",
@@ -295,23 +300,13 @@ const enterPress = async () => {
 };
 
 const headersProductArray = ref<TextPositionType[]>([]);
-const productArray = ref<ProductObjType[]>([defaultProduct]);
+// const productArray = ref<ProductObjType[]>([defaultProduct]);
 
 watch(
   headersProductArray,
   (newValue) => {
     Logger("Headers Array changed:", { value: newValue, useDebugMode: true });
     form.setFieldValue("headersProductArray", newValue);
-  },
-  { deep: true },
-);
-
-watch(
-  productArray,
-  (newValue) => {
-    Logger("Product Array changed:", { value: newValue, useDebugMode: true });
-
-    form.setFieldValue("productArray", newValue);
   },
   { deep: true },
 );
@@ -333,6 +328,7 @@ const addDescription = () => {
 </script>
 
 <template>
+  {{ form.errors }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
@@ -343,7 +339,7 @@ const addDescription = () => {
           </div>
 
           <div v-for="(description, index) in sortedDescriptions" :key="description.id ?? index" class="bg-accent rounded-lg p-2 mt-2">
-            <RecipeDescriptionGroup :description="description" />
+            <RecipeDescription :description="description" />
             <RecipeRemoveDescription
               v-model:descriptions="descriptions"
               v-model:descriptions-to-delete="descriptionsToDelete"

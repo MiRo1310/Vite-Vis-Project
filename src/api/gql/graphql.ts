@@ -536,7 +536,6 @@ export type RecipeProductsCreateDtoInput = {
   id?: InputMaybe<Scalars['UUID']['input']>;
   productId: Scalars['UUID']['input'];
   recipeId?: InputMaybe<Scalars['UUID']['input']>;
-  unit: Scalars['String']['input'];
 };
 
 export type RecipeUpdateDtoInput = {

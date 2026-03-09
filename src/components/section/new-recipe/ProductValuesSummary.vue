@@ -45,6 +45,6 @@ const productLabel = computed(() => selectableProducts.value.find((option) => op
       <span class="ml-2">{{ productLabel }}</span>
       <span class="text-xs font-bold ml-2">{{ product?.description }}</span>
     </div>
-    <span v-if="product?.unit" class="font-semibold">{{ product?.amount }} {{ product.unit }}</span>
+    <span v-if="product?.unit" class="font-semibold">{{ product.amount }} {{ product.unit }}</span>
   </div>
 </template>

@@ -286,8 +286,8 @@ export interface ProductObjType {
   productId: string;
   description: string;
   amount: number;
-  unit: string;
   groupPosition: number;
+  unit?: string;
   id?: string;
   activeUnitId: string;
 }

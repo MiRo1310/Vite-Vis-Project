@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { Button } from "@/components/shared/button";
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { updateTextByGroupPosition } from "@/components/section/new-recipe/utils";
 import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
 import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
@@ -13,9 +13,9 @@ import { isDefined } from "@vueuse/core";
 import { graphql } from "@/api/gql";
 import { Logger } from "@/lib/logger.ts";
 import { Input } from "@/components/shared/input";
-import Select from "@/components/shared/select/Select.vue";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { IRecipeGroup } from "@/components/section/new-recipe/removeProductGroups.ts";
+import FormSelect from "@/components/shared/form/FormSelect.vue";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
 
@@ -39,28 +39,6 @@ const { result: productUnits } = useQuery(
     }
   `),
 );
-
-const updateProduct = ({ target, val, product }: { target: keyof Omit<ProductObjType, "id">; val?: string; product: ProductObjType }) => {
-  if (!val) {
-    return;
-  }
-  if (target === "unit") {
-    const id = selectableUnitOptions.value(product.productId).find((variant) => variant.value === val)?.id;
-    Logger("Unit id to set:", { value: id });
-    if (id) {
-      saveValToItem(product, "activeUnitId", id);
-    }
-  }
-  saveValToItem(product, target, val);
-};
-
-const saveValToItem = <T,>(obj: T, target: keyof T, val: string | number) => {
-  if (typeof (obj as ProductObjType)[target as keyof ProductObjType] === "number") {
-    ((obj as ProductObjType)[target as keyof ProductObjType] as number) = parseFloat(val.toString());
-    return;
-  }
-  ((obj as ProductObjType)[target as keyof ProductObjType] as string) = val.toString();
-};
 
 const removeProduct = async (id: string | null) => {
   if (deleteBtnIsDisabled()) {
@@ -124,21 +102,26 @@ const deleteBtnIsDisabled = () => countedProducts.value === 1 && countedProductG
 
 const countedProducts = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
 
-let newProductIdCounter = 0;
-const newProductIdPlaceholder = computed(() => `${newIdPrefix}${newProductIdCounter++}`);
+const newProductIdCounter = ref(0);
+const newProductIdPlaceholder = computed(() => {
+  return `${newIdPrefix}${newProductIdCounter.value}`;
+});
 
 const addNewProduct = () => {
-  productArray.value.push({
+  const newRecipeProduct = {
     productId: "",
     description: "",
     amount: 0,
-    unit: "",
     groupPosition: props.groupIndex,
     activeUnitId: "",
     id: newProductIdPlaceholder.value,
-  });
+  };
+
+  Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
 
   useProductCards("").closeGroup();
+  productArray.value = [...productArray.value, newRecipeProduct];
+
   useProductCards(newProductIdPlaceholder.value).add();
 };
 
@@ -163,6 +146,14 @@ const selectableUnitOptions = computed(() => (id: string): SelectOption[] => {
   );
 });
 
+onMounted(() => {
+  productArray.value.forEach((product) => {
+    if (product.id) {
+      useProductCards(product.id).add();
+    }
+  });
+});
+
 const isProductOpen = reactive<Record<string, boolean>[]>([]);
 
 const useProductCards = (productId: string) => {
@@ -178,7 +169,10 @@ const useProductCards = (productId: string) => {
 
   return {
     toggle: () => (isProductOpen[groupIndex][productId] = !isProductOpen[groupIndex][productId]),
-    add: () => (isProductOpen[groupIndex][productId] = true),
+    add: () => {
+      isProductOpen[groupIndex][productId] = true;
+      newProductIdCounter.value++;
+    },
     isOpen: computed(() => isProductOpen[groupIndex][productId]),
     closeGroup: () => Object.keys(isProductOpen[groupIndex]).map((k) => (isProductOpen[groupIndex][k] = false)),
     remove: () => delete isProductOpen[groupIndex][productId],
@@ -187,6 +181,7 @@ const useProductCards = (productId: string) => {
 </script>
 
 <template>
+  {{ productArray }}
   <Input
     v-if="headersProductArray"
     type="text"
@@ -201,15 +196,12 @@ const useProductCards = (productId: string) => {
     :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex mt-2">
-      <RecipeProductName
-        v-if="productArray && useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value"
-        :product
-        v-model:product-array="productArray"
-        class="flex-1 mr-4"
-      />
+      <RecipeProductName v-if="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value" :index class="flex-1 mr-4" />
+
       <div v-else class="flex-1 mr-4">
         <ProductValuesSummary :index :product />
       </div>
+
       <Button
         variant="outline"
         :size="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value ? 'icon' : 'iconRow'"
@@ -219,31 +211,17 @@ const useProductCards = (productId: string) => {
       />
     </div>
     <template v-if="product.id && useProductCards(product.id).isOpen.value">
-      <Input
-        v-if="productArray"
-        type="text"
-        :model-value="product.description"
-        placeholder="Beschreibung"
-        @update:model-value="updateProduct({ target: 'description', val: String($event), product })"
-      />
+      <FormInput v-if="productArray" type="text" :name="`productArray.${index}.description`" placeholder="Beschreibung" />
       <div class="flex justify-between mt-2">
         <div class="flex gap-2 items-start flex-1 mr-2">
-          <FormInput
-            placeholder="Menge"
-            :model-value="product.amount"
-            type="number"
-            :step="0.1"
-            :name="`amount-${product.id}`"
-            @update:model-value="updateProduct({ target: 'amount', val: $event, product })"
-          />
-          <Select
+          <FormInput placeholder="Menge" type="number" :step="0.1" :name="`productArray.${index}.amount`" />
+          <FormSelect
             label=""
             class="w-full"
-            :model-value="product.unit"
+            :disabled="!product.productId"
             placeholder="Wähle eine Einheit"
-            :name="`name-${product.id}`"
-            :items="selectableUnitOptions(product.productId)"
-            @update:model-value="updateProduct({ target: 'unit', val: $event, product })"
+            :name="`productArray.${index}.activeUnitId`"
+            :select-options="selectableUnitOptions(product.productId)"
           />
         </div>
         <Button
