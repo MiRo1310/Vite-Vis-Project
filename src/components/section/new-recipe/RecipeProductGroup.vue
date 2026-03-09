@@ -175,9 +175,8 @@ onMounted(() => {
 </script>
 
 <template>
-  {{ productArray }}
   <Input
-    v-if="headersProductArray"
+    v-show="headersProductArray"
     type="text"
     placeholder="Überschrift z.B. Soße"
     class="mb-2"
@@ -186,13 +185,21 @@ onMounted(() => {
   />
   <div
     v-for="(product, index) in productArray.filter((p) => p.groupPosition === props.groupIndex)"
-    :key="index"
+    :key="product.id"
     :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex mt-2">
-      <RecipeProductName v-if="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder)" :index class="flex-1 mr-4" />
+      <RecipeProductName
+        :index
+        :class="[
+          {
+            'invisible w-0 h-0': !productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder),
+            'flex-1 mr-4': productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder),
+          },
+        ]"
+      />
 
-      <div v-else class="flex-1 mr-4">
+      <div v-show="!productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder)" class="flex-1 mr-4">
         <ProductValuesSummary :index :product />
       </div>
 
@@ -204,11 +211,12 @@ onMounted(() => {
         @click.prevent="productCardsHandler.toggle(product.id ?? newProductIdPlaceholder)"
       />
     </div>
-    <template v-if="product.id && productCardsHandler.isOpen.value(product.id)">
-      <FormInput v-if="productArray" type="text" :name="`productArray.${index}.description`" placeholder="Beschreibung" />
+    <div v-show="product.id && productCardsHandler.isOpen.value(product.id)">
+      <FormInput type="text" :name="`productArray.${index}.description`" placeholder="Beschreibung" />
       <div class="flex justify-between mt-2">
         <div class="flex gap-2 items-start flex-1 mr-2">
           <FormInput placeholder="Menge" type="number" :step="0.1" :name="`productArray.${index}.amount`" />
+
           <FormSelect
             label=""
             class="w-full"
@@ -231,7 +239,7 @@ onMounted(() => {
           "
         />
       </div>
-    </template>
+    </div>
   </div>
   <div class="flex justify-end mt-2 space-x-2">
     <Button size="icon" variant="outline" icon="add" @click.prevent="addNewProduct" />

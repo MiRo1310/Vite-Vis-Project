@@ -20,9 +20,6 @@ import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { args, Logger } from "@/lib/logger.ts";
-import { Writeable } from "zod/v3";
-import { output, ZodNumber, ZodObject, ZodOptional, ZodString, ZodUUID } from "zod";
-import { $strip } from "zod/v4/core";
 import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
@@ -185,23 +182,7 @@ const getTextPositionTypeFromResult = <T extends { text: string; position: numbe
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
 };
 
-type ZodProductArrayType =
-  | output<
-      ZodObject<
-        Writeable<{
-          productId: ZodString;
-          description: ZodString;
-          amount: ZodNumber;
-          groupPosition: ZodNumber;
-          id: ZodOptional<ZodString>;
-          activeUnitId: ZodUUID;
-        }>,
-        $strip
-      >
-    >[]
-  | undefined;
-
-const removeNewIdForMutate = (productArray?: ZodProductArrayType): ZodProductArrayType => {
+const removeNewIdForMutate = (productArray?: typeof form.values.productArray): typeof form.values.productArray => {
   return productArray?.map((product) => {
     if (product.id?.startsWith(newIdPrefix)) {
       return { ...product, id: undefined };
@@ -328,7 +309,6 @@ const addDescription = () => {
 </script>
 
 <template>
-  {{ form.errors }}
   <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
