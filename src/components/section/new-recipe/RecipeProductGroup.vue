@@ -39,6 +39,25 @@ const { result: productUnits } = useQuery(
     }
   `),
 );
+const isProductOpen = reactive<Record<string, boolean>[]>([]);
+const useProductCards = () => {
+  const groupIndex = props.groupIndex;
+
+  return {
+    toggle: (productId: string) => (isProductOpen[groupIndex][productId] = !isProductOpen[groupIndex][productId]),
+    add: (productId: string) => {
+      if (!isProductOpen[groupIndex]) {
+        isProductOpen[groupIndex] = {};
+      }
+      isProductOpen[groupIndex][productId] = true;
+      newProductIdCounter.value++;
+    },
+    isOpen: computed(() => (productId: string) => isProductOpen?.[groupIndex]?.[productId] ?? false),
+    closeAllInGroup: () => Object.keys(isProductOpen[groupIndex]).map((k) => (isProductOpen[groupIndex][k] = false)),
+    remove: (productId: string) => delete isProductOpen[groupIndex][productId],
+  };
+};
+const productCardsHandler = useProductCards();
 
 const removeProduct = async (id: string | null) => {
   if (deleteBtnIsDisabled()) {
@@ -53,7 +72,7 @@ const removeProduct = async (id: string | null) => {
   }
 
   if (isDefined(id)) {
-    useProductCards(id).remove();
+    productCardsHandler.remove(id);
     productArray.value = productArray.value.filter((p) => p.id !== id);
     recipeProductIdsToDelete.value.push(id);
   }
@@ -119,10 +138,10 @@ const addNewProduct = () => {
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
 
-  useProductCards("").closeGroup();
+  productCardsHandler.closeAllInGroup();
   productArray.value = [...productArray.value, newRecipeProduct];
 
-  useProductCards(newProductIdPlaceholder.value).add();
+  productCardsHandler.add(newProductIdPlaceholder.value);
 };
 
 const dialogOpenGroup = ref(false);
@@ -149,35 +168,10 @@ const selectableUnitOptions = computed(() => (id: string): SelectOption[] => {
 onMounted(() => {
   productArray.value.forEach((product) => {
     if (product.id) {
-      useProductCards(product.id).add();
+      productCardsHandler.add(product.id);
     }
   });
 });
-
-const isProductOpen = reactive<Record<string, boolean>[]>([]);
-
-const useProductCards = (productId: string) => {
-  const groupIndex = props.groupIndex;
-
-  if (!isProductOpen[groupIndex]) {
-    if (groupIndex === 0) {
-      isProductOpen[groupIndex] = {};
-    } else {
-      isProductOpen[groupIndex] = { [productId]: true };
-    }
-  }
-
-  return {
-    toggle: () => (isProductOpen[groupIndex][productId] = !isProductOpen[groupIndex][productId]),
-    add: () => {
-      isProductOpen[groupIndex][productId] = true;
-      newProductIdCounter.value++;
-    },
-    isOpen: computed(() => isProductOpen[groupIndex][productId]),
-    closeGroup: () => Object.keys(isProductOpen[groupIndex]).map((k) => (isProductOpen[groupIndex][k] = false)),
-    remove: () => delete isProductOpen[groupIndex][productId],
-  };
-};
 </script>
 
 <template>
@@ -196,7 +190,7 @@ const useProductCards = (productId: string) => {
     :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
     <div class="flex mt-2">
-      <RecipeProductName v-if="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value" :index class="flex-1 mr-4" />
+      <RecipeProductName v-if="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder)" :index class="flex-1 mr-4" />
 
       <div v-else class="flex-1 mr-4">
         <ProductValuesSummary :index :product />
@@ -204,13 +198,13 @@ const useProductCards = (productId: string) => {
 
       <Button
         variant="outline"
-        :size="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value ? 'icon' : 'iconRow'"
+        :size="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder) ? 'icon' : 'iconRow'"
         class="mb-2"
-        :icon="useProductCards(product.id ?? newProductIdPlaceholder).isOpen.value ? 'chevronDown' : 'chevronRight'"
-        @click.prevent="useProductCards(product.id ?? newProductIdPlaceholder).toggle()"
+        :icon="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder) ? 'chevronDown' : 'chevronRight'"
+        @click.prevent="productCardsHandler.toggle(product.id ?? newProductIdPlaceholder)"
       />
     </div>
-    <template v-if="product.id && useProductCards(product.id).isOpen.value">
+    <template v-if="product.id && productCardsHandler.isOpen.value(product.id)">
       <FormInput v-if="productArray" type="text" :name="`productArray.${index}.description`" placeholder="Beschreibung" />
       <div class="flex justify-between mt-2">
         <div class="flex gap-2 items-start flex-1 mr-2">
