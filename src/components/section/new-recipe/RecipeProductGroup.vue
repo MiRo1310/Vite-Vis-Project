@@ -134,6 +134,7 @@ const addNewProduct = () => {
     groupPosition: props.groupIndex,
     activeUnitId: "",
     id: newProductIdPlaceholder.value,
+    position: 0,
   };
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
@@ -185,12 +186,12 @@ onMounted(() => {
   />
   <div
     v-for="(product, index) in productArray.filter((p) => p.groupPosition === props.groupIndex)"
-    :key="product.id"
+    :key="index"
     :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
-    <div class="flex mt-2">
+    <div v-if="product.id" class="flex mt-2">
       <RecipeProductName
-        :index
+        :index="product.position"
         :class="[
           {
             'invisible w-0 h-0': !productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder),
@@ -211,34 +212,37 @@ onMounted(() => {
         @click.prevent="productCardsHandler.toggle(product.id ?? newProductIdPlaceholder)"
       />
     </div>
-    <div v-show="product.id && productCardsHandler.isOpen.value(product.id)">
-      <FormInput type="text" :name="`productArray.${index}.description`" placeholder="Beschreibung" />
-      <div class="flex justify-between mt-2">
-        <div class="flex gap-2 items-start flex-1 mr-2">
-          <FormInput placeholder="Menge" type="number" :step="0.1" :name="`productArray.${index}.amount`" />
 
-          <FormSelect
-            label=""
-            class="w-full"
-            :disabled="!product.productId"
-            placeholder="Wähle eine Einheit"
-            :name="`productArray.${index}.activeUnitId`"
-            :select-options="selectableUnitOptions(product.productId)"
+    <div v-show="product.id && productCardsHandler.isOpen.value(product.id)">
+      <template v-if="product.id">
+        <FormInput type="text" :name="`productArray.${product.position}.description`" placeholder="Beschreibung" />
+        <div class="flex justify-between mt-2">
+          <div class="flex gap-2 items-start flex-1 mr-2">
+            <FormInput placeholder="Menge" type="number" :step="0.1" :name="`productArray.${product.position}.amount`" />
+
+            <FormSelect
+              label=""
+              class="w-full"
+              :disabled="!product.productId"
+              placeholder="Wähle eine Einheit"
+              :name="`productArray.${product.position}.activeUnitId`"
+              :select-options="selectableUnitOptions(product.productId)"
+            />
+          </div>
+          <Button
+            size="icon"
+            variant="outline"
+            icon="remove"
+            :disabled="countedProducts === 1"
+            @click.prevent="
+              () => {
+                if (deleteBtnIsDisabled()) return;
+                confirmProductDelete(product.id);
+              }
+            "
           />
         </div>
-        <Button
-          size="icon"
-          variant="outline"
-          icon="remove"
-          :disabled="countedProducts === 1"
-          @click.prevent="
-            () => {
-              if (deleteBtnIsDisabled()) return;
-              confirmProductDelete(product.id);
-            }
-          "
-        />
-      </div>
+      </template>
     </div>
   </div>
   <div class="flex justify-end mt-2 space-x-2">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { TextPositionType, ProductObjType } from "@/types/types";
-import { args, Logger } from "@/lib/logger.ts";
+import { ProductObjType, TextPositionType } from "@/types/types";
+import { Logger } from "@/lib/logger.ts";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
 
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
@@ -10,8 +10,8 @@ const countedProductGroups = defineModel<number>("countedProductGroups", { defau
 
 const addNewProductGroup = () => {
   const productGroupLength = countedProductGroups.value;
-  Logger(args("Adding new product group with position:", productGroupLength));
-  productArray.value.push({
+  Logger("Adding new product group with position:", { value: productGroupLength });
+  const newProduct = {
     productId: "",
     description: "",
     amount: 0,
@@ -19,13 +19,21 @@ const addNewProductGroup = () => {
     groupPosition: productGroupLength,
     activeUnitId: "",
     id: newIdPrefix,
-  });
-  headersProductArray.value.push({
-    position: productGroupLength,
-    text: "",
-  });
+    position: productArray.value.length,
+  };
+  Logger("Adding new product group:", { value: newProduct, useDebugMode: true });
+  productArray.value = [...productArray.value, newProduct];
+
+  headersProductArray.value = [
+    ...headersProductArray.value,
+    {
+      position: productGroupLength,
+      text: "",
+    },
+  ];
 };
 </script>
+
 <template>
   <div class="flex justify-end">
     <Button size="icon" class="mt-2" variant="outline" icon="add" @click.prevent="addNewProductGroup" />

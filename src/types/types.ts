@@ -290,6 +290,7 @@ export interface ProductObjType {
   unit?: string;
   id?: string;
   activeUnitId: string;
+  position: number;
 }
 
 export interface SelectOption {

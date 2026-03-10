@@ -135,12 +135,12 @@ const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
 const productArray = computed<ProductObjType[]>({
   get: () => {
     const current = (values.productArray as ProductObjType[]) ?? [];
-    return [...current];
+    return [...current].map((p, index) => ({ ...p, position: index }));
   },
   set: (v) => form.setFieldValue("productArray", v),
 });
 
-const sortedDescriptions = computed(() => [...descriptions.value].sort((a, b) => a.position - b.position));
+const sortedDescriptions = computed(() => [...descriptions.value]);
 
 const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   if (!recipe) {
@@ -165,7 +165,7 @@ const setValuesToForm = (recipe?: RecipeType) => {
   descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
   headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
 
-  productArray.value = recipe.recipeProducts.map((item) => ({
+  productArray.value = recipe.recipeProducts.map((item, index) => ({
     amount: item.amount || 0,
     description: item.description,
     groupPosition: item.groupPosition,
@@ -173,6 +173,7 @@ const setValuesToForm = (recipe?: RecipeType) => {
     unit: item.unit,
     id: item.id,
     activeUnitId: item.activeUnitId ?? "",
+    position: index,
   }));
 };
 
@@ -259,6 +260,7 @@ const defaultProduct: ProductObjType = {
   groupPosition: 0,
   id: undefined,
   activeUnitId: "",
+  position: productArray.value.length,
 };
 
 const resetForm = () => {
@@ -267,7 +269,7 @@ const resetForm = () => {
   resetRecipeInStore();
   descriptions.value = recipe.value?.recipeDescriptions ?? [{ position: 0, text: "", header: "" }];
   headersProductArray.value = recipe.value?.recipeHeaderProducts ?? [];
-  productArray.value = recipe.value?.recipeProducts ?? [defaultProduct];
+  productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -344,6 +346,7 @@ const addDescription = () => {
               :group-index="toZeroBasedIndex(oneBasedIndex)"
             />
           </div>
+
           <AddNewProductGroup
             v-model:headers-product-array="headersProductArray"
             v-model:counted-product-groups="countedProductGroups"
