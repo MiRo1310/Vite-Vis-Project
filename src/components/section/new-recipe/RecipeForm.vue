@@ -209,6 +209,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   Logger("Submit dto", { value: dto });
 
   if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
+    Logger("Creating new recipe");
     const result = await mutate({ dto });
 
     const recipeId = result?.data?.createRecipe.id;
@@ -230,9 +231,11 @@ const onSubmit = form.handleSubmit(async (values) => {
   };
 
   removeDescriptions(descriptionsToDelete.value);
+
   await removeProductGroups(recipeGroupIdsToDelete.value);
 
   await removeRecipeProducts(recipeProductIdsToDelete.value);
+
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
   toast({

@@ -185,7 +185,7 @@ onMounted(() => {
     @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, String($event))"
   />
   <div
-    v-for="(product, index) in productArray.filter((p) => p.groupPosition === props.groupIndex)"
+    v-for="(product, index) in [...productArray].filter((p) => p.groupPosition === props.groupIndex)"
     :key="index"
     :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
