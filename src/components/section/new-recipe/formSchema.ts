@@ -15,12 +15,12 @@ const productObj = z.object({
   amount: z.number().min(0.1, { error: "Gib einen Wert ein" }),
   groupPosition: z.number(),
   id: z.string().nullable().optional(),
-  activeUnitId: z.uuidv4(),
+  activeUnitId: z.uuidv4("Bitte wähle eine Einheit"),
 });
 
 export const fields = {
-  name: z.string().min(1).max(255),
-  portions: z.number().optional(),
+  name: z.string("Gib einen Rezeptnamen an").min(1).max(255),
+  portions: z.number("Gib einen Wert ein").min(1).max(255),
   descriptions: z.array(description).optional().nullable(),
   headersProductArray: z.array(textPositionObj).optional(),
   productArray: z.array(productObj).optional(),

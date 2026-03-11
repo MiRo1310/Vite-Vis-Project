@@ -3,6 +3,7 @@ import { Button } from "@/components/shared/button";
 
 import { Logger } from "@/lib/logger.ts";
 import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/new-recipe/index.ts";
+import { isDefined } from "@vueuse/core";
 
 const props = defineProps<{ description: IRecipeDescriptionCreateOrUpdate }>();
 
@@ -11,11 +12,17 @@ const descriptions = defineModel<IRecipeDescriptionCreateOrUpdate[]>("descriptio
 const descriptionsToDelete = defineModel<string[]>("descriptionsToDelete", { default: [] });
 
 const removeDescription = () => {
-  const { id = null } = props.description;
-  if (id) {
-    Logger("Removing description with id:", { value: id, useDebugMode: false });
-    descriptionsToDelete.value.push(id);
-    descriptions.value = descriptions.value.filter((d) => d.id !== id);
+  const { id = null, positionByCreate } = props.description;
+  if (isDefined(positionByCreate)) {
+    if (id) {
+      Logger("Removing description with id:", { value: id, useDebugMode: false });
+      descriptionsToDelete.value.push(id);
+    }
+    const copy = [...descriptions.value];
+    console.log(id);
+    console.log(copy.length);
+
+    descriptions.value = copy.filter((d) => d.positionByCreate !== positionByCreate);
   }
 };
 </script>

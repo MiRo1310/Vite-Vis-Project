@@ -19,7 +19,7 @@ import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemov
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
-import { args, Logger } from "@/lib/logger.ts";
+import { Logger } from "@/lib/logger.ts";
 import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
@@ -127,7 +127,17 @@ const { values } = form;
 const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
   get: () => {
     const current = (values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
-    return [...current];
+    // Build a dense array of the same length and normalize each entry to avoid holes created by form fields
+    return Array.from({ length: current.length }, (_, i) => {
+      const d = current[i] as IRecipeDescriptionCreateOrUpdate | undefined;
+      return {
+        position: i,
+        header: d?.header ?? "",
+        text: d?.text ?? "",
+        id: d?.id,
+        positionByCreate: d?.positionByCreate ?? i,
+      };
+    });
   },
   set: (v) => form.setFieldValue("descriptions", v),
 });
@@ -162,7 +172,8 @@ const setValuesToForm = (recipe?: RecipeType) => {
   }
   form.setValues(getRecipeProductObj(recipe));
 
-  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
+  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions).map((d, index) => ({ ...d, positionByCreate: index }));
+  nextDescriptionIndex.value = descriptions.value.length;
   headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
 
   productArray.value = recipe.recipeProducts.map((item, index) => ({
@@ -270,7 +281,9 @@ const resetForm = () => {
   form.resetForm();
   form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
-  descriptions.value = recipe.value?.recipeDescriptions ?? [{ position: 0, text: "", header: "" }];
+  descriptions.value = recipe.value?.recipeDescriptions.map((d, index) => ({ ...d, positionByCreate: index })) ?? [
+    { position: 0, text: "", header: "", positionByCreate: 0 },
+  ];
   headersProductArray.value = recipe.value?.recipeHeaderProducts ?? [];
   productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
 };
@@ -279,14 +292,13 @@ const updateValue = ref(false);
 const textareaFocus = ref(false);
 
 const enterPress = async () => {
-  Logger(args("Submit values by enter press"));
+  Logger("Submit values by enter press");
   if (!textareaFocus.value) {
     await onSubmit();
   }
 };
 
 const headersProductArray = ref<TextPositionType[]>([]);
-// const productArray = ref<ProductObjType[]>([defaultProduct]);
 
 watch(
   headersProductArray,
@@ -307,9 +319,12 @@ const countedProductGroups = computed(() => {
     }, 0) + 1
   );
 });
-
+const nextDescriptionIndex = ref(0);
 const addDescription = () => {
-  descriptions.value = [...descriptions.value, { position: descriptions.value.length, text: "", header: "" }];
+  const copy = [...descriptions.value];
+  const newItem: IRecipeDescriptionCreateOrUpdate = { position: copy.length, text: "", header: "", positionByCreate: nextDescriptionIndex.value };
+  descriptions.value = [...copy, newItem];
+  nextDescriptionIndex.value++;
 };
 </script>
 
@@ -323,8 +338,12 @@ const addDescription = () => {
             <FormInput label="Portionen" name="portions" type="number" />
           </div>
 
-          <div v-for="(description, index) in sortedDescriptions" :key="description.id ?? index" class="bg-accent rounded-lg p-2 mt-2">
-            <RecipeDescription :description="description" />
+          <div
+            v-for="(description, index) in sortedDescriptions"
+            :key="description.positionByCreate ?? description.id ?? index"
+            class="bg-accent rounded-lg p-2 mt-2"
+          >
+            <RecipeDescription :index />
             <RecipeRemoveDescription
               v-model:descriptions="descriptions"
               v-model:descriptions-to-delete="descriptionsToDelete"

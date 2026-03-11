@@ -5,4 +5,5 @@ export interface IRecipeDescriptionCreateOrUpdate {
   id?: string | null;
   position: number;
   text: string;
+  positionByCreate: number;
 }
