@@ -291,6 +291,7 @@ export interface ProductObjType {
   id?: string;
   activeUnitId: string;
   position: number;
+  sortOrder: number;
 }
 
 export interface SelectOption {

@@ -20,6 +20,7 @@ const addNewProductGroup = () => {
     activeUnitId: "",
     id: newIdPrefix,
     position: productArray.value.length,
+    sortOrder: 0,
   };
   Logger("Adding new product group:", { value: newProduct, useDebugMode: true });
   productArray.value = [...productArray.value, newProduct];

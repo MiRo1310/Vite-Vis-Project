@@ -39,6 +39,7 @@ const { result: productUnits } = useQuery(
     }
   `),
 );
+
 const isProductOpen = reactive<Record<string, boolean>[]>([]);
 const useProductCards = () => {
   const groupIndex = props.groupIndex;
@@ -135,6 +136,7 @@ const addNewProduct = () => {
     activeUnitId: "",
     id: newProductIdPlaceholder.value,
     position: 0,
+    sortOrder: [...productArray.value].filter((p) => p.groupPosition === props.groupIndex).length,
   };
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
@@ -176,6 +178,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <!--  TODO to formInput-->
   <Input
     v-show="headersProductArray"
     type="text"

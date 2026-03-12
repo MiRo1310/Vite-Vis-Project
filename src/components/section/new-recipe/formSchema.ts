@@ -16,6 +16,7 @@ const productObj = z.object({
   groupPosition: z.number(),
   id: z.string().nullable().optional(),
   activeUnitId: z.uuidv4("Bitte wähle eine Einheit"),
+  sortOrder: z.int(),
 });
 
 export const fields = {

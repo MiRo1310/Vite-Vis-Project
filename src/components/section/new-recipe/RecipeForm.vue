@@ -70,6 +70,7 @@ const getRecipeByIdQuery = graphql(`
         id
         kcal
         activeUnitId
+        sortOrder
         product {
           name
         }
@@ -185,6 +186,7 @@ const setValuesToForm = (recipe?: RecipeType) => {
     id: item.id,
     activeUnitId: item.activeUnitId ?? "",
     position: index,
+    sortOrder: item.sortOrder,
   }));
 };
 
@@ -194,7 +196,7 @@ const getTextPositionTypeFromResult = <T extends { text: string; position: numbe
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
 };
 
-const removeNewIdForMutate = (productArray?: typeof form.values.productArray): typeof form.values.productArray => {
+const removeNewIdForMutate = (productArray: typeof form.values.productArray): typeof form.values.productArray => {
   return productArray?.map((product) => {
     if (product.id?.startsWith(newIdPrefix)) {
       return { ...product, id: undefined };
@@ -275,6 +277,7 @@ const defaultProduct: ProductObjType = {
   id: undefined,
   activeUnitId: "",
   position: productArray.value.length,
+  sortOrder: productArray.value.length,
 };
 
 const resetForm = () => {
@@ -364,7 +367,7 @@ const addDescription = () => {
               v-model:counted-product-groups="countedProductGroups"
               v-model:recipe-product-ids-to-delete="recipeProductIdsToDelete"
               v-model:recipe-group-ids-to-delete="recipeGroupIdsToDelete"
-              :recipe="recipe"
+              :recipe
               :group-index="toZeroBasedIndex(oneBasedIndex)"
             />
           </div>
