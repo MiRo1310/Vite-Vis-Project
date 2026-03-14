@@ -177,7 +177,7 @@ const setValuesToForm = (recipe?: RecipeType) => {
 
   descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions).map((d, index) => ({ ...d, positionByCreate: index }));
   nextDescriptionIndex.value = descriptions.value.length;
-  headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
+  headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts).sort((a, b) => a.position - b.position);
 
   productArray.value = recipe.recipeProducts.map((item, index) => ({
     amount: item.amount || 0,

@@ -62,11 +62,8 @@ const open = ref(false);
   <div class="flex justify-between items-center">
     <div class="flex justify-between items-center p-1 flex-1 mr-6" data-component="product-summary">
       <div>
-        <!--        TODO Remove-->
-        <span class="text-amber-300 mr-3"> Sort: {{ product?.sortOrder }}</span>
-        <span class="text-amber-300 mr-3"> Pos: {{ product?.position }}</span>
         <span>{{ index + 1 }}.</span>
-        <span class="ml-2 text-amber-300">{{ productLabel }}</span>
+        <span class="ml-2 text-amber-600 dark:text-amber-300">{{ productLabel }}</span>
 
         <span class="text-xs font-bold ml-2">{{ product?.description }}</span>
       </div>
