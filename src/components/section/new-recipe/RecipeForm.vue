@@ -2,7 +2,7 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import Form from "@/components/shared/form/Form.vue";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
@@ -24,7 +24,7 @@ import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/sect
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
-import { IRecipeGroup, removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
+import { removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -90,6 +90,8 @@ const getRecipeByIdQuery = graphql(`
     }
   }
 `);
+
+const store = useRecipeStore();
 
 const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
 
@@ -206,8 +208,6 @@ const removeNewIdForMutate = (productArray: typeof form.values.productArray): ty
 };
 
 const descriptionsToDelete = ref<string[]>([]);
-const recipeProductIdsToDelete = ref<string[]>([]);
-const recipeGroupIdsToDelete = ref<IRecipeGroup[]>([]);
 
 const onSubmit = form.handleSubmit(async (values) => {
   //TODO das new darf nicht in der id stehen
@@ -245,9 +245,9 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   removeDescriptions(descriptionsToDelete.value);
 
-  await removeProductGroups(recipeGroupIdsToDelete.value);
+  await removeProductGroups(store.getRecipeGroupIdsToDelete);
 
-  await removeRecipeProducts(recipeProductIdsToDelete.value);
+  await removeRecipeProducts(store.getRecipeProductsToDelete);
 
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
@@ -312,14 +312,14 @@ watch(
   { deep: true },
 );
 
-const countedProductGroups = computed(() => {
+watchEffect(() => {
   if (!productArray.value?.length) {
     return 0;
   }
-  return (
+  store.setProductGroupCount(
     productArray.value?.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
-    }, 0) + 1
+    }, 0) + 1,
   );
 });
 const nextDescriptionIndex = ref(0);
@@ -360,23 +360,17 @@ const addDescription = () => {
 
         <div class="w-120">
           <RecipeFormFooter @abort="resetForm" />
-          <div v-for="oneBasedIndex in countedProductGroups" :key="oneBasedIndex" class="mb-2">
+          <div v-for="oneBasedIndex in store.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
-              v-model:counted-product-groups="countedProductGroups"
-              v-model:recipe-product-ids-to-delete="recipeProductIdsToDelete"
-              v-model:recipe-group-ids-to-delete="recipeGroupIdsToDelete"
               :recipe
               :group-index="toZeroBasedIndex(oneBasedIndex)"
+              :form
             />
           </div>
 
-          <AddNewProductGroup
-            v-model:headers-product-array="headersProductArray"
-            v-model:counted-product-groups="countedProductGroups"
-            v-model:product-array="productArray"
-          />
+          <AddNewProductGroup v-model:headers-product-array="headersProductArray" v-model:product-array="productArray" />
         </div>
       </div>
 

@@ -5,8 +5,6 @@ import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 
-defineProps<{ index: number }>();
-
 const { result } = useQuery(
   graphql(`
     query GetProductsForSelect {
@@ -22,5 +20,5 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
 </script>
 
 <template>
-  <FormSelect label="" placeholder="Produkt wählen" :name="`productArray.${index}.productId`" :select-options="selectableOptions" />
+  <FormSelect label="" placeholder="Produkt wählen" name="productId" :select-options="selectableOptions" />
 </template>

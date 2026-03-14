@@ -1,51 +1,29 @@
 <script setup lang="ts">
-import FormInput from "@/components/shared/form/FormInput.vue";
 import { Button } from "@/components/shared/button";
 import { computed, onMounted, reactive, ref } from "vue";
 import { updateTextByGroupPosition } from "@/components/section/new-recipe/utils";
-import { ProductObjType, SelectOption, TextPositionType } from "@/types/types";
-import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
+import { ProductObjType, TextPositionType } from "@/types/types";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
-import { useQuery } from "@vue/apollo-composable";
-import ProductValuesSummary from "@/components/section/new-recipe/ProductValuesSummary.vue";
+import RecipeProduct from "@/components/section/new-recipe/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
-import { isDefined } from "@vueuse/core";
-import { graphql } from "@/api/gql";
 import { Logger } from "@/lib/logger.ts";
 import { Input } from "@/components/shared/input";
-import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
-import { IRecipeGroup } from "@/components/section/new-recipe/removeProductGroups.ts";
-import FormSelect from "@/components/shared/form/FormSelect.vue";
+import { newIdPrefix, TForm } from "@/components/section/new-recipe/index.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
+import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 
-const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"] }>();
+const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();
 
-const countedProductGroups = defineModel<number>("countedProductGroups");
+const store = useRecipeStore();
+
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
-const recipeProductIdsToDelete = defineModel<string[]>("recipeProductIdsToDelete", { default: [] });
-const recipeGroupIdsToDelete = defineModel<IRecipeGroup[]>("recipeGroupIdsToDelete", { default: [] });
-
-const { result: productUnits } = useQuery(
-  graphql(`
-    query getProductUnits {
-      productUnits {
-        id
-        createdAt
-        modifiedAt
-        productId
-        amount
-        unit
-      }
-    }
-  `),
-);
 
 const isProductOpen = reactive<Record<string, boolean>[]>([]);
 const useProductCards = () => {
   const groupIndex = props.groupIndex;
 
   return {
-    toggle: (productId: string) => (isProductOpen[groupIndex][productId] = !isProductOpen[groupIndex][productId]),
     add: (productId: string) => {
       if (!isProductOpen[groupIndex]) {
         isProductOpen[groupIndex] = {};
@@ -60,25 +38,6 @@ const useProductCards = () => {
 };
 const productCardsHandler = useProductCards();
 
-const removeProduct = async (id: string | null) => {
-  if (deleteBtnIsDisabled()) {
-    return;
-  }
-
-  if (countedProducts.value === 1) {
-    const recipeId = props.recipe?.id;
-    if (recipeId) {
-      recipeGroupIdsToDelete.value.push({ position: props.groupIndex, recipeId });
-    }
-  }
-
-  if (isDefined(id)) {
-    productCardsHandler.remove(id);
-    productArray.value = productArray.value.filter((p) => p.id !== id);
-    recipeProductIdsToDelete.value.push(id);
-  }
-};
-
 const removeProductGroup = async () => {
   if (deleteBtnIsDisabled()) {
     return;
@@ -86,7 +45,7 @@ const removeProductGroup = async () => {
 
   const recipeId = props.recipe?.id;
   if (recipeId) {
-    recipeGroupIdsToDelete.value.push({ position: props.groupIndex, recipeId });
+    store.addRecipeGroupToDelete({ groupPosition: props.groupIndex, recipeId });
   }
 
   const groupToDelete = props.groupIndex;
@@ -118,7 +77,7 @@ const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: numbe
       return item;
     });
 
-const deleteBtnIsDisabled = () => countedProducts.value === 1 && countedProductGroups.value === 1;
+const deleteBtnIsDisabled = () => countedProducts.value === 1 && store.getProductGroupsCount === 1;
 
 const countedProducts = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
 
@@ -148,25 +107,6 @@ const addNewProduct = () => {
 };
 
 const dialogOpenGroup = ref(false);
-const dialogOpenProduct = ref(false);
-const dialogParam = ref<null | string>(null);
-
-const confirmProductDelete = (id?: string) => {
-  dialogParam.value = id ?? null;
-  dialogOpenProduct.value = true;
-};
-
-const selectableUnitOptions = computed(() => (id: string): SelectOption[] => {
-  const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === id);
-
-  return (
-    unitVariants?.map((variant) => ({
-      value: variant.unit,
-      label: variant.unit,
-      id: variant.id,
-    })) ?? []
-  );
-});
 
 onMounted(() => {
   productArray.value.forEach((product) => {
@@ -175,6 +115,38 @@ onMounted(() => {
     }
   });
 });
+
+const removeProductId = (id: string) => {
+  productArray.value = productArray.value.filter((p) => p.id !== id);
+};
+
+const filteredProductsByGroupPosition = computed(() =>
+  [...productArray.value].filter((p) => p.groupPosition === props.groupIndex).sort((a, b) => a.sortOrder - b.sortOrder),
+);
+
+const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
+  const products = [...productArray.value];
+
+  const productsWithSameSortOrder = products.filter(
+    (p) => p.sortOrder === product.sortOrder + (direction === "up" ? -1 : 1) && p.groupPosition === props.groupIndex,
+  );
+
+  const current = products.find((p) => p.position === product.position && p.groupPosition === props.groupIndex);
+  if (current) {
+    if (direction === "up") {
+      current.sortOrder--;
+    } else {
+      current.sortOrder++;
+    }
+  }
+
+  if (productsWithSameSortOrder.length > 0) {
+    productsWithSameSortOrder.map((p) => {
+      return (p.sortOrder = p.sortOrder + (direction === "up" ? 1 : -1));
+    });
+  }
+  productArray.value = products;
+};
 </script>
 
 <template>
@@ -188,65 +160,18 @@ onMounted(() => {
     @update:model-value="updateTextByGroupPosition(groupIndex, headersProductArray, String($event))"
   />
   <div
-    v-for="(product, index) in [...productArray].filter((p) => p.groupPosition === props.groupIndex)"
+    v-for="(product, index) in filteredProductsByGroupPosition"
     :key="index"
-    :class="['flex flex-col px-2 bg-accent border-black', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
+    :class="['flex flex-col px-2 bg-accent border-background', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
   >
-    <div v-if="product.id" class="flex mt-2">
-      <RecipeProductName
-        :index="product.position"
-        :class="[
-          {
-            'invisible w-0 h-0': !productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder),
-            'flex-1 mr-4': productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder),
-          },
-        ]"
+    <RecipeProduct :index :product :countedProducts :recipe :groupIndex @remove-product-id="removeProductId" :form>
+      <ButtonGroupUpDown
+        :disabled-down="product.sortOrder === filteredProductsByGroupPosition.length - 1"
+        :disabledUp="product.sortOrder === 0"
+        @up="sortOrder(product, 'up')"
+        @down="sortOrder(product, 'down')"
       />
-
-      <div v-show="!productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder)" class="flex-1 mr-4">
-        <ProductValuesSummary :index :product />
-      </div>
-
-      <Button
-        variant="outline"
-        :size="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder) ? 'icon' : 'iconRow'"
-        class="mb-2"
-        :icon="productCardsHandler.isOpen.value(product.id ?? newProductIdPlaceholder) ? 'chevronDown' : 'chevronRight'"
-        @click.prevent="productCardsHandler.toggle(product.id ?? newProductIdPlaceholder)"
-      />
-    </div>
-
-    <div v-show="product.id && productCardsHandler.isOpen.value(product.id)">
-      <template v-if="product.id">
-        <FormInput type="text" :name="`productArray.${product.position}.description`" placeholder="Beschreibung" />
-        <div class="flex justify-between mt-2">
-          <div class="flex gap-2 items-start flex-1 mr-2">
-            <FormInput placeholder="Menge" type="number" :step="0.1" :name="`productArray.${product.position}.amount`" />
-
-            <FormSelect
-              label=""
-              class="w-full"
-              :disabled="!product.productId"
-              placeholder="Wähle eine Einheit"
-              :name="`productArray.${product.position}.activeUnitId`"
-              :select-options="selectableUnitOptions(product.productId)"
-            />
-          </div>
-          <Button
-            size="icon"
-            variant="outline"
-            icon="remove"
-            :disabled="countedProducts === 1"
-            @click.prevent="
-              () => {
-                if (deleteBtnIsDisabled()) return;
-                confirmProductDelete(product.id);
-              }
-            "
-          />
-        </div>
-      </template>
-    </div>
+    </RecipeProduct>
   </div>
   <div class="flex justify-end mt-2 space-x-2">
     <Button size="icon" variant="outline" icon="add" @click.prevent="addNewProduct" />
@@ -254,7 +179,7 @@ onMounted(() => {
       size="icon"
       variant="outline"
       icon="remove"
-      :disabled="countedProductGroups === 1"
+      :disabled="store.productGroupsCount === 1"
       @click.prevent="
         () => {
           if (deleteBtnIsDisabled()) return;
@@ -267,15 +192,5 @@ onMounted(() => {
     v-model:dialog-open="dialogOpenGroup"
     description="Willst du die Produktgruppe wirklich löschen?"
     @update:confirm="() => removeProductGroup()"
-  />
-  <DialogConfirm
-    v-model:dialog-open="dialogOpenProduct"
-    description="Willst du die Zutat wirklich löschen?"
-    @update:confirm="
-      () => {
-        removeProduct(dialogParam);
-        dialogParam = null;
-      }
-    "
   />
 </template>

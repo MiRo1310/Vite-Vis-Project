@@ -1,13 +1,9 @@
 import { provideApolloClient, useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import apolloClient from "@/apolloClient.ts";
+import { IRecipeGroupToDelete } from "@/store/recipeStore.ts";
 
-export interface IRecipeGroup {
-  position: number;
-  recipeId: string;
-}
-
-export const removeProductGroups = async (groups: IRecipeGroup[]) => {
+export const removeProductGroups = async (groups: IRecipeGroupToDelete[]) => {
   provideApolloClient(apolloClient);
 
   const { mutate } = useMutation(
@@ -19,6 +15,6 @@ export const removeProductGroups = async (groups: IRecipeGroup[]) => {
   );
 
   for (const group of groups) {
-    await mutate({ dto: { position: group.position, recipeId: group.recipeId } });
+    await mutate({ dto: { position: group.groupPosition, recipeId: group.recipeId } });
   }
 };

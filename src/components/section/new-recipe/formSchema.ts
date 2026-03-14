@@ -9,9 +9,9 @@ const description = z.object({
   header: z.string().optional().default(""),
 });
 
-const productObj = z.object({
+const productSchema = z.object({
   productId: z.string().min(2, { error: "Wähle ein Produkt" }),
-  description: z.string().default(""),
+  description: z.string().optional(),
   amount: z.number().min(0.1, { error: "Gib einen Wert ein" }),
   groupPosition: z.number(),
   id: z.string().nullable().optional(),
@@ -24,7 +24,8 @@ export const fields = {
   portions: z.number("Gib einen Wert ein").min(1).max(255),
   descriptions: z.array(description).optional().nullable(),
   headersProductArray: z.array(textPositionObj).optional(),
-  productArray: z.array(productObj).optional(),
+  productArray: z.array(productSchema).optional(),
 };
 
 export const formSchema = toTypedSchema(z.object(fields));
+export const formSchemaProduct = toTypedSchema(productSchema);

@@ -3,13 +3,15 @@ import { Button } from "@/components/shared/button";
 import { ProductObjType, TextPositionType } from "@/types/types";
 import { Logger } from "@/lib/logger.ts";
 import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
+
+const store = useRecipeStore();
 
 const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
-const countedProductGroups = defineModel<number>("countedProductGroups", { default: 1 });
 
 const addNewProductGroup = () => {
-  const productGroupLength = countedProductGroups.value;
+  const productGroupLength = store.getProductGroupsCount;
   Logger("Adding new product group with position:", { value: productGroupLength });
   const newProduct = {
     productId: "",
