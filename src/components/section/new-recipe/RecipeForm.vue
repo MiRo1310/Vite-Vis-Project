@@ -281,6 +281,7 @@ const defaultProduct: ProductObjType = {
 };
 
 const resetForm = () => {
+  store.setShouldValidate(false);
   form.resetForm();
   form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();

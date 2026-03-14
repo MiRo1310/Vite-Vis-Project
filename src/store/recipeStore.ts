@@ -12,6 +12,7 @@ interface IRecipeStore {
   recipeGroupIdsToDelete: IRecipeGroupToDelete[];
   recipeProductIdsToDelete: string[];
   productGroupsCount: number;
+  shouldValidate: boolean;
 }
 
 export const useRecipeStore = defineStore("recipeStore", {
@@ -21,6 +22,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     recipeGroupIdsToDelete: [],
     recipeProductIdsToDelete: [],
     productGroupsCount: 0,
+    shouldValidate: false,
   }),
   getters: {
     getRecipeFromStore(state) {
@@ -37,6 +39,9 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     getProductGroupsCount(state) {
       return state.productGroupsCount;
+    },
+    getShouldValidate(state) {
+      return state.shouldValidate;
     },
   },
   actions: {
@@ -63,6 +68,9 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     setProductGroupCount(count: number) {
       this.productGroupsCount = count;
+    },
+    setShouldValidate(validate: boolean) {
+      this.shouldValidate = validate;
     },
   },
 });
