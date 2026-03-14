@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { ProductObjType, TextPositionType } from "@/types/types";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import RecipeProduct from "@/components/section/new-recipe/RecipeProduct.vue";
@@ -119,23 +119,30 @@ const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
   }
   productArray.value = products;
 };
-
-const getProductFieldError = (product: ProductObjType, field: keyof typeof productSchema.shape) => {
-  const result = productSchema.safeParse(product);
-  if (!result.success) {
-    const issue = result.error.issues.find((i) => i.path[0] === field);
-    return issue?.message ?? undefined;
+const hasValidated = ref(false);
+watch(
+  () => props.form.isValidating.value,
+  () => {
+    console.log("Update");
+    hasValidated.value = true;
+  },
+);
+const isValid = computed(() => (product: ProductObjType) => {
+  if (!hasValidated.value) {
+    return true;
   }
-  return undefined;
-};
+  const result = productSchema.safeParse(product);
+  return result.success;
+});
 </script>
 
 <template>
   <FormInput :name="`headersProductArray.${groupIndex}.text`" />
-  <div v-for="(product, index) in filteredProductsByGroupPosition" :key="index" :class="['px-2 bg-accent border-2 rounded-md mb-1']">
-    {{ useFieldError(`productArray.${product.position}.productId`) }}--
-    {{ useFieldValue(`productArray.${product.position}.productId`) }}
-    {{ getProductFieldError(product, `productId`) }}
+  <div
+    v-for="(product, index) in filteredProductsByGroupPosition"
+    :key="index"
+    :class="['px-2 bg-accent border-2 rounded-md mb-1', { 'border-destructive': !isValid(product) }]"
+  >
     <RecipeProduct :index :product :countedProducts :recipe :groupIndex @remove-product-id="removeProductId" :form>
       <ButtonGroupUpDown
         :disabled-down="product.sortOrder === filteredProductsByGroupPosition.length - 1"
