@@ -10,6 +10,9 @@ import { newIdPrefix, TForm } from "@/components/section/new-recipe/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
+import { useFieldArray, useFieldError, useFieldValue } from "vee-validate";
+import { useFormField } from "@/components/ui/form/useFormField.ts";
+import { productSchema } from "@/components/section/new-recipe/formSchema.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();
 
@@ -116,15 +119,23 @@ const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
   }
   productArray.value = products;
 };
+
+const getProductFieldError = (product: ProductObjType, field: keyof typeof productSchema.shape) => {
+  const result = productSchema.safeParse(product);
+  if (!result.success) {
+    const issue = result.error.issues.find((i) => i.path[0] === field);
+    return issue?.message ?? undefined;
+  }
+  return undefined;
+};
 </script>
 
 <template>
   <FormInput :name="`headersProductArray.${groupIndex}.text`" />
-  <div
-    v-for="(product, index) in filteredProductsByGroupPosition"
-    :key="index"
-    :class="['flex flex-col px-2 bg-accent border-background', index === countedProducts ? 'border-b-0 rounded-b-md' : 'border-b-2']"
-  >
+  <div v-for="(product, index) in filteredProductsByGroupPosition" :key="index" :class="['px-2 bg-accent border-2 rounded-md mb-1']">
+    {{ useFieldError(`productArray.${product.position}.productId`) }}--
+    {{ useFieldValue(`productArray.${product.position}.productId`) }}
+    {{ getProductFieldError(product, `productId`) }}
     <RecipeProduct :index :product :countedProducts :recipe :groupIndex @remove-product-id="removeProductId" :form>
       <ButtonGroupUpDown
         :disabled-down="product.sortOrder === filteredProductsByGroupPosition.length - 1"

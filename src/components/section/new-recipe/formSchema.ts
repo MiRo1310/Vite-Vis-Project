@@ -9,7 +9,7 @@ const description = z.object({
   header: z.string().optional().default(""),
 });
 
-const productSchema = z.object({
+export const productSchema = z.object({
   productId: z.string().min(2, { error: "Wähle ein Produkt" }),
   description: z.string().optional(),
   amount: z.number().min(0.1, { error: "Gib einen Wert ein" }),
