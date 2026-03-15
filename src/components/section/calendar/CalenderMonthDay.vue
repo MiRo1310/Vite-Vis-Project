@@ -6,7 +6,7 @@ import { CalendarDayType } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 import { JSONStyle } from "@/components/section/calendar/DialogSettings.vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
-import { logging } from "@/lib/logging.ts";
+import { Logger } from "@/lib/logger.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
 const { calendar, styles } = storeToRefs(useIobrokerStore());
@@ -27,7 +27,7 @@ const getDayValue = computed(() => {
       return isDateBetween(day);
     });
   } catch (e) {
-    logging({ e });
+    Logger("", { e, type: "error" });
   }
   return [];
 });

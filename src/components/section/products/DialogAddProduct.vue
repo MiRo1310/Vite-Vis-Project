@@ -4,7 +4,6 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
-import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
@@ -13,6 +12,7 @@ import { GetProductByIdQuery, ProductCreateDtoInput, ProductUnitCreateOrUpdateDt
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
+import FormSelect from "@/components/shared/form/FormSelect.vue";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
 
@@ -50,7 +50,9 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  if (!values.unit) {return;}
+  if (!values.unit) {
+    return;
+  }
   const dto: ProductCreateDtoInput = {
     name: values.name,
     category: values.category,
@@ -86,7 +88,9 @@ const closeDialog = () => {
 watch(
   () => dialogOpen.value,
   () => {
-    if (updateValue.value) {return;}
+    if (updateValue.value) {
+      return;
+    }
     form.resetForm();
   },
 );
@@ -119,14 +123,6 @@ const nullToUndefined = <T,>(val: T | null): T | undefined => {
   return val === null ? undefined : val;
 };
 
-const getSelected = computed(() => {
-  if (!props.data?.category) {
-    return;
-  }
-
-  return props.data.category;
-});
-
 onMounted(() => {
   initFormData();
 });
@@ -146,17 +142,18 @@ const defaultUnitVariant = computed(() => {
 <template>
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
-      <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="w-120" />
-
-      <div class="min-w-full flex gap-2">
-        <FormSelect label="Kategorie" name="category" :selected="getSelected" :select-options="selectableOptions" class="w-40" />
+      <div class="flex gap-2 items-baseline mb-4">
+        <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="flex-1" />
+        <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" class="w-40" />
       </div>
-      <FormInput label="Kalorien" name="kcal" type="number" :step="1" :model-value="props.data?.kcal?.toString()" />
-      <FormInput label="Fett" name="fat" type="number" :step="0.01" :model-value="props.data?.fat?.toString()" />
-      <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" :model-value="props.data?.carbs?.toString()" />
-      <FormInput label="Zucker" name="sugar" type="number" :step="0.01" :model-value="props.data?.sugar?.toString()" />
-      <FormInput label="Salz" name="salt" type="number" :step="0.01" :model-value="props.data?.salt?.toString()" />
-      <FormInput label="Protein" name="protein" type="number" :step="0.01" :model-value="props.data?.protein?.toString()" />
+      <div class="flex flex-wrap gap-2">
+        <FormInput label="Kalorien" name="kcal" type="number" :step="1" :model-value="props.data?.kcal?.toString()" />
+        <FormInput label="Fett" name="fat" type="number" :step="0.01" :model-value="props.data?.fat?.toString()" />
+        <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" :model-value="props.data?.carbs?.toString()" />
+        <FormInput label="Zucker" name="sugar" type="number" :step="0.01" :model-value="props.data?.sugar?.toString()" />
+        <FormInput label="Salz" name="salt" type="number" :step="0.01" :model-value="props.data?.salt?.toString()" />
+        <FormInput label="Protein" name="protein" type="number" :step="0.01" :model-value="props.data?.protein?.toString()" />
+      </div>
       <p class="w-full font-bold mb-4 mt-6">Bezogen auf diese Menge</p>
       <div class="flex w-full space-x-2">
         <FormInput label="Menge" name="amount" type="number" :step="0.1" :model-value="defaultUnitVariant.amount.toString()" />

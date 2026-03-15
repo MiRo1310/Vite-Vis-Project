@@ -1,6 +1,6 @@
 import { FluxTableMetaData, InfluxDB, QueryApi } from "@influxdata/influxdb-client";
 import { onBeforeUnmount, ref } from "vue";
-import { logging } from "@/lib/logging.ts";
+import { Logger } from "@/lib/logger.ts";
 import { isDefined } from "@vueuse/core";
 
 // Insert this line (Flux) before your aggregateWindow call in `src/lib/influxDB.ts`
@@ -68,11 +68,11 @@ export class InfluxDBClient {
         this.resultTemp.push({ time: o._time, [o._measurement]: value });
       },
       error: (error: Error) => {
-        logging({ e: error, title: "QueryRows ERROR", type: "error" });
+        Logger("QueryRows ERROR", { e: error, type: "error" });
         this.resetResult();
       },
       complete: () => {
-        logging({ title: "QueryRows SUCCESS" });
+        Logger("QueryRows SUCCESS");
         this.result.value = this.resultTemp;
         this.resultTemp = [];
         this.isFetching = false;
@@ -123,7 +123,7 @@ export class InfluxDBClient {
       if (this.intervall) {
         clearInterval(this.intervall);
         this.intervall = null;
-        logging({ title: "InfluxDBClient interval cleared" });
+        Logger("InfluxDBClient interval cleared");
       }
     });
     return this.result;
@@ -132,7 +132,7 @@ export class InfluxDBClient {
   private startInterval() {
     this.intervall = setInterval(() => {
       if (this.isFetching) {
-        logging({ title: "Previous InfluxDB query still running, skipping this interval" });
+        Logger("Previous InfluxDB query still running, skipping this interval");
         return;
       }
       this.queryRows();

@@ -28,8 +28,8 @@ const calculatedKcal = computed(() => {
           <p class="text-xs">{{ ingredient?.description }}</p>
         </div>
       </div>
-      <div class="flex items-baseline space-x-4">
-        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="gray" class="ingredient__badge" />
+      <div class="flex items-center gap-2 mr-1">
+        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="orange" class="ingredient__badge" />
         <Badge :value="calculatedKcal" unit="kcal" class="ingredient__badge" />
       </div>
     </div>

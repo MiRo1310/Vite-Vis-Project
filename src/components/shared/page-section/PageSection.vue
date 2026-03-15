@@ -5,7 +5,7 @@ defineProps<{ class?: HTMLAttributes["class"] }>();
 </script>
 
 <template>
-  <div :class="['mt-2', $props.class]">
+  <div :class="['mt-2', $props.class]" v-component="'PageSection'">
     <slot />
   </div>
 </template>

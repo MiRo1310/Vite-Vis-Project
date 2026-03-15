@@ -29,9 +29,8 @@ withDefaults(
     optionsId: undefined,
     label: "",
     classInput: "",
-  }
+  },
 );
-const modelValue = defineModel<string>();
 </script>
 
 <template>
@@ -42,17 +41,7 @@ const modelValue = defineModel<string>();
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input
-          v-bind="componentField"
-          v-model:model-value="modelValue"
-          :placeholder
-          :type
-          :step
-          :options
-          :options-id
-          :disabled
-          :class="$props.classInput"
-        />
+        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :class="$props.classInput" />
       </FormControl>
       <FormDescription />
       <FormMessage />

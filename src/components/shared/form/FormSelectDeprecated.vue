@@ -13,7 +13,6 @@ withDefaults(
     selectOptions?: SelectOption[];
     defaultVal?: string;
     width?: string;
-    disabled?: boolean;
   }>(),
   {
     placeholder: "",
@@ -23,6 +22,8 @@ withDefaults(
     width: undefined,
   },
 );
+
+const selected = defineModel<string>("selected");
 </script>
 
 <template>
@@ -30,7 +31,7 @@ withDefaults(
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
       <FormControl>
-        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width :disabled />
+        <Select v-bind="componentField" v-model:model-value="selected" :items="selectOptions" :placeholder :default-val :width />
       </FormControl>
       <FormDescription />
       <FormMessage />

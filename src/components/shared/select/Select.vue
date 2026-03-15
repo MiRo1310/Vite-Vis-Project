@@ -10,11 +10,29 @@ const props = defineProps<{
   label?: string;
   class?: HTMLAttributes["class"];
   disableHover?: boolean;
+  disabled?: boolean;
   // eslint-disable-next-line vue/no-unused-properties
   border?: keyof (typeof variants)["border"];
 }>();
 
-const modelValue = defineModel<string>("modelValue");
+const modelValue = defineModel<string>("modelValue", {
+  get: (m) => {
+    return (
+      props.items.find((v) => v.id === m)?.value ??
+      props.items.find((v) => v.label === m)?.value ??
+      props.items.find((v) => v.value === m)?.value ??
+      ""
+    );
+  },
+  set: (v) => {
+    const found = props.items.find((i) => i.id === v || i.value === v || i.label === v);
+    if (found) {
+      return found.id ?? found.value ?? found.label;
+    } else {
+      return v;
+    }
+  },
+});
 const selectedObj = defineModel<SelectOption>("selectedObj");
 
 watchEffect(() => {
@@ -25,8 +43,9 @@ watchEffect(() => {
 
 function getFocusClass(item: SelectOption) {
   let string = "";
-  item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
-
+  if (typeof item?.class === "string") {
+    item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
+  }
   return string;
 }
 
@@ -39,7 +58,7 @@ const variants = {
 </script>
 
 <template>
-  <Select v-model="modelValue">
+  <Select v-model="modelValue" :disabled>
     <SelectTrigger :class="[getVariantsClasses(variants, props), $props.class]">
       <SelectValue :placeholder="placeholder" />
     </SelectTrigger>

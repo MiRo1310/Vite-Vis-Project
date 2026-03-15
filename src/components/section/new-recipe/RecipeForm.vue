@@ -2,27 +2,36 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import Form from "@/components/shared/form/Form.vue";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
-import RecipeDescriptionGroup from "@/components/section/new-recipe/RecipeDescriptionGroup.vue";
+import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
-import AddNewGroup from "@/components/section/new-recipe/AddNewGroup.vue";
+import AddNewProductGroup from "@/components/section/new-recipe/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
-import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeDescriptionCreateOrUpdateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
+import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
+import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
+import { Logger } from "@/lib/logger.ts";
+import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
+import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
+import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
+import { removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
 const router = useRouter();
-const props = defineProps<{ recipeId?: string }>();
+const props = defineProps<{ id?: string }>();
+
+const recipeId = ref<string | undefined>(props.id);
 
 const { toast } = useToast();
 const { mutate } = useMutation(
@@ -34,6 +43,7 @@ const { mutate } = useMutation(
     }
   `),
 );
+
 const { mutate: updateMutate } = useMutation(
   graphql(`
     mutation updateRecipe($dto: RecipeUpdateDtoInput!) {
@@ -57,11 +67,11 @@ const getRecipeByIdQuery = graphql(`
         description
         productId
         groupPosition
-        productPosition
         unit
         id
         kcal
         activeUnitId
+        sortOrder
         product {
           name
         }
@@ -82,6 +92,24 @@ const getRecipeByIdQuery = graphql(`
   }
 `);
 
+const route = useRoute();
+
+/**
+ * Watches route id, if there is no id, it means we are creating a new recipe and the form should be reset to default values.
+ * If there is an id, the form will be filled with the recipe data in onMounted.
+ */
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (!newId) {
+      recipeId.value = undefined;
+      resetForm();
+    }
+  },
+);
+
+const store = useRecipeStore();
+
 const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
 
 onResult((result: OnResult<GetRecipeByIdQuery>) => {
@@ -95,6 +123,7 @@ onResult((result: OnResult<GetRecipeByIdQuery>) => {
   updateValue.value = true;
 });
 
+//TODO saveRecipeToStore wird nicht mehr verwendet
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
 const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
@@ -102,14 +131,49 @@ const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
 onMounted(async () => {
   const recipe = getRecipeFromStore;
 
-  if (recipe && !(props.recipeId === "new")) {
+  if (recipe && !recipeId.value) {
     setValuesToForm(recipe);
   }
 
-  if (props.recipeId && props.recipeId !== "undefined") {
-    await load(getRecipeByIdQuery, { id: props.recipeId });
+  if (recipeId.value) {
+    await load(getRecipeByIdQuery, { id: recipeId.value });
   }
 });
+
+const form = useForm({
+  validationSchema: formSchema,
+  initialValues: { portions: 1 },
+});
+
+const { values } = form;
+
+const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
+  get: () => {
+    const current = (values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
+    // Build a dense array of the same length and normalize each entry to avoid holes created by form fields
+    return Array.from({ length: current.length }, (_, i) => {
+      const d = current[i] as IRecipeDescriptionCreateOrUpdate | undefined;
+      return {
+        position: i,
+        header: d?.header ?? "",
+        text: d?.text ?? "",
+        id: d?.id,
+        positionByCreate: d?.positionByCreate ?? i,
+      };
+    });
+  },
+  set: (v) => form.setFieldValue("descriptions", v),
+});
+
+const productArray = computed<ProductObjType[]>({
+  get: () => {
+    const current = (values.productArray as ProductObjType[]) ?? [];
+    return [...current].map((p, index) => ({ ...p, position: index }));
+  },
+  set: (v) => form.setFieldValue("productArray", v),
+});
+
+const sortedDescriptions = computed(() => [...descriptions.value]);
 
 const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   if (!recipe) {
@@ -125,24 +189,26 @@ const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   return { name, portions: recipe.portions ?? 1, recipeDescriptions, recipeHeaderProducts, recipeProducts };
 };
 
-const setValuesToForm = (recipe?: RecipeType) => {
+const setValuesToForm = (recipe: RecipeType) => {
   if (!recipe) {
     return;
   }
   form.setValues(getRecipeProductObj(recipe));
 
-  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions);
-  headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts);
+  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions).map((d, index) => ({ ...d, positionByCreate: index }));
+  nextDescriptionIndex.value = descriptions.value.length;
+  headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts).sort((a, b) => a.position - b.position);
 
-  productArray.value = recipe.recipeProducts.map((item) => ({
+  productArray.value = recipe.recipeProducts.map((item, index) => ({
     amount: item.amount || 0,
     description: item.description,
     groupPosition: item.groupPosition,
     productId: item.productId,
-    productPosition: item.productPosition,
     unit: item.unit,
     id: item.id,
     activeUnitId: item.activeUnitId ?? "",
+    position: index,
+    sortOrder: item.sortOrder,
   }));
 };
 
@@ -152,21 +218,29 @@ const getTextPositionTypeFromResult = <T extends { text: string; position: numbe
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
 };
 
-const form = useForm({
-  validationSchema: formSchema,
-});
+const removeNewIdForMutate = (productArray: typeof form.values.productArray): typeof form.values.productArray => {
+  return productArray?.map((product) => {
+    if (product.id?.startsWith(newIdPrefix)) {
+      return { ...product, id: undefined };
+    }
+    return product;
+  });
+};
+
+const descriptionsToDelete = ref<string[]>([]);
 
 const onSubmit = form.handleSubmit(async (values) => {
-  //TODO das new darf nicht in der id stehen
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
-    recipeProducts: values.productArray,
+    recipeProducts: removeNewIdForMutate(values.productArray),
   };
+  Logger("Submit dto", { value: dto });
 
-  if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
+  if (!recipeId.value) {
+    Logger("Creating new recipe");
     const result = await mutate({ dto });
 
     const recipeId = result?.data?.createRecipe.id;
@@ -182,20 +256,25 @@ const onSubmit = form.handleSubmit(async (values) => {
     return;
   }
 
-  if (props.recipeId) {
-    const dtoUpdate: RecipeUpdateDtoInput = {
-      id: props.recipeId,
-      ...dto,
-    };
-    await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
+  const dtoUpdate: RecipeUpdateDtoInput = {
+    id: recipeId.value,
+    ...dto,
+  };
 
-    toast({
-      title: "Das Rezept wurde aktualisiert",
-      description: values.name,
-    });
-    if (props.recipeId) {
-      await goBack(props.recipeId);
-    }
+  removeDescriptions(descriptionsToDelete.value);
+
+  await removeProductGroups(store.getRecipeGroupIdsToDelete);
+
+  await removeRecipeProducts(store.getRecipeProductsToDelete);
+
+  await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
+
+  toast({
+    title: "Das Rezept wurde aktualisiert",
+    description: values.name,
+  });
+  if (recipeId.value) {
+    await goBack(recipeId.value);
   }
 });
 
@@ -212,115 +291,121 @@ const defaultProduct: ProductObjType = {
   productId: "",
   description: "",
   amount: 0,
-  unit: "",
-  productPosition: 1,
-  groupPosition: 1,
+  groupPosition: 0,
   id: undefined,
   activeUnitId: "",
+  position: productArray.value.length,
+  sortOrder: productArray.value.length,
 };
 
 const resetForm = () => {
+  store.setShouldValidate(false);
   form.resetForm();
-  form.setValues(getRecipeProductObj());
+  if (!recipeId.value) {
+    descriptions.value = [];
+    headersProductArray.value = [];
+    productArray.value = [];
+    form.setValues(getRecipeProductObj());
+    return;
+  }
+  form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
-  descriptions.value = [{ position: 1, text: "", header: "" }];
-  headersProductArray.value = [];
-  productArray.value = [defaultProduct];
+  descriptions.value = recipe.value?.recipeDescriptions.map((d, index) => ({ ...d, positionByCreate: index })) ?? [
+    { position: 0, text: "", header: "", positionByCreate: 0 },
+  ];
+  headersProductArray.value = recipe.value?.recipeHeaderProducts ?? [];
+  productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
 };
 
 const updateValue = ref(false);
 const textareaFocus = ref(false);
 
 const enterPress = async () => {
+  Logger("Submit values by enter press");
   if (!textareaFocus.value) {
     await onSubmit();
   }
 };
 
-const descriptions = ref<RecipeDescriptionCreateOrUpdateDtoInput[]>([]);
 const headersProductArray = ref<TextPositionType[]>([]);
-const productArray = ref<ProductObjType[]>([defaultProduct]);
-
-watch(
-  descriptions,
-  (newValue) => {
-    form.setFieldValue("descriptions", newValue);
-  },
-  { deep: true },
-);
 
 watch(
   headersProductArray,
   (newValue) => {
+    Logger("Headers Array changed:", { value: newValue, useDebugMode: true });
     form.setFieldValue("headersProductArray", newValue);
   },
   { deep: true },
 );
 
-watch(
-  productArray,
-  (newValue) => {
-    form.setFieldValue("productArray", newValue);
-  },
-  { deep: true },
-);
-
-const countedProductGroups = computed(() =>
-  productArray.value.reduce((acc, curr) => {
-    return curr.groupPosition > acc ? curr.groupPosition : acc;
-  }, 1),
-);
-
+watchEffect(() => {
+  if (!productArray.value?.length) {
+    return 0;
+  }
+  store.setProductGroupCount(
+    productArray.value?.reduce((acc, curr) => {
+      return curr.groupPosition > acc ? curr.groupPosition : acc;
+    }, 0) + 1,
+  );
+});
+const nextDescriptionIndex = ref(0);
 const addDescription = () => {
-  descriptions.value.push({ position: descriptions.value.length + 1, text: "", header: "" });
+  const descriptionsCopy = [...descriptions.value];
+  const newItem: IRecipeDescriptionCreateOrUpdate = {
+    position: descriptionsCopy.length,
+    text: "",
+    header: "",
+    positionByCreate: nextDescriptionIndex.value,
+  };
+  descriptions.value = [...descriptionsCopy, newItem];
+  nextDescriptionIndex.value++;
 };
 </script>
 
 <template>
-  <div class="max-h-full overflow-auto">
+  <div class="max-h-full overflow-auto" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
         <div class="flex-col flex-1 h-full">
-          <FormInput placeholder="Rezeptname" name="name" :model-value="form.values.name" />
-          <FormInput placeholder="Portionen" name="portions" type="number" :model-value="String(form.values.portions)" />
+          <div class="flex gap-2">
+            <FormInput label="Rezeptname" name="name" class="flex-1" />
+            <FormInput label="Portionen" name="portions" type="number" />
+          </div>
+
           <div
-            v-for="(description, index) in descriptions.sort((a, b) => a.position - b.position)"
-            :key="index"
+            v-for="(description, index) in sortedDescriptions"
+            :key="description.positionByCreate ?? description.id ?? index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            <RecipeDescriptionGroup v-model:descriptions="descriptions" :description />
-            <RecipeRemoveDescription v-model:descriptions="descriptions" :description />
+            <RecipeDescription :index />
+            <RecipeRemoveDescription
+              v-model:descriptions="descriptions"
+              v-model:descriptions-to-delete="descriptionsToDelete"
+              :description="description"
+            />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
           </div>
         </div>
+
         <div class="w-120">
-          <div class="w-full flex justify-stretch gap-2 mb-2">
-            <Button class="w-full" type="submit" variant="outline">Speichern</Button>
-            <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
-          </div>
-          <div v-for="index in countedProductGroups" :key="index" class="mb-2">
+          <RecipeFormFooter @abort="resetForm" />
+          <div v-for="oneBasedIndex in store.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
-              v-model:counted-product-groups="countedProductGroups"
-              :recipe="recipe"
-              :group-index="index"
+              :recipe
+              :group-index="toZeroBasedIndex(oneBasedIndex)"
+              :form
             />
           </div>
-          <AddNewGroup
-            v-model:headers-product-array="headersProductArray"
-            v-model:counted-product-groups="countedProductGroups"
-            v-model:product-array="productArray"
-          />
+
+          <AddNewProductGroup v-model:headers-product-array="headersProductArray" v-model:product-array="productArray" />
         </div>
       </div>
 
-      <div class="w-full flex justify-end mt-4 space-x-2">
-        <Button class="w-60" type="submit" variant="outline">Speichern</Button>
-        <Button class="w-60" type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
-      </div>
+      <RecipeFormFooter @abort="resetForm" class="mt-2" />
     </Form>
   </div>
 </template>

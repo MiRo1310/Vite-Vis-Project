@@ -286,18 +286,19 @@ export interface ProductObjType {
   productId: string;
   description: string;
   amount: number;
-  unit: string;
-  productPosition: number;
   groupPosition: number;
+  unit?: string;
   id?: string;
   activeUnitId: string;
+  position: number;
+  sortOrder: number;
 }
 
 export interface SelectOption {
   value: string;
   label?: string;
   id?: string;
-  class?: HTMLAttributes["class"];
+  class?: string;
 }
 
 export interface HasOptionalNameAndId {

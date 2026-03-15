@@ -16,10 +16,8 @@ withDefaults(
     class: "",
     label: "",
     classTextArea: "",
-  }
+  },
 );
-
-const modelValue = defineModel<string>();
 
 const handleEnterPress = ($event: KeyboardEvent) => {
   $event.stopPropagation();
@@ -31,13 +29,7 @@ const handleEnterPress = ($event: KeyboardEvent) => {
     <FormItem :class="$props.class">
       <FormLabel>{{ label }}</FormLabel>
       <FormControl>
-        <Textarea
-          v-bind="componentField"
-          v-model:model-value="modelValue"
-          :placeholder
-          :class="['w-full', classTextArea]"
-          @keydown.enter="handleEnterPress"
-        />
+        <Textarea v-bind="componentField" :placeholder :class="['w-full', classTextArea]" @keydown.enter="handleEnterPress" />
       </FormControl>
       <FormDescription />
       <FormMessage />

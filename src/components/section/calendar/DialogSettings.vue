@@ -51,7 +51,7 @@ function updateHandler(val: { input: string; select: SelectOption; index: number
 
 function addValueToObj(obj: JSONStyle, val: { input: string; select: SelectOption; index: number }) {
   obj.name = val?.input;
-  obj.color = val.select?.class;
+  obj.color = val.select?.class ?? "";
 }
 
 function updateToIobroker() {

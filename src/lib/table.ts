@@ -5,6 +5,7 @@ import TableCell from "@/components/shared/table-cell/TableCell.vue";
 import { Checkbox } from "@/components/ui/checkbox";
 import { clsx } from "clsx";
 import { Pathes } from "@/types/types.ts";
+import { cn } from "@/lib/utils.ts";
 
 export interface DatatableColumns<T> {
   accessorKey?: string;
@@ -37,7 +38,7 @@ export const getColumns = (columns: DatatableColumns<any>[]) => {
         source: column.source,
         label: column.labelKey,
         sortable: column?.sortable,
-        className: column?.className,
+        className: cn(column?.className),
         type: column.type ?? "text",
       }),
       cell: getCell({
@@ -45,7 +46,7 @@ export const getColumns = (columns: DatatableColumns<any>[]) => {
         component: column.component,
         type: column.type ?? "text",
         unit: column.unit,
-        className: column.className,
+        className: cn(column.className),
         callback: column.callback,
         customValue: column.customValue,
         reverse: column.reverse,

@@ -1,30 +1,26 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql.ts";
-import { useMutation } from "@vue/apollo-composable";
-import { graphql } from "@/api/gql";
 
-const props = defineProps<{ description: RecipeDescriptionCreateOrUpdateDtoInput }>();
+import { Logger } from "@/lib/logger.ts";
+import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/new-recipe/index.ts";
+import { isDefined } from "@vueuse/core";
 
-const descriptions = defineModel<RecipeDescriptionCreateOrUpdateDtoInput[]>("descriptions", { default: [] });
+const props = defineProps<{ description: IRecipeDescriptionCreateOrUpdate }>();
 
-const { mutate } = useMutation(
-  graphql(`
-    mutation RemoveTextArea($id: UUID!) {
-      removeTextArea(id: $id)
-    }
-  `),
-);
+const descriptions = defineModel<IRecipeDescriptionCreateOrUpdate[]>("descriptions", { default: [] });
+
+const descriptionsToDelete = defineModel<string[]>("descriptionsToDelete", { default: [] });
 
 const removeDescription = () => {
-  const { id = null, position } = props.description;
-  if (id) {
-    mutate({ id }, { refetchQueries: ["getRecipeById"] });
-  }
+  const { id = null, positionByCreate } = props.description;
+  if (isDefined(positionByCreate)) {
+    if (id) {
+      Logger("Removing description with id:", { value: id, useDebugMode: false });
+      descriptionsToDelete.value.push(id);
+    }
+    const copy = [...descriptions.value];
 
-  if (descriptions.value.length === position) {
-    descriptions.value.pop();
-    return;
+    descriptions.value = copy.filter((d) => d.positionByCreate !== positionByCreate);
   }
 };
 </script>
@@ -32,5 +28,3 @@ const removeDescription = () => {
 <template>
   <Button v-if="descriptions.length > 1" size="icon" variant="outline" icon="remove" @click.prevent="removeDescription" />
 </template>
-
-<style scoped lang="scss"></style>
