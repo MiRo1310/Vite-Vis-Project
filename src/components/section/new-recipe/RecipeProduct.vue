@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import RecipeProductDialogContent from "@/components/section/new-recipe/RecipeProductDialogContent.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import { TForm } from "@/components/section/new-recipe/index.ts";
+import ProductUnit from "@/components/section/new-recipe/ProductUnit.vue";
 
 const props = defineProps<{
   index: number;
@@ -58,7 +59,6 @@ const updateProduct = (product: ProductObjType) => {
 const open = ref(false);
 </script>
 <template>
-  <!--  TODO Error wenn das value nicht passt-->
   <div class="flex justify-between items-center">
     <div class="flex justify-between items-center p-1 flex-1 mr-6" data-component="product-summary">
       <div>
@@ -67,8 +67,7 @@ const open = ref(false);
 
         <span class="text-xs font-bold ml-2">{{ product?.description }}</span>
       </div>
-      <!--      TODO Get unit by id-->
-      <span class="font-semibold">{{ product?.amount }} {{ product?.unit }}</span>
+      <span class="font-semibold">{{ product?.amount }} <ProductUnit :id="product?.activeUnitId" /> </span>
     </div>
     <slot />
     <Dialog v-if="product" v-model:open="open">
