@@ -8,5 +8,5 @@ const recipeId = route.params.id as string | undefined;
 </script>
 
 <template>
-  <RecipeForm :recipe-id="recipeId" />
+  <RecipeForm :id="recipeId" />
 </template>

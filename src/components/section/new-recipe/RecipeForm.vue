@@ -14,7 +14,7 @@ import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
 import { formSchema } from "@/components/section/new-recipe/formSchema";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
@@ -29,7 +29,9 @@ import { removeProductGroups } from "@/components/section/new-recipe/removeProdu
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
 const router = useRouter();
-const props = defineProps<{ recipeId?: string }>();
+const props = defineProps<{ id?: string }>();
+
+const recipeId = ref<string | undefined>(props.id);
 
 const { toast } = useToast();
 const { mutate } = useMutation(
@@ -90,6 +92,22 @@ const getRecipeByIdQuery = graphql(`
   }
 `);
 
+const route = useRoute();
+
+/**
+ * Watches route id, if there is no id, it means we are creating a new recipe and the form should be reset to default values.
+ * If there is an id, the form will be filled with the recipe data in onMounted.
+ */
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (!newId) {
+      recipeId.value = undefined;
+      resetForm();
+    }
+  },
+);
+
 const store = useRecipeStore();
 
 const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
@@ -113,12 +131,12 @@ const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
 onMounted(async () => {
   const recipe = getRecipeFromStore;
 
-  if (recipe && !props.recipeId) {
+  if (recipe && !recipeId.value) {
     setValuesToForm(recipe);
   }
 
-  if (props.recipeId) {
-    await load(getRecipeByIdQuery, { id: props.recipeId });
+  if (recipeId.value) {
+    await load(getRecipeByIdQuery, { id: recipeId.value });
   }
 });
 
@@ -221,7 +239,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   };
   Logger("Submit dto", { value: dto });
 
-  if (!props.recipeId) {
+  if (!recipeId.value) {
     Logger("Creating new recipe");
     const result = await mutate({ dto });
 
@@ -239,7 +257,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 
   const dtoUpdate: RecipeUpdateDtoInput = {
-    id: props.recipeId,
+    id: recipeId.value,
     ...dto,
   };
 
@@ -255,8 +273,8 @@ const onSubmit = form.handleSubmit(async (values) => {
     title: "Das Rezept wurde aktualisiert",
     description: values.name,
   });
-  if (props.recipeId) {
-    await goBack(props.recipeId);
+  if (recipeId.value) {
+    await goBack(recipeId.value);
   }
 });
 
@@ -283,6 +301,13 @@ const defaultProduct: ProductObjType = {
 const resetForm = () => {
   store.setShouldValidate(false);
   form.resetForm();
+  if (!recipeId.value) {
+    descriptions.value = [];
+    headersProductArray.value = [];
+    productArray.value = [];
+    form.setValues(getRecipeProductObj());
+    return;
+  }
   form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
   descriptions.value = recipe.value?.recipeDescriptions.map((d, index) => ({ ...d, positionByCreate: index })) ?? [
@@ -325,9 +350,14 @@ watchEffect(() => {
 });
 const nextDescriptionIndex = ref(0);
 const addDescription = () => {
-  const copy = [...descriptions.value];
-  const newItem: IRecipeDescriptionCreateOrUpdate = { position: copy.length, text: "", header: "", positionByCreate: nextDescriptionIndex.value };
-  descriptions.value = [...copy, newItem];
+  const descriptionsCopy = [...descriptions.value];
+  const newItem: IRecipeDescriptionCreateOrUpdate = {
+    position: descriptionsCopy.length,
+    text: "",
+    header: "",
+    positionByCreate: nextDescriptionIndex.value,
+  };
+  descriptions.value = [...descriptionsCopy, newItem];
   nextDescriptionIndex.value++;
 };
 </script>

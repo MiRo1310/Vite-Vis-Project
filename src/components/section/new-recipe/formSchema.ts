@@ -20,7 +20,7 @@ export const productSchema = z.object({
 });
 
 export const fields = {
-  name: z.string("Gib einen Rezeptnamen an").min(1).max(255),
+  name: z.string("Gib einen Rezeptnamen an").min(1, "Mindestlänge: 1").max(255),
   portions: z.number("Gib einen Wert ein").min(1).max(255),
   descriptions: z.array(description).optional().nullable(),
   headersProductArray: z.array(textPositionObj).optional(),
