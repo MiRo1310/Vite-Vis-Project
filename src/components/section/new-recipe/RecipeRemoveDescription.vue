@@ -19,8 +19,6 @@ const removeDescription = () => {
       descriptionsToDelete.value.push(id);
     }
     const copy = [...descriptions.value];
-    console.log(id);
-    console.log(copy.length);
 
     descriptions.value = copy.filter((d) => d.positionByCreate !== positionByCreate);
   }
