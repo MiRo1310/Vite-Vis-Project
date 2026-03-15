@@ -29,9 +29,7 @@ import { removeProductGroups } from "@/components/section/new-recipe/removeProdu
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
 const router = useRouter();
-// TODO Woher kommt id ? Wird nicht gebraucht da es der gleiche Wert wie recipeId ist
-//eslint-disable-next-line vue/no-unused-properties
-const props = defineProps<{ recipeId?: string; id?: string }>();
+const props = defineProps<{ recipeId?: string }>();
 
 const { toast } = useToast();
 const { mutate } = useMutation(
@@ -43,6 +41,7 @@ const { mutate } = useMutation(
     }
   `),
 );
+
 const { mutate: updateMutate } = useMutation(
   graphql(`
     mutation updateRecipe($dto: RecipeUpdateDtoInput!) {
@@ -106,6 +105,7 @@ onResult((result: OnResult<GetRecipeByIdQuery>) => {
   updateValue.value = true;
 });
 
+//TODO saveRecipeToStore wird nicht mehr verwendet
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
 const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
@@ -113,18 +113,20 @@ const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
 onMounted(async () => {
   const recipe = getRecipeFromStore;
 
-  if (recipe && !(props.recipeId === "new")) {
+  if (recipe && !props.recipeId) {
     setValuesToForm(recipe);
   }
 
-  if (props.recipeId && props.recipeId !== "undefined") {
+  if (props.recipeId) {
     await load(getRecipeByIdQuery, { id: props.recipeId });
   }
 });
 
 const form = useForm({
   validationSchema: formSchema,
+  initialValues: { portions: 1 },
 });
+
 const { values } = form;
 
 const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
@@ -169,7 +171,7 @@ const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   return { name, portions: recipe.portions ?? 1, recipeDescriptions, recipeHeaderProducts, recipeProducts };
 };
 
-const setValuesToForm = (recipe?: RecipeType) => {
+const setValuesToForm = (recipe: RecipeType) => {
   if (!recipe) {
     return;
   }
@@ -210,8 +212,6 @@ const removeNewIdForMutate = (productArray: typeof form.values.productArray): ty
 const descriptionsToDelete = ref<string[]>([]);
 
 const onSubmit = form.handleSubmit(async (values) => {
-  //TODO das new darf nicht in der id stehen
-
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
@@ -221,7 +221,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   };
   Logger("Submit dto", { value: dto });
 
-  if (props.recipeId === "new" || props.recipeId === "undefined" || !props.recipeId) {
+  if (!props.recipeId) {
     Logger("Creating new recipe");
     const result = await mutate({ dto });
 

@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 
-const textPositionObj = z.object({ position: z.number(), text: z.string(), id: z.string().optional() });
+const textPositionObj = z.object({ position: z.number().default(0), text: z.string(), id: z.string().optional() });
 const description = z.object({
   position: z.number(),
   text: z.string(),

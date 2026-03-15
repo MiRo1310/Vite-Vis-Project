@@ -4,7 +4,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 
-const recipeId = String(route.params.id);
+const recipeId = route.params.id as string | undefined;
 </script>
 
 <template>

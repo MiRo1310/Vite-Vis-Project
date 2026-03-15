@@ -15,7 +15,7 @@ const props = defineProps<{
   index: number;
   product?: ProductObjType;
   countedProducts: number;
-  recipe: GetRecipeByIdQuery["recipe"];
+  recipe?: GetRecipeByIdQuery["recipe"] | null;
   groupIndex: number;
   form: TForm;
 }>();
@@ -72,7 +72,7 @@ const open = ref(false);
     <slot />
     <Dialog v-if="product" v-model:open="open">
       <DialogTrigger>
-        <Pencil class="size-4" />
+        <Pencil class="size-4 cursor-pointer" />
         <DialogContent>
           <RecipeProductDialogContent
             :product
