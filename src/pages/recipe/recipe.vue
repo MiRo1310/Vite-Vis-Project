@@ -32,7 +32,6 @@ const selected = ref("");
     <div class="flex justify-between items-center gap-2">
       <div class="flex gap-2 items-center">
         <RecipeSelection v-model:selected="selected" v-model:selected-name="selectedName" class="w-80" @update:selected="updateSelect" />
-        <RecipeAddNew />
       </div>
       <div id="recipe" />
     </div>

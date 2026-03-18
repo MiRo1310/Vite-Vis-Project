@@ -5,6 +5,8 @@ import { onMounted, ref, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { graphql } from "@/api/gql";
+import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
+import { Button } from "@/components/shared/button";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -88,6 +90,9 @@ onMounted(async () => {
   <Teleport v-if="isRecipeElementPresent" to="#recipe">
     <div class="flex items-center gap-2">
       <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
+      <DeleteRecipe :recipe-id="recipeId">
+        <Button variant="outline" size="icon" icon="remove" />
+      </DeleteRecipe>
     </div>
   </Teleport>
   <RecipeContent :recipe="result?.recipe" />

@@ -4,8 +4,8 @@ import { graphql } from "@/api/gql";
 import { useQuery } from "@vue/apollo-composable";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import Header from "@/components/section/header/Header.vue";
-import AddUnit from "@/components/section/recipe/Units/AddUnit.vue";
-import UnitAction from "@/components/section/recipe/Units/UnitAction.vue";
+import AddUnit from "@/components/section/recipe/units/AddUnit.vue";
+import UnitAction from "@/components/section/recipe/units/UnitAction.vue";
 import { GetUnitsQuery } from "@/api/gql/graphql.ts";
 
 const { result } = useQuery(

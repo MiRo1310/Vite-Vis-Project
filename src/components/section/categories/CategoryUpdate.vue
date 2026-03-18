@@ -57,7 +57,7 @@ const name = ref(props.row.original.name ?? "");
       <div class="mt-4 flex flex-col gap-4">
         <Input type="text" placeholder="Einheit" v-model:model-value="name" />
       </div>
-      <DialogFooterActions variant="update" @close="dialogUpdateOpen = false" @update="update" />
+      <DialogFooterActions naming-buttons="update" @close="dialogUpdateOpen = false" @update="update" />
     </template>
   </Dialog>
 </template>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shared/button";
+import { ButtonVariants } from "@/components/shared/button/Button.vue";
 
-defineProps<{ variant: keyof typeof variants }>();
+withDefaults(defineProps<{ namingButtons: keyof typeof buttons; variant?: keyof ButtonVariants["variant"] }>(), { variant: "outline" });
 
 const emit = defineEmits(["update", "close"]);
 
-const variants = {
+const buttons = {
   update: {
     action: "Aktualisieren",
     close: "Schließen",
@@ -19,7 +20,7 @@ const variants = {
 
 <template>
   <div class="flex gap-4 justify-end">
-    <Button variant="outline" @click="emit('update')">{{ variants[variant].action }}</Button>
-    <Button variant="default" @click="emit('close')">{{ variants[variant].close }}</Button>
+    <Button :variant @click="emit('update')" class="w-24">{{ buttons[namingButtons].action }}</Button>
+    <Button variant="default" @click="emit('close')" class="w-24">{{ buttons[namingButtons].close }}</Button>
   </div>
 </template>

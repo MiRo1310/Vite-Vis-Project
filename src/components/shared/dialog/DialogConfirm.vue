@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import DialogFooterActions from "@/components/section/categories/DialogFooterActions.vue";
+import { ButtonVariants } from "@/components/shared/button/Button.vue";
 
-defineProps<{ title?: string; description?: string }>();
+withDefaults(defineProps<{ title?: string; description?: string; variant?: keyof ButtonVariants["variant"] }>(), { variant: "outline" });
 const emits = defineEmits(["update:confirm"]);
 
 const dialogOpen = defineModel<boolean>("dialogOpen");
@@ -24,7 +25,7 @@ const confirm = () => {
       </DialogHeader>
 
       <DialogFooter>
-        <DialogFooterActions variant="confirm" @close="dialogOpen = false" @update="confirm" />
+        <DialogFooterActions namingButtons="confirm" @close="dialogOpen = false" @update="confirm" :variant />
       </DialogFooter>
     </DialogContent>
   </Dialog>
