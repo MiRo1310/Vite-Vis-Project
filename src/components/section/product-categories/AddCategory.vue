@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ErrorCode, ProductCategoriesQuery } from "@/api/gql/graphql";
+import { ErrorCode, ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";

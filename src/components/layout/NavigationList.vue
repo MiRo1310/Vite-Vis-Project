@@ -15,7 +15,8 @@ const buttons: NavigationButtons[] = [
   { label: "Rezept erstellen", name: routes.newRecipe.name },
   { label: "Produkte", name: routes.recipeProducts.name },
   { label: "Einheiten", name: routes.recipeUnits.name },
-  { label: "Kategorien", name: routes.recipeCategories.name },
+  { label: "Produkt Kategorien", name: routes.productCategories.name },
+  { label: "Rezept Kategorien", name: routes.recipeCategories.name },
 ];
 </script>
 

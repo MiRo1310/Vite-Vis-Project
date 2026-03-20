@@ -7,7 +7,7 @@ import { ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { Row } from "@tanstack/vue-table";
 import { TableColumnProps } from "@/types/types.ts";
-import DialogFooterActions from "@/components/section/categories/DialogFooterActions.vue";
+import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 
 const props = defineProps<TableColumnProps<string, Row<ProductCategoriesQuery["productCategories"][number]>>>();

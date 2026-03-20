@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import DialogFooterActions from "@/components/section/categories/DialogFooterActions.vue";
+import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
 import { ButtonVariants } from "@/components/shared/button/Button.vue";
 
 withDefaults(defineProps<{ title?: string; description?: string; variant?: keyof ButtonVariants["variant"] }>(), { variant: "outline" });
