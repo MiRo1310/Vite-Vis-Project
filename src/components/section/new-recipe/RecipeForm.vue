@@ -25,6 +25,7 @@ import { removeDescriptions } from "@/components/section/new-recipe/removeDescri
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
 import { removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
+import RecipeCategoryFormSelect from "@/components/section/new-recipe/RecipeCategoryFormSelect.vue";
 
 type RecipeType = GetRecipeByIdQuery["recipe"];
 
@@ -62,6 +63,9 @@ const getRecipeByIdQuery = graphql(`
       createdAt
       modifiedAt
       portions
+      recipeCategoryId
+      preparationTimeMin
+      totalTimeMin
       recipeProducts {
         amount
         description
@@ -180,13 +184,16 @@ const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
     return {
       name: "",
       portions: 1,
+      recipeCategoryId: null,
+      preparationTimeMin: null,
+      totalTimeMin: null,
       recipeDescriptions: [],
       recipeHeaderProducts: [],
       recipeProducts: [],
     };
   }
-  const { name, recipeDescriptions, recipeHeaderProducts, recipeProducts } = recipe;
-  return { name, portions: recipe.portions ?? 1, recipeDescriptions, recipeHeaderProducts, recipeProducts };
+  const { portions, ...rest } = recipe;
+  return { portions: portions ?? 1, ...rest };
 };
 
 const setValuesToForm = (recipe: RecipeType) => {
@@ -233,6 +240,9 @@ const onSubmit = form.handleSubmit(async (values) => {
   const dto: RecipeCreateDtoInput = {
     name: values.name,
     portions: values.portions ?? 0,
+    preparationTimeMin: values.preparationTimeMin ?? null,
+    totalTimeMin: values.totalTimeMin ?? null,
+    recipeCategoryId: values.recipeCategoryId ?? null,
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
     recipeProducts: removeNewIdForMutate(values.productArray),
@@ -367,9 +377,13 @@ const addDescription = () => {
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
       <div class="flex w-full h-full gap-2">
         <div class="flex-col flex-1 h-full">
-          <div class="flex gap-2">
-            <FormInput label="Rezeptname" name="name" class="flex-1" />
+          <FormInput label="Rezeptname" name="name" class="flex-1" />
+
+          <div class="flex gap-2 items-center">
             <FormInput label="Portionen" name="portions" type="number" />
+            <FormInput label="Zubereitungszeit (min)" name="preparationTimeMin" type="number" />
+            <FormInput label="Gesamtzeit (min)" name="totalTimeMin" type="number" />
+            <RecipeCategoryFormSelect />
           </div>
 
           <div

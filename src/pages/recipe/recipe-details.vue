@@ -87,13 +87,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Teleport v-if="isRecipeElementPresent" to="#recipe">
-    <div class="flex items-center gap-2">
-      <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
-      <DeleteRecipe :recipe-id="recipeId">
-        <Button variant="outline" size="icon" icon="remove" />
-      </DeleteRecipe>
-    </div>
-  </Teleport>
+  <div class="flex items-center gap-2 justify-end">
+    <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
+    <DeleteRecipe :recipe-id="recipeId">
+      <Button variant="outline" size="icon" icon="remove" />
+    </DeleteRecipe>
+  </div>
+
   <RecipeContent :recipe="result?.recipe" />
 </template>

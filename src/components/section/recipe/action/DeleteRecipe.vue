@@ -25,7 +25,7 @@ const removeRecipe = async () => {
   }
   const result = await mutate({ id: props.recipeId });
   if (result) {
-    await router.push({ name: routes.recipe.name });
+    await router.push({ name: routes.recipes.name });
   }
 };
 </script>

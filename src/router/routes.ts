@@ -14,7 +14,7 @@ export const routes = {
   logs: { path: "/logs", name: "logs" },
   pv: { path: "/pv", name: "pv" },
   recipeApp: { path: "/recipe-app", name: "recipe-app" },
-  recipe: { path: "/rezepte", name: "recipe" },
+  recipes: { path: "/rezepte", name: "recipes" },
   recipeDetails: { path: "/rezepte/:recipeId", name: "recipe-details" },
   recipeProducts: { path: "/produkte", name: "products" },
   product: { path: "/produkt/:id", name: "product" },
@@ -48,7 +48,7 @@ export const routing = [
     ],
   },
   {
-    redirect: { name: routes.recipe.name },
+    redirect: { name: routes.recipes.name },
     component: async () => await import("@/pages/recipe/recipe-app.vue"),
     ...routes.recipeApp,
     children: [
@@ -59,11 +59,8 @@ export const routing = [
       { component: () => import("@/pages/recipe/product.vue"), props: true, ...routes.product },
       { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
       { component: () => import("@/pages/recipe/categories.vue"), ...routes.recipeCategories },
-      {
-        component: () => import("@/pages/recipe/recipe.vue"),
-        children: [{ component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routes.recipeDetails }],
-        ...routes.recipe,
-      },
+      { component: () => import("@/pages/recipe/recipes.vue"), ...routes.recipes },
+      { component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routes.recipeDetails },
       { props: true, component: () => import("@/pages/recipe/new-recipe.vue"), ...routes.newRecipe },
     ],
   },
