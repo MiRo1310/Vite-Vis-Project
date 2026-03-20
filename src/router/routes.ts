@@ -58,7 +58,7 @@ export const routing = [
       },
       { component: () => import("@/pages/recipe/product.vue"), props: true, ...routes.product },
       { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
-      { component: () => import("@/pages/recipe/categories.vue"), ...routes.recipeCategories },
+      { component: () => import("@/pages/recipe/product-categories.vue"), ...routes.recipeCategories },
       { component: () => import("@/pages/recipe/recipes.vue"), ...routes.recipes },
       { component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routes.recipeDetails },
       { props: true, component: () => import("@/pages/recipe/new-recipe.vue"), ...routes.newRecipe },

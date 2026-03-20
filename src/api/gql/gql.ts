@@ -28,7 +28,6 @@ type Documents = {
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": typeof types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateTravelCostDocument,
     "\n    query productUnits {\n      productUnits {\n        id\n        unit\n      }\n    }\n  ": typeof types.ProductUnitsDocument,
-    "\n    query getRecipeCategories {\n      recipeCategories {\n        name\n        id\n      }\n    }\n  ": typeof types.GetRecipeCategoriesDocument,
     "\n    mutation addRecipe($dto: RecipeCreateDtoInput!) {\n      createRecipe(dto: $dto) {\n        id\n      }\n    }\n  ": typeof types.AddRecipeDocument,
     "\n    mutation updateRecipe($dto: RecipeUpdateDtoInput!) {\n      updateRecipe(dto: $dto) {\n        id\n      }\n    }\n  ": typeof types.UpdateRecipeDocument,
     "\n  query getRecipeById($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      createdAt\n      modifiedAt\n      portions\n      recipeCategoryId\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        productId\n        groupPosition\n        unit\n        id\n        kcal\n        activeUnitId\n        sortOrder\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        id\n        header\n      }\n      recipeHeaderProducts {\n        id\n        position\n        recipeId\n        text\n      }\n    }\n  }\n": typeof types.GetRecipeByIdDocument,
@@ -50,6 +49,7 @@ type Documents = {
     "\n    mutation DeleteUnit($id: UUID!) {\n      deleteUnit(id: $id)\n    }\n  ": typeof types.DeleteUnitDocument,
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateUnitDocument,
     "\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
+    "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
     "\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
@@ -75,7 +75,6 @@ const documents: Documents = {
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateTravelCostDocument,
     "\n    query productUnits {\n      productUnits {\n        id\n        unit\n      }\n    }\n  ": types.ProductUnitsDocument,
-    "\n    query getRecipeCategories {\n      recipeCategories {\n        name\n        id\n      }\n    }\n  ": types.GetRecipeCategoriesDocument,
     "\n    mutation addRecipe($dto: RecipeCreateDtoInput!) {\n      createRecipe(dto: $dto) {\n        id\n      }\n    }\n  ": types.AddRecipeDocument,
     "\n    mutation updateRecipe($dto: RecipeUpdateDtoInput!) {\n      updateRecipe(dto: $dto) {\n        id\n      }\n    }\n  ": types.UpdateRecipeDocument,
     "\n  query getRecipeById($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      createdAt\n      modifiedAt\n      portions\n      recipeCategoryId\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        productId\n        groupPosition\n        unit\n        id\n        kcal\n        activeUnitId\n        sortOrder\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        id\n        header\n      }\n      recipeHeaderProducts {\n        id\n        position\n        recipeId\n        text\n      }\n    }\n  }\n": types.GetRecipeByIdDocument,
@@ -97,6 +96,7 @@ const documents: Documents = {
     "\n    mutation DeleteUnit($id: UUID!) {\n      deleteUnit(id: $id)\n    }\n  ": types.DeleteUnitDocument,
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateUnitDocument,
     "\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
+    "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
     "\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
@@ -181,10 +181,6 @@ export function graphql(source: "\n    query productUnits {\n      productUnits 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query getRecipeCategories {\n      recipeCategories {\n        name\n        id\n      }\n    }\n  "): (typeof documents)["\n    query getRecipeCategories {\n      recipeCategories {\n        name\n        id\n      }\n    }\n  "];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function graphql(source: "\n    mutation addRecipe($dto: RecipeCreateDtoInput!) {\n      createRecipe(dto: $dto) {\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation addRecipe($dto: RecipeCreateDtoInput!) {\n      createRecipe(dto: $dto) {\n        id\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -266,6 +262,10 @@ export function graphql(source: "\n    mutation UpdateUnit($id: UUID!, $name: St
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

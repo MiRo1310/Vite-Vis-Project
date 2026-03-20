@@ -2,19 +2,9 @@
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { computed } from "vue";
 import { SelectOption } from "@/types/types.ts";
-import { useQuery } from "@vue/apollo-composable";
-import { graphql } from "@/api/gql";
+import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
-const { result } = useQuery(
-  graphql(`
-    query getRecipeCategories {
-      recipeCategories {
-        name
-        id
-      }
-    }
-  `),
-);
+const { result } = useRecipeCategories();
 
 const options = computed(() => {
   return (
