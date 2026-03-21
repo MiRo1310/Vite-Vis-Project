@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ErrorCode, ProductCategoriesQuery } from "@/api/gql/graphql";
+import { ErrorCode, RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
 import { isDefined } from "@vueuse/core";
-import { useProductCategories } from "@/composables/querys/productCategories.ts";
+import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
-const { reload } = useProductCategories();
-
-const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] }>();
+const props = defineProps<{ result: RecipeCategoriesQuery["recipeCategories"] }>();
 
 const update = defineModel<boolean>("update", { default: false });
 
 const { mutate } = useMutation(
   graphql(`
-    mutation addCategory($name: String!) {
-      createProductCategory(dto: { name: $name }) {
+    mutation addRecipeCategory($name: String!) {
+      createRecipeCategory(dto: { name: $name }) {
         data {
           id
           name
@@ -27,7 +25,7 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["productCategories"], awaitRefetchQueries: true },
+  { refetchQueries: ["recipeCategories"], awaitRefetchQueries: true },
 );
 
 watch(update, (newVal) => {
@@ -56,14 +54,14 @@ async function addNewCategory(): Promise<void> {
   } else {
     result = await mutate({ name: newCategory.value });
   }
-  await reload();
+  await useRecipeCategories().reload();
 
   if (result?.data) {
     newCategory.value = "";
     existInDb.value = false;
   }
 
-  if (result?.data?.createProductCategory.errorCode === ErrorCode.Exist) {
+  if (result?.data?.createRecipeCategory.errorCode === ErrorCode.Exist) {
     existInDb.value = true;
   }
 }

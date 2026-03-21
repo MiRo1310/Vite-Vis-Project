@@ -57,7 +57,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
   { icon: Logs, text: "Logs", to: routes.logs.path },
   { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
-  { icon: Utensils, text: "Rezepte", to: routes.recipe.path },
+  { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
 ]);
 </script>
 

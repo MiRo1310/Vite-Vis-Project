@@ -11,11 +11,12 @@ interface NavigationButtons {
 
 const buttons: NavigationButtons[] = [
   { label: "VIS", name: routes.home.name },
-  { label: "Rezepte", name: routes.recipe.name },
+  { label: "Rezepte", name: routes.recipes.name },
   { label: "Rezept erstellen", name: routes.newRecipe.name },
   { label: "Produkte", name: routes.recipeProducts.name },
   { label: "Einheiten", name: routes.recipeUnits.name },
-  { label: "Kategorien", name: routes.recipeCategories.name },
+  { label: "Produkt Kategorien", name: routes.productCategories.name },
+  { label: "Rezept Kategorien", name: routes.recipeCategories.name },
 ];
 </script>
 

@@ -1,5 +1,4 @@
 import { useLazyQuery, useApolloClient } from "@vue/apollo-composable";
-
 import { computed, onMounted } from "vue";
 import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
@@ -7,20 +6,20 @@ import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
 import { invalidateCache as invalidate } from "@/composables/querys/utils.ts";
 
-let productCategoriesFunction: null | ReturnType<typeof productCategoriesComposable> = null;
+let recipeCategoriesFunction: null | ReturnType<typeof recipeCategoriesComposable> = null;
 
-export const useProductCategories = () => {
-  if (!productCategoriesFunction) {
-    productCategoriesFunction = productCategoriesComposable();
+export const useRecipeCategories = () => {
+  if (!recipeCategoriesFunction) {
+    recipeCategoriesFunction = recipeCategoriesComposable();
   }
-  return productCategoriesFunction;
+  return recipeCategoriesFunction;
 };
 
-const productCategoriesComposable = () => {
+const recipeCategoriesComposable = () => {
   const { load, result, refetch } = useLazyQuery(
     graphql(`
-      query productCategories {
-        productCategories {
+      query recipeCategories {
+        recipeCategories {
           id
           name
         }
@@ -35,13 +34,13 @@ const productCategoriesComposable = () => {
     await load();
   });
 
-  const selectableOptions = computed((): SelectOption[] => getSelectableOptions(result.value?.productCategories));
+  const selectableOptions = computed((): SelectOption[] => getSelectableOptions(result.value?.recipeCategories));
 
-  const isResult = computed(() => result.value?.productCategories?.length && result.value.productCategories.length > 0);
-  const length = computed(() => result.value?.productCategories?.length);
+  const isResult = computed(() => result.value?.recipeCategories?.length && result.value.recipeCategories.length > 0);
+  const length = computed(() => result.value?.recipeCategories?.length);
 
-  const getCategoryNameById = (id: string): string => computed(() => getNameById(id, result.value?.productCategories)).value;
-  const getCategoryIdByName = (name: string): string => computed(() => getIdByName(name, result.value?.productCategories)).value;
+  const getCategoryNameById = (id: string): string => computed(() => getNameById(id, result.value?.recipeCategories)).value;
+  const getCategoryIdByName = (name: string): string => computed(() => getIdByName(name, result.value?.recipeCategories)).value;
 
   const reload = async () => {
     await invalidateCache();
@@ -49,8 +48,9 @@ const productCategoriesComposable = () => {
 
     await refetch();
   };
+
   const invalidateCache = async () => {
-    await invalidate(client, "productCategories");
+    await invalidate(client, "recipeCategories");
   };
 
   return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result };

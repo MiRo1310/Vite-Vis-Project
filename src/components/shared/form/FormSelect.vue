@@ -26,11 +26,13 @@ withDefaults(
 </script>
 
 <template>
-  <FormField v-slot="{ componentField }" :name>
+  <FormField v-slot="{ componentField }" :name="name">
     <FormItem :class="$props.class">
-      <FormLabel>{{ label }}</FormLabel>
+      <FormLabel v-if="label" class="flex justify-between">
+        <span>{{ label }}</span>
+      </FormLabel>
       <FormControl>
-        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width :disabled />
+        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width :disabled class="w-full" />
       </FormControl>
       <FormDescription />
       <FormMessage />

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
 import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { graphql } from "@/api/gql";
+import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
+import { Button } from "@/components/shared/button";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -15,6 +17,8 @@ const recipeDetailsQuery = graphql(`
       name
       portions
       totalKcal
+      preparationTimeMin
+      totalTimeMin
       recipeProducts {
         amount
         description
@@ -68,27 +72,32 @@ watch(
   () => loadRecipeFromServer(),
 );
 
-const isRecipeElementPresent = ref(false);
-
 onMounted(async () => {
   await loadRecipeFromServer();
-
-  const checkElement = () => {
-    if (document.getElementById("recipe")) {
-      isRecipeElementPresent.value = true;
-    } else {
-      requestAnimationFrame(checkElement);
-    }
-  };
-  checkElement();
 });
 </script>
 
 <template>
-  <Teleport v-if="isRecipeElementPresent" to="#recipe">
+  <div class="flex items-center gap-2 justify-between">
+    <div class="flex items-center gap-6 text-xs text-blue-200">
+      <span
+        >Zubereitungszeit:
+        <span v-if="result?.recipe?.preparationTimeMin">{{ result?.recipe?.preparationTimeMin }} min</span>
+        <span v-else> - </span>
+      </span>
+      <span>
+        Gesamtzeit:
+        <span v-if="result?.recipe?.totalTimeMin">{{ result?.recipe?.totalTimeMin }} min</span>
+        <span v-else> - </span>
+      </span>
+    </div>
     <div class="flex items-center gap-2">
       <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
+      <DeleteRecipe :recipe-id="recipeId">
+        <Button variant="outline" size="icon" icon="remove" />
+      </DeleteRecipe>
     </div>
-  </Teleport>
+  </div>
+
   <RecipeContent :recipe="result?.recipe" />
 </template>

@@ -74,7 +74,7 @@ const clear = () => {
 };
 
 onMounted(() => {
-  modelValue.value = props.row.original.address.name ?? "";
+  modelValue.value = props.row.original.address?.name ?? "";
 });
 
 const dialogOpen = ref(false);
@@ -109,5 +109,3 @@ const modelValue = ref("");
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss"></style>

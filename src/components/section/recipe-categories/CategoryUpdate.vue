@@ -7,15 +7,15 @@ import { ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { Row } from "@tanstack/vue-table";
 import { TableColumnProps } from "@/types/types.ts";
-import DialogFooterActions from "@/components/section/categories/DialogFooterActions.vue";
-import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
+import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
+import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 
-const props = defineProps<TableColumnProps<string, Row<ProductCategoriesQuery["productCategories"][number]>>>();
+const props = defineProps<TableColumnProps<string, Row<RecipeCategoriesQuery["recipeCategories"][number]>>>();
 
 const { mutate } = useMutation(
   graphql(`
-    mutation UpdateProductCategory($id: UUID!, $name: String!) {
-      updateProductCategory(dto: { name: $name, id: $id }) {
+    mutation UpdateRecipeCategory($id: UUID!, $name: String!) {
+      updateRecipeCategory(dto: { name: $name, id: $id }) {
         id
       }
     }
@@ -33,7 +33,7 @@ const update = () => {
       name: name.value,
     },
     {
-      refetchQueries: ["productCategories"],
+      refetchQueries: ["recipeCategories"],
     },
   );
   clear();
@@ -55,9 +55,9 @@ const name = ref(props.row.original.name ?? "");
     <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
-        <Input type="text" placeholder="Einheit" v-model:model-value="name" />
+        <Input type="text" placeholder="Kategorie" v-model:model-value="name" />
       </div>
-      <DialogFooterActions variant="update" @close="dialogUpdateOpen = false" @update="update" />
+      <DialogFooterActions naming-buttons="update" @close="dialogUpdateOpen = false" @update="update" />
     </template>
   </Dialog>
 </template>

@@ -8,7 +8,7 @@ defineProps<TableColumnProps<string, Row<TravelCostQuery["travelCost"][number]>,
 
 <template>
   <div class="text-muted-foreground">
-    <p>{{ row.original.address.name }}</p>
-    <p>{{ row.original.address.street }} , {{ row.original.address.city }}</p>
+    <p>{{ row.original.address?.name }}</p>
+    <p>{{ row.original.address?.street }} , {{ row.original.address?.city }}</p>
   </div>
 </template>
