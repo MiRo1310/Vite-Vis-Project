@@ -144,7 +144,7 @@ const isValid = computed(() => (product: ProductObjType) => {
 </script>
 
 <template>
-  <FormInput :name="`headersProductArray.${groupIndex}.text`" />
+  <FormInput :name="`headersProductArray.${groupIndex}.text`" placeholder="Beschreibung" />
   <div
     v-for="(product, index) in filteredProductsByGroupPosition"
     :key="index"

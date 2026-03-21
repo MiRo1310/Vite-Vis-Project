@@ -6,16 +6,16 @@ import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
 import { invalidateCache as invalidate } from "@/composables/querys/utils.ts";
 
-let productCategoriesFunction: null | ReturnType<typeof productCategoriesComposable> = null;
+let recipeCategoriesFunction: null | ReturnType<typeof recipeCategoriesComposable> = null;
 
 export const useRecipeCategories = () => {
-  if (!productCategoriesFunction) {
-    productCategoriesFunction = productCategoriesComposable();
+  if (!recipeCategoriesFunction) {
+    recipeCategoriesFunction = recipeCategoriesComposable();
   }
-  return productCategoriesFunction;
+  return recipeCategoriesFunction;
 };
 
-const productCategoriesComposable = () => {
+const recipeCategoriesComposable = () => {
   const { load, result, refetch } = useLazyQuery(
     graphql(`
       query recipeCategories {

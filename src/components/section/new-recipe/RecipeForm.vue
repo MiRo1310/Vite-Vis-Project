@@ -192,8 +192,17 @@ const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
       recipeProducts: [],
     };
   }
-  const { portions, ...rest } = recipe;
-  return { portions: portions ?? 1, ...rest };
+  const { portions, recipeProducts, name, totalTimeMin, recipeHeaderProducts, recipeDescriptions, recipeCategoryId, preparationTimeMin } = recipe;
+  return {
+    portions: portions ?? 1,
+    recipeProducts,
+    recipeHeaderProducts,
+    recipeCategoryId,
+    totalTimeMin,
+    preparationTimeMin,
+    recipeDescriptions,
+    name,
+  };
 };
 
 const setValuesToForm = (recipe: RecipeType) => {
@@ -404,7 +413,7 @@ const addDescription = () => {
         </div>
 
         <div class="w-120">
-          <RecipeFormFooter @abort="resetForm" />
+          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="backToRecipe" />
           <div v-for="oneBasedIndex in store.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
@@ -419,7 +428,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <RecipeFormFooter @abort="resetForm" class="mt-2" />
+      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="backToRecipe" />
     </Form>
   </div>
 </template>

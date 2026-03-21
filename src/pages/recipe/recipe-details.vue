@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
 import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { graphql } from "@/api/gql";
@@ -17,6 +17,8 @@ const recipeDetailsQuery = graphql(`
       name
       portions
       totalKcal
+      preparationTimeMin
+      totalTimeMin
       recipeProducts {
         amount
         description
@@ -70,28 +72,31 @@ watch(
   () => loadRecipeFromServer(),
 );
 
-const isRecipeElementPresent = ref(false);
-
 onMounted(async () => {
   await loadRecipeFromServer();
-
-  const checkElement = () => {
-    if (document.getElementById("recipe")) {
-      isRecipeElementPresent.value = true;
-    } else {
-      requestAnimationFrame(checkElement);
-    }
-  };
-  checkElement();
 });
 </script>
 
 <template>
-  <div class="flex items-center gap-2 justify-end">
-    <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
-    <DeleteRecipe :recipe-id="recipeId">
-      <Button variant="outline" size="icon" icon="remove" />
-    </DeleteRecipe>
+  <div class="flex items-center gap-2 justify-between">
+    <div class="flex items-center gap-6 text-xs text-blue-200">
+      <span
+        >Zubereitungszeit:
+        <span v-if="result?.recipe?.preparationTimeMin">{{ result?.recipe?.preparationTimeMin }} min</span>
+        <span v-else> - </span>
+      </span>
+      <span>
+        Gesamtzeit:
+        <span v-if="result?.recipe?.totalTimeMin">{{ result?.recipe?.totalTimeMin }} min</span>
+        <span v-else> - </span>
+      </span>
+    </div>
+    <div class="flex items-center gap-2">
+      <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
+      <DeleteRecipe :recipe-id="recipeId">
+        <Button variant="outline" size="icon" icon="remove" />
+      </DeleteRecipe>
+    </div>
   </div>
 
   <RecipeContent :recipe="result?.recipe" />

@@ -7,7 +7,7 @@ defineProps<{ descriptions: DescriptionType }>();
 </script>
 
 <template>
-  <div class="w-[50%] rounded-lg" v-component="'RecipeTexts'">
+  <div class="w-[60%] rounded-lg" v-component="'RecipeTexts'">
     <template v-for="(description, index) in [...descriptions].sort((a, b) => a.position - b.position)" :key="index">
       <p class="font-bold text-accent-foreground mb-2 mt-2 2xl:text-xl text-xl first:mt-0">
         {{ description?.header }}

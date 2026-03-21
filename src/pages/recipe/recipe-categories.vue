@@ -2,11 +2,11 @@
 import Header from "@/components/section/header/Header.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import AddCategory from "@/components/section/product-categories/AddCategory.vue";
+import AddCategory from "@/components/section/recipe-categories/AddCategory.vue";
 import { ref } from "vue";
-import CategoryUpdate from "@/components/section/product-categories/CategoryUpdate.vue";
+import CategoryUpdate from "@/components/section/recipe-categories/CategoryUpdate.vue";
 import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
-import CategoryRemove from "@/components/section/product-categories/CategoryRemove.vue";
+import CategoryRemove from "@/components/section/recipe-categories/CategoryRemove.vue";
 import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
 const { result } = useRecipeCategories();

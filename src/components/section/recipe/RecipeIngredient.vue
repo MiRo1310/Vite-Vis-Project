@@ -3,6 +3,7 @@ import RecipeProductProperties from "@/components/section/recipe/RecipeProductPr
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
+import { routes } from "@/router/routes.ts";
 
 type Ingredient = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number];
 
@@ -24,7 +25,9 @@ const calculatedKcal = computed(() => {
     <div class="flex justify-between">
       <div class="flex items-baseline space-x-4">
         <div class="ml-6 flex items-baseline space-x-4 min-w-80">
-          <p class="text-muted-foreground text-sm">{{ ingredient?.product?.name }}</p>
+          <RouterLink :to="{ name: routes.product.name, params: { id: ingredient.productId } }" class="flex"
+            ><span class="text-sm underline">{{ ingredient?.product?.name }}</span>
+          </RouterLink>
           <p class="text-xs">{{ ingredient?.description }}</p>
         </div>
       </div>
