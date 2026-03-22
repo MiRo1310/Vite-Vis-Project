@@ -12,7 +12,7 @@ const props = defineProps<{ recipe: RecipeType }>();
 const customPortions = ref(props.recipe?.portions ?? 1);
 const portions = ref(props.recipe?.portions ?? 1);
 
-const getTotalKcal = computed(() => ((props.recipe?.totalKcal ?? 0) / portions.value).toFixed(2));
+const getTotalKcal = computed(() => Math.ceil((props.recipe?.totalKcal ?? 0) / portions.value));
 
 const getTotalKcalForSection = computed(
   () =>
@@ -53,7 +53,7 @@ const groupByGroupPosition = computed(() => {
         <p v-if="recipe?.recipeHeaderProducts" class="font-semibold underline">
           {{ recipe.recipeHeaderProducts.find((h) => h.position === index)?.text }}
         </p>
-        <Badge :value="getTotalKcalForSection(ingredients) / portions" unit="kcal/p" />
+        <Badge :value="Math.ceil(getTotalKcalForSection(ingredients) / portions)" unit="kcal/p" />
       </div>
       <div v-for="(ingredient, i) in ingredients" :key="i">
         <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />
