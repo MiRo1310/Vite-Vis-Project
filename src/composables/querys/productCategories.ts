@@ -5,7 +5,7 @@ import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
-import { invalidateCache as invalidate } from "@/composables/querys/utils.ts";
+import { invalidateCache as invalidateCacheFn } from "@/composables/querys/utils.ts";
 
 let productCategoriesFunction: null | ReturnType<typeof productCategoriesComposable> = null;
 
@@ -50,7 +50,7 @@ const productCategoriesComposable = () => {
     await refetch();
   };
   const invalidateCache = async () => {
-    await invalidate(client, "productCategories");
+    await invalidateCacheFn(client, "productCategories");
   };
 
   return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result };
