@@ -209,11 +209,10 @@ const setValuesToForm = (recipe: RecipeType) => {
   }
   form.setValues(getRecipeProductObj(recipe));
 
-  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions)
-    .sort((a, b) => a.position - b.position)
-    .map((d, index) => ({ ...d, positionByCreate: index }));
+  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.recipeDescriptions));
+
   nextDescriptionIndex.value = descriptions.value.length;
-  headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts).sort((a, b) => a.position - b.position);
+  headersProductArray.value = sortHeaderProductsByPosition(getTextPositionTypeFromResult(recipe.recipeHeaderProducts));
 
   productArray.value = recipe.recipeProducts.map((item, index) => ({
     amount: item.amount || 0,
@@ -329,10 +328,10 @@ const resetForm = () => {
   }
   form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
-  descriptions.value = recipe.value?.recipeDescriptions.map((d, index) => ({ ...d, positionByCreate: index })) ?? [
-    { position: 0, text: "", header: "", positionByCreate: 0 },
-  ];
-  headersProductArray.value = recipe.value?.recipeHeaderProducts ?? [];
+  descriptions.value = recipe.value?.recipeDescriptions
+    ? sortAndAddPositionByCreate(recipe.value.recipeDescriptions)
+    : [{ position: 0, text: "", header: "", positionByCreate: 0 }];
+  headersProductArray.value = recipe.value?.recipeHeaderProducts ? sortHeaderProductsByPosition(recipe.value.recipeHeaderProducts) : [];
   productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
 };
 
@@ -345,6 +344,13 @@ const enterPress = async () => {
     await onSubmit();
   }
 };
+
+const sortHeaderProductsByPosition = <T extends { text: string; position: number }>(obj: T[]): T[] => {
+  return [...obj].sort((a, b) => a.position - b.position);
+};
+
+const sortAndAddPositionByCreate = <T extends { text: string; position: number }>(obj: T[]): IRecipeDescriptionCreateOrUpdate[] =>
+  obj.sort((a, b) => a.position - b.position).map((d, index) => ({ ...d, positionByCreate: index }));
 
 const headersProductArray = ref<TextPositionType[]>([]);
 
