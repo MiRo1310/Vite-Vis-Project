@@ -4,7 +4,7 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
-import { useMutation } from "@vue/apollo-composable";
+import { useApolloClient, useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
@@ -13,6 +13,7 @@ import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
+import { invalidateCache } from "@/composables/querys/utils.ts";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
 
@@ -49,6 +50,8 @@ const form = useForm({
   validationSchema: formSchemaProduct,
 });
 
+const client = useApolloClient().client;
+
 const onSubmit = form.handleSubmit(async (values) => {
   if (!values.unit) {
     return;
@@ -78,6 +81,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       dto: { ...dto, id },
     });
   }
+  await invalidateCache(client, "products");
   closeDialog();
 });
 
