@@ -17,6 +17,9 @@ const props = defineProps<{
 
 const modelValue = defineModel<string>("modelValue", {
   get: (m) => {
+    if (!m) {
+      return "";
+    }
     return (
       props.items.find((v) => v.id === m)?.value ??
       props.items.find((v) => v.label === m)?.value ??
