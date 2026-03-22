@@ -12,7 +12,9 @@
     "lint": "eslint --ext .ts,.vue src --fix ",
     "lint:fix": "eslint . --fix",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test:e2e:open": "cypress open",
+    "test:e2e:run": "cypress run"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
