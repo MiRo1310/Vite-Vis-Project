@@ -7,6 +7,7 @@ import App from "@/App.vue";
 import apolloClient from "@/apolloClient.ts";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import "@michaelroling/ts-library";
+import { vComponent, vE2E } from "@/directives/directives.ts";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,11 +16,8 @@ const router = createRouter({
 
 const app = createApp(App);
 
-app.directive("component", {
-  mounted(el: HTMLElement, binding) {
-    el.setAttribute("data-component", binding.value);
-  },
-});
+app.directive("component", vComponent);
+app.directive("e2e", vE2E);
 
 app.provide(DefaultApolloClient, apolloClient);
 app.use(router);

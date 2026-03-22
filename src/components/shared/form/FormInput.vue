@@ -41,7 +41,7 @@ withDefaults(
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :class="$props.classInput" />
+        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :class="$props.classInput" e2e="Test" />
       </FormControl>
       <FormDescription />
       <FormMessage />

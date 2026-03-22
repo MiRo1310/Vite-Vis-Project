@@ -20,6 +20,7 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
     disabled?: boolean;
     placeholder?: string;
+    e2e?: string;
   }>(),
   { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "", type: "text" },
 );
@@ -33,13 +34,14 @@ const modelValue = useVModel(props, "modelValue", emits, {
 </script>
 
 <template>
-  <div :class="props.class">
+  <div :class="props.class" v-e2e="e2e">
     <input
       v-model="modelValue"
       :list="optionsId"
       :type
       :step
       :disabled
+      v-e2e="e2e"
       :placeholder
       :class="
         cn(
