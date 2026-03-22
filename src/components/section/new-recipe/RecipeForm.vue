@@ -400,7 +400,7 @@ const addDescription = () => {
             :key="description.positionByCreate ?? description.id ?? index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            <RecipeDescription :index="description.position" />
+            <RecipeDescription :index />
             <RecipeRemoveDescription
               v-model:descriptions="descriptions"
               v-model:descriptions-to-delete="descriptionsToDelete"
