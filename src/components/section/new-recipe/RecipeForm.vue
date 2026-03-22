@@ -329,9 +329,9 @@ const resetForm = () => {
   form.setValues(getRecipeProductObj(recipe.value));
   resetRecipeInStore();
   descriptions.value = recipe.value?.recipeDescriptions
-    ? sortAndAddPositionByCreate(recipe.value.recipeDescriptions)
+    ? sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.value.recipeDescriptions))
     : [{ position: 0, text: "", header: "", positionByCreate: 0 }];
-  headersProductArray.value = recipe.value?.recipeHeaderProducts ? sortHeaderProductsByPosition(recipe.value.recipeHeaderProducts) : [];
+  headersProductArray.value = recipe.value?.recipeHeaderProducts ? sortHeaderProductsByPosition(getTextPositionTypeFromResult(recipe.value.recipeHeaderProducts)) : [];
   productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
 };
 
