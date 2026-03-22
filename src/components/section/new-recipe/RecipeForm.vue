@@ -177,8 +177,6 @@ const productArray = computed<ProductObjType[]>({
   set: (v) => form.setFieldValue("productArray", v),
 });
 
-const sortedDescriptions = computed(() => [...descriptions.value]);
-
 const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
   if (!recipe) {
     return {
@@ -211,7 +209,9 @@ const setValuesToForm = (recipe: RecipeType) => {
   }
   form.setValues(getRecipeProductObj(recipe));
 
-  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions).map((d, index) => ({ ...d, positionByCreate: index }));
+  descriptions.value = getTextPositionTypeFromResult(recipe.recipeDescriptions)
+    .sort((a, b) => a.position - b.position)
+    .map((d, index) => ({ ...d, positionByCreate: index }));
   nextDescriptionIndex.value = descriptions.value.length;
   headersProductArray.value = getTextPositionTypeFromResult(recipe.recipeHeaderProducts).sort((a, b) => a.position - b.position);
 
@@ -396,11 +396,11 @@ const addDescription = () => {
           </div>
 
           <div
-            v-for="(description, index) in sortedDescriptions"
+            v-for="(description, index) in descriptions"
             :key="description.positionByCreate ?? description.id ?? index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            <RecipeDescription :index />
+            <RecipeDescription :index="description.position" />
             <RecipeRemoveDescription
               v-model:descriptions="descriptions"
               v-model:descriptions-to-delete="descriptionsToDelete"
