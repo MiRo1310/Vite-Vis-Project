@@ -29,7 +29,6 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetProducts"] },
 );
 
 const { mutate: updateProductMutate } = useMutation(
@@ -41,7 +40,6 @@ const { mutate: updateProductMutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetProducts"] },
 );
 
 const dialogOpen = defineModel<boolean>("dialogOpen");
