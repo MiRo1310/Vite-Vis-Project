@@ -1,4 +1,4 @@
-import Input from "./Input.vue";
+import Input from "../../../../src/components/shared/input/Input.vue";
 
 describe("<Input />", () => {
   it("renders", () => {

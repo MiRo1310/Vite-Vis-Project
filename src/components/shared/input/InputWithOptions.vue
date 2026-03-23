@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import { HTMLAttributes, ref } from "vue";
 import { cn } from "@/lib/utils";
-import { HTMLInputTypesEnum } from "@/enum/enum";
 import { InputOption } from "@/types/types.ts";
 import { Check, X } from "lucide-vue-next";
 
 const props = withDefaults(
   defineProps<{
-    options?: InputOption[];
-    optionsId?: string;
-    step?: number;
-    type?: keyof typeof HTMLInputTypesEnum;
+    options: InputOption[];
+    optionsId: string;
     class?: HTMLAttributes["class"];
     disabled?: boolean;
     placeholder?: string;
     e2e?: string;
     exactOptionRequired?: boolean;
   }>(),
-  { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "", type: "text" },
+  { class: "", disabled: false, placeholder: "" },
 );
 
 defineOptions({ inheritAttrs: false });
@@ -102,8 +99,6 @@ const isExactOption = ref(false);
       v-model="internalValue"
       @input="updateValue"
       :list="optionsId"
-      :type
-      :step
       :disabled
       v-e2e="e2e"
       :placeholder
@@ -116,9 +111,9 @@ const isExactOption = ref(false);
     <datalist v-if="options" :id="optionsId">
       <option v-for="(option, index) in options" :key="index">{{ option.name }}</option>
     </datalist>
-    <span v-if="exactOptionRequired" class="ml-1">
-      <Check v-if="isExactOption" class="text-success size-4" />
-      <X v-else class="text-red-500 size-4" />
+    <span v-if="exactOptionRequired" class="ml-1" v-e2e="'state-icon'">
+      <Check v-if="isExactOption" class="text-success size-4" v-e2e="'state-icon-check'" />
+      <X v-else class="text-red-500 size-4" v-e2e="'state-icon-x'" />
     </span>
   </div>
 </template>
