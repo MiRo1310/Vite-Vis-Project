@@ -1,26 +1,20 @@
 import Input from "./Input.vue";
-import { vE2E } from "@/directives/directives.ts";
 
 describe("<Input />", () => {
   it("renders", () => {
     // see: https://on.cypress.io/mounting-vue
-    cy.mount(Input);
+    cy.mountE2E(Input);
   });
 
   it("zeigt das Input-Feld an", () => {
-    cy.mount(Input);
+    cy.mountE2E(Input);
     cy.get("input").should("exist");
   });
 
   it("setzt modelValue bei Eingabe", () => {
     const onUpdate = cy.spy().as("updateSpy");
 
-    cy.mount(Input, {
-      global: {
-        directives: {
-          e2e: vE2E,
-        },
-      },
+    cy.mountE2E(Input, {
       props: {
         modelValue: "",
         "onUpdate:modelValue": onUpdate,
@@ -28,7 +22,7 @@ describe("<Input />", () => {
       },
     });
 
-    cy.get("input").type("Hallo");
+    cy.getBySel("input").type("Hallo");
 
     cy.get("@updateSpy").should("have.been.calledWith", "Hallo");
   });

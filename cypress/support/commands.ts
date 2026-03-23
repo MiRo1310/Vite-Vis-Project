@@ -24,14 +24,37 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+import { vE2E } from "../../src/directives/directives";
+
+export interface IComponentOptions {
+  global?: { directives: Record<string, any> };
+}
+
+Cypress.Commands.add("mountE2E", (component, options?: IComponentOptions) => {
+  options = options || {};
+  return cy.mount(component, {
+    global: {
+      directives: {
+        e2e: vE2E,
+        ...(options.global?.directives || {}),
+      },
+      ...options.global,
+    },
+    ...options,
+  });
+});
+
+Cypress.Commands.add("getBySel", (sel: string) => {
+  return cy.get(`[data-e2e="${sel}"]`);
+});
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      mountE2E(component: any, options: IComponentOptions): Chainable<void>;
+      getBySel(sel: string): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}
