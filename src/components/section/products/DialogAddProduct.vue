@@ -6,7 +6,7 @@ import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
 import { useApolloClient, useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
 import { GetProductByIdQuery, ProductCreateDtoInput, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
@@ -46,6 +46,8 @@ const dialogOpen = defineModel<boolean>("dialogOpen");
 
 const form = useForm({
   validationSchema: formSchemaProduct,
+  initialValues: { name: props.data?.name ?? "", category: props.data?.category ?? "", amount: 100, unit: "g" },
+  validateOnMount: false,
 });
 
 const client = useApolloClient().client;
@@ -106,38 +108,26 @@ watch(
       const { fat, carbs, category, kcal, name, salt, protein, sugar } = props.data;
       form.resetForm();
       form.setValues({
-        fat: nullToUndefined(fat),
-        carbs: nullToUndefined(carbs),
-        category: nullToUndefined(category),
-        kcal: nullToUndefined(kcal),
-        name: nullToUndefined(name),
-        salt: nullToUndefined(salt),
-        protein: nullToUndefined(protein),
-        sugar: nullToUndefined(sugar),
-        amount: nullToUndefined(defaultUnitVariant.value.amount),
-        unit: nullToUndefined(defaultUnitVariant.value.unit),
+        fat,
+        carbs,
+        category: category ?? "",
+        kcal,
+        name,
+        salt,
+        protein,
+        sugar,
+        amount: defaultUnitVariant.value.amount,
+        unit: defaultUnitVariant.value.unit,
       });
     }
   },
 );
 
-const nullToUndefined = <T,>(val: T | null): T | undefined => {
-  return val === null ? undefined : val;
-};
-
-onMounted(() => {
-  initFormData();
-});
-
-const initFormData = () => {
-  form.setValues({ name: props.data?.name ?? "", category: props.data?.category ?? "" });
-};
-
 const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
 
 const defaultUnitVariant = computed(() => {
   const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
-  return { amount: defaultItem?.amount ?? 0, unit: defaultItem?.unit ?? "" };
+  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
 });
 </script>
 
@@ -145,21 +135,21 @@ const defaultUnitVariant = computed(() => {
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
       <div class="flex gap-2 items-baseline mb-4">
-        <FormInput label="Produkt" :model-value="props.data?.name ?? ''" name="name" class="flex-1" />
+        <FormInput label="Produkt" name="name" class="flex-1" />
         <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" class="w-40" />
       </div>
       <div class="flex flex-wrap gap-2">
-        <FormInput label="Kalorien" name="kcal" type="number" :step="1" :model-value="props.data?.kcal?.toString()" />
-        <FormInput label="Fett" name="fat" type="number" :step="0.01" :model-value="props.data?.fat?.toString()" />
-        <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" :model-value="props.data?.carbs?.toString()" />
-        <FormInput label="Zucker" name="sugar" type="number" :step="0.01" :model-value="props.data?.sugar?.toString()" />
-        <FormInput label="Salz" name="salt" type="number" :step="0.01" :model-value="props.data?.salt?.toString()" />
-        <FormInput label="Protein" name="protein" type="number" :step="0.01" :model-value="props.data?.protein?.toString()" />
+        <FormInput label="Kalorien" name="kcal" type="number" :step="1" />
+        <FormInput label="Fett" name="fat" type="number" :step="0.01" />
+        <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" />
+        <FormInput label="Zucker" name="sugar" type="number" :step="0.01" />
+        <FormInput label="Salz" name="salt" type="number" :step="0.01" />
+        <FormInput label="Protein" name="protein" type="number" :step="0.01" />
       </div>
       <p class="w-full font-bold mb-4 mt-6">Bezogen auf diese Menge</p>
       <div class="flex w-full space-x-2">
-        <FormInput label="Menge" name="amount" type="number" :step="0.1" :model-value="defaultUnitVariant.amount.toString()" />
-        <FormInput label="Unit" name="unit" type="text" :model-value="defaultUnitVariant.unit" :options="getOptions" options-id="units" />
+        <FormInput label="Menge" name="amount" type="number" :step="0.1" />
+        <FormInput label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" />
       </div>
 
       <AddVariantUnits
