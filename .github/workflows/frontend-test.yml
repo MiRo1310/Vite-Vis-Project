@@ -25,9 +25,18 @@ jobs:
           cache: 'npm'
       - run: yarn install --frozen-lockfile  && yarn lint
   cypress-run:
-    steps:
-      - uses: cypress-io/github-action@v7
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Cypress run
+        uses: cypress-io/github-action@v7
+        with:
+          build: npm run build
+          start: npm start
+        
+ 
+    
     needs: 
       - audit
       - build     
