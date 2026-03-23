@@ -24,18 +24,34 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: yarn install --frozen-lockfile  && yarn lint
-  cypress-run:
+        
+  cypress-e2e:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Cypress run
+        
+      - name: Cypress run E2E Tests
         uses: cypress-io/github-action@v7
-        with:
+        with:         
           build: yarn run build
-          start: yarn run dev    
+          start: yarn run dev     
     needs:      
       - build     
+      
+  cypress-component:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        
+      - name: Cypress run Component Tests
+        uses: cypress-io/github-action@v7
+        with:         
+          component: 'true'           
+    needs:      
+      - build  
+      
   build:
     runs-on: ubuntu-latest
     strategy:
@@ -50,6 +66,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: yarn install --frozen-lockfile  && yarn build
+        
   audit:
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +80,7 @@ jobs:
       - name: Audit dependencies
         run: yarn audit
         continue-on-error: false
+        
   vitest:
     runs-on: ubuntu-latest
     steps:
