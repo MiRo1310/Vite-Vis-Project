@@ -33,12 +33,8 @@ jobs:
         uses: cypress-io/github-action@v7
         with:
           build: npm run build
-          start: npm start
-        
- 
-    
-    needs: 
-      - audit
+          start: npm start    
+    needs:      
       - build     
   build:
     runs-on: ubuntu-latest

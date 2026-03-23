@@ -34,7 +34,7 @@ const modelValue = useVModel(props, "modelValue", emits, {
 </script>
 
 <template>
-  <div :class="props.class" v-e2e="e2e">
+  <div :class="props.class">
     <input
       v-model="modelValue"
       :list="optionsId"
