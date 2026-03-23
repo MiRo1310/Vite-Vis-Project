@@ -110,7 +110,7 @@ watch(
       form.setValues({
         fat,
         carbs,
-        category: category ?? undefined,
+        category: category ?? "",
         kcal,
         name,
         salt,
@@ -127,7 +127,7 @@ const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
 
 const defaultUnitVariant = computed(() => {
   const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
-  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "" };
+  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
 });
 </script>
 
