@@ -4,7 +4,7 @@ import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
 import { SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
-import { InputOptions } from "@/components/shared/input/Input.vue";
+import { InputOption } from "@/components/shared/input/Input.vue";
 
 let unitsFunction: null | ReturnType<typeof unitsComposable> = null;
 

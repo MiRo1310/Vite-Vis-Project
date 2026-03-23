@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { FormField, FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/shared/input";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { HTMLAttributes } from "vue";
 import { HTMLInputTypesEnum } from "@/enum/enum";
-import { InputOption } from "@/components/shared/input/Input.vue";
+import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
+import { InputOption } from "@/types/types.ts";
 
 withDefaults(
   defineProps<{
@@ -19,6 +19,7 @@ withDefaults(
     optionsId?: string;
     disabled?: boolean;
     e2e?: string;
+    exactOptionRequired?: boolean;
   }>(),
   {
     placeholder: "",
@@ -43,7 +44,18 @@ withDefaults(
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :e2e :class="$props.classInput" />
+        <InputWithOptions
+          v-bind="componentField"
+          :placeholder
+          :type
+          :step
+          :options
+          :options-id
+          :disabled
+          :e2e
+          :class="$props.classInput"
+          :exact-option-required
+        />
       </FormControl>
       <FormDescription />
       <FormMessage />

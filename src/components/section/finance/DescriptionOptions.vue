@@ -2,7 +2,7 @@
 import { Input } from "@/components/shared/input";
 import { useQuery } from "@vue/apollo-composable";
 import { computed, watch, ref } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
+import { InputOption } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
 import Select from "@/components/shared/select/Select.vue";
 import { SelectOption } from "@/types/types.ts";
@@ -20,7 +20,7 @@ const { result } = useQuery(
   `),
 );
 
-const options = computed((): InputOptions[] => {
+const options = computed((): InputOption[] => {
   const descriptions = result.value?.description ?? [];
 
   const filteredDescriptions = descriptions.filter((d) => d.text && d.id);

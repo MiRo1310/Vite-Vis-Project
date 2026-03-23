@@ -3,17 +3,13 @@ import type { HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { useVModel } from "@vueuse/core";
 import { HTMLInputTypesEnum } from "@/enum/enum";
-
-export interface InputOptions {
-  id: string;
-  name: string;
-}
+import { InputOption } from "@/types/types.ts";
 
 const props = withDefaults(
   defineProps<{
     defaultValue?: string | number;
     modelValue?: string | number;
-    options?: InputOptions[];
+    options?: InputOption[];
     optionsId?: string;
     step?: number;
     type?: keyof typeof HTMLInputTypesEnum;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from "@/components/shared/button/Button.vue";
 import { onMounted, ref } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
+import { InputOption } from "@/components/shared/input/Input.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 
 type Units = ProductUnitCreateOrUpdateDtoInput[];
 
-const props = defineProps<{ options: InputOptions[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
+const props = defineProps<{ options: InputOption[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
 
 const { mutate } = useMutation(
   graphql(`

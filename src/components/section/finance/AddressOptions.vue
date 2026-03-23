@@ -2,7 +2,7 @@
 import { Input } from "@/components/shared/input";
 import { useQuery } from "@vue/apollo-composable";
 import { computed } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
+import { InputOption } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
 import { isDefined } from "@vueuse/core";
 
@@ -17,7 +17,7 @@ const { result } = useQuery(
   `),
 );
 
-const options = computed((): InputOptions[] => {
+const options = computed((): InputOption[] => {
   const addresses = result.value?.addresses ?? [];
 
   const mappingAddress = addresses.map((address) => {
@@ -27,7 +27,7 @@ const options = computed((): InputOptions[] => {
     };
   });
 
-  return mappingAddress.filter((address) => isDefined(address.name) && isDefined(address.id)) as InputOptions[];
+  return mappingAddress.filter((address) => isDefined(address.name) && isDefined(address.id)) as InputOption[];
 });
 
 const addressId = defineModel<string | null>("addressId");
