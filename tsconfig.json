@@ -26,7 +26,8 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "src/lib/iobroker.ts",
-    "src/**/*.d.ts"
+    "src/**/*.d.ts",
+    "node_modules/cypress/types/cypress-global-vars.d.ts"
   ],
   "references": [
     {

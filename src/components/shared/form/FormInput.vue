@@ -18,6 +18,7 @@ withDefaults(
     options?: InputOptions[];
     optionsId?: string;
     disabled?: boolean;
+    e2e?: string;
   }>(),
   {
     placeholder: "",
@@ -29,6 +30,7 @@ withDefaults(
     optionsId: undefined,
     label: "",
     classInput: "",
+    e2e: undefined,
   },
 );
 </script>
@@ -41,7 +43,7 @@ withDefaults(
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :class="$props.classInput" />
+        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :e2e :class="$props.classInput" />
       </FormControl>
       <FormDescription />
       <FormMessage />

@@ -20,6 +20,7 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
     disabled?: boolean;
     placeholder?: string;
+    e2e?: string;
   }>(),
   { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "", type: "text" },
 );
@@ -40,6 +41,7 @@ const modelValue = useVModel(props, "modelValue", emits, {
       :type
       :step
       :disabled
+      v-e2e="e2e"
       :placeholder
       :class="
         cn(
