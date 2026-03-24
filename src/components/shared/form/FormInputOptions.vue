@@ -15,8 +15,8 @@ withDefaults(
     type?: keyof typeof HTMLInputTypesEnum;
     step?: number;
     labelRight?: string;
-    options?: InputOption[];
-    optionsId?: string;
+    options: InputOption[];
+    optionsId: string;
     disabled?: boolean;
     e2e?: string;
     exactOptionRequired?: boolean;
@@ -27,8 +27,6 @@ withDefaults(
     type: "text",
     step: 1,
     labelRight: "",
-    options: undefined,
-    optionsId: undefined,
     label: "",
     classInput: "",
     e2e: undefined,

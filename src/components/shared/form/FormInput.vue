@@ -3,7 +3,6 @@ import { FormField, FormControl, FormDescription, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/shared/input";
 import { HTMLAttributes } from "vue";
 import { HTMLInputTypesEnum } from "@/enum/enum";
-import { InputOption } from "@/components/shared/input/Input.vue";
 
 withDefaults(
   defineProps<{
@@ -15,8 +14,6 @@ withDefaults(
     type?: keyof typeof HTMLInputTypesEnum;
     step?: number;
     labelRight?: string;
-    options?: InputOption[];
-    optionsId?: string;
     disabled?: boolean;
     e2e?: string;
   }>(),
@@ -26,8 +23,6 @@ withDefaults(
     type: "text",
     step: 1,
     labelRight: "",
-    options: undefined,
-    optionsId: undefined,
     label: "",
     classInput: "",
     e2e: undefined,
@@ -43,7 +38,7 @@ withDefaults(
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input v-bind="componentField" :placeholder :type :step :options :options-id :disabled :e2e :class="$props.classInput" />
+        <Input v-bind="componentField" :placeholder :type :step :disabled :e2e :class="$props.classInput" />
       </FormControl>
       <FormDescription />
       <FormMessage />

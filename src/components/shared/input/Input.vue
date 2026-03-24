@@ -3,14 +3,11 @@ import type { HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { useVModel } from "@vueuse/core";
 import { HTMLInputTypesEnum } from "@/enum/enum";
-import { InputOption } from "@/types/types.ts";
 
 const props = withDefaults(
   defineProps<{
     defaultValue?: string | number;
     modelValue?: string | number;
-    options?: InputOption[];
-    optionsId?: string;
     step?: number;
     type?: keyof typeof HTMLInputTypesEnum;
     class?: HTMLAttributes["class"];
@@ -33,7 +30,6 @@ const modelValue = useVModel(props, "modelValue", emits, {
   <div :class="props.class">
     <input
       v-model="modelValue"
-      :list="optionsId"
       :type
       :step
       :disabled
@@ -45,8 +41,5 @@ const modelValue = useVModel(props, "modelValue", emits, {
         )
       "
     />
-    <datalist v-if="options" :id="optionsId">
-      <option v-for="option in options" :key="option.id">{{ option.name }}</option>
-    </datalist>
   </div>
 </template>

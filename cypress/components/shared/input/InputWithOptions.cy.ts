@@ -73,6 +73,12 @@ describe("<InputWithOptions />", () => {
 
     cy.get("@input").clear();
 
+    cy.get("@input").type("Option 45");
+    cy.get("@updateSpy").should("have.been.calledWith", 114);
+    cy.get("@input").should("have.value", "Option 4");
+
+    cy.get("@input").clear();
+
     cy.get("@input").type("Option");
     cy.get("@updateSpy").should("not.have.been.calledWith", "Option");
     cy.getBySel("state-icon-x").should("exist");

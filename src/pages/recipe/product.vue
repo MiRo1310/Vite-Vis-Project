@@ -13,6 +13,7 @@ import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import ProductRemove from "@/components/section/products/action/ProductRemove.vue";
+import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
 
 const props = defineProps<{ id: string }>();
 
@@ -192,7 +193,7 @@ const valueChanged = computed(() => {
     <p class="w-full font-bold mb-4 mt-6">Bezogen auf diese Menge</p>
     <div class="flex w-full space-x-2">
       <FormInput label="Menge" name="amount" type="number" :step="0.1" />
-      <FormInput label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" />
+      <FormInputOptions label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" />
     </div>
 
     <AddVariantUnits

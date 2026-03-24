@@ -25,15 +25,13 @@ const { mutate } = useMutation(
 const date = ref<string>();
 const description = ref<string>();
 const price = ref<number>();
-const addressId = ref<string | null>(null);
-const selectedName = ref<string>("");
+const addressId = ref<string | undefined>();
 
 const clearInputs = () => {
   date.value = "";
   description.value = "";
   price.value = 0;
-  addressId.value = null;
-  selectedName.value = "";
+  addressId.value = undefined;
 };
 
 const addListingHandler = () => {
@@ -61,7 +59,7 @@ const addListingHandler = () => {
     <DescriptionOptions v-model:model-value="description" :as-select="true" />
     <Textarea placeholder="Beschreibung" v-model:model-value="description" />
     <Input type="number" placeholder="Betrag" v-model:model-value="price" class="w-120" />
-    <AddressOptions v-model:address-id="addressId" v-model:model-value="selectedName" />
+    <AddressOptions v-model:model-value="addressId" />
     <Button icon="add" variant="outline" size="icon" @click="addListingHandler" />
   </div>
 </template>
