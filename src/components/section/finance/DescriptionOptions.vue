@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { computed, watch, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
-import Select from "@/components/shared/select/Select.vue";
-import { InputOption, SelectOption } from "@/types/types.ts";
-import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
-
-defineProps<{ asSelect?: boolean }>();
+import { SelectOption } from "@/types/types.ts";
+import FormSelect from "@/components/shared/form/FormSelect.vue";
 
 const { result } = useQuery(
   graphql(`
@@ -18,19 +15,6 @@ const { result } = useQuery(
     }
   `),
 );
-
-const options = computed((): InputOption[] => {
-  const descriptions = result.value?.description ?? [];
-
-  const filteredDescriptions = descriptions.filter((d) => d.text && d.id);
-
-  return filteredDescriptions.map((d) => {
-    return {
-      name: d.text,
-      value: d.id,
-    };
-  });
-});
 
 const selectOptions = computed((): SelectOption[] => {
   const descriptions = result.value?.description ?? [];
@@ -54,14 +38,5 @@ const selected = ref("");
 </script>
 
 <template>
-  <Select v-if="asSelect" :items="selectOptions" v-model="modelValue" placeholder="Wähle eine Beschreibung" :selected class="w-48" />
-  <InputWithOptions
-    v-else
-    type="text"
-    placeholder="Beschreibung"
-    class="add-listing__input"
-    :options
-    options-id="description"
-    v-model:model-value="modelValue"
-  />
+  <FormSelect label="Wähle eine Beschreibung" name="descriptionHelper" :select-options="selectOptions" v-model="modelValue" class="w-48" />
 </template>

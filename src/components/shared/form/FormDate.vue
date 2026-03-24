@@ -2,7 +2,6 @@
 import { FormField, FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/shared/input";
 import { HTMLAttributes } from "vue";
-import { HTMLInputTypesEnum } from "@/enum/enum";
 
 withDefaults(
   defineProps<{
@@ -11,25 +10,17 @@ withDefaults(
     placeholder?: string;
     class?: HTMLAttributes["class"];
     classInput?: HTMLAttributes["class"];
-    type?: keyof typeof HTMLInputTypesEnum;
-    step?: number;
     labelRight?: string;
     disabled?: boolean;
     e2e?: string;
-    min?: number;
-    max?: number;
   }>(),
   {
     placeholder: "",
     class: "",
-    type: "text",
-    step: 1,
     labelRight: "",
     label: "",
     classInput: "",
     e2e: undefined,
-    min: undefined,
-    max: undefined,
   },
 );
 </script>
@@ -42,7 +33,7 @@ withDefaults(
         <span>{{ labelRight }}</span>
       </FormLabel>
       <FormControl>
-        <Input v-bind="componentField" :placeholder :type :step :disabled :min :max :e2e :class="$props.classInput" />
+        <Input v-bind="componentField" :placeholder type="date" :disabled :e2e :class="$props.classInput" />
       </FormControl>
       <FormDescription />
       <FormMessage />

@@ -74,10 +74,14 @@ const variants = {
           v-for="(item, index) in items"
           :key="index"
           :value="item.value"
-          :class="{
-            [`${item?.class} border-${item?.class || 'accent'}`]: true,
-            [`${getFocusClass(item)} focus:border-black focus:border-2`]: disableHover,
-          }"
+          :class="[
+            `border-${item?.class || 'accent'}`,
+
+            {
+              [`${getFocusClass(item)} focus:border-black focus:border-2`]: disableHover,
+            },
+            item.class,
+          ]"
         >
           {{ item.label || item.value }}
         </SelectItem>

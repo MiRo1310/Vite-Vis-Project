@@ -93,13 +93,52 @@ describe("<InputWithOptions />", () => {
         optionId: "test-id",
         exactOptionRequired: true,
         e2e: "input-with-options",
-        modelValue: "",
+        modelValue: 111,
         "onUpdate:modelValue": onUpdate,
       },
     });
 
     cy.getBySel("input-with-options").as("input");
 
-    cy.get("@input").parent().get("datalist option").should("have.length", options.length);
+    cy.get("@input").should("have.value", "Option 1");
+  });
+
+  it("Should set the correct label from options", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        e2e: "input-with-options",
+        modelValue: 111,
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+
+    cy.getBySel("input-with-options").as("input");
+    cy.get("@input").should("have.value", "Option 1");
+  });
+
+  it("Should reset internalValue if modelValue has been reset", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        e2e: "input-with-options",
+        modelValue: "",
+        "onUpdate:modelValue": onUpdate,
+      },
+    }).then(({ wrapper }) => {
+      cy.getBySel("input-with-options").as("input");
+
+      wrapper.setProps({ modelValue: "" }).then(() => {
+        cy.get("@input").should("have.value", "");
+      });
+    });
   });
 });

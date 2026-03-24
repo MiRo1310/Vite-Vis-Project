@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes, ref } from "vue";
+import { HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
 import { InputOption } from "@/types/types.ts";
 import { Check, X } from "lucide-vue-next";
@@ -28,6 +28,10 @@ const getReturnValueFromOption = (option: InputOption): string | number => optio
 const includesPartOfName = (value: string): boolean => props.options?.some((o) => o.name.includes(value)) ?? false;
 
 const internalValue = ref(getNameByValue(modelValue.value) ?? "");
+
+watch(modelValue, () => {
+  internalValue.value = getNameByValue(modelValue.value) ?? "";
+});
 
 const updateValue = () => {
   const value = internalValue.value;

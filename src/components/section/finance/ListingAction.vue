@@ -4,14 +4,21 @@ import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
-import { onMounted, ref } from "vue";
-import { Input } from "@/components/shared/input";
+import { ref } from "vue";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
 import { Row } from "@tanstack/vue-table";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
-import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "vee-validate";
+import { formSchemaListing } from "@/components/section/finance/formSchema.ts";
+import Form from "@/components/shared/form/Form.vue";
+import FormFooter from "@/components/shared/form/FormFooter.vue";
+import FormDate from "@/components/shared/form/FormDate.vue";
+import FormInput from "@/components/shared/form/FormInput.vue";
+import FormTextarea from "@/components/shared/form/FormTextarea.vue";
 
-const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]> }>();
+// eslint-disable-next-line vue/no-unused-properties
+const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; source: string; customValue?: string }>();
+
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveTravelCost($id: UUID!) {
@@ -45,46 +52,35 @@ const remove = () => {
   );
 };
 
-const update = () => {
-  dialogUpdateOpen.value = false;
-  if (!addressId.value) {
-    return;
-  }
-  updateMutation(
-    {
-      id: props.value,
-      date: date.value,
-      description: description.value,
-      price: Number(String(price.value)) ?? 0,
-      addressId: addressId.value,
-    },
-    {
-      refetchQueries: ["TravelCost"],
-    },
-  );
-  clear();
-};
-
-const clear = () => {
-  date.value = "";
-  description.value = "";
-  price.value = "";
-  addressId.value = null;
-  modelValue.value = "";
-};
-
-onMounted(() => {
-  modelValue.value = props.row.original.address?.name ?? "";
+const form = useForm({
+  validationSchema: formSchemaListing,
+  initialValues: {
+    date: props.row.original.date,
+    description: props.row.original.description,
+    price: props.row.original.price ?? undefined,
+    addressId: props.row.original.addressId ?? undefined,
+  },
 });
 
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
-const date = ref(props.row.original.date ?? "");
-const description = ref(props.row.original.description ?? "");
-const price = ref(props.row.original.price ?? "");
-const addressId = ref<string | null>(props.row.original.addressId ?? null);
-const modelValue = ref("");
+const onSubmit = form.handleSubmit(async (values) => {
+  dialogUpdateOpen.value = false;
+  updateMutation(
+    {
+      id: props.value,
+      date: values.date,
+      description: values.description,
+      price: Number(String(values.price)),
+      addressId: values.addressId,
+    },
+    {
+      refetchQueries: ["TravelCost"],
+    },
+  );
+  form.resetForm();
+});
 </script>
 
 <template>
@@ -96,16 +92,15 @@ const modelValue = ref("");
   <Dialog v-model:open="dialogUpdateOpen">
     <template #title>Aktualisieren</template>
     <template #content>
-      <div class="mt-4 flex flex-col gap-4">
-        <Input type="date" placeholder="Datum" v-model:model-value="date" />
-        <Textarea placeholder="Beschreibung" v-model:model-value="description" />
-        <Input type="number" placeholder="Betrag" v-model:model-value="price" />
-        <AddressOptions v-model:model-value="modelValue" :address-id />
-      </div>
-      <div class="flex gap-4 justify-end">
-        <Button variant="outline" @click="update">Aktualisieren</Button>
-        <Button variant="default" @click="dialogUpdateOpen = false">Schließen</Button>
-      </div>
+      <Form @update:on-submit="onSubmit">
+        <div class="mt-4 flex flex-col gap-4">
+          <FormDate name="date" label="Datum" />
+          <FormTextarea name="description" label="Beschreibung" />
+          <FormInput name="price" label="Betrag" type="number" :min="0" />
+          <AddressOptions />
+        </div>
+        <FormFooter @update:close="dialogUpdateOpen = false" />
+      </Form>
     </template>
   </Dialog>
 </template>
