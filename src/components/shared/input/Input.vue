@@ -14,8 +14,22 @@ const props = withDefaults(
     disabled?: boolean;
     placeholder?: string;
     e2e?: string;
+    min?: number;
+    max?: number;
   }>(),
-  { optionsId: "options", options: undefined, class: "", modelValue: "", defaultValue: "", step: 1, disabled: false, placeholder: "", type: "text" },
+  {
+    optionsId: "options",
+    options: undefined,
+    class: "",
+    modelValue: "",
+    defaultValue: "",
+    step: 1,
+    disabled: false,
+    placeholder: "",
+    type: "text",
+    min: undefined,
+    max: undefined,
+  },
 );
 
 const emits = defineEmits<(e: "update:modelValue", payload: string | number) => void>();
@@ -32,6 +46,8 @@ const modelValue = useVModel(props, "modelValue", emits, {
       v-model="modelValue"
       :type
       :step
+      :min
+      :max
       :disabled
       v-e2e="e2e"
       :placeholder

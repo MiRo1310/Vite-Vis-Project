@@ -27,3 +27,5 @@ graphql.config.yml
 
 coverage/**/*.*
 
+cypress/screenshots
+
