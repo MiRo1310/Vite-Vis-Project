@@ -19,7 +19,7 @@ export default defineConfig([
       "codegen.ts",
       "eslint.config.mjs ",
     ],
-  },
+  },  
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },
