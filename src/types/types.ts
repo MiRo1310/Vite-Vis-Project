@@ -301,6 +301,11 @@ export interface SelectOption {
   class?: string;
 }
 
+export interface InputOption {
+  name: string;
+  value: string | number;
+}
+
 export interface HasOptionalNameAndId {
   name?: string;
   id?: string;

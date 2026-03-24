@@ -1,4 +1,4 @@
-import Button from "./Button.vue";
+import Button from "../../../../src/components/shared/button/Button.vue";
 
 describe("<Button />", () => {
   it("renders", () => {

@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import Button from "@/components/shared/button/Button.vue";
 import { onMounted, ref } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { Input } from "@/components/shared/input";
 import { Label } from "@/components/ui/label";
+import { InputOption } from "@/types/types.ts";
+import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
 
 type Units = ProductUnitCreateOrUpdateDtoInput[];
 
-const props = defineProps<{ options: InputOptions[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
+const props = defineProps<{ options: InputOption[]; data: NonNullable<GetProductByIdQuery["product"]>["productUnits"]; defaultUnit: string }>();
 
 const { mutate } = useMutation(
   graphql(`
@@ -75,7 +76,12 @@ const deleteVariant = async ({ id, index }: { id?: string | null; index: number 
       </span>
       <Label class="flex flex-col gap-2">
         <span class="mb-1">{{ index === 0 ? "Einheit" : "" }}</span>
-        <Input :model-value="unitVariant?.unit?.toString()" :options options-id="units" @update:model-value="updateValue(index, 'unit', $event)" />
+        <InputWithOptions
+          :model-value="unitVariant?.unit?.toString()"
+          :options
+          options-id="units"
+          @update:model-value="updateValue(index, 'unit', $event)"
+        />
       </Label>
       <Button
         icon="remove"

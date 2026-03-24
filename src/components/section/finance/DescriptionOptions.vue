@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Input } from "@/components/shared/input";
 import { useQuery } from "@vue/apollo-composable";
 import { computed, watch, ref } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
 import Select from "@/components/shared/select/Select.vue";
-import { SelectOption } from "@/types/types.ts";
+import { InputOption, SelectOption } from "@/types/types.ts";
+import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
 
 defineProps<{ asSelect?: boolean }>();
 
@@ -20,7 +19,7 @@ const { result } = useQuery(
   `),
 );
 
-const options = computed((): InputOptions[] => {
+const options = computed((): InputOption[] => {
   const descriptions = result.value?.description ?? [];
 
   const filteredDescriptions = descriptions.filter((d) => d.text && d.id);
@@ -28,7 +27,7 @@ const options = computed((): InputOptions[] => {
   return filteredDescriptions.map((d) => {
     return {
       name: d.text,
-      id: d.id,
+      value: d.id,
     };
   });
 });
@@ -56,7 +55,7 @@ const selected = ref("");
 
 <template>
   <Select v-if="asSelect" :items="selectOptions" v-model="modelValue" placeholder="Wähle eine Beschreibung" :selected class="w-48" />
-  <Input
+  <InputWithOptions
     v-else
     type="text"
     placeholder="Beschreibung"

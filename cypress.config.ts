@@ -7,13 +7,13 @@ export default defineConfig({
       framework: "vue",
       bundler: "vite",
     },
-    specPattern: "src/**/*.cy.ts",
+    specPattern: "cypress/components/**/*.cy.ts",
   },
 
   e2e: {
     // setupNodeEvents(on, config) {
     //   // implement node event listeners here
     // },
-    specPattern: "cypress/**/*.cy.ts",
+    specPattern: "cypress/e2e/**/*.cy.ts",
   },
 });

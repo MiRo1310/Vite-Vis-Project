@@ -2,9 +2,8 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { computed, onMounted } from "vue";
 import { getSelectableOptions } from "@/composables/querys/options";
 import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
-import { SelectOption } from "@/types/types";
+import { InputOption, SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
-import { InputOptions } from "@/components/shared/input/Input.vue";
 
 let unitsFunction: null | ReturnType<typeof unitsComposable> = null;
 
@@ -39,7 +38,7 @@ const unitsComposable = () => {
   const getUnitNameById = (id: string): string => computed(() => getNameById(id, result.value?.units)).value;
   const getUnitIdByName = (name: string): string => computed(() => getIdByName(name, result.value?.units)).value;
   const getOptions = computed(
-    (): InputOptions[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ id: unit.id, name: unit.name })) ?? [],
+    (): InputOption[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ value: unit.id, name: unit.name })) ?? [],
   );
 
   return { selectableOptions, getUnitNameById, getUnitIdByName, getOptions, isResult, length, refetch };

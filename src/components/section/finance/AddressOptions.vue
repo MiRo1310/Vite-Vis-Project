@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Input } from "@/components/shared/input";
 import { useQuery } from "@vue/apollo-composable";
 import { computed } from "vue";
-import { InputOptions } from "@/components/shared/input/Input.vue";
 import { graphql } from "@/api/gql";
 import { isDefined } from "@vueuse/core";
+import { InputOption } from "@/types/types.ts";
+import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
 
 const { result } = useQuery(
   graphql(`
@@ -17,7 +17,7 @@ const { result } = useQuery(
   `),
 );
 
-const options = computed((): InputOptions[] => {
+const options = computed((): InputOption[] => {
   const addresses = result.value?.addresses ?? [];
 
   const mappingAddress = addresses.map((address) => {
@@ -27,20 +27,16 @@ const options = computed((): InputOptions[] => {
     };
   });
 
-  return mappingAddress.filter((address) => isDefined(address.name) && isDefined(address.id)) as InputOptions[];
+  return mappingAddress
+    .filter((address) => isDefined(address.name) && isDefined(address.id))
+    .map(({ id, name }): InputOption => ({ value: id, name: name as string }));
 });
-
-const addressId = defineModel<string | null>("addressId");
-
-const setOptionId = (name: string | number) => {
-  addressId.value = options.value.find((option) => option.name === name)?.id ?? null;
-};
 
 const modelValue = defineModel<string>();
 </script>
 
 <template>
-  <Input
+  <InputWithOptions
     type="text"
     placeholder="Adresse"
     class="add-listing__input"
@@ -48,8 +44,5 @@ const modelValue = defineModel<string>();
     :options
     options-id="address"
     v-model:model-value="modelValue"
-    @update:model-value="setOptionId"
   />
 </template>
-
-<style scoped lang="scss"></style>

@@ -3,7 +3,8 @@ import { computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
-import FormSelect from "@/components/shared/form/FormSelect.vue";
+import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
+import { InputOption } from "@/types/types.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -20,5 +21,12 @@ const selectableOptions = computed(() => getSelectableOptions(result.value?.prod
 </script>
 
 <template>
-  <FormSelect label="" placeholder="Produkt wählen" name="productId" :select-options="selectableOptions" />
+  <FormInputOptions
+    label="Produkt"
+    name="productId"
+    type="text"
+    exact-option-required
+    :options="selectableOptions.map((o): InputOption => ({ name: o.label ?? o.value, value: o.value }))"
+    options-id="units"
+  />
 </template>

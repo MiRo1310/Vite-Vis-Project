@@ -26,12 +26,15 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import { vE2E } from "../../src/directives/directives";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { mount } from "cypress/vue";
 
 export interface IComponentOptions {
   global?: { directives: Record<string, any> };
 }
 
-Cypress.Commands.add("mountE2E", (component, options?: IComponentOptions) => {
+Cypress.Commands.add("mountE2E", (component, options?: (typeof mount)["options"]) => {
   options = options || {};
   return cy.mount(component, {
     global: {
@@ -53,7 +56,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      mountE2E(component: any, options: IComponentOptions): Chainable<void>;
+      mountE2E: typeof mount;
       getBySel(sel: string): Chainable<JQuery<HTMLElement>>;
     }
   }

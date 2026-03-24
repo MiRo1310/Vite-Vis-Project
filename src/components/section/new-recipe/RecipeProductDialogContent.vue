@@ -119,7 +119,7 @@ const onSubmit = form.handleSubmit(async (values) => {
           <FormSelect
             label=""
             class="w-full"
-            :disabled="!form.values.productId"
+            :disabled="!form.values.productId || !selectableUnitOptions(form.values.productId).length"
             placeholder="Wähle eine Einheit"
             name="activeUnitId"
             :select-options="selectableUnitOptions(form.values.productId)"
