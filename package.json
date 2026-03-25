@@ -18,7 +18,7 @@
     "test:component:run": "cypress run --component"
   },
   "dependencies": {
-    "@apollo/client": "^4.1.6",
+    "@apollo/client": "^3.14.1",
     "@graphql-codegen/cli": "^6.2.1",
     "@graphql-codegen/typescript": "^5.0.9",
     "@graphql-codegen/typescript-operations": "^5.0.9",
