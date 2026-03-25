@@ -13,6 +13,7 @@ interface IRecipeStore {
   recipeProductIdsToDelete: string[];
   productGroupsCount: number;
   shouldValidate: boolean;
+  directlyOpenNewProductModal: boolean;
 }
 
 export const useRecipeStore = defineStore("recipeStore", {
@@ -23,6 +24,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     recipeProductIdsToDelete: [],
     productGroupsCount: 0,
     shouldValidate: false,
+    directlyOpenNewProductModal: false,
   }),
   getters: {
     getRecipeFromStore(state) {
@@ -43,14 +45,15 @@ export const useRecipeStore = defineStore("recipeStore", {
     getShouldValidate(state) {
       return state.shouldValidate;
     },
+    getDirectlyOpenNewProductModal(state) {
+      return state.directlyOpenNewProductModal;
+    },
   },
   actions: {
     saveRecipeInStore(values: TFormValues) {
-      console.log("saveRecipeInStore", values);
       this.newRecipe = values;
     },
     resetRecipeInStore() {
-      console.log("resetRecipeInStore");
       this.newRecipe = null;
     },
     saveOpenedRecipe(recipe: { id: string }) {
@@ -73,6 +76,9 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     setShouldValidate(validate: boolean) {
       this.shouldValidate = validate;
+    },
+    setDirectlyOpenNewProductModal(setOpen: boolean) {
+      this.directlyOpenNewProductModal = setOpen;
     },
   },
 });

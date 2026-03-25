@@ -2,6 +2,7 @@
 import { Button } from "@/components/shared/button";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { routes } from "@/router/routes.ts";
+import GitHubIssue from "@/components/layout/GitHubIssue.vue";
 
 interface NavigationButtons {
   label: string;
@@ -21,7 +22,7 @@ const buttons: NavigationButtons[] = [
 </script>
 
 <template>
-  <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50 border-b-2 border-accent">
+  <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50 border-b-2 border-accent items-center">
     <div v-for="(button, index) in buttons" :key="index">
       <RouterLink v-if="!button.externalLink" :to="{ name: button.name }">
         <Button variant="outline">{{ button.label }}</Button>
@@ -33,5 +34,6 @@ const buttons: NavigationButtons[] = [
       </a>
     </div>
     <DarkMode small />
+    <GitHubIssue />
   </div>
 </template>

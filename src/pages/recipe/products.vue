@@ -11,11 +11,18 @@ import { graphql } from "@/api/gql";
 import { GetProductsQuery } from "@/api/gql/graphql.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 import TableCellNavigation from "@/components/shared/table-cell/TableCellNavigation.vue";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 
 const { refetch } = useProductCategories();
 
+const recipeStore = useRecipeStore();
+
+const dialogOpen = ref(false);
+
 onMounted(() => {
   refetch();
+  dialogOpen.value = recipeStore.getDirectlyOpenNewProductModal;
+  recipeStore.setDirectlyOpenNewProductModal(false);
 });
 
 const { result } = useQuery(
@@ -53,8 +60,6 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
   { source: "salt", labelKey: "Salz", type: "number", unit: "g" },
   { source: "sugar", labelKey: "Zucker", type: "number", unit: "g" },
 ];
-
-const dialogOpen = ref(false);
 </script>
 
 <template>

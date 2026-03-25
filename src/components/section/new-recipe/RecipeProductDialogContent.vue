@@ -15,6 +15,8 @@ import { isDefined } from "@vueuse/core";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
+import { routes } from "@/router/routes.ts";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{ product: ProductObjType; countedProducts: number; recipe?: GetRecipeByIdQuery["recipe"]; groupIndex: number }>();
 const emits = defineEmits(["removeProductId", "submit"]);
@@ -102,12 +104,23 @@ const removeProduct = async (id: string | null) => {
 const onSubmit = form.handleSubmit(async (values) => {
   emits("submit", values);
 });
+
+const router = useRouter();
+
+const recipeStore = useRecipeStore();
+
+const goToProduct = () => {
+  recipeStore.setDirectlyOpenNewProductModal(true);
+  router.push({ name: routes.recipeProducts.name });
+};
 </script>
 
 <template>
   <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
-    <div class="flex mt-2">
+    <div class="flex items-start justify-between mt-2">
       <RecipeProductName />
+
+      <Button variant="outline" class="mt-5" @click="goToProduct">Neues Produkt anlegen</Button>
     </div>
 
     <template v-if="product.id">
