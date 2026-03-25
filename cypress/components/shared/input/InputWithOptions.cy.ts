@@ -37,6 +37,27 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("state-icon").should("not.exist");
   });
 
+  it("Should have value from modelValue with non exactOption", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: false,
+        e2e: "input-with-options",
+        modelValue: "Abc",
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+
+    cy.getBySel("state-icon").should("not.exist");
+
+    cy.getBySel("input-with-options").should("have.value", "Abc");
+
+    cy.getBySel("state-icon").should("not.exist");
+  });
+
   it("Should return only exact values", () => {
     const onUpdate = cy.spy().as("updateSpy");
 
@@ -119,6 +140,7 @@ describe("<InputWithOptions />", () => {
 
     cy.getBySel("input-with-options").as("input");
     cy.get("@input").should("have.value", "Option 1");
+    cy.getBySel("state-icon-x").should("not.exist");
   });
 
   it("Should reset internalValue if modelValue has been reset", () => {
@@ -138,6 +160,7 @@ describe("<InputWithOptions />", () => {
 
       wrapper.setProps({ modelValue: "" }).then(() => {
         cy.get("@input").should("have.value", "");
+        cy.getBySel("state-icon-x").should("exist");
       });
     });
   });

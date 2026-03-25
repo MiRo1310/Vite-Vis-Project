@@ -2,7 +2,7 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import Form from "@/components/shared/form/Form.vue";
-import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
@@ -28,7 +28,8 @@ import { removeProductGroups } from "@/components/section/new-recipe/removeProdu
 import RecipeCategoryFormSelect from "@/components/section/new-recipe/RecipeCategoryFormSelect.vue";
 import { deepCopy } from "@michaelroling/ts-library";
 
-type RecipeType = GetRecipeByIdQuery["recipe"];
+type TRecipeQuery = GetRecipeByIdQuery["recipe"];
+export type TFormValues = typeof form.values;
 
 const router = useRouter();
 const props = defineProps<{ id?: string }>();
@@ -119,32 +120,28 @@ onResult((result: OnResult<GetRecipeByIdQuery>) => {
   if (!result.data?.recipe) {
     return;
   }
-  const response = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
+  const response = deepCopy<TRecipeQuery>(result.data.recipe);
 
   recipe.value = response;
   setValuesToForm(response);
   updateValue.value = true;
 });
 
-//TODO saveRecipeToStore wird nicht mehr verwendet
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
 const resetRecipeInStore = recipeStore.resetRecipeInStore;
 
 onMounted(async () => {
   const recipe = getRecipeFromStore;
-  console.log("recipe", recipe);
+
   if (recipe && !recipeId.value) {
-    console.log("save to form");
-    storedValueToForm(recipe);
+    valueToForm(recipe);
   }
 
   if (recipeId.value) {
     await load(getRecipeByIdQuery, { id: recipeId.value });
   }
 });
-
-export type TFormValues = typeof form.values;
 
 onUnmounted(() => {
   if (!form.values) {
@@ -153,16 +150,25 @@ onUnmounted(() => {
   recipeStore.saveRecipeInStore(deepCopy<TFormValues>(form.values) ?? {});
 });
 
+const initialValues = {
+  name: "",
+  portions: 1,
+  recipeCategoryId: null,
+  preparationTimeMin: null,
+  totalTimeMin: null,
+  descriptions: [],
+  headersProductArray: [],
+  productArray: [],
+};
+
 const form = useForm({
   validationSchema: formSchema,
-  initialValues: { portions: 1 },
+  initialValues: initialValues,
 });
-
-const { values } = form;
 
 const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
   get: () => {
-    const current = (values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
+    const current = (form.values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
     // Build a dense array of the same length and normalize each entry to avoid holes created by form fields
     return Array.from({ length: current.length }, (_, i) => {
       const d = current[i] as IRecipeDescriptionCreateOrUpdate | undefined;
@@ -180,57 +186,49 @@ const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
 
 const productArray = computed<ProductObjType[]>({
   get: () => {
-    const current = (values.productArray as ProductObjType[]) ?? [];
+    const current = (form.values.productArray as ProductObjType[]) ?? [];
     return [...current].map((p, index) => ({ ...p, position: index }));
   },
   set: (v) => form.setFieldValue("productArray", v),
 });
 
-const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
-  if (!recipe) {
-    return {
-      name: "",
-      portions: 1,
-      recipeCategoryId: null,
-      preparationTimeMin: null,
-      totalTimeMin: null,
-      recipeDescriptions: [],
-      recipeHeaderProducts: [],
-      recipeProducts: [],
-    };
-  }
-  const { portions, recipeProducts, name, totalTimeMin, recipeHeaderProducts, recipeDescriptions, recipeCategoryId, preparationTimeMin } = recipe;
+const recipeToFormValues = (recipe?: TRecipeQuery): TFormValues => {
   return {
-    portions: portions ?? 1,
-    recipeProducts,
-    recipeHeaderProducts,
-    recipeCategoryId,
-    totalTimeMin,
-    preparationTimeMin,
-    recipeDescriptions,
-    name,
+    productArray: recipe?.recipeProducts,
+    descriptions: recipe?.recipeDescriptions,
+    headersProductArray: recipe?.recipeHeaderProducts,
+    portions: recipe?.portions ?? undefined,
+    name: recipe?.name,
+    totalTimeMin: recipe?.totalTimeMin,
+    preparationTimeMin: recipe?.preparationTimeMin,
+    recipeCategoryId: recipe?.recipeCategoryId,
   };
 };
 
-const storedValueToForm = (formValues: TFormValues) => {
-  const {
-    portions,
-    recipeCategoryId,
-    descriptions: descriptionValues,
-    name,
-    productArray: products,
-    preparationTimeMin,
-    totalTimeMin,
-    headersProductArray: headers,
-  } = formValues;
+const getFormValueOrDefault = <K extends keyof TFormValues>(key: K, formValues?: TFormValues): Exclude<TFormValues[K], undefined> => {
+  if (!formValues) {
+    return initialValues[key] as Exclude<TFormValues[K], undefined>;
+  }
+  return (formValues[key] ?? initialValues[key]) as Exclude<TFormValues[K], undefined>;
+};
+
+const valueToForm = (formValues?: TFormValues) => {
+  const portions = getFormValueOrDefault("portions", formValues);
+  const products = getFormValueOrDefault("productArray", formValues);
+  const descriptionValues = getFormValueOrDefault("descriptions", formValues);
+  const recipeCategoryId = getFormValueOrDefault("recipeCategoryId", formValues);
+  const totalTimeMin = getFormValueOrDefault("totalTimeMin", formValues);
+  const preparationTimeMin = getFormValueOrDefault("preparationTimeMin", formValues);
+  const headers = getFormValueOrDefault("headersProductArray", formValues);
+  const name = getFormValueOrDefault("name", formValues);
 
   form.setValues({
-    portions: portions ?? 1,
+    portions,
     productArray: products,
     descriptions: descriptionValues,
-    recipeCategoryId: recipeCategoryId ?? null,
-    totalTimeMin: totalTimeMin ?? null,
-    preparationTimeMin: preparationTimeMin ?? null,
+    recipeCategoryId: recipeCategoryId,
+    totalTimeMin: totalTimeMin,
+    preparationTimeMin: preparationTimeMin,
     headersProductArray: headers,
     name,
   });
@@ -256,11 +254,12 @@ const storedValueToForm = (formValues: TFormValues) => {
     })) ?? [];
 };
 
-const setValuesToForm = (recipe: RecipeType) => {
+const setValuesToForm = (recipe: TRecipeQuery) => {
   if (!recipe) {
     return;
   }
-  form.setValues(getRecipeProductObj(recipe));
+
+  valueToForm(recipeToFormValues(recipe));
 
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.recipeDescriptions));
 
@@ -280,7 +279,7 @@ const setValuesToForm = (recipe: RecipeType) => {
   }));
 };
 
-const recipe = ref<RecipeType>();
+const recipe = ref<TRecipeQuery>();
 
 const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
@@ -349,11 +348,11 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 });
 
-const backToRecipe = ref(false);
+const navigateBackToRecipeDetails = ref(false);
 const goBack = async (id: string) => {
-  if (backToRecipe.value) {
+  if (navigateBackToRecipeDetails.value) {
     resetForm();
-    backToRecipe.value = false;
+    navigateBackToRecipeDetails.value = false;
     await router.push({ name: routes.recipeDetails.name, params: { recipeId: id } });
   }
 };
@@ -378,10 +377,11 @@ const resetForm = () => {
     descriptions.value = [];
     headersProductArray.value = [];
     productArray.value = [];
-    form.setValues(getRecipeProductObj());
+    valueToForm();
     return;
   }
-  form.setValues(getRecipeProductObj(recipe.value));
+
+  valueToForm(recipeToFormValues(recipe.value));
 
   descriptions.value = recipe.value?.recipeDescriptions
     ? sortAndAddPositionByCreate(recipe.value.recipeDescriptions)
@@ -466,7 +466,7 @@ const addDescription = () => {
         </div>
 
         <div class="w-120">
-          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="backToRecipe" />
+          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
           <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
@@ -481,7 +481,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="backToRecipe" />
+      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>
