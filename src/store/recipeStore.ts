@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { GetRecipeByIdQuery } from "@/api/gql/graphql";
+import { TFormValues } from "@/components/section/new-recipe/RecipeForm.vue";
 
 export interface IRecipeGroupToDelete {
   groupPosition: number;
@@ -7,12 +7,13 @@ export interface IRecipeGroupToDelete {
 }
 
 interface IRecipeStore {
-  newRecipe: GetRecipeByIdQuery["recipe"] | null;
+  newRecipe: TFormValues | null;
   openedRecipe: { id: string } | null;
   recipeGroupIdsToDelete: IRecipeGroupToDelete[];
   recipeProductIdsToDelete: string[];
   productGroupsCount: number;
   shouldValidate: boolean;
+  directlyOpenNewProductModal: boolean;
 }
 
 export const useRecipeStore = defineStore("recipeStore", {
@@ -23,6 +24,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     recipeProductIdsToDelete: [],
     productGroupsCount: 0,
     shouldValidate: false,
+    directlyOpenNewProductModal: false,
   }),
   getters: {
     getRecipeFromStore(state) {
@@ -43,9 +45,12 @@ export const useRecipeStore = defineStore("recipeStore", {
     getShouldValidate(state) {
       return state.shouldValidate;
     },
+    getDirectlyOpenNewProductModal(state) {
+      return state.directlyOpenNewProductModal;
+    },
   },
   actions: {
-    saveRecipeInStore(values: GetRecipeByIdQuery["recipe"]) {
+    saveRecipeInStore(values: TFormValues) {
       this.newRecipe = values;
     },
     resetRecipeInStore() {
@@ -71,6 +76,9 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     setShouldValidate(validate: boolean) {
       this.shouldValidate = validate;
+    },
+    setDirectlyOpenNewProductModal(setOpen: boolean) {
+      this.directlyOpenNewProductModal = setOpen;
     },
   },
 });

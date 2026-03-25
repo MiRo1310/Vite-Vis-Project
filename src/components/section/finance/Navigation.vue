@@ -3,6 +3,7 @@ import { Button } from "@/components/shared/button";
 import { useRoute } from "vue-router";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { routes } from "@/router/routes.ts";
+import GitHubIssue from "@/components/layout/GitHubIssue.vue";
 
 const route = useRoute();
 </script>
@@ -20,6 +21,7 @@ const route = useRoute();
         <Button as="div" :variant="route.name === routes.description.name ? 'default' : 'outline'">Beschreibung</Button>
       </RouterLink>
       <DarkMode small />
+      <GitHubIssue />
     </div>
 
     <slot />

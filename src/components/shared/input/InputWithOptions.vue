@@ -27,11 +27,24 @@ const getReturnValueFromOption = (option: InputOption): string | number => optio
 
 const includesPartOfName = (value: string): boolean => props.options?.some((o) => o.name.includes(value)) ?? false;
 
-const internalValue = ref(getNameByValue(modelValue.value) ?? "");
+const isExactOption = ref(false);
+const internalValue = ref<string | number>(handleModelValueChange(modelValue.value));
 
-watch(modelValue, () => {
-  internalValue.value = getNameByValue(modelValue.value) ?? "";
+watch(modelValue, (newValue) => {
+  internalValue.value = handleModelValueChange(newValue);
 });
+
+function handleModelValueChange(value: string | number): string | number {
+  if (props.exactOptionRequired) {
+    const name = getNameByValue(modelValue.value);
+    if (name) {
+      isExactOption.value = true;
+    }
+    return name ?? "";
+  } else {
+    return value;
+  }
+}
 
 const updateValue = () => {
   const value = internalValue.value;
@@ -94,7 +107,6 @@ const hasExactName = (name: string): boolean => {
 };
 
 const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
-const isExactOption = ref(false);
 </script>
 
 <template>

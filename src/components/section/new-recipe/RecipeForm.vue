@@ -2,7 +2,7 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import Form from "@/components/shared/form/Form.vue";
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
@@ -26,8 +26,10 @@ import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.v
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
 import { removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
 import RecipeCategoryFormSelect from "@/components/section/new-recipe/RecipeCategoryFormSelect.vue";
+import { deepCopy } from "@michaelroling/ts-library";
 
-type RecipeType = GetRecipeByIdQuery["recipe"];
+type TRecipeQuery = GetRecipeByIdQuery["recipe"];
+export type TFormValues = typeof form.values;
 
 const router = useRouter();
 const props = defineProps<{ id?: string }>();
@@ -112,31 +114,28 @@ watch(
   },
 );
 
-const store = useRecipeStore();
-
 const { load, onResult } = useLazyQuery(getRecipeByIdQuery);
 
 onResult((result: OnResult<GetRecipeByIdQuery>) => {
   if (!result.data?.recipe) {
     return;
   }
-  const response = JSON.parse(JSON.stringify(result.data.recipe)) as RecipeType | undefined;
+  const response = deepCopy<TRecipeQuery>(result.data.recipe);
 
   recipe.value = response;
   setValuesToForm(response);
   updateValue.value = true;
 });
 
-//TODO saveRecipeToStore wird nicht mehr verwendet
 const recipeStore = useRecipeStore();
 const getRecipeFromStore = recipeStore.getRecipeFromStore;
-const resetRecipeInStore = recipeStore.resetRecipeInStore.bind(recipeStore);
+const resetRecipeInStore = recipeStore.resetRecipeInStore;
 
 onMounted(async () => {
   const recipe = getRecipeFromStore;
 
   if (recipe && !recipeId.value) {
-    setValuesToForm(recipe);
+    valueToForm(recipe);
   }
 
   if (recipeId.value) {
@@ -144,16 +143,32 @@ onMounted(async () => {
   }
 });
 
-const form = useForm({
-  validationSchema: formSchema,
-  initialValues: { portions: 1 },
+onUnmounted(() => {
+  if (!form.values) {
+    return;
+  }
+  recipeStore.saveRecipeInStore(deepCopy<TFormValues>(form.values) ?? {});
 });
 
-const { values } = form;
+const initialValues = {
+  name: "",
+  portions: 1,
+  recipeCategoryId: null,
+  preparationTimeMin: null,
+  totalTimeMin: null,
+  descriptions: [],
+  headersProductArray: [],
+  productArray: [],
+};
+
+const form = useForm({
+  validationSchema: formSchema,
+  initialValues: initialValues,
+});
 
 const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
   get: () => {
-    const current = (values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
+    const current = (form.values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
     // Build a dense array of the same length and normalize each entry to avoid holes created by form fields
     return Array.from({ length: current.length }, (_, i) => {
       const d = current[i] as IRecipeDescriptionCreateOrUpdate | undefined;
@@ -171,43 +186,80 @@ const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
 
 const productArray = computed<ProductObjType[]>({
   get: () => {
-    const current = (values.productArray as ProductObjType[]) ?? [];
+    const current = (form.values.productArray as ProductObjType[]) ?? [];
     return [...current].map((p, index) => ({ ...p, position: index }));
   },
   set: (v) => form.setFieldValue("productArray", v),
 });
 
-const getRecipeProductObj = (recipe?: RecipeType): RecipeCreateDtoInput => {
-  if (!recipe) {
-    return {
-      name: "",
-      portions: 1,
-      recipeCategoryId: null,
-      preparationTimeMin: null,
-      totalTimeMin: null,
-      recipeDescriptions: [],
-      recipeHeaderProducts: [],
-      recipeProducts: [],
-    };
-  }
-  const { portions, recipeProducts, name, totalTimeMin, recipeHeaderProducts, recipeDescriptions, recipeCategoryId, preparationTimeMin } = recipe;
+const recipeToFormValues = (recipe?: TRecipeQuery): TFormValues => {
   return {
-    portions: portions ?? 1,
-    recipeProducts,
-    recipeHeaderProducts,
-    recipeCategoryId,
-    totalTimeMin,
-    preparationTimeMin,
-    recipeDescriptions,
-    name,
+    productArray: recipe?.recipeProducts,
+    descriptions: recipe?.recipeDescriptions,
+    headersProductArray: recipe?.recipeHeaderProducts,
+    portions: recipe?.portions ?? undefined,
+    name: recipe?.name,
+    totalTimeMin: recipe?.totalTimeMin,
+    preparationTimeMin: recipe?.preparationTimeMin,
+    recipeCategoryId: recipe?.recipeCategoryId,
   };
 };
 
-const setValuesToForm = (recipe: RecipeType) => {
+const getFormValueOrDefault = <K extends keyof TFormValues>(key: K, formValues?: TFormValues): Exclude<TFormValues[K], undefined> => {
+  if (!formValues) {
+    return initialValues[key] as Exclude<TFormValues[K], undefined>;
+  }
+  return (formValues[key] ?? initialValues[key]) as Exclude<TFormValues[K], undefined>;
+};
+
+const valueToForm = (formValues?: TFormValues) => {
+  const portions = getFormValueOrDefault("portions", formValues);
+  const products = getFormValueOrDefault("productArray", formValues);
+  const descriptionValues = getFormValueOrDefault("descriptions", formValues);
+  const recipeCategoryId = getFormValueOrDefault("recipeCategoryId", formValues);
+  const totalTimeMin = getFormValueOrDefault("totalTimeMin", formValues);
+  const preparationTimeMin = getFormValueOrDefault("preparationTimeMin", formValues);
+  const headers = getFormValueOrDefault("headersProductArray", formValues);
+  const name = getFormValueOrDefault("name", formValues);
+
+  form.setValues({
+    portions,
+    productArray: products,
+    descriptions: descriptionValues,
+    recipeCategoryId: recipeCategoryId,
+    totalTimeMin: totalTimeMin,
+    preparationTimeMin: preparationTimeMin,
+    headersProductArray: headers,
+    name,
+  });
+
+  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(descriptionValues ?? []));
+
+  nextDescriptionIndex.value = descriptions.value.length;
+  headersProductArray.value = sortHeaderProductsByPosition(
+    getTextPositionTypeFromResult(headers?.map((h, i) => ({ text: h.text, position: h.position ?? i })) ?? []),
+  );
+
+  productArray.value =
+    products?.map((item, index) => ({
+      amount: item.amount || 0,
+      description: item.description ?? "",
+      groupPosition: item.groupPosition,
+      productId: item.productId,
+      unit: "",
+      id: item.id ?? undefined,
+      activeUnitId: item.activeUnitId ?? "",
+      position: index,
+      sortOrder: item.sortOrder,
+    })) ?? [];
+};
+
+const setValuesToForm = (recipe: TRecipeQuery) => {
   if (!recipe) {
     return;
   }
-  form.setValues(getRecipeProductObj(recipe));
+
+  valueToForm(recipeToFormValues(recipe));
 
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.recipeDescriptions));
 
@@ -227,7 +279,7 @@ const setValuesToForm = (recipe: RecipeType) => {
   }));
 };
 
-const recipe = ref<RecipeType>();
+const recipe = ref<TRecipeQuery>();
 
 const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
@@ -281,9 +333,9 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   removeDescriptions(descriptionsToDelete.value);
 
-  await removeProductGroups(store.getRecipeGroupIdsToDelete);
+  await removeProductGroups(recipeStore.getRecipeGroupIdsToDelete);
 
-  await removeRecipeProducts(store.getRecipeProductsToDelete);
+  await removeRecipeProducts(recipeStore.getRecipeProductsToDelete);
 
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
@@ -296,11 +348,11 @@ const onSubmit = form.handleSubmit(async (values) => {
   }
 });
 
-const backToRecipe = ref(false);
+const navigateBackToRecipeDetails = ref(false);
 const goBack = async (id: string) => {
-  if (backToRecipe.value) {
+  if (navigateBackToRecipeDetails.value) {
     resetForm();
-    backToRecipe.value = false;
+    navigateBackToRecipeDetails.value = false;
     await router.push({ name: routes.recipeDetails.name, params: { recipeId: id } });
   }
 };
@@ -317,17 +369,20 @@ const defaultProduct: ProductObjType = {
 };
 
 const resetForm = () => {
-  store.setShouldValidate(false);
+  recipeStore.setShouldValidate(false);
   form.resetForm();
+  resetRecipeInStore();
+
   if (!recipeId.value) {
     descriptions.value = [];
     headersProductArray.value = [];
     productArray.value = [];
-    form.setValues(getRecipeProductObj());
+    valueToForm();
     return;
   }
-  form.setValues(getRecipeProductObj(recipe.value));
-  resetRecipeInStore();
+
+  valueToForm(recipeToFormValues(recipe.value));
+
   descriptions.value = recipe.value?.recipeDescriptions
     ? sortAndAddPositionByCreate(recipe.value.recipeDescriptions)
     : [{ position: 0, text: "", header: "", positionByCreate: 0 }];
@@ -354,25 +409,17 @@ const sortAndAddPositionByCreate = <T extends { text: string; position: number }
 
 const headersProductArray = ref<TextPositionType[]>([]);
 
-watch(
-  headersProductArray,
-  (newValue) => {
-    Logger("Headers Array changed:", { value: newValue, useDebugMode: true });
-    form.setFieldValue("headersProductArray", newValue);
-  },
-  { deep: true },
-);
-
 watchEffect(() => {
   if (!productArray.value?.length) {
     return 0;
   }
-  store.setProductGroupCount(
+  recipeStore.setProductGroupCount(
     productArray.value?.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
     }, 0) + 1,
   );
 });
+
 const nextDescriptionIndex = ref(0);
 const addDescription = () => {
   const descriptionsCopy = [...descriptions.value];
@@ -394,7 +441,7 @@ const addDescription = () => {
         <div class="flex-col flex-1 h-full">
           <FormInput label="Rezeptname" name="name" class="flex-1" />
 
-          <div class="flex gap-2 items-center">
+          <div class="flex gap-2 items-start">
             <FormInput label="Portionen" name="portions" type="number" />
             <FormInput label="Zubereitungszeit (min)" name="preparationTimeMin" type="number" />
             <FormInput label="Gesamtzeit (min)" name="totalTimeMin" type="number" />
@@ -419,8 +466,8 @@ const addDescription = () => {
         </div>
 
         <div class="w-120">
-          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="backToRecipe" />
-          <div v-for="oneBasedIndex in store.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
+          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
+          <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup
               v-model:product-array="productArray"
               v-model:headers-product-array="headersProductArray"
@@ -434,7 +481,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="backToRecipe" />
+      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>
