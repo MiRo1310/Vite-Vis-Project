@@ -197,7 +197,7 @@ export type MutationCreateRecipeArgs = {
 
 
 export type MutationCreateRecipeCategoryArgs = {
-  dto: ProductCategoryCreateDtoInput;
+  dto: RecipeCategoryCreateDtoInput;
 };
 
 
@@ -298,7 +298,7 @@ export type MutationUpdateRecipeArgs = {
 
 
 export type MutationUpdateRecipeCategoryArgs = {
-  dto: ProductCategoryUpdateDtoInput;
+  dto: RecipeCategoryUpdateDtoInput;
 };
 
 
@@ -496,6 +496,15 @@ export type RecipeCategory = {
   id: Scalars['UUID']['output'];
   modifiedAt?: Maybe<Scalars['DateTime']['output']>;
   name: Scalars['String']['output'];
+};
+
+export type RecipeCategoryCreateDtoInput = {
+  name: Scalars['String']['input'];
+};
+
+export type RecipeCategoryUpdateDtoInput = {
+  id: Scalars['UUID']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type RecipeCreateDtoInput = {
