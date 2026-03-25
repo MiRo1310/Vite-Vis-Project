@@ -16,7 +16,7 @@ import { useRecipeStore } from "@/store/recipeStore.ts";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 
-const props = defineProps<{ product: ProductObjType; countedProducts: number; recipe: GetRecipeByIdQuery["recipe"]; groupIndex: number }>();
+const props = defineProps<{ product: ProductObjType; countedProducts: number; recipe?: GetRecipeByIdQuery["recipe"]; groupIndex: number }>();
 const emits = defineEmits(["removeProductId", "submit"]);
 
 const open = defineModel<boolean>("open", { required: true });

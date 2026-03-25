@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { GetRecipeByIdQuery } from "@/api/gql/graphql";
+import { TFormValues } from "@/components/section/new-recipe/RecipeForm.vue";
 
 export interface IRecipeGroupToDelete {
   groupPosition: number;
@@ -7,7 +7,7 @@ export interface IRecipeGroupToDelete {
 }
 
 interface IRecipeStore {
-  newRecipe: GetRecipeByIdQuery["recipe"] | null;
+  newRecipe: TFormValues | null;
   openedRecipe: { id: string } | null;
   recipeGroupIdsToDelete: IRecipeGroupToDelete[];
   recipeProductIdsToDelete: string[];
@@ -45,10 +45,12 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
   },
   actions: {
-    saveRecipeInStore(values: GetRecipeByIdQuery["recipe"]) {
+    saveRecipeInStore(values: TFormValues) {
+      console.log("saveRecipeInStore", values);
       this.newRecipe = values;
     },
     resetRecipeInStore() {
+      console.log("resetRecipeInStore");
       this.newRecipe = null;
     },
     saveOpenedRecipe(recipe: { id: string }) {
