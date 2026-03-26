@@ -1,19 +1,16 @@
 // Public: Cache invalidieren (evict + garbage collect + evtl. refetch aktiver Queries)
-import { ApolloClient } from "@apollo/client/core";
 import { Logger } from "@/lib/logger.ts";
+import apolloClient from "@/apolloClient.ts";
 
-export const invalidateCache = async (client: ApolloClient, fieldName: string) => {
+export const invalidateCache = async (fieldName: string) => {
   try {
-    if (!client) {
-      return;
-    }
     // Evict das Root-Feld productCategories
-    client.cache.evict({ id: "ROOT_QUERY", fieldName });
+    apolloClient.cache.evict({ id: "ROOT_QUERY", fieldName });
     // Entferne dereferenzierte Einträge
-    client.cache.gc();
+    apolloClient.cache.gc();
     // Optional: refetch alle aktiven observable queries
-    if (client.reFetchObservableQueries) {
-      await client.reFetchObservableQueries();
+    if (apolloClient.reFetchObservableQueries) {
+      await apolloClient.reFetchObservableQueries();
     }
   } catch (e) {
     Logger(`Failed to invalidate ${fieldName} cache`, { e, type: "error" });

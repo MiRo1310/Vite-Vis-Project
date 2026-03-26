@@ -1,4 +1,4 @@
-import { useLazyQuery, useApolloClient } from "@vue/apollo-composable";
+import { useLazyQuery } from "@vue/apollo-composable";
 
 import { computed, onMounted } from "vue";
 import { getSelectableOptions } from "@/composables/querys/options";
@@ -28,9 +28,6 @@ const productCategoriesComposable = () => {
     `),
   );
 
-  // Apollo Client für Cache-Operationen
-  const { client } = useApolloClient();
-
   onMounted(async () => {
     await load();
   });
@@ -50,7 +47,7 @@ const productCategoriesComposable = () => {
     await refetch();
   };
   const invalidateCache = async () => {
-    await invalidateCacheFn(client, "productCategories");
+    await invalidateCacheFn("productCategories");
   };
 
   return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result };

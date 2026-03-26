@@ -4,7 +4,7 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
-import { useApolloClient, useMutation } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
@@ -51,8 +51,6 @@ const form = useForm({
   validateOnMount: false,
 });
 
-const client = useApolloClient().client;
-
 const onSubmit = form.handleSubmit(async (values) => {
   if (!values.unit) {
     return;
@@ -82,7 +80,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       dto: { ...dto, id },
     });
   }
-  await invalidateCache(client, "products");
+  await invalidateCache("products");
   closeDialog();
 });
 

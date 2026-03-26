@@ -19,7 +19,7 @@ const { mutate } = useMutation(
   `),
 );
 
-const addUnit = () => {
+const addUnit = async () => {
   if (!newUnit.value || unitExists.value) {
     return;
   }
@@ -34,10 +34,10 @@ const addUnit = () => {
       if (props.units?.find((c) => c.name === unit)) {
         return;
       }
-      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: ["GetUnits"] } : undefined);
+      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: ["Units"] } : undefined);
     });
   } else {
-    mutate({ name: newUnit.value }, { refetchQueries: ["GetUnits"] });
+    mutate({ name: newUnit.value }, { refetchQueries: ["Units"] });
   }
   newUnit.value = "";
 };
