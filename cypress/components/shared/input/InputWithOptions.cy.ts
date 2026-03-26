@@ -58,6 +58,27 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("state-icon").should("not.exist");
   });
 
+  it("Should have correct label filter by modelValue with non exactOption", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: false,
+        e2e: "input-with-options",
+        modelValue: 111,
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+
+    cy.getBySel("state-icon").should("not.exist");
+
+    cy.getBySel("input-with-options").should("have.value", "Option 1");
+
+    cy.getBySel("state-icon").should("not.exist");
+  });
+
   it("Should return only exact values", () => {
     const onUpdate = cy.spy().as("updateSpy");
 
@@ -73,7 +94,6 @@ describe("<InputWithOptions />", () => {
     });
 
     cy.getBySel("input-with-options").as("input");
-    cy.getBySel("state-icon-x").should("exist");
 
     cy.get("@input").type("Test");
     cy.get("@updateSpy").should("not.have.been.calledWith", "Test");
@@ -87,7 +107,6 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("state-icon-check").should("exist");
 
     cy.get("@input").clear();
-    cy.getBySel("state-icon-x").should("exist");
 
     cy.get("@input").type("Option 4");
     cy.get("@updateSpy").should("have.been.calledWith", 114);
@@ -163,5 +182,23 @@ describe("<InputWithOptions />", () => {
         cy.getBySel("state-icon-x").should("exist");
       });
     });
+  });
+
+  it("Should have no Icon if internalValue is empty", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        e2e: "input-with-options",
+        modelValue: "",
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+    cy.getBySel("input-with-options").as("input");
+
+    cy.getBySel("state-icon").should("not.exist");
   });
 });

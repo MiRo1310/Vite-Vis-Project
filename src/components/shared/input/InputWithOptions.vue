@@ -42,7 +42,7 @@ function handleModelValueChange(value: string | number): string | number {
     }
     return name ?? "";
   } else {
-    return value;
+    return getNameByValue(modelValue.value) ?? value;
   }
 }
 
@@ -127,7 +127,7 @@ const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
     <datalist v-if="options" :id="optionsId">
       <option v-for="(option, index) in options" :key="index">{{ option.name }}</option>
     </datalist>
-    <span v-if="exactOptionRequired" class="ml-1" v-e2e="'state-icon'">
+    <span v-if="exactOptionRequired && internalValue" class="ml-1" v-e2e="'state-icon'">
       <Check v-if="isExactOption" class="text-success size-4" v-e2e="'state-icon-check'" />
       <X v-else class="text-red-500 size-4" v-e2e="'state-icon-x'" />
     </span>

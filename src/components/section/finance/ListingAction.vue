@@ -95,7 +95,7 @@ const onSubmit = form.handleSubmit(async (values) => {
         <div class="mt-4 flex flex-col gap-4">
           <FormDate name="date" label="Datum" />
           <FormTextarea name="description" label="Beschreibung" />
-          <FormInput name="price" label="Betrag" type="number" :min="0" />
+          <FormInput name="price" label="Betrag" type="number" :min="0" :step="0.01" />
           <AddressOptions />
         </div>
         <FormFooter @update:close="dialogUpdateOpen = false" />
