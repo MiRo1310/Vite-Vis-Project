@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Row } from "@tanstack/vue-table";
 import { DescriptionsQuery } from "@/api/gql/graphql.ts";
-import { TableColumnProps } from "@/types/types.ts";
+import { ITableColumn } from "@/types/types.ts";
 
-defineProps<TableColumnProps<string, Row<DescriptionsQuery["description"][number]>, undefined>>();
+defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
 </script>
 
 <template>

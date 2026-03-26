@@ -6,10 +6,10 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { DescriptionsQuery } from "@/api/gql/graphql.ts";
-import { Row } from "@tanstack/vue-table";
 import { Textarea } from "@/components/ui/textarea";
+import { ITableColumn } from "@/types/types.ts";
 
-const props = defineProps<{ value: string; row: Row<DescriptionsQuery["description"][number]> }>();
+const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveDescription($id: UUID!) {
