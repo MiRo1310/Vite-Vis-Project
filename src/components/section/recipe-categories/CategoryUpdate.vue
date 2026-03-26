@@ -5,12 +5,11 @@ import { useMutation } from "@vue/apollo-composable";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input";
-import { Row } from "@tanstack/vue-table";
-import { TableColumnProps } from "@/types/types.ts";
+import { ITableColumn } from "@/types/types.ts";
 import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
 import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 
-const props = defineProps<TableColumnProps<string, Row<RecipeCategoriesQuery["recipeCategories"][number]>>>();
+const props = defineProps<ITableColumn<string, RecipeCategoriesQuery["recipeCategories"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`

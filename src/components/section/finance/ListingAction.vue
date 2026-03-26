@@ -6,7 +6,6 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
-import { Row } from "@tanstack/vue-table";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { useForm } from "vee-validate";
 import { formSchemaListing } from "@/components/section/finance/formSchema.ts";
@@ -15,9 +14,9 @@ import FormFooter from "@/components/shared/form/FormFooter.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
+import { ITableColumn } from "@/types/types.ts";
 
-// eslint-disable-next-line vue/no-unused-properties
-const props = defineProps<{ value: string; row: Row<TravelCostQuery["travelCost"][number]>; source: string; customValue?: string }>();
+const props = defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`

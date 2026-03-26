@@ -325,11 +325,11 @@ export type Pathes<T> = T extends object
   : "";
 type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
 
-export interface TableColumnProps<Value, RowType, CustomValue = string> {
+export interface ITableColumn<Value, TRow, CustomValue = null> {
   value: Value;
-  row: RowType;
-  customValue: CustomValue;
+  row: Row<TRow>;
   source: string;
+  customValue?: CustomValue;
 }
 
 export interface InfoType {

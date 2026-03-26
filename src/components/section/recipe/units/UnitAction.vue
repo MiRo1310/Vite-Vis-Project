@@ -7,11 +7,10 @@ import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { GetUnitsQuery } from "@/api/gql/graphql.ts";
-import { Row } from "@tanstack/vue-table";
 import description from "@/pages/finance/description.vue";
-import { TableColumnProps } from "@/types/types.ts";
+import { ITableColumn } from "@/types/types.ts";
 
-const props = defineProps<TableColumnProps<string, Row<GetUnitsQuery["units"][number]>>>();
+const props = defineProps<ITableColumn<string, GetUnitsQuery["units"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`

@@ -7,9 +7,9 @@ import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input";
 import { AddressesQuery } from "@/api/gql/graphql.ts";
-import { Row } from "@tanstack/vue-table";
+import { ITableColumn } from "@/types/types.ts";
 
-const props = defineProps<{ value: string; row: Row<AddressesQuery["addresses"][number]> }>();
+const props = defineProps<ITableColumn<string, AddressesQuery["addresses"][number]>>();
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveAddress($id: UUID!) {

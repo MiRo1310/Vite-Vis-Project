@@ -5,10 +5,9 @@ import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
-import { Row } from "@tanstack/vue-table";
-import { TableColumnProps } from "@/types/types.ts";
+import { ITableColumn } from "@/types/types.ts";
 
-const props = defineProps<TableColumnProps<string, Row<ProductCategoriesQuery["productCategories"][number]>>>();
+const props = defineProps<ITableColumn<string, ProductCategoriesQuery["productCategories"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`

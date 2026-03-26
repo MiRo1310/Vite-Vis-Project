@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { TableColumnProps } from "@/types/types.ts";
-import { Row } from "@tanstack/vue-table";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
+import { ITableColumn } from "@/types/types.ts";
 
-defineProps<TableColumnProps<string, Row<TravelCostQuery["travelCost"][number]>, undefined>>();
+defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
 </script>
 
 <template>
