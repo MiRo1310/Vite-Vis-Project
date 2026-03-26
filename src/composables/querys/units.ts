@@ -41,5 +41,5 @@ const unitsComposable = () => {
     (): InputOption[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ value: unit.id, name: unit.name })) ?? [],
   );
 
-  return { selectableOptions, getUnitNameById, getUnitIdByName, getOptions, isResult, length, refetch };
+  return { selectableOptions, getUnitNameById, getUnitIdByName, getOptions, isResult, length, refetch, result };
 };

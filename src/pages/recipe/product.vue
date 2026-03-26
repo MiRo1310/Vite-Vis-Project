@@ -14,6 +14,8 @@ import { formSchemaProduct } from "@/components/section/products/schema.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import ProductRemove from "@/components/section/products/action/ProductRemove.vue";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
+import { invalidateCache } from "@/composables/querys/utils.ts";
+import { useToast } from "@/components/ui/toast";
 
 const props = defineProps<{ id: string }>();
 
@@ -55,10 +57,10 @@ watch(
   { immediate: true },
 );
 
-const { getOptions } = useUnits();
+const { getOptions, refetch } = useUnits();
 
 const { selectableOptions } = useProductCategories();
-const { mutate } = useMutation(
+const { mutate, onDone: onDoneProductCreate } = useMutation(
   graphql(`
     mutation addProduct($dto: ProductCreateDtoInput!) {
       createProduct(dto: $dto) {
@@ -67,10 +69,9 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetProducts"] },
 );
 
-const { mutate: updateProductMutate } = useMutation(
+const { mutate: updateProductMutate, onDone: onDoneProductMutate } = useMutation(
   graphql(`
     mutation updateProduct($dto: ProductUpdateDtoInput!) {
       updateProduct(dto: $dto) {
@@ -79,7 +80,6 @@ const { mutate: updateProductMutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["GetProducts"] },
 );
 
 const form = useForm({
@@ -101,8 +101,9 @@ const onSubmit = form.handleSubmit(async (values) => {
     sugar: values.sugar,
     amount: values.amount ?? 0,
     unit: values.unit,
-    productUnits: unitVariants.value as [ProductUnitCreateOrUpdateDtoInput],
+    productUnits: unitVariants.value,
   };
+
   if (!updateValue.value) {
     await mutate({ dto });
   } else {
@@ -115,6 +116,16 @@ const onSubmit = form.handleSubmit(async (values) => {
       dto: { ...dto, id },
     });
   }
+  await invalidateCache("productsGrouped");
+});
+
+const { toast } = useToast();
+onDoneProductMutate(() => {
+  toast({ title: "Das Produkt wurde erfolgreich aktualisiert" });
+});
+
+onDoneProductCreate(() => {
+  toast({ title: "Das Produkt wurde erfolgreich angelegt" });
 });
 
 const updateValue = ref(false);
@@ -154,6 +165,7 @@ const nullToUndefined = <T,>(val: T | null): T | undefined => {
 };
 
 onMounted(async () => {
+  await refetch();
   initFormData();
 });
 
@@ -195,7 +207,6 @@ const valueChanged = computed(() => {
       <FormInput label="Menge" name="amount" type="number" :step="0.1" />
       <FormInputOptions label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" />
     </div>
-
     <AddVariantUnits
       v-if="(defaultUnitVariant.amount || form.values.amount) && (defaultUnitVariant.unit || form.values.unit)"
       :options="getOptions"

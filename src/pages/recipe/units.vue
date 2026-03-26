@@ -1,23 +1,13 @@
 <script setup lang="ts">
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { graphql } from "@/api/gql";
-import { useQuery } from "@vue/apollo-composable";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import Header from "@/components/section/header/Header.vue";
 import AddUnit from "@/components/section/recipe/units/AddUnit.vue";
 import UnitAction from "@/components/section/recipe/units/UnitAction.vue";
 import { GetUnitsQuery } from "@/api/gql/graphql.ts";
+import { useUnits } from "@/composables/querys/units.ts";
 
-const { result } = useQuery(
-  graphql(`
-    query GetUnits {
-      units {
-        name
-        id
-      }
-    }
-  `),
-);
+const { result } = useUnits();
 
 const columns: DatatableColumns<GetUnitsQuery["units"][number]>[] = [
   { source: "name", labelKey: "Name" },
