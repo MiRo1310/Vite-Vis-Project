@@ -34,5 +34,5 @@ const options = computed((): InputOption[] => {
 </script>
 
 <template>
-  <FormInputOptions name="addressId" :options options-id="address" label="Adresse" />
+  <FormInputOptions name="addressId" :options options-id="address" label="Adresse" exact-option-required />
 </template>

@@ -57,7 +57,7 @@ const handleDescriptionChange = (value?: string) => {
   <Form @update:on-submit="onSubmit">
     <div class="my-4 flex gap-4 flex-wrap">
       <FormDate name="date" label="Datum" />
-      <FormInput name="price" label="Betrag" type="number" :min="0" />
+      <FormInput name="price" label="Betrag" type="number" :min="0" :step="0.01" />
 
       <AddressOptions />
       <div class="w-full">
