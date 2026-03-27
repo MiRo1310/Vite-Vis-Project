@@ -26,11 +26,9 @@ const unitVariants = defineModel<ProductUnitCreateOrUpdateDtoInput[]>("unitVaria
 const variants = ref<Units>([]);
 
 onMounted(() => {
-  if (props.data.length > 0) {
-    variants.value = props.data
-      .filter((variant) => !variant.isDefault)
-      .map((variant) => ({ id: variant.id, unit: variant.unit, amount: variant.amount })) as ProductUnitCreateOrUpdateDtoInput[];
-  }
+  variants.value = props.data
+    .filter((variant) => !variant.isDefault)
+    .map((variant): ProductUnitCreateOrUpdateDtoInput => ({ id: variant.id, unit: variant.unit, amount: variant.amount ?? 0 }));
 });
 
 const addVariant = () => {
