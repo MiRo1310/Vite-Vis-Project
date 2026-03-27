@@ -45,11 +45,7 @@ const updateValue = (index: number, param: "amount" | "unit", val?: string | num
   if (param === "amount") {
     obj.amount = parseFloat(val.toString());
   } else {
-    const unit = props.options.find((o) => o.value === val.toString())?.name;
-    if (!unit) {
-      return;
-    }
-    obj.unit = unit;
+    obj.unit = props.options.find((o) => o.value === val.toString())?.name ?? "";
   }
   unitVariants.value = variants.value;
 };

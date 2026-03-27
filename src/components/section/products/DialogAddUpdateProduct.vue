@@ -45,48 +45,26 @@ const { mutate: updateProductMutate } = useMutation(
 
 const dialogOpen = defineModel<boolean>("dialogOpen");
 
+const defaultUnitVariant = computed(() => {
+  const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
+  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
+});
 const form = useForm({
   validationSchema: formSchemaProduct,
-  initialValues: { name: props.data?.name ?? "", category: props.data?.category ?? "", amount: 100, unit: "g" },
+  initialValues: {
+    name: props.data?.name ?? "",
+    category: props.data?.category ?? "",
+    amount: defaultUnitVariant.value.amount,
+    unit: defaultUnitVariant.value.unit,
+    fat: props.data?.fat,
+    carbs: props.data?.carbs,
+    kcal: props.data?.kcal,
+    salt: props.data?.salt,
+    protein: props.data?.protein,
+    sugar: props.data?.sugar,
+  },
   validateOnMount: false,
 });
-
-const onSubmit = form.handleSubmit(async (values) => {
-  if (!values.unit) {
-    return;
-  }
-  const dto: ProductCreateDtoInput = {
-    name: values.name,
-    category: values.category,
-    carbs: values.carbs,
-    fat: values.fat,
-    kcal: values.kcal,
-    protein: values.protein,
-    salt: values.salt,
-    sugar: values.sugar,
-    amount: values.amount ?? 0,
-    unit: values.unit,
-    productUnits: unitVariants.value as [ProductUnitCreateOrUpdateDtoInput],
-  };
-  if (!updateValue.value) {
-    await mutate({ dto });
-  } else {
-    const id = props.data?.id;
-    if (!id) {
-      return;
-    }
-
-    await updateProductMutate({
-      dto: { ...dto, id },
-    });
-  }
-  await invalidateCache("products");
-  closeDialog();
-});
-
-const closeDialog = () => {
-  dialogOpen.value = false;
-};
 
 watch(
   () => dialogOpen.value,
@@ -99,35 +77,51 @@ watch(
 );
 const updateValue = ref(false);
 
+const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name, protein, salt, sugar, category }) => {
+  const dto: ProductCreateDtoInput = {
+    name,
+    category,
+    carbs,
+    fat,
+    kcal,
+    protein,
+    salt,
+    sugar,
+    amount,
+    unit,
+    productUnits: unitVariants.value,
+  };
+
+  if (!props.data) {
+    await mutate({ dto });
+  } else {
+    const productId = props.data?.id;
+    if (!productId) {
+      return;
+    }
+
+    await updateProductMutate({
+      dto: { ...dto, id: productId },
+    });
+  }
+  await invalidateCache("products");
+  closeDialog();
+});
+
+const closeDialog = () => {
+  dialogOpen.value = false;
+};
+
 watch(
-  () => props.data,
-  () => {
-    if (props.data) {
-      updateValue.value = true;
-      const { fat, carbs, category, kcal, name, salt, protein, sugar } = props.data;
+  () => dialogOpen.value,
+  (newValue) => {
+    if (!newValue) {
       form.resetForm();
-      form.setValues({
-        fat,
-        carbs,
-        category: category ?? "",
-        kcal,
-        name,
-        salt,
-        protein,
-        sugar,
-        amount: defaultUnitVariant.value.amount,
-        unit: defaultUnitVariant.value.unit,
-      });
     }
   },
 );
 
 const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
-
-const defaultUnitVariant = computed(() => {
-  const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
-  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
-});
 </script>
 
 <template>
@@ -152,9 +146,9 @@ const defaultUnitVariant = computed(() => {
       </div>
 
       <AddVariantUnits
-        v-if="(defaultUnitVariant.amount || form.values.amount) && (defaultUnitVariant.unit || form.values.unit)"
+        v-if="(defaultUnitVariant.amount || form.values.amount) && (defaultUnitVariant.unit || form.values.unit) && data?.productUnits"
         :options="getOptions"
-        :data="props.data?.productUnits ?? []"
+        :data="data.productUnits"
         :default-unit="defaultUnitVariant.unit ?? form.values.unit"
         @update:unit-variants="unitVariants = $event"
       />
