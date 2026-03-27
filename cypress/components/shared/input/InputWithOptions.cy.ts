@@ -58,6 +58,28 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("state-icon").should("not.exist");
   });
 
+  it("Should return name by set option alwaysReturnName and non exactOption", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: false,
+        alwaysReturnName: true,
+        e2e: "input-with-options",
+        modelValue: "",
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+    cy.getBySel("input-with-options").as("input");
+    cy.get("@input").type("Option 1");
+
+    cy.getBySel("input-with-options").should("have.value", "Option 1");
+
+    cy.getBySel("state-icon").should("not.exist");
+  });
+
   it("Should have correct label filter by modelValue with non exactOption", () => {
     const onUpdate = cy.spy().as("updateSpy");
 
@@ -76,7 +98,7 @@ describe("<InputWithOptions />", () => {
 
     cy.getBySel("input-with-options").should("have.value", "Option 1");
 
-    cy.getBySel("state-icon").should("not.exist");
+    cy.get("@updateSpy").should("not.have.been.calledWith", "Option 1");
   });
 
   it("Should return only exact values", () => {
@@ -200,5 +222,27 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("input-with-options").as("input");
 
     cy.getBySel("state-icon").should("not.exist");
+  });
+
+  it("Should return name by set option alwaysReturnName and exactOption", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        alwaysReturnName: true,
+        e2e: "input-with-options",
+        modelValue: "",
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+    cy.getBySel("input-with-options").as("input");
+    cy.get("@input").type("Option 1");
+
+    cy.getBySel("input-with-options").should("have.value", "Option 1");
+
+    cy.getBySel("state-icon").should("exist");
   });
 });

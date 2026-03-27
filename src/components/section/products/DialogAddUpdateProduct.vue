@@ -8,7 +8,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
-import { GetProductByIdQuery, ProductCreateDtoInput, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
+import { GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
@@ -43,6 +43,19 @@ const { mutate: updateProductMutate } = useMutation(
   `),
 );
 
+const { mutate: removeProductUnitMutate } = useMutation(
+  graphql(`
+    mutation removeProductUnit($id: UUID!) {
+      removeProductUnit(id: $id)
+    }
+  `),
+);
+
+const productUnitsToRemove = ref([]);
+const clearProductUnitsToRemove = () => {
+  productUnitsToRemove.value = [];
+};
+
 const dialogOpen = defineModel<boolean>("dialogOpen");
 
 const defaultUnitVariant = computed(() => {
@@ -62,6 +75,13 @@ const form = useForm({
     salt: props.data?.salt,
     protein: props.data?.protein,
     sugar: props.data?.sugar,
+    productUnits:
+      props.data?.productUnits.map((u) => ({
+        amount: u.amount ?? 0,
+        id: u.id,
+        unit: u.unit,
+        isDefault: u.isDefault,
+      })) ?? [],
   },
   validateOnMount: false,
 });
@@ -77,7 +97,7 @@ watch(
 );
 const updateValue = ref(false);
 
-const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name, protein, salt, sugar, category }) => {
+const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name, protein, salt, sugar, category, productUnits }) => {
   const dto: ProductCreateDtoInput = {
     name,
     category,
@@ -89,27 +109,36 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
     sugar,
     amount,
     unit,
-    productUnits: unitVariants.value,
+    productUnits,
   };
 
   if (!props.data) {
-    await mutate({ dto });
+    await mutate({ dto }, { refetchQueries: ["GetProducts"] });
   } else {
     const productId = props.data?.id;
     if (!productId) {
       return;
     }
 
-    await updateProductMutate({
-      dto: { ...dto, id: productId },
-    });
+    await updateProductMutate(
+      {
+        dto: { ...dto, id: productId },
+      },
+      { refetchQueries: ["GetProducts"] },
+    );
   }
-  await invalidateCache("products");
+
+  for (const unitId of productUnitsToRemove.value) {
+    await removeProductUnitMutate({ id: unitId });
+  }
+
+  await invalidateCache("productsGrouped");
   closeDialog();
 });
 
 const closeDialog = () => {
   dialogOpen.value = false;
+  clearProductUnitsToRemove();
 };
 
 watch(
@@ -120,8 +149,6 @@ watch(
     }
   },
 );
-
-const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
 </script>
 
 <template>
@@ -142,15 +169,16 @@ const unitVariants = ref<ProductUnitCreateOrUpdateDtoInput[]>([]);
       <p class="w-full font-bold mb-4 mt-6">Bezogen auf diese Menge</p>
       <div class="flex w-full space-x-2">
         <FormInput label="Menge" name="amount" type="number" :step="0.1" />
-        <FormInputOptions label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" />
+        <FormInputOptions label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" always-return-name />
       </div>
 
       <AddVariantUnits
-        v-if="(defaultUnitVariant.amount || form.values.amount) && (defaultUnitVariant.unit || form.values.unit) && data?.productUnits"
-        :options="getOptions"
-        :data="data.productUnits"
+        v-if="defaultUnitVariant.amount && defaultUnitVariant.unit && data?.productUnits"
+        :unitOptions="getOptions"
+        :productUnits="data.productUnits"
         :default-unit="defaultUnitVariant.unit ?? form.values.unit"
-        @update:unit-variants="unitVariants = $event"
+        :form
+        v-model:product-units-to-remove="productUnitsToRemove"
       />
 
       <template #footer>

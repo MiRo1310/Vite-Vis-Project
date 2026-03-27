@@ -20,6 +20,7 @@ withDefaults(
     disabled?: boolean;
     e2e?: string;
     exactOptionRequired?: boolean;
+    alwaysReturnName?: boolean;
   }>(),
   {
     placeholder: "",
@@ -53,6 +54,7 @@ withDefaults(
           :e2e
           :class="$props.classInput"
           :exact-option-required
+          :always-return-name
         />
       </FormControl>
       <FormDescription />
