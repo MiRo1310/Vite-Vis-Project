@@ -187,13 +187,14 @@ const valueChanged = computed(() => {
 
 <template>
   <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit" v-component="'product'">
-    <div class="flex justify-between">
-      <FormInput label="Produkt" :model-value="result?.product?.name ?? ''" name="name" class="w-120" />
+    <div class="text-right">
       <ProductRemove v-if="result?.product?.id" :id="result?.product?.id" />
     </div>
-    <div class="min-w-full flex gap-2">
-      <FormSelect label="Kategorie" name="category" :select-options="selectableOptions" class="w-40" />
+    <div class="flex justify-between gap-2 flex-wrap mb-4 mt-4">
+      <FormInput label="Produktname" :model-value="result?.product?.name ?? ''" name="name" class="w-120" />
+      <FormSelect label="Produkt Kategorie" name="category" :select-options="selectableOptions" class="min-w-60" />
     </div>
+    <div class="min-w-full flex gap-2"></div>
     <div class="flex flex-wrap gap-2">
       <FormInput label="Kalorien" name="kcal" type="number" :step="1" />
       <FormInput label="Fett" name="fat" type="number" :step="0.01" />

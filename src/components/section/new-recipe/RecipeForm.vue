@@ -435,9 +435,9 @@ const addDescription = () => {
 </script>
 
 <template>
-  <div class="max-h-full overflow-auto" v-component="'Recipe form'">
+  <div class="max-h-full overflow-auto -mr-2" v-component="'Recipe form'">
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
-      <div class="flex w-full h-full gap-2">
+      <div class="flex md:flex-row flex-col w-full h-full gap-2 pr-1">
         <div class="flex-col flex-1 h-full">
           <FormInput label="Rezeptname" name="name" class="flex-1" />
 
@@ -465,7 +465,7 @@ const addDescription = () => {
           </div>
         </div>
 
-        <div class="w-120">
+        <div class="md:w-120 w-full">
           <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
           <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
             <RecipeProductGroup

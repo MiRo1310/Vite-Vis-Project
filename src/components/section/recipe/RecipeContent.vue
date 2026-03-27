@@ -8,7 +8,7 @@ defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"] }>();
 </script>
 
 <template>
-  <PageSection v-if="recipe" class="flex w-full gap-2 min-h-24">
+  <PageSection v-if="recipe" class="flex md:flex-row flex-col w-full gap-2 min-h-24">
     <RecipeTexts :descriptions="recipe?.recipeDescriptions || []" />
     <RecipeIngredients :recipe />
   </PageSection>

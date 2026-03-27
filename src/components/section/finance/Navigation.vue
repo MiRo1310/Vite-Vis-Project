@@ -1,29 +1,24 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
-import { useRoute } from "vue-router";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { routes } from "@/router/routes.ts";
-import GitHubIssue from "@/components/layout/GitHubIssue.vue";
+import { INavigation } from "@/components/shared/responsiveNav";
+import { githubNavigation } from "@/config/config.ts";
+import ResponsiveNavigation from "@/components/shared/responsiveNav/ResponsiveNavigation.vue";
 
-const route = useRoute();
+const navigations: INavigation[] = [
+  { label: "Hauptseite", routeName: routes.finance.name },
+  { label: "Adressen", routeName: routes.addresses.name },
+  { label: "Beschreibung", routeName: routes.description.name },
+  { ...githubNavigation },
+];
 </script>
 
 <template>
   <div class="flex justify-between items-center">
+    <ResponsiveNavigation :navigations />
     <div class="flex items-center gap-2">
-      <RouterLink :to="{ name: routes.finance.name }">
-        <Button as="div" :variant="route.name === routes.finance.name ? 'default' : 'outline'">Hauptseite</Button>
-      </RouterLink>
-      <RouterLink :to="{ name: routes.addresses.name }">
-        <Button as="div" :variant="route.name === routes.addresses.name ? 'default' : 'outline'">Adressen</Button>
-      </RouterLink>
-      <RouterLink :to="{ name: routes.description.name }">
-        <Button as="div" :variant="route.name === routes.description.name ? 'default' : 'outline'">Beschreibung</Button>
-      </RouterLink>
       <DarkMode small />
-      <GitHubIssue />
+      <slot />
     </div>
-
-    <slot />
   </div>
 </template>

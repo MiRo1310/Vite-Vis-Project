@@ -1,12 +1,31 @@
 <script setup lang="ts">
-import NavigationList from "@/components/layout/NavigationList.vue";
 import Toaster from "../../components/ui/toast/Toaster.vue";
+import ResponsiveNavigation from "@/components/shared/responsiveNav/ResponsiveNavigation.vue";
+import { INavigation } from "@/components/shared/responsiveNav";
+import { routes } from "@/router/routes.ts";
+import DarkMode from "@/components/layout/DarkMode.vue";
+import { githubNavigation } from "@/config/config.ts";
+
+const navigations: INavigation[] = [
+  { label: "VIS", routeName: routes.home.name },
+  { label: "Rezepte", routeName: routes.recipes.name },
+  { label: "Rezept erstellen", routeName: routes.newRecipe.name },
+  { label: "Produkte", routeName: routes.recipeProducts.name },
+  { label: "Einheiten", routeName: routes.recipeUnits.name },
+  { label: "Produkt Kategorien", routeName: routes.productCategories.name },
+  { label: "Rezept Kategorien", routeName: routes.recipeCategories.name },
+  { ...githubNavigation },
+];
 </script>
+}
 
 <template>
   <Suspense>
     <div class="relative w-full h-screen bg-cover bg-center">
-      <NavigationList />
+      <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50 border-b-2 border-accent items-center">
+        <ResponsiveNavigation :navigations />
+        <DarkMode small />
+      </div>
 
       <div class="pt-13.25 h-[calc(100vh-53px)] overflow-hidden w-full inline-block px-2 mt-2">
         <router-view />
