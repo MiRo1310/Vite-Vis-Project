@@ -13,5 +13,12 @@ export const formSchemaProduct = toTypedSchema(
     sugar: z.number().optional().nullable(),
     amount: z.number().positive({ error: "Die Menge muss größer als 0 sein" }),
     unit: z.string("Wähle eine Einheit").min(1, { error: "Wähle eine Einheit" }),
+    productUnits: z.array(
+      z.object({
+        id: z.uuidv4().optional(),
+        amount: z.number("Gib einen Wert ein").positive(),
+        unit: z.string("Wähle eine Einheit").min(1, { error: "Wähle eine Einheit" }),
+      }),
+    ),
   }),
 );

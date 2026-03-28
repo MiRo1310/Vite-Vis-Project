@@ -3,15 +3,17 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import { onMounted, ref } from "vue";
-import DialogAddProduct from "@/components/section/products/DialogAddProduct.vue";
 import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { GetProductsQuery } from "@/api/gql/graphql.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
-import TableCellNavigation from "@/components/shared/table-cell/TableCellNavigation.vue";
 import { useRecipeStore } from "@/store/recipeStore.ts";
+import ProductUpdate from "@/components/section/products/ProductUpdate.vue";
+import { useRouteQuery } from "@vueuse/router";
+
+const productId = useRouteQuery("productId", null);
 
 const { refetch } = useProductCategories();
 
@@ -21,8 +23,15 @@ const dialogOpen = ref(false);
 
 onMounted(() => {
   refetch();
-  dialogOpen.value = recipeStore.getDirectlyOpenNewProductModal;
-  recipeStore.setDirectlyOpenNewProductModal(false);
+  if (productId.value) {
+    dialogOpen.value = true;
+  }
+  const directlyOpenNewProductModal = recipeStore.getDirectlyOpenNewProductModal;
+  if (directlyOpenNewProductModal) {
+    dialogOpen.value = directlyOpenNewProductModal;
+    recipeStore.setDirectlyOpenNewProductModal(false);
+    return;
+  }
 });
 
 const { result } = useQuery(
@@ -41,6 +50,11 @@ const { result } = useQuery(
           sugar
           unit
           amount
+          productUnits {
+            id
+            amount
+            unit
+          }
         }
       }
     }
@@ -50,7 +64,7 @@ const { result } = useQuery(
 );
 
 const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
-  { source: "name", labelKey: "Name", type: "component", component: TableCellNavigation, customValue: "id" },
+  { source: "name", labelKey: "Name", type: "component", component: ProductUpdate },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
@@ -74,7 +88,8 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
           <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
         </div>
       </div>
-      <DialogAddProduct v-model:dialog-open="dialogOpen" />
+
+      <ProductUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
     </PageSection>
   </div>
 </template>

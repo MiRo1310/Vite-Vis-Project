@@ -4,10 +4,10 @@ import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";
-import { GetUnitsQuery } from "@/api/gql/graphql.ts";
+import { UnitsQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
 
-const props = defineProps<{ units: GetUnitsQuery["units"] }>();
+const props = defineProps<{ units: UnitsQuery["units"] }>();
 
 const { mutate } = useMutation(
   graphql(`

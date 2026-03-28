@@ -13,8 +13,9 @@ const props = withDefaults(
     placeholder?: string;
     e2e?: string;
     exactOptionRequired?: boolean;
+    alwaysReturnName?: boolean;
   }>(),
-  { class: "", disabled: false, placeholder: "" },
+  { class: "", disabled: false, placeholder: "", alwaysReturnName: false },
 );
 
 defineOptions({ inheritAttrs: false });
@@ -48,9 +49,9 @@ function handleModelValueChange(value: string | number): string | number {
 
 const updateValue = () => {
   const value = internalValue.value;
-
   if (value === "") {
     clearInputFieldAction();
+    modelValue.value = "";
     return;
   }
 
@@ -61,7 +62,7 @@ const updateValue = () => {
   const option = getOptionByName(String(value));
 
   if (option) {
-    modelValue.value = getReturnValueFromOption(option);
+    modelValue.value = props.alwaysReturnName ? value : getReturnValueFromOption(option);
     return;
   }
   modelValue.value = value;
@@ -82,7 +83,7 @@ const exactHandler = (name: string) => {
     if (option) {
       const returnValue = getReturnValueFromOption(option);
       previousExactName.value = option.name;
-      modelValue.value = returnValue;
+      modelValue.value = props.alwaysReturnName ? name : returnValue;
       return;
     }
   }
