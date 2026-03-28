@@ -1,4 +1,8 @@
 import { IoBrokerStates, StoreValue } from "@/store/ioBrokerStore.ts";
+import { Row } from "@tanstack/vue-table";
+import { ApolloQueryResult } from "@apollo/client";
+import { FunctionalComponent, HTMLAttributes } from "vue";
+import { Badge } from "@/components/shared/badge";
 
 export interface AlexaList {
   name: string;
@@ -260,21 +264,8 @@ export interface Entries {
 
 export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
 
-import { Row } from "@tanstack/vue-table";
-import { ApolloQueryResult } from "@apollo/client";
-import { FunctionalComponent, HTMLAttributes } from "vue";
-import { Badge } from "@/components/shared/badge";
-
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
-
-export interface TableCellTypes<T, R, C = null, F = null> {
-  value?: T;
-  row: Row<R>;
-  source: string;
-  customValue?: C | DefaultTypes;
-  callback?: F | CallbackFunktion;
-}
 
 export interface TextPositionType {
   position: number;
@@ -325,11 +316,12 @@ export type Pathes<T> = T extends object
   : "";
 type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
 
-export interface ITableColumn<Value, TRow, CustomValue = null> {
+export interface ITableColumn<Value, TRow, CustomValue = null, F = null> {
   value: Value;
   row: Row<TRow>;
   source: string;
-  customValue?: CustomValue;
+  customValue?: CustomValue | null;
+  callback?: F | CallbackFunktion;
 }
 
 export interface InfoType {

@@ -12,6 +12,9 @@ import { GetProductsQuery } from "@/api/gql/graphql.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ProductUpdate from "@/components/section/products/ProductUpdate.vue";
+import { useRouteQuery } from "@vueuse/router";
+
+const productId = useRouteQuery("productId", null);
 
 const { refetch } = useProductCategories();
 
@@ -19,10 +22,19 @@ const recipeStore = useRecipeStore();
 
 const dialogOpen = ref(false);
 
+const openProductId = ref(false);
+
 onMounted(() => {
   refetch();
-  dialogOpen.value = recipeStore.getDirectlyOpenNewProductModal;
-  recipeStore.setDirectlyOpenNewProductModal(false);
+  if (productId.value) {
+    openProductId.value = true;
+  }
+  const directlyOpenNewProductModal = recipeStore.getDirectlyOpenNewProductModal;
+  if (directlyOpenNewProductModal) {
+    dialogOpen.value = directlyOpenNewProductModal;
+    recipeStore.setDirectlyOpenNewProductModal(false);
+    return;
+  }
 });
 
 const { result } = useQuery(
@@ -41,6 +53,11 @@ const { result } = useQuery(
           sugar
           unit
           amount
+          productUnits {
+            id
+            amount
+            unit
+          }
         }
       }
     }
@@ -50,7 +67,7 @@ const { result } = useQuery(
 );
 
 const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
-  { source: "name", labelKey: "Name", type: "component", component: ProductUpdate, customValue: "id" },
+  { source: "name", labelKey: "Name", type: "component", component: ProductUpdate },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
@@ -74,6 +91,7 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
           <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
         </div>
       </div>
+      <ProductUpdate v-if="openProductId" :row="{} as any" source="''" :custom-value="productId" value="" />
       <DialogAddUpdateProduct v-model:dialog-open="dialogOpen" />
     </PageSection>
   </div>
