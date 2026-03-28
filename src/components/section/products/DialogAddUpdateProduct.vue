@@ -131,6 +131,7 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
   for (const unitId of productUnitsToRemove.value) {
     await removeProductUnitMutate({ id: unitId });
   }
+  productUnitsToRemove.value = [];
 
   await invalidateCache("productsGrouped");
   closeDialog();

@@ -334,8 +334,10 @@ const onSubmit = form.handleSubmit(async (values) => {
   removeDescriptions(descriptionsToDelete.value);
 
   await removeProductGroups(recipeStore.getRecipeGroupIdsToDelete);
+  recipeStore.clearRecipeGroupIdsToDelete();
 
   await removeRecipeProducts(recipeStore.getRecipeProductsToDelete);
+  recipeStore.clearRecipeProductIdsToDelete();
 
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
