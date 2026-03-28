@@ -6,11 +6,11 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input";
-import { GetUnitsQuery } from "@/api/gql/graphql.ts";
+import { UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
 import { ITableColumn } from "@/types/types.ts";
 
-const props = defineProps<ITableColumn<string, GetUnitsQuery["units"][number]>>();
+const props = defineProps<ITableColumn<string, UnitsQuery["units"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`

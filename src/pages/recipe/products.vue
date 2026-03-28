@@ -3,7 +3,6 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import { onMounted, ref } from "vue";
-import DialogAddUpdateProduct from "@/components/section/products/DialogAddUpdateProduct.vue";
 import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
@@ -22,12 +21,10 @@ const recipeStore = useRecipeStore();
 
 const dialogOpen = ref(false);
 
-const openProductId = ref(false);
-
 onMounted(() => {
   refetch();
   if (productId.value) {
-    openProductId.value = true;
+    dialogOpen.value = true;
   }
   const directlyOpenNewProductModal = recipeStore.getDirectlyOpenNewProductModal;
   if (directlyOpenNewProductModal) {
@@ -91,8 +88,8 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
           <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
         </div>
       </div>
-      <ProductUpdate v-if="openProductId" :row="{} as any" source="''" :custom-value="productId" value="" />
-      <DialogAddUpdateProduct v-model:dialog-open="dialogOpen" />
+
+      <ProductUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
     </PageSection>
   </div>
 </template>

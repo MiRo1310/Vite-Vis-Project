@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DialogAddUpdateProduct from "@/components/section/products/DialogAddUpdateProduct.vue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { graphql } from "@/api/gql";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { GetProductsQuery } from "@/api/gql/graphql.ts";
@@ -9,7 +9,7 @@ import { useRouteQuery } from "@vueuse/router";
 
 const props = defineProps<ITableColumn<string, GetProductsQuery["productsGrouped"][number]["value"][number], string | undefined>>();
 const productId = useRouteQuery("productId", null);
-const dialogOpen = ref(false);
+const dialogOpen = defineModel<boolean>("dialogOpen");
 
 const getProductByIdQuery = graphql(`
   query getProductById($id: UUID!) {
@@ -37,7 +37,7 @@ const getProductByIdQuery = graphql(`
 `);
 
 const { load, result, onResult, refetch } = useLazyQuery(getProductByIdQuery);
-
+const newProduct = ref(true);
 onMounted(() => {
   const id = props.customValue;
   if (id) {
@@ -54,6 +54,7 @@ const clickHandler = () => {
 };
 
 const getProduct = (id: string) => {
+  newProduct.value = false;
   load(getProductByIdQuery, { id });
   refetch({ id });
 };
@@ -61,9 +62,17 @@ const getProduct = (id: string) => {
 onResult(() => {
   dialogOpen.value = true;
 });
+
+const showDialog = computed((): boolean => {
+  if (!newProduct.value) {
+    return !!result.value?.product;
+  }
+
+  return true;
+});
 </script>
 
 <template>
-  <DialogAddUpdateProduct v-if="result?.product" v-model:dialog-open="dialogOpen" :data="result.product" />
+  <DialogAddUpdateProduct v-if="showDialog" v-model:dialog-open="dialogOpen" :data="result?.product" />
   <span class="underline cursor-pointer" @click="clickHandler">{{ value }}</span>
 </template>
