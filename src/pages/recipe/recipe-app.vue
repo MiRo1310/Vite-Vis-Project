@@ -5,19 +5,30 @@ import { INavigation } from "@/components/shared/responsiveNav";
 import { routes } from "@/router/routes.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { githubNavigation } from "@/config/config.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
+import { computed } from "vue";
 
-const navigations: INavigation[] = [
-  { label: "VIS", routeName: routes.home.name },
-  { label: "Rezepte", routeName: routes.recipes.name },
-  { label: "Rezept erstellen", routeName: routes.newRecipe.name },
-  { label: "Produkte", routeName: routes.recipeProducts.name },
-  { label: "Einheiten", routeName: routes.recipeUnits.name },
-  { label: "Produkt Kategorien", routeName: routes.productCategories.name },
-  { label: "Rezept Kategorien", routeName: routes.recipeCategories.name },
-  { ...githubNavigation },
-];
+const recipeStore = useRecipeStore();
+
+const navigations = computed((): INavigation[] => {
+  const nav = [
+    { label: "VIS", routeName: routes.home.name },
+    { label: "Rezepte", routeName: routes.recipes.name },
+    { label: "Rezept erstellen", routeName: routes.newRecipe.name },
+    { label: "Produkte", routeName: routes.recipeProducts.name },
+    { label: "Einheiten", routeName: routes.recipeUnits.name },
+    { label: "Produkt Kategorien", routeName: routes.productCategories.name },
+    { label: "Rezept Kategorien", routeName: routes.recipeCategories.name },
+    { ...githubNavigation },
+  ];
+  const id = recipeStore.getLastRecipe?.id;
+  if (id) {
+    nav.push({ label: "Letztes Rezept", routeName: routes.recipeDetails.name, params: { recipeId: id } });
+  }
+
+  return nav;
+});
 </script>
-}
 
 <template>
   <Suspense>
