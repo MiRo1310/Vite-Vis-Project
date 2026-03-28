@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { TFormValues } from "@/components/section/new-recipe/RecipeForm.vue";
+import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 
 export interface IRecipeGroupToDelete {
   groupPosition: number;
@@ -14,7 +15,10 @@ interface IRecipeStore {
   productGroupsCount: number;
   shouldValidate: boolean;
   directlyOpenNewProductModal: boolean;
+  lastRecipes: TRecipe[];
 }
+
+export type TRecipe = TGroupedRecipesByCategory[number][number];
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({
@@ -25,6 +29,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     productGroupsCount: 0,
     shouldValidate: false,
     directlyOpenNewProductModal: false,
+    lastRecipes: getRecipeFromStore(),
   }),
   getters: {
     getRecipeFromStore(state) {
@@ -47,6 +52,12 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     getDirectlyOpenNewProductModal(state) {
       return state.directlyOpenNewProductModal;
+    },
+    getLastRecipe(state) {
+      return state.lastRecipes.mrFirst();
+    },
+    getLastRecipes(state) {
+      return state.lastRecipes;
     },
   },
   actions: {
@@ -80,5 +91,18 @@ export const useRecipeStore = defineStore("recipeStore", {
     setDirectlyOpenNewProductModal(setOpen: boolean) {
       this.directlyOpenNewProductModal = setOpen;
     },
+    addNewOpenedRecipeToLastRecipes(recipe: TRecipe) {
+      const filteredRecipes = this.lastRecipes.filter((r) => r.id !== recipe.id);
+      this.lastRecipes = [recipe, ...filteredRecipes].slice(0, 3);
+      saveToLocalStore(this.lastRecipes);
+    },
   },
 });
+
+const saveToLocalStore = (lastRecipes: TRecipe[]) => {
+  localStorage.setItem("lastRecipes", JSON.stringify(lastRecipes));
+};
+
+const getRecipeFromStore = (): TRecipe[] => {
+  return JSON.parse(localStorage.getItem("lastRecipes") ?? "[]");
+};

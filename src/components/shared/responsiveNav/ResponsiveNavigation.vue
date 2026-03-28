@@ -27,16 +27,18 @@ defineProps<{ navigations: INavigation[] }>();
       <DropdownMenuContent class="w-56" align="start">
         <DropdownMenuLabel>Navigation</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <template v-for="(navigation, index) in navigations" :key="index">
-            <DropdownMenuItem v-if="navigation.externalLink">
-              <a :href="navigation.href" target="_blank" :class="navigation.class">
-                {{ navigation.label }}
+          <template v-for="(nav, index) in navigations" :key="index">
+            <DropdownMenuItem v-if="nav.externalLink">
+              <a :href="nav.href" target="_blank" :class="nav.class">
+                {{ nav.label }}
               </a>
             </DropdownMenuItem>
             <DropdownMenuItem v-else
-              ><RouterLink :to="{ name: navigation.routeName }" :class="route.name === navigation.routeName ? 'underline text-yellow-500' : ''">{{
-                navigation.label
-              }}</RouterLink>
+              ><RouterLink
+                :to="{ name: nav.routeName, params: { ...nav.params } }"
+                :class="route.name === nav.routeName ? 'underline text-yellow-500' : ''"
+                >{{ nav.label }}</RouterLink
+              >
             </DropdownMenuItem>
           </template>
           <slot />
@@ -47,7 +49,7 @@ defineProps<{ navigations: INavigation[] }>();
   </div>
   <div class="hidden lg:flex gap-2 items-center">
     <div v-for="(navigation, index) in navigations" :key="index">
-      <RouterLink v-if="!navigation.externalLink" :to="{ name: navigation.routeName }">
+      <RouterLink v-if="!navigation.externalLink" :to="{ name: navigation.routeName, params: { ...navigation.params } }">
         <Button :variant="route.name === navigation.routeName ? 'default' : 'outline'">{{ navigation.label }}</Button>
       </RouterLink>
       <a v-if="navigation.externalLink" :href="navigation.href" target="_blank">
