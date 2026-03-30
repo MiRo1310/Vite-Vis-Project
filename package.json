@@ -14,8 +14,10 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run",
-    "test:component:run": "cypress run --component"
+    "test:e2e:run": "cypress run",    
+    "test:component:run": "cypress run --component",
+    "deploy:local": "node scripts/release.ts",
+    "release": "ts-node scripts/release.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
