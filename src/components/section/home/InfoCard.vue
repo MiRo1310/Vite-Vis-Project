@@ -7,7 +7,7 @@ defineProps<{ infos: InfoType[] }>();
 </script>
 
 <template>
-  <CardSubcard class="mt-2">
+  <CardSubcard>
     <div
       v-for="(info, index) in infos"
       :key="index"
