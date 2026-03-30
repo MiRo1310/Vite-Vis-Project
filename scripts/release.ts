@@ -39,7 +39,7 @@ VITE_APP_COMMIT=${commit}
 fs.writeFileSync(".env.local", envContent);
 
 // Build mit injected Version
-run(`VITE_APP_VERSION=${version} VITE_APP_COMMIT=${commit} yarn build`);
+run(`npx cross-env VITE_APP_VERSION=${version} VITE_APP_COMMIT=${commit} yarn build`);
 
 // Kopieren
 const user = process.env.VITE_USERNAME;
