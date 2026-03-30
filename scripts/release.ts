@@ -27,10 +27,6 @@ const version = pkg.version;
 // Alternative: Git Commit Hash
 const commit = execSync("git rev-parse --short HEAD").toString().trim();
 
-// Optional: push direkt
-run("git push");
-run("git push --tags");
-
 // 4. ENV Datei schreiben
 const envContent = `VITE_APP_VERSION=${version}
 VITE_APP_COMMIT=${commit}
