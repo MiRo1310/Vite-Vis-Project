@@ -1,7 +1,7 @@
 {
   "name": "vite-project",
   "private": true,
-  "version": "1.3.3",
+  "version": "1.3.4",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,7 +16,8 @@
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
     "test:component:run": "cypress run --component",
-    "deploy:local": "ts-node scripts/release.ts"
+    "deploy:local": "ts-node scripts/release.ts",
+    "copy:local": "ts-node scripts/copy.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
