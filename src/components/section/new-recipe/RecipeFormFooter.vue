@@ -11,9 +11,9 @@ const emits = defineEmits(["abort"]);
 </script>
 
 <template>
-  <div :class="cn('w-full flex justify-end gap-2 mb-2', $props.class)">
-    <Button class="w-60" type="button" variant="default" @click.stop="emits('abort')">Zurücksetzen</Button>
-    <Button class="w-60" type="submit" variant="outline">Speichern</Button>
-    <Button type="submit" @click="backToRecipe = true">Speichern und zurück zum Rezept</Button>
+  <div :class="cn('w-full flex justify-end gap-2 mb-2 flex-wrap', $props.class)">
+    <Button type="button" variant="default" @click.stop="emits('abort')">Zurücksetzen</Button>
+    <Button type="submit" variant="outline">Speichern</Button>
+    <Button type="submit" @click="backToRecipe = true">Speichern und zurück</Button>
   </div>
 </template>

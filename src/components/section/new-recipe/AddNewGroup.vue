@@ -39,6 +39,6 @@ const addNewProductGroup = () => {
 
 <template>
   <div class="flex justify-end">
-    <Button size="icon" class="mt-2" variant="outline" icon="add" @click.prevent="addNewProductGroup" />
+    <Button class="mt-2" variant="warning" @click.prevent="addNewProductGroup">Neue Produktgruppe anlegen</Button>
   </div>
 </template>

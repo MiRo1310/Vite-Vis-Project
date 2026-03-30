@@ -78,9 +78,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex items-center gap-2 justify-between">
-    <div class="flex items-baseline gap-6 text-xs text-blue-200">
-      <span class="text-foreground text-xl!">{{ result?.recipe?.name }}</span>
+  <div class="flex items-start gap-2 justify-between">
+    <div class="flex items-baseline gap-x-6 text-xs text-blue-200 flex-wrap">
+      <span class="text-foreground text-xl! md:w-auto w-full md:inline inline-block">{{ result?.recipe?.name }}</span>
       <span
         >Zubereitungszeit:
         <span v-if="result?.recipe?.preparationTimeMin">{{ result?.recipe?.preparationTimeMin }} min</span>
