@@ -159,7 +159,7 @@ watch(
         <FormInput label="Produkt" name="name" class="flex-1" />
         <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" class="w-40" />
       </div>
-      <div class="flex flex-wrap gap-2">
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
         <FormInput label="Kalorien" name="kcal" type="number" :step="1" />
         <FormInput label="Fett" name="fat" type="number" :step="0.01" />
         <FormInput label="Kohlenhydrate" name="carbs" type="number" :step="0.01" />

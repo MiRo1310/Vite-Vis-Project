@@ -37,7 +37,7 @@ withDefaults(
 <template>
   <FormField v-slot="{ componentField }" :name="name">
     <FormItem :class="$props.class">
-      <FormLabel v-if="label || labelRight" class="flex justify-between">
+      <FormLabel v-if="label || labelRight" class="flex justify-between whitespace-nowrap">
         <span>{{ label }}</span>
         <span>{{ labelRight }}</span>
       </FormLabel>

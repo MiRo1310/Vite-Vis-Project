@@ -437,13 +437,13 @@ const addDescription = () => {
 </script>
 
 <template>
-  <div class="max-h-full overflow-auto -mr-2" v-component="'Recipe form'">
-    <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" data-component="recipe-form">
+  <div class="max-h-full overflow-auto -mr-2">
+    <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" v-component="'recipe-form'">
       <div class="flex md:flex-row flex-col w-full h-full gap-2 pr-1">
         <div class="flex-col flex-1 h-full">
           <FormInput label="Rezeptname" name="name" class="flex-1" />
 
-          <div class="flex gap-2 items-start">
+          <div class="flex gap-2 items-start flex-wrap">
             <FormInput label="Portionen" name="portions" type="number" />
             <FormInput label="Zubereitungszeit (min)" name="preparationTimeMin" type="number" />
             <FormInput label="Gesamtzeit (min)" name="totalTimeMin" type="number" />
@@ -463,7 +463,7 @@ const addDescription = () => {
             />
           </div>
           <div class="flex justify-end mt-2 gap-2">
-            <Button size="icon" variant="outline" icon="add" @click.prevent="addDescription" />
+            <Button variant="warning" @click.prevent="addDescription">Neuen Rezept Text</Button>
           </div>
         </div>
 
@@ -483,7 +483,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <RecipeFormFooter @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
+      <RecipeFormFooter v-if="productArray.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>

@@ -24,7 +24,7 @@ const calculatedKcal = computed(() => {
   <div class="py-0.5 relative rounded-none m-0 border border-accent">
     <div class="flex justify-between">
       <div class="flex items-baseline space-x-4">
-        <div class="ml-6 flex items-baseline space-x-4 min-w-80">
+        <div class="ml-6 flex items-baseline space-x-4 flex-1">
           <RouterLink :to="{ name: routes.recipeProducts.name, query: { productId: ingredient.productId } }" class="flex"
             ><span class="text-sm underline">{{ ingredient?.product?.name }}</span>
           </RouterLink>

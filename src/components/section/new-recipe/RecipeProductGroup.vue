@@ -160,10 +160,10 @@ const isValid = computed(() => (product: ProductObjType) => {
     </RecipeProduct>
   </div>
   <div class="flex justify-end mt-2 space-x-2">
-    <Button size="icon" variant="outline" icon="add" @click.prevent="addNewProduct" />
+    <Button variant="warning" @click.prevent="addNewProduct">Neues Produkt anlegen</Button>
     <Button
       size="icon"
-      variant="outline"
+      variant="destructive"
       icon="remove"
       :disabled="store.productGroupsCount === 1"
       @click.prevent="
