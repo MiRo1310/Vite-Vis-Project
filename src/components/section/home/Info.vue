@@ -20,6 +20,8 @@ const router = useRouter();
 
 useDynamicSubscribe(infoStates);
 
+const version = import.meta.env.VITE_APP_VERSION;
+
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs } = ioBrokerStore;
 const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
@@ -58,12 +60,13 @@ const info = computed((): InfoType[] => [
     <CardHeader>
       <CardTitle>Infos</CardTitle>
     </CardHeader>
-    <CardContent class="text-xs">
+    <CardContent class="text-xs flex flex-col gap-2">
+      <InfoCard :infos="[{ title: 'Version', value: version }]" />
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
 
       <InfoCard :infos="info" />
 
-      <CardSubcard class="mt-2">
+      <CardSubcard>
         <div
           :class="['flex justify-between cursor-pointer', { 'animate-bounce': isTimeToWarn && (getOpenWindows ?? 0) > 0 }]"
           @click="router.push({ name: routes.window.name })"
@@ -74,7 +77,7 @@ const info = computed((): InfoType[] => [
           </div>
         </div>
       </CardSubcard>
-      <CardSubcard class="mt-2">
+      <CardSubcard>
         <div :class="['flex justify-between cursor-pointer']" @click="router.push({ path: routes.light.path })">
           <p>{{ getActiveLights ? "Licht ist an" : "Licht ist aus" }}</p>
           <div>
