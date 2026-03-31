@@ -59,7 +59,7 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
     <div v-for="(unitVariant, index) in variants" :key="index" class="flex gap-2 items-center">
       <template v-if="!unitVariant.isDefault">
         <Label class="flex flex-col gap-2">
-          <span v-if="!index">
+          <span>
             Menge -
             <span class="pr-4 font-bold text-xs whitespace-nowrap">
               {{ defaultUnit }}
@@ -70,17 +70,11 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
         </Label>
 
         <Label class="flex flex-col gap-2">
-          <span v-if="!index">Einheit</span>
+          <span>Einheit</span>
           <FormInputOptions :name="`productUnits.${index}.unit`" :options="unitOptions" options-id="units" always-return-name />
         </Label>
 
-        <Button
-          icon="remove"
-          size="icon"
-          variant="outline"
-          :class="index === 0 ? 'mt-4 shrink-0' : '-mt-2 shrink-0'"
-          @click.prevent="deleteVariant({ unitVariant, index })"
-        />
+        <Button icon="remove" size="icon" variant="outline" class="mt-3 shrink-0" @click.prevent="deleteVariant({ unitVariant, index })" />
       </template>
     </div>
   </div>

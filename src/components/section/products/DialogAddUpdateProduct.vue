@@ -134,6 +134,7 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
   productUnitsToRemove.value = [];
 
   await invalidateCache("productsGrouped");
+  await invalidateCache("productUnits");
   closeDialog();
 });
 

@@ -128,11 +128,15 @@ onResult((result: OnResult<GetRecipeByIdQuery>) => {
 });
 
 const recipeStore = useRecipeStore();
-const getRecipeFromStore = recipeStore.getRecipeFromStore;
-const resetRecipeInStore = recipeStore.resetRecipeInStore;
+const getRecipeFromStore = recipeStore.getRecipeInProgress;
+const resetRecipeInStore = recipeStore.resetRecipeInProgress;
 
 onMounted(async () => {
   const recipe = getRecipeFromStore;
+
+  if (recipe) {
+    recipeId.value = recipe?.recipeId;
+  }
 
   if (recipe && !recipeId.value) {
     valueToForm(recipe);
@@ -147,7 +151,8 @@ onUnmounted(() => {
   if (!form.values) {
     return;
   }
-  recipeStore.saveRecipeInStore(deepCopy<TFormValues>(form.values) ?? {});
+
+  recipeStore.saveRecipeInProgress(deepCopy<TFormValues>(form.values) ?? {}, recipeId.value);
 });
 
 const initialValues = {
@@ -193,6 +198,7 @@ const productArray = computed<ProductObjType[]>({
 });
 
 const recipeToFormValues = (recipe?: TRecipeQuery): TFormValues => {
+  console.log(recipe);
   return {
     productArray: recipe?.recipeProducts,
     descriptions: recipe?.recipeDescriptions,
@@ -221,7 +227,7 @@ const valueToForm = (formValues?: TFormValues) => {
   const preparationTimeMin = getFormValueOrDefault("preparationTimeMin", formValues);
   const headers = getFormValueOrDefault("headersProductArray", formValues);
   const name = getFormValueOrDefault("name", formValues);
-
+  console.log(headers);
   form.setValues({
     portions,
     productArray: products,
@@ -382,7 +388,7 @@ const resetForm = () => {
     valueToForm();
     return;
   }
-
+  console.log(recipe.value);
   valueToForm(recipeToFormValues(recipe.value));
 
   descriptions.value = recipe.value?.recipeDescriptions
@@ -438,6 +444,7 @@ const addDescription = () => {
 
 <template>
   <div class="max-h-full overflow-auto -mr-2">
+    {{ headersProductArray }}
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" v-component="'recipe-form'">
       <div class="flex md:flex-row flex-col w-full h-full gap-2 pr-1">
         <div class="flex-col flex-1 h-full">
@@ -463,7 +470,7 @@ const addDescription = () => {
             />
           </div>
           <div class="flex justify-end mt-2 gap-2">
-            <Button variant="warning" @click.prevent="addDescription">Neuen Rezept Text</Button>
+            <Button variant="warning" @click.prevent="addDescription">Neuen Rezept Text hinzufügen</Button>
           </div>
         </div>
 
