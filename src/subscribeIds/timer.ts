@@ -6,7 +6,7 @@ export const timer: IdToSubscribe<TimerObject> = {
 };
 
 export const timers: IdToSubscribe<Timers, keyof Timer> = {
-  storeFolder: "timer",
+  storeFolder: "timers",
   value: [
     { id: "alexa-timer-vis.0.timer1.string_2", key: 1, subKey: "timeString" },
     { id: "alexa-timer-vis.0.timer1.TimeEnd", key: 1, subKey: "timeEnd" },

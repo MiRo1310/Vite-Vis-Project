@@ -7,6 +7,7 @@ import { useRecipeStore } from "@/store/recipeStore.ts";
 import { graphql } from "@/api/gql";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
 import { Button } from "@/components/shared/button";
+import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -78,6 +79,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <RecipeTimer />
   <div class="flex items-start gap-2 justify-between">
     <div class="flex items-baseline gap-x-6 text-xs text-blue-200 flex-wrap">
       <span class="text-foreground text-xl! md:w-auto w-full md:inline inline-block">{{ result?.recipe?.name }}</span>

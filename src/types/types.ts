@@ -25,7 +25,7 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export interface TimerObject extends Timers {
+export interface TimerObject {
   timerAlive: StoreValue<boolean>;
 }
 
