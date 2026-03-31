@@ -1,5 +1,7 @@
 import fs from "fs";
-import { copyDataToRemote, getVersionType, run } from "./utils.ts";
+import { copyDataToRemote, ensureCleanWorktree, getVersionType, run } from "./utils.ts";
+
+ensureCleanWorktree();
 
 run("git checkout main");
 run("git pull");
