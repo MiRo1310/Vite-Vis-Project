@@ -19,7 +19,7 @@ defineProps<{ navigations: INavigation[] }>();
 </script>
 
 <template>
-  <div class="lg:hidden">
+  <div class="xl:hidden">
     <DropdownMenu>
       <DropdownMenuTrigger as-child>
         <Button variant="outline" size="icon"> <Menu /> </Button>
@@ -47,7 +47,7 @@ defineProps<{ navigations: INavigation[] }>();
       </DropdownMenuContent>
     </DropdownMenu>
   </div>
-  <div class="hidden lg:flex gap-2 items-center">
+  <div class="hidden xl:flex gap-2 items-center">
     <div v-for="(navigation, index) in navigations" :key="index">
       <RouterLink v-if="!navigation.externalLink" :to="{ name: navigation.routeName, params: { ...navigation.params } }">
         <Button :variant="route.name === navigation.routeName ? 'default' : 'outline'">{{ navigation.label }}</Button>

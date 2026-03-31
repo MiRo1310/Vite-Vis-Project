@@ -13,7 +13,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 const appStore = useAppStore();
 const iobrokerStore = useIobrokerStore();
 
-const { timer } = storeToRefs(iobrokerStore);
+const { timers } = storeToRefs(iobrokerStore);
 
 const closeWindow = () => {
   appStore.toggleTimerVisibility();
@@ -26,7 +26,7 @@ const stopTimer = (index: number) => {
 };
 
 const timerLabel = computed(() => (i: number): string => {
-  const timerName = timer.value[i as keyof Timers].name?.val;
+  const timerName = timers.value[i as keyof Timers].name?.val;
   if (!timerName || timerName === "timer") {
     return `Timer ${i}`;
   }
@@ -52,7 +52,7 @@ const timerLabel = computed(() => (i: number): string => {
             <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
               <span class="text-cardCustom-foreground">{{ timerLabel(i) }} </span>
               <span>
-                {{ (timer[i as keyof Timers] as Timer).timeString?.val }}
+                {{ (timers[i as keyof Timers] as Timer).timeString?.val }}
               </span>
             </h1>
             <Button variant="outline" size="icon" @click="stopTimer(i)">
@@ -64,26 +64,26 @@ const timerLabel = computed(() => (i: number): string => {
             <div class="flex justify-between items-center w-1/2">
               <p>Startzeit:</p>
               <p class="">
-                {{ timer[i as keyof Timers].timeStart?.val }}
+                {{ timers[i as keyof Timers].timeStart?.val }}
               </p>
             </div>
             <div class="flex justify-between items-center w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{ timer[i as keyof Timers].timeEnd?.val }}
+                {{ timers[i as keyof Timers].timeEnd?.val }}
               </p>
             </div>
           </div>
           <div class="flex justify-between items-center">
             <p>Gerät:</p>
             <p>
-              {{ timer[i as keyof Timers].device?.val }}
+              {{ timers[i as keyof Timers].device?.val }}
             </p>
           </div>
           <div class="flex justify-between items-center">
             <p>Länge:</p>
             <p>
-              {{ timer[i as keyof Timers].initialTimer?.val }}
+              {{ timers[i as keyof Timers].initialTimer?.val }}
             </p>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { Pool } from "@/subscribeIds/pool.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
 import { defineStore, Store, StoreDefinition } from "pinia";
 import { Wetter } from "@/subscribeIds/wetter.ts";
 import { Landroid } from "../subscribeIds/landroid.ts";
@@ -29,7 +29,7 @@ export interface IoBrokerStoreState {
   idsToControl: IdsToControl;
   shutterAutoUp: Shutter;
   shutterAutoDownTime: Shutter;
-  timer: TimerObject;
+  timers: Timers;
   rolladen: Shutter;
   fenster: WindowType;
   pv: Pv;
@@ -144,7 +144,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     shutterAutoDownTime: {} as Shutter,
     styles: {} as StylesType,
     time: {} as TimeStates,
-    timer: {} as TimerObject,
+    timers: {} as Timers,
     trash: {} as TrashStates,
     wetter: {} as Wetter,
     windowGlobal: {} as WindowGlobalStates,

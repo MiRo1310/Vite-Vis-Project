@@ -2,22 +2,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
-import { computed, HTMLAttributes } from "vue";
+import { HTMLAttributes } from "vue";
 import { useAppStore } from "@/store/appStore.ts";
-import { Timer, Timers } from "@/types/types.ts";
+import { Timers } from "@/types/types.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import { getNameByIndex } from "@/composables/timer.ts";
 
-defineProps<{ class: HTMLAttributes["class"] }>();
+defineProps<{ class?: HTMLAttributes["class"] }>();
 
 const iobrokerStore = useIobrokerStore();
 
-const { timer } = storeToRefs(iobrokerStore);
-
-const nameByIndex = computed(() => (index: number) => {
-  const timerName = (timer.value[index as keyof Timers] as Timer)?.name?.val;
-  return timerName !== "Timer" ? timerName : null;
-});
+const { timers } = storeToRefs(iobrokerStore);
 </script>
 
 <template>
@@ -31,21 +27,21 @@ const nameByIndex = computed(() => (index: number) => {
       <CardSubcard v-for="i in 4" :key="i" class="min-w-60 flex-1 flex">
         <div class="w-full">
           <h1 class="text-xl flex justify-between">
-            <span>{{ nameByIndex(i) || `Timer ${i}` }}</span>
-            <span> {{ (timer[i as keyof Timers] as Timer)?.timeString?.val }}</span>
+            <span>{{ getNameByIndex(timers, i) }}</span>
+            <span> {{ timers[i as keyof Timers]?.timeString?.val }}</span>
           </h1>
           <TextSeparator />
           <div class="w-full">
             <div class="flex justify-between">
               <p>Gerät:</p>
               <p class="flex-1 text-right">
-                {{ (timer[i as keyof Timers] as Timer)?.device?.val }}
+                {{ timers[i as keyof Timers]?.device?.val }}
               </p>
             </div>
             <div class="flex justify-between">
               <p>Länge:</p>
               <p class="flex-1 text-right">
-                {{ (timer[i as keyof Timers] as Timer)?.initialTimer?.val }}
+                {{ timers[i as keyof Timers]?.initialTimer?.val }}
               </p>
             </div>
           </div>

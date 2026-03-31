@@ -35,6 +35,7 @@ const navigations = computed((): INavigation[] => {
     <div class="relative w-full h-screen bg-cover bg-center">
       <div class="fixed top-0 flex p-2 space-x-2 flex-wrap w-full z-50 border-b-2 border-accent items-center">
         <ResponsiveNavigation :navigations />
+
         <DarkMode small />
       </div>
 
