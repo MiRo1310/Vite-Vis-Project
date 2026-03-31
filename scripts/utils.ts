@@ -3,13 +3,11 @@ import { loadEnv } from "vite";
 
 export function copyDataToRemote(version: string): void {
   const env = loadEnv("production", process.cwd(), "");
-  console.log(`Copying to ${process.cwd()}`, env);
+
   const user = env.VITE_USERNAME;
   const host = env.VITE_HOST;
   const path = env.VITE_PATH;
   const graphQLUrl = env.VITE_GRAPHQL_URL;
-
-  console.log(graphQLUrl);
 
   // Build mit injected Version
   run(`npx cross-env VITE_APP_VERSION=${version} VITE_GRAPHQL_URL=${graphQLUrl} yarn build`);
