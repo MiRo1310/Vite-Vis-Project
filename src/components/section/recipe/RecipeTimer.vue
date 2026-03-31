@@ -20,7 +20,7 @@ const filteredTimers = computed(() => {
     <CardSubcard v-for="(timer, i) in filteredTimers" :key="i" class="min-w-60 flex-1 flex">
       <div class="w-full">
         <h1 class="text-sm flex justify-between">
-          <span>{{ getNameByIndex(timers, i) }}</span>
+          <span>{{ getNameByIndex(timers, i + 1) }}</span>
           <span v-if="timer?.timeString?.val"> {{ timer.timeString?.val }} / {{ timer.initialTimer?.val }}</span>
         </h1>
         <TextSeparator />
