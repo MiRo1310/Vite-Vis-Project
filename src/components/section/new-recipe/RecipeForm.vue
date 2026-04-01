@@ -20,7 +20,13 @@ import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Logger } from "@/lib/logger.ts";
-import { IRecipeDescriptionCreateOrUpdate, newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import {
+  IRecipeDescriptionCreateOrUpdate,
+  newIdPrefix,
+  TRecipeDescriptionLike,
+  TRecipeHeaderProductLike,
+  TRecipeProductLike,
+} from "@/components/section/new-recipe/index.ts";
 import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
@@ -197,12 +203,40 @@ const productArray = computed<ProductObjType[]>({
   set: (v) => form.setFieldValue("productArray", v),
 });
 
+const cloneDescriptions = (items: TRecipeDescriptionLike[] = []): NonNullable<TFormValues["descriptions"]> =>
+  items.map((item: TRecipeDescriptionLike) => ({
+    position: item.position,
+    text: item.text,
+    id: item.id ?? undefined,
+    header: item.header ?? "",
+  }));
+
+const cloneHeaders = (items: TRecipeHeaderProductLike[] = []): NonNullable<TFormValues["headersProductArray"]> =>
+  items.map((item: TRecipeHeaderProductLike, index: number) => ({
+    id: item.id ?? undefined,
+    recipeId: item.recipeId ?? undefined,
+    text: item.text,
+    position: item.position ?? index,
+  }));
+
+const cloneProducts = (items: TRecipeProductLike[] = []): NonNullable<TFormValues["productArray"]> =>
+  items.map((item: TRecipeProductLike) => ({
+    amount: item.amount ?? 0,
+    description: item.description ?? "",
+    groupPosition: item.groupPosition,
+    productId: item.productId,
+    unit: "",
+    id: item.id ?? undefined,
+    activeUnitId: item.activeUnitId ?? "",
+    position: item.position ?? 0,
+    sortOrder: item.sortOrder,
+  })) ?? [];
+
 const recipeToFormValues = (recipe?: TRecipeQuery): TFormValues => {
-  console.log(recipe);
   return {
-    productArray: recipe?.recipeProducts,
-    descriptions: recipe?.recipeDescriptions,
-    headersProductArray: recipe?.recipeHeaderProducts,
+    productArray: cloneProducts(recipe?.recipeProducts),
+    descriptions: cloneDescriptions(recipe?.recipeDescriptions),
+    headersProductArray: cloneHeaders(recipe?.recipeHeaderProducts),
     portions: recipe?.portions ?? undefined,
     name: recipe?.name,
     totalTimeMin: recipe?.totalTimeMin,
@@ -227,37 +261,42 @@ const valueToForm = (formValues?: TFormValues) => {
   const preparationTimeMin = getFormValueOrDefault("preparationTimeMin", formValues);
   const headers = getFormValueOrDefault("headersProductArray", formValues);
   const name = getFormValueOrDefault("name", formValues);
-  console.log(headers);
-  form.setValues({
-    portions,
-    productArray: products,
-    descriptions: descriptionValues,
-    recipeCategoryId: recipeCategoryId,
-    totalTimeMin: totalTimeMin,
-    preparationTimeMin: preparationTimeMin,
-    headersProductArray: headers,
-    name,
+
+  const normalizedHeaders = (headers ?? []).map((h, i) => ({
+    text: h.text,
+    position: h.position ?? i,
+    id: h.id,
+  }));
+
+  const normalizedProducts = (products ?? []).map((item, index) => ({
+    amount: item.amount ?? 0,
+    description: item.description ?? "",
+    groupPosition: item.groupPosition,
+    productId: item.productId,
+    unit: "",
+    id: item.id ?? undefined,
+    activeUnitId: item.activeUnitId ?? "",
+    position: index,
+    sortOrder: item.sortOrder,
+  }));
+
+  form.resetForm({
+    values: deepCopy({
+      portions,
+      productArray: normalizedProducts,
+      descriptions: descriptionValues,
+      recipeCategoryId,
+      totalTimeMin,
+      preparationTimeMin,
+      headersProductArray: normalizedHeaders,
+      name,
+    }),
   });
 
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(descriptionValues ?? []));
-
   nextDescriptionIndex.value = descriptions.value.length;
-  headersProductArray.value = sortHeaderProductsByPosition(
-    getTextPositionTypeFromResult(headers?.map((h, i) => ({ text: h.text, position: h.position ?? i })) ?? []),
-  );
-
-  productArray.value =
-    products?.map((item, index) => ({
-      amount: item.amount || 0,
-      description: item.description ?? "",
-      groupPosition: item.groupPosition,
-      productId: item.productId,
-      unit: "",
-      id: item.id ?? undefined,
-      activeUnitId: item.activeUnitId ?? "",
-      position: index,
-      sortOrder: item.sortOrder,
-    })) ?? [];
+  headersProductArray.value = sortHeaderProductsByPosition(normalizedHeaders);
+  productArray.value = normalizedProducts;
 };
 
 const setValuesToForm = (recipe: TRecipeQuery) => {
@@ -378,24 +417,34 @@ const defaultProduct: ProductObjType = {
 
 const resetForm = () => {
   recipeStore.setShouldValidate(false);
-  form.resetForm();
   resetRecipeInStore();
 
   if (!recipeId.value) {
+    form.resetForm({ values: deepCopy(initialValues) });
     descriptions.value = [];
     headersProductArray.value = [];
     productArray.value = [];
     valueToForm();
     return;
   }
-  console.log(recipe.value);
-  valueToForm(recipeToFormValues(recipe.value));
 
-  descriptions.value = recipe.value?.recipeDescriptions
-    ? sortAndAddPositionByCreate(recipe.value.recipeDescriptions)
-    : [{ position: 0, text: "", header: "", positionByCreate: 0 }];
-  headersProductArray.value = recipe.value?.recipeHeaderProducts ? sortHeaderProductsByPosition(recipe.value.recipeHeaderProducts) : [];
-  productArray.value = recipe.value?.recipeProducts.map((p, i) => ({ ...p, position: i })) ?? [defaultProduct];
+  const values = recipeToFormValues(recipe.value);
+  form.resetForm({ values: deepCopy(values) });
+  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(values.descriptions ?? []));
+  nextDescriptionIndex.value = descriptions.value.length;
+  const resetHeaders = (values.headersProductArray ?? []).map((header, index) => ({
+    text: header.text,
+    position: header.position ?? index,
+    id: header.id,
+  }));
+  headersProductArray.value = sortHeaderProductsByPosition(resetHeaders);
+  const resetProducts = (values.productArray ?? []).map((product, index) => ({
+    ...product,
+    id: product.id ?? undefined,
+    description: product.description ?? "",
+    position: index,
+  }));
+  productArray.value = resetProducts.length ? resetProducts : [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -413,12 +462,13 @@ const sortHeaderProductsByPosition = <T extends { text: string; position: number
 };
 
 const sortAndAddPositionByCreate = <T extends { text: string; position: number }>(obj: T[]): IRecipeDescriptionCreateOrUpdate[] =>
-  obj.sort((a, b) => a.position - b.position).map((d, index) => ({ ...d, positionByCreate: index }));
+  [...obj].sort((a, b) => a.position - b.position).map((d, index) => ({ ...d, positionByCreate: index }));
 
 const headersProductArray = ref<TextPositionType[]>([]);
 
 watchEffect(() => {
   if (!productArray.value?.length) {
+    recipeStore.setProductGroupCount(0);
     return 0;
   }
   recipeStore.setProductGroupCount(
@@ -444,7 +494,6 @@ const addDescription = () => {
 
 <template>
   <div class="max-h-full overflow-auto -mr-2">
-    {{ headersProductArray }}
     <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" v-component="'recipe-form'">
       <div class="flex md:flex-row flex-col w-full h-full gap-2 pr-1">
         <div class="flex-col flex-1 h-full">
