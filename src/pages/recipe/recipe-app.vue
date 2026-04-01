@@ -15,6 +15,8 @@ const navigations = computed((): INavigation[] => {
     { label: "VIS", routeName: routes.home.name },
     { label: "Rezepte", routeName: routes.recipes.name },
     { label: "Rezept erstellen", routeName: routes.newRecipe.name },
+    //TODO routen anpassen
+    { label: "Zwischen gespeichertes Rezept bearbeiten", routeName: routes.newRecipe.name },
     { label: "Produkte", routeName: routes.recipeProducts.name },
     { label: "Einheiten", routeName: routes.recipeUnits.name },
     { label: "Produkt Kategorien", routeName: routes.productCategories.name },
@@ -23,7 +25,7 @@ const navigations = computed((): INavigation[] => {
   ];
   const id = recipeStore.getLastRecipe?.id;
   if (id) {
-    nav.push({ label: "Letztes Rezept", routeName: routes.recipeDetails.name, params: { recipeId: id } });
+    nav.push({ label: "Zurück zum letzten Rezept", routeName: routes.recipeDetails.name, params: { recipeId: id } });
   }
 
   return nav;
