@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { TFormValues } from "@/components/section/new-recipe/RecipeForm.vue";
+import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 
 export interface IRecipeGroupToDelete {

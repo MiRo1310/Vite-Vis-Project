@@ -5,17 +5,17 @@ import Form from "@/components/shared/form/Form.vue";
 import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { Button } from "@/components/shared/button";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
-import RecipeDescription from "@/components/section/new-recipe/RecipeDescription.vue";
-import RecipeProductGroup from "@/components/section/new-recipe/RecipeProductGroup.vue";
-import AddNewProductGroup from "@/components/section/new-recipe/AddNewGroup.vue";
+import RecipeDescription from "@/components/section/recipe-form/RecipeDescription.vue";
+import RecipeProductGroup from "@/components/section/recipe-form/RecipeProductGroup.vue";
+import AddNewProductGroup from "@/components/section/recipe-form/AddNewGroup.vue";
 import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
-import { formSchema } from "@/components/section/new-recipe/formSchema";
+import { formSchema } from "@/components/section/recipe-form/formSchema";
 import { useRoute, useRouter } from "vue-router";
-import RecipeRemoveDescription from "@/components/section/new-recipe/RecipeRemoveDescription.vue";
+import RecipeRemoveDescription from "@/components/section/recipe-form/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
@@ -26,12 +26,12 @@ import {
   TRecipeDescriptionLike,
   TRecipeHeaderProductLike,
   TRecipeProductLike,
-} from "@/components/section/new-recipe/index.ts";
-import { removeDescriptions } from "@/components/section/new-recipe/removeDescriptions.ts";
-import RecipeFormFooter from "@/components/section/new-recipe/RecipeFormFooter.vue";
-import { removeRecipeProducts } from "@/components/section/new-recipe/removeRecipeProducts.ts";
-import { removeProductGroups } from "@/components/section/new-recipe/removeProductGroups.ts";
-import RecipeCategoryFormSelect from "@/components/section/new-recipe/RecipeCategoryFormSelect.vue";
+} from "@/components/section/recipe-form/index.ts";
+import { removeDescriptions } from "@/components/section/recipe-form/removeDescriptions.ts";
+import RecipeFormFooter from "@/components/section/recipe-form/RecipeFormFooter.vue";
+import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
+import { removeProductGroups } from "@/components/section/recipe-form/removeProductGroups.ts";
+import RecipeCategoryFormSelect from "@/components/section/recipe-form/RecipeCategoryFormSelect.vue";
 import { deepCopy } from "@michaelroling/ts-library";
 
 type TRecipeQuery = GetRecipeByIdQuery["recipe"];

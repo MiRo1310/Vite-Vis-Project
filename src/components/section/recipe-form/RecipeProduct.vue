@@ -6,10 +6,10 @@ import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Pencil } from "lucide-vue-next";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import RecipeProductDialogContent from "@/components/section/new-recipe/RecipeProductDialogContent.vue";
+import RecipeProductDialogContent from "@/components/section/recipe-form/RecipeProductDialogContent.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
-import { TForm } from "@/components/section/new-recipe/index.ts";
-import ProductUnit from "@/components/section/new-recipe/ProductUnit.vue";
+import { TForm } from "@/components/section/recipe-form/index.ts";
+import ProductUnit from "@/components/section/recipe-form/ProductUnit.vue";
 
 const props = defineProps<{
   index: number;

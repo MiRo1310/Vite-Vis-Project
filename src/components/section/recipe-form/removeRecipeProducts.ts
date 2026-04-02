@@ -1,7 +1,7 @@
 import { provideApolloClient, useMutation } from "@vue/apollo-composable";
 import apolloClient from "@/apolloClient.ts";
 import { graphql } from "@/api/gql";
-import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { newIdPrefix } from "@/components/section/recipe-form/index.ts";
 
 export const removeRecipeProducts = async (productIds: string[]) => {
   provideApolloClient(apolloClient);

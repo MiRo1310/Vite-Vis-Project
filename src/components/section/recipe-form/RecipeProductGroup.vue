@@ -3,14 +3,14 @@ import { Button } from "@/components/shared/button";
 import { computed, ref, watch } from "vue";
 import { ProductObjType, TextPositionType } from "@/types/types";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
-import RecipeProduct from "@/components/section/new-recipe/RecipeProduct.vue";
+import RecipeProduct from "@/components/section/recipe-form/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, TForm } from "@/components/section/new-recipe/index.ts";
+import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
-import { productSchema } from "@/components/section/new-recipe/formSchema.ts";
+import { productSchema } from "@/components/section/recipe-form/formSchema.ts";
 import { isDefined } from "@vueuse/core";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();

@@ -22,11 +22,14 @@ defineOptions({ inheritAttrs: false });
 
 const modelValue = defineModel<string | number>("modelValue", { default: "" });
 
-const getOptionByName = (name: string): InputOption | undefined => props.options?.find((option) => option.name === name);
-const getNameByValue = (value: string | number): string | undefined => props.options?.find((option) => option.value === value)?.name;
+const getOptionByName = (name: string): InputOption | undefined =>
+  props.options?.find((option) => option.name.toLocaleLowerCase() === name.toLocaleLowerCase());
+const getNameByValue = (value: string | number): string | undefined =>
+  props.options?.find((option) => String(option.value).toLocaleLowerCase() === String(value).toLocaleLowerCase())?.name;
 const getReturnValueFromOption = (option: InputOption): string | number => option.value ?? option.name;
 
-const includesPartOfName = (value: string): boolean => props.options?.some((o) => o.name.includes(value)) ?? false;
+const includesPartOfName = (value: string): boolean =>
+  props.options?.some((o) => o.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())) ?? false;
 
 const isExactOption = ref(false);
 const internalValue = ref<string | number>(handleModelValueChange(modelValue.value));
@@ -102,7 +105,7 @@ const resetModelValue = () => {
 };
 
 const hasExactName = (name: string): boolean => {
-  const exact = !!props.options?.some((o) => o.name === name);
+  const exact = !!props.options?.some((o) => o.name.toLocaleLowerCase() === name.toLocaleLowerCase());
   isExactOption.value = exact;
   return exact;
 };

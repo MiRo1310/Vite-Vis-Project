@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@vue/apollo-composable";
 import { computed, onMounted } from "vue";
 import { getSelectableOptions } from "@/composables/querys/options";
-import { getIdByName, getNameById } from "@/components/section/new-recipe/utils";
+import { getIdByName, getNameById } from "@/components/section/recipe-form/utils";
 import { InputOption, SelectOption } from "@/types/types";
 import { graphql } from "@/api/gql";
 

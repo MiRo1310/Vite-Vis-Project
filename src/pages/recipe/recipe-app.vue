@@ -11,12 +11,12 @@ import { computed } from "vue";
 const recipeStore = useRecipeStore();
 
 const navigations = computed((): INavigation[] => {
-  const nav = [
+  const recipeId = recipeStore.getLastRecipe?.id;
+  const nav: INavigation[] = [
     { label: "VIS", routeName: routes.home.name },
     { label: "Rezepte", routeName: routes.recipes.name },
     { label: "Rezept erstellen", routeName: routes.newRecipe.name },
-    //TODO routen anpassen
-    { label: "Zwischen gespeichertes Rezept bearbeiten", routeName: routes.newRecipe.name },
+    { label: "Zwischen gespeichertes Rezept bearbeiten", disabled: !recipeId, routeName: routes.editRecipe.name, params: { id: recipeId } },
     { label: "Produkte", routeName: routes.recipeProducts.name },
     { label: "Einheiten", routeName: routes.recipeUnits.name },
     { label: "Produkt Kategorien", routeName: routes.productCategories.name },

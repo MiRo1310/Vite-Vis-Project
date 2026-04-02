@@ -2,7 +2,7 @@
 import { Button } from "@/components/shared/button";
 
 import { Logger } from "@/lib/logger.ts";
-import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/new-recipe/index.ts";
+import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/recipe-form/index.ts";
 import { isDefined } from "@vueuse/core";
 
 const props = defineProps<{ description: IRecipeDescriptionCreateOrUpdate }>();

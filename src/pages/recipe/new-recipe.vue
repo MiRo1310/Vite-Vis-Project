@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import RecipeForm from "@/components/section/new-recipe/RecipeForm.vue";
-import { useRoute } from "vue-router";
-
-const route = useRoute();
-
-const recipeId = route.params.id as string | undefined;
+import RecipeForm from "@/components/section/recipe-form/RecipeForm.vue";
 </script>
 
 <template>
-  <RecipeForm :id="recipeId" />
+  <RecipeForm />
 </template>

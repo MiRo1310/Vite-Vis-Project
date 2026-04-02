@@ -2,7 +2,7 @@
 import { Button } from "@/components/shared/button";
 import { ProductObjType, TextPositionType } from "@/types/types";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix } from "@/components/section/new-recipe/index.ts";
+import { newIdPrefix } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 
 const store = useRecipeStore();

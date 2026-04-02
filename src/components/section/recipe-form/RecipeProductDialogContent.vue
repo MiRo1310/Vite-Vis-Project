@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import Form from "@/components/shared/form/Form.vue";
-import RecipeProductName from "@/components/section/new-recipe/RecipeProductName.vue";
+import RecipeProductName from "@/components/section/recipe-form/RecipeProductName.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { ProductObjType, SelectOption } from "@/types/types.ts";
@@ -9,7 +9,7 @@ import { computed, ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
-import { formSchemaProduct } from "@/components/section/new-recipe/formSchema.ts";
+import { formSchemaProduct } from "@/components/section/recipe-form/formSchema.ts";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { isDefined } from "@vueuse/core";
 import { useRecipeStore } from "@/store/recipeStore.ts";

@@ -1,5 +1,5 @@
 import { ProductObjType } from "@/types/types.ts";
-import { productSchema } from "@/components/section/new-recipe/formSchema.ts";
+import { productSchema } from "@/components/section/recipe-form/formSchema.ts";
 import { computed } from "vue";
 
 export const getProductFieldError = (product: ProductObjType, field: keyof typeof productSchema.shape) => {
