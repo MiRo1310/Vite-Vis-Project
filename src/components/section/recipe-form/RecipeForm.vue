@@ -138,14 +138,11 @@ const getRecipeFromStore = recipeStore.getRecipeInProgress;
 const resetRecipeInStore = recipeStore.resetRecipeInProgress;
 
 onMounted(async () => {
-  const recipe = getRecipeFromStore;
+  const recipeFromStore = getRecipeFromStore;
 
-  if (recipe) {
-    recipeId.value = recipe?.recipeId;
-  }
-
-  if (recipe && !recipeId.value) {
-    valueToForm(recipe);
+  if (recipeFromStore && recipeId.value === recipeFromStore?.recipeId) {
+    valueToForm(recipeFromStore);
+    return;
   }
 
   if (recipeId.value) {
@@ -157,7 +154,6 @@ onUnmounted(() => {
   if (!form.values) {
     return;
   }
-
   recipeStore.saveRecipeInProgress(deepCopy<TFormValues>(form.values) ?? {}, recipeId.value);
 });
 
