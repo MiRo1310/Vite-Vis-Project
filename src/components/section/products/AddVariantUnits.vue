@@ -56,7 +56,7 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
     <p>Eine Variante hinzufügen</p>
   </div>
   <div class="w-full items-center mt-2">
-    <div v-for="(unitVariant, index) in variants" :key="index" class="flex gap-2 items-center">
+    <div v-for="(unitVariant, index) in variants" :key="index" class="flex gap-2 items-start">
       <template v-if="!unitVariant.isDefault">
         <Label class="flex flex-col gap-2">
           <span>
