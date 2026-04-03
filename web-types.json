@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json",
+  "name": "vue-e2e",
+  "version": "0.0.1",
+  "framework": "vue",
+  "js-types-syntax": "typescript",
+  "description-markup": "markdown",
+  "framework-config": {
+    "enable-when": {
+      "file-extensions": ["vue"]
+    }
+  },
+  "contributions": {
+    "html": {
+      "vue-directives": [
+        {
+          "name": "e2e",
+          "description": "E2E test attribute, attribute value is used as a selector in Cypress tests, and should be unique.",
+          "doc-url": "./README.adoc",
+          "attribute-value": {
+            "type": "string",
+            "required": true
+          }
+        }
+      ]
+    }
+  }
+}
