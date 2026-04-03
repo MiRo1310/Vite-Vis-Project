@@ -6,9 +6,7 @@ import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
 import { isDefined } from "@vueuse/core";
-import { useProductCategories } from "@/composables/querys/productCategories.ts";
-
-const { reload } = useProductCategories();
+import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
 
 const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] }>();
 
@@ -27,7 +25,7 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["productCategories"], awaitRefetchQueries: true },
+  { refetchQueries: [refetchQueryProductCategories], awaitRefetchQueries: true },
 );
 
 watch(update, (newVal) => {
@@ -56,7 +54,6 @@ async function addNewCategory(): Promise<void> {
   } else {
     result = await mutate({ name: newCategory.value });
   }
-  await reload();
 
   if (result?.data) {
     newCategory.value = "";
