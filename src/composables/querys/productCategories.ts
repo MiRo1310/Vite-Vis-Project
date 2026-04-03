@@ -23,7 +23,7 @@ const productCategoriesComposable = () => {
   const { load, result, refetch } = useLazyQuery(
     graphql(`
       query ProductCategories {
-        productCategories {
+        productCategories(order: { name: ASC }) {
           id
           name
         }

@@ -68,6 +68,11 @@ export type AddressUpdateDtoInput = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type BooleanOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  neq?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export type DateTimeOperationFilterInput = {
   eq?: InputMaybe<Scalars['DateTime']['input']>;
   gt?: InputMaybe<Scalars['DateTime']['input']>;
@@ -110,10 +115,60 @@ export enum ErrorCode {
   Success = 'SUCCESS'
 }
 
+export type IntOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Int']['input']>;
+  gt?: InputMaybe<Scalars['Int']['input']>;
+  gte?: InputMaybe<Scalars['Int']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  lt?: InputMaybe<Scalars['Int']['input']>;
+  lte?: InputMaybe<Scalars['Int']['input']>;
+  neq?: InputMaybe<Scalars['Int']['input']>;
+  ngt?: InputMaybe<Scalars['Int']['input']>;
+  ngte?: InputMaybe<Scalars['Int']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  nlt?: InputMaybe<Scalars['Int']['input']>;
+  nlte?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type KeyValuePairOfStringAndListOfProduct = {
   __typename?: 'KeyValuePairOfStringAndListOfProduct';
   key: Scalars['String']['output'];
   value: Array<Product>;
+};
+
+export type ListFilterInputTypeOfProductFilterInput = {
+  all?: InputMaybe<ProductFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ProductFilterInput>;
+  some?: InputMaybe<ProductFilterInput>;
+};
+
+export type ListFilterInputTypeOfProductUnitFilterInput = {
+  all?: InputMaybe<ProductUnitFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ProductUnitFilterInput>;
+  some?: InputMaybe<ProductUnitFilterInput>;
+};
+
+export type ListFilterInputTypeOfRecipeDescriptionFilterInput = {
+  all?: InputMaybe<RecipeDescriptionFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeDescriptionFilterInput>;
+  some?: InputMaybe<RecipeDescriptionFilterInput>;
+};
+
+export type ListFilterInputTypeOfRecipeProductFilterInput = {
+  all?: InputMaybe<RecipeProductFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeProductFilterInput>;
+  some?: InputMaybe<RecipeProductFilterInput>;
+};
+
+export type ListFilterInputTypeOfRecipeProductHeaderFilterInput = {
+  all?: InputMaybe<RecipeProductHeaderFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeProductHeaderFilterInput>;
+  some?: InputMaybe<RecipeProductHeaderFilterInput>;
 };
 
 export type ListFilterInputTypeOfTravelCostFilterInput = {
@@ -344,6 +399,23 @@ export type ProductCategoryCreateDtoInput = {
   name: Scalars['String']['input'];
 };
 
+export type ProductCategoryFilterInput = {
+  and?: InputMaybe<Array<ProductCategoryFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<ProductCategoryFilterInput>>;
+  products?: InputMaybe<ListFilterInputTypeOfProductFilterInput>;
+};
+
+export type ProductCategorySortInput = {
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+};
+
 export type ProductCategoryUpdateDtoInput = {
   id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
@@ -361,6 +433,27 @@ export type ProductCreateDtoInput = {
   salt?: InputMaybe<Scalars['Decimal']['input']>;
   sugar?: InputMaybe<Scalars['Decimal']['input']>;
   unit: Scalars['String']['input'];
+};
+
+export type ProductFilterInput = {
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<ProductFilterInput>>;
+  carbs?: InputMaybe<DecimalOperationFilterInput>;
+  category?: InputMaybe<UuidOperationFilterInput>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  fat?: InputMaybe<DecimalOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  kcal?: InputMaybe<DecimalOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<ProductFilterInput>>;
+  productCategory?: InputMaybe<ProductCategoryFilterInput>;
+  productUnits?: InputMaybe<ListFilterInputTypeOfProductUnitFilterInput>;
+  protein?: InputMaybe<DecimalOperationFilterInput>;
+  recipeProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductFilterInput>;
+  salt?: InputMaybe<DecimalOperationFilterInput>;
+  sugar?: InputMaybe<DecimalOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type ProductUnit = {
@@ -381,6 +474,21 @@ export type ProductUnitCreateOrUpdateDtoInput = {
   amount: Scalars['Decimal']['input'];
   id?: InputMaybe<Scalars['UUID']['input']>;
   unit: Scalars['String']['input'];
+};
+
+export type ProductUnitFilterInput = {
+  active?: InputMaybe<BooleanOperationFilterInput>;
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<ProductUnitFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  faktor?: InputMaybe<DecimalOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  isDefault?: InputMaybe<BooleanOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<ProductUnitFilterInput>>;
+  product?: InputMaybe<ProductFilterInput>;
+  productId?: InputMaybe<UuidOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type ProductUpdateDtoInput = {
@@ -433,6 +541,12 @@ export type QueryProductArgs = {
 };
 
 
+export type QueryProductCategoriesArgs = {
+  order?: InputMaybe<Array<ProductCategorySortInput>>;
+  where?: InputMaybe<ProductCategoryFilterInput>;
+};
+
+
 export type QueryProductCategoryByIdArgs = {
   id: Scalars['UUID']['input'];
 };
@@ -450,6 +564,12 @@ export type QueryProductUnitByProductIdArgs = {
 
 export type QueryRecipeArgs = {
   id: Scalars['UUID']['input'];
+};
+
+
+export type QueryRecipeCategoriesArgs = {
+  order?: InputMaybe<Array<RecipeCategorySortInput>>;
+  where?: InputMaybe<RecipeCategoryFilterInput>;
 };
 
 
@@ -508,6 +628,22 @@ export type RecipeCategoryCreateDtoInput = {
   name: Scalars['String']['input'];
 };
 
+export type RecipeCategoryFilterInput = {
+  and?: InputMaybe<Array<RecipeCategoryFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeCategoryFilterInput>>;
+};
+
+export type RecipeCategorySortInput = {
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+};
+
 export type RecipeCategoryUpdateDtoInput = {
   id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
@@ -543,6 +679,37 @@ export type RecipeDescriptionCreateOrUpdateDtoInput = {
   text: Scalars['String']['input'];
 };
 
+export type RecipeDescriptionFilterInput = {
+  and?: InputMaybe<Array<RecipeDescriptionFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  header?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeDescriptionFilterInput>>;
+  position?: InputMaybe<IntOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type RecipeFilterInput = {
+  and?: InputMaybe<Array<RecipeFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeFilterInput>>;
+  portions?: InputMaybe<IntOperationFilterInput>;
+  preparationTimeMin?: InputMaybe<IntOperationFilterInput>;
+  recipeCategory?: InputMaybe<RecipeCategoryFilterInput>;
+  recipeCategoryId?: InputMaybe<UuidOperationFilterInput>;
+  recipeDescriptions?: InputMaybe<ListFilterInputTypeOfRecipeDescriptionFilterInput>;
+  recipeHeaderProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductHeaderFilterInput>;
+  recipeProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductFilterInput>;
+  totalKcal?: InputMaybe<IntOperationFilterInput>;
+  totalTimeMin?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type RecipeGroupRemoveDtoInput = {
   position: Scalars['Int']['input'];
   recipeId: Scalars['UUID']['input'];
@@ -573,6 +740,25 @@ export type RecipeProduct = {
   unit: Scalars['String']['output'];
 };
 
+export type RecipeProductFilterInput = {
+  activeUnitId?: InputMaybe<UuidOperationFilterInput>;
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<RecipeProductFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  groupPosition?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  kcal?: InputMaybe<IntOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeProductFilterInput>>;
+  product?: InputMaybe<ProductFilterInput>;
+  productId?: InputMaybe<UuidOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  sortOrder?: InputMaybe<IntOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
+};
+
 export type RecipeProductHeader = {
   __typename?: 'RecipeProductHeader';
   createdAt: Scalars['DateTime']['output'];
@@ -582,6 +768,18 @@ export type RecipeProductHeader = {
   recipe?: Maybe<Recipe>;
   recipeId: Scalars['UUID']['output'];
   text: Scalars['String']['output'];
+};
+
+export type RecipeProductHeaderFilterInput = {
+  and?: InputMaybe<Array<RecipeProductHeaderFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeProductHeaderFilterInput>>;
+  position?: InputMaybe<IntOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type RecipeProductsCreateDtoInput = {
@@ -1117,8 +1315,8 @@ export const RemoveRecipeDocument = {"kind":"Document","definitions":[{"kind":"O
 export const CreateUnitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUnit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUnit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateUnitMutation, CreateUnitMutationVariables>;
 export const DeleteUnitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteUnit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteUnit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteUnitMutation, DeleteUnitMutationVariables>;
 export const UpdateUnitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUnit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUnit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateUnitMutation, UpdateUnitMutationVariables>;
-export const ProductCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProductCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<ProductCategoriesQuery, ProductCategoriesQueryVariables>;
-export const RecipeCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"recipeCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipeCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RecipeCategoriesQuery, RecipeCategoriesQueryVariables>;
+export const ProductCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProductCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<ProductCategoriesQuery, ProductCategoriesQueryVariables>;
+export const RecipeCategoriesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"recipeCategories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipeCategories"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RecipeCategoriesQuery, RecipeCategoriesQueryVariables>;
 export const UnitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Units"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"units"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<UnitsQuery, UnitsQueryVariables>;
 export const AddressesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AddressesQuery, AddressesQueryVariables>;
 export const DescriptionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DescriptionsQuery, DescriptionsQueryVariables>;
