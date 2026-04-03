@@ -3,14 +3,15 @@ import { Button } from "@/components/shared/button";
 import { computed, ref, watch } from "vue";
 import { ProductObjType, TextPositionType } from "@/types/types";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
-import RecipeProduct from "@/components/section/new-recipe/RecipeProduct.vue";
+import RecipeProduct from "@/components/section/recipe-form/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, TForm } from "@/components/section/new-recipe/index.ts";
+import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
-import { productSchema } from "@/components/section/new-recipe/formSchema.ts";
+import { productSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { isDefined } from "@vueuse/core";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();
 
@@ -38,7 +39,7 @@ const removeProductGroup = async () => {
 const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: number, targetOptional?: keyof T, numberOptional?: number) =>
   obj
     .filter((item) => {
-      if (targetOptional && numberOptional) {
+      if (isDefined(targetOptional) && isDefined(numberOptional)) {
         if ((item[targetOptional] as number) === numberOptional) {
           return item[target] !== number;
         }
@@ -47,15 +48,17 @@ const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: numbe
       return item[target] !== number;
     })
     .map((item) => {
-      if (targetOptional && numberOptional) {
-        if ((item[target] as number) > number && (item[targetOptional] as number) === numberOptional) {
-          (item[target] as number) = (item[target] as number) - 1;
+      const nextItem = { ...item };
+      if (isDefined(targetOptional) && isDefined(numberOptional)) {
+        if ((nextItem[target] as number) > number && (nextItem[targetOptional] as number) === numberOptional) {
+          nextItem[target] = ((nextItem[target] as number) - 1) as T[keyof T];
         }
-        return item;
-      } else if ((item[target] as number) > number) {
-        (item[target] as number) = (item[target] as number) - 1;
+        return nextItem;
       }
-      return item;
+      if ((nextItem[target] as number) > number) {
+        nextItem[target] = ((nextItem[target] as number) - 1) as T[keyof T];
+      }
+      return nextItem;
     });
 
 const disableDeleteBtn = () => productsLength.value === 1 && store.getProductGroupsCount === 1;
@@ -95,26 +98,27 @@ const filteredProductsByGroupPosition = computed(() =>
 );
 
 const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
-  const products = [...productArray.value];
+  const delta = direction === "up" ? -1 : 1;
+  const products = productArray.value.map((p) => ({ ...p }));
 
-  const productsWithSameSortOrder = products.filter(
-    (p) => p.sortOrder === product.sortOrder + (direction === "up" ? -1 : 1) && p.groupPosition === props.groupIndex,
+  const currentIndex = products.findIndex((p) => p.position === product.position && p.groupPosition === props.groupIndex);
+  if (currentIndex !== -1) {
+    products[currentIndex] = {
+      ...products[currentIndex],
+      sortOrder: products[currentIndex].sortOrder + delta,
+    };
+  }
+
+  const swapIndex = products.findIndex(
+    (p) => p.sortOrder === product.sortOrder + delta && p.groupPosition === props.groupIndex && p.position !== product.position,
   );
-
-  const current = products.find((p) => p.position === product.position && p.groupPosition === props.groupIndex);
-  if (current) {
-    if (direction === "up") {
-      current.sortOrder--;
-    } else {
-      current.sortOrder++;
-    }
+  if (swapIndex !== -1) {
+    products[swapIndex] = {
+      ...products[swapIndex],
+      sortOrder: products[swapIndex].sortOrder - delta,
+    };
   }
 
-  if (productsWithSameSortOrder.length > 0) {
-    productsWithSameSortOrder.map((p) => {
-      return (p.sortOrder = p.sortOrder + (direction === "up" ? 1 : -1));
-    });
-  }
   productArray.value = products;
 };
 
@@ -145,6 +149,7 @@ const isValid = computed(() => (product: ProductObjType) => {
 
 <template>
   <FormInput :name="`headersProductArray.${groupIndex}.text`" placeholder="Beschreibung" />
+
   <div
     v-for="(product, index) in filteredProductsByGroupPosition"
     :key="index"

@@ -19,45 +19,34 @@ defineProps<{ navigations: INavigation[] }>();
 </script>
 
 <template>
-  <div class="xl:hidden">
-    <DropdownMenu>
-      <DropdownMenuTrigger as-child>
-        <Button variant="outline" size="icon"> <Menu /> </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent class="w-56" align="start">
-        <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <template v-for="(nav, index) in navigations" :key="index">
-            <DropdownMenuItem v-if="nav.externalLink">
-              <a :href="nav.href" target="_blank" :class="nav.class">
+  <DropdownMenu>
+    <DropdownMenuTrigger as-child>
+      <Button variant="outline" size="icon">
+        <Menu />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent class="w-auto" align="start">
+      <DropdownMenuLabel>Navigation</DropdownMenuLabel>
+      <DropdownMenuGroup class="grid lg:grid-cols-3 grid-cols-1 gap-2 lg:mx-2">
+        <template v-for="(nav, index) in navigations" :key="index">
+          <DropdownMenuItem class="lg:w-auto lg:h-20 lg:bg-accent lg:text-center lg:text-lg">
+            <a v-if="nav.externalLink" :href="nav.href" target="_blank" :class="[nav.class, 'lg:text-center text-lg w-full']">
+              <Button variant="ghost" as="div">{{ nav.label }}</Button>
+            </a>
+            <RouterLink
+              v-else
+              :to="{ name: nav.routeName, params: { ...nav.params } }"
+              :class="['w-full', route.name === nav.routeName ? 'underline text-yellow-500' : '']"
+            >
+              <Button :disabled="nav.disabled" variant="ghost">
                 {{ nav.label }}
-              </a>
-            </DropdownMenuItem>
-            <DropdownMenuItem v-else
-              ><RouterLink
-                :to="{ name: nav.routeName, params: { ...nav.params } }"
-                :class="route.name === nav.routeName ? 'underline text-yellow-500' : ''"
-                >{{ nav.label }}</RouterLink
-              >
-            </DropdownMenuItem>
-          </template>
-          <slot />
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </div>
-  <div class="hidden xl:flex gap-2 items-center">
-    <div v-for="(navigation, index) in navigations" :key="index">
-      <RouterLink v-if="!navigation.externalLink" :to="{ name: navigation.routeName, params: { ...navigation.params } }">
-        <Button :variant="route.name === navigation.routeName ? 'default' : 'outline'">{{ navigation.label }}</Button>
-      </RouterLink>
-      <a v-if="navigation.externalLink" :href="navigation.href" target="_blank">
-        <Button as="div" variant="outline" :class="navigation.class">
-          {{ navigation.label }}
-        </Button>
-      </a>
-    </div>
-    <slot />
-  </div>
+              </Button>
+            </RouterLink>
+          </DropdownMenuItem>
+        </template>
+        <slot />
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+    </DropdownMenuContent>
+  </DropdownMenu>
 </template>

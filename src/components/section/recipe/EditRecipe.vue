@@ -7,7 +7,7 @@ defineProps<{ recipe?: GetRecipeDetailsQuery["recipe"] }>();
 </script>
 
 <template>
-  <RouterLink :to="{ name: routes.newRecipe.name, params: { id: recipe?.id } }">
+  <RouterLink :to="{ name: routes.editRecipe.name, params: { id: recipe?.id } }">
     <Button as="div" size="icon" icon="edit" variant="outline" />
   </RouterLink>
 </template>

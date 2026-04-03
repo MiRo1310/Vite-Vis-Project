@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { TFormValues } from "@/components/section/new-recipe/RecipeForm.vue";
+import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 
 export interface IRecipeGroupToDelete {
@@ -8,8 +8,7 @@ export interface IRecipeGroupToDelete {
 }
 
 interface IRecipeStore {
-  newRecipe: TFormValues | null;
-  openedRecipe: { id: string } | null;
+  recipeInProgress: (TFormValues & { recipeId?: string }) | null;
   recipeGroupIdsToDelete: IRecipeGroupToDelete[];
   recipeProductIdsToDelete: string[];
   productGroupsCount: number;
@@ -22,21 +21,17 @@ export type TRecipe = TGroupedRecipesByCategory[number][number];
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({
-    newRecipe: null,
-    openedRecipe: null,
+    recipeInProgress: null,
     recipeGroupIdsToDelete: [],
     recipeProductIdsToDelete: [],
     productGroupsCount: 0,
     shouldValidate: false,
     directlyOpenNewProductModal: false,
-    lastRecipes: getRecipeFromStore(),
+    lastRecipes: getRecipeFromLocalStorage(),
   }),
   getters: {
-    getRecipeFromStore(state) {
-      return state.newRecipe;
-    },
-    getOpenedRecipe(state) {
-      return state.openedRecipe;
+    getRecipeInProgress(state) {
+      return state.recipeInProgress;
     },
     getRecipeGroupIdsToDelete(state) {
       return state.recipeGroupIdsToDelete;
@@ -61,14 +56,11 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
   },
   actions: {
-    saveRecipeInStore(values: TFormValues) {
-      this.newRecipe = values;
+    saveRecipeInProgress(values: TFormValues, id?: string) {
+      this.recipeInProgress = { ...values, recipeId: id };
     },
-    resetRecipeInStore() {
-      this.newRecipe = null;
-    },
-    saveOpenedRecipe(recipe: { id: string }) {
-      this.openedRecipe = recipe;
+    resetRecipeInProgress() {
+      this.recipeInProgress = null;
     },
     addRecipeGroupToDelete(obj: IRecipeGroupToDelete) {
       this.recipeGroupIdsToDelete.push(obj);
@@ -103,6 +95,6 @@ const saveToLocalStore = (lastRecipes: TRecipe[]) => {
   localStorage.setItem("lastRecipes", JSON.stringify(lastRecipes));
 };
 
-const getRecipeFromStore = (): TRecipe[] => {
+const getRecipeFromLocalStorage = (): TRecipe[] => {
   return JSON.parse(localStorage.getItem("lastRecipes") ?? "[]");
 };

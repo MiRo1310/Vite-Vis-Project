@@ -3,7 +3,6 @@ import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
 import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
 import { onMounted, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
-import { useRecipeStore } from "@/store/recipeStore.ts";
 import { graphql } from "@/api/gql";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
 import { Button } from "@/components/shared/button";
@@ -53,9 +52,6 @@ const recipeDetailsQuery = graphql(`
 `);
 
 const { load, result, refetch } = useLazyQuery(recipeDetailsQuery);
-const recipeStore = useRecipeStore();
-
-const saveOpenedRecipe = recipeStore.saveOpenedRecipe.bind(recipeStore);
 
 const loadRecipeFromServer = async (): Promise<void> => {
   const recipeId = props.recipeId;
@@ -63,7 +59,6 @@ const loadRecipeFromServer = async (): Promise<void> => {
     return;
   }
 
-  saveOpenedRecipe({ id: recipeId });
   await load(recipeDetailsQuery, { id: recipeId });
   await refetch({ id: recipeId });
 };

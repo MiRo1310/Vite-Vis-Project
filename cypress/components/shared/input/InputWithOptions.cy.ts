@@ -146,6 +146,27 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("state-icon-x").should("exist");
   });
 
+  it("Should return only exact values, with none case sensitive", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+
+    cy.mountE2E(InputWithOptions, {
+      props: {
+        options,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        e2e: "input-with-options",
+        modelValue: "",
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+
+    cy.getBySel("input-with-options").as("input");
+
+    cy.get("@input").type("option 1");
+    cy.get("@updateSpy").should("have.been.calledWith", 111);
+    cy.getBySel("state-icon-check").should("exist");
+  });
+
   it("Should have correct datalist options", () => {
     const onUpdate = cy.spy().as("updateSpy");
 

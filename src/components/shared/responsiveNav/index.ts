@@ -7,4 +7,5 @@ export interface INavigation {
   externalLink?: boolean;
   href?: string;
   class?: string;
+  disabled?: boolean;
 }

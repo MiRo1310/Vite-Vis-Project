@@ -37,6 +37,7 @@ const router = useRouter();
 
 const navigate = async (recipe: TGroupedRecipesByCategory[number][number]) => {
   recipeStore.addNewOpenedRecipeToLastRecipes(recipe);
+  recipeStore.resetRecipeInProgress();
   await router.push({ name: routes.recipeDetails.name, params: { recipeId: recipe.id } });
 };
 
