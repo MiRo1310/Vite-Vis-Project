@@ -14,6 +14,8 @@ export const useUnits = () => {
   return unitsFunction;
 };
 
+export const refetchQueryUnits = "Units";
+
 const unitsComposable = () => {
   const { load, result, refetch } = useLazyQuery(
     graphql(`
