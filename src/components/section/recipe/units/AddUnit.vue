@@ -6,6 +6,7 @@ import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";
 import { UnitsQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
+import { refetchQueryUnits } from "@/composables/querys/units.ts";
 
 const props = defineProps<{ units: UnitsQuery["units"] }>();
 
@@ -34,10 +35,10 @@ const addUnit = async () => {
       if (props.units?.find((c) => c.name === unit)) {
         return;
       }
-      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: ["Units"] } : undefined);
+      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: [refetchQueryUnits] } : undefined);
     });
   } else {
-    mutate({ name: newUnit.value }, { refetchQueries: ["Units"] });
+    mutate({ name: newUnit.value }, { refetchQueries: [refetchQueryUnits] });
   }
   newUnit.value = "";
 };

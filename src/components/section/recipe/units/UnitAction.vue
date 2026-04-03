@@ -9,8 +9,10 @@ import { Input } from "@/components/shared/input";
 import { UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
 import { ITableColumn } from "@/types/types.ts";
+import { refetchQueryUnits } from "@/composables/querys/units.ts";
 
 const props = defineProps<ITableColumn<string, UnitsQuery["units"][number]>>();
+const refetchQueries = [refetchQueryUnits];
 
 const { mutate } = useMutation(
   graphql(`
@@ -19,7 +21,7 @@ const { mutate } = useMutation(
     }
   `),
   {
-    refetchQueries: ["GetUnits"],
+    refetchQueries,
   },
 );
 
@@ -32,7 +34,7 @@ const { mutate: updateMutation } = useMutation(
     }
   `),
   {
-    refetchQueries: ["GetUnits"],
+    refetchQueries,
   },
 );
 
@@ -40,7 +42,7 @@ const remove = () => {
   mutate(
     { id: props.value },
     {
-      refetchQueries: ["GetUnits"],
+      refetchQueries,
     },
   );
 };
@@ -56,7 +58,7 @@ const update = () => {
       name: name.value,
     },
     {
-      refetchQueries: ["GetUnits"],
+      refetchQueries,
     },
   );
   clear();
