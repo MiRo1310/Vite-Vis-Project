@@ -8,6 +8,7 @@ import { Input } from "@/components/shared/input";
 import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { ITableColumn } from "@/types/types.ts";
+import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
 
 const props = defineProps<ITableColumn<string, ProductCategoriesQuery["productCategories"][number]>>();
 
@@ -32,7 +33,7 @@ const update = () => {
       name: name.value,
     },
     {
-      refetchQueries: ["productCategories"],
+      refetchQueries: [refetchQueryProductCategories],
     },
   );
   clear();

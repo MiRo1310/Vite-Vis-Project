@@ -6,6 +6,7 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { ITableColumn } from "@/types/types.ts";
+import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
 
 const props = defineProps<ITableColumn<string, ProductCategoriesQuery["productCategories"][number]>>();
 
@@ -21,7 +22,7 @@ const remove = () => {
   mutate(
     { id: props.value },
     {
-      refetchQueries: ["productCategories"],
+      refetchQueries: [refetchQueryProductCategories],
     },
   );
 };
