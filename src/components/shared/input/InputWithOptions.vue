@@ -118,7 +118,7 @@ const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
       :list="optionsId"
       :disabled
       v-e2e="e2e"
-      :placeholder
+      :placeholder="placeholder"
       :class="
         cn(
           'flex h-9 pr-8 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm leading-10 shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
