@@ -54,7 +54,7 @@ type Documents = {
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateUnitDocument,
     "\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
-    "\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
+    "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": typeof types.TravelCostDocument,
@@ -103,7 +103,7 @@ const documents: Documents = {
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateUnitDocument,
     "\n      query productCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
-    "\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
+    "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": types.TravelCostDocument,
@@ -289,7 +289,7 @@ export function graphql(source: "\n      query recipeCategories {\n        recip
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query Units {\n        units {\n          id\n          name\n        }\n      }\n    "];
+export function graphql(source: "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

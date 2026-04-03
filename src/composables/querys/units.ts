@@ -20,7 +20,7 @@ const unitsComposable = () => {
   const { load, result, refetch } = useLazyQuery(
     graphql(`
       query Units {
-        units {
+        units(order: { name: ASC }) {
           id
           name
         }
