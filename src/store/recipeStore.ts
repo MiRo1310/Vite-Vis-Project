@@ -88,6 +88,11 @@ export const useRecipeStore = defineStore("recipeStore", {
       this.lastRecipes = [recipe, ...filteredRecipes].slice(0, 3);
       saveToLocalStore(this.lastRecipes);
     },
+    getFilterLastRecipes(groups: TGroupedRecipesByCategory) {
+      this.lastRecipes = this.lastRecipes.filter((r) => Object.values(groups)?.some((g) => g.some((p) => p.id === r.id)));
+      saveToLocalStore(this.lastRecipes);
+      return this.lastRecipes;
+    },
   },
 });
 

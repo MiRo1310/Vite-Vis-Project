@@ -41,7 +41,7 @@ const navigate = async (recipe: TGroupedRecipesByCategory[number][number]) => {
   await router.push({ name: routes.recipeDetails.name, params: { recipeId: recipe.id } });
 };
 
-const groupedRecipesByCategory = computed(() => {
+const groupedRecipesByCategory = computed((): TGroupedRecipesByCategory | undefined => {
   return result.value?.recipes.reduce((acc, cur) => {
     const categoryName = cur?.recipeCategory?.name ?? "Keiner Kategorie zugeordnet";
     if (categoryName in acc) {
@@ -56,17 +56,19 @@ const groupedRecipesByCategory = computed(() => {
 type TRecipe = RecipesQuery["recipes"][number];
 
 export type TGroupedRecipesByCategory = Record<string, TRecipe[]>;
+
+const lastRecipes = computed(() => {
+  if (!groupedRecipesByCategory.value) {
+    return [];
+  }
+  return recipeStore.getFilterLastRecipes(groupedRecipesByCategory.value);
+});
 </script>
 
 <template>
-  <p class="mb-1">Letzten 3 geöffneten Rezepte</p>
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 mb-4">
-    <div
-      v-for="recipe in recipeStore.getLastRecipes"
-      :key="recipe.id"
-      @click="navigate(recipe)"
-      class="border-2 p-2 rounded-md bg-card cursor-pointer"
-    >
+  <p class="mb-1">Zuletzt geöffnete Rezepte</p>
+  <div v-if="lastRecipes.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 mb-4">
+    <div v-for="recipe in lastRecipes" :key="recipe.id" @click="navigate(recipe)" class="border-2 p-2 rounded-md bg-card cursor-pointer">
       <RecipeCard :recipe />
     </div>
   </div>
