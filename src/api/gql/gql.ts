@@ -52,8 +52,8 @@ type Documents = {
     "\n    mutation CreateUnit($name: String!) {\n      createUnit(dto: { name: $name }) {\n        name\n      }\n    }\n  ": typeof types.CreateUnitDocument,
     "\n    mutation DeleteUnit($id: UUID!) {\n      deleteUnit(id: $id)\n    }\n  ": typeof types.DeleteUnitDocument,
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateUnitDocument,
-    "\n      query ProductCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
-    "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
+    "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
+    "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
@@ -101,8 +101,8 @@ const documents: Documents = {
     "\n    mutation CreateUnit($name: String!) {\n      createUnit(dto: { name: $name }) {\n        name\n      }\n    }\n  ": types.CreateUnitDocument,
     "\n    mutation DeleteUnit($id: UUID!) {\n      deleteUnit(id: $id)\n    }\n  ": types.DeleteUnitDocument,
     "\n    mutation UpdateUnit($id: UUID!, $name: String!) {\n      updateUnit(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateUnitDocument,
-    "\n      query ProductCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
-    "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
+    "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
+    "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
     "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
@@ -281,11 +281,11 @@ export function graphql(source: "\n    mutation UpdateUnit($id: UUID!, $name: St
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n      query ProductCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query ProductCategories {\n        productCategories {\n          id\n          name\n        }\n      }\n    "];
+export function graphql(source: "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query recipeCategories {\n        recipeCategories {\n          id\n          name\n        }\n      }\n    "];
+export function graphql(source: "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "): (typeof documents)["\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -6,7 +6,7 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import RecipeProduct from "@/components/section/recipe-form/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
+import { newIdPrefix, PrefixedIdGenerator, TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
@@ -65,10 +65,7 @@ const disableDeleteBtn = () => productsLength.value === 1 && store.getProductGro
 
 const productsLength = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
 
-const newProductIndexCounter = ref(0);
-const newProductIdPlaceholder = computed(() => {
-  return `${newIdPrefix}${newProductIndexCounter.value}`;
-});
+const prefixedIdGenerator = new PrefixedIdGenerator(newIdPrefix);
 
 const addNewProduct = () => {
   const newRecipeProduct = {
@@ -77,7 +74,7 @@ const addNewProduct = () => {
     amount: 0,
     groupPosition: props.groupIndex,
     activeUnitId: "",
-    id: newProductIdPlaceholder.value,
+    id: prefixedIdGenerator.nextId(),
     position: 0,
     sortOrder: [...productArray.value].filter((p) => p.groupPosition === props.groupIndex).length,
   };
@@ -90,7 +87,8 @@ const addNewProduct = () => {
 const isOpenDialogRemoveGroup = ref(false);
 
 const removeProductId = (id: string) => {
-  productArray.value = productArray.value.filter((p) => p.id !== id);
+  const filtered = [...props.form.values.productArray].filter((p) => p.id !== id);
+  props.form.setFieldValue("productArray", filtered);
 };
 
 const filteredProductsByGroupPosition = computed(() =>

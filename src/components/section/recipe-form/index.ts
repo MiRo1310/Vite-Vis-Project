@@ -25,3 +25,15 @@ export type TRecipeProductLike = {
   position?: number | null;
   sortOrder: number;
 };
+
+export class PrefixedIdGenerator {
+  index = 0;
+
+  constructor(readonly prefix: string) {}
+
+  public nextId(): string {
+    const id = `${this.prefix}${this.index}`;
+    this.index++;
+    return id;
+  }
+}
