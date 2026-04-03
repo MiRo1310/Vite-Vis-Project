@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<ImageProps>(), {
 });
 const showDialog = ref(false);
 const shouldLoadFallBack = ref(false);
-const imageLoadTimeout: Ref<null | NodeJS.Timeout> = ref(null);
+const imageLoadTimeout: Ref<null | number> = ref(null);
 
 const clickImageHandler = () => {
   if (props.useLightbox) {
