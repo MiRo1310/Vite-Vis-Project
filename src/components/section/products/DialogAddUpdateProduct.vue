@@ -158,7 +158,7 @@ watch(
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
       <div class="flex gap-2 items-baseline mb-4">
         <FormInput label="Produkt" name="name" class="flex-1" />
-        <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" class="w-40" />
+        <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" />
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
         <FormInput label="Kalorien" name="kcal" type="number" :step="1" />
