@@ -81,7 +81,7 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
-    <PageSection class="grid md:grid-cols-2 grid-cols-1 gap-4 rounded-lg max-h-[calc(100vh-9.5rem)] overflow-auto">
+    <PageSection class="grid md:grid-cols-2 grid-cols-1 gap-4 rounded-lg max-h-[calc(100vh-8.25rem)] overflow-auto">
       <div v-for="product in result?.productsGrouped" :key="product.key" class="rounded-md">
         {{ product.key }}
         <div class="bg-accent rounded-md px-2 pb-2 mt-1">
