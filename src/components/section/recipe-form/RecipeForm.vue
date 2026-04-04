@@ -8,7 +8,7 @@ import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/recipe-form/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/recipe-form/RecipeProductGroup.vue";
 import AddNewProductGroup from "@/components/section/recipe-form/AddNewGroup.vue";
-import { OnResult, TextPositionType } from "@/types/types";
+import { OnResult } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
@@ -285,7 +285,6 @@ const valueToForm = (formValues?: TFormValues) => {
 
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(descriptionValues ?? []));
   nextDescriptionIndex.value = descriptions.value.length;
-  headersProductArray.value = sortHeaderProductsByPosition(normalizedHeaders);
 };
 
 const setValuesToForm = (recipe: TRecipeQuery) => {
@@ -298,7 +297,6 @@ const setValuesToForm = (recipe: TRecipeQuery) => {
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.recipeDescriptions));
 
   nextDescriptionIndex.value = descriptions.value.length;
-  headersProductArray.value = sortHeaderProductsByPosition(getTextPositionTypeFromResult(recipe.recipeHeaderProducts));
 };
 
 const recipe = ref<TRecipeQuery>();
@@ -363,7 +361,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   await removeRecipeProducts(recipeStore.getRecipeProductsToDelete);
   recipeStore.clearRecipeProductIdsToDelete();
-  console.log(dtoUpdate);
+
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
   toast({
@@ -391,8 +389,6 @@ const resetForm = () => {
   if (!recipeId.value) {
     form.resetForm({ values: deepCopy(initialValues) });
     descriptions.value = [];
-    headersProductArray.value = [];
-    // productArray.value = [];
     valueToForm();
     return;
   }
@@ -401,12 +397,6 @@ const resetForm = () => {
   form.resetForm({ values: deepCopy(values) });
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(values.descriptions ?? []));
   nextDescriptionIndex.value = descriptions.value.length;
-  const resetHeaders = (values.headersProductArray ?? []).map((header, index) => ({
-    text: header.text,
-    position: header.position ?? index,
-    id: header.id,
-  }));
-  headersProductArray.value = sortHeaderProductsByPosition(resetHeaders);
 };
 
 const updateValue = ref(false);
@@ -419,14 +409,8 @@ const enterPress = async () => {
   }
 };
 
-const sortHeaderProductsByPosition = <T extends { text: string; position: number }>(obj: T[]): T[] => {
-  return [...obj].sort((a, b) => a.position - b.position);
-};
-
 const sortAndAddPositionByCreate = <T extends { text: string; position: number }>(obj: T[]): IRecipeDescriptionCreateOrUpdate[] =>
   [...obj].sort((a, b) => a.position - b.position).map((d, index) => ({ ...d, positionByCreate: index }));
-
-const headersProductArray = ref<TextPositionType[]>([]);
 
 watchEffect(() => {
   if (!formProductArray.value?.length) {
@@ -488,10 +472,10 @@ const addDescription = () => {
         <div class="md:w-120 w-full">
           <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
           <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
-            <RecipeProductGroup v-model:headers-product-array="headersProductArray" :recipe :group-index="toZeroBasedIndex(oneBasedIndex)" :form />
+            <RecipeProductGroup :recipe :group-index="toZeroBasedIndex(oneBasedIndex)" :form />
           </div>
 
-          <AddNewProductGroup v-model:headers-product-array="headersProductArray" :form />
+          <AddNewProductGroup :form />
         </div>
       </div>
 

@@ -10,7 +10,7 @@ import RecipeProductDialogContent from "@/components/section/recipe-form/RecipeP
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import { TForm } from "@/components/section/recipe-form/index.ts";
 import ProductUnit from "@/components/section/recipe-form/ProductUnit.vue";
-import { TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
 
 const props = defineProps<{
   index: number;
@@ -53,8 +53,8 @@ const selectableProducts = computed((): SelectOption[] => getSelectableOptions(r
 const productLabel = computed(() => selectableProducts.value.find((option) => option.value === props.product?.productId)?.label);
 
 const updateProduct = (product: ProductObjType) => {
-  const index = props.form.values.productArray.findIndex((p: TProductSchema) => p.id === product.id);
-  props.form.setFieldValue(`productArray.${index}`, { ...props.product, ...product });
+  const index = props.form.values[fieldsRecipe.products].findIndex((p: TProductSchema) => p.id === product.id);
+  props.form.setFieldValue(`${fieldsRecipe.products}.${index}`, { ...props.product, ...product });
   open.value = false;
 };
 

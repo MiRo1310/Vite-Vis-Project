@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { TextPositionType } from "@/types/types";
 import { Logger } from "@/lib/logger.ts";
 import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { computed } from "vue";
-import { TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, TProductHeaderSchema, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
 
 const store = useRecipeStore();
 
 const props = defineProps<{ form: TForm }>();
 
-const formProductArray = computed((): TProductSchema[] => props.form.values.productArray);
-const saveToFormProductArray = (productArray: TProductSchema[]) => {
-  props.form.setFieldValue("productArray", productArray);
-};
+const formProducts = computed((): TProductSchema[] => props.form.values[fieldsRecipe.products]);
+const formProductHeaders = computed((): TProductHeaderSchema[] => props.form.values[fieldsRecipe.headers]);
 
-const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
+const saveToFormProducts = (products: TProductSchema[]) => {
+  props.form.setFieldValue(fieldsRecipe.products, products);
+};
+const saveToFormProductHeaders = (headers: TProductHeaderSchema[]) => {
+  props.form.setFieldValue(fieldsRecipe.headers, headers);
+};
 
 const addNewProductGroup = () => {
   const productGroupLength = store.getProductGroupsCount;
@@ -29,19 +31,19 @@ const addNewProductGroup = () => {
     groupPosition: productGroupLength,
     activeUnitId: "",
     id: newIdPrefix,
-    position: formProductArray.value.length,
+    position: formProducts.value.length,
     sortOrder: 0,
   };
   Logger("Adding new product group:", { value: newProduct, useDebugMode: true });
-  saveToFormProductArray([...formProductArray.value, newProduct]);
+  saveToFormProducts([...formProducts.value, newProduct]);
 
-  headersProductArray.value = [
-    ...headersProductArray.value,
+  saveToFormProductHeaders([
+    ...formProductHeaders.value,
     {
       position: productGroupLength,
       text: "",
     },
-  ];
+  ]);
 };
 </script>
 
