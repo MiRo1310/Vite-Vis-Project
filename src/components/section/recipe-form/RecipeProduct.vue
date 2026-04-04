@@ -5,7 +5,7 @@ import { getSelectableOptions } from "@/composables/querys/options.ts";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Pencil } from "lucide-vue-next";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import RecipeProductDialogContent from "@/components/section/recipe-form/RecipeProductDialogContent.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import { TForm } from "@/components/section/recipe-form/index.ts";
@@ -76,6 +76,7 @@ const open = ref(false);
       <DialogTrigger>
         <Pencil class="size-4 cursor-pointer" />
         <DialogContent>
+          <DialogTitle> Ein Produkt anlegen </DialogTitle>
           <RecipeProductDialogContent
             :product
             :counted-products
