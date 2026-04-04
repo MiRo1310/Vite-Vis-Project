@@ -20,11 +20,11 @@ const store = useRecipeStore();
 const formProducts = computed((): TProductSchema[] => props.form.values.productArray);
 const formProductHeaders = computed((): TProductHeaderSchema[] => props.form.values.headersProductArray);
 
-const saveToFormProducts = (products: TProductSchema[]) => {
+const saveProductsToForm = (products: TProductSchema[]) => {
   props.form.setFieldValue(fieldsRecipe.products, products);
 };
 
-const saveToFormProductHeaders = (productHeaders: TProductHeaderSchema[]) => {
+const saveHeadersToForm = (productHeaders: TProductHeaderSchema[]) => {
   props.form.setFieldValue(fieldsRecipe.headers, productHeaders);
 };
 
@@ -40,8 +40,8 @@ const removeProductGroup = async () => {
 
   const groupToDelete = props.groupIndex;
   Logger(`Remove group with index: ${groupToDelete}`);
-  saveToFormProducts(filterByTargetAndDecrement(formProducts.value, "groupPosition", groupToDelete));
-  saveToFormProductHeaders(filterByTargetAndDecrement(formProductHeaders.value, "position", groupToDelete));
+  saveProductsToForm(filterByTargetAndDecrement(formProducts.value, "groupPosition", groupToDelete));
+  saveHeadersToForm(filterByTargetAndDecrement(formProductHeaders.value, "position", groupToDelete));
 };
 
 const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: number, targetOptional?: keyof T, numberOptional?: number) =>
@@ -88,14 +88,14 @@ const addNewProduct = () => {
   };
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
-  saveToFormProducts([...formProducts.value, newRecipeProduct]);
+  saveProductsToForm([...formProducts.value, newRecipeProduct]);
 };
 
 const isOpenDialogRemoveGroup = ref(false);
 
 const removeProductId = (id: string) => {
   const filtered = [...props.form.values.productArray].filter((p) => p.id !== id);
-  saveToFormProducts(filtered);
+  saveProductsToForm(filtered);
 };
 
 const filteredProductsByGroupPosition = computed(() =>
@@ -123,7 +123,7 @@ const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
       sortOrder: products[swapIndex].sortOrder - delta,
     };
   }
-  saveToFormProducts(products);
+  saveProductsToForm(products);
 };
 
 /**

@@ -11,22 +11,15 @@ import AddNewProductGroup from "@/components/section/recipe-form/AddNewGroup.vue
 import { OnResult } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
-import { formSchema, TProductSchema } from "@/components/section/recipe-form/formSchema";
+import { formSchema, TDescriptionSchema, TProductSchema } from "@/components/section/recipe-form/formSchema";
 import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/recipe-form/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Logger } from "@/lib/logger.ts";
-import {
-  IRecipeDescriptionCreateOrUpdate,
-  newIdPrefix,
-  TRecipeDescriptionLike,
-  TRecipeHeaderProductLike,
-  TRecipeProductLike,
-} from "@/components/section/recipe-form/index.ts";
+import { newIdPrefix, TRecipeDescriptionLike, TRecipeHeaderProductLike, TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
 import { removeDescriptions } from "@/components/section/recipe-form/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/recipe-form/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
@@ -173,25 +166,8 @@ const form = useForm({
   initialValues: initialValues,
 });
 
-const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
-  get: () => {
-    const current = (form.values.descriptions as IRecipeDescriptionCreateOrUpdate[]) ?? [];
-    // Build a dense array of the same length and normalize each entry to avoid holes created by form fields
-    return Array.from({ length: current.length }, (_, i) => {
-      const d = current[i] as IRecipeDescriptionCreateOrUpdate | undefined;
-      return {
-        position: i,
-        header: d?.header ?? "",
-        text: d?.text ?? "",
-        id: d?.id,
-        positionByCreate: d?.positionByCreate ?? i,
-      };
-    });
-  },
-  set: (v) => form.setFieldValue("descriptions", v),
-});
-
-const formProductArray = computed((): TProductSchema[] => form.values.productArray ?? []);
+const formProducts = computed((): TProductSchema[] => form.values.productArray ?? []);
+const formDescriptions = computed((): TDescriptionSchema[] => form.values.descriptions ?? []);
 
 const cloneDescriptions = (items: TRecipeDescriptionLike[] = []): NonNullable<TFormValues["descriptions"]> =>
   items.map((item: TRecipeDescriptionLike) => ({
@@ -282,9 +258,6 @@ const valueToForm = (formValues?: TFormValues) => {
       name,
     }),
   });
-
-  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(descriptionValues ?? []));
-  nextDescriptionIndex.value = descriptions.value.length;
 };
 
 const setValuesToForm = (recipe: TRecipeQuery) => {
@@ -293,17 +266,9 @@ const setValuesToForm = (recipe: TRecipeQuery) => {
   }
 
   valueToForm(recipeToFormValues(recipe));
-
-  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(recipe.recipeDescriptions));
-
-  nextDescriptionIndex.value = descriptions.value.length;
 };
 
 const recipe = ref<TRecipeQuery>();
-
-const getTextPositionTypeFromResult = <T extends { text: string; position: number }>(obj: T[]): T[] => {
-  return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
-};
 
 const removeNewIdForMutate = (productArray?: TProductSchema[]): TProductSchema[] | undefined => {
   return productArray?.map((product) => {
@@ -314,7 +279,6 @@ const removeNewIdForMutate = (productArray?: TProductSchema[]): TProductSchema[]
   });
 };
 
-const descriptionsToDelete = ref<string[]>([]);
 const cleanUpFormProducts = (products?: TProductSchema[]): RecipeCreateDtoInput["recipeProducts"] => {
   return products?.map(({ position: _, ...rest }) => rest);
 };
@@ -354,12 +318,13 @@ const onSubmit = form.handleSubmit(async (values) => {
     ...dto,
   };
 
-  removeDescriptions(descriptionsToDelete.value);
+  removeDescriptions(recipeStore.getRecipeDescriptionIdsToDelete);
+  recipeStore.clearRecipeDescriptionIdsToDelete();
 
   await removeProductGroups(recipeStore.getRecipeGroupIdsToDelete);
   recipeStore.clearRecipeGroupIdsToDelete();
 
-  await removeRecipeProducts(recipeStore.getRecipeProductsToDelete);
+  await removeRecipeProducts(recipeStore.getRecipeProductIdsToDelete);
   recipeStore.clearRecipeProductIdsToDelete();
 
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
@@ -387,16 +352,12 @@ const resetForm = () => {
   resetRecipeInStore();
 
   if (!recipeId.value) {
-    form.resetForm({ values: deepCopy(initialValues) });
-    descriptions.value = [];
     valueToForm();
     return;
   }
 
   const values = recipeToFormValues(recipe.value);
   form.resetForm({ values: deepCopy(values) });
-  descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(values.descriptions ?? []));
-  nextDescriptionIndex.value = descriptions.value.length;
 };
 
 const updateValue = ref(false);
@@ -409,32 +370,31 @@ const enterPress = async () => {
   }
 };
 
-const sortAndAddPositionByCreate = <T extends { text: string; position: number }>(obj: T[]): IRecipeDescriptionCreateOrUpdate[] =>
-  [...obj].sort((a, b) => a.position - b.position).map((d, index) => ({ ...d, positionByCreate: index }));
-
 watchEffect(() => {
-  if (!formProductArray.value?.length) {
+  if (!formProducts.value?.length) {
     recipeStore.setProductGroupCount(0);
     return 0;
   }
   recipeStore.setProductGroupCount(
-    formProductArray.value?.reduce((acc, curr) => {
+    formProducts.value?.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
     }, 0) + 1,
   );
 });
 
-const nextDescriptionIndex = ref(0);
+const saveToFormDescriptions = (descriptions: TDescriptionSchema[]) => {
+  form.setFieldValue("descriptions", descriptions);
+};
+
 const addDescription = () => {
-  const descriptionsCopy = [...descriptions.value];
-  const newItem: IRecipeDescriptionCreateOrUpdate = {
+  const descriptionsCopy: TDescriptionSchema[] = [...formDescriptions.value];
+  const newItem: TDescriptionSchema = {
     position: descriptionsCopy.length,
     text: "",
     header: "",
-    positionByCreate: nextDescriptionIndex.value,
   };
-  descriptions.value = [...descriptionsCopy, newItem];
-  nextDescriptionIndex.value++;
+
+  saveToFormDescriptions([...descriptionsCopy, newItem]);
 };
 </script>
 
@@ -453,16 +413,13 @@ const addDescription = () => {
           </div>
 
           <div
-            v-for="(description, index) in descriptions"
-            :key="description.positionByCreate ?? description.id ?? index"
+            v-for="(description, index) in formDescriptions"
+            :key="description.position ?? description.id ?? index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
+            {{ description }}
             <RecipeDescription :index />
-            <RecipeRemoveDescription
-              v-model:descriptions="descriptions"
-              v-model:descriptions-to-delete="descriptionsToDelete"
-              :description="description"
-            />
+            <RecipeRemoveDescription :description :form />
           </div>
           <div class="flex justify-end mt-2 gap-2">
             <Button variant="warning" @click.prevent="addDescription">Neuen Rezept Text hinzufügen</Button>
@@ -479,7 +436,7 @@ const addDescription = () => {
         </div>
       </div>
 
-      <RecipeFormFooter v-if="formProductArray.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
+      <RecipeFormFooter v-if="formProducts.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>

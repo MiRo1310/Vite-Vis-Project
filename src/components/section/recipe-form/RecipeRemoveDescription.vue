@@ -1,30 +1,39 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-
 import { Logger } from "@/lib/logger.ts";
-import { IRecipeDescriptionCreateOrUpdate } from "@/components/section/recipe-form/index.ts";
+import { TForm } from "@/components/section/recipe-form/index.ts";
 import { isDefined } from "@vueuse/core";
+import { computed } from "vue";
+import { fieldsRecipe, TDescriptionSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 
-const props = defineProps<{ description: IRecipeDescriptionCreateOrUpdate }>();
+const props = defineProps<{ description: TDescriptionSchema; form: TForm }>();
 
-const descriptions = defineModel<IRecipeDescriptionCreateOrUpdate[]>("descriptions", { default: [] });
-
-const descriptionsToDelete = defineModel<string[]>("descriptionsToDelete", { default: [] });
+const recipeStore = useRecipeStore();
+const formDescriptions = computed((): TDescriptionSchema[] => props.form.values[fieldsRecipe.descriptions]);
+const saveToFormDescriptions = (descriptions: TDescriptionSchema[]) => {
+  props.form.setFieldValue(fieldsRecipe.descriptions, descriptions);
+};
 
 const removeDescription = () => {
-  const { id = null, positionByCreate } = props.description;
-  if (isDefined(positionByCreate)) {
-    if (id) {
-      Logger("Removing description with id:", { value: id, useDebugMode: false });
-      descriptionsToDelete.value.push(id);
-    }
-    const copy = [...descriptions.value];
-
-    descriptions.value = copy.filter((d) => d.positionByCreate !== positionByCreate);
+  const { id = null, position } = props.description;
+  if (!isDefined(position)) {
+    return;
   }
+  if (id) {
+    Logger("Removing description with id:", { value: id, useDebugMode: false });
+    recipeStore.addRecipeDescriptionIdToDelete(id);
+  }
+
+  saveToFormDescriptions(
+    [...formDescriptions.value]
+      .filter((d) => d.position !== position)
+      .sort((a, b) => a.position - b.position)
+      .map((item, index) => ({ ...item, position: index })),
+  );
 };
 </script>
 
 <template>
-  <Button v-if="descriptions.length > 1" size="icon" variant="outline" icon="remove" @click.prevent="removeDescription" />
+  <Button v-if="formDescriptions.length > 1" size="icon" variant="outline" icon="remove" @click.prevent="removeDescription" />
 </template>
