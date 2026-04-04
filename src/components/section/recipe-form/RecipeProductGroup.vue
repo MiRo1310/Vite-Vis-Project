@@ -10,7 +10,7 @@ import { newIdPrefix, PrefixedIdGenerator, TForm } from "@/components/section/re
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
-import { productSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { productSchema, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
 import { isDefined } from "@vueuse/core";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();
@@ -18,7 +18,12 @@ const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["rec
 const store = useRecipeStore();
 
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
-const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
+
+const formProductArray = computed((): TProductSchema[] => props.form.values.productArray);
+
+const saveToFormProductArray = (productArray: TProductSchema[]) => {
+  props.form.setFieldValue("productArray", productArray);
+};
 
 const removeProductGroup = async () => {
   if (disableDeleteBtn()) {
@@ -32,7 +37,7 @@ const removeProductGroup = async () => {
 
   const groupToDelete = props.groupIndex;
   Logger(`Remove group with index: ${groupToDelete}`);
-  productArray.value = filterByTargetAndDecrement(productArray.value, "groupPosition", groupToDelete);
+  saveToFormProductArray(filterByTargetAndDecrement(formProductArray.value, "groupPosition", groupToDelete));
   headersProductArray.value = filterByTargetAndDecrement(headersProductArray.value, "position", groupToDelete);
 };
 
@@ -63,7 +68,7 @@ const filterByTargetAndDecrement = <T,>(obj: T[], target: keyof T, number: numbe
 
 const disableDeleteBtn = () => productsLength.value === 1 && store.getProductGroupsCount === 1;
 
-const productsLength = computed((): number => productArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
+const productsLength = computed((): number => formProductArray.value.filter((product) => product.groupPosition === props.groupIndex).length);
 
 const prefixedIdGenerator = new PrefixedIdGenerator(newIdPrefix);
 
@@ -75,29 +80,28 @@ const addNewProduct = () => {
     groupPosition: props.groupIndex,
     activeUnitId: "",
     id: prefixedIdGenerator.nextId(),
-    position: 0,
-    sortOrder: [...productArray.value].filter((p) => p.groupPosition === props.groupIndex).length,
+    position: productsLength.value,
+    sortOrder: productsLength.value,
   };
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
-
-  productArray.value = [...productArray.value, newRecipeProduct];
+  saveToFormProductArray([...formProductArray.value, newRecipeProduct]);
 };
 
 const isOpenDialogRemoveGroup = ref(false);
 
 const removeProductId = (id: string) => {
   const filtered = [...props.form.values.productArray].filter((p) => p.id !== id);
-  props.form.setFieldValue("productArray", filtered);
+  saveToFormProductArray(filtered);
 };
 
 const filteredProductsByGroupPosition = computed(() =>
-  [...productArray.value].filter((p) => p.groupPosition === props.groupIndex).sort((a, b) => a.sortOrder - b.sortOrder),
+  [...props.form.values.productArray].filter((p) => p.groupPosition === props.groupIndex).sort((a, b) => a.sortOrder - b.sortOrder),
 );
 
 const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
   const delta = direction === "up" ? -1 : 1;
-  const products = productArray.value.map((p) => ({ ...p }));
+  const products = formProductArray.value.map((p) => ({ ...p }));
 
   const currentIndex = products.findIndex((p) => p.position === product.position && p.groupPosition === props.groupIndex);
   if (currentIndex !== -1) {
@@ -116,8 +120,7 @@ const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
       sortOrder: products[swapIndex].sortOrder - delta,
     };
   }
-
-  productArray.value = products;
+  saveToFormProductArray(products);
 };
 
 /**
@@ -147,7 +150,6 @@ const isValid = computed(() => (product: ProductObjType) => {
 
 <template>
   <FormInput :name="`headersProductArray.${groupIndex}.text`" placeholder="Beschreibung" />
-
   <div
     v-for="(product, index) in filteredProductsByGroupPosition"
     :key="index"

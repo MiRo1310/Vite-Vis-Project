@@ -9,6 +9,8 @@ const description = z.object({
   header: z.string().optional().default(""),
 });
 
+export type TProductSchema = z.infer<typeof productSchema>;
+
 export const productSchema = z.object({
   productId: z.string().min(2, { error: "Wähle ein Produkt" }),
   description: z.string().optional(),
@@ -17,6 +19,7 @@ export const productSchema = z.object({
   id: z.string().nullable().optional(),
   activeUnitId: z.uuidv4("Bitte wähle eine Einheit"),
   sortOrder: z.int(),
+  position: z.number(),
 });
 
 export const fields = {
