@@ -11,6 +11,7 @@ interface IRecipeStore {
   recipeInProgress: (TFormValues & { recipeId?: string }) | null;
   recipeGroupIdsToDelete: IRecipeGroupToDelete[];
   recipeProductIdsToDelete: string[];
+  recipeDescriptionIdsToDelete: string[];
   productGroupsCount: number;
   shouldValidate: boolean;
   directlyOpenNewProductModal: boolean;
@@ -24,6 +25,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     recipeInProgress: null,
     recipeGroupIdsToDelete: [],
     recipeProductIdsToDelete: [],
+    recipeDescriptionIdsToDelete: [],
     productGroupsCount: 0,
     shouldValidate: false,
     directlyOpenNewProductModal: false,
@@ -36,8 +38,11 @@ export const useRecipeStore = defineStore("recipeStore", {
     getRecipeGroupIdsToDelete(state) {
       return state.recipeGroupIdsToDelete;
     },
-    getRecipeProductsToDelete(state) {
+    getRecipeProductIdsToDelete(state) {
       return state.recipeProductIdsToDelete;
+    },
+    getRecipeDescriptionIdsToDelete(state) {
+      return state.recipeDescriptionIdsToDelete;
     },
     getProductGroupsCount(state) {
       return state.productGroupsCount;
@@ -67,6 +72,12 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     clearRecipeGroupIdsToDelete() {
       this.recipeGroupIdsToDelete = [];
+    },
+    addRecipeDescriptionIdToDelete(id: string) {
+      this.recipeDescriptionIdsToDelete.push(id);
+    },
+    clearRecipeDescriptionIdsToDelete() {
+      this.recipeDescriptionIdsToDelete = [];
     },
     addRecipeProductIdToDelete(id: string) {
       this.recipeProductIdsToDelete.push(id);
