@@ -8,12 +8,12 @@ import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/recipe-form/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/recipe-form/RecipeProductGroup.vue";
 import AddNewProductGroup from "@/components/section/recipe-form/AddNewGroup.vue";
-import { OnResult, ProductObjType, TextPositionType } from "@/types/types";
+import { OnResult, TextPositionType } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { isDefined } from "@vueuse/core";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
-import { formSchema } from "@/components/section/recipe-form/formSchema";
+import { formSchema, TProductSchema } from "@/components/section/recipe-form/formSchema";
 import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/recipe-form/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
@@ -191,13 +191,7 @@ const descriptions = computed<IRecipeDescriptionCreateOrUpdate[]>({
   set: (v) => form.setFieldValue("descriptions", v),
 });
 
-const productArray = computed<ProductObjType[]>({
-  get: () => {
-    const current = (form.values.productArray as ProductObjType[]) ?? [];
-    return [...current].map((p, index) => ({ ...p, position: index }));
-  },
-  set: (v) => form.setFieldValue("productArray", v),
-});
+const formProductArray = computed((): TProductSchema[] => form.values.productArray ?? []);
 
 const cloneDescriptions = (items: TRecipeDescriptionLike[] = []): NonNullable<TFormValues["descriptions"]> =>
   items.map((item: TRecipeDescriptionLike) => ({
@@ -215,8 +209,8 @@ const cloneHeaders = (items: TRecipeHeaderProductLike[] = []): NonNullable<TForm
     position: item.position ?? index,
   }));
 
-const cloneProducts = (items: TRecipeProductLike[] = []): NonNullable<TFormValues["productArray"]> =>
-  items.map((item: TRecipeProductLike) => ({
+const cloneProducts = (items: TRecipeProductLike[] = []): TProductSchema[] =>
+  items.map((item: TRecipeProductLike, index: number) => ({
     amount: item.amount ?? 0,
     description: item.description ?? "",
     groupPosition: item.groupPosition,
@@ -224,7 +218,7 @@ const cloneProducts = (items: TRecipeProductLike[] = []): NonNullable<TFormValue
     unit: "",
     id: item.id ?? undefined,
     activeUnitId: item.activeUnitId ?? "",
-    position: item.position ?? 0,
+    position: item.position ?? index,
     sortOrder: item.sortOrder,
   })) ?? [];
 
@@ -292,7 +286,6 @@ const valueToForm = (formValues?: TFormValues) => {
   descriptions.value = sortAndAddPositionByCreate(getTextPositionTypeFromResult(descriptionValues ?? []));
   nextDescriptionIndex.value = descriptions.value.length;
   headersProductArray.value = sortHeaderProductsByPosition(normalizedHeaders);
-  productArray.value = normalizedProducts;
 };
 
 const setValuesToForm = (recipe: TRecipeQuery) => {
@@ -306,18 +299,6 @@ const setValuesToForm = (recipe: TRecipeQuery) => {
 
   nextDescriptionIndex.value = descriptions.value.length;
   headersProductArray.value = sortHeaderProductsByPosition(getTextPositionTypeFromResult(recipe.recipeHeaderProducts));
-
-  productArray.value = recipe.recipeProducts.map((item, index) => ({
-    amount: item.amount || 0,
-    description: item.description,
-    groupPosition: item.groupPosition,
-    productId: item.productId,
-    unit: item.unit,
-    id: item.id,
-    activeUnitId: item.activeUnitId ?? "",
-    position: index,
-    sortOrder: item.sortOrder,
-  }));
 };
 
 const recipe = ref<TRecipeQuery>();
@@ -326,7 +307,7 @@ const getTextPositionTypeFromResult = <T extends { text: string; position: numbe
   return obj.filter((item) => isDefined(item.text) && isDefined(item.position));
 };
 
-const removeNewIdForMutate = (productArray: typeof form.values.productArray): typeof form.values.productArray => {
+const removeNewIdForMutate = (productArray?: TProductSchema[]): TProductSchema[] | undefined => {
   return productArray?.map((product) => {
     if (product.id?.startsWith(newIdPrefix)) {
       return { ...product, id: undefined };
@@ -336,6 +317,9 @@ const removeNewIdForMutate = (productArray: typeof form.values.productArray): ty
 };
 
 const descriptionsToDelete = ref<string[]>([]);
+const cleanUpFormProducts = (products?: TProductSchema[]): RecipeCreateDtoInput["recipeProducts"] => {
+  return products?.map(({ position: _, ...rest }) => rest);
+};
 
 const onSubmit = form.handleSubmit(async (values) => {
   const dto: RecipeCreateDtoInput = {
@@ -346,7 +330,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeCategoryId: values.recipeCategoryId ?? null,
     recipeDescriptions: values.descriptions,
     recipeHeaderProducts: values.headersProductArray,
-    recipeProducts: removeNewIdForMutate(values.productArray),
+    recipeProducts: cleanUpFormProducts(removeNewIdForMutate(values.productArray)),
   };
   Logger("Submit dto", { value: dto });
 
@@ -379,7 +363,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   await removeRecipeProducts(recipeStore.getRecipeProductsToDelete);
   recipeStore.clearRecipeProductIdsToDelete();
-
+  console.log(dtoUpdate);
   await updateMutate({ dto: dtoUpdate }, { refetchQueries: ["getRecipeById"] });
 
   toast({
@@ -400,17 +384,6 @@ const goBack = async (id: string) => {
   }
 };
 
-const defaultProduct: ProductObjType = {
-  productId: "",
-  description: "",
-  amount: 0,
-  groupPosition: 0,
-  id: undefined,
-  activeUnitId: "",
-  position: productArray.value.length,
-  sortOrder: productArray.value.length,
-};
-
 const resetForm = () => {
   recipeStore.setShouldValidate(false);
   resetRecipeInStore();
@@ -419,7 +392,7 @@ const resetForm = () => {
     form.resetForm({ values: deepCopy(initialValues) });
     descriptions.value = [];
     headersProductArray.value = [];
-    productArray.value = [];
+    // productArray.value = [];
     valueToForm();
     return;
   }
@@ -434,13 +407,6 @@ const resetForm = () => {
     id: header.id,
   }));
   headersProductArray.value = sortHeaderProductsByPosition(resetHeaders);
-  const resetProducts = (values.productArray ?? []).map((product, index) => ({
-    ...product,
-    id: product.id ?? undefined,
-    description: product.description ?? "",
-    position: index,
-  }));
-  productArray.value = resetProducts.length ? resetProducts : [defaultProduct];
 };
 
 const updateValue = ref(false);
@@ -463,12 +429,12 @@ const sortAndAddPositionByCreate = <T extends { text: string; position: number }
 const headersProductArray = ref<TextPositionType[]>([]);
 
 watchEffect(() => {
-  if (!productArray.value?.length) {
+  if (!formProductArray.value?.length) {
     recipeStore.setProductGroupCount(0);
     return 0;
   }
   recipeStore.setProductGroupCount(
-    productArray.value?.reduce((acc, curr) => {
+    formProductArray.value?.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
     }, 0) + 1,
   );
@@ -522,20 +488,14 @@ const addDescription = () => {
         <div class="md:w-120 w-full">
           <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
           <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
-            <RecipeProductGroup
-              v-model:product-array="productArray"
-              v-model:headers-product-array="headersProductArray"
-              :recipe
-              :group-index="toZeroBasedIndex(oneBasedIndex)"
-              :form
-            />
+            <RecipeProductGroup v-model:headers-product-array="headersProductArray" :recipe :group-index="toZeroBasedIndex(oneBasedIndex)" :form />
           </div>
 
-          <AddNewProductGroup v-model:headers-product-array="headersProductArray" v-model:product-array="productArray" />
+          <AddNewProductGroup v-model:headers-product-array="headersProductArray" :form />
         </div>
       </div>
 
-      <RecipeFormFooter v-if="productArray.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
+      <RecipeFormFooter v-if="formProductArray.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>

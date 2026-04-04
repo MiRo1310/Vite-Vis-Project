@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
-import { ProductObjType, TextPositionType } from "@/types/types";
+import { TextPositionType } from "@/types/types";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix } from "@/components/section/recipe-form/index.ts";
+import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
+import { computed } from "vue";
+import { TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
 
 const store = useRecipeStore();
 
-const productArray = defineModel<ProductObjType[]>("productArray", { default: [] });
+const props = defineProps<{ form: TForm }>();
+
+const formProductArray = computed((): TProductSchema[] => props.form.values.productArray);
+const saveToFormProductArray = (productArray: TProductSchema[]) => {
+  props.form.setFieldValue("productArray", productArray);
+};
+
 const headersProductArray = defineModel<TextPositionType[]>("headersProductArray", { default: [] });
 
 const addNewProductGroup = () => {
@@ -21,11 +29,11 @@ const addNewProductGroup = () => {
     groupPosition: productGroupLength,
     activeUnitId: "",
     id: newIdPrefix,
-    position: productArray.value.length,
+    position: formProductArray.value.length,
     sortOrder: 0,
   };
   Logger("Adding new product group:", { value: newProduct, useDebugMode: true });
-  productArray.value = [...productArray.value, newProduct];
+  saveToFormProductArray([...formProductArray.value, newProduct]);
 
   headersProductArray.value = [
     ...headersProductArray.value,
