@@ -153,7 +153,7 @@ const goToProduct = () => {
       </div>
     </template>
 
-    <FormFooter @update:close="open = false" />
+    <FormFooter @update:close="open = false" save-label="Übernehmen" />
   </Form>
 
   <DialogConfirm

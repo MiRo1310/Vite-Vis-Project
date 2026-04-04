@@ -417,7 +417,6 @@ const addDescription = () => {
             :key="description.position ?? description.id ?? index"
             class="bg-accent rounded-lg p-2 mt-2"
           >
-            {{ description }}
             <RecipeDescription :index />
             <RecipeRemoveDescription :description :form />
           </div>
