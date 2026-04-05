@@ -1,12 +1,23 @@
 import * as z from "zod";
 import { toTypedSchema } from "@vee-validate/zod";
 
+export type TProductSchema = z.infer<typeof productSchema>;
+export type TProductHeaderSchema = z.infer<typeof textPositionObj>;
+export type TDescriptionSchema = z.infer<typeof description>;
+
+export const fieldsRecipe = {
+  products: "productArray",
+  headers: "headersProductArray",
+  descriptions: "descriptions",
+};
+
 const textPositionObj = z.object({ position: z.number().default(0), text: z.string(), id: z.string().optional() });
+
 const description = z.object({
   position: z.number(),
   text: z.string(),
   id: z.string().optional().nullable(),
-  header: z.string().optional().default(""),
+  header: z.string(),
 });
 
 export const productSchema = z.object({
@@ -17,6 +28,7 @@ export const productSchema = z.object({
   id: z.string().nullable().optional(),
   activeUnitId: z.uuidv4("Bitte wähle eine Einheit"),
   sortOrder: z.int(),
+  position: z.number(),
 });
 
 export const fields = {
