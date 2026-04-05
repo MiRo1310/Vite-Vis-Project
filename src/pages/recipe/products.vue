@@ -12,6 +12,7 @@ import { useProductCategories } from "@/composables/querys/productCategories.ts"
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ProductUpdate from "@/components/section/products/ProductUpdate.vue";
 import { useRouteQuery } from "@vueuse/router";
+import InputSearch from "@/components/shared/input/InputSearch.vue";
 
 const productId = useRouteQuery("productId", null);
 
@@ -34,10 +35,14 @@ onMounted(() => {
   }
 });
 
-const { result } = useQuery(
+const {
+  onResult,
+  result,
+  refetch: refetchProductsGrouped,
+} = useQuery(
   graphql(`
-    query GetProducts {
-      productsGrouped {
+    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {
+      productsGrouped(where: $where) {
         key
         value {
           id
@@ -74,6 +79,31 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
   { source: "salt", labelKey: "Salz", type: "number", unit: "g" },
   { source: "sugar", labelKey: "Zucker", type: "number", unit: "g" },
 ];
+
+const selectedFilter = ref<string[]>([]);
+onResult(() => {
+  result.value?.productsGrouped.forEach((group) => {
+    if (!selectedFilterHasKey(group.key)) {
+      selectedFilter.value.push(group.key);
+    }
+  });
+});
+
+const selectedFilterHasKey = (key: string) => {
+  return selectedFilter.value.some((f) => f === key);
+};
+
+const toggleFilter = (key: string) => {
+  if (!selectedFilterHasKey(key)) {
+    selectedFilter.value.push(key);
+    return;
+  }
+  selectedFilter.value = selectedFilter.value.filter((f) => f !== key);
+};
+
+const refetchHandler = (search: string) => {
+  refetchProductsGrouped({ where: { value: { some: { name: { contains: search } } } } });
+};
 </script>
 
 <template>
@@ -81,14 +111,28 @@ const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["val
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
-    <PageSection class="grid md:grid-cols-2 grid-cols-1 gap-4 rounded-lg max-h-[calc(100vh-8.25rem)] overflow-auto">
-      <div v-for="product in result?.productsGrouped" :key="product.key" class="rounded-md">
-        {{ product.key }}
-        <div class="bg-accent rounded-md px-2 pb-2 mt-1">
-          <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
-        </div>
-      </div>
 
+    <div class="flex flex-wrap gap-2">
+      <InputSearch class="w-48" placeholder="Nach Produkten Filtern" @update:modelValue="refetchHandler(String($event))" />
+      <Button
+        v-for="(button, i) in result?.productsGrouped"
+        :variant="selectedFilterHasKey(button.key) ? 'outline' : 'secondary'"
+        @click="toggleFilter(button.key)"
+        :key="i"
+        >{{ button.key }}</Button
+      >
+    </div>
+
+    <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg max-h-[calc(100vh-8.25rem)] overflow-auto">
+      <template v-for="product in result?.productsGrouped" :key="product.key">
+        <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
+          {{ product.key }}
+          <div class="bg-accent rounded-md px-2 pb-2 mt-1">
+            <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
+          </div>
+        </div>
+      </template>
+      <p v-if="!result?.productsGrouped || !result.productsGrouped.length" class="mt-10 text-center text-xl">Es wurden keine Daten gefunden</p>
       <ProductUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
     </PageSection>
   </div>
