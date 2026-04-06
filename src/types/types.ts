@@ -273,18 +273,6 @@ export interface TextPositionType {
   id?: string;
 }
 
-export interface ProductObjType {
-  productId: string;
-  description: string;
-  amount: number;
-  groupPosition: number;
-  unit?: string;
-  id?: string;
-  activeUnitId: string;
-  position: number;
-  sortOrder: number;
-}
-
 export interface SelectOption {
   value: string;
   label?: string;

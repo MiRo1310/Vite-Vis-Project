@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { computed, ref, watch } from "vue";
-import { ProductObjType } from "@/types/types";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import RecipeProduct from "@/components/section/recipe-form/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
@@ -86,6 +85,7 @@ const addNewProduct = () => {
     position: productsLength.value,
     sortOrder: productsLength.value,
   };
+  newProductIdToOpenModal.value = newRecipeProduct.id;
 
   Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
   saveProductsToForm([...formProducts.value, newRecipeProduct]);
@@ -98,11 +98,11 @@ const removeProductId = (id: string) => {
   saveProductsToForm(filtered);
 };
 
-const filteredProductsByGroupPosition = computed(() =>
+const filteredProductsByGroupPosition = computed((): TProductSchema[] =>
   [...props.form.values.productArray].filter((p) => p.groupPosition === props.groupIndex).sort((a, b) => a.sortOrder - b.sortOrder),
 );
 
-const sortOrder = (product: ProductObjType, direction: "up" | "down") => {
+const sortOrder = (product: TProductSchema, direction: "up" | "down") => {
   const delta = direction === "up" ? -1 : 1;
   const products = formProducts.value.map((p) => ({ ...p }));
 
@@ -142,13 +142,18 @@ watch(
 /**
  * Flag that indicates whether the product is valid based on the product schema validation. If shouldValidate is false, it returns true to avoid showing validation errors before the user attempts to submit the form. Once shouldValidate is true, it validates the product against the schema and returns whether it's valid or not.
  */
-const isValid = computed(() => (product: ProductObjType) => {
+const isValid = computed(() => (product: TProductSchema) => {
   if (!store.getShouldValidate) {
     return true;
   }
   const result = productSchema.safeParse(product);
   return result.success;
 });
+
+const dialogClosedHandler = () => {
+  newProductIdToOpenModal.value = "";
+};
+const newProductIdToOpenModal = ref("");
 </script>
 
 <template>
@@ -156,9 +161,19 @@ const isValid = computed(() => (product: ProductObjType) => {
   <div
     v-for="(product, index) in filteredProductsByGroupPosition"
     :key="index"
-    :class="['px-2 bg-accent border-2 rounded-md mb-1', { 'border-destructive': !isValid(product) }]"
+    :class="['bg-accent border-2 rounded-md mb-1', { 'border-destructive': !isValid(product) }]"
   >
-    <RecipeProduct :index :product :counted-products="productsLength" :recipe :groupIndex @remove-product-id="removeProductId" :form>
+    <RecipeProduct
+      :index
+      :product
+      :counted-products="productsLength"
+      :dialog-open="newProductIdToOpenModal === product.id"
+      :recipe
+      :groupIndex
+      @remove-product-id="removeProductId"
+      :form
+      @dialog-close="dialogClosedHandler"
+    >
       <ButtonGroupUpDown
         :disabled-down="product.sortOrder === filteredProductsByGroupPosition.length - 1"
         :disabledUp="product.sortOrder === 0"
