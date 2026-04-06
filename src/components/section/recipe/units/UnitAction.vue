@@ -10,6 +10,7 @@ import { UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
 import { ITableColumn } from "@/types/types.ts";
 import { refetchQueryUnits } from "@/composables/querys/units.ts";
+import { errorCodeHandler } from "@/lib/errorCodeHandler.ts";
 
 const props = defineProps<ITableColumn<string, UnitsQuery["units"][number]>>();
 const refetchQueries = [refetchQueryUnits];
@@ -17,7 +18,10 @@ const refetchQueries = [refetchQueryUnits];
 const { mutate } = useMutation(
   graphql(`
     mutation DeleteUnit($id: UUID!) {
-      deleteUnit(id: $id)
+      deleteUnit(id: $id) {
+        errorCode
+        isError
+      }
     }
   `),
   {
@@ -38,13 +42,17 @@ const { mutate: updateMutation } = useMutation(
   },
 );
 
-const remove = () => {
-  mutate(
+const remove = async () => {
+  const result = await mutate(
     { id: props.value },
     {
       refetchQueries,
     },
   );
+  const errorCode = result?.data?.deleteUnit.errorCode;
+  if (errorCode) {
+    errorCodeHandler(errorCode, "units");
+  }
 };
 
 const update = () => {
@@ -77,8 +85,8 @@ const name = ref(props.row.original.name ?? "");
 
 <template>
   <div class="flex gap-2 justify-end print-none">
-    <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
-    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
+    <Button size="iconRow" icon="edit" variant="ghost" @click="dialogUpdateOpen = true" />
+    <Button size="iconRow" icon="remove" variant="ghost" @click="dialogOpen = true" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
   <Dialog v-model:open="dialogUpdateOpen">

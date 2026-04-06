@@ -12,7 +12,10 @@ const emits = defineEmits(["update:removeCategory"]);
 const { mutate } = useMutation(
   graphql(`
     mutation removeCategory($id: UUID!) {
-      removeProductCategory(id: $id)
+      removeProductCategory(id: $id) {
+        errorCode
+        isError
+      }
     }
   `),
   { refetchQueries: ["productCategories"] },
@@ -20,7 +23,9 @@ const { mutate } = useMutation(
 const { getCategoryIdByName } = useProductCategories();
 
 async function removeCategoryById() {
-  if (!props.id) {return;}
+  if (!props.id) {
+    return;
+  }
 
   await mutate({ id: props.id });
   emits("update:removeCategory");

@@ -12,7 +12,10 @@ const router = useRouter();
 const { mutate } = useMutation(
   graphql(`
     mutation removeProduct($id: UUID!) {
-      removeProduct(id: $id)
+      removeProduct(id: $id) {
+        errorCode
+        isError
+      }
     }
   `),
 );

@@ -48,7 +48,7 @@ const name = ref(props.row.original.name ?? "");
 </script>
 
 <template>
-  <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
+  <Button size="iconRow" icon="edit" variant="ghost" class="mt-1" @click="dialogUpdateOpen = true" />
 
   <Dialog v-model:open="dialogUpdateOpen">
     <template #title>Aktualisieren</template>
