@@ -4,12 +4,12 @@ import Form from "@/components/shared/form/Form.vue";
 import RecipeProductName from "@/components/section/recipe-form/RecipeProductName.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
-import { ProductObjType, SelectOption } from "@/types/types.ts";
+import { SelectOption } from "@/types/types.ts";
 import { computed, ref } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
-import { formSchemaProduct } from "@/components/section/recipe-form/formSchema.ts";
+import { formSchemaProduct, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { isDefined } from "@vueuse/core";
 import { useRecipeStore } from "@/store/recipeStore.ts";
@@ -18,7 +18,7 @@ import FormFooter from "@/components/shared/form/FormFooter.vue";
 import { routes } from "@/router/routes.ts";
 import { useRouter } from "vue-router";
 
-const props = defineProps<{ product: ProductObjType; countedProducts: number; recipe?: GetRecipeByIdQuery["recipe"]; groupIndex: number }>();
+const props = defineProps<{ product: TProductSchema; countedProducts: number; recipe?: GetRecipeByIdQuery["recipe"]; groupIndex: number }>();
 const emits = defineEmits(["removeProductId", "submit"]);
 
 const open = defineModel<boolean>("open", { required: true });
@@ -55,7 +55,7 @@ const selectableUnitOptions = computed(() => (id?: string): SelectOption[] => {
   );
 });
 
-const defaultProduct: ProductObjType = {
+const defaultProduct: TProductSchema = {
   productId: "",
   description: "",
   amount: 0,
@@ -76,7 +76,7 @@ const form = useForm({
 const dialogOpenProduct = ref(false);
 const dialogParam = ref<null | string>(null);
 
-const confirmProductDelete = (id?: string) => {
+const confirmProductDelete = (id?: string | null) => {
   dialogParam.value = id ?? null;
   dialogOpenProduct.value = true;
 };
