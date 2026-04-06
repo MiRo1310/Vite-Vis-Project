@@ -129,7 +129,7 @@ const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
       "
     />
     <datalist v-if="options" :id="optionsId">
-      <option v-for="(option, index) in options" :key="index">{{ option.name }}</option>
+      <option v-for="(option, index) in options" :key="index">{{ option.name }} ( {{ option.description }} )</option>
     </datalist>
     <span v-if="exactOptionRequired && internalValue" class="ml-1" v-e2e="'state-icon'">
       <Check v-if="isExactOption" class="text-success size-4" v-e2e="'state-icon-check'" />

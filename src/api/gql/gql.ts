@@ -44,7 +44,7 @@ type Documents = {
     "\n  query getRecipeById($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      createdAt\n      modifiedAt\n      portions\n      recipeCategoryId\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        productId\n        groupPosition\n        unit\n        id\n        kcal\n        activeUnitId\n        sortOrder\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        id\n        header\n      }\n      recipeHeaderProducts {\n        id\n        position\n        recipeId\n        text\n      }\n    }\n  }\n": typeof types.GetRecipeByIdDocument,
     "\n    query products {\n      products {\n        id\n        carbs\n        category\n        fat\n        kcal\n        name\n        protein\n        salt\n        sugar\n        kcal\n        productUnits {\n          id\n          unit\n          amount\n          isDefault\n          faktor\n        }\n      }\n    }\n  ": typeof types.ProductsDocument,
     "\n    query getProductUnits {\n      productUnits {\n        id\n        createdAt\n        modifiedAt\n        productId\n        amount\n        unit\n      }\n    }\n  ": typeof types.GetProductUnitsDocument,
-    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": typeof types.GetProductsForSelectDocument,
+    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n        productCategory {\n          name\n        }\n      }\n    }\n  ": typeof types.GetProductsForSelectDocument,
     "\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    ": typeof types.RemoveTextAreaDocument,
     "\n      mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {\n        removeProductGroup(dto: $dto)\n      }\n    ": typeof types.RemoveRecipeGroupDocument,
     "\n      mutation removeRecipeProduct($id: UUID!) {\n        removeRecipeProduct(id: $id)\n      }\n    ": typeof types.RemoveRecipeProductDocument,
@@ -93,7 +93,7 @@ const documents: Documents = {
     "\n  query getRecipeById($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      createdAt\n      modifiedAt\n      portions\n      recipeCategoryId\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        productId\n        groupPosition\n        unit\n        id\n        kcal\n        activeUnitId\n        sortOrder\n        product {\n          name\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        id\n        header\n      }\n      recipeHeaderProducts {\n        id\n        position\n        recipeId\n        text\n      }\n    }\n  }\n": types.GetRecipeByIdDocument,
     "\n    query products {\n      products {\n        id\n        carbs\n        category\n        fat\n        kcal\n        name\n        protein\n        salt\n        sugar\n        kcal\n        productUnits {\n          id\n          unit\n          amount\n          isDefault\n          faktor\n        }\n      }\n    }\n  ": types.ProductsDocument,
     "\n    query getProductUnits {\n      productUnits {\n        id\n        createdAt\n        modifiedAt\n        productId\n        amount\n        unit\n      }\n    }\n  ": types.GetProductUnitsDocument,
-    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  ": types.GetProductsForSelectDocument,
+    "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n        productCategory {\n          name\n        }\n      }\n    }\n  ": types.GetProductsForSelectDocument,
     "\n      mutation RemoveTextArea($id: UUID!) {\n        removeTextArea(id: $id)\n      }\n    ": types.RemoveTextAreaDocument,
     "\n      mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {\n        removeProductGroup(dto: $dto)\n      }\n    ": types.RemoveRecipeGroupDocument,
     "\n      mutation removeRecipeProduct($id: UUID!) {\n        removeRecipeProduct(id: $id)\n      }\n    ": types.RemoveRecipeProductDocument,
@@ -249,7 +249,7 @@ export function graphql(source: "\n    query getProductUnits {\n      productUni
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  "): (typeof documents)["\n    query GetProductsForSelect {\n      products {\n        id\n        name\n      }\n    }\n  "];
+export function graphql(source: "\n    query GetProductsForSelect {\n      products {\n        id\n        name\n        productCategory {\n          name\n        }\n      }\n    }\n  "): (typeof documents)["\n    query GetProductsForSelect {\n      products {\n        id\n        name\n        productCategory {\n          name\n        }\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
