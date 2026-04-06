@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
 import { Primitive, type PrimitiveProps } from "radix-vue";
-import { ref, onMounted } from "vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
 
 interface Props extends PrimitiveProps, ButtonVariantProps {
   // eslint-disable-next-line vue/no-unused-properties
   variant?: keyof typeof variants.variant;
+  // eslint-disable-next-line vue/no-unused-properties
   size?: keyof typeof variants.size;
   as?: string;
   class?: HTMLAttributes["class"];
@@ -68,14 +68,6 @@ const variants = {
     remove: "remove",
   },
 };
-
-const buttonChild = ref<HTMLElement | null>(null);
-
-onMounted(() => {
-  if (props.size === "iconRow" && buttonChild.value) {
-    buttonChild.value.closest("td")?.querySelector("div")?.classList.add("btn__row-center");
-  }
-});
 </script>
 
 <template>
