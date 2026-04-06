@@ -283,6 +283,7 @@ export interface SelectOption {
 export interface InputOption {
   name: string;
   value: string | number;
+  description?: string;
 }
 
 export interface HasOptionalNameAndId {
