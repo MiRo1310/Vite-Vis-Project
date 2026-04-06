@@ -124,7 +124,10 @@ const refetchHandler = (search: string) => {
     </div>
 
     <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg flex-1 overflow-auto">
-      <template v-for="product in result?.productsGrouped" :key="product.key">
+      <template
+        v-for="product in result?.productsGrouped.map((g) => ({ ...g, value: [...g.value].sort((a, b) => a.name.localeCompare(b.name)) }))"
+        :key="product.key"
+      >
         <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
           {{ product.key }}
           <div class="bg-accent rounded-md px-2 pb-2 mt-1">
