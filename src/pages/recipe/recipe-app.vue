@@ -41,7 +41,7 @@ const navigations = computed((): INavigation[] => {
         <DarkMode small />
       </div>
 
-      <div class="pt-13.25 h-[calc(100vh-14px)] overflow-hidden w-full inline-block px-2 mt-2">
+      <div class="pt-15.25 h-[calc(100vh-10px)] overflow-hidden w-full inline-block px-2">
         <router-view />
       </div>
     </div>

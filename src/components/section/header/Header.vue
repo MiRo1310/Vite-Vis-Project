@@ -3,7 +3,7 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <div class="flex justify-between items-center p-2 rounded-xl">
+  <div class="flex justify-between items-center rounded-xl mb-2">
     <div class="w-full">
       <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold">{{ title }}</h1>

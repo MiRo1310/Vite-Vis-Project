@@ -107,7 +107,7 @@ const refetchHandler = (search: string) => {
 </script>
 
 <template>
-  <div class="products">
+  <div class="max-h-full flex flex-col">
     <Header title="Produkte">
       <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
     </Header>
@@ -123,7 +123,7 @@ const refetchHandler = (search: string) => {
       >
     </div>
 
-    <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg max-h-[calc(100vh-8.25rem)] overflow-auto">
+    <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg flex-1 overflow-auto">
       <template v-for="product in result?.productsGrouped" :key="product.key">
         <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
           {{ product.key }}
