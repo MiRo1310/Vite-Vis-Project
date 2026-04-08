@@ -34,7 +34,7 @@ export interface IComponentOptions {
   global?: { directives: Record<string, any> };
 }
 
-Cypress.Commands.add("mountE2E", (component: any, options?: (typeof mount)["options"]) => {
+Cypress.Commands.add("mountE2E", (component, options?: Parameters<typeof mount>[1]) => {
   options = options || {};
   return cy.mount(component, {
     global: {
