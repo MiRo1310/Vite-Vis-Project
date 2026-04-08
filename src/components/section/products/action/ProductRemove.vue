@@ -25,7 +25,7 @@ const remove = async () => {
     return;
   }
   await mutate({ id: props.id });
-  await router.push({ name: routes.recipeProducts.name });
+  await router.push({ name: routes.products.name });
 };
 
 const dialogOpen = ref(false);

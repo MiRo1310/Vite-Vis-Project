@@ -17,7 +17,7 @@ const navigations = computed((): INavigation[] => {
     { label: "Rezepte", routeName: routes.recipes.name },
     { label: "Rezept erstellen", routeName: routes.newRecipe.name },
     { label: "Zwischen gespeichertes Rezept bearbeiten", disabled: !recipeId, routeName: routes.editRecipe.name, params: { id: recipeId } },
-    { label: "Produkte", routeName: routes.recipeProducts.name },
+    { label: "Produkte", routeName: routes.products.name },
     { label: "Einheiten", routeName: routes.recipeUnits.name },
     { label: "Produkt Kategorien", routeName: routes.productCategories.name },
     { label: "Rezept Kategorien", routeName: routes.recipeCategories.name },

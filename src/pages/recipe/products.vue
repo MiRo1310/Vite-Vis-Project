@@ -13,6 +13,7 @@ import { useRecipeStore } from "@/store/recipeStore.ts";
 import ProductUpdate from "@/components/section/products/ProductUpdate.vue";
 import { useRouteQuery } from "@vueuse/router";
 import InputSearch from "@/components/shared/input/InputSearch.vue";
+import { routes } from "@/router/routes.ts";
 
 const productId = useRouteQuery("productId", null);
 
@@ -109,7 +110,13 @@ const refetchHandler = (search: string) => {
 <template>
   <div class="max-h-full flex flex-col">
     <Header title="Produkte">
-      <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
+      <div class="flex gap-2 flex-wrap">
+        <RouterLink :to="{ name: routes.productCategories.name }">
+          <Button as="div" variant="outline">Zu den Produktkategorien</Button>
+        </RouterLink>
+
+        <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
+      </div>
     </Header>
 
     <div class="flex flex-wrap gap-2">
