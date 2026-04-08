@@ -15,8 +15,9 @@
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run",
-    "test:component:run": "cypress run --component",
+    "test:e2e:ci": "cypress run",
+    "test:component:ci": "cypress run --component",
+    "test:cypress:ci": "yarn run test:e2e:ci && yarn run test:component:ci",
     "release": "ts-node scripts/release.ts",
     "copy:local": "ts-node scripts/copy.ts"
   },
@@ -98,14 +99,13 @@
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.1",
-    "vite": "8.0.7",
+    "vite": "7.3.2",
     "vitest": "^4.1.3",
     "vue-tsc": "^3.2.6"
   },
   "resolutions": {
     "lodash": "^4.18.0",
-    "lodash-es": "^4.18.0",
-    "vite": "^8.0.7"
+    "lodash-es": "^4.18.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
