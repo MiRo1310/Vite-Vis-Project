@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes, ref, watch } from "vue";
+import { computed, HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
 import { InputOption } from "@/types/types.ts";
 import { Check, X } from "lucide-vue-next";
@@ -111,6 +111,12 @@ const hasExactName = (name: string): boolean => {
 };
 
 const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
+const getDescription = computed(() => (option: InputOption) => {
+  if (option.description) {
+    return `( ${option.description} )`;
+  }
+  return "";
+});
 </script>
 
 <template>
@@ -129,7 +135,7 @@ const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
       "
     />
     <datalist v-if="options" :id="optionsId">
-      <option v-for="(option, index) in options" :key="index">{{ option.name }} ( {{ option.description }} )</option>
+      <option v-for="(option, index) in options" :key="index">{{ option.name }} {{ getDescription(option) }}</option>
     </datalist>
     <span v-if="exactOptionRequired && internalValue" class="ml-1" v-e2e="'state-icon'">
       <Check v-if="isExactOption" class="text-success size-4" v-e2e="'state-icon-check'" />
