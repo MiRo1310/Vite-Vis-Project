@@ -2,7 +2,7 @@
 import { computed, HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
 import { InputOption } from "@/types/types.ts";
-import { Check, X } from "lucide-vue-next";
+import { X } from "lucide-vue-next";
 
 const props = withDefaults(
   defineProps<{
@@ -49,6 +49,11 @@ function handleModelValueChange(value: string | number): string | number {
     return getNameByValue(modelValue.value) ?? value;
   }
 }
+
+const resetInternal = () => {
+  internalValue.value = "";
+  updateValue();
+};
 
 const updateValue = () => {
   const value = internalValue.value;
@@ -117,10 +122,17 @@ const getDescription = computed(() => (option: InputOption) => {
   }
   return "";
 });
+
+const getBorderColor = computed(() => {
+  if (props.exactOptionRequired && internalValue.value) {
+    return isExactOption.value ? "border-success" : "border-destructive";
+  }
+  return "";
+});
 </script>
 
 <template>
-  <div :class="['flex items-center', props.class]">
+  <div :class="['flex items-center relative', props.class]">
     <input
       v-model="internalValue"
       @input="updateValue"
@@ -130,16 +142,14 @@ const getDescription = computed(() => (option: InputOption) => {
       :placeholder="placeholder"
       :class="
         cn(
-          'flex h-9 pr-8 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm leading-10 shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-9 w-full rounded-md border border-input bg-transparent px-3 pr-8 py-2 text-sm leading-10 shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+          getBorderColor,
         )
       "
     />
     <datalist v-if="options" :id="optionsId">
       <option v-for="(option, index) in options" :key="index">{{ option.name }} {{ getDescription(option) }}</option>
     </datalist>
-    <span v-if="exactOptionRequired && internalValue" class="ml-1" v-e2e="'state-icon'">
-      <Check v-if="isExactOption" class="text-success size-4" v-e2e="'state-icon-check'" />
-      <X v-else class="text-red-500 size-4" v-e2e="'state-icon-x'" />
-    </span>
+    <X v-if="internalValue !== ''" class="absolute right-2.5 top-2.5 size-4 hover:text-destructive cursor-pointer" @click="resetInternal" />
   </div>
 </template>
