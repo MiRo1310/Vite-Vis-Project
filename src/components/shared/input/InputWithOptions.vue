@@ -3,6 +3,7 @@ import { computed, HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
 import { InputOption } from "@/types/types.ts";
 import { X } from "lucide-vue-next";
+import { variantsInputWithOptions } from "@/components/shared/input/index.ts";
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +12,6 @@ const props = withDefaults(
     class?: HTMLAttributes["class"];
     disabled?: boolean;
     placeholder?: string;
-    e2e?: string;
     exactOptionRequired?: boolean;
     alwaysReturnName?: boolean;
   }>(),
@@ -125,7 +125,7 @@ const getDescription = computed(() => (option: InputOption) => {
 
 const getBorderColor = computed(() => {
   if (props.exactOptionRequired && internalValue.value) {
-    return isExactOption.value ? "border-success" : "border-destructive";
+    return isExactOption.value ? variantsInputWithOptions.success : variantsInputWithOptions.destructive;
   }
   return "";
 });
@@ -138,7 +138,7 @@ const getBorderColor = computed(() => {
       @input="updateValue"
       :list="optionsId"
       :disabled
-      v-e2e="e2e"
+      v-e2e="'input-with-options'"
       :placeholder="placeholder"
       :class="
         cn(
@@ -150,6 +150,11 @@ const getBorderColor = computed(() => {
     <datalist v-if="options" :id="optionsId">
       <option v-for="(option, index) in options" :key="index">{{ option.name }} {{ getDescription(option) }}</option>
     </datalist>
-    <X v-if="internalValue !== ''" class="absolute right-2.5 top-2.5 size-4 hover:text-destructive cursor-pointer" @click="resetInternal" />
+    <X
+      v-if="internalValue !== ''"
+      class="absolute right-2.5 top-2.5 size-4 hover:text-destructive cursor-pointer"
+      @click="resetInternal"
+      v-e2e="'reset'"
+    />
   </div>
 </template>
