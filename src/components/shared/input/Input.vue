@@ -45,7 +45,7 @@ const modelValue = useVModel(props, "modelValue", emits, {
 <template>
   <div :class="props.class">
     <input
-      v-model="modelValue"
+      v-model.trim="modelValue"
       :type
       :step
       :min
