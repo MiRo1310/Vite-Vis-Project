@@ -8,6 +8,8 @@ import CategoryUpdate from "@/components/section/product-categories/CategoryUpda
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/product-categories/CategoryRemove.vue";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
+import { routes } from "@/router/routes.ts";
+import { Button } from "@/components/shared/button";
 
 const { result } = useProductCategories();
 
@@ -21,7 +23,11 @@ const updateByPressEnter = ref(false);
 </script>
 
 <template>
-  <Header title="Produkt Kategorien" />
+  <Header title="Produkt Kategorien"
+    ><RouterLink :to="{ name: routes.products.name }">
+      <Button as="div" variant="outline">Zu den Produkten</Button>
+    </RouterLink>
+  </Header>
   <div class="flex items-center gap-2">
     <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
   </div>

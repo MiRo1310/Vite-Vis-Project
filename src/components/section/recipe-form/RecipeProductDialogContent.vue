@@ -111,7 +111,7 @@ const recipeStore = useRecipeStore();
 
 const goToProduct = () => {
   recipeStore.setDirectlyOpenNewProductModal(true);
-  router.push({ name: routes.recipeProducts.name });
+  router.push({ name: routes.products.name });
 };
 </script>
 

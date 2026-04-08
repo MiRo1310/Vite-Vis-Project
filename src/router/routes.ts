@@ -16,7 +16,7 @@ export const routes = {
   recipeApp: { path: "/recipe-app", name: "recipe-app" },
   recipes: { path: "/rezepte", name: "recipes" },
   recipeDetails: { path: "/rezepte/:recipeId", name: "recipe-details" },
-  recipeProducts: { path: "/produkte", name: "products" },
+  products: { path: "/produkte", name: "products" },
   recipeUnits: { path: "/einheiten", name: "units" },
   recipeCategories: { path: "/rezept-kategorien", name: "recipe-categories" },
   productCategories: { path: "/produkt-kategorien", name: "product-categories" },
@@ -55,7 +55,7 @@ export const routing = [
     children: [
       {
         component: () => import("@/pages/recipe/products.vue"),
-        ...routes.recipeProducts,
+        ...routes.products,
       },
       { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
       { component: () => import("@/pages/recipe/product-categories.vue"), ...routes.productCategories },
