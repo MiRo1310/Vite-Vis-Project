@@ -307,9 +307,15 @@ const onSubmit = form.handleSubmit(async (values) => {
       title: "Das Rezept wurde gespeichert",
       description: description,
     });
-    if (recipeId) {
-      await goBack(recipeId);
+    if (!recipeId) {
+      return;
     }
+    const willNavigateToDetails = await toDetails(recipeId);
+
+    if (!willNavigateToDetails) {
+      await router.push({ name: routes.editRecipe.name, params: { id: recipeId } });
+    }
+
     return;
   }
 
@@ -333,18 +339,19 @@ const onSubmit = form.handleSubmit(async (values) => {
     title: "Das Rezept wurde aktualisiert",
     description: values.name,
   });
-  if (recipeId.value) {
-    await goBack(recipeId.value);
-  }
+
+  await toDetails(recipeId.value);
 });
 
 const navigateBackToRecipeDetails = ref(false);
-const goBack = async (id: string) => {
+const toDetails = async (id: string): Promise<boolean> => {
   if (navigateBackToRecipeDetails.value) {
     resetForm();
     navigateBackToRecipeDetails.value = false;
     await router.push({ name: routes.recipeDetails.name, params: { recipeId: id } });
+    return true;
   }
+  return false;
 };
 
 const resetForm = () => {
