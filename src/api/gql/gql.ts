@@ -55,7 +55,7 @@ type Documents = {
     "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
-    "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
+    "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": typeof types.TravelCostDocument,
     "\n    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {\n      productsGrouped(where: $where) {\n        key\n        value {\n          id\n          carbs\n          fat\n          kcal\n          name\n          protein\n          salt\n          sugar\n          unit\n          amount\n          productUnits {\n            id\n            amount\n            unit\n          }\n        }\n      }\n    }\n  ": typeof types.GetProductsDocument,
@@ -104,7 +104,7 @@ const documents: Documents = {
     "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
-    "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
+    "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": types.TravelCostDocument,
     "\n    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {\n      productsGrouped(where: $where) {\n        key\n        value {\n          id\n          carbs\n          fat\n          kcal\n          name\n          protein\n          salt\n          sugar\n          unit\n          amount\n          productUnits {\n            id\n            amount\n            unit\n          }\n        }\n      }\n    }\n  ": types.GetProductsDocument,
@@ -293,7 +293,7 @@ export function graphql(source: "\n      query Units {\n        units(order: { n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  "): (typeof documents)["\n    query Addresses {\n      addresses {\n        name\n        city\n        street\n        id\n      }\n    }\n  "];
+export function graphql(source: "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  "): (typeof documents)["\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

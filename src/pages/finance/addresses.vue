@@ -12,7 +12,7 @@ import { AddressesQuery } from "@/api/gql/graphql.ts";
 const { result } = useQuery(
   graphql(`
     query Addresses {
-      addresses {
+      addresses(order: { name: ASC }) {
         name
         city
         street
