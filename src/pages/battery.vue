@@ -54,7 +54,7 @@ const columns: DatatableColumns<BatteryTableData>[] = [
   <Page title="Batteriestatus von Aktoren">
     <template #default>
       <CardSubcard>
-        <TableBasic :columns="getColumns(columns)" :data="batteryList" />
+        <TableBasic :columns="getColumns(columns)" :data="batteryList" :loading="false" />
       </CardSubcard>
     </template>
   </Page>

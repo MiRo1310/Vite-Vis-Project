@@ -7,7 +7,7 @@ import UnitAction from "@/components/section/recipe/units/UnitAction.vue";
 import { UnitsQuery } from "@/api/gql/graphql.ts";
 import { useUnits } from "@/composables/querys/units.ts";
 
-const { result } = useUnits();
+const { result, loading } = useUnits();
 
 const columns: DatatableColumns<UnitsQuery["units"][number]>[] = [
   { source: "name", labelKey: "Name" },
@@ -19,6 +19,6 @@ const columns: DatatableColumns<UnitsQuery["units"][number]>[] = [
   <Header title="Einheiten" />
   <div class="px-2">
     <AddUnit :units="result?.units ?? []" />
-    <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" />
+    <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" :loading />
   </div>
 </template>

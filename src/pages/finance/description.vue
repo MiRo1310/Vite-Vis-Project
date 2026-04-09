@@ -10,7 +10,7 @@ import DescriptionAction from "@/components/section/finance/DescriptionAction.vu
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import { DescriptionsQuery } from "@/api/gql/graphql.ts";
 
-const { result } = useQuery(
+const { result, loading } = useQuery(
   graphql(`
     query Descriptions {
       description {
@@ -43,7 +43,7 @@ const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
     <Navigation />
     <AddDescription />
     <Card class="p-4">
-      <TableBasic :columns="getColumns(columns)" :data="result?.description ?? []" />
+      <TableBasic :columns="getColumns(columns)" :data="result?.description ?? []" :loading />
     </Card>
   </div>
 </template>

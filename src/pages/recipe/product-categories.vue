@@ -11,7 +11,7 @@ import { useProductCategories } from "@/composables/querys/productCategories.ts"
 import { routes } from "@/router/routes.ts";
 import { Button } from "@/components/shared/button";
 
-const { result } = useProductCategories();
+const { result, loading } = useProductCategories();
 
 const columns: DatatableColumns<ProductCategoriesQuery["productCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },
@@ -32,5 +32,5 @@ const updateByPressEnter = ref(false);
     <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
   </div>
 
-  <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" />
+  <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" :loading />
 </template>

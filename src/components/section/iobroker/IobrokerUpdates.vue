@@ -71,6 +71,6 @@ const columns: DatatableColumns<UpdatesType>[] = [
       <Badge :value="availableUpdates.length" />
     </div>
 
-    <TableBasic :columns="getColumns(columns)" :data="availableUpdates" />
+    <TableBasic :columns="getColumns(columns)" :data="availableUpdates" :loading="false" />
   </CardSubcard>
 </template>

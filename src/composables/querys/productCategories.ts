@@ -20,7 +20,7 @@ export const refetchQueryProductCategories = "ProductCategories";
 export const fieldNameProductCategories = "productCategories";
 
 const productCategoriesComposable = () => {
-  const { load, result, refetch } = useLazyQuery(
+  const { load, result, refetch, loading } = useLazyQuery(
     graphql(`
       query ProductCategories {
         productCategories(order: { name: ASC }) {
@@ -53,5 +53,5 @@ const productCategoriesComposable = () => {
     await invalidateCacheFn(fieldNameProductCategories);
   };
 
-  return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result };
+  return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result, loading };
 };

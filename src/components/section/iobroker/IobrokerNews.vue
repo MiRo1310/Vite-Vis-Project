@@ -42,7 +42,7 @@ const json = computed(() => toJSON<NewsFeed[]>(getValString(infos.newsFeeds)).js
     <p>News</p>
 
     <div class="max-h-full overflow-auto">
-      <TableBasic :columns="getColumns(columns)" :data="json" />
+      <TableBasic :columns="getColumns(columns)" :data="json" :loading="false" />
     </div>
   </CardSubcard>
 </template>
