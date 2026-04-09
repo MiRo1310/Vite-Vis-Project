@@ -1,6 +1,7 @@
 import { InputOption } from "../../../../src/types/types";
 import InputWithOptions from "../../../../src/components/shared/input/InputWithOptions.vue";
 import { variantsInputWithOptions } from "../../../../src/components/shared/input";
+
 const options: InputOption[] = [
   { value: 111, name: "Option 1" },
   { value: 112, name: "Option 2" },
@@ -339,6 +340,40 @@ describe("<InputWithOptions />", () => {
     cy.getBySel("reset").should("not.exist");
     cy.get("@updateSpy").should("have.been.calledWith", "");
     cy.getBySel("input-with-options").type("Option 1");
+    cy.getBySel("reset").should("exist");
+  });
+
+  it("Should find option if option has description", () => {
+    const onUpdate = cy.spy().as("updateSpy");
+    const optionsWithDescription: InputOption[] = [
+      { value: 111, name: "Option 1", description: "Test" },
+      { value: 112, name: "Option 2", description: "Test" },
+      { value: 113, name: "Option 3", description: "Test" },
+      { value: 114, name: "Option 4", description: "Test" },
+    ];
+    cy.mountE2E(InputWithOptions as any, {
+      props: {
+        options: optionsWithDescription,
+        optionId: "test-id",
+        exactOptionRequired: true,
+        alwaysReturnName: false,
+        e2e: "input-with-options",
+        modelValue: 111,
+        "onUpdate:modelValue": onUpdate,
+      },
+    });
+
+    cy.getBySel("input-with-options").should("have.value", "Option 1");
+    cy.getBySel("reset").should("exist").click();
+    cy.getBySel("input-with-options")
+      .parent()
+      .find("option")
+      .first()
+      .invoke("text")
+      .then((text) => {
+        cy.getBySel("input-with-options").type(text);
+        cy.get("@updateSpy").should("have.been.calledWith", 111);
+      });
     cy.getBySel("reset").should("exist");
   });
 });
