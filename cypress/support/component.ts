@@ -1,4 +1,5 @@
 import "./commands";
+import "@michaelroling/ts-library";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { mount } from "cypress/vue";

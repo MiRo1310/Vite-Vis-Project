@@ -55,8 +55,16 @@ const resetInternal = () => {
   updateValue();
 };
 
+const removeOptionalDescription = (option: string | number): string | number => {
+  if (typeof option === "number") {
+    return option;
+  }
+  return option.endsWith(")") ? option.mrDecomposeText("(", ")").textExcludeSubstring : option;
+};
+
 const updateValue = () => {
-  const value = internalValue.value;
+  const value = removeOptionalDescription(internalValue.value);
+
   if (value === "") {
     clearInputFieldAction();
     modelValue.value = "";
