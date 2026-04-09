@@ -35,7 +35,7 @@ const query = graphql(`
     }
   }
 `);
-const { result, load } = useLazyQuery(query);
+const { result, load, loading } = useLazyQuery(query);
 
 onMounted(() => {
   load(query, { order: order, where: filter.value }, { fetchPolicy: "network-only" });
@@ -86,7 +86,7 @@ const total = computed(() => {
       <ListingFilter @update:active-year="updateYear" />
     </div>
     <p class="font-semibold mb-4 mt-4">Außerordentliche Aufwendungen - Krankheitskosten {{ year }}</p>
-    <TableBasic :columns="getColumns(columns)" :data="result?.travelCost ?? []" />
+    <TableBasic :columns="getColumns(columns)" :data="result?.travelCost ?? []" :loading />
     <div v-if="total" class="text-muted-foreground flex justify-end mt-4">Gesamtbetrag: {{ total }} €</div>
   </div>
 </template>

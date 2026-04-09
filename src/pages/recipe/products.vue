@@ -40,6 +40,7 @@ const {
   onResult,
   result,
   refetch: refetchProductsGrouped,
+  loading,
 } = useQuery(
   graphql(`
     query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {
@@ -129,7 +130,6 @@ const refetchHandler = (search: string) => {
         >{{ button.key }}</Button
       >
     </div>
-
     <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg flex-1 overflow-auto">
       <template
         v-for="product in result?.productsGrouped.map((g) => ({ ...g, value: [...g.value].sort((a, b) => a.name.localeCompare(b.name)) }))"
@@ -138,7 +138,7 @@ const refetchHandler = (search: string) => {
         <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
           {{ product.key }}
           <div class="bg-accent rounded-md px-2 pb-2 mt-1">
-            <TableBasic :data="product.value || []" :columns="getColumns(columns)" />
+            <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
           </div>
         </div>
       </template>

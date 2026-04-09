@@ -9,7 +9,7 @@ import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/recipe-categories/CategoryRemove.vue";
 import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
-const { result } = useRecipeCategories();
+const { result, loading } = useRecipeCategories();
 
 const columns: DatatableColumns<RecipeCategoriesQuery["recipeCategories"][number]>[] = [
   { source: "name", labelKey: "Name" },
@@ -26,5 +26,5 @@ const updateByPressEnter = ref(false);
     <AddCategory :update="updateByPressEnter" :result="result?.recipeCategories ?? []" />
   </div>
 
-  <TableBasic :columns="getColumns(columns)" :data="result?.recipeCategories ?? []" />
+  <TableBasic :columns="getColumns(columns)" :data="result?.recipeCategories ?? []" :loading />
 </template>

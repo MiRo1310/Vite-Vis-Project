@@ -9,7 +9,7 @@ import AddressAction from "@/components/section/finance/AddressAction.vue";
 import Navigation from "@/components/section/finance/Navigation.vue";
 import { AddressesQuery } from "@/api/gql/graphql.ts";
 
-const { result } = useQuery(
+const { result, loading } = useQuery(
   graphql(`
     query Addresses {
       addresses {
@@ -50,7 +50,7 @@ const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
     <Navigation />
     <AddAddress />
     <Card class="p-4">
-      <TableBasic :columns="getColumns(columns)" :data="result?.addresses ?? []" />
+      <TableBasic :columns="getColumns(columns)" :data="result?.addresses ?? []" :loading />
     </Card>
   </div>
 </template>

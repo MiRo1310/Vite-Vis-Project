@@ -164,7 +164,7 @@ const columns: DatatableColumns<AlexaDotAction>[] = [
     type: "component",
     component: TableNumberInput,
     accessorKey: "telVolume",
-    labelKey: "Telefon Laustärke",
+    labelKey: "Telefon Lautstärke",
     customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
     callback,
   },
@@ -174,7 +174,7 @@ const columns: DatatableColumns<AlexaDotAction>[] = [
 <template>
   <Page title="Alexa Dots">
     <CardSubcard>
-      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" />
+      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" :loading="false" />
     </CardSubcard>
   </Page>
 </template>

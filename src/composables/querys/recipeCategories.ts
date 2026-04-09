@@ -16,7 +16,7 @@ export const useRecipeCategories = () => {
 };
 
 const recipeCategoriesComposable = () => {
-  const { load, result, refetch } = useLazyQuery(
+  const { load, result, refetch, loading } = useLazyQuery(
     graphql(`
       query recipeCategories {
         recipeCategories(order: { name: ASC }) {
@@ -50,5 +50,5 @@ const recipeCategoriesComposable = () => {
     await invalidate("recipeCategories");
   };
 
-  return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result };
+  return { selectableOptions, getCategoryNameById, getCategoryIdByName, isResult, length, refetch, reload, invalidateCache, result, loading };
 };

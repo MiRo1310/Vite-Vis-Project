@@ -17,7 +17,7 @@ export const useUnits = () => {
 export const refetchQueryUnits = "Units";
 
 const unitsComposable = () => {
-  const { load, result, refetch } = useLazyQuery(
+  const { load, result, refetch, loading } = useLazyQuery(
     graphql(`
       query Units {
         units(order: { name: ASC }) {
@@ -43,5 +43,5 @@ const unitsComposable = () => {
     (): InputOption[] => result.value?.units.filter((unit) => unit.id && unit.name).map((unit) => ({ value: unit.id, name: unit.name })) ?? [],
   );
 
-  return { selectableOptions, getUnitNameById, getUnitIdByName, getOptions, isResult, length, refetch, result };
+  return { selectableOptions, getUnitNameById, getUnitIdByName, getOptions, isResult, length, refetch, result, loading };
 };
