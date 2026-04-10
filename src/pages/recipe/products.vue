@@ -10,11 +10,13 @@ import { graphql } from "@/api/gql";
 import { GetProductsQuery } from "@/api/gql/graphql.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
-import ProductUpdate from "@/components/section/products/ProductUpdate.vue";
+import ProductAddUpdate from "@/components/section/products/ProductAddUpdate.vue";
 import { useRouteQuery } from "@vueuse/router";
 import InputSearch from "@/components/shared/input/InputSearch.vue";
 import { routes } from "@/router/routes.ts";
+import { useUnits } from "@/composables/querys/units.ts";
 
+useUnits();
 const productId = useRouteQuery("productId", null);
 
 const { refetch } = useProductCategories();
@@ -71,7 +73,7 @@ const {
 );
 
 const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
-  { source: "name", labelKey: "Name", type: "component", component: ProductUpdate },
+  { source: "name", labelKey: "Name", type: "component", component: ProductAddUpdate },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
@@ -143,7 +145,7 @@ const refetchHandler = (search: string) => {
         </div>
       </template>
       <p v-if="!result?.productsGrouped || !result.productsGrouped.length" class="mt-10 text-center text-xl">Es wurden keine Daten gefunden</p>
-      <ProductUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
+      <ProductAddUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
     </PageSection>
   </div>
 </template>

@@ -4,11 +4,10 @@ import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
 import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";
-import { UnitsQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
-import { refetchQueryUnits } from "@/composables/querys/units.ts";
+import { refetchQueryUnits, useUnits } from "@/composables/querys/units.ts";
 
-const props = defineProps<{ units: UnitsQuery["units"] }>();
+const { result } = useUnits();
 
 const { mutate } = useMutation(
   graphql(`
@@ -24,26 +23,23 @@ const addUnit = async () => {
   if (!newUnit.value || unitExists.value) {
     return;
   }
-  const unitString = newUnit.value.trim();
-  if (unitString.includes(",")) {
-    const unitArray = unitString
-      .split(",")
-      .map((u) => u.trim())
-      .filter((u) => u);
 
-    unitArray.forEach((unit, index) => {
-      if (props.units?.find((c) => c.name === unit)) {
-        return;
-      }
-      mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: [refetchQueryUnits] } : undefined);
-    });
-  } else {
-    mutate({ name: newUnit.value }, { refetchQueries: [refetchQueryUnits] });
-  }
+  const unitArray = newUnit.value
+    .split(",")
+    .map((u) => u.trim())
+    .filter((u) => u);
+
+  unitArray.forEach((unit, index) => {
+    if (result.value?.units?.find((c) => c.name === unit)) {
+      return;
+    }
+    mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: [refetchQueryUnits] } : undefined);
+  });
+
   newUnit.value = "";
 };
 
-const unitExists = computed(() => isDefined(props.units?.find((c) => c.name === newUnit.value)));
+const unitExists = computed(() => isDefined(result.value?.units?.find((c) => c.name === newUnit.value)));
 const newUnit = ref("");
 </script>
 

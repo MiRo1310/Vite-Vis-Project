@@ -18,7 +18,7 @@ const columns: DatatableColumns<UnitsQuery["units"][number]>[] = [
 <template>
   <Header title="Einheiten" />
   <div class="px-2">
-    <AddUnit :units="result?.units ?? []" />
+    <AddUnit />
     <TableBasic :columns="getColumns(columns)" :data="result?.units ?? []" :loading />
   </div>
 </template>

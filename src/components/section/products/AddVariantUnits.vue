@@ -74,7 +74,7 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
           <FormInputOptions :name="`productUnits.${index}.unit`" :options="unitOptions" options-id="units" always-return-name />
         </Label>
 
-        <Button icon="remove" size="icon" variant="outline" class="mt-3 shrink-0" @click.prevent="deleteVariant({ unitVariant, index })" />
+        <Button icon="remove" size="icon" variant="outline" class="mt-5 shrink-0" @click.prevent="deleteVariant({ unitVariant, index })" />
       </template>
     </div>
   </div>
