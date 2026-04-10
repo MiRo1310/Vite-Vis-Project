@@ -28,12 +28,12 @@ type Documents = {
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": typeof types.AddCategoryDocument,
     "\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id) {\n        isError\n        errorCode\n      }\n    }\n  ": typeof types.DeleteCategoryDocument,
     "\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateProductCategoryDocument,
-    "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": typeof types.AddProductDocument,
-    "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": typeof types.UpdateProductDocument,
+    "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        errorCode\n        data {\n          name\n          id\n        }\n      }\n    }\n  ": typeof types.AddProductDocument,
+    "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        data {\n          name\n          id\n        }\n        errorCode\n      }\n    }\n  ": typeof types.UpdateProductDocument,
     "\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  ": typeof types.RemoveProductUnitDocument,
+    "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n": typeof types.GetProductByIdDocument,
     "\n    mutation removeCategory($id: UUID!) {\n      removeProductCategory(id: $id) {\n        errorCode\n        isError\n      }\n    }\n  ": typeof types.RemoveCategoryDocument,
     "\n    mutation renameCategory($name: String!, $id: UUID!) {\n      updateProductCategory(dto: { id: $id, name: $name }) {\n        name\n        id\n      }\n    }\n  ": typeof types.RenameCategoryDocument,
-    "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n": typeof types.GetProductByIdDocument,
     "\n    mutation removeProduct($id: UUID!) {\n      removeProduct(id: $id) {\n        errorCode\n        isError\n      }\n    }\n  ": typeof types.RemoveProductDocument,
     "\n    mutation addRecipeCategory($name: String!) {\n      createRecipeCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": typeof types.AddRecipeCategoryDocument,
     "\n    mutation RemoveRecipeCategory($id: UUID!) {\n      removeRecipeCategory(id: $id) {\n        isError\n        errorCode\n      }\n    }\n  ": typeof types.RemoveRecipeCategoryDocument,
@@ -77,12 +77,12 @@ const documents: Documents = {
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": types.AddCategoryDocument,
     "\n    mutation DeleteCategory($id: UUID!) {\n      removeProductCategory(id: $id) {\n        isError\n        errorCode\n      }\n    }\n  ": types.DeleteCategoryDocument,
     "\n    mutation UpdateProductCategory($id: UUID!, $name: String!) {\n      updateProductCategory(dto: { name: $name, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateProductCategoryDocument,
-    "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": types.AddProductDocument,
-    "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  ": types.UpdateProductDocument,
+    "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        errorCode\n        data {\n          name\n          id\n        }\n      }\n    }\n  ": types.AddProductDocument,
+    "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        data {\n          name\n          id\n        }\n        errorCode\n      }\n    }\n  ": types.UpdateProductDocument,
     "\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  ": types.RemoveProductUnitDocument,
+    "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n": types.GetProductByIdDocument,
     "\n    mutation removeCategory($id: UUID!) {\n      removeProductCategory(id: $id) {\n        errorCode\n        isError\n      }\n    }\n  ": types.RemoveCategoryDocument,
     "\n    mutation renameCategory($name: String!, $id: UUID!) {\n      updateProductCategory(dto: { id: $id, name: $name }) {\n        name\n        id\n      }\n    }\n  ": types.RenameCategoryDocument,
-    "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n": types.GetProductByIdDocument,
     "\n    mutation removeProduct($id: UUID!) {\n      removeProduct(id: $id) {\n        errorCode\n        isError\n      }\n    }\n  ": types.RemoveProductDocument,
     "\n    mutation addRecipeCategory($name: String!) {\n      createRecipeCategory(dto: { name: $name }) {\n        data {\n          id\n          name\n        }\n        errorCode\n        isError\n      }\n    }\n  ": types.AddRecipeCategoryDocument,
     "\n    mutation RemoveRecipeCategory($id: UUID!) {\n      removeRecipeCategory(id: $id) {\n        isError\n        errorCode\n      }\n    }\n  ": types.RemoveRecipeCategoryDocument,
@@ -185,15 +185,19 @@ export function graphql(source: "\n    mutation UpdateProductCategory($id: UUID!
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  "];
+export function graphql(source: "\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        errorCode\n        data {\n          name\n          id\n        }\n      }\n    }\n  "): (typeof documents)["\n    mutation addProduct($dto: ProductCreateDtoInput!) {\n      createProduct(dto: $dto) {\n        errorCode\n        data {\n          name\n          id\n        }\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        name\n        id\n      }\n    }\n  "];
+export function graphql(source: "\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        data {\n          name\n          id\n        }\n        errorCode\n      }\n    }\n  "): (typeof documents)["\n    mutation updateProduct($dto: ProductUpdateDtoInput!) {\n      updateProduct(dto: $dto) {\n        data {\n          name\n          id\n        }\n        errorCode\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  "): (typeof documents)["\n    mutation removeProductUnit($id: UUID!) {\n      removeProductUnit(id: $id)\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -202,10 +206,6 @@ export function graphql(source: "\n    mutation removeCategory($id: UUID!) {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    mutation renameCategory($name: String!, $id: UUID!) {\n      updateProductCategory(dto: { id: $id, name: $name }) {\n        name\n        id\n      }\n    }\n  "): (typeof documents)["\n    mutation renameCategory($name: String!, $id: UUID!) {\n      updateProductCategory(dto: { id: $id, name: $name }) {\n        name\n        id\n      }\n    }\n  "];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProductById($id: UUID!) {\n    product(id: $id) {\n      id\n      carbs\n      category\n      fat\n      kcal\n      name\n      protein\n      salt\n      sugar\n      productUnits {\n        modifiedAt\n        createdAt\n        id\n        productId\n        amount\n        unit\n        isDefault\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

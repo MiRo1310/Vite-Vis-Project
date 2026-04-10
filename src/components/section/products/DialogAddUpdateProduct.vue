@@ -8,25 +8,30 @@ import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
-import { GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
+import { ErrorCode, GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { invalidateCache } from "@/composables/querys/utils.ts";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
+import { useToast } from "@/components/ui/toast";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
 
 const { getOptions } = useUnits();
+const { toast } = useToast();
 
 const { selectableOptions } = useProductCategories();
 const { mutate } = useMutation(
   graphql(`
     mutation addProduct($dto: ProductCreateDtoInput!) {
       createProduct(dto: $dto) {
-        name
-        id
+        errorCode
+        data {
+          name
+          id
+        }
       }
     }
   `),
@@ -36,8 +41,11 @@ const { mutate: updateProductMutate } = useMutation(
   graphql(`
     mutation updateProduct($dto: ProductUpdateDtoInput!) {
       updateProduct(dto: $dto) {
-        name
-        id
+        data {
+          name
+          id
+        }
+        errorCode
       }
     }
   `),
@@ -62,6 +70,7 @@ const defaultUnitVariant = computed(() => {
   const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
   return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
 });
+
 const form = useForm({
   validationSchema: formSchemaProduct,
   initialValues: {
@@ -112,20 +121,23 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
     productUnits,
   };
 
-  if (!props.data) {
-    await mutate({ dto }, { refetchQueries: ["GetProducts"] });
-  } else {
-    const productId = props.data?.id;
-    if (!productId) {
+  const productId = props.data?.id;
+
+  if (!productId) {
+    const response = await mutate({ dto }, { refetchQueries: ["GetProducts"] });
+    if (!isSuccess(response?.data?.createProduct.errorCode, "erstellt")) {
       return;
     }
-
-    await updateProductMutate(
+  } else {
+    const response = await updateProductMutate(
       {
         dto: { ...dto, id: productId },
       },
       { refetchQueries: ["GetProducts"] },
     );
+    if (!isSuccess(response?.data?.updateProduct.errorCode, "aktualisiert")) {
+      return;
+    }
   }
 
   for (const unitId of productUnitsToRemove.value) {
@@ -137,6 +149,20 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
   await invalidateCache("productUnits");
   closeDialog();
 });
+
+const isSuccess = (error: ErrorCode | null | undefined, type: "aktualisiert" | "erstellt"): boolean => {
+  if (error === ErrorCode.Exist) {
+    toast({ title: `Das Produkt konnte nicht ${type} werden, da der Name schon existiert`, variant: "destructive" });
+    form.setErrors({ name: "Wähle einen anderen Namen, dieser existiert schon" });
+    return false;
+  }
+  if (error !== ErrorCode.Success) {
+    toast({ title: "Ein Fehler ist aufgetreten", variant: "destructive" });
+    return false;
+  }
+  toast({ title: `Das Produkt wurde erfolgreich ${type}` });
+  return true;
+};
 
 const closeDialog = () => {
   dialogOpen.value = false;
