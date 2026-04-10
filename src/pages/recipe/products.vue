@@ -2,7 +2,7 @@
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
@@ -108,6 +108,36 @@ const toggleFilter = (key: string) => {
 const refetchHandler = (search: string) => {
   refetchProductsGrouped({ where: { value: { some: { name: { contains: search } } } } });
 };
+
+type TGroupedProducts = GetProductsQuery["productsGrouped"];
+interface IProducts {
+  group1: TGroupedProducts;
+  group2: TGroupedProducts;
+}
+
+const groupedProducts = computed((): IProducts => {
+  const length = {
+    group1: 0,
+    group2: 0,
+  };
+  return (
+    result.value?.productsGrouped
+      .map((g) => ({ key: g.key, value: [...g.value].sort((a, b) => a.name.localeCompare(b.name)) }))
+      .reduce(
+        (acc, curr) => {
+          if (length.group1 <= length.group2) {
+            length.group1 += curr.value?.length ?? 0;
+            acc.group1.push(curr);
+            return acc;
+          }
+          length.group2 += curr.value?.length ?? 0;
+          acc.group2.push(curr);
+          return acc;
+        },
+        { group1: [] as TGroupedProducts, group2: [] as TGroupedProducts },
+      ) ?? { group1: [], group2: [] }
+  );
+});
 </script>
 
 <template>
@@ -133,17 +163,26 @@ const refetchHandler = (search: string) => {
       >
     </div>
     <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg flex-1 overflow-auto">
-      <template
-        v-for="product in result?.productsGrouped.map((g) => ({ ...g, value: [...g.value].sort((a, b) => a.name.localeCompare(b.name)) }))"
-        :key="product.key"
-      >
-        <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
-          {{ product.key }}
-          <div class="bg-accent rounded-md px-2 pb-2 mt-1">
-            <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
+      <div>
+        <template v-for="product in groupedProducts.group1" :key="product.key">
+          <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
+            {{ product.key }}
+            <div class="bg-accent rounded-md px-2 pb-2 mt-1">
+              <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
+            </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </div>
+      <div>
+        <template v-for="product in groupedProducts.group2" :key="product.key">
+          <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
+            {{ product.key }}
+            <div class="bg-accent rounded-md px-2 pb-2 mt-1">
+              <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
+            </div>
+          </div>
+        </template>
+      </div>
       <p v-if="!result?.productsGrouped || !result.productsGrouped.length" class="mt-10 text-center text-xl">Es wurden keine Daten gefunden</p>
       <ProductAddUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
     </PageSection>
