@@ -55,15 +55,8 @@ const resetInternal = () => {
   updateValue();
 };
 
-const removeOptionalDescription = (option: string | number): string | number => {
-  if (typeof option === "number") {
-    return option;
-  }
-  return option.endsWith(")") ? option.mrDecomposeText("(", ")").textExcludeSubstring : option;
-};
-
 const updateValue = () => {
-  const value = removeOptionalDescription(internalValue.value);
+  const value = internalValue.value;
 
   if (value === "") {
     clearInputFieldAction();
@@ -124,12 +117,6 @@ const hasExactName = (name: string): boolean => {
 };
 
 const previousExactName = ref<string>(getNameByValue(modelValue.value) ?? "");
-const getDescription = computed(() => (option: InputOption) => {
-  if (option.description) {
-    return `( ${option.description} )`;
-  }
-  return "";
-});
 
 const getBorderColor = computed(() => {
   if (props.exactOptionRequired && internalValue.value) {
@@ -156,7 +143,7 @@ const getBorderColor = computed(() => {
       "
     />
     <datalist v-if="options" :id="optionsId">
-      <option v-for="(option, index) in options" :key="index">{{ option.name }} {{ getDescription(option) }}</option>
+      <option v-for="(option, index) in options" :key="index">{{ option.name }}</option>
     </datalist>
     <X
       v-if="internalValue !== ''"

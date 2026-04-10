@@ -5,7 +5,7 @@ import RecipeProductName from "@/components/section/recipe-form/RecipeProductNam
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { SelectOption } from "@/types/types.ts";
-import { computed, ref } from "vue";
+import { ref, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
@@ -39,21 +39,6 @@ const { result: productUnits } = useQuery(
     }
   `),
 );
-
-const selectableUnitOptions = computed(() => (id?: string): SelectOption[] => {
-  if (!id) {
-    return [];
-  }
-  const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === id);
-
-  return (
-    unitVariants?.map((variant) => ({
-      value: variant.unit,
-      label: variant.unit,
-      id: variant.id,
-    })) ?? []
-  );
-});
 
 const defaultProduct: TProductSchema = {
   productId: "",
@@ -113,6 +98,25 @@ const goToProduct = () => {
   recipeStore.setDirectlyOpenNewProductModal(true);
   router.push({ name: routes.products.name });
 };
+
+const selectableUnitOptions = ref<SelectOption[]>([]);
+
+watch(
+  () => form.values.productId,
+  (newValue) => {
+    if (!newValue) {
+      selectableUnitOptions.value = [];
+    }
+    const unitVariants = productUnits.value?.productUnits.filter((variant) => variant.productId === newValue);
+    selectableUnitOptions.value =
+      unitVariants?.map((variant) => ({
+        value: variant.unit,
+        label: variant.unit,
+        id: variant.id,
+      })) ?? [];
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -132,10 +136,10 @@ const goToProduct = () => {
           <FormSelect
             label=""
             class="w-full"
-            :disabled="!form.values.productId || !selectableUnitOptions(form.values.productId).length"
+            :disabled="!form.values.productId || !selectableUnitOptions.length"
             placeholder="Wähle eine Einheit"
             name="activeUnitId"
-            :select-options="selectableUnitOptions(form.values.productId)"
+            :select-options="selectableUnitOptions"
           />
         </div>
         <Button

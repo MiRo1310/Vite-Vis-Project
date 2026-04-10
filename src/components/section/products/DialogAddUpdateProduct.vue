@@ -175,9 +175,9 @@ watch(
       </div>
 
       <AddVariantUnits
-        v-if="defaultUnitVariant.amount && defaultUnitVariant.unit && data?.productUnits"
+        v-if="defaultUnitVariant.amount && defaultUnitVariant.unit"
         :unitOptions="getOptions"
-        :productUnits="data.productUnits"
+        :productUnits="data?.productUnits ?? []"
         :default-unit="defaultUnitVariant.unit ?? form.values.unit"
         :form
         v-model:product-units-to-remove="productUnitsToRemove"
