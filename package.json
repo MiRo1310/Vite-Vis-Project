@@ -76,7 +76,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@cypress/vue": "^6.0.2",
+    "@cypress/vue": "^6.0.3",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@graphql-codegen/client-preset": "5.2.4",
