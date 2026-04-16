@@ -18,6 +18,7 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
   /** The `Decimal` scalar type represents a decimal floating-point number. */
   Decimal: { input: number; output: number; }
+  JSON: { input: any; output: any; }
   /** The `LocalDate` scalar type represents a ISO date string, represented as UTF-8 character sequences YYYY-MM-DD. The scalar follows the specification defined in RFC3339 */
   LocalDate: { input: any; output: any; }
   UUID: { input: string; output: string; }
@@ -141,6 +142,12 @@ export type IntOperationFilterInput = {
   nin?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   nlt?: InputMaybe<Scalars['Int']['input']>;
   nlte?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type KeyValuePairOfStringAndJsonElement = {
+  __typename?: 'KeyValuePairOfStringAndJsonElement';
+  key: Scalars['String']['output'];
+  value: Scalars['JSON']['output'];
 };
 
 export type KeyValuePairOfStringAndListOfProduct = {
@@ -386,12 +393,87 @@ export type MutationUpdateUnitArgs = {
   dto: UnitUpdateDtoInput;
 };
 
+export type Nutriments = {
+  __typename?: 'Nutriments';
+  addedSugars?: Maybe<Scalars['Float']['output']>;
+  addedSugars100g?: Maybe<Scalars['Float']['output']>;
+  addedSugarsModifier?: Maybe<Scalars['String']['output']>;
+  addedSugarsUnit?: Maybe<Scalars['String']['output']>;
+  addedSugarsValue?: Maybe<Scalars['Float']['output']>;
+  carbohydrates?: Maybe<Scalars['Float']['output']>;
+  carbohydrates100g?: Maybe<Scalars['Float']['output']>;
+  carbohydratesUnit?: Maybe<Scalars['String']['output']>;
+  carbohydratesValue?: Maybe<Scalars['Float']['output']>;
+  energy?: Maybe<Scalars['Float']['output']>;
+  energy100g?: Maybe<Scalars['Float']['output']>;
+  energyKcal?: Maybe<Scalars['Float']['output']>;
+  energyKcal100g?: Maybe<Scalars['Float']['output']>;
+  energyKcalUnit?: Maybe<Scalars['String']['output']>;
+  energyKcalValue?: Maybe<Scalars['Float']['output']>;
+  energyKj?: Maybe<Scalars['Float']['output']>;
+  energyKj100g?: Maybe<Scalars['Float']['output']>;
+  energyKjModifier?: Maybe<Scalars['String']['output']>;
+  energyKjUnit?: Maybe<Scalars['String']['output']>;
+  energyKjValue?: Maybe<Scalars['Float']['output']>;
+  energyModifier?: Maybe<Scalars['String']['output']>;
+  energyUnit?: Maybe<Scalars['String']['output']>;
+  energyValue?: Maybe<Scalars['Float']['output']>;
+  fat?: Maybe<Scalars['Float']['output']>;
+  fat100g?: Maybe<Scalars['Float']['output']>;
+  fatUnit?: Maybe<Scalars['String']['output']>;
+  fatValue?: Maybe<Scalars['Float']['output']>;
+  fruitsVegetablesLegumesEstimateFromIngredients100g?: Maybe<Scalars['Float']['output']>;
+  fruitsVegetablesNutsEstimateFromIngredients100g?: Maybe<Scalars['Float']['output']>;
+  novaGroup?: Maybe<Scalars['Int']['output']>;
+  novaGroup100g?: Maybe<Scalars['Int']['output']>;
+  novaGroupServing?: Maybe<Scalars['Int']['output']>;
+  novaGroupUnit?: Maybe<Scalars['String']['output']>;
+  novaGroupValue?: Maybe<Scalars['Int']['output']>;
+  proteins?: Maybe<Scalars['Float']['output']>;
+  proteins100g?: Maybe<Scalars['Float']['output']>;
+  proteinsUnit?: Maybe<Scalars['String']['output']>;
+  proteinsValue?: Maybe<Scalars['Float']['output']>;
+  salt?: Maybe<Scalars['Float']['output']>;
+  salt100g?: Maybe<Scalars['Float']['output']>;
+  saltUnit?: Maybe<Scalars['String']['output']>;
+  saltValue?: Maybe<Scalars['Float']['output']>;
+  sodium?: Maybe<Scalars['Float']['output']>;
+  sodium100g?: Maybe<Scalars['Float']['output']>;
+  sodiumUnit?: Maybe<Scalars['String']['output']>;
+  sodiumValue?: Maybe<Scalars['Float']['output']>;
+  sugars?: Maybe<Scalars['Float']['output']>;
+  sugars100g?: Maybe<Scalars['Float']['output']>;
+  sugarsUnit?: Maybe<Scalars['String']['output']>;
+  sugarsValue?: Maybe<Scalars['Float']['output']>;
+};
+
+export type OpenFoodFactProduct = {
+  __typename?: 'OpenFoodFactProduct';
+  additionalProductData: Array<KeyValuePairOfStringAndJsonElement>;
+  brands?: Maybe<Scalars['String']['output']>;
+  brandsTags?: Maybe<Array<Scalars['String']['output']>>;
+  code: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  ingredientsText: Scalars['String']['output'];
+  nutriments?: Maybe<Nutriments>;
+};
+
+export type OpenFoodFactsProductResponse = {
+  __typename?: 'OpenFoodFactsProductResponse';
+  additionalData: Array<KeyValuePairOfStringAndJsonElement>;
+  code: Scalars['String']['output'];
+  openFoodFactProduct?: Maybe<OpenFoodFactProduct>;
+  status?: Maybe<Scalars['Int']['output']>;
+  statusVerbose?: Maybe<Scalars['String']['output']>;
+};
+
 export type Product = {
   __typename?: 'Product';
   amount: Scalars['Decimal']['output'];
   carbs?: Maybe<Scalars['Decimal']['output']>;
   category?: Maybe<Scalars['UUID']['output']>;
   createdAt: Scalars['DateTime']['output'];
+  ean?: Maybe<Scalars['String']['output']>;
   fat?: Maybe<Scalars['Decimal']['output']>;
   id: Scalars['UUID']['output'];
   kcal?: Maybe<Scalars['Decimal']['output']>;
@@ -445,6 +527,7 @@ export type ProductCreateDtoInput = {
   amount: Scalars['Decimal']['input'];
   carbs?: InputMaybe<Scalars['Decimal']['input']>;
   category?: InputMaybe<Scalars['UUID']['input']>;
+  ean?: InputMaybe<Scalars['String']['input']>;
   fat?: InputMaybe<Scalars['Decimal']['input']>;
   kcal?: InputMaybe<Scalars['Decimal']['input']>;
   name: Scalars['String']['input'];
@@ -461,6 +544,7 @@ export type ProductFilterInput = {
   carbs?: InputMaybe<DecimalOperationFilterInput>;
   category?: InputMaybe<UuidOperationFilterInput>;
   createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  ean?: InputMaybe<StringOperationFilterInput>;
   fat?: InputMaybe<DecimalOperationFilterInput>;
   id?: InputMaybe<UuidOperationFilterInput>;
   kcal?: InputMaybe<DecimalOperationFilterInput>;
@@ -481,6 +565,7 @@ export type ProductSortInput = {
   carbs?: InputMaybe<SortEnumType>;
   category?: InputMaybe<SortEnumType>;
   createdAt?: InputMaybe<SortEnumType>;
+  ean?: InputMaybe<SortEnumType>;
   fat?: InputMaybe<SortEnumType>;
   id?: InputMaybe<SortEnumType>;
   kcal?: InputMaybe<SortEnumType>;
@@ -532,6 +617,7 @@ export type ProductUpdateDtoInput = {
   amount?: InputMaybe<Scalars['Decimal']['input']>;
   carbs?: InputMaybe<Scalars['Decimal']['input']>;
   category?: InputMaybe<Scalars['UUID']['input']>;
+  ean?: InputMaybe<Scalars['String']['input']>;
   fat?: InputMaybe<Scalars['Decimal']['input']>;
   id: Scalars['UUID']['input'];
   kcal?: InputMaybe<Scalars['Decimal']['input']>;
@@ -548,6 +634,8 @@ export type Query = {
   address?: Maybe<Address>;
   addresses: Array<Address>;
   description: Array<Description>;
+  foodFactsProductByCode?: Maybe<OpenFoodFactsProductResponse>;
+  foodFactsProductsBySearch?: Maybe<Scalars['String']['output']>;
   product?: Maybe<Product>;
   productCategories: Array<ProductCategory>;
   productCategoryById?: Maybe<ProductCategory>;
@@ -582,6 +670,16 @@ export type QueryAddressesArgs = {
 export type QueryDescriptionArgs = {
   order?: InputMaybe<Array<DescriptionSortInput>>;
   where?: InputMaybe<DescriptionFilterInput>;
+};
+
+
+export type QueryFoodFactsProductByCodeArgs = {
+  code: Scalars['String']['input'];
+};
+
+
+export type QueryFoodFactsProductsBySearchArgs = {
+  search: Scalars['String']['input'];
 };
 
 
@@ -1158,12 +1256,26 @@ export type RemoveProductUnitMutationVariables = Exact<{
 
 export type RemoveProductUnitMutation = { __typename?: 'Mutation', removeProductUnit: boolean };
 
+export type FoodFactsProductByCodeQueryVariables = Exact<{
+  code: Scalars['String']['input'];
+}>;
+
+
+export type FoodFactsProductByCodeQuery = { __typename?: 'Query', foodFactsProductByCode?: { __typename?: 'OpenFoodFactsProductResponse', code: string, statusVerbose?: string | null, openFoodFactProduct?: { __typename?: 'OpenFoodFactProduct', brands?: string | null, additionalProductData: Array<{ __typename?: 'KeyValuePairOfStringAndJsonElement', key: string, value: any }>, nutriments?: { __typename?: 'Nutriments', carbohydrates100g?: number | null, addedSugars100g?: number | null, energy100g?: number | null, fat100g?: number | null, energyKcal100g?: number | null, proteins100g?: number | null, salt100g?: number | null } | null } | null } | null };
+
+export type FoodFactsProductsBySearchQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+}>;
+
+
+export type FoodFactsProductsBySearchQuery = { __typename?: 'Query', foodFactsProductsBySearch?: string | null };
+
 export type GetProductByIdQueryVariables = Exact<{
   id: Scalars['UUID']['input'];
 }>;
 
 
-export type GetProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, carbs?: number | null, category?: string | null, fat?: number | null, kcal?: number | null, name: string, protein?: number | null, salt?: number | null, sugar?: number | null, productUnits: Array<{ __typename?: 'ProductUnit', modifiedAt?: string | null, createdAt: string, id: string, productId: string, amount?: number | null, unit: string, isDefault: boolean }> } | null };
+export type GetProductByIdQuery = { __typename?: 'Query', product?: { __typename?: 'Product', id: string, carbs?: number | null, category?: string | null, fat?: number | null, kcal?: number | null, name: string, protein?: number | null, salt?: number | null, sugar?: number | null, ean?: string | null, productUnits: Array<{ __typename?: 'ProductUnit', modifiedAt?: string | null, createdAt: string, id: string, productId: string, amount?: number | null, unit: string, isDefault: boolean }> } | null };
 
 export type RemoveCategoryMutationVariables = Exact<{
   id: Scalars['UUID']['input'];
@@ -1370,7 +1482,9 @@ export const UpdateProductCategoryDocument = {"kind":"Document","definitions":[{
 export const AddProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductCreateDtoInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"errorCode"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<AddProductMutation, AddProductMutationVariables>;
 export const UpdateProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductUpdateDtoInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"errorCode"}}]}}]}}]} as unknown as DocumentNode<UpdateProductMutation, UpdateProductMutationVariables>;
 export const RemoveProductUnitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeProductUnit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeProductUnit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<RemoveProductUnitMutation, RemoveProductUnitMutationVariables>;
-export const GetProductByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getProductById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}},{"kind":"Field","name":{"kind":"Name","value":"productUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifiedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"isDefault"}}]}}]}}]}}]} as unknown as DocumentNode<GetProductByIdQuery, GetProductByIdQueryVariables>;
+export const FoodFactsProductByCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"foodFactsProductByCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"foodFactsProductByCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"statusVerbose"}},{"kind":"Field","name":{"kind":"Name","value":"openFoodFactProduct"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brands"}},{"kind":"Field","name":{"kind":"Name","value":"additionalProductData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"nutriments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"carbohydrates100g"}},{"kind":"Field","name":{"kind":"Name","value":"addedSugars100g"}},{"kind":"Field","name":{"kind":"Name","value":"energy100g"}},{"kind":"Field","name":{"kind":"Name","value":"fat100g"}},{"kind":"Field","name":{"kind":"Name","value":"energyKcal100g"}},{"kind":"Field","name":{"kind":"Name","value":"proteins100g"}},{"kind":"Field","name":{"kind":"Name","value":"salt100g"}}]}}]}}]}}]}}]} as unknown as DocumentNode<FoodFactsProductByCodeQuery, FoodFactsProductByCodeQueryVariables>;
+export const FoodFactsProductsBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"foodFactsProductsBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"foodFactsProductsBySearch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}]}]}}]} as unknown as DocumentNode<FoodFactsProductsBySearchQuery, FoodFactsProductsBySearchQueryVariables>;
+export const GetProductByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getProductById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}},{"kind":"Field","name":{"kind":"Name","value":"ean"}},{"kind":"Field","name":{"kind":"Name","value":"productUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifiedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"isDefault"}}]}}]}}]}}]} as unknown as DocumentNode<GetProductByIdQuery, GetProductByIdQueryVariables>;
 export const RemoveCategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeCategory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeProductCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"errorCode"}},{"kind":"Field","name":{"kind":"Name","value":"isError"}}]}}]}}]} as unknown as DocumentNode<RemoveCategoryMutation, RemoveCategoryMutationVariables>;
 export const RenameCategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"renameCategory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateProductCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<RenameCategoryMutation, RenameCategoryMutationVariables>;
 export const RemoveProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"errorCode"}},{"kind":"Field","name":{"kind":"Name","value":"isError"}}]}}]}}]} as unknown as DocumentNode<RemoveProductMutation, RemoveProductMutationVariables>;

@@ -23,6 +23,7 @@ const getProductByIdQuery = graphql(`
       protein
       salt
       sugar
+      ean
       productUnits {
         modifiedAt
         createdAt

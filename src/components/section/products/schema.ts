@@ -11,6 +11,7 @@ export const formSchemaProduct = toTypedSchema(
     protein: z.number().optional().nullable(),
     salt: z.number().optional().nullable(),
     sugar: z.number().optional().nullable(),
+    ean: z.string().optional().nullable(),
     amount: z.number().positive({ error: "Die Menge muss größer als 0 sein" }),
     unit: z.string("Wähle eine Einheit").min(1, { error: "Wähle eine Einheit" }),
     productUnits: z.array(
