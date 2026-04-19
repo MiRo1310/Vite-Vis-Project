@@ -28,7 +28,7 @@ watch(addAll, (newValue) => {
 
     <div class="mt-3 flex items-center gap-2">
       <Button @click.prevent="setValue" :disabled="!value"> Übernehmen </Button>
-      <div v-if="value" class="text-blue-400 w-24">{{ value }} {{ unit }}</div>
+      <div v-if="value" class="text-blue-400 whitespace-nowrap">{{ value }} {{ unit }}</div>
     </div>
   </div>
 </template>

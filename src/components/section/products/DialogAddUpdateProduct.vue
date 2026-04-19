@@ -6,7 +6,7 @@ import FormFooter from "@/components/shared/form/FormFooter.vue";
 import Form from "@/components/shared/form/Form.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
 import { FoodFactsProductByCodeQuery, GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
@@ -93,6 +93,15 @@ const form = useForm({
   validateOnMount: false,
 });
 
+const openFoodFactsProduct = ref<FoodFactsProductByCodeQuery["foodFactsProductByCode"] | undefined>();
+const ean = ref("");
+
+onMounted(() => {
+  if (props.data?.ean) {
+    ean.value = props.data.ean;
+  }
+});
+
 watch(
   () => dialogOpen.value,
   () => {
@@ -124,7 +133,6 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
 
   if (!productId) {
     const response = await mutate({ dto }, { refetchQueries: ["GetProducts"] });
-    //TODO
     if (response) {
       isSuccess("erstellt");
       return;
@@ -171,7 +179,6 @@ watch(
   },
 );
 
-const openFoodFactsProduct = ref<FoodFactsProductByCodeQuery["foodFactsProductByCode"] | undefined>();
 const addAllValuesToForm = ref(false);
 </script>
 
@@ -179,12 +186,16 @@ const addAllValuesToForm = ref(false);
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
       <div class="max-h-[70vh] overflow-auto">
-        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" /><Button @click.prevent="addAllValuesToForm = true"
-          >Alles hinzufügen</Button
-        >
-        {{ form.values }}
+        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean
+          ><Button @click.prevent="addAllValuesToForm = true">Alles hinzufügen</Button>
+        </OpenFoodFactsProduct>
+
+        <OpenFoodFactsValueUpdater :value="openFoodFactsProduct?.code" name="ean" :form v-model:add-all="addAllValuesToForm">
+          <FormInput label="Ean" name="ean" />
+        </OpenFoodFactsValueUpdater>
         <div class="flex gap-2 items-baseline mb-4">
           <FormInput label="Produkt" name="name" class="flex-1" />
+
           <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">

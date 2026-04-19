@@ -6,6 +6,9 @@ import { Input } from "@/components/shared/input";
 import { Button } from "@/components/shared/button";
 import { FoodFactsProductByCodeQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
+import { Undo } from "lucide-vue-next";
+
+const props = defineProps<{ ean: string }>();
 
 const product = defineModel<FoodFactsProductByCodeQuery["foodFactsProductByCode"] | undefined>("modelValue", { default: [] });
 
@@ -56,12 +59,17 @@ const loadDataByCode = async () => {
   product.value = result?.data.foodFactsProductByCode;
 };
 
-const modelValue = ref("");
+const modelValue = ref(props.ean);
 </script>
 
 <template>
   <div class="flex gap-2 mb-2">
     <Input v-model:model-value="modelValue" type="number" placeholder="Ean nummer" />
+    <Button variant="ghost" size="icon" @click.prevent="modelValue = ean" :disabled="modelValue === ean">
+      <Undo />
+    </Button>
     <Button @click.prevent="loadDataByCode">Load</Button>
+
+    <slot />
   </div>
 </template>

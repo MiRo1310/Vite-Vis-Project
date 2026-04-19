@@ -58,6 +58,7 @@ const {
           salt
           sugar
           unit
+          ean
           amount
           productUnits {
             id
@@ -74,6 +75,7 @@ const {
 
 const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
   { source: "name", labelKey: "Name", type: "component", component: ProductAddUpdate },
+  { source: "ean", labelKey: "Ean" },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
   { source: "amount", labelKey: "Menge" },
   { source: "unit", labelKey: "Einheit" },
