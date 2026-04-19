@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CustomValue } from "@/lib/table.ts";
 import { Row } from "@tanstack/vue-table";
-import { AlexaDotAction } from "@/pages/alexa.vue";
+import { AlexaDotAction } from "@/pages/vis/alexa.vue";
 
 defineProps<{
   value: string;

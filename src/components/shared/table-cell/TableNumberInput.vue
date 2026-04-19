@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
 import { Row } from "@tanstack/vue-table";
-import { AlexaDotAction } from "@/pages/alexa.vue";
+import { AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { ref, watchEffect } from "vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
@@ -21,7 +21,9 @@ const value = ref(Number(props.value));
 
 function update(event?: string | number) {
   value.value = Number(event);
-  if (isNaN(Number(event))) {return;}
+  if (isNaN(Number(event))) {
+    return;
+  }
   props.callback({
     value: Number(event),
     row: props.row,

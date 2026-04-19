@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Row } from "@tanstack/vue-table";
-import { AlexaDotAction } from "@/pages/alexa.vue";
+import { AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { Switch } from "@/components/ui/switch";
 import { ref } from "vue";
 
