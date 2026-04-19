@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ErrorCode, ProductCategoriesQuery } from "@/api/gql/graphql.ts";
+import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
@@ -12,16 +12,12 @@ const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] 
 
 const update = defineModel<boolean>("update", { default: false });
 
-const { mutate } = useMutation(
+const { mutate, onError } = useMutation(
   graphql(`
     mutation addCategory($name: String!) {
       createProductCategory(dto: { name: $name }) {
-        data {
-          id
-          name
-        }
-        errorCode
-        isError
+        id
+        name
       }
     }
   `),
@@ -47,6 +43,7 @@ async function addNewCategory(): Promise<void> {
       .filter((u) => u);
     for (const category of categoryArray) {
       if (props.result?.find((c) => c.name === category)) {
+        existInDb.value = true;
         continue;
       }
       result = await mutate({ name: category });
@@ -59,11 +56,12 @@ async function addNewCategory(): Promise<void> {
     newCategory.value = "";
     existInDb.value = false;
   }
-
-  if (result?.data?.createProductCategory.errorCode === ErrorCode.Exist) {
-    existInDb.value = true;
-  }
 }
+
+onError((error) => {
+  //eslint-disable-next-line
+  console.log(error);
+});
 
 const disabled = computed((): boolean => newCategory.value === "" || categoryExists.value);
 

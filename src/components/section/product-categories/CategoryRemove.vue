@@ -7,33 +7,24 @@ import { ref } from "vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { ITableColumn } from "@/types/types.ts";
 import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
-import { errorCodeHandler } from "@/lib/errorCodeHandler.ts";
 
 const props = defineProps<ITableColumn<string, ProductCategoriesQuery["productCategories"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`
     mutation DeleteCategory($id: UUID!) {
-      removeProductCategory(id: $id) {
-        isError
-        errorCode
-      }
+      removeProductCategory(id: $id)
     }
   `),
 );
 
 const remove = async () => {
-  const result = await mutate(
+  await mutate(
     { id: props.value },
     {
       refetchQueries: [refetchQueryProductCategories],
     },
   );
-
-  const errorCode = result?.data?.removeProductCategory.errorCode;
-  if (errorCode) {
-    errorCodeHandler(errorCode, "categories");
-  }
 };
 
 const dialogOpen = ref(false);

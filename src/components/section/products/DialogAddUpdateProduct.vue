@@ -8,7 +8,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
-import { ErrorCode, FoodFactsProductByCodeQuery, GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
+import { FoodFactsProductByCodeQuery, GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.ts";
@@ -30,11 +30,8 @@ const { mutate } = useMutation(
   graphql(`
     mutation addProduct($dto: ProductCreateDtoInput!) {
       createProduct(dto: $dto) {
-        errorCode
-        data {
-          name
-          id
-        }
+        name
+        id
       }
     }
   `),
@@ -44,11 +41,8 @@ const { mutate: updateProductMutate } = useMutation(
   graphql(`
     mutation updateProduct($dto: ProductUpdateDtoInput!) {
       updateProduct(dto: $dto) {
-        data {
-          name
-          id
-        }
-        errorCode
+        name
+        id
       }
     }
   `),
@@ -130,7 +124,9 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
 
   if (!productId) {
     const response = await mutate({ dto }, { refetchQueries: ["GetProducts"] });
-    if (!isSuccess(response?.data?.createProduct.errorCode, "erstellt")) {
+    //TODO
+    if (response) {
+      isSuccess("erstellt");
       return;
     }
   } else {
@@ -140,7 +136,9 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
       },
       { refetchQueries: ["GetProducts"] },
     );
-    if (!isSuccess(response?.data?.updateProduct.errorCode, "aktualisiert")) {
+
+    if (response) {
+      isSuccess("aktualisiert");
       return;
     }
   }
@@ -155,18 +153,8 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
   closeDialog();
 });
 
-const isSuccess = (error: ErrorCode | null | undefined, type: "aktualisiert" | "erstellt"): boolean => {
-  if (error === ErrorCode.Exist) {
-    toast({ title: `Das Produkt konnte nicht ${type} werden, da der Name schon existiert`, variant: "destructive" });
-    form.setErrors({ name: "Wähle einen anderen Namen, dieser existiert schon" });
-    return false;
-  }
-  if (error !== ErrorCode.Success) {
-    toast({ title: "Ein Fehler ist aufgetreten", variant: "destructive" });
-    return false;
-  }
+const isSuccess = (type: "aktualisiert" | "erstellt"): void => {
   toast({ title: `Das Produkt wurde erfolgreich ${type}` });
-  return true;
 };
 
 const closeDialog = () => {
