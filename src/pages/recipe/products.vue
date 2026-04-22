@@ -45,7 +45,7 @@ const {
   loading,
 } = useQuery(
   graphql(`
-    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {
+    query GetProducts($where: MySql_KeyValuePairOfStringAndListOfProductFilterInput) {
       productsGrouped(where: $where) {
         key
         value {

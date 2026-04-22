@@ -4,25 +4,23 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Input } from "@/components/shared/input";
 import { Button } from "@/components/shared/button";
-import { FoodFactsProductByCodeQuery } from "@/api/gql/graphql.ts";
+import { LocalProductsByCodeQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
 import { Undo } from "lucide-vue-next";
+import { TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ ean: string }>();
 
-const product = defineModel<FoodFactsProductByCodeQuery["foodFactsProductByCode"] | undefined>("modelValue", { default: [] });
+const product = defineModel<TProduct>("modelValue", {
+  default: [],
+});
 
-const foodFactsProductByCodeQuery = graphql(`
-  query foodFactsProductByCode($code: String!) {
-    foodFactsProductByCode(code: $code) {
-      code
-      statusVerbose
-      openFoodFactProduct {
+const localProductsByCodeQuery = graphql(`
+  query localProductsByCode($code: String!) {
+    localProducts(skip: 0, take: 10, where: { code: { eq: $code } }) {
+      items {
+        code
         brands
-        additionalProductData {
-          key
-          value
-        }
         nutriments {
           carbohydrates100g
           addedSugars100g
@@ -37,7 +35,7 @@ const foodFactsProductByCodeQuery = graphql(`
   }
 `);
 
-const { load: loadByCode, refetch } = useLazyQuery(foodFactsProductByCodeQuery);
+const { load: loadByCode, refetch } = useLazyQuery(localProductsByCodeQuery);
 
 let init = false;
 
@@ -46,17 +44,21 @@ const loadDataByCode = async () => {
     return;
   }
   if (!init) {
-    const result = await loadByCode(foodFactsProductByCodeQuery, { code: String(modelValue.value) });
+    const result = await loadByCode(localProductsByCodeQuery, { code: String(modelValue.value) });
     if (typeof result === "boolean") {
       return;
     }
-    product.value = result.foodFactsProductByCode;
+    product.value = getFirstItem(result);
     init = true;
     return;
   }
 
   const result = await refetch({ code: String(modelValue.value) });
-  product.value = result?.data.foodFactsProductByCode;
+  product.value = getFirstItem(result?.data);
+};
+
+const getFirstItem = (result?: LocalProductsByCodeQuery): TProduct | undefined => {
+  return result?.localProducts?.items?.[0];
 };
 
 const modelValue = ref(props.ean);
@@ -68,7 +70,7 @@ const modelValue = ref(props.ean);
     <Button variant="ghost" size="icon" @click.prevent="modelValue = ean" :disabled="modelValue === ean">
       <Undo />
     </Button>
-    <Button @click.prevent="loadDataByCode">Load</Button>
+    <Button @click.prevent="loadDataByCode">Abrufen </Button>
 
     <slot />
   </div>

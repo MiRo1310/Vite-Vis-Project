@@ -11,16 +11,16 @@ import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
-import { SortEnumType, TravelCostFilterInput, TravelCostQuery } from "@/api/gql/graphql.ts";
+import { MySql_SortEnumType, MySql_TravelCostFilterInput, TravelCostQuery } from "@/api/gql/graphql.ts";
 
-const filter = computed((): TravelCostFilterInput => {
+const filter = computed((): MySql_TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
 });
 
-const order = { date: SortEnumType.Desc };
+const order = { date: MySql_SortEnumType.Desc };
 
 const query = graphql(`
-  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {
+  query TravelCost($where: MySql_TravelCostFilterInput, $order: [MySql_TravelCostSortInput!]) {
     travelCost(where: $where, order: $order) {
       id
       addressId
