@@ -14,13 +14,18 @@ const infos = computed((): InfoTypes[][] => [
   ],
   [
     {
-      title: getValNumber(pv.feedIn) < 0 ? "Bezug" : "Einspeisung",
+      title: getValNumber(pv.feedIn) < 0 ? "Netz Bezug" : "Netz Einspeisung",
       value: getValNumber(pv.feedIn) < 0 ? getValNumber(pv.feedIn) * -1 : getValNumber(pv.feedIn),
       unit: "W",
       valueClass: getValNumber(pv.feedIn) < 0 ? "text-destructive" : "text-success",
     },
-    { title: "Aktives Laden", value: getValNumber(pv.activeCharging), unit: "W" },
-    { title: "Ladezustand", value: getValNumber(pv.batteryCharging), unit: "%" },
+    {
+      title: getValNumber(pv.activeCharging) > 0 ? "Batterie laden" : "Batterie entladen",
+      value: getValNumber(pv.activeCharging),
+      unit: "W",
+      valueClass: getValNumber(pv.activeCharging) < 0 ? "text-destructive" : "text-success",
+    },
+    { title: "Ladezustand Batterie", value: getValNumber(pv.batteryCharging), unit: "%" },
   ],
   [
     { title: "Verkauft", value: getValNumber(pv.profit), unit: "€" },
