@@ -41,6 +41,27 @@ export type AddressCreateDtoInput = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type AddressFilterInput = {
+  and?: InputMaybe<Array<AddressFilterInput>>;
+  city?: InputMaybe<StringOperationFilterInput>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<AddressFilterInput>>;
+  street?: InputMaybe<StringOperationFilterInput>;
+  travelCost?: InputMaybe<ListFilterInputTypeOfTravelCostFilterInput>;
+};
+
+export type AddressSortInput = {
+  city?: InputMaybe<SortEnumType>;
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+  street?: InputMaybe<SortEnumType>;
+};
+
 export type AddressUpdateDtoInput = {
   city?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['UUID']['input'];
@@ -48,13 +69,39 @@ export type AddressUpdateDtoInput = {
   street?: InputMaybe<Scalars['String']['input']>;
 };
 
-/** Information about the offset pagination. */
-export type CollectionSegmentInfo = {
-  __typename?: 'CollectionSegmentInfo';
-  /** Indicates whether more items exist following the set defined by the clients arguments. */
-  hasNextPage: Scalars['Boolean']['output'];
-  /** Indicates whether more items exist prior the set defined by the clients arguments. */
-  hasPreviousPage: Scalars['Boolean']['output'];
+export type BooleanOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  neq?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type DateTimeOperationFilterInput = {
+  eq?: InputMaybe<Scalars['DateTime']['input']>;
+  gt?: InputMaybe<Scalars['DateTime']['input']>;
+  gte?: InputMaybe<Scalars['DateTime']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  lt?: InputMaybe<Scalars['DateTime']['input']>;
+  lte?: InputMaybe<Scalars['DateTime']['input']>;
+  neq?: InputMaybe<Scalars['DateTime']['input']>;
+  ngt?: InputMaybe<Scalars['DateTime']['input']>;
+  ngte?: InputMaybe<Scalars['DateTime']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
+  nlt?: InputMaybe<Scalars['DateTime']['input']>;
+  nlte?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type DecimalOperationFilterInput = {
+  eq?: InputMaybe<Scalars['Decimal']['input']>;
+  gt?: InputMaybe<Scalars['Decimal']['input']>;
+  gte?: InputMaybe<Scalars['Decimal']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  lt?: InputMaybe<Scalars['Decimal']['input']>;
+  lte?: InputMaybe<Scalars['Decimal']['input']>;
+  neq?: InputMaybe<Scalars['Decimal']['input']>;
+  ngt?: InputMaybe<Scalars['Decimal']['input']>;
+  ngte?: InputMaybe<Scalars['Decimal']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
+  nlt?: InputMaybe<Scalars['Decimal']['input']>;
+  nlte?: InputMaybe<Scalars['Decimal']['input']>;
 };
 
 export type Description = {
@@ -63,63 +110,25 @@ export type Description = {
   text: Scalars['String']['output'];
 };
 
+export type DescriptionFilterInput = {
+  and?: InputMaybe<Array<DescriptionFilterInput>>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  or?: InputMaybe<Array<DescriptionFilterInput>>;
+  text?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type DescriptionSortInput = {
+  id?: InputMaybe<SortEnumType>;
+  text?: InputMaybe<SortEnumType>;
+};
+
 export enum ErrorCode {
   Exist = 'EXIST',
   InUse = 'IN_USE',
   NotFound = 'NOT_FOUND'
 }
 
-export type KeyValuePairOfStringAndJsonElement = {
-  __typename?: 'KeyValuePairOfStringAndJsonElement';
-  key: Scalars['String']['output'];
-  value: Scalars['JSON']['output'];
-};
-
-export type KeyValuePairOfStringAndListOfProduct = {
-  __typename?: 'KeyValuePairOfStringAndListOfProduct';
-  key: Scalars['String']['output'];
-  value: Array<Product>;
-};
-
-export type LocalProduct = {
-  __typename?: 'LocalProduct';
-  brands?: Maybe<Scalars['String']['output']>;
-  brandsTags?: Maybe<Array<Scalars['String']['output']>>;
-  categoriesTags?: Maybe<Array<Scalars['String']['output']>>;
-  code: Scalars['String']['output'];
-  genericNameDe?: Maybe<Scalars['String']['output']>;
-  id: Scalars['String']['output'];
-  imageUrl?: Maybe<Scalars['String']['output']>;
-  ingredientsText: Scalars['String']['output'];
-  manufacturingPlacesTags?: Maybe<Array<Scalars['String']['output']>>;
-  nutriments?: Maybe<Nutriments>;
-};
-
-/** A segment of a collection. */
-export type LocalProductsCollectionSegment = {
-  __typename?: 'LocalProductsCollectionSegment';
-  /** A flattened list of the items. */
-  items?: Maybe<Array<LocalProduct>>;
-  /** Information to aid in pagination. */
-  pageInfo: CollectionSegmentInfo;
-};
-
-export type MongoDb_FloatOperationFilterInput = {
-  eq?: InputMaybe<Scalars['Float']['input']>;
-  gt?: InputMaybe<Scalars['Float']['input']>;
-  gte?: InputMaybe<Scalars['Float']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
-  lt?: InputMaybe<Scalars['Float']['input']>;
-  lte?: InputMaybe<Scalars['Float']['input']>;
-  neq?: InputMaybe<Scalars['Float']['input']>;
-  ngt?: InputMaybe<Scalars['Float']['input']>;
-  ngte?: InputMaybe<Scalars['Float']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['Float']['input']>>>;
-  nlt?: InputMaybe<Scalars['Float']['input']>;
-  nlte?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type MongoDb_IntOperationFilterInput = {
+export type IntOperationFilterInput = {
   eq?: InputMaybe<Scalars['Int']['input']>;
   gt?: InputMaybe<Scalars['Int']['input']>;
   gte?: InputMaybe<Scalars['Int']['input']>;
@@ -134,164 +143,80 @@ export type MongoDb_IntOperationFilterInput = {
   nlte?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type MongoDb_ListStringOperationFilterInput = {
-  all?: InputMaybe<MongoDb_StringOperationFilterInput>;
+export type KeyValuePairOfStringAndJsonElement = {
+  __typename?: 'KeyValuePairOfStringAndJsonElement';
+  key: Scalars['String']['output'];
+  value: Scalars['JSON']['output'];
+};
+
+export type KeyValuePairOfStringAndListOfProduct = {
+  __typename?: 'KeyValuePairOfStringAndListOfProduct';
+  key: Scalars['String']['output'];
+  value: Array<Product>;
+};
+
+export type KeyValuePairOfStringAndListOfProductFilterInput = {
+  and?: InputMaybe<Array<KeyValuePairOfStringAndListOfProductFilterInput>>;
+  key?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<KeyValuePairOfStringAndListOfProductFilterInput>>;
+  value?: InputMaybe<ListFilterInputTypeOfProductFilterInput>;
+};
+
+export type ListFilterInputTypeOfProductFilterInput = {
+  all?: InputMaybe<ProductFilterInput>;
   any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  some?: InputMaybe<MongoDb_StringOperationFilterInput>;
+  none?: InputMaybe<ProductFilterInput>;
+  some?: InputMaybe<ProductFilterInput>;
 };
 
-export type MongoDb_LocalProductFilterInput = {
-  and?: InputMaybe<Array<MongoDb_LocalProductFilterInput>>;
-  brands?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  brandsTags?: InputMaybe<MongoDb_ListStringOperationFilterInput>;
-  categoriesTags?: InputMaybe<MongoDb_ListStringOperationFilterInput>;
-  code?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  genericNameDe?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  id?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  imageUrl?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  ingredientsText?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  manufacturingPlacesTags?: InputMaybe<MongoDb_ListStringOperationFilterInput>;
-  nutriments?: InputMaybe<MongoDb_NutrimentsFilterInput>;
-  or?: InputMaybe<Array<MongoDb_LocalProductFilterInput>>;
+export type ListFilterInputTypeOfProductUnitFilterInput = {
+  all?: InputMaybe<ProductUnitFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<ProductUnitFilterInput>;
+  some?: InputMaybe<ProductUnitFilterInput>;
 };
 
-export type MongoDb_LocalProductSortInput = {
-  brands?: InputMaybe<MongoDb_SortEnumType>;
-  code?: InputMaybe<MongoDb_SortEnumType>;
-  genericNameDe?: InputMaybe<MongoDb_SortEnumType>;
-  id?: InputMaybe<MongoDb_SortEnumType>;
-  imageUrl?: InputMaybe<MongoDb_SortEnumType>;
-  ingredientsText?: InputMaybe<MongoDb_SortEnumType>;
-  nutriments?: InputMaybe<MongoDb_NutrimentsSortInput>;
+export type ListFilterInputTypeOfRecipeDescriptionFilterInput = {
+  all?: InputMaybe<RecipeDescriptionFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeDescriptionFilterInput>;
+  some?: InputMaybe<RecipeDescriptionFilterInput>;
 };
 
-export type MongoDb_NutrimentsFilterInput = {
-  addedSugars?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  addedSugars100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  addedSugarsModifier?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  addedSugarsUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  addedSugarsValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  and?: InputMaybe<Array<MongoDb_NutrimentsFilterInput>>;
-  carbohydrates?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  carbohydrates100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  carbohydratesUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  carbohydratesValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energy?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energy100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKcal?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKcal100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKcalUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  energyKcalValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKj?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKj100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyKjModifier?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  energyKjUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  energyKjValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  energyModifier?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  energyUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  energyValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  fat?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  fat100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  fatUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  fatValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  fruitsVegetablesLegumesEstimateFromIngredients100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  fruitsVegetablesNutsEstimateFromIngredients100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  novaGroup?: InputMaybe<MongoDb_IntOperationFilterInput>;
-  novaGroup100g?: InputMaybe<MongoDb_IntOperationFilterInput>;
-  novaGroupServing?: InputMaybe<MongoDb_IntOperationFilterInput>;
-  novaGroupUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  novaGroupValue?: InputMaybe<MongoDb_IntOperationFilterInput>;
-  or?: InputMaybe<Array<MongoDb_NutrimentsFilterInput>>;
-  proteins?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  proteins100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  proteinsUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  proteinsValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  salt?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  salt100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  saltUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  saltValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sodium?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sodium100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sodiumUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  sodiumValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sugars?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sugars100g?: InputMaybe<MongoDb_FloatOperationFilterInput>;
-  sugarsUnit?: InputMaybe<MongoDb_StringOperationFilterInput>;
-  sugarsValue?: InputMaybe<MongoDb_FloatOperationFilterInput>;
+export type ListFilterInputTypeOfRecipeProductFilterInput = {
+  all?: InputMaybe<RecipeProductFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeProductFilterInput>;
+  some?: InputMaybe<RecipeProductFilterInput>;
 };
 
-export type MongoDb_NutrimentsSortInput = {
-  addedSugars?: InputMaybe<MongoDb_SortEnumType>;
-  addedSugars100g?: InputMaybe<MongoDb_SortEnumType>;
-  addedSugarsModifier?: InputMaybe<MongoDb_SortEnumType>;
-  addedSugarsUnit?: InputMaybe<MongoDb_SortEnumType>;
-  addedSugarsValue?: InputMaybe<MongoDb_SortEnumType>;
-  carbohydrates?: InputMaybe<MongoDb_SortEnumType>;
-  carbohydrates100g?: InputMaybe<MongoDb_SortEnumType>;
-  carbohydratesUnit?: InputMaybe<MongoDb_SortEnumType>;
-  carbohydratesValue?: InputMaybe<MongoDb_SortEnumType>;
-  energy?: InputMaybe<MongoDb_SortEnumType>;
-  energy100g?: InputMaybe<MongoDb_SortEnumType>;
-  energyKcal?: InputMaybe<MongoDb_SortEnumType>;
-  energyKcal100g?: InputMaybe<MongoDb_SortEnumType>;
-  energyKcalUnit?: InputMaybe<MongoDb_SortEnumType>;
-  energyKcalValue?: InputMaybe<MongoDb_SortEnumType>;
-  energyKj?: InputMaybe<MongoDb_SortEnumType>;
-  energyKj100g?: InputMaybe<MongoDb_SortEnumType>;
-  energyKjModifier?: InputMaybe<MongoDb_SortEnumType>;
-  energyKjUnit?: InputMaybe<MongoDb_SortEnumType>;
-  energyKjValue?: InputMaybe<MongoDb_SortEnumType>;
-  energyModifier?: InputMaybe<MongoDb_SortEnumType>;
-  energyUnit?: InputMaybe<MongoDb_SortEnumType>;
-  energyValue?: InputMaybe<MongoDb_SortEnumType>;
-  fat?: InputMaybe<MongoDb_SortEnumType>;
-  fat100g?: InputMaybe<MongoDb_SortEnumType>;
-  fatUnit?: InputMaybe<MongoDb_SortEnumType>;
-  fatValue?: InputMaybe<MongoDb_SortEnumType>;
-  fruitsVegetablesLegumesEstimateFromIngredients100g?: InputMaybe<MongoDb_SortEnumType>;
-  fruitsVegetablesNutsEstimateFromIngredients100g?: InputMaybe<MongoDb_SortEnumType>;
-  novaGroup?: InputMaybe<MongoDb_SortEnumType>;
-  novaGroup100g?: InputMaybe<MongoDb_SortEnumType>;
-  novaGroupServing?: InputMaybe<MongoDb_SortEnumType>;
-  novaGroupUnit?: InputMaybe<MongoDb_SortEnumType>;
-  novaGroupValue?: InputMaybe<MongoDb_SortEnumType>;
-  proteins?: InputMaybe<MongoDb_SortEnumType>;
-  proteins100g?: InputMaybe<MongoDb_SortEnumType>;
-  proteinsUnit?: InputMaybe<MongoDb_SortEnumType>;
-  proteinsValue?: InputMaybe<MongoDb_SortEnumType>;
-  salt?: InputMaybe<MongoDb_SortEnumType>;
-  salt100g?: InputMaybe<MongoDb_SortEnumType>;
-  saltUnit?: InputMaybe<MongoDb_SortEnumType>;
-  saltValue?: InputMaybe<MongoDb_SortEnumType>;
-  sodium?: InputMaybe<MongoDb_SortEnumType>;
-  sodium100g?: InputMaybe<MongoDb_SortEnumType>;
-  sodiumUnit?: InputMaybe<MongoDb_SortEnumType>;
-  sodiumValue?: InputMaybe<MongoDb_SortEnumType>;
-  sugars?: InputMaybe<MongoDb_SortEnumType>;
-  sugars100g?: InputMaybe<MongoDb_SortEnumType>;
-  sugarsUnit?: InputMaybe<MongoDb_SortEnumType>;
-  sugarsValue?: InputMaybe<MongoDb_SortEnumType>;
+export type ListFilterInputTypeOfRecipeProductHeaderFilterInput = {
+  all?: InputMaybe<RecipeProductHeaderFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<RecipeProductHeaderFilterInput>;
+  some?: InputMaybe<RecipeProductHeaderFilterInput>;
 };
 
-export enum MongoDb_SortEnumType {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
+export type ListFilterInputTypeOfTravelCostFilterInput = {
+  all?: InputMaybe<TravelCostFilterInput>;
+  any?: InputMaybe<Scalars['Boolean']['input']>;
+  none?: InputMaybe<TravelCostFilterInput>;
+  some?: InputMaybe<TravelCostFilterInput>;
+};
 
-export type MongoDb_StringOperationFilterInput = {
-  and?: InputMaybe<Array<MongoDb_StringOperationFilterInput>>;
-  contains?: InputMaybe<Scalars['String']['input']>;
-  endsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  ncontains?: InputMaybe<Scalars['String']['input']>;
-  nendsWith?: InputMaybe<Scalars['String']['input']>;
-  neq?: InputMaybe<Scalars['String']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  nstartsWith?: InputMaybe<Scalars['String']['input']>;
-  or?: InputMaybe<Array<MongoDb_StringOperationFilterInput>>;
-  startsWith?: InputMaybe<Scalars['String']['input']>;
+export type LocalDateOperationFilterInput = {
+  eq?: InputMaybe<Scalars['LocalDate']['input']>;
+  gt?: InputMaybe<Scalars['LocalDate']['input']>;
+  gte?: InputMaybe<Scalars['LocalDate']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
+  lt?: InputMaybe<Scalars['LocalDate']['input']>;
+  lte?: InputMaybe<Scalars['LocalDate']['input']>;
+  neq?: InputMaybe<Scalars['LocalDate']['input']>;
+  ngt?: InputMaybe<Scalars['LocalDate']['input']>;
+  ngte?: InputMaybe<Scalars['LocalDate']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
+  nlt?: InputMaybe<Scalars['LocalDate']['input']>;
+  nlte?: InputMaybe<Scalars['LocalDate']['input']>;
 };
 
 export type Mutation = {
@@ -467,378 +392,6 @@ export type MutationUpdateUnitArgs = {
   dto: UnitUpdateDtoInput;
 };
 
-export type MySql_AddressFilterInput = {
-  and?: InputMaybe<Array<MySql_AddressFilterInput>>;
-  city?: InputMaybe<MySql_StringOperationFilterInput>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_AddressFilterInput>>;
-  street?: InputMaybe<MySql_StringOperationFilterInput>;
-  travelCost?: InputMaybe<MySql_ListFilterInputTypeOfTravelCostFilterInput>;
-};
-
-export type MySql_AddressSortInput = {
-  city?: InputMaybe<MySql_SortEnumType>;
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  name?: InputMaybe<MySql_SortEnumType>;
-  street?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_BooleanOperationFilterInput = {
-  eq?: InputMaybe<Scalars['Boolean']['input']>;
-  neq?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type MySql_DateTimeOperationFilterInput = {
-  eq?: InputMaybe<Scalars['DateTime']['input']>;
-  gt?: InputMaybe<Scalars['DateTime']['input']>;
-  gte?: InputMaybe<Scalars['DateTime']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
-  lt?: InputMaybe<Scalars['DateTime']['input']>;
-  lte?: InputMaybe<Scalars['DateTime']['input']>;
-  neq?: InputMaybe<Scalars['DateTime']['input']>;
-  ngt?: InputMaybe<Scalars['DateTime']['input']>;
-  ngte?: InputMaybe<Scalars['DateTime']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['DateTime']['input']>>>;
-  nlt?: InputMaybe<Scalars['DateTime']['input']>;
-  nlte?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type MySql_DecimalOperationFilterInput = {
-  eq?: InputMaybe<Scalars['Decimal']['input']>;
-  gt?: InputMaybe<Scalars['Decimal']['input']>;
-  gte?: InputMaybe<Scalars['Decimal']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
-  lt?: InputMaybe<Scalars['Decimal']['input']>;
-  lte?: InputMaybe<Scalars['Decimal']['input']>;
-  neq?: InputMaybe<Scalars['Decimal']['input']>;
-  ngt?: InputMaybe<Scalars['Decimal']['input']>;
-  ngte?: InputMaybe<Scalars['Decimal']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['Decimal']['input']>>>;
-  nlt?: InputMaybe<Scalars['Decimal']['input']>;
-  nlte?: InputMaybe<Scalars['Decimal']['input']>;
-};
-
-export type MySql_DescriptionFilterInput = {
-  and?: InputMaybe<Array<MySql_DescriptionFilterInput>>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_DescriptionFilterInput>>;
-  text?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export type MySql_DescriptionSortInput = {
-  id?: InputMaybe<MySql_SortEnumType>;
-  text?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_IntOperationFilterInput = {
-  eq?: InputMaybe<Scalars['Int']['input']>;
-  gt?: InputMaybe<Scalars['Int']['input']>;
-  gte?: InputMaybe<Scalars['Int']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
-  lt?: InputMaybe<Scalars['Int']['input']>;
-  lte?: InputMaybe<Scalars['Int']['input']>;
-  neq?: InputMaybe<Scalars['Int']['input']>;
-  ngt?: InputMaybe<Scalars['Int']['input']>;
-  ngte?: InputMaybe<Scalars['Int']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
-  nlt?: InputMaybe<Scalars['Int']['input']>;
-  nlte?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type MySql_KeyValuePairOfStringAndListOfProductFilterInput = {
-  and?: InputMaybe<Array<MySql_KeyValuePairOfStringAndListOfProductFilterInput>>;
-  key?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_KeyValuePairOfStringAndListOfProductFilterInput>>;
-  value?: InputMaybe<MySql_ListFilterInputTypeOfProductFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfProductFilterInput = {
-  all?: InputMaybe<MySql_ProductFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_ProductFilterInput>;
-  some?: InputMaybe<MySql_ProductFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfProductUnitFilterInput = {
-  all?: InputMaybe<MySql_ProductUnitFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_ProductUnitFilterInput>;
-  some?: InputMaybe<MySql_ProductUnitFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfRecipeDescriptionFilterInput = {
-  all?: InputMaybe<MySql_RecipeDescriptionFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_RecipeDescriptionFilterInput>;
-  some?: InputMaybe<MySql_RecipeDescriptionFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfRecipeProductFilterInput = {
-  all?: InputMaybe<MySql_RecipeProductFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_RecipeProductFilterInput>;
-  some?: InputMaybe<MySql_RecipeProductFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfRecipeProductHeaderFilterInput = {
-  all?: InputMaybe<MySql_RecipeProductHeaderFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_RecipeProductHeaderFilterInput>;
-  some?: InputMaybe<MySql_RecipeProductHeaderFilterInput>;
-};
-
-export type MySql_ListFilterInputTypeOfTravelCostFilterInput = {
-  all?: InputMaybe<MySql_TravelCostFilterInput>;
-  any?: InputMaybe<Scalars['Boolean']['input']>;
-  none?: InputMaybe<MySql_TravelCostFilterInput>;
-  some?: InputMaybe<MySql_TravelCostFilterInput>;
-};
-
-export type MySql_LocalDateOperationFilterInput = {
-  eq?: InputMaybe<Scalars['LocalDate']['input']>;
-  gt?: InputMaybe<Scalars['LocalDate']['input']>;
-  gte?: InputMaybe<Scalars['LocalDate']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
-  lt?: InputMaybe<Scalars['LocalDate']['input']>;
-  lte?: InputMaybe<Scalars['LocalDate']['input']>;
-  neq?: InputMaybe<Scalars['LocalDate']['input']>;
-  ngt?: InputMaybe<Scalars['LocalDate']['input']>;
-  ngte?: InputMaybe<Scalars['LocalDate']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['LocalDate']['input']>>>;
-  nlt?: InputMaybe<Scalars['LocalDate']['input']>;
-  nlte?: InputMaybe<Scalars['LocalDate']['input']>;
-};
-
-export type MySql_ProductCategoryFilterInput = {
-  and?: InputMaybe<Array<MySql_ProductCategoryFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_ProductCategoryFilterInput>>;
-  products?: InputMaybe<MySql_ListFilterInputTypeOfProductFilterInput>;
-};
-
-export type MySql_ProductCategorySortInput = {
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  name?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_ProductFilterInput = {
-  amount?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  and?: InputMaybe<Array<MySql_ProductFilterInput>>;
-  carbs?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  category?: InputMaybe<MySql_UuidOperationFilterInput>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  ean?: InputMaybe<MySql_StringOperationFilterInput>;
-  fat?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  kcal?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_ProductFilterInput>>;
-  productCategory?: InputMaybe<MySql_ProductCategoryFilterInput>;
-  productUnits?: InputMaybe<MySql_ListFilterInputTypeOfProductUnitFilterInput>;
-  protein?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  recipeProducts?: InputMaybe<MySql_ListFilterInputTypeOfRecipeProductFilterInput>;
-  salt?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  sugar?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  unit?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export type MySql_ProductSortInput = {
-  amount?: InputMaybe<MySql_SortEnumType>;
-  carbs?: InputMaybe<MySql_SortEnumType>;
-  category?: InputMaybe<MySql_SortEnumType>;
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  ean?: InputMaybe<MySql_SortEnumType>;
-  fat?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  kcal?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  name?: InputMaybe<MySql_SortEnumType>;
-  productCategory?: InputMaybe<MySql_ProductCategorySortInput>;
-  protein?: InputMaybe<MySql_SortEnumType>;
-  salt?: InputMaybe<MySql_SortEnumType>;
-  sugar?: InputMaybe<MySql_SortEnumType>;
-  unit?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_ProductUnitFilterInput = {
-  active?: InputMaybe<MySql_BooleanOperationFilterInput>;
-  amount?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  and?: InputMaybe<Array<MySql_ProductUnitFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  faktor?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  isDefault?: InputMaybe<MySql_BooleanOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_ProductUnitFilterInput>>;
-  product?: InputMaybe<MySql_ProductFilterInput>;
-  productId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  unit?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export type MySql_RecipeCategoryFilterInput = {
-  and?: InputMaybe<Array<MySql_RecipeCategoryFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_RecipeCategoryFilterInput>>;
-};
-
-export type MySql_RecipeCategorySortInput = {
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  name?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_RecipeDescriptionFilterInput = {
-  and?: InputMaybe<Array<MySql_RecipeDescriptionFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  header?: InputMaybe<MySql_StringOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_RecipeDescriptionFilterInput>>;
-  position?: InputMaybe<MySql_IntOperationFilterInput>;
-  recipe?: InputMaybe<MySql_RecipeFilterInput>;
-  recipeId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  text?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export type MySql_RecipeFilterInput = {
-  and?: InputMaybe<Array<MySql_RecipeFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_RecipeFilterInput>>;
-  portions?: InputMaybe<MySql_IntOperationFilterInput>;
-  preparationTimeMin?: InputMaybe<MySql_IntOperationFilterInput>;
-  recipeCategory?: InputMaybe<MySql_RecipeCategoryFilterInput>;
-  recipeCategoryId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  recipeDescriptions?: InputMaybe<MySql_ListFilterInputTypeOfRecipeDescriptionFilterInput>;
-  recipeHeaderProducts?: InputMaybe<MySql_ListFilterInputTypeOfRecipeProductHeaderFilterInput>;
-  recipeProducts?: InputMaybe<MySql_ListFilterInputTypeOfRecipeProductFilterInput>;
-  totalKcal?: InputMaybe<MySql_IntOperationFilterInput>;
-  totalTimeMin?: InputMaybe<MySql_IntOperationFilterInput>;
-};
-
-export type MySql_RecipeProductFilterInput = {
-  activeUnitId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  amount?: InputMaybe<MySql_DecimalOperationFilterInput>;
-  and?: InputMaybe<Array<MySql_RecipeProductFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  description?: InputMaybe<MySql_StringOperationFilterInput>;
-  groupPosition?: InputMaybe<MySql_IntOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  kcal?: InputMaybe<MySql_IntOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_RecipeProductFilterInput>>;
-  product?: InputMaybe<MySql_ProductFilterInput>;
-  productId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  recipe?: InputMaybe<MySql_RecipeFilterInput>;
-  recipeId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  sortOrder?: InputMaybe<MySql_IntOperationFilterInput>;
-  unit?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export type MySql_RecipeProductHeaderFilterInput = {
-  and?: InputMaybe<Array<MySql_RecipeProductHeaderFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_RecipeProductHeaderFilterInput>>;
-  position?: InputMaybe<MySql_IntOperationFilterInput>;
-  recipe?: InputMaybe<MySql_RecipeFilterInput>;
-  recipeId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  text?: InputMaybe<MySql_StringOperationFilterInput>;
-};
-
-export enum MySql_SortEnumType {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
-
-export type MySql_StringOperationFilterInput = {
-  and?: InputMaybe<Array<MySql_StringOperationFilterInput>>;
-  contains?: InputMaybe<Scalars['String']['input']>;
-  endsWith?: InputMaybe<Scalars['String']['input']>;
-  eq?: InputMaybe<Scalars['String']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  ncontains?: InputMaybe<Scalars['String']['input']>;
-  nendsWith?: InputMaybe<Scalars['String']['input']>;
-  neq?: InputMaybe<Scalars['String']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  nstartsWith?: InputMaybe<Scalars['String']['input']>;
-  or?: InputMaybe<Array<MySql_StringOperationFilterInput>>;
-  startsWith?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type MySql_TravelCostFilterInput = {
-  address?: InputMaybe<MySql_AddressFilterInput>;
-  addressId?: InputMaybe<MySql_UuidOperationFilterInput>;
-  and?: InputMaybe<Array<MySql_TravelCostFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  date?: InputMaybe<MySql_LocalDateOperationFilterInput>;
-  description?: InputMaybe<MySql_StringOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_TravelCostFilterInput>>;
-  price?: InputMaybe<MySql_DecimalOperationFilterInput>;
-};
-
-export type MySql_TravelCostSortInput = {
-  address?: InputMaybe<MySql_AddressSortInput>;
-  addressId?: InputMaybe<MySql_SortEnumType>;
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  date?: InputMaybe<MySql_SortEnumType>;
-  description?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  price?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_UnitFilterInput = {
-  and?: InputMaybe<Array<MySql_UnitFilterInput>>;
-  createdAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  id?: InputMaybe<MySql_UuidOperationFilterInput>;
-  modifiedAt?: InputMaybe<MySql_DateTimeOperationFilterInput>;
-  name?: InputMaybe<MySql_StringOperationFilterInput>;
-  or?: InputMaybe<Array<MySql_UnitFilterInput>>;
-};
-
-export type MySql_UnitSortInput = {
-  createdAt?: InputMaybe<MySql_SortEnumType>;
-  id?: InputMaybe<MySql_SortEnumType>;
-  modifiedAt?: InputMaybe<MySql_SortEnumType>;
-  name?: InputMaybe<MySql_SortEnumType>;
-};
-
-export type MySql_UuidOperationFilterInput = {
-  eq?: InputMaybe<Scalars['UUID']['input']>;
-  gt?: InputMaybe<Scalars['UUID']['input']>;
-  gte?: InputMaybe<Scalars['UUID']['input']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
-  lt?: InputMaybe<Scalars['UUID']['input']>;
-  lte?: InputMaybe<Scalars['UUID']['input']>;
-  neq?: InputMaybe<Scalars['UUID']['input']>;
-  ngt?: InputMaybe<Scalars['UUID']['input']>;
-  ngte?: InputMaybe<Scalars['UUID']['input']>;
-  nin?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
-  nlt?: InputMaybe<Scalars['UUID']['input']>;
-  nlte?: InputMaybe<Scalars['UUID']['input']>;
-};
-
 export type Nutriments = {
   __typename?: 'Nutriments';
   addedSugars?: Maybe<Scalars['Float']['output']>;
@@ -901,6 +454,7 @@ export type OpenFoodFactProduct = {
   code: Scalars['String']['output'];
   id: Scalars['String']['output'];
   ingredientsText: Scalars['String']['output'];
+  nutriments?: Maybe<Nutriments>;
 };
 
 export type OpenFoodFactProductSearch = {
@@ -970,6 +524,23 @@ export type ProductCategoryCreateDtoInput = {
   name: Scalars['String']['input'];
 };
 
+export type ProductCategoryFilterInput = {
+  and?: InputMaybe<Array<ProductCategoryFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<ProductCategoryFilterInput>>;
+  products?: InputMaybe<ListFilterInputTypeOfProductFilterInput>;
+};
+
+export type ProductCategorySortInput = {
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+};
+
 export type ProductCategoryUpdateDtoInput = {
   id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
@@ -990,6 +561,46 @@ export type ProductCreateDtoInput = {
   unit: Scalars['String']['input'];
 };
 
+export type ProductFilterInput = {
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<ProductFilterInput>>;
+  carbs?: InputMaybe<DecimalOperationFilterInput>;
+  category?: InputMaybe<UuidOperationFilterInput>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  ean?: InputMaybe<StringOperationFilterInput>;
+  fat?: InputMaybe<DecimalOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  kcal?: InputMaybe<DecimalOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<ProductFilterInput>>;
+  productCategory?: InputMaybe<ProductCategoryFilterInput>;
+  productUnits?: InputMaybe<ListFilterInputTypeOfProductUnitFilterInput>;
+  protein?: InputMaybe<DecimalOperationFilterInput>;
+  recipeProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductFilterInput>;
+  salt?: InputMaybe<DecimalOperationFilterInput>;
+  sugar?: InputMaybe<DecimalOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type ProductSortInput = {
+  amount?: InputMaybe<SortEnumType>;
+  carbs?: InputMaybe<SortEnumType>;
+  category?: InputMaybe<SortEnumType>;
+  createdAt?: InputMaybe<SortEnumType>;
+  ean?: InputMaybe<SortEnumType>;
+  fat?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  kcal?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+  productCategory?: InputMaybe<ProductCategorySortInput>;
+  protein?: InputMaybe<SortEnumType>;
+  salt?: InputMaybe<SortEnumType>;
+  sugar?: InputMaybe<SortEnumType>;
+  unit?: InputMaybe<SortEnumType>;
+};
+
 export type ProductUnit = {
   __typename?: 'ProductUnit';
   active: Scalars['Boolean']['output'];
@@ -1008,6 +619,21 @@ export type ProductUnitCreateOrUpdateDtoInput = {
   amount: Scalars['Decimal']['input'];
   id?: InputMaybe<Scalars['UUID']['input']>;
   unit: Scalars['String']['input'];
+};
+
+export type ProductUnitFilterInput = {
+  active?: InputMaybe<BooleanOperationFilterInput>;
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<ProductUnitFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  faktor?: InputMaybe<DecimalOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  isDefault?: InputMaybe<BooleanOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<ProductUnitFilterInput>>;
+  product?: InputMaybe<ProductFilterInput>;
+  productId?: InputMaybe<UuidOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type ProductUpdateDtoInput = {
@@ -1034,7 +660,6 @@ export type Query = {
   errorCodes: Array<ErrorCode>;
   foodFactsProductByCode?: Maybe<OpenFoodFactsProductResponse>;
   foodFactsProductsBySearch?: Maybe<OpenFoodFactsSearchResponse>;
-  localProducts?: Maybe<LocalProductsCollectionSegment>;
   product?: Maybe<Product>;
   productCategories: Array<ProductCategory>;
   productCategoryById?: Maybe<ProductCategory>;
@@ -1061,14 +686,14 @@ export type QueryAddressArgs = {
 
 
 export type QueryAddressesArgs = {
-  order?: InputMaybe<Array<MySql_AddressSortInput>>;
-  where?: InputMaybe<MySql_AddressFilterInput>;
+  order?: InputMaybe<Array<AddressSortInput>>;
+  where?: InputMaybe<AddressFilterInput>;
 };
 
 
 export type QueryDescriptionArgs = {
-  order?: InputMaybe<Array<MySql_DescriptionSortInput>>;
-  where?: InputMaybe<MySql_DescriptionFilterInput>;
+  order?: InputMaybe<Array<DescriptionSortInput>>;
+  where?: InputMaybe<DescriptionFilterInput>;
 };
 
 
@@ -1082,22 +707,14 @@ export type QueryFoodFactsProductsBySearchArgs = {
 };
 
 
-export type QueryLocalProductsArgs = {
-  order?: InputMaybe<Array<MongoDb_LocalProductSortInput>>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
-  take?: InputMaybe<Scalars['Int']['input']>;
-  where?: InputMaybe<MongoDb_LocalProductFilterInput>;
-};
-
-
 export type QueryProductArgs = {
   id: Scalars['UUID']['input'];
 };
 
 
 export type QueryProductCategoriesArgs = {
-  order?: InputMaybe<Array<MySql_ProductCategorySortInput>>;
-  where?: InputMaybe<MySql_ProductCategoryFilterInput>;
+  order?: InputMaybe<Array<ProductCategorySortInput>>;
+  where?: InputMaybe<ProductCategoryFilterInput>;
 };
 
 
@@ -1117,13 +734,13 @@ export type QueryProductUnitByProductIdArgs = {
 
 
 export type QueryProductsArgs = {
-  order?: InputMaybe<Array<MySql_ProductSortInput>>;
-  where?: InputMaybe<MySql_ProductFilterInput>;
+  order?: InputMaybe<Array<ProductSortInput>>;
+  where?: InputMaybe<ProductFilterInput>;
 };
 
 
 export type QueryProductsGroupedArgs = {
-  where?: InputMaybe<MySql_KeyValuePairOfStringAndListOfProductFilterInput>;
+  where?: InputMaybe<KeyValuePairOfStringAndListOfProductFilterInput>;
 };
 
 
@@ -1133,8 +750,8 @@ export type QueryRecipeArgs = {
 
 
 export type QueryRecipeCategoriesArgs = {
-  order?: InputMaybe<Array<MySql_RecipeCategorySortInput>>;
-  where?: InputMaybe<MySql_RecipeCategoryFilterInput>;
+  order?: InputMaybe<Array<RecipeCategorySortInput>>;
+  where?: InputMaybe<RecipeCategoryFilterInput>;
 };
 
 
@@ -1144,8 +761,8 @@ export type QueryRecipeCategoryByIdArgs = {
 
 
 export type QueryTravelCostArgs = {
-  order?: InputMaybe<Array<MySql_TravelCostSortInput>>;
-  where?: InputMaybe<MySql_TravelCostFilterInput>;
+  order?: InputMaybe<Array<TravelCostSortInput>>;
+  where?: InputMaybe<TravelCostFilterInput>;
 };
 
 
@@ -1160,8 +777,8 @@ export type QueryUnitArgs = {
 
 
 export type QueryUnitsArgs = {
-  order?: InputMaybe<Array<MySql_UnitSortInput>>;
-  where?: InputMaybe<MySql_UnitFilterInput>;
+  order?: InputMaybe<Array<UnitSortInput>>;
+  where?: InputMaybe<UnitFilterInput>;
 };
 
 export type Recipe = {
@@ -1191,6 +808,22 @@ export type RecipeCategory = {
 
 export type RecipeCategoryCreateDtoInput = {
   name: Scalars['String']['input'];
+};
+
+export type RecipeCategoryFilterInput = {
+  and?: InputMaybe<Array<RecipeCategoryFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeCategoryFilterInput>>;
+};
+
+export type RecipeCategorySortInput = {
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
 };
 
 export type RecipeCategoryUpdateDtoInput = {
@@ -1228,6 +861,37 @@ export type RecipeDescriptionCreateOrUpdateDtoInput = {
   text: Scalars['String']['input'];
 };
 
+export type RecipeDescriptionFilterInput = {
+  and?: InputMaybe<Array<RecipeDescriptionFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  header?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeDescriptionFilterInput>>;
+  position?: InputMaybe<IntOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
+};
+
+export type RecipeFilterInput = {
+  and?: InputMaybe<Array<RecipeFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeFilterInput>>;
+  portions?: InputMaybe<IntOperationFilterInput>;
+  preparationTimeMin?: InputMaybe<IntOperationFilterInput>;
+  recipeCategory?: InputMaybe<RecipeCategoryFilterInput>;
+  recipeCategoryId?: InputMaybe<UuidOperationFilterInput>;
+  recipeDescriptions?: InputMaybe<ListFilterInputTypeOfRecipeDescriptionFilterInput>;
+  recipeHeaderProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductHeaderFilterInput>;
+  recipeProducts?: InputMaybe<ListFilterInputTypeOfRecipeProductFilterInput>;
+  totalKcal?: InputMaybe<IntOperationFilterInput>;
+  totalTimeMin?: InputMaybe<IntOperationFilterInput>;
+};
+
 export type RecipeGroupRemoveDtoInput = {
   position: Scalars['Int']['input'];
   recipeId: Scalars['UUID']['input'];
@@ -1258,6 +922,25 @@ export type RecipeProduct = {
   unit: Scalars['String']['output'];
 };
 
+export type RecipeProductFilterInput = {
+  activeUnitId?: InputMaybe<UuidOperationFilterInput>;
+  amount?: InputMaybe<DecimalOperationFilterInput>;
+  and?: InputMaybe<Array<RecipeProductFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  groupPosition?: InputMaybe<IntOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  kcal?: InputMaybe<IntOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeProductFilterInput>>;
+  product?: InputMaybe<ProductFilterInput>;
+  productId?: InputMaybe<UuidOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  sortOrder?: InputMaybe<IntOperationFilterInput>;
+  unit?: InputMaybe<StringOperationFilterInput>;
+};
+
 export type RecipeProductHeader = {
   __typename?: 'RecipeProductHeader';
   createdAt: Scalars['DateTime']['output'];
@@ -1267,6 +950,18 @@ export type RecipeProductHeader = {
   recipe?: Maybe<Recipe>;
   recipeId: Scalars['UUID']['output'];
   text: Scalars['String']['output'];
+};
+
+export type RecipeProductHeaderFilterInput = {
+  and?: InputMaybe<Array<RecipeProductHeaderFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<RecipeProductHeaderFilterInput>>;
+  position?: InputMaybe<IntOperationFilterInput>;
+  recipe?: InputMaybe<RecipeFilterInput>;
+  recipeId?: InputMaybe<UuidOperationFilterInput>;
+  text?: InputMaybe<StringOperationFilterInput>;
 };
 
 export type RecipeProductsCreateDtoInput = {
@@ -1293,6 +988,26 @@ export type RecipeUpdateDtoInput = {
   totalTimeMin?: InputMaybe<Scalars['Int']['input']>;
 };
 
+export enum SortEnumType {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
+export type StringOperationFilterInput = {
+  and?: InputMaybe<Array<StringOperationFilterInput>>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  endsWith?: InputMaybe<Scalars['String']['input']>;
+  eq?: InputMaybe<Scalars['String']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  ncontains?: InputMaybe<Scalars['String']['input']>;
+  nendsWith?: InputMaybe<Scalars['String']['input']>;
+  neq?: InputMaybe<Scalars['String']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  nstartsWith?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<StringOperationFilterInput>>;
+  startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type TravelCost = {
   __typename?: 'TravelCost';
   address?: Maybe<Address>;
@@ -1310,6 +1025,30 @@ export type TravelCostCreateDtoInput = {
   date?: InputMaybe<Scalars['LocalDate']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type TravelCostFilterInput = {
+  address?: InputMaybe<AddressFilterInput>;
+  addressId?: InputMaybe<UuidOperationFilterInput>;
+  and?: InputMaybe<Array<TravelCostFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  date?: InputMaybe<LocalDateOperationFilterInput>;
+  description?: InputMaybe<StringOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  or?: InputMaybe<Array<TravelCostFilterInput>>;
+  price?: InputMaybe<DecimalOperationFilterInput>;
+};
+
+export type TravelCostSortInput = {
+  address?: InputMaybe<AddressSortInput>;
+  addressId?: InputMaybe<SortEnumType>;
+  createdAt?: InputMaybe<SortEnumType>;
+  date?: InputMaybe<SortEnumType>;
+  description?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  price?: InputMaybe<SortEnumType>;
 };
 
 export type TravelCostSortPerMonthDto = {
@@ -1348,9 +1087,40 @@ export type UnitCreateDtoInput = {
   name: Scalars['String']['input'];
 };
 
+export type UnitFilterInput = {
+  and?: InputMaybe<Array<UnitFilterInput>>;
+  createdAt?: InputMaybe<DateTimeOperationFilterInput>;
+  id?: InputMaybe<UuidOperationFilterInput>;
+  modifiedAt?: InputMaybe<DateTimeOperationFilterInput>;
+  name?: InputMaybe<StringOperationFilterInput>;
+  or?: InputMaybe<Array<UnitFilterInput>>;
+};
+
+export type UnitSortInput = {
+  createdAt?: InputMaybe<SortEnumType>;
+  id?: InputMaybe<SortEnumType>;
+  modifiedAt?: InputMaybe<SortEnumType>;
+  name?: InputMaybe<SortEnumType>;
+};
+
 export type UnitUpdateDtoInput = {
   id: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
+};
+
+export type UuidOperationFilterInput = {
+  eq?: InputMaybe<Scalars['UUID']['input']>;
+  gt?: InputMaybe<Scalars['UUID']['input']>;
+  gte?: InputMaybe<Scalars['UUID']['input']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
+  lt?: InputMaybe<Scalars['UUID']['input']>;
+  lte?: InputMaybe<Scalars['UUID']['input']>;
+  neq?: InputMaybe<Scalars['UUID']['input']>;
+  ngt?: InputMaybe<Scalars['UUID']['input']>;
+  ngte?: InputMaybe<Scalars['UUID']['input']>;
+  nin?: InputMaybe<Array<InputMaybe<Scalars['UUID']['input']>>>;
+  nlt?: InputMaybe<Scalars['UUID']['input']>;
+  nlte?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 export type AddAddressMutationVariables = Exact<{
@@ -1487,7 +1257,7 @@ export type LocalProductsByCodeQueryVariables = Exact<{
 }>;
 
 
-export type LocalProductsByCodeQuery = { __typename?: 'Query', localProducts?: { __typename?: 'LocalProductsCollectionSegment', items?: Array<{ __typename?: 'LocalProduct', code: string, brands?: string | null, nutriments?: { __typename?: 'Nutriments', carbohydrates100g?: number | null, addedSugars100g?: number | null, energy100g?: number | null, fat100g?: number | null, energyKcal100g?: number | null, proteins100g?: number | null, salt100g?: number | null } | null }> | null } | null };
+export type LocalProductsByCodeQuery = { __typename?: 'Query', foodFactsProductByCode?: { __typename?: 'OpenFoodFactsProductResponse', code: string, additionalData: Array<{ __typename?: 'KeyValuePairOfStringAndJsonElement', key: string, value: any }>, openFoodFactProduct?: { __typename?: 'OpenFoodFactProduct', brands?: string | null, additionalProductData: Array<{ __typename?: 'KeyValuePairOfStringAndJsonElement', value: any, key: string }>, nutriments?: { __typename?: 'Nutriments', carbohydrates100g?: number | null, addedSugars100g?: number | null, energy100g?: number | null, fat100g?: number | null, energyKcal100g?: number | null, proteins100g?: number | null, salt100g?: number | null } | null } | null } | null };
 
 export type FoodFactsProductsBySearchQueryVariables = Exact<{
   search: Scalars['String']['input'];
@@ -1664,15 +1434,15 @@ export type DescriptionsQueryVariables = Exact<{ [key: string]: never; }>;
 export type DescriptionsQuery = { __typename?: 'Query', description: Array<{ __typename?: 'Description', text: string, id: string }> };
 
 export type TravelCostQueryVariables = Exact<{
-  where?: InputMaybe<MySql_TravelCostFilterInput>;
-  order?: InputMaybe<Array<MySql_TravelCostSortInput> | MySql_TravelCostSortInput>;
+  where?: InputMaybe<TravelCostFilterInput>;
+  order?: InputMaybe<Array<TravelCostSortInput> | TravelCostSortInput>;
 }>;
 
 
 export type TravelCostQuery = { __typename?: 'Query', travelCost: Array<{ __typename?: 'TravelCost', id: string, addressId?: string | null, date?: any | null, description?: string | null, price?: number | null, address?: { __typename?: 'Address', name?: string | null, street?: string | null, city?: string | null } | null }> };
 
 export type GetProductsQueryVariables = Exact<{
-  where?: InputMaybe<MySql_KeyValuePairOfStringAndListOfProductFilterInput>;
+  where?: InputMaybe<KeyValuePairOfStringAndListOfProductFilterInput>;
 }>;
 
 
@@ -1708,7 +1478,7 @@ export const UpdateProductCategoryDocument = {"kind":"Document","definitions":[{
 export const AddProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductCreateDtoInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AddProductMutation, AddProductMutationVariables>;
 export const UpdateProductDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateProduct"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"dto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProductUpdateDtoInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateProduct"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"dto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"dto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateProductMutation, UpdateProductMutationVariables>;
 export const RemoveProductUnitDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeProductUnit"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeProductUnit"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<RemoveProductUnitMutation, RemoveProductUnitMutationVariables>;
-export const LocalProductsByCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"localProductsByCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"localProducts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"IntValue","value":"0"}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"IntValue","value":"10"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"code"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"brands"}},{"kind":"Field","name":{"kind":"Name","value":"nutriments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"carbohydrates100g"}},{"kind":"Field","name":{"kind":"Name","value":"addedSugars100g"}},{"kind":"Field","name":{"kind":"Name","value":"energy100g"}},{"kind":"Field","name":{"kind":"Name","value":"fat100g"}},{"kind":"Field","name":{"kind":"Name","value":"energyKcal100g"}},{"kind":"Field","name":{"kind":"Name","value":"proteins100g"}},{"kind":"Field","name":{"kind":"Name","value":"salt100g"}}]}}]}}]}}]}}]} as unknown as DocumentNode<LocalProductsByCodeQuery, LocalProductsByCodeQueryVariables>;
+export const LocalProductsByCodeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"localProductsByCode"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"foodFactsProductByCode"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"additionalData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","name":{"kind":"Name","value":"openFoodFactProduct"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"brands"}},{"kind":"Field","name":{"kind":"Name","value":"additionalProductData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"nutriments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"carbohydrates100g"}},{"kind":"Field","name":{"kind":"Name","value":"addedSugars100g"}},{"kind":"Field","name":{"kind":"Name","value":"energy100g"}},{"kind":"Field","name":{"kind":"Name","value":"fat100g"}},{"kind":"Field","name":{"kind":"Name","value":"energyKcal100g"}},{"kind":"Field","name":{"kind":"Name","value":"proteins100g"}},{"kind":"Field","name":{"kind":"Name","value":"salt100g"}}]}}]}}]}}]}}]} as unknown as DocumentNode<LocalProductsByCodeQuery, LocalProductsByCodeQueryVariables>;
 export const FoodFactsProductsBySearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"foodFactsProductsBySearch"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"foodFactsProductsBySearch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"additionalData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"products"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"additionalProductData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"brands"}},{"kind":"Field","name":{"kind":"Name","value":"categoriesTags"}},{"kind":"Field","name":{"kind":"Name","value":"genericNameDe"}},{"kind":"Field","name":{"kind":"Name","value":"manufacturingPlacesTags"}}]}},{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"page"}},{"kind":"Field","name":{"kind":"Name","value":"pageCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}}]}}]}}]} as unknown as DocumentNode<FoodFactsProductsBySearchQuery, FoodFactsProductsBySearchQueryVariables>;
 export const GetProductByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getProductById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}},{"kind":"Field","name":{"kind":"Name","value":"ean"}},{"kind":"Field","name":{"kind":"Name","value":"productUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"modifiedAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"isDefault"}}]}}]}}]}}]} as unknown as DocumentNode<GetProductByIdQuery, GetProductByIdQueryVariables>;
 export const RemoveCategoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"removeCategory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeProductCategory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<RemoveCategoryMutation, RemoveCategoryMutationVariables>;
@@ -1736,7 +1506,7 @@ export const RecipeCategoriesDocument = {"kind":"Document","definitions":[{"kind
 export const UnitsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Units"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"units"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<UnitsQuery, UnitsQueryVariables>;
 export const AddressesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Addresses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addresses"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<AddressesQuery, AddressesQueryVariables>;
 export const DescriptionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Descriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DescriptionsQuery, DescriptionsQueryVariables>;
-export const TravelCostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TravelCost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MySql_TravelCostFilterInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MySql_TravelCostSortInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"travelCost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"addressId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}}]}}]}}]} as unknown as DocumentNode<TravelCostQuery, TravelCostQueryVariables>;
-export const GetProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProducts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MySql_KeyValuePairOfStringAndListOfProductFilterInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productsGrouped"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"ean"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"productUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
+export const TravelCostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TravelCost"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TravelCostFilterInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TravelCostSortInput"}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"travelCost"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"order"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"addressId"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}}]}}]}}]} as unknown as DocumentNode<TravelCostQuery, TravelCostQueryVariables>;
+export const GetProductsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetProducts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"KeyValuePairOfStringAndListOfProductFilterInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"productsGrouped"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"ean"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"productUnits"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetProductsQuery, GetProductsQueryVariables>;
 export const GetRecipeDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getRecipeDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipe"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"portions"}},{"kind":"Field","name":{"kind":"Name","value":"totalKcal"}},{"kind":"Field","name":{"kind":"Name","value":"preparationTimeMin"}},{"kind":"Field","name":{"kind":"Name","value":"totalTimeMin"}},{"kind":"Field","name":{"kind":"Name","value":"recipeProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"groupPosition"}},{"kind":"Field","name":{"kind":"Name","value":"unit"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"activeUnitId"}},{"kind":"Field","name":{"kind":"Name","value":"productId"}},{"kind":"Field","name":{"kind":"Name","value":"product"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"carbs"}},{"kind":"Field","name":{"kind":"Name","value":"fat"}},{"kind":"Field","name":{"kind":"Name","value":"kcal"}},{"kind":"Field","name":{"kind":"Name","value":"protein"}},{"kind":"Field","name":{"kind":"Name","value":"salt"}},{"kind":"Field","name":{"kind":"Name","value":"sugar"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"recipeDescriptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"position"}},{"kind":"Field","name":{"kind":"Name","value":"text"}},{"kind":"Field","name":{"kind":"Name","value":"header"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recipeHeaderProducts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"position"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]}}]} as unknown as DocumentNode<GetRecipeDetailsQuery, GetRecipeDetailsQueryVariables>;
 export const RecipesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"recipes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"totalTimeMin"}},{"kind":"Field","name":{"kind":"Name","value":"preparationTimeMin"}},{"kind":"Field","name":{"kind":"Name","value":"totalKcal"}},{"kind":"Field","name":{"kind":"Name","value":"recipeCategory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<RecipesQuery, RecipesQueryVariables>;

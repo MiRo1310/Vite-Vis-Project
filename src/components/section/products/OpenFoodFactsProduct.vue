@@ -4,7 +4,6 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Input } from "@/components/shared/input";
 import { Button } from "@/components/shared/button";
-import { LocalProductsByCodeQuery } from "@/api/gql/graphql.ts";
 import { isDefined } from "@vueuse/core";
 import { Undo } from "lucide-vue-next";
 import { TProduct } from "@/components/section/products/index.ts";
@@ -17,10 +16,18 @@ const product = defineModel<TProduct>("modelValue", {
 
 const localProductsByCodeQuery = graphql(`
   query localProductsByCode($code: String!) {
-    localProducts(skip: 0, take: 10, where: { code: { eq: $code } }) {
-      items {
-        code
+    foodFactsProductByCode(code: $code) {
+      code
+      additionalData {
+        key
+        value
+      }
+      openFoodFactProduct {
         brands
+        additionalProductData {
+          value
+          key
+        }
         nutriments {
           carbohydrates100g
           addedSugars100g
@@ -48,17 +55,13 @@ const loadDataByCode = async () => {
     if (typeof result === "boolean") {
       return;
     }
-    product.value = getFirstItem(result);
+    product.value = result.foodFactsProductByCode;
     init = true;
     return;
   }
 
   const result = await refetch({ code: String(modelValue.value) });
-  product.value = getFirstItem(result?.data);
-};
-
-const getFirstItem = (result?: LocalProductsByCodeQuery): TProduct | undefined => {
-  return result?.localProducts?.items?.[0];
+  product.value = result?.data.foodFactsProductByCode;
 };
 
 const modelValue = ref(props.ean);

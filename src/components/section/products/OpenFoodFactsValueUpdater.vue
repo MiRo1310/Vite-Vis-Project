@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 
-import { watch } from "vue";
+import { computed, watch } from "vue";
 import { TForm } from "@/components/section/recipe-form";
 
 const props = defineProps<{ name: string; value?: string | number | boolean | null; unit?: string; form: TForm }>();
@@ -20,6 +20,10 @@ watch(addAll, (newValue) => {
     addAll.value = false;
   }
 });
+
+const disabled = computed(() => {
+  return !props.value || props.value === "" || props.value === props.form.values[props.name];
+});
 </script>
 
 <template>
@@ -27,7 +31,7 @@ watch(addAll, (newValue) => {
     <slot />
 
     <div class="mt-3 flex items-center gap-2">
-      <Button @click.prevent="setValue" :disabled="!value"> Übernehmen </Button>
+      <Button @click.prevent="setValue" :disabled> Übernehmen </Button>
       <div v-if="value" class="text-blue-400 whitespace-nowrap">{{ value }} {{ unit }}</div>
     </div>
   </div>

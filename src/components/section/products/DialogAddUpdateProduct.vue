@@ -19,7 +19,6 @@ import { useToast } from "@/components/ui/toast";
 import OpenFoodFactsProduct from "@/components/section/products/OpenFoodFactsProduct.vue";
 import OpenFoodFactsValueUpdater from "@/components/section/products/OpenFoodFactsValueUpdater.vue";
 import { Button } from "@/components/shared/button";
-import OpenFoodFactsSearch from "@/components/section/products/OpenFoodFactsSearch.vue";
 import { TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
@@ -190,7 +189,6 @@ const addAllValuesToForm = ref(false);
       <div class="max-h-[70vh] overflow-auto">
         <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean
           ><Button @click.prevent="addAllValuesToForm = true">Alles hinzufügen</Button>
-          <OpenFoodFactsSearch />
         </OpenFoodFactsProduct>
 
         <OpenFoodFactsValueUpdater :value="openFoodFactsProduct?.code" name="ean" :form v-model:add-all="addAllValuesToForm">
@@ -203,7 +201,7 @@ const addAllValuesToForm = ref(false);
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
           <OpenFoodFactsValueUpdater
-            :value="openFoodFactsProduct?.nutriments?.energyKcal100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.energyKcal100g"
             unit="kcal"
             name="kcal"
             :form
@@ -213,7 +211,7 @@ const addAllValuesToForm = ref(false);
           </OpenFoodFactsValueUpdater>
           <OpenFoodFactsValueUpdater
             name="fat"
-            :value="openFoodFactsProduct?.nutriments?.fat100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.fat100g"
             unit="g"
             v-model:add-all="addAllValuesToForm"
             :form
@@ -222,7 +220,7 @@ const addAllValuesToForm = ref(false);
           </OpenFoodFactsValueUpdater>
           <OpenFoodFactsValueUpdater
             name="carbs"
-            :value="openFoodFactsProduct?.nutriments?.carbohydrates100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.carbohydrates100g"
             unit="g"
             :form
             v-model:add-all="addAllValuesToForm"
@@ -231,7 +229,7 @@ const addAllValuesToForm = ref(false);
           </OpenFoodFactsValueUpdater>
           <OpenFoodFactsValueUpdater
             name="sugar"
-            :value="openFoodFactsProduct?.nutriments?.addedSugars100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.addedSugars100g"
             :form
             unit="g"
             v-model:add-all="addAllValuesToForm"
@@ -240,7 +238,7 @@ const addAllValuesToForm = ref(false);
           </OpenFoodFactsValueUpdater>
           <OpenFoodFactsValueUpdater
             name="salt"
-            :value="openFoodFactsProduct?.nutriments?.salt100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.salt100g"
             unit="g"
             :form
             v-model:add-all="addAllValuesToForm"
@@ -249,7 +247,7 @@ const addAllValuesToForm = ref(false);
           </OpenFoodFactsValueUpdater>
           <OpenFoodFactsValueUpdater
             name="protein"
-            :value="openFoodFactsProduct?.nutriments?.proteins100g"
+            :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.proteins100g"
             unit="g"
             :form
             v-model:add-all="addAllValuesToForm"
