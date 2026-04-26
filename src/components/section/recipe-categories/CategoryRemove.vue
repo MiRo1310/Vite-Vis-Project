@@ -6,32 +6,24 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
 import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import { ITableColumn } from "@/types/types.ts";
-import { errorCodeHandler } from "@/lib/errorCodeHandler.ts";
 
 const props = defineProps<ITableColumn<string, RecipeCategoriesQuery["recipeCategories"][number]>>();
 
 const { mutate } = useMutation(
   graphql(`
     mutation RemoveRecipeCategory($id: UUID!) {
-      removeRecipeCategory(id: $id) {
-        isError
-        errorCode
-      }
+      removeRecipeCategory(id: $id)
     }
   `),
 );
 
 const remove = async () => {
-  const result = await mutate(
+  await mutate(
     { id: props.value },
     {
       refetchQueries: ["recipeCategories"],
     },
   );
-  const errorCode = result?.data?.removeRecipeCategory.errorCode;
-  if (errorCode) {
-    errorCodeHandler(errorCode, "categories");
-  }
 };
 
 const dialogOpen = ref(false);

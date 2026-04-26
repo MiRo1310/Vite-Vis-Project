@@ -10,7 +10,6 @@ import { UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
 import { ITableColumn } from "@/types/types.ts";
 import { refetchQueryUnits } from "@/composables/querys/units.ts";
-import { errorCodeHandler } from "@/lib/errorCodeHandler.ts";
 
 const props = defineProps<ITableColumn<string, UnitsQuery["units"][number]>>();
 const refetchQueries = [refetchQueryUnits];
@@ -18,10 +17,7 @@ const refetchQueries = [refetchQueryUnits];
 const { mutate } = useMutation(
   graphql(`
     mutation DeleteUnit($id: UUID!) {
-      deleteUnit(id: $id) {
-        errorCode
-        isError
-      }
+      deleteUnit(id: $id)
     }
   `),
   {
@@ -43,16 +39,12 @@ const { mutate: updateMutation } = useMutation(
 );
 
 const remove = async () => {
-  const result = await mutate(
+  await mutate(
     { id: props.value },
     {
       refetchQueries,
     },
   );
-  const errorCode = result?.data?.deleteUnit.errorCode;
-  if (errorCode) {
-    errorCodeHandler(errorCode, "units");
-  }
 };
 
 const update = () => {

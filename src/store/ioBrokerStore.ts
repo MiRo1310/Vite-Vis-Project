@@ -11,7 +11,7 @@ import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeri
 import { Infos } from "@/subscribeIds/info.ts";
 import { PhoneStates } from "@/subscribeIds/phone.ts";
 import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
-import { AlexaAction } from "@/pages/alexa.vue";
+import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
 import { StylesType } from "@/subscribeIds/styles.ts";
 import { PresenceType } from "@/subscribeIds/presence.ts";

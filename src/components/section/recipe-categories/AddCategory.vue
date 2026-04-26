@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button";
 import { useMutation } from "@vue/apollo-composable";
-import { ErrorCode, RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
+import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
@@ -16,12 +16,8 @@ const { mutate } = useMutation(
   graphql(`
     mutation addRecipeCategory($name: String!) {
       createRecipeCategory(dto: { name: $name }) {
-        data {
-          id
-          name
-        }
-        errorCode
-        isError
+        id
+        name
       }
     }
   `),
@@ -47,6 +43,7 @@ async function addNewCategory(): Promise<void> {
       .filter((u) => u);
     for (const category of categoryArray) {
       if (props.result?.find((c) => c.name === category)) {
+        existInDb.value = true;
         continue;
       }
       result = await mutate({ name: category });
@@ -59,10 +56,6 @@ async function addNewCategory(): Promise<void> {
   if (result?.data) {
     newCategory.value = "";
     existInDb.value = false;
-  }
-
-  if (result?.data?.createRecipeCategory.errorCode === ErrorCode.Exist) {
-    existInDb.value = true;
   }
 }
 

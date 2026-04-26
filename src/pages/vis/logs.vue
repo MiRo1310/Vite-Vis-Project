@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { IdToSubscribe, Level, Log, LogReset } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe";
+import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button";
-import { toLocaleTime } from "../lib/time.ts";
+import { toLocaleTime } from "../../lib/time.ts";
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";

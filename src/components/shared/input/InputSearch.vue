@@ -8,11 +8,13 @@ const props = withDefaults(
   defineProps<{
     defaultValue?: string | number;
     modelValue?: string | number;
+    debounceMs?: number;
   }>(),
   {
     class: "",
     modelValue: "",
     defaultValue: "",
+    debounceMs: 500,
   },
 );
 
@@ -22,7 +24,7 @@ const emits = defineEmits<(e: "update:modelValue", payload: string | number) => 
 
 const debounceFn = useDebounceFn((payload: string | number) => {
   updateHandler(payload);
-}, 500);
+}, props.debounceMs);
 
 const updateHandler = (payload: string | number) => {
   internalValue.value = payload;

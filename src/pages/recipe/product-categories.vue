@@ -7,8 +7,8 @@ import { ref } from "vue";
 import CategoryUpdate from "@/components/section/product-categories/CategoryUpdate.vue";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/product-categories/CategoryRemove.vue";
-import { useProductCategories } from "@/composables/querys/productCategories.ts";
-import { routes } from "@/router/routes.ts";
+import { useProductCategories } from "@/composables/querys/productCategories";
+import { routes } from "@/router/routes";
 import { Button } from "@/components/shared/button";
 
 const { result, loading } = useProductCategories();
