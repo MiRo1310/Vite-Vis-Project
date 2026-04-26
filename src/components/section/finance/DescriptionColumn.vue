@@ -5,9 +5,8 @@ import { onMounted, ref, watch } from "vue";
 
 const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
 
-// textColor removed: wir setzen Farbe per JS direkt wenn nötig
 const column = ref<null | HTMLElement>(null);
-const coloredRowText = "text-black";
+
 onMounted(() => {
   watch(
     () => props.value,
@@ -22,38 +21,25 @@ onMounted(() => {
       const columns = tr.querySelectorAll(".text-muted-foreground, [data-type='number'], button");
 
       if (value.toLocaleLowerCase().includes("fahrtkosten")) {
-        tr?.classList.add("bg-orange-100");
-
-        setColor(columns, tr);
+        setColor(columns, tr, "text-orange-400");
       }
 
       if (value.toLocaleLowerCase().includes("rechnung")) {
-        tr?.classList.add("bg-blue-100");
-        setColor(columns, tr);
+        setColor(columns, tr, "text-blue-400");
       }
-      const hoverClass = "text-muted-foreground";
-      tr.addEventListener("mouseenter", () => {
-        columns.forEach((c) => c.classList.add(hoverClass));
-        columns.forEach((c) => c.classList.remove(coloredRowText));
-      });
-
-      tr.addEventListener("mouseleave", () => {
-        columns.forEach((c) => c.classList.remove(hoverClass));
-        columns.forEach((c) => c.classList.add(coloredRowText));
-      });
     },
     { immediate: true },
   );
 });
 
-const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement) => {
+const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, color: string) => {
   columns?.forEach((col) => {
     if (!(col instanceof HTMLElement)) {
       return;
     }
 
     col.classList.remove("text-muted-foreground");
-    col.classList.add(coloredRowText);
+    col.classList.add(color);
   });
 };
 </script>
