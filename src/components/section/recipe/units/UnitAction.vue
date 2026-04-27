@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { Input } from "@/components/shared/input";
+import { Input } from "@/components/shared/input/input.variants";
 import { UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
 import { ITableColumn } from "@/types/types.ts";

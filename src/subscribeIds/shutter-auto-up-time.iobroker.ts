@@ -1,6 +1,6 @@
 import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
-export const shutterAutoUpTime: IdToSubscribe<Shutter> = {
+export const shutterAutoUpTimeIobroker: IdToSubscribe<Shutter> = {
   // Zeit Auto hochfahren Rolladen
   storeFolder: "shutterAutoUp",
   value: [

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";

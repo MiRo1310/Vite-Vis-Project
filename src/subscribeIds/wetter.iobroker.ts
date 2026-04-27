@@ -3,13 +3,13 @@ import { IdToSubscribe } from "@/types/types.ts";
 
 export type BoolText = "true" | "false" | true | false;
 
-export interface Wetter {
+export interface WetterIobroker {
   Aussentemperatur: StoreValue<number>;
   Luftfeuchtigkeit: StoreValue<number>;
   RegenMenge: StoreValue<number>;
 }
 
-export const wetter: IdToSubscribe<Wetter> = {
+export const wetter: IdToSubscribe<WetterIobroker> = {
   storeFolder: "wetter",
   value: [
     {

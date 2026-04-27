@@ -1,6 +1,6 @@
 import { IdToSubscribe, Shutter } from "@/types/types.ts";
 
-export const shutterIdsLogo: IdToSubscribe<Shutter> = {
+export const shutterIdsLogoIobroker: IdToSubscribe<Shutter> = {
   storeFolder: "rolladen",
   value: [
     {

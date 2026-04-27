@@ -5,7 +5,7 @@ import { onMounted, watch } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
 
 const props = defineProps<{ recipeId?: string }>();

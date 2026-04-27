@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { Trash } from "lucide-vue-next";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { graphql } from "@/api/gql";
 

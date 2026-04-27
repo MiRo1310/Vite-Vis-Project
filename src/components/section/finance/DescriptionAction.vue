@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";

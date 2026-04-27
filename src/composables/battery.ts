@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
+import { BatteriesTypeIobroker, HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "../subscribeIds/batteriesType.iobroker.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 export interface BatteryTableData {
@@ -25,10 +25,10 @@ const getXioamiValues = (item: XiaomiWindowSensor): { available: boolean; percen
   voltage: item?.voltage?.val ?? 0,
 });
 
-export const batteryList = computed(() => {
+function getBatteryList(list: BatteriesTypeIobroker) {
   const data: BatteryTableData[] = [];
-  Object.keys(batteries).forEach((key) => {
-    const item = batteries[key as keyof typeof batteries];
+  Object.keys(list).forEach((key) => {
+    const item = list[key as keyof typeof list];
     const { available, percent, voltage } = getXioamiValues(item as XiaomiWindowSensor);
     data.push({
       name: key,
@@ -41,4 +41,8 @@ export const batteryList = computed(() => {
     });
   });
   return data;
+}
+
+export const batteryList = computed(() => {
+  return getBatteryList(batteries);
 });

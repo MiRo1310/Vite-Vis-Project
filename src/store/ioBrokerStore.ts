@@ -1,31 +1,31 @@
-import { Pool } from "@/subscribeIds/pool.ts";
+import { PoolIobroker } from "../subscribeIds/pool.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
 import { defineStore, Store, StoreDefinition } from "pinia";
-import { Wetter } from "@/subscribeIds/wetter.ts";
-import { Landroid } from "../subscribeIds/landroid.ts";
-import { Calendar } from "@/subscribeIds/calendar.ts";
-import { Heating, HeatingControlType } from "@/subscribeIds/heating.ts";
-import { LogStates } from "@/subscribeIds/logs.ts";
+import { WetterIobroker } from "../subscribeIds/wetter.iobroker.ts";
+import { LandroidIobroker } from "../subscribeIds/landroid.iobroker.ts";
+import { CalendarIobroker } from "../subscribeIds/calendar.iobroker.ts";
+import { HeatingIobroker, HeatingControlType } from "../subscribeIds/heating.iobroker.ts";
+import { LogStates } from "../subscribeIds/logs.iobroker.ts";
 import { computed, ComputedRef } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
-import { Infos } from "@/subscribeIds/info.ts";
-import { PhoneStates } from "@/subscribeIds/phone.ts";
-import { BatteriesType } from "@/subscribeIds/batteriesType.ts";
+import { Infos } from "../subscribeIds/info.iobroker.ts";
+import { PhoneStates } from "../subscribeIds/phone.iobroker.ts";
+import { BatteriesTypeIobroker } from "../subscribeIds/batteriesType.iobroker.ts";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
-import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.ts";
-import { StylesType } from "@/subscribeIds/styles.ts";
-import { PresenceType } from "@/subscribeIds/presence.ts";
-import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.ts";
-import { AirConditioners } from "@/subscribeIds/air-conditioners.ts";
-import { Hmip } from "@/subscribeIds/hmip.ts";
+import { LightTypes, LightTypesAdditive } from "../subscribeIds/light.iobroker.ts";
+import { StylesType } from "../subscribeIds/styles.iobroker.ts";
+import { PresenceType } from "../subscribeIds/presence.iobroker.ts";
+import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "../subscribeIds/diverse.iobroker.ts";
+import { AirConditionersIobroker } from "../subscribeIds/air-conditioners.iobroker.ts";
+import { HmipIobroker } from "../subscribeIds/hmip.iobroker.ts";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
-  wetter: Wetter;
-  hmip: Hmip;
+  wetter: WetterIobroker;
+  hmip: HmipIobroker;
   idsToControl: IdsToControl;
   shutterAutoUp: Shutter;
   shutterAutoDownTime: Shutter;
@@ -35,16 +35,16 @@ export interface IoBrokerStoreState {
   pv: Pv;
   trash: TrashStates;
   alexaLists: AlexaListStates;
-  pool: Pool;
-  landroid: Landroid;
-  calendar: Calendar;
-  heating: Heating;
+  pool: PoolIobroker;
+  landroid: LandroidIobroker;
+  calendar: CalendarIobroker;
+  heating: HeatingIobroker;
   logs: LogStates;
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;
   infos: Infos;
   phone: PhoneStates;
-  batteries: BatteriesType;
+  batteries: BatteriesTypeIobroker;
   alexaAction: AlexaAction;
   lights: LightTypes;
   lightsAdditive: LightTypesAdditive;
@@ -55,7 +55,7 @@ export interface IoBrokerStoreState {
   time: TimeStates;
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
-  airConditioners: AirConditioners;
+  airConditioners: AirConditionersIobroker;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
@@ -117,23 +117,23 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
     alexaAction: {} as AlexaAction,
-    airConditioners: {} as AirConditioners,
-    batteries: {} as BatteriesType,
-    calendar: {} as Calendar,
+    airConditioners: {} as AirConditionersIobroker,
+    batteries: {} as BatteriesTypeIobroker,
+    calendar: {} as CalendarIobroker,
     fenster: {} as WindowType,
-    heating: {} as Heating,
+    heating: {} as HeatingIobroker,
     heatingControl: {} as HeatingControlType,
     heatingTimeSlot: {} as HeatingTimeSlot,
     holiday: {} as HolidayStates,
     idsToControl: {} as IdsToControl,
     infos: {} as Infos,
-    landroid: {} as Landroid,
+    landroid: {} as LandroidIobroker,
     lights: {} as LightTypes,
     lightsAdditive: {} as LightTypesAdditive,
     logReset: {} as LogReset,
     logs: {} as LogStates,
     phone: {} as PhoneStates,
-    pool: {} as Pool,
+    pool: {} as PoolIobroker,
     presence: {} as PresenceType,
     pv: {} as Pv,
     rolladen: {} as Shutter,
@@ -146,9 +146,9 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     time: {} as TimeStates,
     timers: {} as Timers,
     trash: {} as TrashStates,
-    wetter: {} as Wetter,
+    wetter: {} as WetterIobroker,
     windowGlobal: {} as WindowGlobalStates,
-    hmip: {} as Hmip,
+    hmip: {} as HmipIobroker,
   }),
   getters: {
     isAdminConnected(state: IoBrokerStoreState) {

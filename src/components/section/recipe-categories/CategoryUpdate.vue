@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { Input } from "@/components/shared/input";
+import { Input } from "@/components/shared/input/input.variants";
 import { ITableColumn } from "@/types/types.ts";
 import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
 import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";

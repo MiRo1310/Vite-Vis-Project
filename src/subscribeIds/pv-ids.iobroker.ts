@@ -1,6 +1,6 @@
 import { IdToSubscribe, Pv } from "@/types/types.ts";
 
-export const pvIds: IdToSubscribe<Pv> = {
+export const pvIdsIobroker: IdToSubscribe<Pv> = {
   storeFolder: "pv",
   value: [
     { id: "modbus.0.holdingRegisters.41069_soc", key: "batteryCharging" },

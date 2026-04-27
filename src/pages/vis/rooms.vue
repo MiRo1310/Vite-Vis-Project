@@ -3,14 +3,14 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { RoomItems, RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
-import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.ts";
+import { notSubscribedIds } from "@/subscribeIds/ids-not-subscribed.iobroker.js";
 import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
 import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
 import { roomNames, updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
-import { BatteriesType, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.ts";
-import { Button } from "@/components/shared/button";
+import { BatteriesTypeIobroker, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.iobroker.js";
+import { Button } from "@/components/shared/button/button.variants";
 import { getValBoolean, getValNumber } from "@/lib/object.ts";
 
 const iobrokerStore = useIobrokerStore();
@@ -21,7 +21,7 @@ const getAvailable = (val?: XiaomiWindowSensor) => val?.available;
 
 const rooms = computed((): RoomType[] => {
   const { kueche, esszimmer, wohnzimmer, schlafen, bad, abstellraumog, kinderzimmer, gaestezimmer } = notSubscribedIds;
-  const batterie: BatteriesType | undefined = batteries.value;
+  const batterie: BatteriesTypeIobroker | undefined = batteries.value;
   if (!batterie) {
     return [];
   }

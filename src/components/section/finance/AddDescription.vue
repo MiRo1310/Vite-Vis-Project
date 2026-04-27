@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";

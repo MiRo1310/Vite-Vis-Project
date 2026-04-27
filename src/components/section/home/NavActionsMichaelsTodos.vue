@@ -7,7 +7,7 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { AlexaList } from "@/types/types.ts";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { toJSON } from "@michaelroling/ts-library";
 import { getValString } from "@/lib/object.ts";
 

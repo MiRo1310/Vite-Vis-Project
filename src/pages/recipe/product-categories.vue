@@ -9,7 +9,7 @@ import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/product-categories/CategoryRemove.vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { routes } from "@/router/routes";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 
 const { result, loading } = useProductCategories();
 

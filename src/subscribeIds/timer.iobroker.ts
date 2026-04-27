@@ -1,6 +1,6 @@
 import { IdToSubscribe, Timer, TimerObject, Timers } from "@/types/types.ts";
 
-export const timer: IdToSubscribe<TimerObject> = {
+export const timerIobroker: IdToSubscribe<TimerObject> = {
   storeFolder: "showTimerCard",
   value: [{ id: "alexa-timer-vis.0.all_Timer.alive", key: "timerAlive" }],
 };

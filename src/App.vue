@@ -6,11 +6,11 @@ import { useTime } from "@/composables/time.ts";
 import { socketIo } from "@/config/config.ts";
 import { Toaster } from "@/components/ui/toast";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { batteryIds } from "@/subscribeIds/batteriesType.ts";
-import { hmipIds } from "@/subscribeIds/hmip.ts";
+import { batteryIds } from "@/subscribeIds/batteriesType.iobroker.js";
+import { hmipIds } from "@/subscribeIds/hmip.iobroker.js";
 import { useColorMode } from "@vueuse/core";
-import { lightStates } from "@/subscribeIds/light.ts";
-import { heating } from "@/subscribeIds/heating.ts";
+import { lightStates } from "@/subscribeIds/light.iobroker.js";
+import { heating } from "@/subscribeIds/heating.iobroker.js";
 
 useColorMode();
 

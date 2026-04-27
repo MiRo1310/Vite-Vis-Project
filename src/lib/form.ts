@@ -1,4 +1,4 @@
-import { productSchema, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { productSchema, TProductSchema } from "../components/section/recipe-form/schema.form.ts";
 import { computed } from "vue";
 
 export const getProductFieldError = (product: TProductSchema, field: keyof typeof productSchema.shape) => {

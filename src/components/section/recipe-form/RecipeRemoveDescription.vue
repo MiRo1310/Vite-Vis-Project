@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Logger } from "@/lib/logger.ts";
 import { TForm } from "@/components/section/recipe-form/index.ts";
 import { isDefined } from "@vueuse/core";
 import { computed } from "vue";
-import { fieldsRecipe, TDescriptionSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, TDescriptionSchema } from "@/components/section/recipe-form/schema.form.js";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 
 const props = defineProps<{ description: TDescriptionSchema; form: TForm }>();

@@ -11,14 +11,14 @@ import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
 import { GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
-import { formSchemaProduct } from "@/components/section/products/schema.ts";
+import { formSchemaProduct } from "@/components/section/products/schema.form.js";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { invalidateCache } from "@/composables/querys/utils.ts";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
 import { useToast } from "@/components/ui/toast";
 import OpenFoodFactsProduct from "@/components/section/products/OpenFoodFactsProduct.vue";
 import OpenFoodFactsValueUpdater from "@/components/section/products/OpenFoodFactsValueUpdater.vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();

@@ -6,7 +6,7 @@ import { computed, ref } from "vue";
 import ColorSettings from "@/components/section/calendar/ColorSettings.vue";
 import DialogSettings from "@/components/section/calendar/DialogSettings.vue";
 import Page from "@/components/shared/page/Page.vue";
-import { weekdays } from "@/defaultValues/defaultValues.ts";
+import { weekdays } from "@/constants/constants.js";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 const daysInMonth = ref(0);

@@ -3,7 +3,7 @@ import { IdToSubscribe } from "@/types/types.ts";
 
 export type BoolText = "true" | "false" | true | false;
 
-export interface Pool {
+export interface PoolIobroker {
   heaterState: StoreValue<BoolText>;
   tempSet: StoreValue<number>;
   consumption: StoreValue<number>;
@@ -31,7 +31,7 @@ export interface Pool {
   temperature: StoreValueWithTimestamp<number>;
 }
 
-export const poolIds: IdToSubscribe<Pool> = {
+export const poolIds: IdToSubscribe<PoolIobroker> = {
   storeFolder: "pool",
   value: [
     { id: "midas-aquatemp.0.state", key: "heaterState" },

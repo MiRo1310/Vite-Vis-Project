@@ -1,7 +1,7 @@
 import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 
-export interface AirConditioners {
+export interface AirConditionersIobroker {
   schlafenOnline: StoreValue<boolean>;
   schlafenPower: StoreValue<number>;
   schlafenPowerStatus: StoreValue<boolean>;
@@ -15,7 +15,7 @@ export interface AirConditioners {
   childSetTemp: StoreValue<number>;
 }
 
-export const airConditioners: IdToSubscribe<AirConditioners> = {
+export const airConditioners: IdToSubscribe<AirConditionersIobroker> = {
   storeFolder: "airConditioners",
   value: [
     { id: "tuya.0.bf371cfe643bf102afauv6.online", key: "schlafenOnline" },

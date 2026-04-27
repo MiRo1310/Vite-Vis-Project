@@ -30,3 +30,17 @@ export const getNameById = <T extends NameId | null>(id?: string, array?: T[] | 
 
 export const getIdByName = <T extends NameId | null>(name?: string, array?: T[] | null): string =>
   array?.find((item) => item?.name === name)?.id || "";
+
+export const newIdPrefix = "NEW_ID_TEMP_";
+
+export class PrefixedIdGenerator {
+  index = 0;
+
+  constructor(readonly prefix: string) {}
+
+  public nextId(): string {
+    const id = `${this.prefix}${this.index}`;
+    this.index++;
+    return id;
+  }
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 defineProps<{ abortLabel?: string; disabled?: boolean; saveLabel?: string }>();
 const emits = defineEmits(["update:close"]);
 </script>

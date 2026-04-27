@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { Primitive, type PrimitiveProps } from "radix-vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
-import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/index.ts";
+import { buttonIcons, ButtonVariantProps } from "@/components/shared/button/button.variants.js";
 
 interface Props extends PrimitiveProps, ButtonVariantProps {
   // eslint-disable-next-line vue/no-unused-properties

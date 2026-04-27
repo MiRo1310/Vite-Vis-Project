@@ -42,5 +42,5 @@ export const fields = {
   productArray: z.array(productSchema).optional(),
 };
 
-export const formSchema = toTypedSchema(z.object(fields));
+export const schemaForm = toTypedSchema(z.object(fields));
 export const formSchemaProduct = toTypedSchema(productSchema);

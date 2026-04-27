@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, TForm } from "@/components/section/recipe-form/index.ts";
+import { TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { computed } from "vue";
-import { fieldsRecipe, TProductHeaderSchema, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, TProductHeaderSchema, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
+import { newIdPrefix } from "@/components/section/recipe-form/utils.ts";
 
 const store = useRecipeStore();
 

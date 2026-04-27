@@ -3,7 +3,7 @@ import { IdToSubscribe } from "@/types/types.ts";
 
 export type BoolText = "true" | "false" | true | false;
 
-export interface Landroid {
+export interface LandroidIobroker {
   battery: StoreValue<number>;
   totalDistance: StoreValue<number>;
   totalBladeTime: StoreValue<number>;
@@ -15,7 +15,7 @@ export interface Landroid {
   batteryCharging: StoreValue<boolean>;
 }
 
-export const landroid: IdToSubscribe<Landroid> = {
+export const landroid: IdToSubscribe<LandroidIobroker> = {
   storeFolder: "landroid",
   value: [
     {

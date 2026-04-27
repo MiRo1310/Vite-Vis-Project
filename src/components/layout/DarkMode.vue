@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode } from "@vueuse/core";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Moon, Sun } from "lucide-vue-next";
 
 defineProps<{ small?: boolean }>();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CollapsibleShared from "@/components/shared/collapsible/CollapsibleShared.vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { computed, ref } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";

@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import { useLazyQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
-import { Input } from "@/components/shared/input";
-import { Button } from "@/components/shared/button";
+import { Input } from "@/components/shared/input/input.variants";
+import { Button } from "@/components/shared/button/button.variants";
 
 const foodFactsProductsBySearchQuery = graphql(`
   query foodFactsProductsBySearch($search: String!) {

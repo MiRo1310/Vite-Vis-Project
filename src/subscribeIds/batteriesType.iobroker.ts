@@ -20,7 +20,7 @@ export interface ShellyPlusSmoke {
   ts: number;
 }
 
-export interface BatteriesType {
+export interface BatteriesTypeIobroker {
   "Shelly Plus Smoke Flur OG": ShellyPlusSmoke;
   "HMIP Flur": HMIPDevice;
   "HMIP Wohnzimmer links": HMIPDevice;
@@ -63,7 +63,7 @@ export interface BatteriesType {
   xioami_attic_left: XiaomiWindowSensor;
 }
 
-const batteryIds: IdToSubscribe<BatteriesType> = {
+const batteryIds: IdToSubscribe<BatteriesTypeIobroker> = {
   storeFolder: "batteries",
   value: [
     {
@@ -83,7 +83,7 @@ const batteryIds: IdToSubscribe<BatteriesType> = {
     },
   ],
 };
-const HMIP: { name: keyof BatteriesType; id: string }[] = [
+const HMIP: { name: keyof BatteriesTypeIobroker; id: string }[] = [
   { name: "HMIP Buero", id: "hmip.0.devices.3014F711A000201A49A55C45" },
   {
     name: "HMIP Keller Waschen",
@@ -107,7 +107,7 @@ const HMIP: { name: keyof BatteriesType; id: string }[] = [
   { name: "HMIP Gaestezimmer", id: "hmip.0.devices.3014F711A000201A49A55C2A" },
 ];
 
-const zigbeeWindowDevices: { name: keyof BatteriesType; id: string }[] = [
+const zigbeeWindowDevices: { name: keyof BatteriesTypeIobroker; id: string }[] = [
   { name: "xioami_cellar_door", id: "zigbee.0.00158d00045efc35" },
   {
     name: "xioami_cellar_stair_window",

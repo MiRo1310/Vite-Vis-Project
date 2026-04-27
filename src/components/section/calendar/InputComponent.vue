@@ -2,7 +2,7 @@
 import { InputShadcn } from "@/components/ui/input";
 import Select from "@/components/shared/select/Select.vue";
 import { colors } from "@/config/colors.ts";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Trash2 } from "lucide-vue-next";
 import { SelectOption } from "@/types/types.ts";
 

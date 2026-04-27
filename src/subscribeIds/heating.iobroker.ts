@@ -1,7 +1,7 @@
 import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { IdToSubscribe } from "@/types/types.ts";
 
-export interface Heating {
+export interface HeatingIobroker {
   automatic: StoreValue<boolean>;
   level: StoreValue<boolean>;
   active: StoreValue<boolean>;
@@ -28,7 +28,7 @@ export interface Heating {
   heatingPump: StoreValue<boolean>;
 }
 
-export const heating: IdToSubscribe<Heating> = {
+export const heating: IdToSubscribe<HeatingIobroker> = {
   storeFolder: "heating",
   value: [
     { id: "s7.0.DBs.DB1.I6_-_NQ5", key: "automatic" },
