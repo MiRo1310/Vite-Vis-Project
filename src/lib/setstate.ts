@@ -1,16 +1,25 @@
 import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { AdminConnection } from "@iobroker/socket-client";
+import { Logger } from "@/lib/logger.ts";
 
 export const setstate = async (id: string | undefined, value: string | number | boolean, ack = false) => {
   if (adminConnection && id) {
-    await adminConnection.setState(id, await transformValueToCorrectType(id, value), ack);
+    await adminConnection.setState(id, await transformValueToCorrectType(adminConnection, id, value), ack);
+  }
+  if (!id) {
+    Logger("Cannot set state because id is undefined", { type: "warn" });
+  }
+  if (!adminConnection) {
+    Logger("No admin connection available to set state", { type: "error" });
   }
 };
 
-const transformValueToCorrectType = async (id: string, value: string | number | boolean): Promise<string | number | boolean> => {
-  if (!adminConnection) {
-    return value;
-  }
-  const iobrokerObject = await adminConnection.getObject(id);
+const transformValueToCorrectType = async (
+  connection: AdminConnection,
+  id: string,
+  value: string | number | boolean,
+): Promise<string | number | boolean> => {
+  const iobrokerObject = await connection.getObject(id);
   const type = iobrokerObject?.common?.type;
 
   if (!type) {

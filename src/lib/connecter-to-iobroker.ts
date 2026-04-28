@@ -5,6 +5,7 @@ import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } fr
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { isDefined } from "@vueuse/core";
 import { Logger } from "@/lib/logger.ts";
+import { invertBoolean } from "@/lib/boolean.ts";
 
 let iobrokerStore: IoBrokerStore | null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -67,7 +68,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
             iobrokerStore?.setValues({
               state,
               storeFolder: item.storeFolder,
-              val: stateId.invertValue ? invertBoolean(value) : value,
+              val: stateId.invertValue ? invertBoolean(!!value) : value,
               id,
               key: String(stateId.key),
               subKey: stateId.subKey,
@@ -82,8 +83,4 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
       }
     });
   });
-}
-
-export function invertBoolean(value: IobrokerStateValue | null) {
-  return typeof value === "boolean" ? !value : value;
 }

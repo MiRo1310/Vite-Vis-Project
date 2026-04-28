@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getShutterImageByPosition } from "@/composables/shutterImages.ts";
+import { getShutterImageByPosition } from "@/composables/shutter-images.js";
 
 defineProps<{ position?: number }>();
 </script>

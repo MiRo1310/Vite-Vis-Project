@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getShutterImageIndexByPosition } from "@/composables/shutterImages.ts";
+import { getShutterImageIndexByPosition } from "../../src/composables/shutter-images";
 
 test("get correct shutter index", () => {
   expect(getShutterImageIndexByPosition(0)).toBe(0);

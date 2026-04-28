@@ -22,17 +22,3 @@ export const Logger = (t: string, options?: { value?: unknown; e?: any; type?: C
     }
   }
 };
-
-export const args = (...args: any[]): string => {
-  let str = "";
-  args.forEach((arg) => {
-    if (typeof arg === "object") {
-      str += JSON.stringify(arg) + " ";
-    } else if (typeof arg === "string") {
-      str += arg + " ";
-    } else {
-      str += String(arg) + " ";
-    }
-  });
-  return str;
-};

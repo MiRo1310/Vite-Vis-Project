@@ -1,6 +1,6 @@
 import { TextPositionType } from "@/types/types";
 import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
-import { args, Logger } from "@/lib/logger.ts";
+import { Logger } from "@/lib/logger.ts";
 
 export const getElementByPosition = (
   index: number,
@@ -11,7 +11,7 @@ export const getElementByPosition = (
 };
 
 export const updateTextByGroupPosition = (index: number, array: TextPositionType[], value?: string) => {
-  Logger(args("Update text by position", { index, value, array }));
+  Logger("Update text by position", { value: { index, value, array } });
   const obj = array.find((element) => element.position === index);
 
   if (obj && value) {
