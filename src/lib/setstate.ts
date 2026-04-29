@@ -1,4 +1,4 @@
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "./iobroker-service.ts";
 import { AdminConnection } from "@iobroker/socket-client";
 import { Logger } from "@/lib/logger.ts";
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/ui/button";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { storeToRefs } from "pinia";
 
 defineProps<{ class: string }>();

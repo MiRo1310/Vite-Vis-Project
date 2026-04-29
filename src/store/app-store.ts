@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-
-interface AppStore {
-  showTimer: boolean;
-}
+import { AppStore } from "@/store/index.ts";
 
 export const useAppStore = defineStore("appStore", {
   state: (): AppStore => ({

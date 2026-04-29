@@ -1,4 +1,4 @@
-import { subscribeStates, unSubscribeStates } from "@/lib/connecter-to-iobroker.ts";
+import { subscribeStates, unSubscribeStates } from "../lib/iobroker-service.ts";
 import { onUnmounted, watchEffect } from "vue";
 import { IdToSubscribe } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";

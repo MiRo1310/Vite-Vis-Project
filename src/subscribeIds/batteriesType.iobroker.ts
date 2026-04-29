@@ -1,5 +1,5 @@
 import { IdToSubscribe } from "@/types/types.ts";
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 
 export interface XiaomiWindowSensor {
   percent: StoreValue<number>;

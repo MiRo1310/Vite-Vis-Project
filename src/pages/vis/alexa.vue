@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { ref, watchEffect } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
@@ -7,11 +7,12 @@ import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { IdToSubscribe } from "@/types/types.ts";
-import { StoreValue, useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 const { alexaAction: alexaActionStore } = useIobrokerStore();
 

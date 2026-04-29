@@ -1,8 +1,8 @@
-import { IoBrokerStates, StoreValue } from "@/store/ioBrokerStore.ts";
 import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
 import { FunctionalComponent, HTMLAttributes } from "vue";
 import { Badge } from "../components/shared/badge/badge.variants";
+import { IoBrokerStates, StoreValue } from "@/store";
 
 export interface AlexaList {
   name: string;

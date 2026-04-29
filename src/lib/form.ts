@@ -7,7 +7,7 @@ import type { ZodSchema } from "zod";
  * @param data data to validate
  * @param field field name (or numeric index) to look for in issue paths
  */
-export const getFieldError = <T>(schema: ZodSchema<T>, data: unknown, field: string | number) => {
+export const getFieldError = <T extends Record<string, unknown>>(schema: ZodSchema<T>, data: unknown, field: keyof T | number) => {
   const result = schema.safeParse(data);
   if (!result.success) {
     const issue = result.error.issues.find((i) => i.path[0] === field);
@@ -27,4 +27,3 @@ export const createIsValid = <T>(schema: ZodSchema<T>) => {
  * Create a computed validator to produce the same reactive API shape as before
  */
 export const createIsValidComputed = <T>(schema: ZodSchema<T>) => computed(() => (data: unknown) => schema.safeParse(data).success);
-

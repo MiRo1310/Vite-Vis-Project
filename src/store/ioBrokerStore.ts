@@ -1,12 +1,12 @@
 import { PoolIobroker } from "../subscribeIds/pool.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
-import { defineStore, Store, StoreDefinition } from "pinia";
+import { defineStore } from "pinia";
 import { WetterIobroker } from "../subscribeIds/wetter.iobroker.ts";
 import { LandroidIobroker } from "../subscribeIds/landroid.iobroker.ts";
 import { CalendarIobroker } from "../subscribeIds/calendar.iobroker.ts";
-import { HeatingIobroker, HeatingControlType } from "../subscribeIds/heating.iobroker.ts";
+import { HeatingControlType, HeatingIobroker } from "../subscribeIds/heating.iobroker.ts";
 import { LogStates } from "../subscribeIds/logs.iobroker.ts";
-import { computed, ComputedRef } from "vue";
+import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { Infos } from "../subscribeIds/info.iobroker.ts";
 import { PhoneStates } from "../subscribeIds/phone.iobroker.ts";
@@ -15,103 +15,12 @@ import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "../subscribeIds/light.iobroker.ts";
 import { StylesType } from "../subscribeIds/styles.iobroker.ts";
 import { PresenceType } from "../subscribeIds/presence.iobroker.ts";
-import { HolidayStates, AlexaListStates, TimeStates, TrashStates, WindowGlobalStates } from "../subscribeIds/diverse.iobroker.ts";
+import { AlexaListStates, HolidayStates, TimeStates, TrashStates, WindowGlobalStates } from "../subscribeIds/diverse.iobroker.ts";
 import { AirConditionersIobroker } from "../subscribeIds/air-conditioners.iobroker.ts";
 import { HmipIobroker } from "../subscribeIds/hmip.iobroker.ts";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
-
-export interface IoBrokerStoreState {
-  adminConnectionEstablished: boolean;
-  subscribedIds: string[];
-  wetter: WetterIobroker;
-  hmip: HmipIobroker;
-  idsToControl: IdsToControl;
-  shutterAutoUp: Shutter;
-  shutterAutoDownTime: Shutter;
-  timers: Timers;
-  rolladen: Shutter;
-  fenster: WindowType;
-  pv: Pv;
-  trash: TrashStates;
-  alexaLists: AlexaListStates;
-  pool: PoolIobroker;
-  landroid: LandroidIobroker;
-  calendar: CalendarIobroker;
-  heating: HeatingIobroker;
-  logs: LogStates;
-  logReset: LogReset;
-  heatingTimeSlot: HeatingTimeSlot;
-  infos: Infos;
-  phone: PhoneStates;
-  batteries: BatteriesTypeIobroker;
-  alexaAction: AlexaAction;
-  lights: LightTypes;
-  lightsAdditive: LightTypesAdditive;
-  styles: StylesType;
-  presence: PresenceType;
-  holiday: HolidayStates;
-  windowGlobal: WindowGlobalStates;
-  time: TimeStates;
-  showTimerCard: TimerObject;
-  heatingControl: HeatingControlType;
-  airConditioners: AirConditionersIobroker;
-}
-
-export type StoreValue<T> = StoreValueType<T> | undefined;
-export type StoreValueWithTimestamp<T> = (StoreValueType<T> & Timestamp) | undefined;
-
-export interface Timestamp {
-  ts: number;
-}
-
-export interface StoreValueType<T> {
-  val: T | undefined;
-  id: string;
-  ack: boolean;
-  ts?: number;
-  lc?: number;
-  from?: string;
-  q?: number;
-}
-
-export interface ParsedLogs {
-  error: Log[];
-  warn: Log[];
-  info: Log[];
-}
-
-interface SetValues {
-  storeFolder: keyof IoBrokerStoreState;
-  val: string | number | boolean | object | null;
-  id: string;
-  key: string;
-  subKey?: string;
-  timestamp?: boolean;
-  state: IobrokerState;
-}
-
-export type IoBrokerStates = keyof IoBrokerStoreState;
-
-interface IoBrokerStoreActions {
-  setAdminConnection(val: boolean): void;
-  resetIdsToSubscribe(): void;
-  addIdToSubscribedIds(id: string): void;
-  removeIdFromSubscribedIds(id: string): void;
-  setValues(params: SetValues): void;
-}
-
-interface IoBrokerStoreGetters {
-  isAdminConnected(state: IoBrokerStoreState): boolean;
-  getTrash(state: IoBrokerStoreState): TrashStates;
-  getShoppinglist(state: IoBrokerStoreState): AlexaListStates;
-  getState(state: IoBrokerStoreState): IoBrokerStoreState;
-  getIdsToControl(state: IoBrokerStoreState): IdsToControl;
-  getParsedLogs(state: IoBrokerStoreState): ComputedRef<ParsedLogs>;
-}
-
-type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
-export type IoBrokerStore = Store<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
+import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
 
 export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 import { useDebounceFn } from "@vueuse/core";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { watch } from "vue";
 import { InputType } from "@/components/ui/input/InputShadcn.vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";

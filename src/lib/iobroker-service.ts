@@ -1,11 +1,12 @@
 import { AdminConnection } from "@iobroker/socket-client";
-import { IoBrokerStore, useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { idToSubscribeOnAppStart } from "../subscribeIds/ids-to-subscribe.iobroker.ts";
 import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { isDefined } from "@vueuse/core";
 import { Logger } from "@/lib/logger.ts";
 import { invertBoolean } from "@/lib/boolean.ts";
+import { IoBrokerStore } from "@/store";
 
 let iobrokerStore: IoBrokerStore | null;
 document.addEventListener("DOMContentLoaded", () => {

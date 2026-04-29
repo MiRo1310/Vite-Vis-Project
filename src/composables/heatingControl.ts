@@ -1,4 +1,4 @@
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "../lib/iobroker-service.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { RoomItems } from "@/types/types.ts";
 

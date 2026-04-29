@@ -1,24 +1,7 @@
 import { defineStore } from "pinia";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-
-export interface IRecipeGroupToDelete {
-  groupPosition: number;
-  recipeId: string;
-}
-
-interface IRecipeStore {
-  recipeInProgress: (TFormValues & { recipeId?: string }) | null;
-  recipeGroupIdsToDelete: IRecipeGroupToDelete[];
-  recipeProductIdsToDelete: string[];
-  recipeDescriptionIdsToDelete: string[];
-  productGroupsCount: number;
-  shouldValidate: boolean;
-  directlyOpenNewProductModal: boolean;
-  lastRecipes: TRecipe[];
-}
-
-export type TRecipe = TGroupedRecipesByCategory[number][number];
+import { IRecipeGroupToDelete, IRecipeStore, TRecipe } from "@/store/index.ts";
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({

@@ -1,5 +1,5 @@
 import { SelectOption } from "@/types/types.ts";
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 
 export function tempArray() {
   const array: SelectOption[] = [];

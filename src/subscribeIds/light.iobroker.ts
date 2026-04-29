@@ -1,4 +1,4 @@
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 import { IdToSubscribe } from "@/types/types.ts";
 
 export interface LightTypes extends LightTypesAdditive {

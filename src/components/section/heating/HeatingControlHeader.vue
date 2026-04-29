@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Select from "@/components/shared/select/Select.vue";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { RoomItems, SelectOption } from "@/types/types.ts";
 import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 

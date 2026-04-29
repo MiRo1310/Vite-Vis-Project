@@ -8,7 +8,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { colors } from "@/config/colors";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { SelectOption } from "@/types/types.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { getValString } from "@/lib/object.ts";

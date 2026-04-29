@@ -1,8 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // Wir erstellen die mocks innerhalb der vi.mock-Fabrik, um Hoisting-Probleme zu vermeiden.
-let mockGetObject: ReturnType<typeof vi.fn>;
-let mockSetState: ReturnType<typeof vi.fn>;
+// Declare the mock functions here so they are available to the mock factory (no hoisting issues)
+const _mockGetObject = vi.fn();
+const _mockSetState = vi.fn();
+let mockGetObject: ReturnType<typeof vi.fn> = _mockGetObject;
+let mockSetState: ReturnType<typeof vi.fn> = _mockSetState;
 let warnSpy: ReturnType<typeof vi.spyOn>;
 let errorSpy: ReturnType<typeof vi.spyOn>;
 
@@ -10,28 +13,29 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-vi.mock("../../src/lib/connecter-to-iobroker", () => {
-  const getObject = vi.fn();
-  const setState = vi.fn();
+// Mock the module that `setstate.ts` actually imports (`iobroker-service`)
+vi.mock("../../src/lib/iobroker-service", () => {
   return {
     adminConnection: {
-      getObject,
-      setState,
+      getObject: _mockGetObject,
+      setState: _mockSetState,
     },
   };
 });
 
-// Importiere erst nach dem Mock
-import { setstate } from "../../src/lib/setstate";
+// We'll import the module under test dynamically in beforeEach so we can re-load with mocks
+let setstate: any;
 
 describe("setstate / transformValueToCorrectType", () => {
   beforeEach(async () => {
-    // Nachdem die Mock-Fabrik registriert ist, holen wir die tatsächlichen Mock-Funktionen
-    const mocked = await import("../../src/lib/connecter-to-iobroker");
-    mockGetObject = mocked.adminConnection?.getObject as ReturnType<typeof vi.fn>;
-    mockSetState = mocked.adminConnection?.setState as ReturnType<typeof vi.fn>;
+    // Reset the top-level mocks
+    mockGetObject = _mockGetObject;
+    mockSetState = _mockSetState;
     mockGetObject.mockReset();
     mockSetState.mockReset();
+    // dynamically import the module under test so it uses the current mocks
+    const mod = await import("../../src/lib/setstate");
+    setstate = mod.setstate;
     // setze console spies
     warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -83,7 +87,7 @@ describe("setstate / transformValueToCorrectType", () => {
 
   it("setstate wird nicht aufgerufen wenn die admin connection fehlt", async () => {
     // Simuliere, dass die adminConnection nicht verfügbar ist
-    const mod = await import("../../src/lib/connecter-to-iobroker");
+    const mod = await import("../../src/lib/iobroker-service");
     (mod as any).adminConnection = undefined;
     // Auch wenn getObject im Mock definiert ist, wird es nicht verwendet, weil adminConnection fehlt
     mockGetObject.mockResolvedValue({ common: { type: "boolean" } });

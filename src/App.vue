@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted } from "vue";
-import { loadScript } from "@/lib/connecter-to-iobroker.ts";
+import { loadScript } from "@/lib/iobroker-service.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useTime } from "@/composables/time.ts";
 import { socketIo } from "@/config/config.ts";

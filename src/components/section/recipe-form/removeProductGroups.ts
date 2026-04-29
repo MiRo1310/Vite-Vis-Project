@@ -1,7 +1,7 @@
 import { provideApolloClient, useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import apolloClient from "@/apolloClient.ts";
-import { IRecipeGroupToDelete } from "@/store/recipeStore.ts";
+import { IRecipeGroupToDelete } from "@/store";
 
 export const removeProductGroups = async (groups: IRecipeGroupToDelete[]) => {
   provideApolloClient(apolloClient);

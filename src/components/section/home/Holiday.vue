@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
 import { UserRoundSearch } from "lucide-vue-next";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 

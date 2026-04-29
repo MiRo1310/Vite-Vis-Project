@@ -1,5 +1,5 @@
-import { StoreValue } from "@/store/ioBrokerStore.ts";
 import { IdToSubscribe } from "@/types/types.ts";
+import { StoreValue } from "@/store";
 
 export type BoolText = "true" | "false" | true | false;
 

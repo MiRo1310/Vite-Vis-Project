@@ -3,7 +3,7 @@ import { toLocaleTime } from "@/lib/time.ts";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Button from "../../shared/button/Button.vue";
 import { X } from "lucide-vue-next";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { AlexaList } from "@/types/types.ts";
 
 defineProps<{ list: AlexaList[] }>();
