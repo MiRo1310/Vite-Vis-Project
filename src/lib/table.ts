@@ -136,7 +136,7 @@ const checkbox = () => {
     });
 };
 
-const getHtml = (source: string) => {
+export const getHtml = (source: string) => {
   return ({ row }: any) => {
     let val = getValueByPath(row.original, source);
     if (!val) {
