@@ -2,13 +2,13 @@ import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 import { HasOptionalNameAndId, SelectOption } from "@/types/types";
 
-function isHasOptionalNameAndId<T>(item: T): item is T & HasOptionalNameAndId {
+function hasOptionalNameAndId<T>(item: T): item is T & HasOptionalNameAndId {
   return isDefined((item as HasOptionalNameAndId).name) && isDefined((item as HasOptionalNameAndId).id);
 }
 
 const options = computed(() => <T>(array: T[]): SelectOption[] => {
   return array
-    .filter(isHasOptionalNameAndId)
+    .filter(hasOptionalNameAndId)
     .map((item) => ({
       label: item.name ?? "",
       value: item.id ?? "",
