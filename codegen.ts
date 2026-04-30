@@ -17,6 +17,7 @@ const config: CodegenConfig = {
           Boolean: "boolean",
           String: "string",
           Int: "number",
+          LocalDate: "string",
         },
       },
     },

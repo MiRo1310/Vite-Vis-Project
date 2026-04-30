@@ -54,7 +54,7 @@ const remove = () => {
 const form = useForm({
   validationSchema: formSchemaListing,
   initialValues: {
-    date: props.row.original.date,
+    date: props.row.original.date ?? "",
     description: props.row.original.description,
     price: props.row.original.price ?? undefined,
     addressId: props.row.original.addressId ?? undefined,
