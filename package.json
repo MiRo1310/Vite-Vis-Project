@@ -72,7 +72,7 @@
     "vue-eslint-parser": "^10.4.0",
     "vue-material-design-icons": "^5.3.1",
     "vue-router": "^5.0.6",
-    "zod": "^4.3.6"
+    "zod": "^4.4.1"
   },
   "devDependencies": {
     "@cypress/vue": "^6.0.3",
