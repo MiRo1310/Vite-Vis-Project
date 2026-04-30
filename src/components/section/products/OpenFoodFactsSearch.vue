@@ -40,12 +40,11 @@ const loadDataByCode = async () => {
   if (!init) {
     result.value = await load(foodFactsProductsBySearchQuery, { search: modelValue.value });
     init = true;
-    console.log(result.value);
+
     return;
   }
 
   result.value = await refetch({ search: String(modelValue.value) });
-  console.log(result.value);
 };
 
 const modelValue = ref("");
