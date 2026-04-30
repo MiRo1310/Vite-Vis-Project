@@ -9,6 +9,7 @@ export const useDynamicSubscribe = (states: IdToSubscribe<any> | IdToSubscribe<a
   }
   let subscribedStatesArray: IdToSubscribe<any>[] | null = null;
 
+  //TODO watcheffect testen ob es weg kann, evtl alles in eine klasse
   watchEffect(() => {
     if (!useIobrokerStore().isAdminConnected) {
       return;

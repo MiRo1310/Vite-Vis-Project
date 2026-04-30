@@ -1,3 +1,5 @@
+import { RoomItems } from "@/types/types.ts";
+
 export const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 export const weekdays: Weekdays[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
 
@@ -33,3 +35,17 @@ export const range = {
   last7d: { rangeSec: 604800, title: "Letzte 7 Tage" },
   last30d: { rangeSec: 2592000, title: "Letzte 30 Tage" },
 };
+
+export const roomNames: RoomItems[] = [
+  "Bad",
+  "Flur",
+  "Gäste WC",
+  "Kinderzimmer",
+  "Küche",
+  "Schlafzimmer",
+  "Wohnzimmer",
+  "Esszimmer",
+  "Gästezimmer",
+  "Keller Michael",
+  "Keller Waschen",
+];

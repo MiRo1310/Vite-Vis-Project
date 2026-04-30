@@ -8,10 +8,11 @@ import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
 import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
-import { roomNames, updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
+import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 import { BatteriesTypeIobroker, XiaomiWindowSensor } from "@/subscribeIds/batteriesType.iobroker.js";
 import { Button } from "@/components/shared/button/button.variants";
 import { getValBoolean, getValNumber } from "@/lib/object.ts";
+import { roomNames } from "@/constants/constants.ts";
 
 const iobrokerStore = useIobrokerStore();
 

@@ -11,17 +11,3 @@ export function updateRoomInHeatingControl(val: RoomItems | null) {
   }
   adminConnection?.setState(id, val);
 }
-
-export const roomNames: RoomItems[] = [
-  "Bad",
-  "Flur",
-  "Gäste WC",
-  "Kinderzimmer",
-  "Küche",
-  "Schlafzimmer",
-  "Wohnzimmer",
-  "Esszimmer",
-  "Gästezimmer",
-  "Keller Michael",
-  "Keller Waschen",
-];
