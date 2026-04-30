@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 
 import { computed, watch } from "vue";
 import { TForm } from "@/components/section/recipe-form";

@@ -1,7 +1,5 @@
 import { useForm } from "vee-validate";
 
-export const newIdPrefix = "NEW_ID_TEMP_";
-
 export interface IRecipeDescriptionCreateOrUpdate {
   header?: string;
   id?: string | null;
@@ -25,15 +23,3 @@ export type TRecipeProductLike = {
   position?: number | null;
   sortOrder: number;
 };
-
-export class PrefixedIdGenerator {
-  index = 0;
-
-  constructor(readonly prefix: string) {}
-
-  public nextId(): string {
-    const id = `${this.prefix}${this.index}`;
-    this.index++;
-    return id;
-  }
-}

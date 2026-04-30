@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";

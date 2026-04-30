@@ -6,7 +6,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { AlexaList } from "@/types/types.ts";

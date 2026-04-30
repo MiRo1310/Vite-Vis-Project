@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import Form from "@/components/shared/form/Form.vue";
 import RecipeProductName from "@/components/section/recipe-form/RecipeProductName.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
@@ -9,7 +9,7 @@ import { ref, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
-import { formSchemaProduct, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { formSchemaProduct, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { isDefined } from "@vueuse/core";
 import { useRecipeStore } from "@/store/recipeStore.ts";

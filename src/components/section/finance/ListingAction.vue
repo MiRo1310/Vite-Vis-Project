@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
@@ -8,7 +8,7 @@ import { ref } from "vue";
 import { TravelCostQuery } from "@/api/gql/graphql.ts";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { useForm } from "vee-validate";
-import { formSchemaListing } from "@/components/section/finance/formSchema.ts";
+import { formSchemaListing } from "@/components/section/finance/schema.form.js";
 import Form from "@/components/shared/form/Form.vue";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";

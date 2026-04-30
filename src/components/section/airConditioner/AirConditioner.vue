@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
 

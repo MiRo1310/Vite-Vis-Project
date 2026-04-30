@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import Dialog from "@/components/shared/dialog/Dialog.vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { styles } from "@/subscribeIds/styles.ts";
+import { stylesIobroker } from "@/subscribeIds/styles.iobroker.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
-import { colors } from "@/config/colors.ts";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { colors } from "@/config/colors";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { SelectOption } from "@/types/types.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { getValString } from "@/lib/object.ts";
 
 const open = defineModel<boolean>("open");
 
-useDynamicSubscribe(styles);
+useDynamicSubscribe(stylesIobroker);
 
 const { styles: styling } = useIobrokerStore();
 

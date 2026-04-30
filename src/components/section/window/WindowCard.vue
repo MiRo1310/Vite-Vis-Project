@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Switch } from "@/components/ui/switch";
 import WindowCardOpenCloseText from "@/components/section/window/WindowCardOpenCloseText.vue";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 import { RoomType } from "@/types/types.ts";
 import ShutterLabel from "@/components/section/window/ShutterLabel.vue";
 import WindowImage from "@/components/section/window/WindowImage.vue";

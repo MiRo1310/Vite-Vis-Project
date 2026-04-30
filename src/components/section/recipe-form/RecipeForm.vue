@@ -3,7 +3,7 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import Form from "@/components/shared/form/Form.vue";
 import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/recipe-form/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/recipe-form/RecipeProductGroup.vue";
@@ -12,20 +12,21 @@ import { OnResult } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
-import { formSchema, TDescriptionSchema, TProductSchema } from "@/components/section/recipe-form/formSchema";
+import { schemaForm, TDescriptionSchema, TProductSchema } from "@/components/section/recipe-form/schema.form";
 import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/recipe-form/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, TRecipeDescriptionLike, TRecipeHeaderProductLike, TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
+import { TRecipeDescriptionLike, TRecipeHeaderProductLike, TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
 import { removeDescriptions } from "@/components/section/recipe-form/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/recipe-form/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
 import { removeProductGroups } from "@/components/section/recipe-form/removeProductGroups.ts";
 import RecipeCategoryFormSelect from "@/components/section/recipe-form/RecipeCategoryFormSelect.vue";
 import { deepCopy } from "@michaelroling/ts-library";
+import { newIdPrefix } from "@/components/section/recipe-form/utils.ts";
 
 type TRecipeQuery = GetRecipeByIdQuery["recipe"];
 export type TFormValues = typeof form.values;
@@ -162,7 +163,7 @@ const initialValues = {
 };
 
 const form = useForm({
-  validationSchema: formSchema,
+  validationSchema: schemaForm,
   initialValues: initialValues,
 });
 

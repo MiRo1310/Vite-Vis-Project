@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils.ts";
 

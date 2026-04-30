@@ -3,7 +3,7 @@ import { computed, HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
 import { InputOption } from "@/types/types.ts";
 import { X } from "lucide-vue-next";
-import { variantsInputWithOptions } from "@/components/shared/input/index.ts";
+import { variantsInputWithOptions } from "@/components/shared/input/input.variants.js";
 
 const props = withDefaults(
   defineProps<{

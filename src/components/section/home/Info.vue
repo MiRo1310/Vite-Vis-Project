@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/subscribeIds/info.ts";
+import { infoStates } from "@/subscribeIds/info.iobroker.js";
 import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard from "@/components/section/home/InfoCard.vue";
 import { useRouter } from "vue-router";

@@ -4,7 +4,7 @@ import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import { computed } from "vue";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { getValBoolean } from "@/lib/object.ts";
 
 const { airConditioners, pool, landroid, heating } = storeToRefs(useIobrokerStore());

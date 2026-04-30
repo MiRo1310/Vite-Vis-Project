@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { phoneStates } from "@/subscribeIds/phone.ts";
+import { phoneStates } from "@/subscribeIds/phone.iobroker.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";

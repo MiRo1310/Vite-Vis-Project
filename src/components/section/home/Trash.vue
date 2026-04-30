@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { Days, days } from "@/defaultValues/defaultValues.ts";
+import { Days, days } from "@/constants/constants.js";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";

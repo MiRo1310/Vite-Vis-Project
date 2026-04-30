@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { ButtonVariants } from "@/components/shared/button/Button.vue";
 
 withDefaults(defineProps<{ namingButtons: keyof typeof buttons; variant?: keyof ButtonVariants["variant"] }>(), { variant: "outline" });

@@ -10,8 +10,8 @@ import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
 import Lists from "@/components/section/home/Lists.vue";
 import { Hourglass } from "lucide-vue-next";
-import { useAppStore } from "@/store/appStore.ts";
-import { Button } from "@/components/shared/button";
+import { useAppStore } from "@/store/app-store.js";
+import { Button } from "@/components/shared/button/button.variants";
 import Shutter from "@/components/section/home/Shutter.vue";
 import Empty from "@/components/section/home/Empty.vue";
 

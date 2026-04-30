@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import { computed, onMounted, ref } from "vue";
-import { months } from "@/defaultValues/defaultValues.ts";
+import { months } from "@/constants/constants.js";
 
 const emit = defineEmits(["update:daysInMonth", "update:year", "update:month"]);
 

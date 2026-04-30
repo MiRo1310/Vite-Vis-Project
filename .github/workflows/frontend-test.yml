@@ -33,6 +33,9 @@ jobs:
         
       - name: Cypress run E2E Tests
         uses: cypress-io/github-action@v7
+        env:
+          LANG: de_DE.UTF-8
+          TZ: Europe/Berlin
         with:         
           build: yarn run build
           start: yarn run dev     
@@ -92,5 +95,8 @@ jobs:
           cache: 'npm'
       - run: yarn install --frozen-lockfile
       - name: Vitest tests
+        env:
+          LANG: de_DE.UTF-8
+          TZ: Europe/Berlin
         run: yarn run test
         continue-on-error: false

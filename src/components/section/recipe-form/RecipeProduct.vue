@@ -9,7 +9,7 @@ import RecipeProductDialogContent from "@/components/section/recipe-form/RecipeP
 import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import { TForm } from "@/components/section/recipe-form/index.ts";
 import ProductUnit from "@/components/section/recipe-form/ProductUnit.vue";
-import { fieldsRecipe, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 
 const props = defineProps<{
   index: number;

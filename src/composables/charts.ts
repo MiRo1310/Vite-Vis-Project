@@ -1,5 +1,11 @@
 import { computed } from "vue";
 
+export interface AggregatedPerDay {
+  localeDateString: string;
+  count: number;
+  key: string;
+}
+
 export const xDomainSynchronized = computed(() => (dates: { date: Date }[][]): Date[] | undefined => {
   const all = dates.flat();
   if (!all.length) {
@@ -10,12 +16,6 @@ export const xDomainSynchronized = computed(() => (dates: { date: Date }[][]): D
   const max = Math.max(...times);
   return [new Date(min), new Date(max)];
 });
-
-export interface AggregatedPerDay {
-  localeDateString: string;
-  count: number;
-  key: string;
-}
 
 export const aggregatePerDay = computed(() => <T extends { date: Date; key: string }, K extends keyof T>(data: T[], key: K) => {
   return data.reduce((prev, curr) => {
@@ -32,9 +32,9 @@ export const aggregatePerDay = computed(() => <T extends { date: Date; key: stri
     }
 
     if (!el) {
-      prev.push({ localeDateString: newDate, count: currentCount ?? 0, key: curr.key });
+      prev.push({ localeDateString: newDate, count: currentCount, key: curr.key });
     } else {
-      el.count += currentCount ?? 0;
+      el.count += currentCount;
     }
     return prev;
   }, [] as AggregatedPerDay[]);

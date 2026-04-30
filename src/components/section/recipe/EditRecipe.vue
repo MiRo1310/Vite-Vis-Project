@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import { routes } from "@/router/routes.ts";
 

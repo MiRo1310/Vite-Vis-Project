@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/ca
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { HTMLAttributes } from "vue";
-import { useAppStore } from "@/store/appStore.ts";
+import { useAppStore } from "@/store/app-store.js";
 import { Timers } from "@/types/types.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";

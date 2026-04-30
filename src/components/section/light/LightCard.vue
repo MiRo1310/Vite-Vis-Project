@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Card } from "@/components/shared/card";
 import Svg from "@/components/shared/image/Svg.vue";
-import { StoreValue } from "@/store/ioBrokerStore.ts";
+import { StoreValue } from "@/store";
 import { computed, HTMLAttributes } from "vue";
-import { adminConnection } from "@/lib/connecter-to-iobroker.ts";
+import { adminConnection } from "@/lib/iobroker-service.js";
 
 const props = defineProps<{
   light: StoreValue<boolean>;

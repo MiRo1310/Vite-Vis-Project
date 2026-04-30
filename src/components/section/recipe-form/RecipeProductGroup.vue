@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { computed, ref, watch } from "vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import RecipeProduct from "@/components/section/recipe-form/RecipeProduct.vue";
 import { GetRecipeByIdQuery } from "@/api/gql/graphql";
 import { Logger } from "@/lib/logger.ts";
-import { newIdPrefix, PrefixedIdGenerator, TForm } from "@/components/section/recipe-form/index.ts";
+import { TForm } from "@/components/section/recipe-form/index.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
-import { fieldsRecipe, productSchema, TProductHeaderSchema, TProductSchema } from "@/components/section/recipe-form/formSchema.ts";
+import { fieldsRecipe, productSchema, TProductHeaderSchema, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 import { isDefined } from "@vueuse/core";
+import { newIdPrefix, PrefixedIdGenerator } from "@/components/section/recipe-form/utils.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();
 

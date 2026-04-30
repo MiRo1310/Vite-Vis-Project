@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { Menu } from "lucide-vue-next";
 import { INavigation } from "@/components/shared/responsiveNav/index.ts";
 import { useRoute } from "vue-router";

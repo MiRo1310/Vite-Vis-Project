@@ -2,12 +2,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed, ref } from "vue";
-import { range } from "@/lib/time.ts";
 import { isDefined } from "@vueuse/core";
 import { AggregatedPerDay, aggregatePerDay } from "@/composables/charts.ts";
 import ChartStepAfter from "@/components/shared/chart/ChartStepAfter.vue";
 import { localDateStringToDate } from "@/lib/date.ts";
 import HeatingLineChart from "@/components/section/heating/HeatingLineChart.vue";
+import { range } from "@/constants/constants.ts";
 
 const actualRange = range.last7d;
 
@@ -50,7 +50,7 @@ const combineValues = computed(() => (list: AggregatedPerDay[][]) => {
   list.forEach((item, index) => {
     item.forEach((agg) => {
       const date = localDateStringToDate(agg.localeDateString);
-      if (index === 0) {
+      if (index === 0 && date instanceof Date) {
         combined.push({ date, value1: agg.count, value2: 0 });
       } else {
         const existing = combined.find((c) => c.date.toLocaleString() === date.toLocaleString());

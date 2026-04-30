@@ -1,6 +1,6 @@
 import { InputOption } from "../../../../src/types/types";
 import InputWithOptions from "../../../../src/components/shared/input/InputWithOptions.vue";
-import { variantsInputWithOptions } from "../../../../src/components/shared/input";
+import { variantsInputWithOptions } from "../../../../src/components/shared/input/input.variants";
 
 const options: InputOption[] = [
   { value: 111, name: "Option 1" },

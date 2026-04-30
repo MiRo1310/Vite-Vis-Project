@@ -3,7 +3,7 @@ import { Blinds } from "lucide-vue-next";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useRouter } from "vue-router";
-import { Button } from "@/components/shared/button";
+import { Button } from "@/components/shared/button/button.variants";
 import { routes } from "@/router/routes.ts";
 
 const iobrokerStore = useIobrokerStore();
