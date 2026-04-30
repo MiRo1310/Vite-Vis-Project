@@ -261,7 +261,7 @@ const valueToForm = (formValues?: TFormValues) => {
   });
 };
 
-const setValuesToForm = (recipe: TRecipeQuery) => {
+const setValuesToForm = (recipe?: TRecipeQuery) => {
   if (!recipe) {
     return;
   }
