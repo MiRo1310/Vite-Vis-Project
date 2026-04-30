@@ -1,12 +1,13 @@
 import fs from "fs";
-import { copyDataToRemote, ensureCleanWorktree, getVersionType, run } from "./utils.ts";
+import { copyDataToRemote, ensureCleanWorktree, getVersionTypeInteractive, run } from "./utils.ts";
 
 ensureCleanWorktree();
 
 run("git checkout main");
 run("git pull");
+run("yarn install");
 
-const versionType = getVersionType();
+const versionType = getVersionTypeInteractive();
 
 run(`npm version ${versionType}`);
 
