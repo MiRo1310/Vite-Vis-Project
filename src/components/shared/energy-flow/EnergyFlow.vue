@@ -1,42 +1,37 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { Positions } from "@/components/shared/energy-flow/utils.ts";
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
-import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
-import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
-
-defineProps<{ data: IEnergyFlow[] }>();
-
-const positions = new Positions();
-const animationRef = ref<null | SVGGElement>(null);
+import AnimatedLine from "@/components/shared/energy-flow/AnimatedLine.vue";
+import AnimatedLine2 from "@/components/shared/energy-flow/AnimatedLine2.vue";
 </script>
 
 <template>
-  <Teleport to="body">
-    <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10" xmlns="http://www.w3.org/2000/svg">
-      <template v-for="(item, i) in data" :key="i">
-        <EnergyFlowCard :energy-flow="item" :positions />
-        <template v-for="(line, index) in item.lines" :key="index">
-          <EnergyFlowLine
-            :id="String(i)"
-            :animation="line.getActive()"
-            :reverse="line.getReverse()"
-            :points="line.getCoordinates(positions)"
-            :dots-per-group="line.getDotsPerRow()"
-            :particle-shape="line.getParticleShape()"
-            :line-height="line.getLineHeight()"
-            :speed="line.getSpeed()"
-            :line-width="line.getLineWidth()"
-            :group-count="line.getGroupCount()"
-            :spacing="line.getSpacing()"
-            :stroke-width="line.getStrokeWidth()"
-            :dot-radius="line.getDotRadius()"
-            :flow-color="line.getFlowColorHex()"
-            :animation-ref
-          />
-        </template>
-      </template>
-      <g ref="animationRef" id="svg-animations"></g>
-    </svg>
-  </Teleport>
+  <div class="grid grid-cols-4 gap-4 relative">
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <EnergyFlowCard />
+    <AnimatedLine :start="{ x: 100, y: 100 }" :end="{ x: 1000, y: 400 }" :duration="100" color="green" :width="1500" :height="500" />
+    <animated-line2
+      :points="[
+        { x: 100, y: 100 },
+        { x: 1000, y: 400 },
+      ]"
+    />
+    <AnimatedLine2
+      :points="[
+        { x: 0, y: 0 },
+        { x: 120, y: 0 },
+        { x: 120, y: 100 },
+        { x: 260, y: 100 },
+      ]"
+      animation="dots"
+      reverse
+      :duration="20"
+      flow-color="#60a5fa"
+      track-color="#1e293b"
+    />
+  </div>
 </template>
