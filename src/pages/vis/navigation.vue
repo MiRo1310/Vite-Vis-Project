@@ -55,6 +55,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: Heater, text: "Heizung", to: routes.heating.path },
   { icon: SunSnow, text: "Heizungkörper Steuerung", to: routes.heatingControl.path },
   { icon: PlugZap, text: "PV", to: routes.pv.path },
+  { icon: PlugZap, text: "Energy", to: routes.energy.path },
   { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
   { icon: Logs, text: "Logs", to: routes.logs.path },
   { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
