@@ -7,6 +7,9 @@ export interface Point {
 
 export interface IEnergyFlow {
   id: string;
+  x: number;
+  y: number;
+  radius?: number;
   title: string;
   in?: IEnergyFlowOutIn;
   out?: IEnergyFlowOutIn;

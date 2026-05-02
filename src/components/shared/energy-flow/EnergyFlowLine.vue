@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
+import EnergyFlowAnimate from "@/components/shared/energy-flow/EnergyFlowAnimate.vue";
+import EnergyFlowAnimateMotion from "@/components/shared/energy-flow/EnergyFlowAnimateMotion.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -8,9 +10,6 @@ const props = withDefaults(
     points: Point[];
 
     animation?: boolean;
-
-    width?: string;
-    height?: string;
 
     radius?: number;
     strokeWidth?: number;
@@ -62,9 +61,6 @@ const props = withDefaults(
     duration: 4,
 
     reverse: false,
-
-    width: "100%",
-    height: "100%",
   },
 );
 
@@ -130,68 +126,26 @@ function getBegin(groupIndex: number, dotIndex = 0) {
 </script>
 
 <template>
-  <Teleport to="body">
-    <svg :width="width" :height="height" class="energy-flow-line overflow-visible absolute top-0 left-0" xmlns="http://www.w3.org/2000/svg">
-      <!-- Hintergrundlinie -->
-      <path :d="pathData" fill="none" :stroke="trackColor" :stroke-width="strokeWidth" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Hintergrundlinie -->
+  <path :d="pathData" fill="none" :stroke="trackColor" :stroke-width="strokeWidth" stroke-linecap="round" stroke-linejoin="round" />
 
-      <!-- Dot Gruppen -->
-      <g v-for="groupIndex in groupCount" :key="groupIndex">
-        <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
-          <!-- Kreise -->
-          <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
-            <animateMotion
-              v-if="animation"
-              :dur="`${duration}s`"
-              repeatCount="indefinite"
-              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-              :keyPoints="reverse ? '1;0' : '0;1'"
-              keyTimes="0;1"
-              calcMode="linear"
-              rotate="auto"
-            >
-              <mpath :href="`#energy-path-${id}`" />
-            </animateMotion>
+  <!-- Dot Gruppen -->
+  <g v-for="groupIndex in groupCount" :key="groupIndex">
+    <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
+      <!-- Kreise -->
+      <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
+        <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+        <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
+      </circle>
 
-            <animate
-              attributeName="opacity"
-              values="0;1;1;0"
-              keyTimes="0;0.1;0.9;1"
-              :dur="`${duration}s`"
-              repeatCount="indefinite"
-              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-            />
-          </circle>
+      <!-- Linien/Balken -->
+      <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
+        <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+        <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
+      </rect>
+    </template>
+  </g>
 
-          <!-- Linien/Balken -->
-          <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
-            <animateMotion
-              v-if="animation"
-              :dur="`${duration}s`"
-              repeatCount="indefinite"
-              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-              :keyPoints="reverse ? '1;0' : '0;1'"
-              keyTimes="0;1"
-              calcMode="linear"
-              rotate="auto"
-            >
-              <mpath :href="`#energy-path-${id}`" />
-            </animateMotion>
-
-            <animate
-              attributeName="opacity"
-              values="0;1;1;0"
-              keyTimes="0;0.1;0.9;1"
-              :dur="`${duration}s`"
-              repeatCount="indefinite"
-              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-            />
-          </rect>
-        </template>
-      </g>
-
-      <!-- Unsichtbarer Pfad für Motion -->
-      <path :id="`energy-path-${id}`" :d="pathData" fill="none" stroke="transparent" />
-    </svg>
-  </Teleport>
+  <!-- Unsichtbarer Pfad für Motion -->
+  <path ref="pathRef" :id="`energy-path-${id}`" :d="pathData" fill="none" stroke="transparent" />
 </template>
