@@ -1,5 +1,3 @@
-import { UseElementBoundingReturn } from "@vueuse/core";
-
 export class PositionHandler {
   private readonly id: string;
   private left: number = 0;
@@ -9,20 +7,22 @@ export class PositionHandler {
   private heightCenter: number = 0;
   private widthCenter: number = 0;
 
-  private readonly padding: number = 0;
+  private readonly padding: number = 10;
 
   constructor(id: string, options?: { padding?: number }) {
     this.id = id;
     this.padding = options?.padding ?? this.padding;
   }
 
-  public updatePosition(react: UseElementBoundingReturn) {
-    this.top = react.top.value - this.padding;
-    this.left = react.left.value - this.padding;
-    this.bottom = react.top.value + react.height.value + this.padding;
-    this.right = react.left.value + react.width.value + this.padding;
-    this.heightCenter = react.top.value + react.height.value / 2;
-    this.widthCenter = react.left.value + react.width.value / 2;
+  public updatePosition(x: number, y: number, height: number, width: number, border: number) {
+    const halfHeight = height / 2;
+    const halfWidth = width / 2;
+    this.top = y - halfHeight - this.padding - border;
+    this.bottom = y + halfHeight + this.padding + border;
+    this.left = x - halfWidth - this.padding - border;
+    this.right = x + halfWidth + this.padding + border;
+    this.heightCenter = y;
+    this.widthCenter = x;
   }
 
   public getId() {
@@ -44,7 +44,7 @@ export class PositionHandler {
 export class Positions {
   private positions: Record<string, PositionHandler> = {};
 
-  public updateCard(handler: PositionHandler) {
+  public updatePositionsForCard(handler: PositionHandler) {
     this.positions[handler.getId()] = handler;
   }
 
@@ -63,6 +63,7 @@ export class Positions {
 
   public getCoordinatesRightCenter(id: string) {
     const position = this.getPositionsById(id);
+
     return {
       x: position.right,
       y: position.heightCenter,
@@ -94,7 +95,7 @@ export class Positions {
   }
 }
 
-export type LineStartEnd = "leftRightCenter" | "bottomTopCenter";
+export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
 export class Line {
   private readonly lineEndId: string;
   private readonly lineStartId: string;
@@ -122,6 +123,20 @@ export class Line {
       case "leftRightCenter":
         return [positions.getCoordinatesRightCenter(this.getLineStartId()), positions.getCoordinatesLeftCenter(this.getLineEndId())];
       case "bottomTopCenter":
+        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId());
+        const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId());
+        if (positionsStart.x !== positionsEnd.x) {
+          const distanceY = positionsEnd.y - positionsStart.y;
+
+          const step = distanceY / 2;
+          console.log(distanceY);
+          const secondCoordinates = { x: positionsStart.x, y: positionsStart.y + step };
+          const thirdCoordinates = { x: positionsEnd.x, y: positionsEnd.y - step };
+          return [positionsStart, secondCoordinates, thirdCoordinates, positionsEnd];
+        }
+
+        return [positionsStart, positionsEnd];
+      case "bottomTopCenterDiagonal":
         return [positions.getCoordinatesBottomCenter(this.getLineStartId()), positions.getCoordinatesTopCenter(this.getLineEndId())];
       default:
         return [];
