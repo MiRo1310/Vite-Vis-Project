@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
 import EnergyFlowAnimate from "@/components/shared/energy-flow/EnergyFlowAnimate.vue";
 import EnergyFlowAnimateMotion from "@/components/shared/energy-flow/EnergyFlowAnimateMotion.vue";
@@ -37,7 +37,7 @@ const props = withDefaults(
     /**
      * Dauer komplette Strecke
      */
-    duration?: number;
+    speed?: number;
 
     reverse?: boolean;
   }>(),
@@ -58,7 +58,7 @@ const props = withDefaults(
     dotSpacing: 0.12,
     dotRadius: 5,
 
-    duration: 4,
+    speed: 100,
 
     reverse: false,
   },
@@ -116,13 +116,20 @@ const pathData = computed(() => {
   return d;
 });
 
-function getBegin(groupIndex: number, dotIndex = 0) {
-  const groupOffset = (props.duration / props.groupCount) * groupIndex;
+const duration = computed(() => {
+  const duration = (pathRef.value?.getTotalLength() ?? 0) / props.speed;
+  return duration === 0 ? 4 : duration;
+});
 
-  const dotOffset = props.duration * props.dotSpacing * dotIndex;
+const getBegin = computed(() => (groupIndex: number, dotIndex = 0) => {
+  const groupOffset = (duration.value / props.groupCount) * groupIndex;
+
+  const dotOffset = duration.value * props.dotSpacing * dotIndex;
 
   return -(groupOffset + dotOffset);
-}
+});
+
+const pathRef = ref<SVGPathElement | null>(null);
 </script>
 
 <template>

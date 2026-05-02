@@ -68,11 +68,11 @@ const positions = new Positions();
             :dots-per-group="3"
             particle-shape="circle"
             :line-height="5"
+            :speed="100"
             :line-width="10"
             :group-count="2"
             :dot-spacing="0.05"
             :stroke-width="10"
-            :duration="5"
             :dot-radius="4"
             flow-color="#00ff99"
           />
