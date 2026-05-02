@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
-import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { computed, ref } from "vue";
-import { IEnergyFlow, IEnergyFlowUpdatePosition } from "@/components/shared/energy-flow/index.ts";
-import { UseElementBoundingReturn } from "@vueuse/core";
-import { EvaluatedModuleNode } from "vite/module-runner";
+import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+import { Line, Positions } from "@/components/shared/energy-flow/utils.ts";
 
 const value = ref(500);
 setInterval(() => {
@@ -12,39 +10,42 @@ setInterval(() => {
 }, 2000);
 
 const data = computed((): IEnergyFlow[] => [
-  { id: "battery", title: "Speicher", out: { value: value.value, unit: "W", class: "text-green-400" }, in: { value: 100 } },
-  { id: "pv", title: "PV", out: { value: 2000, unit: "W", class: "text-green-600" } },
+  {
+    id: "battery",
+    title: "Speicher",
+    padding: 10,
+    lines: [new Line("battery", "pv", "leftRightCenter")],
+    out: { value: value.value, unit: "W", class: "text-green-400", reverse: true },
+    in: { value: 100 },
+  },
+  {
+    id: "pv",
+    title: "PV",
+    padding: 10,
+    lines: [new Line("pv", "test", "leftRightCenter")],
+    out: { value: 2000, unit: "W", class: "text-green-600" },
+    in: { value: 100 },
+  },
+  { id: "test", title: "PV", padding: 10, lines: [], out: { value: 2000, unit: "W", class: "text-green-600" } },
+  { id: "", title: "", lines: [] },
+  { id: "", title: "", lines: [] },
+  {
+    id: "2",
+    title: "Test",
+    padding: 10,
+    lines: [new Line("pv", "2", "bottomTopCenter")],
+    out: { value: 2000, unit: "W", class: "text-green-600" },
+    in: { value: 100 },
+  },
 ]);
 
-const positions = ref<Record<string, UseElementBoundingReturn>>({});
-
-const updatePosition = (event: IEnergyFlowUpdatePosition): void => {
-  positions.value[event.id] = event.elementBounding;
-};
+const positions = new Positions();
 </script>
 
 <template>
-  {{ positions }}
-  <div class="grid grid-cols-4 gap-4 relative">
+  <div class="grid grid-cols-4 gap-4">
     <template v-for="(item, index) in data" :key="index">
-      <EnergyFlowCard :energy-flow="item" @update:position="updatePosition" />
+      <EnergyFlowCard :energy-flow="item" :positions="positions" :indexForId="index" />
     </template>
-    {{ positions["battery"].right }}
-    <EnergyFlowLine
-      :points="[
-        { x: 416, y: 160 },
-        { x: 600, y: 160 },
-      ]"
-      :dots-per-group="4"
-      particle-shape="circle"
-      :line-height="5"
-      :line-width="10"
-      :group-count="3"
-      :dot-spacing="0.05"
-      :stroke-width="2"
-      :duration="5"
-      :dot-radius="4"
-      flow-color="#00ff99"
-    />
   </div>
 </template>
