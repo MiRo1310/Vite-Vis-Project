@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
 import EnergyFlowAnimate from "@/components/shared/energy-flow/EnergyFlowAnimate.vue";
 import EnergyFlowAnimateMotion from "@/components/shared/energy-flow/EnergyFlowAnimateMotion.vue";
+import { TParticleShape } from "@/components/shared/energy-flow/utils.ts";
 
 const props = withDefaults(
   defineProps<{
     id: string;
+    animationRef: null | SVGGElement;
     points: Point[];
 
     animation?: boolean;
@@ -14,7 +16,7 @@ const props = withDefaults(
     radius?: number;
     strokeWidth?: number;
 
-    particleShape?: "circle" | "line";
+    particleShape?: TParticleShape;
     lineWidth?: number;
     lineHeight?: number;
 
@@ -27,7 +29,7 @@ const props = withDefaults(
     /**
      * Abstand zwischen Dots
      */
-    dotSpacing?: number;
+    spacing?: number;
 
     /**
      * Größe Dot
@@ -55,7 +57,7 @@ const props = withDefaults(
     dotsPerGroup: 3,
     groupCount: 2,
 
-    dotSpacing: 0.12,
+    spacing: 0.12,
     dotRadius: 5,
 
     speed: 100,
@@ -124,12 +126,21 @@ const duration = computed(() => {
 const getBegin = computed(() => (groupIndex: number, dotIndex = 0) => {
   const groupOffset = (duration.value / props.groupCount) * groupIndex;
 
-  const dotOffset = duration.value * props.dotSpacing * dotIndex;
+  const dotOffset = props.spacing * dotIndex;
 
   return -(groupOffset + dotOffset);
 });
 
 const pathRef = ref<SVGPathElement | null>(null);
+watch(
+  () => props.animationRef,
+  (newValue) => {
+    if (newValue) {
+      animationRefExist.value = true;
+    }
+  },
+);
+const animationRefExist = ref<boolean>(false);
 </script>
 
 <template>
@@ -137,22 +148,25 @@ const pathRef = ref<SVGPathElement | null>(null);
   <path :d="pathData" fill="none" :stroke="trackColor" :stroke-width="strokeWidth" stroke-linecap="round" stroke-linejoin="round" />
 
   <!-- Dot Gruppen -->
-  <g v-for="groupIndex in groupCount" :key="groupIndex">
-    <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
-      <!-- Kreise -->
-      <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
-        <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
-        <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
-      </circle>
+  <Teleport v-if="animationRefExist" to="#svg-animations">
+    <g v-if="pathRef?.getTotalLength()">
+      <g v-for="groupIndex in groupCount" :key="groupIndex">
+        <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
+          <!-- Kreise -->
+          <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
+            <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+            <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
+          </circle>
 
-      <!-- Linien/Balken -->
-      <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
-        <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
-        <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
-      </rect>
-    </template>
-  </g>
-
+          <!-- Linien/Balken -->
+          <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
+            <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+            <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
+          </rect>
+        </template>
+      </g>
+    </g>
+  </Teleport>
   <!-- Unsichtbarer Pfad für Motion -->
   <path ref="pathRef" :id="`energy-path-${id}`" :d="pathData" fill="none" stroke="transparent" />
 </template>

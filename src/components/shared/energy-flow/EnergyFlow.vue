@@ -4,59 +4,63 @@ import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 import { Line, Positions } from "@/components/shared/energy-flow/utils.ts";
 import EnergyFlowCircle from "@/components/shared/energy-flow/EnergyFlowCircle.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+
+const { pv } = useIobrokerStore();
 
 const value = ref(500);
-setInterval(() => {
-  value.value = Math.round(Math.random() * 500);
-}, 5000);
+const columnsCoordinates = (row: number, column: number, options?: { offsetY?: number; offsetX?: number }) => {
+  const xStart = 70;
+  const yStart = 70;
+  const distanceX = 140;
+  const distanceY = 100;
+
+  return {
+    x: xStart * column + (column - 1) * distanceX + (options?.offsetX ?? 0),
+    y: yStart * row + (row - 1) * distanceY + (options?.offsetY ?? 0),
+  };
+};
 
 const data = computed((): IEnergyFlow[] => [
   {
+    id: "pv",
+    title: "PV Gross",
+    ...columnsCoordinates(1, 1),
+    lines: [new Line("pv", "netz", "leftRightCenter", { groupCount: 1 })],
+    out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
+  },
+  {
+    id: "3",
+    title: "PV Klein",
+    ...columnsCoordinates(2, 1),
+    lines: [new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })],
+    out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600", reverse: true },
+  },
+  {
     id: "battery",
-    x: 100,
-    y: 100,
+    ...columnsCoordinates(2, 2),
     title: "Speicher",
-    lines: [new Line("battery", "pv", "leftRightCenter")],
+    lines: [],
     out: { value: value.value, unit: "W", class: "text-green-400", reverse: true },
     in: { value: 100 },
   },
   {
-    id: "pv",
-    title: "PV",
-    x: 400,
-    y: 100,
-    lines: [new Line("pv", "test", "leftRightCenter")],
-    out: { value: 2000, unit: "W", class: "text-green-600" },
-    in: { value: 100 },
-  },
-  { id: "test", title: "PV", x: 700, y: 100, lines: [], out: { value: 2000, unit: "W", class: "text-green-600" } },
-
-  {
-    id: "2",
-    title: "Test",
-    x: 100,
-    y: 500,
-    lines: [new Line("battery", "2", "bottomTopCenter")],
-    out: { value: 2000, unit: "W", class: "text-green-600" },
-    in: { value: 100 },
-  },
-  {
-    id: "3",
-    title: "Test",
-    x: 700,
-    y: 500,
-    lines: [new Line("battery", "3", "bottomTopCenter")],
-    out: { value: 2000, unit: "W", class: "text-green-600" },
+    id: "netz",
+    ...columnsCoordinates(1, 2),
+    title: "Netz",
+    lines: [],
+    out: { value: value.value, unit: "W", class: "text-green-400", reverse: true },
     in: { value: 100 },
   },
 ]);
 
 const positions = new Positions();
+const animationRef = ref<null | SVGGElement>(null);
 </script>
 
 <template>
   <Teleport to="body">
-    <svg width="100%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-20 bg-gray-900" xmlns="http://www.w3.org/2000/svg">
+    <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10 bg-gray-900" xmlns="http://www.w3.org/2000/svg">
       <template v-for="(item, i) in data" :key="i">
         <EnergyFlowCircle :energy-flow="item" :positions />
         <template v-for="(line, index) in item.lines" :key="index">
@@ -65,19 +69,21 @@ const positions = new Positions();
             animation
             :reverse="item.out?.reverse"
             :points="line.getCoordinates(positions)"
-            :dots-per-group="3"
-            particle-shape="circle"
-            :line-height="5"
-            :speed="100"
-            :line-width="10"
-            :group-count="2"
-            :dot-spacing="0.05"
-            :stroke-width="10"
-            :dot-radius="4"
-            flow-color="#00ff99"
+            :dots-per-group="line.getDotsPerRow()"
+            :particle-shape="line.getParticleShape()"
+            :line-height="line.getLineHeight()"
+            :speed="line.getSpeed()"
+            :line-width="line.getLineWidth()"
+            :group-count="line.getGroupCount()"
+            :spacing="line.getSpacing()"
+            :stroke-width="line.getStrokeWidth()"
+            :dot-radius="line.getDotRadius()"
+            :flow-color="line.getFlowColorHex()"
+            :animation-ref
           />
         </template>
       </template>
+      <g ref="animationRef" id="svg-animations"></g>
     </svg>
   </Teleport>
 </template>
