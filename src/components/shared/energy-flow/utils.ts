@@ -1,5 +1,4 @@
-import { computed } from "vue";
-import { isDefined } from "@vueuse/core";
+import { UseElementBoundingReturn } from "@vueuse/core";
 
 export class PositionHandler {
   private readonly id: string;
@@ -9,34 +8,28 @@ export class PositionHandler {
   private right: number = 0;
   private heightCenter: number = 0;
   private widthCenter: number = 0;
-  private height: number = 0;
-  private width: number = 0;
 
-  private readonly padding: number = 10;
+  private readonly padding: number = 0;
 
   constructor(id: string, options?: { padding?: number }) {
     this.id = id;
     this.padding = options?.padding ?? this.padding;
   }
 
-  public updatePosition(x: number, y: number, height: number, width: number, border: number) {
-    const halfHeight = height / 2;
-    const halfWidth = width / 2;
-    this.top = y - halfHeight - this.padding - border;
-    this.bottom = y + halfHeight + this.padding + border;
-    this.left = x - halfWidth - this.padding - border;
-    this.right = x + halfWidth + this.padding + border;
-    this.heightCenter = y;
-    this.widthCenter = x;
-    this.width = width;
-    this.height = height;
+  public updatePosition(react: UseElementBoundingReturn) {
+    this.top = react.top.value - this.padding;
+    this.left = react.left.value - this.padding;
+    this.bottom = react.top.value + react.height.value + this.padding;
+    this.right = react.left.value + react.width.value + this.padding;
+    this.heightCenter = react.top.value + react.height.value / 2;
+    this.widthCenter = react.left.value + react.width.value / 2;
   }
 
   public getId() {
     return this.id;
   }
 
-  public getPosition() {
+  public getPositions() {
     return {
       left: this.left,
       top: this.top,
@@ -44,8 +37,6 @@ export class PositionHandler {
       bottom: this.bottom,
       heightCenter: this.heightCenter,
       widthCenter: this.widthCenter,
-      height: this.height,
-      width: this.width,
     };
   }
 }
@@ -53,298 +44,87 @@ export class PositionHandler {
 export class Positions {
   private positions: Record<string, PositionHandler> = {};
 
-  public updatePositionsForCard(handler: PositionHandler) {
+  public updateCard(handler: PositionHandler) {
     this.positions[handler.getId()] = handler;
   }
 
   public getPositionsById(id: string) {
     return (
-      this.positions[id]?.getPosition() ?? {
+      this.positions[id]?.getPositions() ?? {
         left: 0,
         top: 0,
         right: 0,
         bottom: 0,
         heightCenter: 0,
         widthCenter: 0,
-        height: 0,
-        width: 0,
       }
     );
   }
 
-  public getCoordinates(line: ILineEndPoint) {
-    const positions = this.getPositionsById(line.id);
-    const lineOffsetX = line.offsetX ?? 0;
-    const lineOffsetY = line.offsetY ?? 0;
-
+  public getCoordinatesRightCenter(id: string) {
+    const position = this.getPositionsById(id);
     return {
-      x: this.getPositionX(line.position, positions) + lineOffsetX,
-      y: this.getPositionY(line.position, positions) + lineOffsetY,
+      x: position.right,
+      y: position.heightCenter,
     };
   }
 
-  private getPositionY(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
-    switch (position) {
-      case "top":
-        return positions.top;
-      case "bottom":
-        return positions.bottom;
-      case "right":
-      case "left":
-        return positions.heightCenter;
-      default:
-        return 0;
-    }
+  public getCoordinatesLeftCenter(id: string) {
+    const position = this.getPositionsById(id);
+    return {
+      x: position.left,
+      y: position.heightCenter,
+    };
   }
 
-  private getPositionX(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
-    switch (position) {
-      case "top":
-      case "bottom":
-        return positions.widthCenter;
-      case "left":
-        return positions.left;
-      case "right":
-        return positions.right;
-      default:
-        return 0;
-    }
+  public getCoordinatesBottomCenter(id: string) {
+    const position = this.getPositionsById(id);
+    return {
+      x: position.widthCenter,
+      y: position.bottom,
+    };
+  }
+
+  public getCoordinatesTopCenter(id: string) {
+    const position = this.getPositionsById(id);
+    return {
+      x: position.widthCenter,
+      y: position.top,
+    };
   }
 }
 
-interface IAutoSpeed {
-  active?: boolean;
-  max: number;
-  min: number;
-  maxSpeed?: number;
-  minSpeed?: number;
-}
-
-export type TPositions = "top" | "bottom" | "left" | "right";
-export type TReverse = "greaterThan" | "lessThan";
-export interface ILineEndPoint {
-  id: string;
-  position: TPositions;
-  offsetX?: number;
-  offsetY?: number;
-}
-
-export type TParticleShape = "circle" | "line";
+export type LineStartEnd = "leftRightCenter" | "bottomTopCenter";
 export class Line {
-  private readonly lineEnd: ILineEndPoint;
-  private readonly lineStart: ILineEndPoint;
-  private readonly autoSpeed: IAutoSpeed = {
-    active: false,
-    max: 100,
-    min: 0,
-    maxSpeed: 100,
-    minSpeed: 0,
-  };
-  private readonly reverse: TReverse = "greaterThan";
-  private readonly active: boolean = true;
-  private readonly dotsPerRow: number = 3;
-  private readonly particleShape: TParticleShape = "circle";
-  private readonly lineHeight: number = 3;
-  private readonly speed: number = 50;
-  private readonly lineWidth: number = 10;
-  private readonly groupCount: number = 2;
-  private readonly spacing: number = 0.25;
-  private readonly strokeWidth: number = 10;
-  private readonly dotRadius: number = 4;
-  private readonly flowColorHex: { positive: string; negative?: string } = { positive: "#58ea38", negative: "#ff0000" };
-  private readonly value: number = 0;
+  private readonly lineEndId: string;
+  private readonly lineStartId: string;
+  private readonly lineStartEnd: LineStartEnd;
 
-  // eslint-disable-next-line complexity
-  constructor(
-    lineStart: ILineEndPoint,
-    lineEnd: ILineEndPoint,
-    value: number,
-    options?: {
-      dotsPerGroup?: number;
-      particleShape?: TParticleShape;
-      lineHeight?: number;
-      speed?: number;
-      autoSpeed?: IAutoSpeed;
-      lineWidth?: number;
-      groupCount?: number;
-      spacing?: number;
-      strokeWidth?: number;
-      dotRadius?: number;
-      flowColorHex?: { positive: string; negative?: string };
-      reverse?: TReverse;
-      active?: boolean;
-    },
-  ) {
-    this.lineEnd = lineEnd;
-    this.lineStart = lineStart;
-    if (!options) {
-      return;
-    }
-    this.dotsPerRow = options.dotsPerGroup ?? this.dotsPerRow;
-    this.particleShape = options.particleShape ?? this.particleShape;
-    this.lineHeight = options.lineHeight ?? this.lineHeight;
-    this.speed = options.speed ?? this.speed;
-    this.lineWidth = options.lineWidth ?? this.lineWidth;
-    this.groupCount = options.groupCount ?? this.groupCount;
-    this.spacing = options.spacing ?? this.spacing;
-    this.strokeWidth = options.strokeWidth ?? this.strokeWidth;
-    this.dotRadius = options.dotRadius ?? this.dotRadius;
-    this.flowColorHex = options.flowColorHex ?? this.flowColorHex;
-    this.autoSpeed = options.autoSpeed ?? this.autoSpeed;
-    this.reverse = isDefined(options.reverse) ? options.reverse : this.reverse;
-    this.active = isDefined(options.active) ? options.active : this.active;
-    this.value = value;
+  constructor(lineStartId: string, lineEndId: string, lineStartEnd: LineStartEnd) {
+    this.lineEndId = lineEndId;
+    this.lineStartId = lineStartId;
+    this.lineStartEnd = lineStartEnd;
   }
 
-  getReverse() {
-    return this.reverse === "greaterThan" ? this.value > 0 : this.value < 0;
+  getLineEndId() {
+    return this.lineEndId;
   }
 
-  getActive() {
-    return this.value !== 0 && this.active;
+  getLineStartId() {
+    return this.lineStartId;
   }
 
-  getStrokeWidth() {
-    return this.strokeWidth;
+  getLineStartEnd() {
+    return this.lineStartEnd;
   }
-
-  getDotRadius() {
-    return this.dotRadius;
-  }
-
-  getFlowColorHex() {
-    return this.value > 0 ? this.flowColorHex.positive : this.flowColorHex.negative;
-  }
-
-  getLineWidth() {
-    return this.lineWidth;
-  }
-
-  getGroupCount() {
-    return this.groupCount;
-  }
-
-  getSpacing() {
-    return this.spacing;
-  }
-
-  private calculateAutoSpeed() {
-    return computed(() => {
-      const { max, min, maxSpeed = 50, minSpeed = 25 } = this.autoSpeed;
-
-      const range = max - min;
-
-      if (range <= 0) {
-        return minSpeed;
-      }
-
-      let value = this.value;
-      if (value < 0) {
-        value = value * -1;
-      }
-
-      const faktor = (value - min) / range;
-
-      const speed = minSpeed + (maxSpeed - minSpeed) * faktor;
-
-      return Math.min(maxSpeed, Math.max(minSpeed, speed));
-    });
-  }
-
-  getSpeed() {
-    if (this.autoSpeed.active === false) {
-      return this.speed;
-    }
-    return this.calculateAutoSpeed().value;
-  }
-
-  getLineHeight() {
-    return this.lineHeight;
-  }
-
-  getDotsPerRow() {
-    return this.dotsPerRow;
-  }
-
-  getParticleShape() {
-    return this.particleShape;
-  }
-
-  // eslint-disable-next-line complexity
   getCoordinates(positions: Positions) {
-    const start = positions.getCoordinates(this.lineStart);
-    const end = positions.getCoordinates(this.lineEnd);
-    const startObject = positions.getPositionsById(this.lineStart.id);
-    const endObject = positions.getPositionsById(this.lineEnd.id);
-
-    const isSameX = start.x === end.x;
-    const isSameY = start.y === end.y;
-    const width = 100;
-    if (this.isBottomTop(this.lineStart.position) && this.isBottomTop(this.lineEnd.position)) {
-      if (isSameX) {
-        if ((start.y < end.y && startObject.top !== start.y) || endObject.bottom !== end.y) {
-          return [start, end];
-        }
-        const x = start.x - Math.max(startObject.width, endObject.width) / 2 - 20;
-        return [start, { y: start.y, x }, { y: end.y, x }, end];
-      }
-
-      if (start.y <= end.y) {
-        const max = end.y;
-        const min = start.y;
-        const yCenter = min + (max - min) / 2;
-        return [start, { x: start.x, y: yCenter }, { x: end.x, y: yCenter }, end];
-      } else {
-        return [
-          start,
-          { x: start.x, y: start.y - 10 },
-          { x: start.x - width / 2 - 10, y: start.y + 10 },
-          { y: end.y + 10, x: start.x - width / 2 - 10 },
-          { x: end.x, y: end.y + 10 },
-          end,
-        ];
-      }
+    switch (this.lineStartEnd) {
+      case "leftRightCenter":
+        return [positions.getCoordinatesRightCenter(this.getLineStartId()), positions.getCoordinatesLeftCenter(this.getLineEndId())];
+      case "bottomTopCenter":
+        return [positions.getCoordinatesBottomCenter(this.getLineStartId()), positions.getCoordinatesTopCenter(this.getLineEndId())];
+      default:
+        return [];
     }
-
-    if (this.isLeftRight(this.lineStart.position) && this.isLeftRight(this.lineEnd.position)) {
-      if (isSameY) {
-        if ((start.x < end.x && startObject.left !== start.x) || endObject.right !== end.x) {
-          return [start, end];
-        }
-        const y = start.y - Math.max(startObject.height, endObject.height) / 2 - 20;
-        return [start, { x: start.x, y }, { x: end.x, y }, end];
-      }
-      if (start.x <= end.x) {
-        const max = end.x;
-        const min = start.x;
-        const xCenter = min + (max - min) / 2;
-        return [start, { y: start.y, x: xCenter }, { y: end.y, x: xCenter }, end];
-      } else {
-        return [
-          start,
-          { y: start.y, x: start.x - 10 },
-          { y: start.y - width / 2 - 10, x: start.x + 10 },
-          { x: end.x + 10, y: start.y - width / 2 - 10 },
-          { y: end.y, x: end.x + 10 },
-          end,
-        ];
-      }
-    }
-
-    if (
-      (this.isLeftRight(this.lineStart.position) && this.isBottomTop(this.lineEnd.position)) ||
-      (this.isBottomTop(this.lineStart.position) && this.isLeftRight(this.lineEnd.position))
-    ) {
-      return [start, { y: start.y, x: end.x }, end];
-    }
-    return [{ x: 0, y: 0 }];
-  }
-
-  private isBottomTop(str: TPositions): boolean {
-    return ["bottom", "top"].includes(str);
-  }
-
-  private isLeftRight(str: TPositions): boolean {
-    return ["left", "right"].includes(str);
   }
 }

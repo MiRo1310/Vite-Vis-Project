@@ -4,7 +4,13 @@ import { Point } from "@/components/shared/energy-flow/index.ts";
 
 const props = withDefaults(
   defineProps<{
+    id: string;
     points: Point[];
+
+    animation?: boolean;
+
+    width?: string;
+    height?: string;
 
     radius?: number;
     strokeWidth?: number;
@@ -35,8 +41,6 @@ const props = withDefaults(
     duration?: number;
 
     reverse?: boolean;
-
-    padding?: number;
   }>(),
   {
     radius: 16,
@@ -59,7 +63,8 @@ const props = withDefaults(
 
     reverse: false,
 
-    padding: 20,
+    width: "100%",
+    height: "100%",
   },
 );
 
@@ -70,40 +75,15 @@ function clampRadius(prev: Point, current: Point, next: Point, radius: number) {
   return Math.min(radius, dist1 / 2, dist2 / 2);
 }
 
-const bounds = computed(() => {
-  const xs = props.points.map((p) => p.x);
-  const ys = props.points.map((p) => p.y);
-
-  return {
-    minX: Math.min(...xs),
-    minY: Math.min(...ys),
-    maxX: Math.max(...xs),
-    maxY: Math.max(...ys),
-  };
-});
-
-const svgWidth = computed(() => {
-  return bounds.value.maxX - bounds.value.minX + props.padding * 2;
-});
-
-const svgHeight = computed(() => {
-  return bounds.value.maxY - bounds.value.minY + props.padding * 2;
-});
-
-function normalizePoint(p: Point): Point {
-  return {
-    x: p.x - bounds.value.minX + props.padding,
-    y: p.y - bounds.value.minY + props.padding,
-  };
-}
-
 const pathData = computed(() => {
   if (props.points.length < 2) {
     return "";
   }
 
-  const pts = props.points.map(normalizePoint);
-
+  const pts = props.points.map((p) => ({
+    x: p.x,
+    y: p.y,
+  }));
   let d = `M ${pts[0].x} ${pts[0].y}`;
 
   for (let i = 1; i < pts.length - 1; i++) {
@@ -150,64 +130,68 @@ function getBegin(groupIndex: number, dotIndex = 0) {
 </script>
 
 <template>
-  <svg :width="svgWidth" :height="svgHeight" class="energy-flow-line overflow-visible display-block absolute" xmlns="http://www.w3.org/2000/svg">
-    <!-- Hintergrundlinie -->
-    <path :d="pathData" fill="none" :stroke="trackColor" :stroke-width="strokeWidth" stroke-linecap="round" stroke-linejoin="round" />
+  <Teleport to="body">
+    <svg :width="width" :height="height" class="energy-flow-line overflow-visible absolute top-0 left-0" xmlns="http://www.w3.org/2000/svg">
+      <!-- Hintergrundlinie -->
+      <path :d="pathData" fill="none" :stroke="trackColor" :stroke-width="strokeWidth" stroke-linecap="round" stroke-linejoin="round" />
 
-    <!-- Dot Gruppen -->
-    <g v-for="groupIndex in groupCount" :key="groupIndex">
-      <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
-        <!-- Kreise -->
-        <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
-          <animateMotion
-            :dur="`${duration}s`"
-            repeatCount="indefinite"
-            :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-            :keyPoints="reverse ? '1;0' : '0;1'"
-            keyTimes="0;1"
-            calcMode="linear"
-            rotate="auto"
-          >
-            <mpath href="#energy-path" />
-          </animateMotion>
+      <!-- Dot Gruppen -->
+      <g v-for="groupIndex in groupCount" :key="groupIndex">
+        <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
+          <!-- Kreise -->
+          <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
+            <animateMotion
+              v-if="animation"
+              :dur="`${duration}s`"
+              repeatCount="indefinite"
+              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
+              :keyPoints="reverse ? '1;0' : '0;1'"
+              keyTimes="0;1"
+              calcMode="linear"
+              rotate="auto"
+            >
+              <mpath :href="`#energy-path-${id}`" />
+            </animateMotion>
 
-          <animate
-            attributeName="opacity"
-            values="0;1;1;0"
-            keyTimes="0;0.1;0.9;1"
-            :dur="`${duration}s`"
-            repeatCount="indefinite"
-            :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-          />
-        </circle>
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0"
+              keyTimes="0;0.1;0.9;1"
+              :dur="`${duration}s`"
+              repeatCount="indefinite"
+              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
+            />
+          </circle>
 
-        <!-- Linien/Balken -->
-        <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
-          <animateMotion
-            :dur="`${duration}s`"
-            repeatCount="indefinite"
-            :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-            :keyPoints="reverse ? '1;0' : '0;1'"
-            keyTimes="0;1"
-            calcMode="linear"
-            rotate="auto"
-          >
-            <mpath href="#energy-path" />
-          </animateMotion>
+          <!-- Linien/Balken -->
+          <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
+            <animateMotion
+              v-if="animation"
+              :dur="`${duration}s`"
+              repeatCount="indefinite"
+              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
+              :keyPoints="reverse ? '1;0' : '0;1'"
+              keyTimes="0;1"
+              calcMode="linear"
+              rotate="auto"
+            >
+              <mpath :href="`#energy-path-${id}`" />
+            </animateMotion>
 
-          <animate
-            attributeName="opacity"
-            values="0;1;1;0"
-            keyTimes="0;0.1;0.9;1"
-            :dur="`${duration}s`"
-            repeatCount="indefinite"
-            :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
-          />
-        </rect>
-      </template>
-    </g>
+            <animate
+              attributeName="opacity"
+              values="0;1;1;0"
+              keyTimes="0;0.1;0.9;1"
+              :dur="`${duration}s`"
+              repeatCount="indefinite"
+              :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`"
+            />
+          </rect>
+        </template>
+      </g>
 
-    <!-- Unsichtbarer Pfad für Motion -->
-    <path id="energy-path" :d="pathData" fill="none" stroke="transparent" />
-  </svg>
+      <!-- Unsichtbarer Pfad für Motion -->
+      <path :id="`energy-path-${id}`" :d="pathData" fill="none" stroke="transparent" />
+    </svg>
+  </Teleport>
 </template>

@@ -1,4 +1,4 @@
-import { UseElementBoundingReturn } from "@vueuse/core";
+import { Line } from "@/components/shared/energy-flow/utils.ts";
 
 export interface Point {
   x: number;
@@ -6,19 +6,17 @@ export interface Point {
 }
 
 export interface IEnergyFlow {
-  title: string;
   id: string;
+  title: string;
   in?: IEnergyFlowOutIn;
   out?: IEnergyFlowOutIn;
+  lines: Line[];
+  padding?: number;
 }
 
 export interface IEnergyFlowOutIn {
   value: number;
   unit?: string;
   class?: string;
-}
-
-export interface IEnergyFlowUpdatePosition {
-  elementBounding: UseElementBoundingReturn;
-  id: string;
+  reverse?: boolean;
 }
