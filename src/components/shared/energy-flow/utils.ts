@@ -61,54 +61,207 @@ export class Positions {
     );
   }
 
-  public getCoordinatesRightCenter(id: string) {
+  public getCoordinatesRightCenter(id: string, offsetX: number, offsetY: number) {
     const position = this.getPositionsById(id);
 
     return {
-      x: position.right,
-      y: position.heightCenter,
+      x: position.right + offsetX,
+      y: position.heightCenter + offsetY,
     };
   }
 
-  public getCoordinatesLeftCenter(id: string) {
+  public getCoordinatesLeftCenter(id: string, offsetX: number, offsetY: number) {
     const position = this.getPositionsById(id);
     return {
-      x: position.left,
-      y: position.heightCenter,
+      x: position.left + offsetX,
+      y: position.heightCenter + offsetY,
     };
   }
 
-  public getCoordinatesBottomCenter(id: string) {
+  public getCoordinatesBottomCenter(id: string, offsetX: number, offsetY: number) {
     const position = this.getPositionsById(id);
     return {
-      x: position.widthCenter,
-      y: position.bottom,
+      x: position.widthCenter + offsetX,
+      y: position.bottom + offsetY,
     };
   }
 
-  public getCoordinatesTopCenter(id: string) {
+  public getCoordinatesTopCenter(id: string, offsetX: number, offsetY: number) {
     const position = this.getPositionsById(id);
     return {
-      x: position.widthCenter,
-      y: position.top,
+      x: position.widthCenter + offsetX,
+      y: position.top + offsetY,
     };
   }
 }
 
+export interface IOffset {
+  offsetXStart: number;
+  offsetYStart: number;
+  offsetXEnd: number;
+  offsetYEnd: number;
+}
+
 export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
+export type TParticleShape = "circle" | "line";
 export class Line {
   private readonly lineEndId: string;
   private readonly lineStartId: string;
   private readonly lineStartEnd: LineStartEnd;
+  private readonly offsetXStart: number = 0;
+  private readonly offsetYStart: number = 0;
+  private readonly offsetXEnd: number = 0;
+  private readonly offsetYEnd: number = 0;
+  private dotsPerRow = 3;
+  private particleShape: TParticleShape = "circle";
+  private lineHeight = 3;
+  private speed = 50;
+  private lineWidth = 10;
+  private groupCount = 2;
+  private spacing = 0.25;
+  private strokeWidth = 10;
+  private dotRadius = 4;
+  private flowColorHex = "#00ff99";
 
-  constructor(lineStartId: string, lineEndId: string, lineStartEnd: LineStartEnd) {
+  // eslint-disable-next-line complexity
+  constructor(
+    lineStartId: string,
+    lineEndId: string,
+    lineStartEnd: LineStartEnd,
+    options?: {
+      dotsPerGroup?: number;
+      particleShape?: TParticleShape;
+      lineHeight?: number;
+      speed?: number;
+      lineWidth?: number;
+      groupCount?: number;
+      spacing?: number;
+      strokeWidth?: number;
+      dotRadius?: number;
+      flowColorHex?: string;
+      offsetXStart?: number;
+      offsetYStart?: number;
+      offsetXEnd?: number;
+      offsetYEnd?: number;
+    },
+  ) {
     this.lineEndId = lineEndId;
     this.lineStartId = lineStartId;
     this.lineStartEnd = lineStartEnd;
+    if (!options) {
+      return;
+    }
+    this.dotsPerRow = options.dotsPerGroup ?? this.dotsPerRow;
+    this.particleShape = options.particleShape ?? this.particleShape;
+    this.lineHeight = options.lineHeight ?? this.lineHeight;
+    this.speed = options.speed ?? this.speed;
+    this.lineWidth = options.lineWidth ?? this.lineWidth;
+    this.groupCount = options.groupCount ?? this.groupCount;
+    this.spacing = options.spacing ?? this.spacing;
+    this.strokeWidth = options.strokeWidth ?? this.strokeWidth;
+    this.dotRadius = options.dotRadius ?? this.dotRadius;
+    this.flowColorHex = options.flowColorHex ?? this.flowColorHex;
+    this.offsetXStart = options.offsetXStart ?? this.offsetXStart;
+    this.offsetYStart = options.offsetYStart ?? this.offsetYStart;
+    this.offsetXEnd = options.offsetXEnd ?? this.offsetXEnd;
+    this.offsetYEnd = options.offsetYEnd ?? this.offsetYEnd;
+  }
+
+  getOffsetXStart() {
+    return this.offsetXStart;
+  }
+  getOffsetYStart() {
+    return this.offsetYStart;
+  }
+  getOffsetYEnd() {
+    return this.offsetYEnd;
+  }
+  getOffsetXEnd() {
+    return this.offsetXEnd;
   }
 
   getLineEndId() {
     return this.lineEndId;
+  }
+
+  getStrokeWidth() {
+    return this.strokeWidth;
+  }
+
+  setStrokeWidth(width: number) {
+    this.strokeWidth = width;
+  }
+
+  getDotRadius() {
+    return this.dotRadius;
+  }
+
+  setDotRadius(radius: number) {
+    this.dotRadius = radius;
+  }
+
+  getFlowColorHex() {
+    return this.flowColorHex;
+  }
+
+  setFlowColorHex(hex: string) {
+    this.flowColorHex = hex;
+  }
+
+  getLineWidth() {
+    return this.lineWidth;
+  }
+
+  setLineWidth(lineWidth: number) {
+    this.lineWidth = lineWidth;
+  }
+
+  getGroupCount() {
+    return this.groupCount;
+  }
+
+  setGroupCount(groupCount: number) {
+    this.groupCount = groupCount;
+  }
+
+  getSpacing() {
+    return this.spacing;
+  }
+
+  setSpacing(spacing: number) {
+    this.spacing = spacing;
+  }
+
+  getSpeed() {
+    return this.speed;
+  }
+
+  setSpeed(speed: number) {
+    this.speed = speed;
+  }
+
+  getLineHeight() {
+    return this.lineHeight;
+  }
+
+  setLineHeight(height: number) {
+    this.lineHeight = height;
+  }
+
+  getDotsPerRow() {
+    return this.dotsPerRow;
+  }
+
+  setDotsPerRow(dots: number) {
+    this.dotsPerRow = dots;
+  }
+
+  getParticleShape() {
+    return this.particleShape;
+  }
+
+  setParticleShape(particleShape: TParticleShape) {
+    this.particleShape = particleShape;
   }
 
   getLineStartId() {
@@ -121,15 +274,17 @@ export class Line {
   getCoordinates(positions: Positions) {
     switch (this.lineStartEnd) {
       case "leftRightCenter":
-        return [positions.getCoordinatesRightCenter(this.getLineStartId()), positions.getCoordinatesLeftCenter(this.getLineEndId())];
+        return [
+          positions.getCoordinatesRightCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart()),
+          positions.getCoordinatesLeftCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd()),
+        ];
       case "bottomTopCenter":
-        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId());
-        const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId());
+        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart());
+        const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd());
         if (positionsStart.x !== positionsEnd.x) {
           const distanceY = positionsEnd.y - positionsStart.y;
 
           const step = distanceY / 2;
-          console.log(distanceY);
           const secondCoordinates = { x: positionsStart.x, y: positionsStart.y + step };
           const thirdCoordinates = { x: positionsEnd.x, y: positionsEnd.y - step };
           return [positionsStart, secondCoordinates, thirdCoordinates, positionsEnd];
@@ -137,7 +292,10 @@ export class Line {
 
         return [positionsStart, positionsEnd];
       case "bottomTopCenterDiagonal":
-        return [positions.getCoordinatesBottomCenter(this.getLineStartId()), positions.getCoordinatesTopCenter(this.getLineEndId())];
+        return [
+          positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart()),
+          positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd()),
+        ];
       default:
         return [];
     }
