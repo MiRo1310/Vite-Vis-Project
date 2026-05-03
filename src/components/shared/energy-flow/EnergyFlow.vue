@@ -26,14 +26,16 @@ const data = computed((): IEnergyFlow[] => [
     id: "pv",
     title: "PV Gross",
     ...columnsCoordinates(1, 1),
-    lines: [new Line("pv", "netz", "leftRightCenter", { groupCount: 1 })],
+    lines: [new Line("pv", "netz", "leftRightCenter", { groupCount: 1, offsetYStart: 0 })],
     out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
     id: "3",
     title: "PV Klein",
     ...columnsCoordinates(2, 1),
-    lines: [new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })],
+    lines: [
+      // new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })
+    ],
     out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600", reverse: true },
   },
   {
