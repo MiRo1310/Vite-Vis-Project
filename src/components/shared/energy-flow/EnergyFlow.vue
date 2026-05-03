@@ -27,10 +27,11 @@ const data = computed((): IEnergyFlow[] => [
     id: "pv",
     title: "PV Gross",
     type: "react",
-    ...columnsCoordinates(1, 1),
+    ...columnsCoordinates(2, 1),
     lines: [
       new Line("pv", "netz", "leftRightCenter", {
         groupCount: 1,
+        spacing: 0.15,
         offsetYStart: 0,
         autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25, value: pv.pvGross?.val ?? 0 },
         reverse: false,
@@ -42,19 +43,20 @@ const data = computed((): IEnergyFlow[] => [
     id: "pvSmall",
     title: "PV Klein",
     type: "react",
-    ...columnsCoordinates(2, 1),
-    lines: [new Line("netz", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true })],
+    ...columnsCoordinates(3, 1),
+    lines: [new Line("netz", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true, groupCount: 3, dotsPerGroup: 3, spacing: 0.05 })],
     out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
     id: "battery",
-    ...columnsCoordinates(2, 2),
+    ...columnsCoordinates(3, 2),
     title: "Speicher",
     lines: [
       new Line("netz", "battery", "bottomTopCenter", {
         offsetXStart: 10,
         offsetXEnd: 10,
         speed: 10,
+        groupCount: 1,
         reverse: false,
         active: getValNumber(pv.activeCharging) !== 0,
       }),
@@ -64,7 +66,7 @@ const data = computed((): IEnergyFlow[] => [
   },
   {
     id: "netz",
-    ...columnsCoordinates(1, 2),
+    ...columnsCoordinates(2, 2),
     title: "Netz",
     lines: [],
     out: { value: value.value, unit: "W", class: "text-green-400" },
