@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
 import EnergyFlowAnimate from "@/components/shared/energy-flow/EnergyFlowAnimate.vue";
 import EnergyFlowAnimateMotion from "@/components/shared/energy-flow/EnergyFlowAnimateMotion.vue";
@@ -118,8 +118,16 @@ const pathData = computed(() => {
   return d;
 });
 
+const basePathLength = ref<number>(0);
+const pathRef = ref<SVGPathElement | null>(null);
+
+onMounted(async () => {
+  await nextTick();
+  basePathLength.value = pathRef.value?.getTotalLength() ?? 0;
+});
+
 const duration = computed(() => {
-  const duration = (pathRef.value?.getTotalLength() ?? 0) / props.speed;
+  const duration = (basePathLength.value ?? 0) / props.speed;
   return duration === 0 ? 4 : duration;
 });
 
@@ -131,7 +139,6 @@ const getBegin = computed(() => (groupIndex: number, dotIndex = 0) => {
   return -(groupOffset + dotOffset);
 });
 
-const pathRef = ref<SVGPathElement | null>(null);
 watch(
   () => props.animationRef,
   (newValue) => {

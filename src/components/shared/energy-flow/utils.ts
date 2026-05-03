@@ -95,13 +95,6 @@ export class Positions {
   }
 }
 
-export interface IOffset {
-  offsetXStart: number;
-  offsetYStart: number;
-  offsetXEnd: number;
-  offsetYEnd: number;
-}
-
 export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
 export type TParticleShape = "circle" | "line";
 export class Line {
@@ -276,10 +269,10 @@ export class Line {
       case "leftRightCenter":
         return [
           positions.getCoordinatesRightCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart()),
-          positions.getCoordinatesLeftCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd()),
+          positions.getCoordinatesLeftCenter(this.getLineEndId(), this.getOffsetYEnd(), this.getOffsetYEnd()),
         ];
       case "bottomTopCenter":
-        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart());
+        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetXEnd());
         const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd());
         if (positionsStart.x !== positionsEnd.x) {
           const distanceY = positionsEnd.y - positionsStart.y;
