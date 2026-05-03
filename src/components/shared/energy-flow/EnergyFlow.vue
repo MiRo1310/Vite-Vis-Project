@@ -27,7 +27,13 @@ const data = computed((): IEnergyFlow[] => [
     title: "PV Gross",
     type: "react",
     ...columnsCoordinates(1, 1),
-    lines: [new Line("pv", "netz", "leftRightCenter", { groupCount: 1, offsetYStart: 0 })],
+    lines: [
+      new Line("pv", "netz", "leftRightCenter", {
+        groupCount: 1,
+        offsetYStart: 0,
+        autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 100, minSpeed: 25, value: pv.pvGross?.val ?? 0 },
+      }),
+    ],
     out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
