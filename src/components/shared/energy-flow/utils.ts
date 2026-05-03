@@ -1,4 +1,5 @@
 import { computed } from "vue";
+import { isDefined } from "@vueuse/core";
 
 export class PositionHandler {
   private readonly id: string;
@@ -116,6 +117,16 @@ export class Line {
   private readonly offsetYStart: number = 0;
   private readonly offsetXEnd: number = 0;
   private readonly offsetYEnd: number = 0;
+  private readonly autoSpeed: IAutoSpeed = {
+    active: false,
+    max: 100,
+    min: 0,
+    value: 0,
+    maxSpeed: 100,
+    minSpeed: 0,
+  };
+  private readonly reverse: boolean = false;
+  private readonly active: boolean = true;
   private dotsPerRow = 3;
   private particleShape: TParticleShape = "circle";
   private lineHeight = 3;
@@ -126,14 +137,6 @@ export class Line {
   private strokeWidth = 10;
   private dotRadius = 4;
   private flowColorHex = "#00ff99";
-  private autoSpeed: IAutoSpeed = {
-    active: false,
-    max: 100,
-    min: 0,
-    value: 0,
-    maxSpeed: 100,
-    minSpeed: 0,
-  };
 
   // eslint-disable-next-line complexity
   constructor(
@@ -156,6 +159,8 @@ export class Line {
       offsetYStart?: number;
       offsetXEnd?: number;
       offsetYEnd?: number;
+      reverse?: boolean;
+      active?: boolean;
     },
   ) {
     this.lineEndId = lineEndId;
@@ -179,6 +184,16 @@ export class Line {
     this.offsetXEnd = options.offsetXEnd ?? this.offsetXEnd;
     this.offsetYEnd = options.offsetYEnd ?? this.offsetYEnd;
     this.autoSpeed = options.autoSpeed ?? this.autoSpeed;
+    this.reverse = isDefined(options.reverse) ? options.reverse : this.reverse;
+    this.active = isDefined(options.active) ? options.active : this.active;
+  }
+
+  getReverse() {
+    return this.reverse;
+  }
+
+  getActive() {
+    return this.active;
   }
 
   getOffsetXStart() {
@@ -314,7 +329,7 @@ export class Line {
           positions.getCoordinatesLeftCenter(this.getLineEndId(), this.getOffsetYEnd(), this.getOffsetYEnd()),
         ];
       case "bottomTopCenter":
-        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetXEnd());
+        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart());
         const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd());
         if (positionsStart.x !== positionsEnd.x) {
           const distanceY = positionsEnd.y - positionsStart.y;
