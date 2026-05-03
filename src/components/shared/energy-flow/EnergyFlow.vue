@@ -6,10 +6,13 @@ import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getValNumber } from "@/lib/object.ts";
+import { Battery, BatteryFull, BatteryLow, BatteryMedium } from "lucide-vue-next";
 
 const { pv } = useIobrokerStore();
 
 const value = ref(500);
+
+//TODO Ersetzen mit Position {row, column}
 const columnsCoordinates = (row: number, column: number, options?: { offsetY?: number; offsetX?: number }) => {
   const xStart = 70;
   const yStart = 70;
@@ -21,6 +24,21 @@ const columnsCoordinates = (row: number, column: number, options?: { offsetY?: n
     y: yStart * row + (row - 1) * distanceY + (options?.offsetY ?? 0),
   };
 };
+
+const iconBattery = computed(() => {
+  const value = getValNumber(pv.batteryCharging);
+  if (value === 100) {
+    return BatteryFull;
+  }
+  if (value > 40) {
+    return BatteryMedium;
+  }
+
+  if (value > 10) {
+    return BatteryLow;
+  }
+  return Battery;
+});
 
 const data = computed((): IEnergyFlow[] => [
   {
@@ -43,6 +61,7 @@ const data = computed((): IEnergyFlow[] => [
     id: "pvSmall",
     title: "PV Klein",
     type: "react",
+
     ...columnsCoordinates(3, 1),
     lines: [
       new Line("verteiler", "pvSmall", "bottomTopCenter", getValNumber(pv.smallPv), {
@@ -60,6 +79,9 @@ const data = computed((): IEnergyFlow[] => [
     id: "battery",
     ...columnsCoordinates(3, 2),
     title: "Speicher",
+    icon: {
+      icon: iconBattery.value,
+    },
     lines: [
       new Line("verteiler", "battery", "bottomTopCenter", getValNumber(pv.activeCharging), {
         offsetXStart: 10,

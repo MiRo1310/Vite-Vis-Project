@@ -2,7 +2,6 @@
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/utils.ts";
 import { computed, onMounted, ref } from "vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
-import { Battery } from "lucide-vue-next";
 
 const props = defineProps<{
   energyFlow: IEnergyFlow;
@@ -71,7 +70,7 @@ const circle = computed(() => {
 
     <foreignObject :x="energyFlow.x - 20" :y="energyFlow.y - 50" width="40" height="40">
       <div xmlns="http://www.w3.org/1999/xhtml" class="flex items-center justify-center w-full h-full">
-        <Component :is="Battery" class="text-green-400" :size="32" />
+        <Component v-if="energyFlow.icon?.icon" :is="energyFlow.icon.icon" class="text-green-400" :size="32" />
       </div>
     </foreignObject>
 
