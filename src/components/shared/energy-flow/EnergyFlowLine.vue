@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
-import EnergyFlowAnimate from "@/components/shared/energy-flow/EnergyFlowAnimate.vue";
-import EnergyFlowAnimateMotion from "@/components/shared/energy-flow/EnergyFlowAnimateMotion.vue";
 import { TParticleShape } from "@/components/shared/energy-flow/utils.ts";
 
 const props = withDefaults(
@@ -118,25 +116,116 @@ const pathData = computed(() => {
   return d;
 });
 
-const basePathLength = ref<number>(0);
 const pathRef = ref<SVGPathElement | null>(null);
 
-onMounted(async () => {
+const pathLength = ref(0);
+
+const particles = ref<
+  {
+    progress: number;
+    offset: number;
+  }[]
+>([]);
+
+const positions = ref<
+  {
+    x: number;
+    y: number;
+    angle: number;
+  }[]
+>([]);
+
+function buildParticles() {
+  const list = [];
+
+  for (let group = 0; group < props.groupCount; group++) {
+    for (let dot = 0; dot < props.dotsPerGroup; dot++) {
+      const groupGap = 0.35;
+      const dotGap = props.spacing;
+
+      const offset = group * groupGap + dot * dotGap;
+
+      list.push({
+        progress: props.reverse ? 1 - offset : offset,
+        offset,
+      });
+    }
+  }
+
+  particles.value = list;
+}
+async function updatePathLength() {
   await nextTick();
-  basePathLength.value = pathRef.value?.getTotalLength() ?? 0;
+
+  pathLength.value = pathRef.value?.getTotalLength() ?? 0;
+}
+watch(
+  () => [props.groupCount, props.dotsPerGroup, props.spacing, props.reverse],
+  () => {
+    buildParticles();
+  },
+  {
+    immediate: true,
+  },
+);
+
+onMounted(async () => {
+  await updatePathLength();
+  startAnimation();
 });
 
-const duration = computed(() => {
-  const duration = (basePathLength.value ?? 0) / props.speed;
-  return duration === 0 ? 4 : duration;
-});
+let animationFrame = 0;
+let lastTime = performance.now();
 
-const getBegin = computed(() => (groupIndex: number, dotIndex = 0) => {
-  const groupOffset = (duration.value / props.groupCount) * groupIndex;
+function startAnimation() {
+  cancelAnimationFrame(animationFrame);
 
-  const dotOffset = props.spacing * dotIndex;
+  const animate = (time: number) => {
+    const delta = (time - lastTime) / 1000;
 
-  return -(groupOffset + dotOffset);
+    lastTime = time;
+
+    const length = pathLength.value;
+
+    if (pathRef.value && length > 0) {
+      // eslint-disable-next-line complexity
+      positions.value = particles.value.map((particle) => {
+        const movement = (props.speed * delta) / length;
+
+        particle.progress += props.reverse ? -movement : movement;
+
+        if (particle.progress > 1) {
+          particle.progress = 0;
+        }
+
+        if (particle.progress < 0) {
+          particle.progress = 1;
+        }
+
+        const currentLength = particle.progress * length;
+
+        const point = pathRef.value?.getPointAtLength(currentLength);
+
+        const nextPoint = pathRef.value?.getPointAtLength(Math.min(length, currentLength + 1));
+
+        const angle = (Math.atan2((nextPoint?.y ?? 0) - (point?.y ?? 0), (nextPoint?.x ?? 0) - (point?.x ?? 0)) * 180) / Math.PI;
+
+        return {
+          x: point?.x ?? 0,
+          y: point?.y ?? 0,
+          angle,
+        };
+      });
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+  };
+
+  animationFrame = requestAnimationFrame(animate);
+}
+
+onUnmounted(() => {
+  cancelAnimationFrame(animationFrame);
 });
 
 watch(
@@ -156,31 +245,26 @@ const animationRefExist = ref<boolean>(false);
 
   <!-- Dot Gruppen -->
   <Teleport v-if="animationRefExist" to="#svg-animations">
-    <g v-if="pathRef?.getTotalLength()">
-      <g v-for="groupIndex in groupCount" :key="groupIndex">
-        <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
-          <!-- Kreise -->
-          <circle v-if="particleShape === 'circle' && animation" :r="dotRadius" :fill="flowColor">
-            <EnergyFlowAnimateMotion :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
-            <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
-          </circle>
+    <template v-for="(particle, index) in positions" :key="index">
+      <circle v-if="particleShape === 'circle' && animation" :cx="particle.x" :cy="particle.y" :r="dotRadius" :fill="flowColor" />
 
-          <!-- Linien/Balken -->
-          <rect
-            v-else-if="animation"
-            :width="lineWidth"
-            :height="lineHeight"
-            :rx="lineHeight / 2"
-            :fill="flowColor"
-            :x="-lineWidth / 2"
-            :y="-lineHeight / 2"
-          >
-            <EnergyFlowAnimateMotion :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
-            <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
-          </rect>
-        </template>
-      </g>
-    </g>
+      <rect
+        v-else-if="animation"
+        :x="particle.x - lineWidth / 2"
+        :y="particle.y - lineHeight / 2"
+        :width="lineWidth"
+        :height="lineHeight"
+        :rx="lineHeight / 2"
+        :fill="flowColor"
+        :transform="`
+      rotate(
+        ${particle.angle}
+        ${particle.x}
+        ${particle.y}
+      )
+    `"
+      />
+    </template>
   </Teleport>
   <!-- Unsichtbarer Pfad für Motion -->
   <path ref="pathRef" :id="`energy-path-${id}`" :d="pathData" fill="none" stroke="transparent" />
