@@ -1,4 +1,6 @@
 import { Line } from "@/components/shared/energy-flow/utils.ts";
+import { FunctionalComponent } from "vue";
+import { LucideProps } from "lucide-vue-next";
 
 export interface Point {
   x: number;
@@ -10,6 +12,7 @@ export interface IEnergyFlow {
   x: number;
   y: number;
   title: string;
+  icon?: IEnergyFlowIcon;
   values: IEnergyFlowCardValue[];
   lines: Line[];
   padding?: number;
@@ -37,8 +40,15 @@ export interface IEnergyFlowCardValue {
   unit?: string;
   class?: string;
   fontSize?: number;
-  textAnchor?: "start" | "middle" | "end" | "inherit";
+  textAnchor?: TTextAnchor;
   fill?: string;
 }
 
 export type TTextAnchor = "start" | "middle" | "end" | "inherit";
+
+export interface IEnergyFlowIcon {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  icon: FunctionalComponent<LucideProps, object, any, object>;
+  color?: string;
+}
