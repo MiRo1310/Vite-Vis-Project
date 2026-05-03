@@ -13,8 +13,8 @@ const value = ref(500);
 const columnsCoordinates = (row: number, column: number, options?: { offsetY?: number; offsetX?: number }) => {
   const xStart = 70;
   const yStart = 70;
-  const distanceX = 140;
-  const distanceY = 100;
+  const distanceX = 160;
+  const distanceY = 120;
 
   return {
     x: xStart * column + (column - 1) * distanceX + (options?.offsetX ?? 0),
@@ -29,7 +29,7 @@ const data = computed((): IEnergyFlow[] => [
     type: "react",
     ...columnsCoordinates(2, 1),
     lines: [
-      new Line("pv", "netz", "leftRightCenter", {
+      new Line("pv", "verteiler", "leftRightCenter", {
         groupCount: 1,
         spacing: 0.15,
         offsetYStart: 0,
@@ -44,7 +44,7 @@ const data = computed((): IEnergyFlow[] => [
     title: "PV Klein",
     type: "react",
     ...columnsCoordinates(3, 1),
-    lines: [new Line("netz", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true, groupCount: 3, dotsPerGroup: 3, spacing: 0.05 })],
+    lines: [new Line("verteiler", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true, groupCount: 3, dotsPerGroup: 3, spacing: 0.05 })],
     out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
@@ -52,7 +52,7 @@ const data = computed((): IEnergyFlow[] => [
     ...columnsCoordinates(3, 2),
     title: "Speicher",
     lines: [
-      new Line("netz", "battery", "bottomTopCenter", {
+      new Line("verteiler", "battery", "bottomTopCenter", {
         offsetXStart: 10,
         offsetXEnd: 10,
         speed: 10,
@@ -65,12 +65,19 @@ const data = computed((): IEnergyFlow[] => [
     in: { value: getValNumber(pv.batteryCharging), unit: "%" },
   },
   {
-    id: "netz",
+    id: "verteiler",
     ...columnsCoordinates(2, 2),
-    title: "Netz",
+    title: "Verteiler",
     lines: [],
     out: { value: value.value, unit: "W", class: "text-green-400" },
     in: { value: 100 },
+  },
+  {
+    id: "netz",
+    ...columnsCoordinates(1, 2),
+    title: "Netz",
+    lines: [new Line("netz", "verteiler", "bottomTopCenter", { groupCount: 1, reverse: getValNumber(pv.feedIn) > 0 })],
+    out: { value: getValNumber(pv.feedIn), unit: "W", class: "text-green-400" },
   },
 ]);
 
