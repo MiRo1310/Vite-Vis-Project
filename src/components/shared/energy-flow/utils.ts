@@ -1,3 +1,5 @@
+import { computed } from "vue";
+
 export class PositionHandler {
   private readonly id: string;
   private left: number = 0;
@@ -95,6 +97,15 @@ export class Positions {
   }
 }
 
+interface IAutoSpeed {
+  active?: boolean;
+  max: number;
+  min: number;
+  value: number;
+  maxSpeed?: number;
+  minSpeed?: number;
+}
+
 export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
 export type TParticleShape = "circle" | "line";
 export class Line {
@@ -115,6 +126,14 @@ export class Line {
   private strokeWidth = 10;
   private dotRadius = 4;
   private flowColorHex = "#00ff99";
+  private autoSpeed: IAutoSpeed = {
+    active: false,
+    max: 100,
+    min: 0,
+    value: 0,
+    maxSpeed: 100,
+    minSpeed: 0,
+  };
 
   // eslint-disable-next-line complexity
   constructor(
@@ -126,6 +145,7 @@ export class Line {
       particleShape?: TParticleShape;
       lineHeight?: number;
       speed?: number;
+      autoSpeed?: IAutoSpeed;
       lineWidth?: number;
       groupCount?: number;
       spacing?: number;
@@ -158,6 +178,7 @@ export class Line {
     this.offsetYStart = options.offsetYStart ?? this.offsetYStart;
     this.offsetXEnd = options.offsetXEnd ?? this.offsetXEnd;
     this.offsetYEnd = options.offsetYEnd ?? this.offsetYEnd;
+    this.autoSpeed = options.autoSpeed ?? this.autoSpeed;
   }
 
   getOffsetXStart() {
@@ -225,7 +246,28 @@ export class Line {
     this.spacing = spacing;
   }
 
+  private calculateAutoSpeed() {
+    return computed(() => {
+      const { max, min, maxSpeed = 50, minSpeed = 25, value } = this.autoSpeed;
+
+      const range = max - min;
+
+      if (range <= 0) {
+        return minSpeed;
+      }
+
+      const faktor = (value - min) / range;
+
+      const speed = minSpeed + (maxSpeed - minSpeed) * faktor;
+
+      return Math.min(maxSpeed, Math.max(minSpeed, speed));
+    });
+  }
+
   getSpeed() {
+    if (this.autoSpeed.active) {
+      return this.calculateAutoSpeed().value;
+    }
     return this.speed;
   }
 
