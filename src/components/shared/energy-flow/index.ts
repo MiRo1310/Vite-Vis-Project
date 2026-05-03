@@ -37,5 +37,4 @@ export interface IEnergyFlowOutIn {
   value: number;
   unit?: string;
   class?: string;
-  reverse?: boolean;
 }

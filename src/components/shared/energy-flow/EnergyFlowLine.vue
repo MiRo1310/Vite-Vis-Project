@@ -160,14 +160,22 @@ const animationRefExist = ref<boolean>(false);
       <g v-for="groupIndex in groupCount" :key="groupIndex">
         <template v-for="dotIndex in dotsPerGroup" :key="dotIndex">
           <!-- Kreise -->
-          <circle v-if="particleShape === 'circle'" :r="dotRadius" :fill="flowColor">
-            <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+          <circle v-if="particleShape === 'circle' && animation" :r="dotRadius" :fill="flowColor">
+            <EnergyFlowAnimateMotion :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
             <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
           </circle>
 
           <!-- Linien/Balken -->
-          <rect v-else :width="lineWidth" :height="lineHeight" :rx="lineHeight / 2" :fill="flowColor" :x="-lineWidth / 2" :y="-lineHeight / 2">
-            <EnergyFlowAnimateMotion v-if="animation" :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
+          <rect
+            v-else-if="animation"
+            :width="lineWidth"
+            :height="lineHeight"
+            :rx="lineHeight / 2"
+            :fill="flowColor"
+            :x="-lineWidth / 2"
+            :y="-lineHeight / 2"
+          >
+            <EnergyFlowAnimateMotion :id :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" :reverse />
             <EnergyFlowAnimate :duration :begin="`${getBegin(groupIndex - 1, dotIndex - 1)}s`" />
           </rect>
         </template>

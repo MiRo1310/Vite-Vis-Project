@@ -5,6 +5,7 @@ import { Line, Positions } from "@/components/shared/energy-flow/utils.ts";
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { getValNumber } from "@/lib/object.ts";
 
 const { pv } = useIobrokerStore();
 
@@ -31,33 +32,42 @@ const data = computed((): IEnergyFlow[] => [
       new Line("pv", "netz", "leftRightCenter", {
         groupCount: 1,
         offsetYStart: 0,
-        autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 100, minSpeed: 25, value: pv.pvGross?.val ?? 0 },
+        autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25, value: pv.pvGross?.val ?? 0 },
+        reverse: false,
       }),
     ],
     out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
-    id: "3",
+    id: "pvSmall",
     title: "PV Klein",
     type: "react",
     ...columnsCoordinates(2, 1),
-    lines: [new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })],
-    out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600", reverse: true },
+    lines: [new Line("netz", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true })],
+    out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600" },
   },
   {
     id: "battery",
     ...columnsCoordinates(2, 2),
     title: "Speicher",
-    lines: [],
-    out: { value: value.value, unit: "W", class: "text-green-400", reverse: true },
-    in: { value: 100 },
+    lines: [
+      new Line("netz", "battery", "bottomTopCenter", {
+        offsetXStart: 10,
+        offsetXEnd: 10,
+        speed: 10,
+        reverse: false,
+        active: getValNumber(pv.activeCharging) !== 0,
+      }),
+    ],
+    out: { value: getValNumber(pv.activeCharging), unit: "W", class: "text-green-400" },
+    in: { value: getValNumber(pv.batteryCharging), unit: "%" },
   },
   {
     id: "netz",
     ...columnsCoordinates(1, 2),
     title: "Netz",
     lines: [],
-    out: { value: value.value, unit: "W", class: "text-green-400", reverse: true },
+    out: { value: value.value, unit: "W", class: "text-green-400" },
     in: { value: 100 },
   },
 ]);
@@ -74,8 +84,8 @@ const animationRef = ref<null | SVGGElement>(null);
         <template v-for="(line, index) in item.lines" :key="index">
           <EnergyFlowLine
             :id="String(i)"
-            animation
-            :reverse="item.out?.reverse"
+            :animation="line.getActive()"
+            :reverse="line.getReverse()"
             :points="line.getCoordinates(positions)"
             :dots-per-group="line.getDotsPerRow()"
             :particle-shape="line.getParticleShape()"
