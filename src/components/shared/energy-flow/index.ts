@@ -10,8 +10,7 @@ export interface IEnergyFlow {
   x: number;
   y: number;
   title: string;
-  in?: IEnergyFlowOutIn;
-  out?: IEnergyFlowOutIn;
+  values: IEnergyFlowCardValue[];
   lines: Line[];
   padding?: number;
   fillColor?: string;
@@ -33,8 +32,13 @@ export interface IReact {
   radiusY?: number;
 }
 
-export interface IEnergyFlowOutIn {
+export interface IEnergyFlowCardValue {
   value: number;
   unit?: string;
   class?: string;
+  fontSize?: number;
+  textAnchor?: "start" | "middle" | "end" | "inherit";
+  fill?: string;
 }
+
+export type TTextAnchor = "start" | "middle" | "end" | "inherit";
