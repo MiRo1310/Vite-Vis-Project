@@ -102,11 +102,11 @@ interface IAutoSpeed {
   active?: boolean;
   max: number;
   min: number;
-  value: number;
   maxSpeed?: number;
   minSpeed?: number;
 }
 
+export type TReverse = "greaterThan" | "lessThan";
 export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
 export type TParticleShape = "circle" | "line";
 export class Line {
@@ -121,11 +121,10 @@ export class Line {
     active: false,
     max: 100,
     min: 0,
-    value: 0,
     maxSpeed: 100,
     minSpeed: 0,
   };
-  private readonly reverse: boolean = false;
+  private readonly reverse: TReverse = "greaterThan";
   private readonly active: boolean = true;
   private dotsPerRow = 3;
   private particleShape: TParticleShape = "circle";
@@ -136,13 +135,15 @@ export class Line {
   private spacing = 0.25;
   private strokeWidth = 10;
   private dotRadius = 4;
-  private flowColorHex = "#00ff99";
+  private flowColorHex = { positive: "#58ea38", negative: "#ff0000" };
+  private readonly value: number = 0;
 
   // eslint-disable-next-line complexity
   constructor(
     lineStartId: string,
     lineEndId: string,
     lineStartEnd: LineStartEnd,
+    value: number,
     options?: {
       dotsPerGroup?: number;
       particleShape?: TParticleShape;
@@ -154,12 +155,12 @@ export class Line {
       spacing?: number;
       strokeWidth?: number;
       dotRadius?: number;
-      flowColorHex?: string;
+      flowColorHex?: { positive: string; negative: string };
       offsetXStart?: number;
       offsetYStart?: number;
       offsetXEnd?: number;
       offsetYEnd?: number;
-      reverse?: boolean;
+      reverse?: TReverse;
       active?: boolean;
     },
   ) {
@@ -186,14 +187,15 @@ export class Line {
     this.autoSpeed = options.autoSpeed ?? this.autoSpeed;
     this.reverse = isDefined(options.reverse) ? options.reverse : this.reverse;
     this.active = isDefined(options.active) ? options.active : this.active;
+    this.value = value;
   }
 
   getReverse() {
-    return this.reverse;
+    return this.reverse === "greaterThan" ? this.value > 0 : this.value < 0;
   }
 
   getActive() {
-    return this.active;
+    return this.value !== 0 && this.active;
   }
 
   getOffsetXStart() {
@@ -217,58 +219,39 @@ export class Line {
     return this.strokeWidth;
   }
 
-  setStrokeWidth(width: number) {
-    this.strokeWidth = width;
-  }
-
   getDotRadius() {
     return this.dotRadius;
   }
 
-  setDotRadius(radius: number) {
-    this.dotRadius = radius;
-  }
-
   getFlowColorHex() {
-    return this.flowColorHex;
-  }
-
-  setFlowColorHex(hex: string) {
-    this.flowColorHex = hex;
+    return this.value > 0 ? this.flowColorHex.positive : this.flowColorHex.negative;
   }
 
   getLineWidth() {
     return this.lineWidth;
   }
 
-  setLineWidth(lineWidth: number) {
-    this.lineWidth = lineWidth;
-  }
-
   getGroupCount() {
     return this.groupCount;
-  }
-
-  setGroupCount(groupCount: number) {
-    this.groupCount = groupCount;
   }
 
   getSpacing() {
     return this.spacing;
   }
 
-  setSpacing(spacing: number) {
-    this.spacing = spacing;
-  }
-
   private calculateAutoSpeed() {
     return computed(() => {
-      const { max, min, maxSpeed = 50, minSpeed = 25, value } = this.autoSpeed;
+      const { max, min, maxSpeed = 50, minSpeed = 25 } = this.autoSpeed;
 
       const range = max - min;
 
       if (range <= 0) {
         return minSpeed;
+      }
+
+      let value = this.value;
+      if (value < 0) {
+        value = value * -1;
       }
 
       const faktor = (value - min) / range;
@@ -280,47 +263,28 @@ export class Line {
   }
 
   getSpeed() {
-    if (this.autoSpeed.active) {
-      return this.calculateAutoSpeed().value;
+    if (this.autoSpeed.active === false) {
+      return this.speed;
     }
-    return this.speed;
-  }
-
-  setSpeed(speed: number) {
-    this.speed = speed;
+    return this.calculateAutoSpeed().value;
   }
 
   getLineHeight() {
     return this.lineHeight;
   }
 
-  setLineHeight(height: number) {
-    this.lineHeight = height;
-  }
-
   getDotsPerRow() {
     return this.dotsPerRow;
-  }
-
-  setDotsPerRow(dots: number) {
-    this.dotsPerRow = dots;
   }
 
   getParticleShape() {
     return this.particleShape;
   }
 
-  setParticleShape(particleShape: TParticleShape) {
-    this.particleShape = particleShape;
-  }
-
   getLineStartId() {
     return this.lineStartId;
   }
 
-  getLineStartEnd() {
-    return this.lineStartEnd;
-  }
   getCoordinates(positions: Positions) {
     switch (this.lineStartEnd) {
       case "leftRightCenter":

@@ -29,55 +29,71 @@ const data = computed((): IEnergyFlow[] => [
     type: "react",
     ...columnsCoordinates(2, 1),
     lines: [
-      new Line("pv", "verteiler", "leftRightCenter", {
+      new Line("pv", "verteiler", "leftRightCenter", getValNumber(pv.pvGross), {
         groupCount: 1,
         spacing: 0.15,
         offsetYStart: 0,
-        autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25, value: pv.pvGross?.val ?? 0 },
-        reverse: false,
+        autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25 },
+        reverse: "lessThan",
       }),
     ],
-    out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
+    values: [{ value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" }],
   },
   {
     id: "pvSmall",
     title: "PV Klein",
     type: "react",
     ...columnsCoordinates(3, 1),
-    lines: [new Line("verteiler", "pvSmall", "bottomTopCenter", { offsetXStart: -10, reverse: true, groupCount: 3, dotsPerGroup: 3, spacing: 0.05 })],
-    out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600" },
+    lines: [
+      new Line("verteiler", "pvSmall", "bottomTopCenter", getValNumber(pv.smallPv), {
+        offsetXStart: -10,
+        reverse: "greaterThan",
+        groupCount: 3,
+        dotsPerGroup: 3,
+        spacing: 0.05,
+        autoSpeed: { max: 600, min: 50, maxSpeed: 75, minSpeed: 25 },
+      }),
+    ],
+    values: [{ value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600" }],
   },
   {
     id: "battery",
     ...columnsCoordinates(3, 2),
     title: "Speicher",
     lines: [
-      new Line("verteiler", "battery", "bottomTopCenter", {
+      new Line("verteiler", "battery", "bottomTopCenter", getValNumber(pv.activeCharging), {
         offsetXStart: 10,
         offsetXEnd: 10,
         speed: 10,
         groupCount: 1,
-        reverse: false,
-        active: getValNumber(pv.activeCharging) !== 0,
+        autoSpeed: { max: 5000, min: 50, maxSpeed: 75, minSpeed: 25 },
+        reverse: "lessThan",
       }),
     ],
-    out: { value: getValNumber(pv.activeCharging), unit: "W", class: "text-green-400" },
-    in: { value: getValNumber(pv.batteryCharging), unit: "%" },
+    values: [
+      { value: getValNumber(pv.activeCharging), unit: "W", class: "text-green-400" },
+      { value: getValNumber(pv.batteryCharging), unit: "%" },
+    ],
   },
   {
     id: "verteiler",
     ...columnsCoordinates(2, 2),
     title: "Verteiler",
     lines: [],
-    out: { value: value.value, unit: "W", class: "text-green-400" },
-    in: { value: 100 },
+    values: [{ value: value.value, unit: "W", class: "text-green-400" }, { value: 100 }],
   },
   {
     id: "netz",
     ...columnsCoordinates(1, 2),
     title: "Netz",
-    lines: [new Line("netz", "verteiler", "bottomTopCenter", { groupCount: 1, reverse: getValNumber(pv.feedIn) > 0 })],
-    out: { value: getValNumber(pv.feedIn), unit: "W", class: "text-green-400" },
+    lines: [
+      new Line("netz", "verteiler", "bottomTopCenter", getValNumber(pv.feedIn), {
+        groupCount: 1,
+        reverse: "greaterThan",
+        autoSpeed: { max: 5000, min: 50, maxSpeed: 75, minSpeed: 25 },
+      }),
+    ],
+    values: [{ value: getValNumber(pv.feedIn), unit: "W", class: "text-green-400" }],
   },
 ]);
 
