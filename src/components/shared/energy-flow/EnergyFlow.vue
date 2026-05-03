@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 import { Line, Positions } from "@/components/shared/energy-flow/utils.ts";
-import EnergyFlowCircle from "@/components/shared/energy-flow/EnergyFlowCircle.vue";
+import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
@@ -25,6 +25,7 @@ const data = computed((): IEnergyFlow[] => [
   {
     id: "pv",
     title: "PV Gross",
+    type: "react",
     ...columnsCoordinates(1, 1),
     lines: [new Line("pv", "netz", "leftRightCenter", { groupCount: 1, offsetYStart: 0 })],
     out: { value: pv.pvGross?.val ?? 0, unit: "W", class: "text-green-600" },
@@ -32,10 +33,9 @@ const data = computed((): IEnergyFlow[] => [
   {
     id: "3",
     title: "PV Klein",
+    type: "react",
     ...columnsCoordinates(2, 1),
-    lines: [
-      // new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })
-    ],
+    lines: [new Line("netz", "3", "bottomTopCenter", { offsetXStart: 0 })],
     out: { value: pv.smallPv?.val ?? 0, unit: "W", class: "text-green-600", reverse: true },
   },
   {
@@ -64,7 +64,7 @@ const animationRef = ref<null | SVGGElement>(null);
   <Teleport to="body">
     <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10 bg-gray-900" xmlns="http://www.w3.org/2000/svg">
       <template v-for="(item, i) in data" :key="i">
-        <EnergyFlowCircle :energy-flow="item" :positions />
+        <EnergyFlowCard :energy-flow="item" :positions />
         <template v-for="(line, index) in item.lines" :key="index">
           <EnergyFlowLine
             :id="String(i)"

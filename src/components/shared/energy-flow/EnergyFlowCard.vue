@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/utils.ts";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 
 const props = defineProps<{
@@ -14,17 +14,54 @@ const card = new PositionHandler(props.energyFlow.id, { padding: props.energyFlo
 const radius = ref(defaultRadius);
 
 onMounted(() => {
-  if (props.energyFlow.radius) {
-    radius.value = props.energyFlow.radius;
+  const r = props.energyFlow.circle?.radius;
+  if (r) {
+    radius.value = r;
   }
   card.updatePosition(props.energyFlow.x, props.energyFlow.y, radius.value * 2, radius.value * 2, 2);
   props.positions.updatePositionsForCard(card);
+});
+
+const getReactAndCircleValues = () => {
+  return {
+    stroke: props.energyFlow.stroke ?? "#22c55e",
+    fill: props.energyFlow.fillColor ?? "#1e293b",
+    strokeWidth: props.energyFlow.strokeWidth,
+  };
+};
+
+const react = computed(() => {
+  const width = props.energyFlow.react?.width ?? 100;
+  const height = props.energyFlow.react?.height ?? 100;
+  const rx = props.energyFlow.react?.radiusX ?? 0;
+  const ry = props.energyFlow.react?.radiusY ?? 0;
+  const x = props.energyFlow.x - width / 2;
+  const y = props.energyFlow.y - height / 2;
+  return {
+    height: height,
+    width: width,
+    x: x,
+    y: y,
+    ry: ry,
+    rx: rx,
+    ...getReactAndCircleValues(),
+  };
+});
+
+const circle = computed(() => {
+  return {
+    cx: props.energyFlow.x,
+    cy: props.energyFlow.y,
+    r: radius.value,
+    ...getReactAndCircleValues(),
+  };
 });
 </script>
 
 <template>
   <g>
-    <circle :cx="energyFlow.x" :cy="energyFlow.y" :r="radius" fill="#1e293b" stroke="#22c55e" stroke-width="2" />
+    <rect v-if="energyFlow.type === 'react'" v-bind="react" />
+    <circle v-else v-bind="circle" />
 
     <text :x="energyFlow.x" :y="energyFlow.y - 15" text-anchor="middle" fill="white" font-size="16"> {{ energyFlow.title }}</text>
 
