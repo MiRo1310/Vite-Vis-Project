@@ -32,7 +32,7 @@ export class PositionHandler {
     return this.id;
   }
 
-  public getPositions() {
+  public getPosition() {
     return {
       left: this.left,
       top: this.top,
@@ -53,7 +53,7 @@ export class Positions {
 
   public getPositionsById(id: string) {
     return (
-      this.positions[id]?.getPositions() ?? {
+      this.positions[id]?.getPosition() ?? {
         left: 0,
         top: 0,
         right: 0,
