@@ -6,24 +6,11 @@ import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getValNumber } from "@/lib/object.ts";
-import { Battery, BatteryFull, BatteryLow, BatteryMedium } from "lucide-vue-next";
+import { Battery, BatteryFull, BatteryLow, BatteryMedium, House, SolarPanel } from "lucide-vue-next";
 
 const { pv } = useIobrokerStore();
 
 const value = ref(500);
-
-//TODO Ersetzen mit Position {row, column}
-const columnsCoordinates = (row: number, column: number, options?: { offsetY?: number; offsetX?: number }) => {
-  const xStart = 70;
-  const yStart = 70;
-  const distanceX = 160;
-  const distanceY = 120;
-
-  return {
-    x: xStart * column + (column - 1) * distanceX + (options?.offsetX ?? 0),
-    y: yStart * row + (row - 1) * distanceY + (options?.offsetY ?? 0),
-  };
-};
 
 const iconBattery = computed(() => {
   const value = getValNumber(pv.batteryCharging);
@@ -45,7 +32,9 @@ const data = computed((): IEnergyFlow[] => [
     id: "pv",
     title: "PV Gross",
     type: "react",
-    ...columnsCoordinates(2, 1),
+    react: { height: 150 },
+    icon: { svg: SolarPanel },
+    position: { row: 2, col: 1 },
     lines: [
       new Line("pv", "verteiler", "leftRightCenter", getValNumber(pv.pvGross), {
         groupCount: 1,
@@ -61,8 +50,8 @@ const data = computed((): IEnergyFlow[] => [
     id: "pvSmall",
     title: "PV Klein",
     type: "react",
-
-    ...columnsCoordinates(3, 1),
+    icon: { svg: SolarPanel, width: 30, height: 30 },
+    position: { row: 3, col: 1 },
     lines: [
       new Line("verteiler", "pvSmall", "bottomTopCenter", getValNumber(pv.smallPv), {
         offsetXStart: -10,
@@ -77,10 +66,10 @@ const data = computed((): IEnergyFlow[] => [
   },
   {
     id: "battery",
-    ...columnsCoordinates(3, 2),
+    position: { row: 3, col: 2 },
     title: "Speicher",
     icon: {
-      icon: iconBattery.value,
+      svg: iconBattery.value,
     },
     lines: [
       new Line("verteiler", "battery", "bottomTopCenter", getValNumber(pv.activeCharging), {
@@ -99,14 +88,15 @@ const data = computed((): IEnergyFlow[] => [
   },
   {
     id: "verteiler",
-    ...columnsCoordinates(2, 2),
+    position: { row: 2, col: 2 },
     title: "Verteiler",
+    icon: { svg: House },
     lines: [],
     values: [{ value: value.value, unit: "W", class: "text-green-400" }, { value: 100 }],
   },
   {
     id: "netz",
-    ...columnsCoordinates(1, 2),
+    position: { row: 1, col: 2 },
     title: "Netz",
     lines: [
       new Line("netz", "verteiler", "bottomTopCenter", getValNumber(pv.feedIn), {
@@ -125,7 +115,7 @@ const animationRef = ref<null | SVGGElement>(null);
 
 <template>
   <Teleport to="body">
-    <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10 bg-gray-900" xmlns="http://www.w3.org/2000/svg">
+    <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10" xmlns="http://www.w3.org/2000/svg">
       <template v-for="(item, i) in data" :key="i">
         <EnergyFlowCard :energy-flow="item" :positions />
         <template v-for="(line, index) in item.lines" :key="index">

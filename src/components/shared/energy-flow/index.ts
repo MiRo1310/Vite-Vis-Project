@@ -9,8 +9,7 @@ export interface Point {
 
 export interface IEnergyFlow {
   id: string;
-  x: number;
-  y: number;
+  position: { row: number; col: number; options?: { offsetY?: number; offsetX?: number } };
   title: string;
   icon?: IEnergyFlowIcon;
   values: IEnergyFlowCardValue[];
@@ -49,6 +48,10 @@ export type TTextAnchor = "start" | "middle" | "end" | "inherit";
 export interface IEnergyFlowIcon {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
-  icon: FunctionalComponent<LucideProps, object, any, object>;
+  svg: FunctionalComponent<LucideProps, object, any, object>;
   color?: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  size?: number;
 }
