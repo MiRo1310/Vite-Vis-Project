@@ -10,7 +10,7 @@ export interface Point {
 export interface IEnergyFlow {
   id: string;
   position: { row: number; col: number; options?: { offsetY?: number; offsetX?: number } };
-  title: string;
+  title?: string;
   icon?: IEnergyFlowIcon;
   values: IEnergyFlowCardValue[];
   lines: Line[];
@@ -35,7 +35,7 @@ export interface IReact {
 }
 
 export interface IEnergyFlowCardValue {
-  value: number;
+  value: number | "";
   unit?: string;
   class?: string;
   fontSize?: number;

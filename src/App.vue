@@ -11,6 +11,7 @@ import { hmipIds } from "@/subscribeIds/hmip.iobroker.js";
 import { useColorMode } from "@vueuse/core";
 import { lightStates } from "@/subscribeIds/light.iobroker.js";
 import { heating } from "@/subscribeIds/heating.iobroker.js";
+import { energyStates } from "@/subscribeIds/energy.iobroker.ts";
 
 useColorMode();
 
@@ -18,7 +19,7 @@ onMounted(async () => {
   useIobrokerStore().resetIdsToSubscribe();
   loadScript(socketIo);
 
-  useDynamicSubscribe([batteryIds, hmipIds, ...lightStates, heating]);
+  useDynamicSubscribe([batteryIds, hmipIds, ...lightStates, heating, energyStates]);
 });
 onUnmounted(() => {
   useTime().clear();

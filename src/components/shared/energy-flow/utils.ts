@@ -9,6 +9,8 @@ export class PositionHandler {
   private right: number = 0;
   private heightCenter: number = 0;
   private widthCenter: number = 0;
+  private height: number = 0;
+  private width: number = 0;
 
   private readonly padding: number = 10;
 
@@ -26,6 +28,8 @@ export class PositionHandler {
     this.right = x + halfWidth + this.padding + border;
     this.heightCenter = y;
     this.widthCenter = x;
+    this.width = width;
+    this.height = height;
   }
 
   public getId() {
@@ -40,6 +44,8 @@ export class PositionHandler {
       bottom: this.bottom,
       heightCenter: this.heightCenter,
       widthCenter: this.widthCenter,
+      height: this.height,
+      width: this.width,
     };
   }
 }
@@ -60,41 +66,49 @@ export class Positions {
         bottom: 0,
         heightCenter: 0,
         widthCenter: 0,
+        height: 0,
+        width: 0,
       }
     );
   }
 
-  public getCoordinatesRightCenter(id: string, offsetX: number, offsetY: number) {
-    const position = this.getPositionsById(id);
+  public getCoordinates(line: ILineEndPoint) {
+    const positions = this.getPositionsById(line.id);
+    const lineOffsetX = line.offsetX ?? 0;
+    const lineOffsetY = line.offsetY ?? 0;
 
     return {
-      x: position.right + offsetX,
-      y: position.heightCenter + offsetY,
+      x: this.getPositionX(line.position, positions) + lineOffsetX,
+      y: this.getPositionY(line.position, positions) + lineOffsetY,
     };
   }
 
-  public getCoordinatesLeftCenter(id: string, offsetX: number, offsetY: number) {
-    const position = this.getPositionsById(id);
-    return {
-      x: position.left + offsetX,
-      y: position.heightCenter + offsetY,
-    };
+  private getPositionY(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+    switch (position) {
+      case "top":
+        return positions.top;
+      case "bottom":
+        return positions.bottom;
+      case "right":
+      case "left":
+        return positions.heightCenter;
+      default:
+        return 0;
+    }
   }
 
-  public getCoordinatesBottomCenter(id: string, offsetX: number, offsetY: number) {
-    const position = this.getPositionsById(id);
-    return {
-      x: position.widthCenter + offsetX,
-      y: position.bottom + offsetY,
-    };
-  }
-
-  public getCoordinatesTopCenter(id: string, offsetX: number, offsetY: number) {
-    const position = this.getPositionsById(id);
-    return {
-      x: position.widthCenter + offsetX,
-      y: position.top + offsetY,
-    };
+  private getPositionX(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+    switch (position) {
+      case "top":
+      case "bottom":
+        return positions.widthCenter;
+      case "left":
+        return positions.left;
+      case "right":
+        return positions.right;
+      default:
+        return 0;
+    }
   }
 }
 
@@ -106,17 +120,19 @@ interface IAutoSpeed {
   minSpeed?: number;
 }
 
+export type TPositions = "top" | "bottom" | "left" | "right";
 export type TReverse = "greaterThan" | "lessThan";
-export type LineStartEnd = "leftRightCenter" | "bottomTopCenter" | "bottomTopCenterDiagonal";
+export interface ILineEndPoint {
+  id: string;
+  position: TPositions;
+  offsetX?: number;
+  offsetY?: number;
+}
+
 export type TParticleShape = "circle" | "line";
 export class Line {
-  private readonly lineEndId: string;
-  private readonly lineStartId: string;
-  private readonly lineStartEnd: LineStartEnd;
-  private readonly offsetXStart: number = 0;
-  private readonly offsetYStart: number = 0;
-  private readonly offsetXEnd: number = 0;
-  private readonly offsetYEnd: number = 0;
+  private readonly lineEnd: ILineEndPoint;
+  private readonly lineStart: ILineEndPoint;
   private readonly autoSpeed: IAutoSpeed = {
     active: false,
     max: 100,
@@ -126,23 +142,22 @@ export class Line {
   };
   private readonly reverse: TReverse = "greaterThan";
   private readonly active: boolean = true;
-  private dotsPerRow = 3;
-  private particleShape: TParticleShape = "circle";
-  private lineHeight = 3;
-  private speed = 50;
-  private lineWidth = 10;
-  private groupCount = 2;
-  private spacing = 0.25;
-  private strokeWidth = 10;
-  private dotRadius = 4;
-  private flowColorHex = { positive: "#58ea38", negative: "#ff0000" };
+  private readonly dotsPerRow: number = 3;
+  private readonly particleShape: TParticleShape = "circle";
+  private readonly lineHeight: number = 3;
+  private readonly speed: number = 50;
+  private readonly lineWidth: number = 10;
+  private readonly groupCount: number = 2;
+  private readonly spacing: number = 0.25;
+  private readonly strokeWidth: number = 10;
+  private readonly dotRadius: number = 4;
+  private readonly flowColorHex: { positive: string; negative?: string } = { positive: "#58ea38", negative: "#ff0000" };
   private readonly value: number = 0;
 
   // eslint-disable-next-line complexity
   constructor(
-    lineStartId: string,
-    lineEndId: string,
-    lineStartEnd: LineStartEnd,
+    lineStart: ILineEndPoint,
+    lineEnd: ILineEndPoint,
     value: number,
     options?: {
       dotsPerGroup?: number;
@@ -155,18 +170,13 @@ export class Line {
       spacing?: number;
       strokeWidth?: number;
       dotRadius?: number;
-      flowColorHex?: { positive: string; negative: string };
-      offsetXStart?: number;
-      offsetYStart?: number;
-      offsetXEnd?: number;
-      offsetYEnd?: number;
+      flowColorHex?: { positive: string; negative?: string };
       reverse?: TReverse;
       active?: boolean;
     },
   ) {
-    this.lineEndId = lineEndId;
-    this.lineStartId = lineStartId;
-    this.lineStartEnd = lineStartEnd;
+    this.lineEnd = lineEnd;
+    this.lineStart = lineStart;
     if (!options) {
       return;
     }
@@ -180,10 +190,6 @@ export class Line {
     this.strokeWidth = options.strokeWidth ?? this.strokeWidth;
     this.dotRadius = options.dotRadius ?? this.dotRadius;
     this.flowColorHex = options.flowColorHex ?? this.flowColorHex;
-    this.offsetXStart = options.offsetXStart ?? this.offsetXStart;
-    this.offsetYStart = options.offsetYStart ?? this.offsetYStart;
-    this.offsetXEnd = options.offsetXEnd ?? this.offsetXEnd;
-    this.offsetYEnd = options.offsetYEnd ?? this.offsetYEnd;
     this.autoSpeed = options.autoSpeed ?? this.autoSpeed;
     this.reverse = isDefined(options.reverse) ? options.reverse : this.reverse;
     this.active = isDefined(options.active) ? options.active : this.active;
@@ -196,23 +202,6 @@ export class Line {
 
   getActive() {
     return this.value !== 0 && this.active;
-  }
-
-  getOffsetXStart() {
-    return this.offsetXStart;
-  }
-  getOffsetYStart() {
-    return this.offsetYStart;
-  }
-  getOffsetYEnd() {
-    return this.offsetYEnd;
-  }
-  getOffsetXEnd() {
-    return this.offsetXEnd;
-  }
-
-  getLineEndId() {
-    return this.lineEndId;
   }
 
   getStrokeWidth() {
@@ -281,37 +270,81 @@ export class Line {
     return this.particleShape;
   }
 
-  getLineStartId() {
-    return this.lineStartId;
+  // eslint-disable-next-line complexity
+  getCoordinates(positions: Positions) {
+    const start = positions.getCoordinates(this.lineStart);
+    const end = positions.getCoordinates(this.lineEnd);
+    const startObject = positions.getPositionsById(this.lineStart.id);
+    const endObject = positions.getPositionsById(this.lineEnd.id);
+
+    const isSameX = start.x === end.x;
+    const isSameY = start.y === end.y;
+    const width = 100;
+    if (this.isBottomTop(this.lineStart.position) && this.isBottomTop(this.lineEnd.position)) {
+      if (isSameX) {
+        if ((start.y < end.y && startObject.top !== start.y) || endObject.bottom !== end.y) {
+          return [start, end];
+        }
+        const x = start.x - Math.max(startObject.width, endObject.width) / 2 - 20;
+        return [start, { y: start.y, x }, { y: end.y, x }, end];
+      }
+
+      if (start.y <= end.y) {
+        const max = end.y;
+        const min = start.y;
+        const yCenter = min + (max - min) / 2;
+        return [start, { x: start.x, y: yCenter }, { x: end.x, y: yCenter }, end];
+      } else {
+        return [
+          start,
+          { x: start.x, y: start.y - 10 },
+          { x: start.x - width / 2 - 10, y: start.y + 10 },
+          { y: end.y + 10, x: start.x - width / 2 - 10 },
+          { x: end.x, y: end.y + 10 },
+          end,
+        ];
+      }
+    }
+
+    if (this.isLeftRight(this.lineStart.position) && this.isLeftRight(this.lineEnd.position)) {
+      if (isSameY) {
+        if ((start.x < end.x && startObject.left !== start.x) || endObject.right !== end.x) {
+          return [start, end];
+        }
+        const y = start.y - Math.max(startObject.height, endObject.height) / 2 - 20;
+        return [start, { x: start.x, y }, { x: end.x, y }, end];
+      }
+      if (start.x <= end.x) {
+        const max = end.x;
+        const min = start.x;
+        const xCenter = min + (max - min) / 2;
+        return [start, { y: start.y, x: xCenter }, { y: end.y, x: xCenter }, end];
+      } else {
+        return [
+          start,
+          { y: start.y, x: start.x - 10 },
+          { y: start.y - width / 2 - 10, x: start.x + 10 },
+          { x: end.x + 10, y: start.y - width / 2 - 10 },
+          { y: end.y, x: end.x + 10 },
+          end,
+        ];
+      }
+    }
+
+    if (
+      (this.isLeftRight(this.lineStart.position) && this.isBottomTop(this.lineEnd.position)) ||
+      (this.isBottomTop(this.lineStart.position) && this.isLeftRight(this.lineEnd.position))
+    ) {
+      return [start, { y: start.y, x: end.x }, end];
+    }
+    return [{ x: 0, y: 0 }];
   }
 
-  getCoordinates(positions: Positions) {
-    switch (this.lineStartEnd) {
-      case "leftRightCenter":
-        return [
-          positions.getCoordinatesRightCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart()),
-          positions.getCoordinatesLeftCenter(this.getLineEndId(), this.getOffsetYEnd(), this.getOffsetYEnd()),
-        ];
-      case "bottomTopCenter":
-        const positionsStart = positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart());
-        const positionsEnd = positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd());
-        if (positionsStart.x !== positionsEnd.x) {
-          const distanceY = positionsEnd.y - positionsStart.y;
+  private isBottomTop(str: TPositions): boolean {
+    return ["bottom", "top"].includes(str);
+  }
 
-          const step = distanceY / 2;
-          const secondCoordinates = { x: positionsStart.x, y: positionsStart.y + step };
-          const thirdCoordinates = { x: positionsEnd.x, y: positionsEnd.y - step };
-          return [positionsStart, secondCoordinates, thirdCoordinates, positionsEnd];
-        }
-
-        return [positionsStart, positionsEnd];
-      case "bottomTopCenterDiagonal":
-        return [
-          positions.getCoordinatesBottomCenter(this.getLineStartId(), this.getOffsetXStart(), this.getOffsetYStart()),
-          positions.getCoordinatesTopCenter(this.getLineEndId(), this.getOffsetXEnd(), this.getOffsetYEnd()),
-        ];
-      default:
-        return [];
-    }
+  private isLeftRight(str: TPositions): boolean {
+    return ["left", "right"].includes(str);
   }
 }

@@ -1,4 +1,4 @@
-import { StoreValue, StoreValueWithTimestamp } from "@/store";
+import { StoreValue } from "@/store";
 import { IdToSubscribe } from "@/types/types.ts";
 
 export type BoolText = "true" | "false" | true | false;
@@ -12,23 +12,6 @@ export interface PoolIobroker {
   rotor: StoreValue<number>;
   mode: StoreValue<string>;
   status: StoreValue<boolean>;
-  available: StoreValue<boolean>;
-  battery: StoreValue<number>;
-  el: StoreValue<number>;
-  el_max: StoreValue<number>;
-  el_min: StoreValue<number>;
-  free_chlorine: StoreValue<number>;
-  free_chlorine_max: StoreValue<number>;
-  free_chlorine_min: StoreValue<number>;
-  orp: StoreValue<number>;
-  orp_max: StoreValue<number>;
-  orp_min: StoreValue<number>;
-  ph: StoreValue<number>;
-  ph_max: StoreValue<number>;
-  ph_min: StoreValue<number>;
-  salinity: StoreValue<number>;
-  totalDissolvedSolids: StoreValue<number>;
-  temperature: StoreValueWithTimestamp<number>;
 }
 
 export const poolIds: IdToSubscribe<PoolIobroker> = {

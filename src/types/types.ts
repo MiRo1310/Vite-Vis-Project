@@ -15,12 +15,6 @@ export interface AlexaList {
   buttonDeleteId: string;
 }
 
-export interface RowShoppinglist {
-  user: string;
-  amount: number;
-  getValue: (key: string) => any;
-}
-
 export interface GlobalObject {
   [key: string]: any;
 }
@@ -177,17 +171,6 @@ export interface WindowType {
   kellerTuer: StoreValue<boolean>;
   dachbodenLinks: StoreValue<boolean>;
   dachbodenRechts: StoreValue<boolean>;
-}
-
-export interface Pv {
-  feedIn: StoreValue<number>;
-  batteryCharging: StoreValue<number>;
-  shellyFeedOut: StoreValue<number>;
-  smallPv: StoreValue<number>;
-  activeCharging: StoreValue<number>;
-  profit: StoreValue<number>;
-  pvGross: StoreValue<number>;
-  savedMoney: StoreValue<number>;
 }
 
 export interface IdToSubscribe<TData, SubKey = string> {
