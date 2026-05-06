@@ -29,7 +29,7 @@ export type CustomValue = string | number | boolean | undefined | object;
 export const getColumns = (columns: DatatableColumns<any>[]) => {
   return columns.map((column: DatatableColumns<any>) => {
     return {
-      accessorKey: column.accessorKey || column.labelKey || column.source,
+      accessorKey: column.accessorKey || column.source || column.labelKey,
       headerClass: column.headerClass,
       source: column.source,
 
@@ -241,11 +241,11 @@ const buttonSorting = (column: any, obj: DataTableHeaderCreator) => {
       {
         variant: "ghost",
         onClick: () => {
-          column.toggleSorting(column.getIsSorted() === "asc", obj.label);
+          column.toggleSorting(column.getIsSorted() === "asc");
         },
         class: "px-0 hover:bg-accent/50",
       },
-      () => [obj.label === "" ? "" : (obj.label ?? obj.source), h(ArrowUpDown, { class: "ml-2 h-4 w-4 " })],
+      () => [obj.label === "" ? "" : (obj.label ?? obj.source), h(ArrowUpDown, { class: "ml-2 h-4 w-4" })],
     ),
   );
 };

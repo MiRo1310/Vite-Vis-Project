@@ -1,9 +1,11 @@
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from "@tanstack/vue-table";
+import type { ColumnDef, SortingState } from "@tanstack/vue-table";
 import { FlexRender, getCoreRowModel, getSortedRowModel, useVueTable } from "@tanstack/vue-table";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import TableCell from "@/components/shared/table/TableCell.vue";
 import Skeleton from "@/components/shared/skeleton/Skeleton.vue";
+import { valueUpdater } from "@/lib/utils";
+import { ref } from "vue";
 
 type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   width?: string;
@@ -16,6 +18,8 @@ const props = defineProps<{
   loading: boolean;
 }>();
 
+const sorting = ref<SortingState>([]);
+
 const table = useVueTable({
   get data() {
     return props.data;
@@ -25,6 +29,14 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
+  onSortingChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, sorting);
+  },
+  state: {
+    get sorting() {
+      return sorting.value;
+    },
+  },
 });
 </script>
 <template>

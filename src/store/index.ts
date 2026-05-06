@@ -20,6 +20,7 @@ import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
+import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -60,6 +61,7 @@ export interface IoBrokerStoreState {
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
   airConditioners: AirConditionersIobroker;
+  tankerKoenig: TankerKoenig;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;

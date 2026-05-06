@@ -21,6 +21,7 @@ import { HmipIobroker } from "../subscribeIds/hmip.iobroker.ts";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
+import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
 
 export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
@@ -58,6 +59,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     wetter: {} as WetterIobroker,
     windowGlobal: {} as WindowGlobalStates,
     hmip: {} as HmipIobroker,
+    tankerKoenig: {} as TankerKoenig,
   }),
   getters: {
     isAdminConnected(state: IoBrokerStoreState) {

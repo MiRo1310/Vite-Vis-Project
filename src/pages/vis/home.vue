@@ -14,6 +14,7 @@ import { useAppStore } from "@/store/app-store.js";
 import { Button } from "@/components/shared/button/button.variants";
 import Shutter from "@/components/section/home/Shutter.vue";
 import Empty from "@/components/section/home/Empty.vue";
+import Fuel from "@/components/section/home/Fuel.vue";
 
 const appStore = useAppStore();
 </script>
@@ -30,6 +31,7 @@ const appStore = useAppStore();
       <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">
         <Time>
           <Caller class="flex-1" />
+          <Fuel />
         </Time>
       </div>
       <Info class="lg:col-span-2 md:col-span-6 col-span-11" />

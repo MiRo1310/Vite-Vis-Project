@@ -1,8 +1,6 @@
 import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue } from "@/store";
 
-export type BoolText = "true" | "false" | true | false;
-
 export interface WetterIobroker {
   Aussentemperatur: StoreValue<number>;
   Luftfeuchtigkeit: StoreValue<number>;

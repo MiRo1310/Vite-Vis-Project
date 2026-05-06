@@ -6,6 +6,7 @@ import {
   CalendarDays,
   ChartSpline,
   CircleDot,
+  Fuel,
   Heater,
   Info,
   LampCeiling,
@@ -56,6 +57,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: PlugZap, text: "PV", to: routes.pv.path },
   { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
   { icon: Logs, text: "Logs", to: routes.logs.path },
+  { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
   { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
   { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
 ]);
