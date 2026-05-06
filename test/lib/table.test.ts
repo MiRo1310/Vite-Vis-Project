@@ -40,17 +40,16 @@ describe("getColumns (structure)", () => {
     expect(res).toHaveLength(2);
 
     const first = res[0];
-    expect(first.accessorKey).toBe("Name");
+    expect(first.accessorKey).toBe("name");
     expect(typeof first.header).toBe("function");
     expect(typeof first.cell).toBe("function");
     expect(first.enableHiding).toBe(true);
     expect(first.enableSorting).toBe(true);
 
     const second = res[1];
-    expect(second.accessorKey).toBe("Select");
+    expect(second.accessorKey).toBe("sel");
     // checkbox columns should disable hiding and sorting
     expect(second.enableHiding).toBe(false);
     expect(second.enableSorting).toBe(false);
   });
 });
-

@@ -14,7 +14,7 @@ const status = computed(() => {
     {
       name: "Heizung",
       online: getValBoolean(heating.value.active),
-      power: getValBoolean(heating.value.automatic),
+      power: getValBoolean(heating.value.automatic) && getValBoolean(heating.value.active),
     },
     {
       name: "Klima Schlafen",

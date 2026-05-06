@@ -26,6 +26,7 @@ import {
   WindowGlobalStates,
 } from "./diverse.iobroker.ts";
 import { AirConditionersIobroker, airConditioners } from "./air-conditioners.iobroker.ts";
+import { TankerKoenig, tankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
 
 export type IdGroups = PoolIobroker &
   Shutter &
@@ -44,7 +45,8 @@ export type IdGroups = PoolIobroker &
   WindowGlobalStates &
   TimeStates &
   AirConditionersIobroker &
-  HeatingControlType;
+  HeatingControlType &
+  TankerKoenig;
 
 export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
   shutterAutoUpIobroker,
@@ -68,4 +70,5 @@ export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
   timeIds,
   heatingControl,
   airConditioners,
+  tankerKoenig,
 ];
