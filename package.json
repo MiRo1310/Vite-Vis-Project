@@ -90,7 +90,7 @@
     "eslint-plugin-vue": "^10.9.0",
     "globals": "^17.5.0",
     "jsdom": "^29.1.1",
-    "postcss": "^8.5.12",
+    "postcss": "^8.5.14",
     "prettier": "3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "sass": "^1.99.0",
