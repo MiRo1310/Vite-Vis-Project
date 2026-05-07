@@ -7,7 +7,7 @@ run("git checkout main");
 run("git pull");
 run("yarn install");
 
-const versionType = getVersionTypeInteractive();
+const versionType = await getVersionTypeInteractive();
 
 run(`npm version ${versionType}`);
 
