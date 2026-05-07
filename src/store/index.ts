@@ -2,7 +2,7 @@ import { Store, StoreDefinition } from "pinia";
 import { AirConditionersIobroker } from "@/subscribeIds/air-conditioners.iobroker.ts";
 import { BatteriesTypeIobroker } from "@/subscribeIds/batteriesType.iobroker.ts";
 import { CalendarIobroker } from "@/subscribeIds/calendar.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
 import { HeatingControlType, HeatingIobroker } from "@/subscribeIds/heating.iobroker.ts";
 import { AlexaListStates, HolidayStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.iobroker.ts";
 import { Infos } from "@/subscribeIds/info.iobroker.ts";
@@ -21,6 +21,8 @@ import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeri
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
+import { EnergyStates } from "@/subscribeIds/energy.iobroker.ts";
+import { IPvStates } from "@/subscribeIds/pv-ids.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -37,7 +39,7 @@ export interface IoBrokerStoreState {
   timers: Timers;
   rolladen: Shutter;
   fenster: WindowType;
-  pv: Pv;
+  pv: IPvStates;
   trash: TrashStates;
   alexaLists: AlexaListStates;
   pool: PoolIobroker;
@@ -61,6 +63,7 @@ export interface IoBrokerStoreState {
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
   airConditioners: AirConditionersIobroker;
+  energy: EnergyStates;
   tankerKoenig: TankerKoenig;
 }
 

@@ -5,8 +5,8 @@ import { shutterAutoDownTimeIobroker } from "./shutter-auto-down-time.iobroker.t
 import { timerIobroker, timers } from "./timer.iobroker.ts";
 import { shutterIdsLogoIobroker } from "./shutter-ids-logo.iobroker.ts";
 import { windowOpenClose } from "./window.iobroker.ts";
-import { pvIdsIobroker } from "./pv-ids.iobroker.ts";
-import { IdToSubscribe, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
+import { IPvStates, pvIdsIobroker } from "./pv-ids.iobroker.ts";
+import { IdToSubscribe, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
 import { PoolIobroker } from "./pool.iobroker.ts";
 import { WetterIobroker, wetter } from "./wetter.iobroker.ts";
 import { LandroidIobroker, landroid } from "./landroid.iobroker.ts";
@@ -32,7 +32,7 @@ export type IdGroups = PoolIobroker &
   Shutter &
   TimerObject &
   WindowType &
-  Pv &
+  IPvStates &
   WetterIobroker &
   LandroidIobroker &
   CalendarIobroker &

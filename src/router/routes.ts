@@ -13,6 +13,7 @@ export const routes = {
   light: { path: "/light", name: "light" },
   logs: { path: "/logs", name: "logs" },
   pv: { path: "/pv", name: "pv" },
+  energy: { path: "/energy", name: "energy" },
   tanker_koenig: { path: "/tanker_koenig", name: "tanker_koenig" },
   recipeApp: { path: "/recipe-app", name: "recipe-app" },
   recipes: { path: "/rezepte", name: "recipes" },
@@ -48,6 +49,7 @@ export const routing = [
       { component: async () => await import("@/pages/vis/logs.vue"), ...routes.logs },
       { component: async () => await import("@/pages/vis/pv.vue"), ...routes.pv },
       { component: async () => await import("@/pages/vis/tankerkoenig.vue"), ...routes.tanker_koenig },
+      { component: async () => await import("@/pages/vis/energy.vue"), ...routes.energy },
     ],
   },
   {

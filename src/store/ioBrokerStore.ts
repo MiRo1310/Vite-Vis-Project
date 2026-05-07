@@ -1,5 +1,5 @@
 import { PoolIobroker } from "../subscribeIds/pool.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, Pv, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { WetterIobroker } from "../subscribeIds/wetter.iobroker.ts";
 import { LandroidIobroker } from "../subscribeIds/landroid.iobroker.ts";
@@ -21,7 +21,9 @@ import { HmipIobroker } from "../subscribeIds/hmip.iobroker.ts";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
+import { EnergyStates } from "@/subscribeIds/energy.iobroker.ts";
 import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
+import { IPvStates } from "@/subscribeIds/pv-ids.iobroker.ts";
 
 export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
@@ -45,7 +47,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     phone: {} as PhoneStates,
     pool: {} as PoolIobroker,
     presence: {} as PresenceType,
-    pv: {} as Pv,
+    pv: {} as IPvStates,
     rolladen: {} as Shutter,
     alexaLists: {} as AlexaListStates,
     showTimerCard: {} as TimerObject,
@@ -60,6 +62,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     windowGlobal: {} as WindowGlobalStates,
     hmip: {} as HmipIobroker,
     tankerKoenig: {} as TankerKoenig,
+    energy: {} as EnergyStates,
   }),
   getters: {
     isAdminConnected(state: IoBrokerStoreState) {

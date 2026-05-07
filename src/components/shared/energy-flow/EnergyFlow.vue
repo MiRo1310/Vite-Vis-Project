@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { Positions } from "@/components/shared/energy-flow/utils.ts";
+import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
+import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
+import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+
+defineProps<{ data: IEnergyFlow[] }>();
+
+const positions = new Positions();
+const animationRef = ref<null | SVGGElement>(null);
+</script>
+
+<template>
+  <Teleport to="body">
+    <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10" xmlns="http://www.w3.org/2000/svg">
+      <template v-for="(item, i) in data" :key="i">
+        <EnergyFlowCard :energy-flow="item" :positions />
+        <template v-for="(line, index) in item.lines" :key="index">
+          <EnergyFlowLine
+            :id="String(i)"
+            :animation="line.getActive()"
+            :reverse="line.getReverse()"
+            :points="line.getCoordinates(positions)"
+            :dots-per-group="line.getDotsPerRow()"
+            :particle-shape="line.getParticleShape()"
+            :line-height="line.getLineHeight()"
+            :speed="line.getSpeed()"
+            :line-width="line.getLineWidth()"
+            :group-count="line.getGroupCount()"
+            :spacing="line.getSpacing()"
+            :stroke-width="line.getStrokeWidth()"
+            :dot-radius="line.getDotRadius()"
+            :flow-color="line.getFlowColorHex()"
+            :animation-ref
+          />
+        </template>
+      </template>
+      <g ref="animationRef" id="svg-animations"></g>
+    </svg>
+  </Teleport>
+</template>
