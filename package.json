@@ -39,7 +39,7 @@
     "@tanstack/vue-table": "^8.21.3",
     "@types/prettier": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
-    "@typescript-eslint/parser": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.2",
     "@unovis/ts": "^1.6.5",
     "@unovis/vue": "^1.6.5",
     "@vee-validate/zod": "^4.15.1",
