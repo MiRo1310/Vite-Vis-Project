@@ -1,8 +1,8 @@
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 
-export class PositionHandler {
-  private readonly id: string;
+export class PositionHandler<T> {
+  private readonly id: T;
   private left: number = 0;
   private top: number = 0;
   private bottom: number = 0;
@@ -14,7 +14,7 @@ export class PositionHandler {
 
   private readonly padding: number = 10;
 
-  constructor(id: string, options?: { padding?: number }) {
+  constructor(id: T, options?: { padding?: number }) {
     this.id = id;
     this.padding = options?.padding ?? this.padding;
   }
@@ -50,14 +50,14 @@ export class PositionHandler {
   }
 }
 
-export class Positions {
-  private positions: Record<string, PositionHandler> = {};
+export class Positions<T extends PropertyKey> {
+  private positions: Record<T, PositionHandler<T>> = {} as Record<T, PositionHandler<T>>;
 
-  public updatePositionsForCard(handler: PositionHandler) {
+  public updatePositionsForCard(handler: PositionHandler<T>) {
     this.positions[handler.getId()] = handler;
   }
 
-  public getPositionsById(id: string) {
+  public getPositionsById(id: T) {
     return (
       this.positions[id]?.getPosition() ?? {
         left: 0,
@@ -72,7 +72,7 @@ export class Positions {
     );
   }
 
-  public getCoordinates(line: ILineEndPoint) {
+  public getCoordinates(line: ILineEndPoint<T>) {
     const positions = this.getPositionsById(line.id);
     const lineOffsetX = line.offsetX ?? 0;
     const lineOffsetY = line.offsetY ?? 0;
@@ -83,7 +83,7 @@ export class Positions {
     };
   }
 
-  private getPositionY(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+  private getPositionY(position: TPositions, positions: ReturnType<Positions<T>["getPositionsById"]>) {
     switch (position) {
       case "top":
         return positions.top;
@@ -97,7 +97,7 @@ export class Positions {
     }
   }
 
-  private getPositionX(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+  private getPositionX(position: TPositions, positions: ReturnType<Positions<T>["getPositionsById"]>) {
     switch (position) {
       case "top":
       case "bottom":
@@ -122,17 +122,17 @@ interface IAutoSpeed {
 
 export type TPositions = "top" | "bottom" | "left" | "right";
 export type TReverse = "greaterThan" | "lessThan";
-export interface ILineEndPoint {
-  id: string;
+export interface ILineEndPoint<T> {
+  id: T;
   position: TPositions;
   offsetX?: number;
   offsetY?: number;
 }
 
 export type TParticleShape = "circle" | "line";
-export class Line {
-  private readonly lineEnd: ILineEndPoint;
-  private readonly lineStart: ILineEndPoint;
+export class Line<T extends PropertyKey> {
+  private readonly lineEnd: ILineEndPoint<T>;
+  private readonly lineStart: ILineEndPoint<T>;
   private readonly autoSpeed: IAutoSpeed = {
     active: false,
     max: 100,
@@ -156,8 +156,8 @@ export class Line {
 
   // eslint-disable-next-line complexity
   constructor(
-    lineStart: ILineEndPoint,
-    lineEnd: ILineEndPoint,
+    lineStart: ILineEndPoint<T>,
+    lineEnd: ILineEndPoint<T>,
     value: number,
     options?: {
       dotsPerGroup?: number;
@@ -271,7 +271,7 @@ export class Line {
   }
 
   // eslint-disable-next-line complexity
-  getCoordinates(positions: Positions) {
+  getCoordinates(positions: Positions<T>) {
     const start = positions.getCoordinates(this.lineStart);
     const end = positions.getCoordinates(this.lineEnd);
     const startObject = positions.getPositionsById(this.lineStart.id);
