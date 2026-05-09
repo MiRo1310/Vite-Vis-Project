@@ -1,29 +1,36 @@
-import { PoolIobroker } from "../subscribeIds/pool.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
+import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { defineStore } from "pinia";
-import { WetterIobroker } from "../subscribeIds/wetter.iobroker.ts";
-import { LandroidIobroker } from "../subscribeIds/landroid.iobroker.ts";
-import { CalendarIobroker } from "../subscribeIds/calendar.iobroker.ts";
-import { HeatingControlType, HeatingIobroker } from "../subscribeIds/heating.iobroker.ts";
-import { LogStates } from "../subscribeIds/logs.iobroker.ts";
+import { WetterIobroker } from "../iobroker-states/states-subscribed/wetter.iobroker.ts";
+import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
+import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
+import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
+import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
-import { Infos } from "../subscribeIds/info.iobroker.ts";
-import { PhoneStates } from "../subscribeIds/phone.iobroker.ts";
-import { BatteriesTypeIobroker } from "../subscribeIds/batteriesType.iobroker.ts";
+import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
+import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
+import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
-import { LightTypes, LightTypesAdditive } from "../subscribeIds/light.iobroker.ts";
-import { StylesType } from "../subscribeIds/styles.iobroker.ts";
-import { PresenceType } from "../subscribeIds/presence.iobroker.ts";
-import { AlexaListStates, HolidayStates, TimeStates, TrashStates, WindowGlobalStates } from "../subscribeIds/diverse.iobroker.ts";
-import { AirConditionersIobroker } from "../subscribeIds/air-conditioners.iobroker.ts";
-import { HmipIobroker } from "../subscribeIds/hmip.iobroker.ts";
+import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
+import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
+import {
+  AlexaListStates,
+  HolidayStates,
+  TimeStates,
+  TrashStates,
+  WindowGlobalStates,
+} from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
+import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
+import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { getValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
-import { EnergyStates } from "@/subscribeIds/energy.iobroker.ts";
-import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
-import { IPvStates } from "@/subscribeIds/pv-ids.iobroker.ts";
+import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
+import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
+import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
+import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
+import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
 
@@ -48,14 +55,13 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     logs: empty<LogStates>(),
     phone: empty<PhoneStates>(),
     pool: empty<PoolIobroker>(),
-    presence: empty<PresenceType>(),
     pv: empty<IPvStates>(),
-    rolladen: empty<Shutter>(),
+    rolladen: empty<IShutter>(),
     alexaLists: empty<AlexaListStates>(),
     showTimerCard: empty<TimerObject>(),
     subscribedIds: [],
-    shutterAutoUp: empty<Shutter>(),
-    shutterAutoDownTime: empty<Shutter>(),
+    shutterAutoUp: empty<IShutter>(),
+    shutterAutoDownTime: empty<IShutter>(),
     styles: empty<StylesType>(),
     time: empty<TimeStates>(),
     timers: empty<Timers>(),

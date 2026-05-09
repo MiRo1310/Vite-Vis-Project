@@ -1,13 +1,13 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
 import { ref } from "vue";
 import { Positions } from "@/components/shared/energy-flow/utils.ts";
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 
-defineProps<{ data: IEnergyFlow[] }>();
+defineProps<{ data: IEnergyFlow<T>[] }>();
 
-const positions = new Positions();
+const positions = new Positions<T>();
 const animationRef = ref<null | SVGGElement>(null);
 </script>
 
@@ -15,7 +15,7 @@ const animationRef = ref<null | SVGGElement>(null);
   <Teleport to="body">
     <svg width="90%" height="80%" class="energy-flow-line overflow-visible absolute top-20 left-10" xmlns="http://www.w3.org/2000/svg">
       <template v-for="(item, i) in data" :key="i">
-        <EnergyFlowCard :energy-flow="item" :positions />
+        <EnergyFlowCard :energy-flow="item" :positions="positions" />
         <template v-for="(line, index) in item.lines" :key="index">
           <EnergyFlowLine
             :id="String(i)"

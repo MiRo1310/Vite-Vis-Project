@@ -1,28 +1,35 @@
 import { Store, StoreDefinition } from "pinia";
-import { AirConditionersIobroker } from "@/subscribeIds/air-conditioners.iobroker.ts";
-import { BatteriesTypeIobroker } from "@/subscribeIds/batteriesType.iobroker.ts";
-import { CalendarIobroker } from "@/subscribeIds/calendar.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
-import { HeatingControlType, HeatingIobroker } from "@/subscribeIds/heating.iobroker.ts";
-import { AlexaListStates, HolidayStates, TimeStates, TrashStates, WindowGlobalStates } from "@/subscribeIds/diverse.iobroker.ts";
-import { Infos } from "@/subscribeIds/info.iobroker.ts";
-import { LandroidIobroker } from "@/subscribeIds/landroid.iobroker.ts";
-import { LightTypes, LightTypesAdditive } from "@/subscribeIds/light.iobroker.ts";
-import { LogStates } from "@/subscribeIds/logs.iobroker.ts";
-import { PhoneStates } from "@/subscribeIds/phone.iobroker.ts";
-import { PoolIobroker } from "@/subscribeIds/pool.iobroker.ts";
-import { PresenceType } from "@/subscribeIds/presence.iobroker.ts";
-import { StylesType } from "@/subscribeIds/styles.iobroker.ts";
-import { WetterIobroker } from "@/subscribeIds/wetter.iobroker.ts";
-import { HmipIobroker } from "@/subscribeIds/hmip.iobroker.ts";
+import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
+import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
+import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
+import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
+import {
+  AlexaListStates,
+  HolidayStates,
+  TimeStates,
+  TrashStates,
+  WindowGlobalStates,
+} from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
+import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
+import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
+import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
+import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
+import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
+import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
+import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
+import { WetterIobroker } from "../iobroker-states/states-subscribed/wetter.iobroker.ts";
+import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { ComputedRef } from "vue";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { TankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
-import { EnergyStates } from "@/subscribeIds/energy.iobroker.ts";
-import { IPvStates } from "@/subscribeIds/pv-ids.iobroker.ts";
+import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
+import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
+import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
+import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
+import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -34,10 +41,10 @@ export interface IoBrokerStoreState {
   wetter: WetterIobroker;
   hmip: HmipIobroker;
   idsToControl: IdsToControl;
-  shutterAutoUp: Shutter;
-  shutterAutoDownTime: Shutter;
+  shutterAutoUp: IShutter;
+  shutterAutoDownTime: IShutter;
   timers: Timers;
-  rolladen: Shutter;
+  rolladen: IShutter;
   fenster: WindowType;
   pv: IPvStates;
   trash: TrashStates;
@@ -56,7 +63,6 @@ export interface IoBrokerStoreState {
   lights: LightTypes;
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
-  presence: PresenceType;
   holiday: HolidayStates;
   windowGlobal: WindowGlobalStates;
   time: TimeStates;

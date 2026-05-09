@@ -1,5 +1,5 @@
-import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue } from "@/store";
+import { IdToSubscribe } from "@/types/types.ts";
 
 export interface EnergyStates {
   Waschmaschine: StoreValue<number>;

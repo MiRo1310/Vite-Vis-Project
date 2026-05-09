@@ -15,7 +15,7 @@ const defaultReact = {
   height: 100,
 };
 
-const card = new PositionHandler(props.energyFlow.id, { padding: props.energyFlow.padding });
+const card = new PositionHandler<T>(props.energyFlow.id, { padding: props.energyFlow.padding });
 
 onMounted(() => {
   card.updatePosition(coordinates.value.x, coordinates.value.y, coordinates.value.height, coordinates.value.width, props.energyFlow.strokeWidth ?? 2);

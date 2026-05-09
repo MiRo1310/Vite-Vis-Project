@@ -1,6 +1,7 @@
-import { IdToSubscribe, Shutter } from "@/types/types.ts";
+import { IdToSubscribe } from "@/types/types.ts";
+import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 
-export const shutterIdsLogoIobroker: IdToSubscribe<Shutter> = {
+export const shutterIdsLogoIobroker: IdToSubscribe<IShutter> = {
   storeFolder: "rolladen",
   value: [
     {

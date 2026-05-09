@@ -3,7 +3,7 @@ import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { Plus } from "lucide-vue-next";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { stylesIobroker } from "@/subscribeIds/styles.iobroker.js";
+import { stylesIobroker } from "@/iobroker-states/states-subscribed/styles.iobroker";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
