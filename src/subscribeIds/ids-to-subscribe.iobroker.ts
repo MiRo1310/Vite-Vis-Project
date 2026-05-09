@@ -5,50 +5,22 @@ import { shutterAutoDownTimeIobroker } from "./shutter-auto-down-time.iobroker.t
 import { timerIobroker, timers } from "./timer.iobroker.ts";
 import { shutterIdsLogoIobroker } from "./shutter-ids-logo.iobroker.ts";
 import { windowOpenClose } from "./window.iobroker.ts";
-import { IPvStates, pvIdsIobroker } from "./pv-ids.iobroker.ts";
-import { IdToSubscribe, Shutter, TimerObject, Timers, WindowType } from "@/types/types.ts";
-import { PoolIobroker } from "./pool.iobroker.ts";
-import { WetterIobroker, wetter } from "./wetter.iobroker.ts";
-import { LandroidIobroker, landroid } from "./landroid.iobroker.ts";
-import { CalendarIobroker, calendar } from "./calendar.iobroker.ts";
-import { HeatingIobroker, heating, heatingControl, HeatingControlType } from "./heating.iobroker.ts";
-import { LogStates, logStates } from "./logs.iobroker.ts";
-import {
-  AlexaListStates,
-  holiday,
-  HolidayStates,
-  shoppingList,
-  timeIds,
-  TimeStates,
-  trash,
-  TrashStates,
-  windowGlobal,
-  WindowGlobalStates,
-} from "./diverse.iobroker.ts";
-import { AirConditionersIobroker, airConditioners } from "./air-conditioners.iobroker.ts";
-import { TankerKoenig, tankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
+import { pvIdsIobroker } from "./pv-ids.iobroker.ts";
+import { IdToSubscribe } from "@/types/types.ts";
+import { wetter } from "./wetter.iobroker.ts";
+import { landroid } from "./landroid.iobroker.ts";
+import { calendar } from "./calendar.iobroker.ts";
+import { heating, heatingControl } from "./heating.iobroker.ts";
+import { logStates } from "./logs.iobroker.ts";
+import { holiday, shoppingList, timeIds, trash, windowGlobal } from "./diverse.iobroker.ts";
+import { airConditioners } from "./air-conditioners.iobroker.ts";
+import { tankerKoenig } from "@/subscribeIds/tankerkoenig.iobroker.ts";
+import { batteryIds } from "@/subscribeIds/batteriesType.iobroker.ts";
+import { hmipIds } from "@/subscribeIds/hmip.iobroker.ts";
+import { lightStates } from "@/subscribeIds/light.iobroker.ts";
+import { energyStates } from "@/subscribeIds/energy.iobroker.ts";
 
-export type IdGroups = PoolIobroker &
-  Shutter &
-  TimerObject &
-  WindowType &
-  IPvStates &
-  WetterIobroker &
-  LandroidIobroker &
-  CalendarIobroker &
-  HeatingIobroker &
-  Timers &
-  LogStates &
-  TrashStates &
-  AlexaListStates &
-  HolidayStates &
-  WindowGlobalStates &
-  TimeStates &
-  AirConditionersIobroker &
-  HeatingControlType &
-  TankerKoenig;
-
-export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
+export const idToSubscribeOnAppStart: IdToSubscribe<any>[] = [
   shutterAutoUpIobroker,
   shutterAutoDownIobroker,
   shutterAutoUpTimeIobroker,
@@ -71,4 +43,9 @@ export const idToSubscribeOnAppStart: IdToSubscribe<IdGroups>[] = [
   heatingControl,
   airConditioners,
   tankerKoenig,
+  batteryIds,
+  hmipIds,
+  ...lightStates,
+  heating,
+  energyStates,
 ];
