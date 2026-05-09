@@ -1,8 +1,9 @@
 <script setup lang="ts" generic="T extends string">
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/utils.ts";
 import { computed, onMounted } from "vue";
-import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+import { IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
 import { cn } from "@/lib/utils.ts";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 const props = defineProps<{
   energyFlow: IEnergyFlow<T>;
@@ -25,8 +26,8 @@ onMounted(() => {
 
 const getReactAndCircleValues = () => {
   return {
-    stroke: props.energyFlow.stroke ?? "#22c55e",
-    fill: props.energyFlow.fillColor ?? "#1e293b",
+    stroke: props.energyFlow.stroke ?? HexColors.DARK_GREEN,
+    fill: props.energyFlow.fillColor ?? HexColors.DARK_BLUE_GRAY,
     strokeWidth: props.energyFlow.strokeWidth,
   };
 };
@@ -90,6 +91,13 @@ const icon = computed(() => {
   const offestY = props.energyFlow.icon?.offsetY ?? 0;
   return { height, width, x: coordinates.value.x - width / 2 + offestX, y: coordinates.value.y - coordinates.value.halfHeight + 5 + offestY };
 });
+
+const sumValue = computed(() => (val: TValue) => {
+  if (Array.isArray(val)) {
+    return val.reduce((acc, val) => acc + val, 0);
+  }
+  return val;
+});
 </script>
 
 <template>
@@ -120,13 +128,13 @@ const icon = computed(() => {
       </foreignObject>
 
       <text
-        :x="coordinates.x"
-        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13"
+        :x="coordinates.x + (cardValue.offsetX ?? 0)"
+        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13 + (cardValue.offsetY ?? 0)"
         v-bind="{ 'text-anchor': cardValue.textAnchor ?? 'middle' }"
-        :fill="cardValue.colorHex ?? '#22c55e'"
+        :fill="cardValue.colorHex ?? HexColors.DARK_GREEN"
         :font-size="cardValue.fontSize ?? 12"
       >
-        {{ cardValue?.value }} {{ cardValue?.unit }}
+        {{ sumValue(cardValue?.value) }} {{ cardValue?.unit }}
       </text>
     </g>
     <text :x="coordinates.x" :y="coordinates.y + coordinates.halfHeight - 10" text-anchor="middle" fill="white" font-size="10">

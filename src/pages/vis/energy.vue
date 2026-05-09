@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Page from "@/components/shared/page/Page.vue";
 import EnergyFlow from "@/components/shared/energy-flow/EnergyFlow.vue";
-
 import { computed } from "vue";
 import { getValNumber } from "@/lib/object.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, House, SolarPanel } from "lucide-vue-next";
 import { TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { Line } from "@/components/shared/energy-flow/utils.ts";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 const { pv, energy, pool } = useIobrokerStore();
 
@@ -26,7 +26,20 @@ const iconBattery = computed(() => {
   return Battery;
 });
 
-type Ids = "pv" | "balconyPv" | "washer" | "car" | "server" | "house" | "battery" | "powerGrid" | "cellar" | "freezer" | "pool";
+type Ids =
+  | "pv"
+  | "balconyPv"
+  | "washer"
+  | "car"
+  | "server"
+  | "house"
+  | "battery"
+  | "powerGrid"
+  | "cellar"
+  | "freezer"
+  | "pool"
+  | "heat_pump"
+  | "pool_pump";
 
 const data = computed(
   (): TEnergyFlowArray<Ids> => [
@@ -92,7 +105,7 @@ const data = computed(
     {
       id: "house",
       position: { row: 2, col: 2 },
-      stroke: "#999",
+      stroke: HexColors.GRAY,
       type: "react",
 
       icon: { svg: House },
@@ -101,7 +114,7 @@ const data = computed(
         {
           value: getValNumber(energy.energyReceived).toFixed(2),
           unit: "KW",
-          colorHex: "#c52240",
+          colorHex: HexColors.RED,
           icon: { svg: ArrowRight, offsetX: -40, offsetY: -13, width: 15, height: 15, class: "text-red-200" },
         },
         {
@@ -113,7 +126,7 @@ const data = computed(
     },
     {
       id: "powerGrid",
-      position: { row: 0.75, col: 2 },
+      position: { row: 1, col: 2 },
       title: "Netz",
       lines: [
         new Line<Ids>({ id: "powerGrid", position: "bottom" }, { id: "house", position: "top" }, getValNumber(pv.feedIn), {
@@ -129,13 +142,14 @@ const data = computed(
       position: { row: 2.65, col: 2.75 },
       title: "Keller",
       type: "react",
+      react: { height: 50, width: 50 },
       lines: [
         new Line<Ids>(
           { id: "house", position: "right", offsetY: 30 },
           { id: "cellar", position: "top" },
           getValNumber(energy.Waschmaschine) + getValNumber(energy.Rack) + getValNumber(energy.Kuehltruhe),
           {
-            flowColorHex: { positive: "#dce652" },
+            flowColorHex: { positive: HexColors.YELLOW },
             groupCount: 1,
             dotsPerGroup: 3,
             spacing: 0.08,
@@ -144,7 +158,7 @@ const data = computed(
           },
         ),
       ],
-      values: [{ value: getValNumber(energy.Waschmaschine) + getValNumber(energy.Rack) + getValNumber(energy.Kuehltruhe), unit: "W" }],
+      values: [{ value: [getValNumber(energy.Waschmaschine), getValNumber(energy.Rack), getValNumber(energy.Kuehltruhe)], unit: "W", offsetY: -25 }],
     },
     {
       id: "server",
@@ -155,7 +169,7 @@ const data = computed(
         new Line<Ids>({ id: "cellar", position: "bottom", offsetX: 12 }, { id: "server", position: "top" }, getValNumber(energy.Rack), {
           groupCount: 1,
           spacing: 0.12,
-          flowColorHex: { positive: "#dce652" },
+          flowColorHex: { positive: HexColors.YELLOW },
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
         }),
@@ -180,13 +194,13 @@ const data = computed(
       id: "freezer",
       position: { row: 3, col: 4 },
       title: "Kühltruhe",
-      stroke: "#0f148e",
+      stroke: HexColors.BLUE,
       lines: [
         new Line<Ids>({ id: "cellar", position: "right", offsetY: -30 }, { id: "freezer", position: "top" }, getValNumber(energy.Kuehltruhe), {
           groupCount: 3,
           dotsPerGroup: 3,
           spacing: 0.04,
-          flowColorHex: { positive: "#dce652" },
+          flowColorHex: { positive: HexColors.YELLOW },
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 15 },
         }),
@@ -195,11 +209,11 @@ const data = computed(
     },
     {
       id: "pool",
-      position: { row: 1, col: 3 },
-      title: "Wärmepumpe",
+      position: { row: 2, col: 4 },
+      title: "Pool",
       type: "react",
       lines: [
-        new Line<Ids>({ id: "house", position: "right", offsetY: -40 }, { id: "pool", position: "bottom" }, getValNumber(pool.consumption), {
+        new Line<Ids>({ id: "house", position: "right" }, { id: "pool", position: "left" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
           spacing: 0.04,
@@ -210,12 +224,46 @@ const data = computed(
       values: [{ value: getValNumber(pool.consumption), unit: "W" }],
     },
     {
-      id: "car",
+      id: "heat_pump",
       position: { row: 1, col: 4 },
+      title: "Wärmepumpe",
+      type: "react",
+      react: { width: 80, height: 80 },
+      lines: [
+        new Line<Ids>({ id: "heat_pump", position: "bottom" }, { id: "pool", position: "top" }, getValNumber(pool.consumption), {
+          groupCount: 3,
+          dotsPerGroup: 3,
+          spacing: 0.04,
+          reverse: "lessThan",
+          autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+        }),
+      ],
+      values: [{ value: getValNumber(pool.consumption), unit: "W" }],
+    },
+    {
+      id: "pool_pump",
+      position: { row: 1, col: 4.5 },
+      title: "Poolpumpe",
+      type: "react",
+      react: { width: 80, height: 80 },
+      lines: [
+        new Line<Ids>({ id: "pool", position: "right" }, { id: "pool_pump", position: "bottom" }, getValNumber(pool.consumption), {
+          groupCount: 3,
+          dotsPerGroup: 3,
+          spacing: 0.04,
+          reverse: "lessThan",
+          autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+        }),
+      ],
+      values: [{ value: 0, unit: "W" }],
+    },
+    {
+      id: "car",
+      position: { row: 1, col: 3 },
       title: "Auto",
       icon: { svg: Car },
       lines: [
-        new Line<Ids>({ id: "house", position: "right", offsetY: -12 }, { id: "car", position: "bottom" }, getValNumber(pool.consumption), {
+        new Line<Ids>({ id: "house", position: "right", offsetY: -24 }, { id: "car", position: "bottom" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
           spacing: 0.04,

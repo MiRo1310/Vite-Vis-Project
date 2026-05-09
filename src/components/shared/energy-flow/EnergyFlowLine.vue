@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
 import { TParticleShape } from "@/components/shared/energy-flow/utils.ts";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 const props = withDefaults(
   defineProps<{
@@ -49,8 +50,8 @@ const props = withDefaults(
     lineHeight: 5,
     lineWidth: 10,
 
-    trackColor: "#1e293b",
-    flowColor: "#22c55e",
+    trackColor: HexColors.DARK_BLUE_GRAY,
+    flowColor: HexColors.GREEN,
 
     dotsPerGroup: 3,
     groupCount: 2,

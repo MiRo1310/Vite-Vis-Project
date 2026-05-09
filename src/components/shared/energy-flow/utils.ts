@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 export class PositionHandler<T> {
   private readonly id: T;
@@ -151,7 +152,7 @@ export class Line<T extends PropertyKey> {
   private readonly spacing: number = 0.25;
   private readonly strokeWidth: number = 10;
   private readonly dotRadius: number = 4;
-  private readonly flowColorHex: { positive: string; negative?: string } = { positive: "#58ea38", negative: "#ff0000" };
+  private readonly flowColorHex: { positive: HexColors; negative?: HexColors } = { positive: HexColors.GREEN, negative: HexColors.RED };
   private readonly value: number = 0;
 
   // eslint-disable-next-line complexity
@@ -170,7 +171,7 @@ export class Line<T extends PropertyKey> {
       spacing?: number;
       strokeWidth?: number;
       dotRadius?: number;
-      flowColorHex?: { positive: string; negative?: string };
+      flowColorHex?: { positive: HexColors; negative?: HexColors };
       reverse?: TReverse;
       active?: boolean;
     },

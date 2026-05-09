@@ -1,6 +1,7 @@
 import { Line } from "@/components/shared/energy-flow/utils.ts";
 import { FunctionalComponent } from "vue";
 import { LucideProps } from "lucide-vue-next";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 export interface Point {
   x: number;
@@ -18,7 +19,7 @@ export interface IEnergyFlow<T extends PropertyKey> {
   lines: Line<T>[];
   padding?: number;
   fillColor?: string;
-  stroke?: string;
+  stroke?: HexColors;
   strokeWidth?: number;
   type?: "circle" | "react";
   react?: IReact;
@@ -36,13 +37,17 @@ export interface IReact {
   radiusY?: number;
 }
 
+export type TValue = string | number | number[];
+
 export interface IEnergyFlowCardValue {
-  value: number | string;
+  value: TValue;
   unit?: string;
   fontSize?: number;
   textAnchor?: TTextAnchor;
-  colorHex?: string;
+  colorHex?: HexColors;
   icon?: IEnergyFlowIcon;
+  offsetX?: number;
+  offsetY?: number;
 }
 
 export type TTextAnchor = "start" | "middle" | "end" | "inherit";
