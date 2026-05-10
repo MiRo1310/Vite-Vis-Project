@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends string">
 import { ref } from "vue";
-import { Positions } from "@/components/shared/energy-flow/utils.ts";
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+import { Positions } from "@/components/shared/energy-flow/position.ts";
 
 defineProps<{ data: IEnergyFlow<T>[] }>();
 

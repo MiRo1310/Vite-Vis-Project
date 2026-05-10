@@ -1,7 +1,7 @@
-import { Line } from "@/components/shared/energy-flow/utils.ts";
 import { FunctionalComponent } from "vue";
 import { LucideProps } from "lucide-vue-next";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { Line } from "@/components/shared/energy-flow/line.ts";
 
 export interface Point {
   x: number;
@@ -56,7 +56,6 @@ export interface IEnergyFlowIcon {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   svg: FunctionalComponent<LucideProps, object, any, object>;
-  // color?: string;
   width?: number;
   height?: number;
   class?: string;
@@ -64,3 +63,22 @@ export interface IEnergyFlowIcon {
   offsetX?: number;
   offsetY?: number;
 }
+
+export interface IAutoSpeed {
+  active?: boolean;
+  max: number;
+  min: number;
+  maxSpeed?: number;
+  minSpeed?: number;
+}
+
+export type TPositions = "top" | "bottom" | "left" | "right";
+export type TReverse = "greaterThan" | "lessThan";
+export interface ILineEndPoint<T> {
+  id: T;
+  position: TPositions;
+  offsetX?: number;
+  offsetY?: number;
+}
+
+export type TParticleShape = "circle" | "line";

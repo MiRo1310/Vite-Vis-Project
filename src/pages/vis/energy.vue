@@ -6,8 +6,8 @@ import { getValNumber } from "@/lib/object.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, House, SolarPanel } from "lucide-vue-next";
 import { TEnergyFlowArray } from "@/components/shared/energy-flow";
-import { Line } from "@/components/shared/energy-flow/utils.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { Line } from "@/components/shared/energy-flow/line.ts";
 
 const { pv, energy, pool } = useIobrokerStore();
 

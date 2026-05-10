@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
-import { Point } from "@/components/shared/energy-flow/index.ts";
-import { TParticleShape } from "@/components/shared/energy-flow/utils.ts";
+import { Point, TParticleShape } from "@/components/shared/energy-flow/index.ts";
 
 const props = defineProps<{
   id: string;

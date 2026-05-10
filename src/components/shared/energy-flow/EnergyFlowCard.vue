@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="T extends string">
-import { PositionHandler, Positions } from "@/components/shared/energy-flow/utils.ts";
 import { computed, onMounted } from "vue";
 import { IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
 import { cn } from "@/lib/utils.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { PositionHandler, Positions } from "@/components/shared/energy-flow/position.ts";
 
 const props = defineProps<{
   energyFlow: IEnergyFlow<T>;
