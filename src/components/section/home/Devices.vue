@@ -1,40 +1,45 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import { computed } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { getValBoolean } from "@/lib/object.ts";
 
-const { airConditioners, pool, landroid, heating } = storeToRefs(useIobrokerStore());
+const { airConditioners, pool, landroid, heating } = useIobrokerStore();
 
 const status = computed(() => {
   return [
     {
       name: "Heizung",
-      online: getValBoolean(heating.value.active),
-      power: getValBoolean(heating.value.automatic) && getValBoolean(heating.value.active),
+      online: getValBoolean(heating.active),
+      power: getValBoolean(heating.automatic) && getValBoolean(heating.active),
+    },
+    {
+      name: "Solar Pumpe",
+      online: getValBoolean(heating.solarPump),
+      textActive: "An",
+      textInactive: "Aus",
     },
     {
       name: "Klima Schlafen",
-      online: getValBoolean(airConditioners.value.schlafenOnline),
-      power: getValBoolean(airConditioners.value.schlafenPowerStatus),
+      online: getValBoolean(airConditioners.schlafenOnline),
+      power: getValBoolean(airConditioners.schlafenPowerStatus),
     },
     {
       name: "Klima Kind",
-      online: getValBoolean(airConditioners.value.childOnline),
-      power: getValBoolean(airConditioners.value.childPowerStatus),
+      online: getValBoolean(airConditioners.childOnline),
+      power: getValBoolean(airConditioners.childPowerStatus),
     },
     {
       name: "Wärmepumpe",
-      online: getValBoolean(pool.value.status),
-      power: (pool.value.consumption?.val ?? 0) > 30,
+      online: getValBoolean(pool.status),
+      power: (pool.consumption?.val ?? 0) > 30,
     },
     {
       name: "Rasenmäher",
-      online: getValBoolean(landroid.value.online),
-      power: landroid.value.status?.val !== 1,
+      online: getValBoolean(landroid.online),
+      power: landroid.status?.val !== 1,
     },
   ];
 });
@@ -51,7 +56,7 @@ const status = computed(() => {
           <div class="flex justify-between w-full items-center">
             <span>{{ s.name }}</span>
 
-            <OnlineOffline :status="s.online" :power="s.power" />
+            <OnlineOffline :status="s.online" :power="s.power" :text-inactive="s?.textInactive" :text-active="s?.textActive" />
           </div>
         </Button>
       </div>

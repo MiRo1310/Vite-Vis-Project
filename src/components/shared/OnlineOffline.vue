@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ status?: boolean; power?: boolean }>();
+defineProps<{ status?: boolean; power?: boolean; textActive?: string; textInactive?: string }>();
 </script>
 
 <template>
@@ -13,6 +13,6 @@ defineProps<{ status?: boolean; power?: boolean }>();
       },
     ]"
   >
-    {{ status ? "Online" : "Offline" }}
+    {{ status ? (textActive ?? "Online") : (textInactive ?? "Offline") }}
   </span>
 </template>

@@ -16,7 +16,7 @@ const props = defineProps<{
       <CardTitle styling="default">{{ title }}</CardTitle>
     </CardHeader>
     <CardContent>
-      <div v-for="(entry, i) in entries" :key="i" class="flex justify-between items-center text-cardCustom-text/70 font-bold text-xs">
+      <div v-for="(entry, i) in entries" :key="i" class="flex justify-between items-center text-muted-foreground font-bold text-xs">
         <div>
           <p>{{ entry.title }}</p>
         </div>
