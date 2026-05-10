@@ -3,66 +3,44 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { Point } from "@/components/shared/energy-flow/index.ts";
 import { TParticleShape } from "@/components/shared/energy-flow/utils.ts";
 
-const props = withDefaults(
-  defineProps<{
-    id: string;
-    animationRef: null | SVGGElement;
-    points: Point[];
+const props = defineProps<{
+  id: string;
+  animationRef: null | SVGGElement;
+  points: Point[];
 
-    animation?: boolean;
+  animation?: boolean;
 
-    radius?: number;
-    strokeWidth?: number;
+  strokeWidth: number;
 
-    particleShape?: TParticleShape;
-    lineWidth?: number;
-    lineHeight?: number;
+  particleShape: TParticleShape;
+  lineWidth: number;
+  lineHeight: number;
 
-    trackColor?: string;
-    flowColor?: string;
+  trackColor: string;
+  flowColor: string;
 
-    dotsPerGroup?: number;
-    groupCount?: number;
+  dotsPerGroup: number;
+  groupCount: number;
 
-    /**
-     * Abstand zwischen Dots
-     */
-    spacing?: number;
+  /**
+   * Abstand zwischen Dots
+   */
+  spacing: number;
 
-    /**
-     * Größe Dot
-     */
-    dotRadius?: number;
+  /**
+   * Größe Dot
+   */
+  dotRadius: number;
 
-    /**
-     * Dauer komplette Strecke
-     */
-    speed?: number;
+  /**
+   * Dauer komplette Strecke
+   */
+  speed: number;
 
-    reverse?: boolean;
-  }>(),
-  {
-    radius: 16,
-    strokeWidth: 8,
+  reverse: boolean;
 
-    particleShape: "circle",
-    lineHeight: 5,
-    lineWidth: 10,
-
-    trackColor: "#1e293b",
-    flowColor: "#22c55e",
-
-    dotsPerGroup: 3,
-    groupCount: 2,
-
-    spacing: 0.12,
-    dotRadius: 5,
-
-    speed: 100,
-
-    reverse: false,
-  },
-);
+  _clampRadius: number;
+}>();
 
 function clampRadius(prev: Point, current: Point, next: Point, radius: number) {
   const dist1 = Math.hypot(current.x - prev.x, current.y - prev.y);
@@ -87,7 +65,7 @@ const pathData = computed(() => {
     const current = pts[i];
     const next = pts[i + 1];
 
-    const r = clampRadius(prev, current, next, props.radius);
+    const r = clampRadius(prev, current, next, props._clampRadius);
 
     const dx1 = Math.sign(current.x - prev.x);
     const dy1 = Math.sign(current.y - prev.y);
@@ -122,7 +100,7 @@ const pathLength = ref(0);
 
 const particles = ref<
   {
-    progress: number;
+    animationPosition: number;
     offset: number;
   }[]
 >([]);
@@ -137,30 +115,33 @@ const positions = ref<
 
 function buildParticles() {
   const list = [];
+  const length = pathLength.value;
+  if (!length) {
+    return;
+  }
+  const groupGap = 1 / props.groupCount;
+  const dotGap = props.spacing / length;
 
   for (let group = 0; group < props.groupCount; group++) {
     for (let dot = 0; dot < props.dotsPerGroup; dot++) {
-      const groupGap = 0.35;
-      const dotGap = props.spacing;
-
       const offset = group * groupGap + dot * dotGap;
 
       list.push({
-        progress: props.reverse ? 1 - offset : offset,
+        animationPosition: props.reverse ? 1 - offset : offset,
         offset,
       });
     }
   }
-
   particles.value = list;
 }
+
 async function updatePathLength() {
   await nextTick();
 
   pathLength.value = pathRef.value?.getTotalLength() ?? 0;
 }
 watch(
-  () => [props.groupCount, props.dotsPerGroup, props.spacing, props.reverse],
+  () => [props.groupCount, props.dotsPerGroup, props.spacing, props.reverse, pathLength.value],
   () => {
     buildParticles();
   },
@@ -177,6 +158,18 @@ onMounted(async () => {
 let animationFrame = 0;
 let lastTime = performance.now();
 
+function resetPositionGraterEnd(particle: { animationPosition: number; offset: number }) {
+  if (particle.animationPosition > 1) {
+    particle.animationPosition = 0;
+  }
+}
+
+function resetPositionLessStart(particle: { animationPosition: number; offset: number }) {
+  if (particle.animationPosition < 0) {
+    particle.animationPosition = 1;
+  }
+}
+
 function startAnimation() {
   cancelAnimationFrame(animationFrame);
 
@@ -192,17 +185,11 @@ function startAnimation() {
       positions.value = particles.value.map((particle) => {
         const movement = (props.speed * delta) / length;
 
-        particle.progress += props.reverse ? -movement : movement;
+        particle.animationPosition += props.reverse ? -movement : movement;
+        resetPositionGraterEnd(particle);
+        resetPositionLessStart(particle);
 
-        if (particle.progress > 1) {
-          particle.progress = 0;
-        }
-
-        if (particle.progress < 0) {
-          particle.progress = 1;
-        }
-
-        const currentLength = particle.progress * length;
+        const currentLength = particle.animationPosition * length;
 
         const point = pathRef.value?.getPointAtLength(currentLength);
 

@@ -1,4 +1,34 @@
-import { IdToSubscribe, WindowType } from "@/types/types.ts";
+import { StoreValue } from "@/store";
+import { IdToSubscribe } from "@/types/types.ts";
+
+export interface WindowType {
+  haustuer: StoreValue<boolean>;
+  wohnzimmerEcke: StoreValue<boolean>;
+  wohnzimmerMitte: StoreValue<boolean>;
+  wohnzimmerLinks: StoreValue<boolean>;
+  wohnzimmerRechts: StoreValue<boolean>;
+  kuecheTuer: StoreValue<boolean>;
+  kuecheFenster: StoreValue<boolean>;
+  esszimmerLinks: StoreValue<boolean>;
+  esszimmerRechts: StoreValue<boolean>;
+  kinderzimmerFenster: StoreValue<boolean>;
+  gaestezimmerFenster: StoreValue<boolean>;
+  schlafenFenster: StoreValue<boolean>;
+  schlafenTuer: StoreValue<boolean>;
+  badFenster: StoreValue<boolean>;
+  flurLinks: StoreValue<boolean>;
+  flurRechts: StoreValue<boolean>;
+  gaesteWcLinks: StoreValue<boolean>;
+  gaesteWcRechts: StoreValue<boolean>;
+  bueroFenster: StoreValue<boolean>;
+  abstellraumFenster: StoreValue<boolean>;
+  abstellraumOgLinks: StoreValue<boolean>;
+  abstellraumOgRechts: StoreValue<boolean>;
+  kellerFlurFenster: StoreValue<boolean>;
+  kellerTuer: StoreValue<boolean>;
+  dachbodenLinks: StoreValue<boolean>;
+  dachbodenRechts: StoreValue<boolean>;
+}
 
 export const windowOpenClose: IdToSubscribe<WindowType> = {
   storeFolder: "fenster",

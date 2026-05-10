@@ -1,12 +1,13 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends string">
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/utils.ts";
 import { computed, onMounted } from "vue";
-import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+import { IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
 import { cn } from "@/lib/utils.ts";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 const props = defineProps<{
-  energyFlow: IEnergyFlow;
-  positions: Positions;
+  energyFlow: IEnergyFlow<T>;
+  positions: Positions<T>;
 }>();
 
 const defaultRadius = 50;
@@ -15,8 +16,7 @@ const defaultReact = {
   height: 100,
 };
 
-const card = new PositionHandler(props.energyFlow.id, { padding: props.energyFlow.padding });
-// const radius = ref(defaultRadius);
+const card = new PositionHandler<T>(props.energyFlow.id, { padding: props.energyFlow.padding });
 
 onMounted(() => {
   card.updatePosition(coordinates.value.x, coordinates.value.y, coordinates.value.height, coordinates.value.width, props.energyFlow.strokeWidth ?? 2);
@@ -26,8 +26,8 @@ onMounted(() => {
 
 const getReactAndCircleValues = () => {
   return {
-    stroke: props.energyFlow.stroke ?? "#22c55e",
-    fill: props.energyFlow.fillColor ?? "#1e293b",
+    stroke: props.energyFlow.stroke ?? HexColors.DARK_GREEN,
+    fill: props.energyFlow.fillColor ?? HexColors.DARK_BLUE_GRAY,
     strokeWidth: props.energyFlow.strokeWidth,
   };
 };
@@ -47,15 +47,20 @@ const react = computed(() => {
     ry: ry,
     rx: rx,
     ...getReactAndCircleValues(),
+    "data-rect": JSON.stringify({ x, y, width, height }),
   };
 });
 
 const circle = computed(() => {
+  const r = coordinates.value.radius;
+  const cx = coordinates.value.x;
+  const cy = coordinates.value.y;
   return {
-    cx: coordinates.value.x,
-    cy: coordinates.value.y,
-    r: coordinates.value.radius,
+    cx,
+    cy,
+    r,
     ...getReactAndCircleValues(),
+    "data-rect": JSON.stringify({ x: cx - r, y: cy - r, width: 2 * r, height: 2 * r }),
   };
 });
 
@@ -87,7 +92,16 @@ const coordinates = computed(() => {
 const icon = computed(() => {
   const width = props.energyFlow.icon?.width ?? 30;
   const height = props.energyFlow.icon?.height ?? 30;
-  return { height, width, x: coordinates.value.x - width / 2, y: coordinates.value.y - coordinates.value.halfHeight + 5 };
+  const offestX = props.energyFlow.icon?.offsetX ?? 0;
+  const offestY = props.energyFlow.icon?.offsetY ?? 0;
+  return { height, width, x: coordinates.value.x - width / 2 + offestX, y: coordinates.value.y - coordinates.value.halfHeight + 5 + offestY };
+});
+
+const sumValue = computed(() => (val: TValue) => {
+  if (Array.isArray(val)) {
+    return val.reduce((acc, val) => acc + val, 0);
+  }
+  return val;
 });
 </script>
 
@@ -106,19 +120,28 @@ const icon = computed(() => {
         />
       </div>
     </foreignObject>
+    <g v-for="(cardValue, index) in energyFlow.values" :key="index">
+      <foreignObject
+        :x="coordinates.x + (cardValue.icon?.offsetX ?? 0)"
+        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13 + (cardValue.icon?.offsetY ?? 0)"
+        :width="cardValue.icon?.width ?? 10"
+        :height="cardValue.icon?.height ?? 10"
+      >
+        <div xmlns="http://www.w3.org/1999/xhtml" class="flex items-center justify-center w-full h-full">
+          <Component :is="cardValue.icon?.svg" :class="cn('text-muted-foreground', cardValue.icon?.class)" :size="cardValue.icon?.size ?? 32" />
+        </div>
+      </foreignObject>
 
-    <text
-      v-for="(cardValue, index) in energyFlow.values"
-      :x="coordinates.x"
-      :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13"
-      v-bind="{ 'text-anchor': cardValue.textAnchor ?? 'middle' }"
-      :fill="cardValue.fill ?? '#22c55e'"
-      :font-size="cardValue.fontSize ?? 12"
-      :key="index"
-    >
-      {{ cardValue?.value }} {{ cardValue?.unit }}
-    </text>
-
+      <text
+        :x="coordinates.x + (cardValue.offsetX ?? 0)"
+        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13 + (cardValue.offsetY ?? 0)"
+        v-bind="{ 'text-anchor': cardValue.textAnchor ?? 'middle' }"
+        :fill="cardValue.colorHex ?? HexColors.DARK_GREEN"
+        :font-size="cardValue.fontSize ?? 12"
+      >
+        {{ sumValue(cardValue?.value) }} {{ cardValue?.unit }}
+      </text>
+    </g>
     <text :x="coordinates.x" :y="coordinates.y + coordinates.halfHeight - 10" text-anchor="middle" fill="white" font-size="10">
       {{ energyFlow.title }}</text
     >

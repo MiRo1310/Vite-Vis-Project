@@ -1,5 +1,10 @@
 import { computed } from "vue";
-import { BatteriesTypeIobroker, HMIPDevice, ShellyPlusSmoke, XiaomiWindowSensor } from "../subscribeIds/batteriesType.iobroker.ts";
+import {
+  BatteriesTypeIobroker,
+  HMIPDevice,
+  ShellyPlusSmoke,
+  XiaomiWindowSensor,
+} from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 export interface BatteryTableData {

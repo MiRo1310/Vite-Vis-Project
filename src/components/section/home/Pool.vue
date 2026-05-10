@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
-import { BoolText, poolIds } from "@/subscribeIds/pool.iobroker.js";
+import { BoolText, poolIds } from "@/iobroker-states/states-subscribed/pool.iobroker";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";

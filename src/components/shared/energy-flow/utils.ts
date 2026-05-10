@@ -1,8 +1,10 @@
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
+import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { Point } from "@/components/shared/energy-flow/index.ts";
 
-export class PositionHandler {
-  private readonly id: string;
+export class PositionHandler<T> {
+  private readonly id: T;
   private left: number = 0;
   private top: number = 0;
   private bottom: number = 0;
@@ -14,7 +16,7 @@ export class PositionHandler {
 
   private readonly padding: number = 10;
 
-  constructor(id: string, options?: { padding?: number }) {
+  constructor(id: T, options?: { padding?: number }) {
     this.id = id;
     this.padding = options?.padding ?? this.padding;
   }
@@ -50,14 +52,14 @@ export class PositionHandler {
   }
 }
 
-export class Positions {
-  private positions: Record<string, PositionHandler> = {};
+export class Positions<T extends PropertyKey> {
+  private positions: Record<T, PositionHandler<T>> = {} as Record<T, PositionHandler<T>>;
 
-  public updatePositionsForCard(handler: PositionHandler) {
+  public updatePositionsForCard(handler: PositionHandler<T>) {
     this.positions[handler.getId()] = handler;
   }
 
-  public getPositionsById(id: string) {
+  public getPositionsById(id: T) {
     return (
       this.positions[id]?.getPosition() ?? {
         left: 0,
@@ -72,7 +74,7 @@ export class Positions {
     );
   }
 
-  public getCoordinates(line: ILineEndPoint) {
+  public getCoordinates(line: ILineEndPoint<T>) {
     const positions = this.getPositionsById(line.id);
     const lineOffsetX = line.offsetX ?? 0;
     const lineOffsetY = line.offsetY ?? 0;
@@ -83,7 +85,7 @@ export class Positions {
     };
   }
 
-  private getPositionY(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+  private getPositionY(position: TPositions, positions: ReturnType<Positions<T>["getPositionsById"]>) {
     switch (position) {
       case "top":
         return positions.top;
@@ -97,7 +99,7 @@ export class Positions {
     }
   }
 
-  private getPositionX(position: TPositions, positions: ReturnType<Positions["getPositionsById"]>) {
+  private getPositionX(position: TPositions, positions: ReturnType<Positions<T>["getPositionsById"]>) {
     switch (position) {
       case "top":
       case "bottom":
@@ -122,17 +124,20 @@ interface IAutoSpeed {
 
 export type TPositions = "top" | "bottom" | "left" | "right";
 export type TReverse = "greaterThan" | "lessThan";
-export interface ILineEndPoint {
-  id: string;
+export interface ILineEndPoint<T> {
+  id: T;
   position: TPositions;
   offsetX?: number;
   offsetY?: number;
 }
 
 export type TParticleShape = "circle" | "line";
-export class Line {
-  private readonly lineEnd: ILineEndPoint;
-  private readonly lineStart: ILineEndPoint;
+export class Line<T extends PropertyKey> {
+  private static flowColorDefault = HexColors.GREEN;
+  private static clampRadius = 16;
+
+  private readonly lineEnd: ILineEndPoint<T>;
+  private readonly lineStart: ILineEndPoint<T>;
   private readonly autoSpeed: IAutoSpeed = {
     active: false,
     max: 100,
@@ -148,16 +153,17 @@ export class Line {
   private readonly speed: number = 50;
   private readonly lineWidth: number = 10;
   private readonly groupCount: number = 2;
-  private readonly spacing: number = 0.25;
+  private readonly spacing: number = 10;
   private readonly strokeWidth: number = 10;
   private readonly dotRadius: number = 4;
-  private readonly flowColorHex: { positive: string; negative?: string } = { positive: "#58ea38", negative: "#ff0000" };
+  private readonly flowColorHex: { positive: HexColors; negative?: HexColors } = { positive: HexColors.GREEN, negative: HexColors.RED };
   private readonly value: number = 0;
+  private readonly trackColor: HexColors = HexColors.DARK_BLUE_GRAY;
 
   // eslint-disable-next-line complexity
   constructor(
-    lineStart: ILineEndPoint,
-    lineEnd: ILineEndPoint,
+    lineStart: ILineEndPoint<T>,
+    lineEnd: ILineEndPoint<T>,
     value: number,
     options?: {
       dotsPerGroup?: number;
@@ -170,7 +176,7 @@ export class Line {
       spacing?: number;
       strokeWidth?: number;
       dotRadius?: number;
-      flowColorHex?: { positive: string; negative?: string };
+      flowColorHex?: { positive: HexColors; negative?: HexColors };
       reverse?: TReverse;
       active?: boolean;
     },
@@ -213,7 +219,7 @@ export class Line {
   }
 
   getFlowColorHex() {
-    return this.value > 0 ? this.flowColorHex.positive : this.flowColorHex.negative;
+    return this.value > 0 ? this.flowColorHex.positive : (this.flowColorHex.negative ?? Line.flowColorDefault);
   }
 
   getLineWidth() {
@@ -270,10 +276,45 @@ export class Line {
     return this.particleShape;
   }
 
+  getTrackColor() {
+    return this.trackColor;
+  }
+  getClampRadius() {
+    return Line.clampRadius;
+  }
+
+  buildStraightHorizontalRoute(start: Point, end: Point) {
+    const midX = (start.x + end.x) / 2;
+
+    return [start, { x: midX, y: start.y }, { x: midX, y: end.y }, end];
+  }
+
+  buildStraightVerticalRoute(start: Point, end: Point) {
+    const midY = (start.y + end.y) / 2;
+
+    return [start, { x: start.x, y: midY }, { x: end.x, y: midY }, end];
+  }
+
+  collides() {}
+
   // eslint-disable-next-line complexity
-  getCoordinates(positions: Positions) {
+  buildPath(positions: Positions<T>) {
     const start = positions.getCoordinates(this.lineStart);
     const end = positions.getCoordinates(this.lineEnd);
+    // const candidates = [
+    //   this.buildStraightHorizontalRoute(start, end),
+    //   this.buildStraightVerticalRoute(start, end),
+    //   buildOrthogonalRouteA(start, end),
+    //   buildOrthogonalRouteB(start, end),
+    //   buildDetourRoute(start, end),
+    // ];
+    //
+    // for (const route of candidates) {
+    //   if (!collides(route, obstacles)) {
+    //     return route;
+    //   }
+    // }
+
     const startObject = positions.getPositionsById(this.lineStart.id);
     const endObject = positions.getPositionsById(this.lineEnd.id);
 

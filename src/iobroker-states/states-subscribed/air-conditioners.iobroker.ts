@@ -1,5 +1,5 @@
-import { StoreValue } from "@/store";
 import { IdToSubscribe } from "@/types/types.ts";
+import { StoreValue } from "@/store";
 
 export interface AirConditionersIobroker {
   schlafenOnline: StoreValue<boolean>;

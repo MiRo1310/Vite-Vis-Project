@@ -1,6 +1,7 @@
-import { IdToSubscribe, Shutter } from "@/types/types.ts";
+import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
+import { IdToSubscribe } from "@/types/types.ts";
 
-export const shutterAutoUpIobroker: IdToSubscribe<Shutter> = {
+export const shutterAutoUpIobroker: IdToSubscribe<IShutter> = {
   // Auto hoch aktiv
   storeFolder: "shutterAutoUp",
   value: [
