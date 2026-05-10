@@ -4,7 +4,7 @@ import Time from "@/components/section/home/Time.vue";
 import Trash from "@/components/section/home/Trash.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
-import Pv from "@/components/section/home/PV.vue";
+import PvHeating from "@/components/section/home/PvHeating.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
@@ -36,7 +36,7 @@ const appStore = useAppStore();
       </div>
       <Info class="lg:col-span-2 md:col-span-6 col-span-11" />
       <Trash class="lg:col-span-3 md:col-span-5 col-span-11" />
-      <Pv class="lg:col-span-2 md:col-span-3 col-span-11" />
+      <PvHeating class="lg:col-span-2 md:col-span-3 col-span-11" />
       <Devices class="lg:col-span-2 md:col-span-3 col-span-11" />
       <Calendar class="lg:col-span-6 md:col-span-8 col-span-11" />
       <Lists class="lg:col-span-2 md:col-span-3 col-span-11" />

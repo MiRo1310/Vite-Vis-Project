@@ -5,7 +5,7 @@ import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getValNumber } from "@/lib/object.ts";
 
-const { pv } = useIobrokerStore();
+const { pv, heating } = useIobrokerStore();
 
 const infos = computed((): InfoTypes[][] => [
   [
@@ -36,13 +36,20 @@ const infos = computed((): InfoTypes[][] => [
     },
     { title: "Ersparnis", value: getValNumber(pv.savedMoney), unit: "€" },
   ],
+  [
+    { title: "Heizung", value: getValNumber(heating.heatingTemperature), unit: "°C" },
+    { title: "Solar", value: getValNumber(heating.heatingSolar), unit: "°C" },
+    { title: "Puffer Oben", value: getValNumber(heating.heatingBufferTop), unit: "°C" },
+    { title: "Puffer Mitte", value: getValNumber(heating.heatingBufferMiddle), unit: "°C" },
+    { title: "Puffer Unten", value: getValNumber(heating.heatingBuffer), unit: "°C" },
+  ],
 ]);
 </script>
 
 <template>
   <Card styling="small" color="primary">
     <CardHeader>
-      <CardTitle> PV</CardTitle>
+      <CardTitle> PV & Heizung</CardTitle>
     </CardHeader>
     <CardContent>
       <InfoCard v-for="(info, i) in infos" :key="i" :infos="info" class="mt-2 first:mt-0" />

@@ -8,6 +8,8 @@ export interface HeatingIobroker {
   autoSolar: StoreValue<boolean>;
   heatingTemperature: StoreValue<number>;
   heatingBuffer: StoreValue<number>;
+  heatingBufferMiddle: StoreValue<number>;
+  heatingBufferTop: StoreValue<number>;
   heatingSolar: StoreValue<number>;
   solarMaxToday: StoreValue<number>;
   solarMax: StoreValue<number>;
@@ -38,6 +40,8 @@ export const heating: IdToSubscribe<HeatingIobroker> = {
     { id: "s7.0.DBs.DB1.B059", key: "heatingTemperature" },
     { id: "s7.0.DBs.DB1.B054", key: "heatingSolar" },
     { id: "s7.0.DBs.DB1.B068", key: "heatingBuffer" },
+    { id: "mqtt.0.oeg.43_T6_Puffer_Mitte_Ist-Wert", key: "heatingBufferMiddle" },
+    { id: "mqtt.0.oeg.42_T5_Puffer_Brauchwasser_Ist-Wert", key: "heatingBufferTop" },
     { id: "s7.0.DBs.DB1.B076", key: "solarMaxToday" },
     { id: "s7.0.DBs.DB1.B085", key: "solarMax" },
     { id: "s7.0.DBs.DB1.NQ12", key: "pelletExist" },
