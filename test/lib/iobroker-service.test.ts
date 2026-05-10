@@ -46,8 +46,8 @@ vi.mock("../../src/store/ioBrokerStore.ts", () => {
   };
 });
 
-// Mock the subscribeIds so init() doesn't subscribe to a large list during tests
-vi.mock("../../src/subscribeIds/ids-to-subscribe.iobroker.ts", () => ({
+// Mock the real import used by src/lib/iobroker-service.ts so init() doesn't subscribe to a large list during tests
+vi.mock("../../src/iobroker-states/index.iobroker.ts", () => ({
   idToSubscribeOnAppStart: [],
 }));
 

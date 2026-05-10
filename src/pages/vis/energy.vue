@@ -53,7 +53,6 @@ const data = computed(
       lines: [
         new Line<Ids>({ id: "pv", offsetY: 0, position: "right" }, { id: "house", position: "left" }, getValNumber(pv.pvGross), {
           groupCount: 1,
-          spacing: 0.15,
           autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25 },
           reverse: "lessThan",
         }),
@@ -76,7 +75,6 @@ const data = computed(
           reverse: "greaterThan",
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.05,
           autoSpeed: { max: 600, min: 50, maxSpeed: 75, minSpeed: 25 },
         }),
       ],
@@ -86,6 +84,7 @@ const data = computed(
       id: "battery",
       position: { row: 3, col: 2 },
       title: "Speicher",
+      circle: { radius: 50 },
       icon: {
         svg: iconBattery.value,
       },
@@ -152,7 +151,6 @@ const data = computed(
             flowColorHex: { positive: HexColors.YELLOW },
             groupCount: 1,
             dotsPerGroup: 3,
-            spacing: 0.08,
             reverse: "lessThan",
             autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
           },
@@ -168,7 +166,7 @@ const data = computed(
       lines: [
         new Line<Ids>({ id: "cellar", position: "bottom", offsetX: 12 }, { id: "server", position: "top" }, getValNumber(energy.Rack), {
           groupCount: 1,
-          spacing: 0.12,
+
           flowColorHex: { positive: HexColors.YELLOW },
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
@@ -199,7 +197,7 @@ const data = computed(
         new Line<Ids>({ id: "cellar", position: "right", offsetY: -30 }, { id: "freezer", position: "top" }, getValNumber(energy.Kuehltruhe), {
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.04,
+
           flowColorHex: { positive: HexColors.YELLOW },
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 15 },
@@ -216,7 +214,7 @@ const data = computed(
         new Line<Ids>({ id: "house", position: "right" }, { id: "pool", position: "left" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.04,
+
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
         }),
@@ -233,7 +231,7 @@ const data = computed(
         new Line<Ids>({ id: "heat_pump", position: "bottom" }, { id: "pool", position: "top" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.04,
+
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
         }),
@@ -250,7 +248,6 @@ const data = computed(
         new Line<Ids>({ id: "pool", position: "right" }, { id: "pool_pump", position: "bottom" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.04,
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
         }),
@@ -266,7 +263,6 @@ const data = computed(
         new Line<Ids>({ id: "house", position: "right", offsetY: -24 }, { id: "car", position: "bottom" }, getValNumber(pool.consumption), {
           groupCount: 3,
           dotsPerGroup: 3,
-          spacing: 0.04,
           reverse: "lessThan",
           autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
         }),

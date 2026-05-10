@@ -47,15 +47,20 @@ const react = computed(() => {
     ry: ry,
     rx: rx,
     ...getReactAndCircleValues(),
+    "data-rect": JSON.stringify({ x, y, width, height }),
   };
 });
 
 const circle = computed(() => {
+  const r = coordinates.value.radius;
+  const cx = coordinates.value.x;
+  const cy = coordinates.value.y;
   return {
-    cx: coordinates.value.x,
-    cy: coordinates.value.y,
-    r: coordinates.value.radius,
+    cx,
+    cy,
+    r,
     ...getReactAndCircleValues(),
+    "data-rect": JSON.stringify({ x: cx - r, y: cy - r, width: 2 * r, height: 2 * r }),
   };
 });
 

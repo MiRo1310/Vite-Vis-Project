@@ -1,6 +1,7 @@
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { Point } from "@/components/shared/energy-flow/index.ts";
 
 export class PositionHandler<T> {
   private readonly id: T;
@@ -132,6 +133,9 @@ export interface ILineEndPoint<T> {
 
 export type TParticleShape = "circle" | "line";
 export class Line<T extends PropertyKey> {
+  private static flowColorDefault = HexColors.GREEN;
+  private static clampRadius = 16;
+
   private readonly lineEnd: ILineEndPoint<T>;
   private readonly lineStart: ILineEndPoint<T>;
   private readonly autoSpeed: IAutoSpeed = {
@@ -149,11 +153,12 @@ export class Line<T extends PropertyKey> {
   private readonly speed: number = 50;
   private readonly lineWidth: number = 10;
   private readonly groupCount: number = 2;
-  private readonly spacing: number = 0.25;
+  private readonly spacing: number = 10;
   private readonly strokeWidth: number = 10;
   private readonly dotRadius: number = 4;
   private readonly flowColorHex: { positive: HexColors; negative?: HexColors } = { positive: HexColors.GREEN, negative: HexColors.RED };
   private readonly value: number = 0;
+  private readonly trackColor: HexColors = HexColors.DARK_BLUE_GRAY;
 
   // eslint-disable-next-line complexity
   constructor(
@@ -214,7 +219,7 @@ export class Line<T extends PropertyKey> {
   }
 
   getFlowColorHex() {
-    return this.value > 0 ? this.flowColorHex.positive : this.flowColorHex.negative;
+    return this.value > 0 ? this.flowColorHex.positive : (this.flowColorHex.negative ?? Line.flowColorDefault);
   }
 
   getLineWidth() {
@@ -271,10 +276,45 @@ export class Line<T extends PropertyKey> {
     return this.particleShape;
   }
 
+  getTrackColor() {
+    return this.trackColor;
+  }
+  getClampRadius() {
+    return Line.clampRadius;
+  }
+
+  buildStraightHorizontalRoute(start: Point, end: Point) {
+    const midX = (start.x + end.x) / 2;
+
+    return [start, { x: midX, y: start.y }, { x: midX, y: end.y }, end];
+  }
+
+  buildStraightVerticalRoute(start: Point, end: Point) {
+    const midY = (start.y + end.y) / 2;
+
+    return [start, { x: start.x, y: midY }, { x: end.x, y: midY }, end];
+  }
+
+  collides() {}
+
   // eslint-disable-next-line complexity
-  getCoordinates(positions: Positions<T>) {
+  buildPath(positions: Positions<T>) {
     const start = positions.getCoordinates(this.lineStart);
     const end = positions.getCoordinates(this.lineEnd);
+    // const candidates = [
+    //   this.buildStraightHorizontalRoute(start, end),
+    //   this.buildStraightVerticalRoute(start, end),
+    //   buildOrthogonalRouteA(start, end),
+    //   buildOrthogonalRouteB(start, end),
+    //   buildDetourRoute(start, end),
+    // ];
+    //
+    // for (const route of candidates) {
+    //   if (!collides(route, obstacles)) {
+    //     return route;
+    //   }
+    // }
+
     const startObject = positions.getPositionsById(this.lineStart.id);
     const endObject = positions.getPositionsById(this.lineEnd.id);
 

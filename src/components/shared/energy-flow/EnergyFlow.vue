@@ -21,17 +21,19 @@ const animationRef = ref<null | SVGGElement>(null);
             :id="String(i)"
             :animation="line.getActive()"
             :reverse="line.getReverse()"
-            :points="line.getCoordinates(positions)"
+            :points="line.buildPath(positions)"
             :dots-per-group="line.getDotsPerRow()"
             :particle-shape="line.getParticleShape()"
-            :line-height="line.getLineHeight()"
             :speed="line.getSpeed()"
             :line-width="line.getLineWidth()"
+            :line-height="line.getLineHeight()"
             :group-count="line.getGroupCount()"
             :spacing="line.getSpacing()"
             :stroke-width="line.getStrokeWidth()"
             :dot-radius="line.getDotRadius()"
             :flow-color="line.getFlowColorHex()"
+            :track-color="line.getTrackColor()"
+            :_clamp-radius="line.getClampRadius()"
             :animation-ref
           />
         </template>
