@@ -12,7 +12,7 @@ const props = defineProps<{
   animationRef: null | SVGGElement;
 }>();
 
-const l = computed(() => new Line(props.line.lineStart, props.line.lineEnd, props.line.value, props.line.options));
+const l = computed(() => new Line(props.animationRef, props.line.lineStart, props.line.lineEnd, props.line.value, props.line.options));
 </script>
 
 <template>

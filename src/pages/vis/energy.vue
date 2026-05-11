@@ -157,7 +157,7 @@ const data = computed(
     },
     {
       id: "cellar",
-      position: { row: 2.65, col: 2.75 },
+      position: { row: 2.6, col: 2.75 },
       title: "Keller",
       type: "react",
       react: { height: 50, width: 50 },
@@ -205,7 +205,7 @@ const data = computed(
       type: "react",
       lines: [
         {
-          lineStart: { id: "cellar", position: "right" },
+          lineStart: { id: "cellar", position: "right", offsetY: 12 },
           lineEnd: { id: "washer", position: "top" },
           value: getValNumber(energy.Waschmaschine),
           options: {
@@ -224,7 +224,7 @@ const data = computed(
       stroke: HexColors.BLUE,
       lines: [
         {
-          lineStart: { id: "cellar", position: "right", offsetY: -30 },
+          lineStart: { id: "cellar", position: "right", offsetY: -12 },
           lineEnd: { id: "freezer", position: "top" },
           value: getValNumber(energy.Kuehltruhe),
           options: {

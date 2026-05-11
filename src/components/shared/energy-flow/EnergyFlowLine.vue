@@ -173,7 +173,9 @@ function startAnimation() {
   cancelAnimationFrame(animationFrame);
 
   const animate = (time: number) => {
-    const delta = (time - lastTime) / 1000;
+    const rawDelta = (time - lastTime) / 1000;
+
+    const delta = Math.min(rawDelta, 0.05);
 
     lastTime = time;
 

@@ -46,6 +46,13 @@ export interface ILineObject<T extends PropertyKey> {
   };
 }
 
+export interface IBoxValues {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 export interface ICircle {
   radius?: number;
 }
@@ -102,3 +109,8 @@ export interface ILineEndPoint<T> {
 }
 
 export type TParticleShape = "circle" | "line";
+
+export interface IEnergyFlowAnchorSegment {
+  startPoint: Point;
+  exitPoint: Point;
+}

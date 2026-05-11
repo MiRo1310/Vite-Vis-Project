@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="T extends string">
 import { computed, onMounted } from "vue";
-import { IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
+import { IBoxValues, IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
 import { cn } from "@/lib/utils.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/position.ts";
@@ -39,6 +39,7 @@ const react = computed(() => {
   const ry = props.energyFlow.react?.radiusY ?? 0;
   const x = coordinates.value.x - width / 2;
   const y = coordinates.value.y - height / 2;
+  const dataRect: IBoxValues = { x, y, width, height };
   return {
     height: height,
     width: width,
@@ -47,7 +48,7 @@ const react = computed(() => {
     ry: ry,
     rx: rx,
     ...getReactAndCircleValues(),
-    "data-rect": JSON.stringify({ x, y, width, height }),
+    "data-rect": JSON.stringify(dataRect),
   };
 });
 
@@ -55,12 +56,13 @@ const circle = computed(() => {
   const r = coordinates.value.radius;
   const cx = coordinates.value.x;
   const cy = coordinates.value.y;
+  const dataRect: IBoxValues = { x: cx - r, y: cy - r, width: 2 * r, height: 2 * r };
   return {
     cx,
     cy,
     r,
     ...getReactAndCircleValues(),
-    "data-rect": JSON.stringify({ x: cx - r, y: cy - r, width: 2 * r, height: 2 * r }),
+    "data-rect": JSON.stringify(dataRect),
   };
 });
 
