@@ -30,6 +30,7 @@ import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobrok
 import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
 import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
+import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -71,6 +72,7 @@ export interface IoBrokerStoreState {
   airConditioners: AirConditionersIobroker;
   energy: EnergyStates;
   tankerKoenig: TankerKoenig;
+  position: PositionIobroker;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;

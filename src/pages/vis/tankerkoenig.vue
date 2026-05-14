@@ -43,6 +43,6 @@ const columns: DatatableColumns<IJson>[] = [
   <Page title="Tanken">
     <CardSubcard class="p-2 flex flex-wrap gap-1">
       <TableBasic :columns="getColumns(columns)" :data="parsedJson" :loading="false" />
-    </CardSubcard>
+    </CardSubcard> 
   </Page>
 </template>

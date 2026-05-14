@@ -31,6 +31,7 @@ import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.
 import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
 import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
+import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
 
@@ -71,6 +72,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     hmip: empty<HmipIobroker>(),
     tankerKoenig: empty<TankerKoenig>(),
     energy: empty<EnergyStates>(),
+    position: empty<PositionIobroker>(),
   }),
   getters: {
     isAdminConnected(state: IoBrokerStoreState) {

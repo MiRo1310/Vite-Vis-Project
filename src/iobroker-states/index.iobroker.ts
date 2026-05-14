@@ -19,6 +19,7 @@ import { batteryIds } from "./states-subscribed/batteriesType.iobroker.ts";
 import { hmipIds } from "./states-subscribed/hmip.iobroker.ts";
 import { lightStates } from "./states-subscribed/light.iobroker.ts";
 import { energyStates } from "./states-subscribed/energy.iobroker.ts";
+import { position } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
 
 export const idToSubscribeOnAppStart: IdToSubscribe<any>[] = [
   shutterAutoUpIobroker,
@@ -48,4 +49,5 @@ export const idToSubscribeOnAppStart: IdToSubscribe<any>[] = [
   ...lightStates,
   heating,
   energyStates,
+  position,
 ];
