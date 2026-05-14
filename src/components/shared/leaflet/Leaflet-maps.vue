@@ -90,7 +90,7 @@ watch(normalizedMarkers, () => {
 <template>
   <LMap
     @ready="onMapReady"
-    style="height: 400px"
+    style="height: 100%"
     :zoom="zoom"
     :center="center"
     :options="{
