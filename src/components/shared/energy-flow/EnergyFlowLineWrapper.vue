@@ -4,6 +4,7 @@ import { ILineObject } from "@/components/shared/energy-flow/index.ts";
 import { Line } from "@/components/shared/energy-flow/line.ts";
 import { Positions } from "@/components/shared/energy-flow/position.ts";
 import { computed } from "vue";
+import { sumNumbers } from "@/lib/number.ts";
 
 const props = defineProps<{
   line: ILineObject<any>;
@@ -12,7 +13,9 @@ const props = defineProps<{
   animationRef: null | SVGGElement;
 }>();
 
-const l = computed(() => new Line(props.animationRef, props.line.lineStart, props.line.lineEnd, props.line.value, props.line.options));
+const l = computed(
+  () => new Line(props.animationRef, props.line.lineStart, props.line.lineEnd, sumNumbers.value(props.line.value), props.line.options),
+);
 </script>
 
 <template>

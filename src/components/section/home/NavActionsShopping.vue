@@ -7,14 +7,14 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { AlexaList } from "@/types/types.ts";
 
 const { alexaLists } = storeToRefs(useIobrokerStore());
 
 const createShoppinglist = computed((): AlexaList[] => {
-  return toJSON<AlexaList[]>(getValString(alexaLists.value.shoppingListActive)).json ?? [];
+  return toJSON<AlexaList[]>(getStoreValString(alexaLists.value.shoppingListActive)).json ?? [];
 });
 </script>
 <template>

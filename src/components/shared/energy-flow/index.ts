@@ -23,12 +23,13 @@ export interface IEnergyFlow<T extends PropertyKey> {
   type?: "circle" | "react";
   react?: IReact;
   circle?: ICircle;
+  clickHandler?: () => void;
 }
 
 export interface ILineObject<T extends PropertyKey> {
   lineStart: ILineEndPoint<T>;
   lineEnd: ILineEndPoint<T>;
-  value: number;
+  value: TValue;
   options?: {
     dotsPerGroup?: number;
     particleShape?: TParticleShape;
@@ -64,10 +65,10 @@ export interface IReact {
   radiusY?: number;
 }
 
-export type TValue = string | number | number[];
+export type TValue = number | number[];
 
 export interface IEnergyFlowCardValue {
-  value: TValue;
+  value: TValue | string;
   unit?: string;
   fontSize?: number;
   textAnchor?: TTextAnchor;

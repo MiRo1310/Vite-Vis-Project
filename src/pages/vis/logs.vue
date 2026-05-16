@@ -4,13 +4,13 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { toLocaleTime } from "../../lib/time.ts";
+import { toLocaleTime } from "@/lib/time.ts";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { storeToRefs } from "pinia";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { getValId } from "@/lib/object.ts";
+import { getStoreValId } from "@/lib/object.ts";
 
 const { getParsedLogs } = useIobrokerStore();
 const { logReset } = storeToRefs(useIobrokerStore());
@@ -43,7 +43,7 @@ onMounted(() => {
 });
 
 function reset() {
-  const id = getValId(logReset.value[selected.value]);
+  const id = getStoreValId(logReset.value[selected.value]);
   if (!id) {
     return;
   }

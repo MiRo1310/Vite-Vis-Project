@@ -2,112 +2,112 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import HeatingControlConfigRow, { RowHeatingConfig } from "./HeatingControlConfigRow.vue";
-import { getValBoolean, getValId, getValNumber, tempArray } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValId, getStoreValNumber, tempArray } from "@/lib/object.ts";
 
 const { heatingControl } = useIobrokerStore();
 
 const rows = computed((): RowHeatingConfig[] => [
   {
     checkbox: {
-      id: getValId(heatingControl.periodActive),
-      val: getValBoolean(heatingControl.periodActive),
+      id: getStoreValId(heatingControl.periodActive),
+      val: getStoreValBoolean(heatingControl.periodActive),
     },
     titleCheckbox: "Heizperiode aktiv",
     titleSelect: "Gäste Anhebung",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.guestIncrease).toString(),
+      selected: getStoreValNumber(heatingControl.guestIncrease).toString(),
       placeholder: "",
-      id: getValId(heatingControl.guestIncrease),
+      id: getStoreValId(heatingControl.guestIncrease),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.publicHoliday),
-      val: getValBoolean(heatingControl.publicHoliday),
+      id: getStoreValId(heatingControl.publicHoliday),
+      val: getStoreValBoolean(heatingControl.publicHoliday),
     },
     titleCheckbox: "Feiertag heute",
     titleSelect: "Party Absenkung",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.partyDecrease).toString(),
+      selected: getStoreValNumber(heatingControl.partyDecrease).toString(),
       placeholder: "",
-      id: getValId(heatingControl.partyDecrease),
+      id: getStoreValId(heatingControl.partyDecrease),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.present),
-      val: getValBoolean(heatingControl.present),
+      id: getStoreValId(heatingControl.present),
+      val: getStoreValBoolean(heatingControl.present),
     },
     titleCheckbox: "Anwesend",
     titleSelect: "Abwesenheits Absenkung",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.absentDecrease).toString(),
+      selected: getStoreValNumber(heatingControl.absentDecrease).toString(),
       placeholder: "",
-      id: getValId(heatingControl.absentDecrease),
+      id: getStoreValId(heatingControl.absentDecrease),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.partyNow),
-      val: getValBoolean(heatingControl.partyNow),
+      id: getStoreValId(heatingControl.partyNow),
+      val: getStoreValBoolean(heatingControl.partyNow),
     },
     titleCheckbox: "Party jetzt",
     titleSelect: "Urlaub abwesend Absenkung",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.vacationAbsentDecrease).toString(),
+      selected: getStoreValNumber(heatingControl.vacationAbsentDecrease).toString(),
       placeholder: "",
-      id: getValId(heatingControl.vacationAbsentDecrease),
+      id: getStoreValId(heatingControl.vacationAbsentDecrease),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.guestsPresent),
-      val: getValBoolean(heatingControl.guestsPresent),
+      id: getStoreValId(heatingControl.guestsPresent),
+      val: getStoreValBoolean(heatingControl.guestsPresent),
     },
     titleCheckbox: "Gäste",
     titleSelect: "Fenster offen Absenkung",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.windowOpenDecrease).toString(),
+      selected: getStoreValNumber(heatingControl.windowOpenDecrease).toString(),
       placeholder: "",
-      id: getValId(heatingControl.windowOpenDecrease),
+      id: getStoreValId(heatingControl.windowOpenDecrease),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.holidayPresent),
-      val: getValBoolean(heatingControl.holidayPresent),
+      id: getStoreValId(heatingControl.holidayPresent),
+      val: getStoreValBoolean(heatingControl.holidayPresent),
     },
     titleCheckbox: "Urlaub anwesend",
     titleSelect: "Override für",
     input: {
-      id: getValId(heatingControl.temperatureOverrideTime),
-      val: getValNumber(heatingControl.temperatureOverrideTime).toString(),
+      id: getStoreValId(heatingControl.temperatureOverrideTime),
+      val: getStoreValNumber(heatingControl.temperatureOverrideTime).toString(),
       textBehind: "um",
     },
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.temperatureOverrideTemp).toString(),
+      selected: getStoreValNumber(heatingControl.temperatureOverrideTemp).toString(),
       placeholder: "",
-      id: getValId(heatingControl.temperatureOverrideTemp),
+      id: getStoreValId(heatingControl.temperatureOverrideTemp),
     },
   },
   {
     checkbox: {
-      id: getValId(heatingControl.vacationAbsent),
-      val: getValBoolean(heatingControl.vacationAbsent),
+      id: getStoreValId(heatingControl.vacationAbsent),
+      val: getStoreValBoolean(heatingControl.vacationAbsent),
     },
     titleCheckbox: "Urlaub abwesend",
     titleSelect: "Minimal Temperatur",
     select: {
       items: tempArray(),
-      selected: getValNumber(heatingControl.minimumTemperature).toString(),
+      selected: getStoreValNumber(heatingControl.minimumTemperature).toString(),
       placeholder: "",
-      id: getValId(heatingControl.minimumTemperature),
+      id: getStoreValId(heatingControl.minimumTemperature),
     },
   },
 ]);

@@ -11,7 +11,7 @@ import { colors } from "@/config/colors";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import { SelectOption } from "@/types/types.ts";
 import { toJSON } from "@michaelroling/ts-library";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 
 const open = defineModel<boolean>("open");
 
@@ -25,7 +25,7 @@ export interface JSONStyle {
 }
 
 const json = computed((): JSONStyle[] => {
-  return toJSON<JSONStyle[]>(getValString(styling.calendarStyle)).json ?? [];
+  return toJSON<JSONStyle[]>(getStoreValString(styling.calendarStyle)).json ?? [];
 });
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);

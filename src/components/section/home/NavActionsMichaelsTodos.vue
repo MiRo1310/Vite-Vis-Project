@@ -9,12 +9,12 @@ import Badge from "@/components/shared/badge/Badge.vue";
 import { AlexaList } from "@/types/types.ts";
 import { Button } from "@/components/shared/button/button.variants";
 import { toJSON } from "@michaelroling/ts-library";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 
 const { alexaLists } = storeToRefs(useIobrokerStore());
 
 const totoList = computed(() => {
-  return toJSON<AlexaList[]>(getValString(alexaLists.value.michaelsTodoList)).json ?? [];
+  return toJSON<AlexaList[]>(getStoreValString(alexaLists.value.michaelsTodoList)).json ?? [];
 });
 </script>
 <template>

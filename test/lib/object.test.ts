@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { tempArray, getValNumber, getValBoolean, getValString, getValId } from "../../src/lib/object";
+import { tempArray, getStoreValNumber, getStoreValBoolean, getStoreValString, getStoreValId } from "../../src/lib/object";
 
 describe("tempArray", () => {
   it("returns an array starting with 'Aus' and then numbers 5..30", () => {
@@ -14,25 +14,24 @@ describe("tempArray", () => {
 
 describe("getVal helpers", () => {
   it("getValNumber returns numeric value or 0", () => {
-    expect(getValNumber({ val: 42 } as any)).toBe(42);
-    expect(getValNumber(undefined as any)).toBe(0);
-    expect(getValNumber({ val: null } as any)).toBe(0);
+    expect(getStoreValNumber({ val: 42 } as any)).toBe(42);
+    expect(getStoreValNumber(undefined as any)).toBe(0);
+    expect(getStoreValNumber({ val: null } as any)).toBe(0);
   });
 
   it("getValBoolean returns boolean or false", () => {
-    expect(getValBoolean({ val: true } as any)).toBe(true);
-    expect(getValBoolean({ val: false } as any)).toBe(false);
-    expect(getValBoolean(undefined as any)).toBe(false);
+    expect(getStoreValBoolean({ val: true } as any)).toBe(true);
+    expect(getStoreValBoolean({ val: false } as any)).toBe(false);
+    expect(getStoreValBoolean(undefined as any)).toBe(false);
   });
 
   it("getValString returns string or empty string", () => {
-    expect(getValString({ val: "hello" } as any)).toBe("hello");
-    expect(getValString(undefined as any)).toBe("");
+    expect(getStoreValString({ val: "hello" } as any)).toBe("hello");
+    expect(getStoreValString(undefined as any)).toBe("");
   });
 
   it("getValId returns id or undefined", () => {
-    expect(getValId({ id: "some.id" } as any)).toBe("some.id");
-    expect(getValId(undefined as any)).toBeUndefined();
+    expect(getStoreValId({ id: "some.id" } as any)).toBe("some.id");
+    expect(getStoreValId(undefined as any)).toBeUndefined();
   });
 });
-

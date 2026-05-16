@@ -3,17 +3,14 @@ import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
-import { BoolText, poolIds } from "@/iobroker-states/states-subscribed/pool.iobroker";
+import { BoolText } from "@/iobroker-states/states-subscribed/pool.iobroker";
 import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import { getValBoolean, getValNumber, getValString } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValNumber, getStoreValString } from "@/lib/object.ts";
 
 const { pool } = storeToRefs(useIobrokerStore());
-
-useDynamicSubscribe(poolIds);
 
 interface Items {
   title: string;
@@ -24,12 +21,12 @@ interface Items {
 }
 
 const items = computed(() => {
-  const status = getValBoolean(pool.value.status);
+  const status = getStoreValBoolean(pool.value.status);
   const items: Items[] = [
     {
       title: "Heizung aktiv",
       type: "bool",
-      value: getValNumber(pool.value.consumption) > 30,
+      value: getStoreValNumber(pool.value.consumption) > 30,
     },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
@@ -39,36 +36,36 @@ const items = computed(() => {
     {
       title: "Modus",
       type: "text",
-      value: getMode(getValString(pool.value.mode)),
+      value: getMode(getStoreValString(pool.value.mode)),
     },
     {
       title: "Verbrauch",
       type: "number",
-      value: status ? getValNumber(pool.value.consumption) : 0,
+      value: status ? getStoreValNumber(pool.value.consumption) : 0,
       unit: "W",
     },
     {
       title: "Wunschtemperatur",
       type: "input",
-      value: getValNumber(pool.value.tempSet),
+      value: getStoreValNumber(pool.value.tempSet),
       unit: "°C",
     },
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: status ? getValNumber(pool.value.tempIn) : 0,
+      value: status ? getStoreValNumber(pool.value.tempIn) : 0,
       unit: "°C",
     },
     {
       title: "Temperatur Ausgang",
       type: "text",
-      value: status ? getValNumber(pool.value.tempOut) : 0,
+      value: status ? getStoreValNumber(pool.value.tempOut) : 0,
       unit: "°C",
     },
     {
       title: "Lüfterdrehzahl",
       type: "text",
-      value: getValNumber(pool.value.rotor),
+      value: getStoreValNumber(pool.value.rotor),
       unit: "Rpm",
     },
   ];

@@ -1,9 +1,10 @@
 <script setup lang="ts" generic="T extends string">
 import { computed, onMounted } from "vue";
-import { IBoxValues, IEnergyFlow, TValue } from "@/components/shared/energy-flow/index.ts";
+import { IBoxValues, IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 import { cn } from "@/lib/utils.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { PositionHandler, Positions } from "@/components/shared/energy-flow/position.ts";
+import { sumNumbers } from "@/lib/number.ts";
 
 const props = defineProps<{
   energyFlow: IEnergyFlow<T>;
@@ -27,8 +28,9 @@ onMounted(() => {
 const getReactAndCircleValues = () => {
   return {
     stroke: props.energyFlow.stroke ?? HexColors.DARK_GREEN,
-    fill: props.energyFlow.fillColor ?? HexColors.DARK_BLUE_GRAY,
+    fill: props.energyFlow.fillColor ?? HexColors.DARK_BLUE_GRAY, // "transparent"
     strokeWidth: props.energyFlow.strokeWidth,
+    style: { cursor: props.energyFlow.clickHandler ? "pointer" : "default" },
   };
 };
 
@@ -98,19 +100,12 @@ const icon = computed(() => {
   const offestY = props.energyFlow.icon?.offsetY ?? 0;
   return { height, width, x: coordinates.value.x - width / 2 + offestX, y: coordinates.value.y - coordinates.value.halfHeight + 5 + offestY };
 });
-
-const sumValue = computed(() => (val: TValue) => {
-  if (Array.isArray(val)) {
-    return val.reduce((acc, val) => acc + val, 0);
-  }
-  return val;
-});
 </script>
 
 <template>
   <g>
-    <rect v-if="energyFlow.type === 'react'" v-bind="react" />
-    <circle v-else v-bind="circle" />
+    <rect v-if="energyFlow.type === 'react'" v-bind="react" @click="energyFlow.clickHandler" />
+    <circle v-else v-bind="circle" @click="energyFlow.clickHandler" />
 
     <foreignObject :x="icon.x" :y="icon.y" :width="icon.width" :height="icon.height">
       <div xmlns="http://www.w3.org/1999/xhtml" class="flex items-center justify-center w-full h-full">
@@ -141,7 +136,7 @@ const sumValue = computed(() => (val: TValue) => {
         :fill="cardValue.colorHex ?? HexColors.DARK_GREEN"
         :font-size="cardValue.fontSize ?? 12"
       >
-        {{ sumValue(cardValue?.value) }} {{ cardValue?.unit }}
+        {{ typeof cardValue?.value === "string" ? cardValue?.value : sumNumbers(cardValue?.value) }} {{ cardValue?.unit }}
       </text>
     </g>
     <text :x="coordinates.x" :y="coordinates.y + coordinates.halfHeight - 10" text-anchor="middle" fill="white" font-size="10">

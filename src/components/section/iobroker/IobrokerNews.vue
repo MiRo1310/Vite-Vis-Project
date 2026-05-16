@@ -5,7 +5,7 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { IobrokerLanguages } from "@/types/types.ts";
 import { computed } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
 interface NewsFeed {
@@ -34,7 +34,7 @@ const columns: DatatableColumns<NewsFeed>[] = [
     type: "datetime",
   },
 ];
-const json = computed(() => toJSON<NewsFeed[]>(getValString(infos.newsFeeds)).json ?? []);
+const json = computed(() => toJSON<NewsFeed[]>(getStoreValString(infos.newsFeeds)).json ?? []);
 </script>
 
 <template>
