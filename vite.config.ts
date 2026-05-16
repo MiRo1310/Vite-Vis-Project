@@ -12,4 +12,19 @@ export default defineConfig({
     },
   },
   base: "/",
+  build: {
+    rolldownOptions: {
+      output: {
+        manualChunks: (moduleId) => {
+          if (moduleId.includes("leaflet")) {
+            return "leaflet";
+          }
+          if (moduleId.includes("apollo-client")) {
+            return "apollo-client";
+          }
+          return null;
+        },
+      },
+    },
+  },
 });
