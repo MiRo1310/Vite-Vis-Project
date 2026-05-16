@@ -4,7 +4,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import { computed } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { getValBoolean } from "@/lib/object.ts";
+import { getStoreValBoolean } from "@/lib/object.ts";
 
 const { airConditioners, pool, landroid, heating } = useIobrokerStore();
 
@@ -12,33 +12,33 @@ const status = computed(() => {
   return [
     {
       name: "Heizung",
-      online: getValBoolean(heating.active),
-      power: getValBoolean(heating.automatic) && getValBoolean(heating.active),
+      online: getStoreValBoolean(heating.active),
+      power: getStoreValBoolean(heating.automatic) && getStoreValBoolean(heating.active),
     },
     {
       name: "Solar Pumpe",
-      online: getValBoolean(heating.solarPump),
+      online: getStoreValBoolean(heating.solarPump),
       textActive: "An",
       textInactive: "Aus",
     },
     {
       name: "Klima Schlafen",
-      online: getValBoolean(airConditioners.schlafenOnline),
-      power: getValBoolean(airConditioners.schlafenPowerStatus),
+      online: getStoreValBoolean(airConditioners.schlafenOnline),
+      power: getStoreValBoolean(airConditioners.schlafenPowerStatus),
     },
     {
       name: "Klima Kind",
-      online: getValBoolean(airConditioners.childOnline),
-      power: getValBoolean(airConditioners.childPowerStatus),
+      online: getStoreValBoolean(airConditioners.childOnline),
+      power: getStoreValBoolean(airConditioners.childPowerStatus),
     },
     {
       name: "Wärmepumpe",
-      online: getValBoolean(pool.status),
+      online: getStoreValBoolean(pool.status),
       power: (pool.consumption?.val ?? 0) > 30,
     },
     {
       name: "Rasenmäher",
-      online: getValBoolean(landroid.online),
+      online: getStoreValBoolean(landroid.online),
       power: landroid.status?.val !== 1,
     },
   ];

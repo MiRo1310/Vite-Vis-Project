@@ -1,4 +1,3 @@
-import { Line } from "@/components/shared/energy-flow/utils.ts";
 import { FunctionalComponent } from "vue";
 import { LucideProps } from "lucide-vue-next";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
@@ -16,7 +15,7 @@ export interface IEnergyFlow<T extends PropertyKey> {
   title?: string;
   icon?: IEnergyFlowIcon;
   values: IEnergyFlowCardValue[];
-  lines: Line<T>[];
+  lines: ILineObject<T>[];
   padding?: number;
   fillColor?: string;
   stroke?: HexColors;
@@ -24,6 +23,35 @@ export interface IEnergyFlow<T extends PropertyKey> {
   type?: "circle" | "react";
   react?: IReact;
   circle?: ICircle;
+  clickHandler?: () => void;
+}
+
+export interface ILineObject<T extends PropertyKey> {
+  lineStart: ILineEndPoint<T>;
+  lineEnd: ILineEndPoint<T>;
+  value: TValue;
+  options?: {
+    dotsPerGroup?: number;
+    particleShape?: TParticleShape;
+    lineHeight?: number;
+    speed?: number;
+    autoSpeed?: IAutoSpeed;
+    lineWidth?: number;
+    groupCount?: number;
+    spacing?: number;
+    strokeWidth?: number;
+    dotRadius?: number;
+    flowColorHex?: { positive: HexColors; negative?: HexColors };
+    reverse?: TReverse;
+    active?: boolean;
+  };
+}
+
+export interface IBoxValues {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export interface ICircle {
@@ -37,10 +65,10 @@ export interface IReact {
   radiusY?: number;
 }
 
-export type TValue = string | number | number[];
+export type TValue = number | number[];
 
 export interface IEnergyFlowCardValue {
-  value: TValue;
+  value: TValue | string;
   unit?: string;
   fontSize?: number;
   textAnchor?: TTextAnchor;
@@ -56,11 +84,34 @@ export interface IEnergyFlowIcon {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   svg: FunctionalComponent<LucideProps, object, any, object>;
-  // color?: string;
   width?: number;
   height?: number;
   class?: string;
   size?: number;
   offsetX?: number;
   offsetY?: number;
+}
+
+export interface IAutoSpeed {
+  active?: boolean;
+  max: number;
+  min: number;
+  maxSpeed?: number;
+  minSpeed?: number;
+}
+
+export type TPositions = "top" | "bottom" | "left" | "right";
+export type TReverse = "greaterThan" | "lessThan";
+export interface ILineEndPoint<T> {
+  id: T;
+  position: TPositions;
+  offsetX?: number;
+  offsetY?: number;
+}
+
+export type TParticleShape = "circle" | "line";
+
+export interface IEnergyFlowAnchorSegment {
+  startPoint: Point;
+  exitPoint: Point;
 }

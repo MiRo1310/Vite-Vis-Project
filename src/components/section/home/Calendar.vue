@@ -7,14 +7,14 @@ import { CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/CalenderDay.vue";
 import { toJSON } from "@michaelroling/ts-library";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 import { routes } from "@/router/routes.ts";
 
 const { calendar } = storeToRefs(useIobrokerStore());
 const router = useRouter();
 
 const data = computed((): CalendarDayType[] => {
-  return toJSON<CalendarDayType[]>(getValString(calendar.value.table)).json ?? [];
+  return toJSON<CalendarDayType[]>(getStoreValString(calendar.value.table)).json ?? [];
 });
 
 const today = computed(() => {

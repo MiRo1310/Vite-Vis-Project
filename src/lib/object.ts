@@ -18,7 +18,12 @@ export function tempArray() {
   return array;
 }
 
-export const getValNumber = (storeValue: StoreValue<number>): number => storeValue?.val ?? 0;
-export const getValBoolean = (storeValue: StoreValue<boolean>): boolean => storeValue?.val ?? false;
-export const getValString = (storeValue: StoreValue<string>): string => storeValue?.val ?? "";
-export const getValId = (storeValue: StoreValue<unknown>): string | undefined => storeValue?.id;
+export const getStoreValNumber = (storeValue: StoreValue<number>): number => storeValue?.val ?? 0;
+export const getStoreValNumberArray = (arr: StoreValue<number>[]): number[] =>
+  arr.reduce((prev, curr): number[] => {
+    prev.push(curr?.val ?? 0);
+    return prev;
+  }, []);
+export const getStoreValBoolean = (storeValue: StoreValue<boolean>): boolean => storeValue?.val ?? false;
+export const getStoreValString = (storeValue: StoreValue<string>): string => storeValue?.val ?? "";
+export const getStoreValId = (storeValue: StoreValue<unknown>): string | undefined => storeValue?.id;

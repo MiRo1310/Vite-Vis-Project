@@ -76,11 +76,6 @@ export interface IoBrokerStoreState {
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
-export type StoreValueWithTimestamp<T> = (StoreValueType<T> & Timestamp) | undefined;
-
-export interface Timestamp {
-  ts: number;
-}
 
 export interface StoreValueType<T> {
   val: T | undefined;

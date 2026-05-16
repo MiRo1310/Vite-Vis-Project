@@ -4,7 +4,7 @@ import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { computed } from "vue";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 
 interface IJson {
@@ -22,7 +22,7 @@ interface IJson {
 const { tankerKoenig } = useIobrokerStore();
 
 const parsedJson = computed(() => {
-  const table = getValString(tankerKoenig.jsonTable);
+  const table = getStoreValString(tankerKoenig.jsonTable);
   if (!table) {
     return [];
   }
@@ -43,6 +43,6 @@ const columns: DatatableColumns<IJson>[] = [
   <Page title="Tanken">
     <CardSubcard class="p-2 flex flex-wrap gap-1">
       <TableBasic :columns="getColumns(columns)" :data="parsedJson" :loading="false" />
-    </CardSubcard> 
+    </CardSubcard>
   </Page>
 </template>

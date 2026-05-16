@@ -23,7 +23,7 @@ import {
 } from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
 import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
 import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
-import { getValString } from "@/lib/object.ts";
+import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
 import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
@@ -93,9 +93,9 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
-          error: toJSON<Log[]>(getValString(state.logs.error)).json ?? [],
-          warn: toJSON<Log[]>(getValString(state.logs.warning)).json ?? [],
-          info: toJSON<Log[]>(getValString(state.logs.info)).json ?? [],
+          error: toJSON<Log[]>(getStoreValString(state.logs.error)).json ?? [],
+          warn: toJSON<Log[]>(getStoreValString(state.logs.warning)).json ?? [],
+          info: toJSON<Log[]>(getStoreValString(state.logs.info)).json ?? [],
         };
       });
     },
