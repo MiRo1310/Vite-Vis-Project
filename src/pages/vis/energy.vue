@@ -4,7 +4,7 @@ import EnergyFlow from "@/components/shared/energy-flow/EnergyFlow.vue";
 import { computed } from "vue";
 import { getStoreValBoolean, getStoreValId, getStoreValNumber, getStoreValNumberArray } from "@/lib/object.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, House, SolarPanel } from "lucide-vue-next";
+import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, House, SolarPanel, Torus } from "lucide-vue-next";
 import { TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
@@ -239,7 +239,7 @@ const data = computed(
             dotsPerGroup: 3,
             flowColorHex: { positive: HexColors.YELLOW },
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 15 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -250,6 +250,8 @@ const data = computed(
       position: { row: 2, col: 4 },
       title: "Pool",
       type: "react",
+      react: { height: 70, width: 70 },
+      icon: { svg: Torus },
       lines: [
         {
           lineStart: { id: "house", position: "right" },
@@ -277,11 +279,11 @@ const data = computed(
           lineEnd: { id: "pool", position: "top" },
           value: getStoreValNumber(pool.consumption),
           options: {
-            groupCount: 3,
+            groupCount: 2,
             flowColorHex: { positive: HexColors.YELLOW },
             dotsPerGroup: 3,
-            reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            reverse: "greaterThan",
+            autoSpeed: { max: 3000, min: 0, maxSpeed: 75, minSpeed: 25 },
           },
         },
       ],
@@ -310,7 +312,7 @@ const data = computed(
             groupCount: 3,
             dotsPerGroup: 3,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -325,22 +327,23 @@ const data = computed(
         {
           lineStart: { id: "house", position: "right", offsetY: -24 },
           lineEnd: { id: "car", position: "bottom" },
-          value: getStoreValNumber(pool.consumption),
+          value: 0,
           options: {
             groupCount: 3,
             dotsPerGroup: 3,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 11000, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
-      values: [{ value: getStoreValNumber(pool.consumption), unit: "W" }],
+      values: [{ value: 0, unit: "W" }],
     },
   ],
 );
 </script>
+
 <template>
   <Page title="Energy">
-    <EnergyFlow :data />
+    <EnergyFlow :data :width="1000" :height="700" />
   </Page>
 </template>

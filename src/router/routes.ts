@@ -1,3 +1,5 @@
+export type RoutePath = (typeof routes)[keyof typeof routes]["path"];
+
 export const routes = {
   home: { path: "/", name: "home" },
   navigation: { path: "/navigation", name: "navigation" },
@@ -28,7 +30,7 @@ export const routes = {
   finance: { path: "/finance", name: "finance" },
   addresses: { path: "/adressen", name: "addresses" },
   description: { path: "/beschreibung", name: "descriptions" },
-};
+} as const;
 
 export const routing = [
   {
