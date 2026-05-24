@@ -4,7 +4,21 @@ import EnergyFlow from "@/components/shared/energy-flow/EnergyFlow.vue";
 import { computed } from "vue";
 import { getStoreValBoolean, getStoreValId, getStoreValNumber, getStoreValNumberArray } from "@/lib/object.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, House, SolarPanel, Torus } from "lucide-vue-next";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Battery,
+  BatteryFull,
+  BatteryLow,
+  BatteryMedium,
+  Car,
+  Check,
+  Heater,
+  House,
+  SolarPanel,
+  Torus,
+  X,
+} from "lucide-vue-next";
 import { TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
@@ -150,7 +164,7 @@ const data = computed(
           options: {
             groupCount: 1,
             reverse: "greaterThan",
-            autoSpeed: { max: 5000, min: 50, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 5000, min: 50, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -172,7 +186,7 @@ const data = computed(
             groupCount: 1,
             dotsPerGroup: 3,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -196,10 +210,9 @@ const data = computed(
           value: getStoreValNumber(energy.Rack),
           options: {
             groupCount: 1,
-
             flowColorHex: { positive: HexColors.YELLOW },
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -216,9 +229,9 @@ const data = computed(
           lineEnd: { id: "washer", position: "top" },
           value: getStoreValNumber(energy.Waschmaschine),
           options: {
-            groupCount: 1,
+            groupCount: 2,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -272,7 +285,8 @@ const data = computed(
       position: { row: 1, col: 4 },
       title: "Wärmepumpe",
       type: "react",
-      react: { width: 80, height: 80 },
+      react: { width: 80, height: 120 },
+      icon: { svg: Heater },
       lines: [
         {
           lineStart: { id: "heat_pump", position: "bottom" },
@@ -287,14 +301,35 @@ const data = computed(
           },
         },
       ],
-      values: [{ value: getStoreValNumber(pool.consumption), unit: "W" }],
+      values: [
+        { value: getStoreValNumber(pool.consumption), unit: "W" },
+        {
+          value: getStoreValNumber(pool.tempIn),
+          unit: "°C",
+          colorHex: HexColors.BLUE_LIGHT,
+          icon: { svg: ArrowRight, offsetX: -35, offsetY: -12, width: 15, height: 15, class: "text-blue-200" },
+        },
+        {
+          value: getStoreValNumber(pool.tempOut),
+          unit: "°C",
+          colorHex: HexColors.RED,
+          icon: { svg: ArrowLeft, offsetX: -35, offsetY: -12, width: 15, height: 15, class: "text-red-200" },
+        },
+        {
+          value: "Silent",
+          offsetY: 5,
+          icon: getStoreValBoolean(pool.silent)
+            ? { svg: Check, offsetX: 18, offsetY: -12, width: 15, height: 15, class: "text-green-200" }
+            : { svg: X, offsetX: 18, offsetY: -12, width: 15, height: 15, class: "text-red-200" },
+        },
+      ],
     },
     {
       id: "pool_pump",
-      position: { row: 1, col: 4.5 },
+      position: { row: 1, col: 5 },
       title: "Poolpumpe",
       type: "react",
-      react: { width: 80, height: 80 },
+      react: { width: 80, height: 85 },
       stroke: getStoreValBoolean(pool.poolPumpSwitch) ? HexColors.GREEN : HexColors.GRAY,
       clickHandler: () => {
         const id = getStoreValId(pool.poolPumpSwitch);
@@ -344,6 +379,6 @@ const data = computed(
 
 <template>
   <Page title="Energy">
-    <EnergyFlow :data :width="1000" :height="700" />
+    <EnergyFlow :data :width="1200" :height="700" />
   </Page>
 </template>
