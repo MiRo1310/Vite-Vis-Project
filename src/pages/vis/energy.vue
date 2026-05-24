@@ -239,7 +239,7 @@ const data = computed(
             dotsPerGroup: 3,
             flowColorHex: { positive: HexColors.YELLOW },
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 15 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -310,7 +310,7 @@ const data = computed(
             groupCount: 3,
             dotsPerGroup: 3,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -330,7 +330,7 @@ const data = computed(
             groupCount: 3,
             dotsPerGroup: 3,
             reverse: "lessThan",
-            autoSpeed: { max: 500, min: 0, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 11000, min: 0, maxSpeed: 75, minSpeed: 5 },
           },
         },
       ],
@@ -339,8 +339,9 @@ const data = computed(
   ],
 );
 </script>
+
 <template>
   <Page title="Energy">
-    <EnergyFlow :data />
+    <EnergyFlow :data :width="1000" :height="700" />
   </Page>
 </template>

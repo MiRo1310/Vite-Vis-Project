@@ -13,7 +13,7 @@ defineProps<{ title: string }>();
         <slot name="header" />
       </PageHeader>
     </div>
-    <div class="flex-1 overflow-y-auto">
+    <div class="flex-1 overflow-auto max-w-screen">
       <slot />
     </div>
   </Card>
