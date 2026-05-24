@@ -104,7 +104,7 @@ const icon = computed(() => {
 
 <template>
   <g>
-    <rect v-if="energyFlow.type === 'react'" v-bind="react" @click="energyFlow.clickHandler" />
+    <rect v-if="energyFlow.type === 'react'" v-bind="react" @click="energyFlow.clickHandler" class="z-50" />
     <circle v-else v-bind="circle" @click="energyFlow.clickHandler" />
 
     <foreignObject :x="icon.x" :y="icon.y" :width="icon.width" :height="icon.height">
@@ -119,8 +119,8 @@ const icon = computed(() => {
     </foreignObject>
     <g v-for="(cardValue, index) in energyFlow.values" :key="index">
       <foreignObject
-        :x="coordinates.x + (cardValue.icon?.offsetX ?? 0)"
-        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13 + (cardValue.icon?.offsetY ?? 0)"
+        :x="coordinates.x + (cardValue.icon?.offsetX ?? 0) + (cardValue.offsetX ?? 0)"
+        :y="coordinates.y - coordinates.halfHeight + icon.height + 20 + index * 13 + (cardValue.icon?.offsetY ?? 0) + (cardValue.offsetY ?? 0)"
         :width="cardValue.icon?.width ?? 10"
         :height="cardValue.icon?.height ?? 10"
       >

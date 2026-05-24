@@ -14,6 +14,7 @@ export interface PoolIobroker {
   status: StoreValue<boolean>;
   poolPumpPower: StoreValue<number>;
   poolPumpSwitch: StoreValue<boolean>;
+  silent: StoreValue<boolean>;
 }
 
 export const poolStates: IdToSubscribe<PoolIobroker> = {
@@ -27,6 +28,7 @@ export const poolStates: IdToSubscribe<PoolIobroker> = {
     { id: "midas-aquatemp.0.rotor", key: "rotor" },
     { id: "midas-aquatemp.0.mode", key: "mode" },
     { id: "midas-aquatemp.0.info.connection", key: "status" },
+    { id: "midas-aquatemp.0.silent", key: "silent" },
     { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power", key: "poolPumpPower" },
     { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", key: "poolPumpSwitch" },
   ],
