@@ -5,12 +5,12 @@ import NavigationButton from "@/components/layout/NavigationButton.vue";
 </script>
 
 <template>
-  <div class="flex gap-2 flex-wrap">
+  <div class="flex-1 max-w-200 flex gap-2 flex-wrap">
     <slot />
-    <div class="flex-1 w-80">
+    <div class="flex-1">
       <NavigationButton :navigation="mainPages.navigation" small />
     </div>
-    <div class="w-30">
+    <div class="flex-1">
       <NavigationButton :navigation="mainPages.home" small />
     </div>
     <slot name="after" />

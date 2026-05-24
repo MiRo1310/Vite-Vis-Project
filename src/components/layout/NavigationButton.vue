@@ -9,7 +9,7 @@ defineProps<{ navigation: NavigationType; small?: boolean }>();
 <template>
   <RouterLink :to="{ path: navigation.to }">
     <Button as="div" variant="outline" :size="small ? 'full' : 'fullXxl'">
-      <div class="flex justify-between w-full">
+      <div class="flex justify-between w-full gap-2">
         <span>{{ navigation.text }}</span>
         <div class="relative">
           <div class="absolute right-10 flex items-center gap-2">
