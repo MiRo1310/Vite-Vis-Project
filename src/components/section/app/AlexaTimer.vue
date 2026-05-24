@@ -45,8 +45,8 @@ const timerLabel = computed(() => (i: number): string => {
     <CardHeader class="text-center text-xl relative px-4">
       <p>Alexa Timer</p>
     </CardHeader>
-    <CardContent class="flex flex-wrap gap-6">
-      <div v-for="i of 4" :key="i" class="min-w-[40%] flex-1 max-w-[50%] flex relative bg-background/70 p-2 shadow-lg rounded-md">
+    <CardContent class="grid grid-cols-2 gap-6">
+      <div v-for="i of 4" :key="i" class="col-span-2 lg:col-span-1 relative bg-background/70 p-2 shadow-lg rounded-md">
         <div class="w-full">
           <div class="flex justify-between items-center mb-2">
             <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">

@@ -26,22 +26,20 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  <div class="overflow-auto max-h-[calc(100%-44px)] mt-2">
-    <div class="grid grid-cols-11 gap-2">
-      <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">
-        <Time>
-          <Caller class="flex-1" />
-          <Fuel />
-        </Time>
-      </div>
-      <Info class="lg:col-span-2 md:col-span-6 col-span-11" />
-      <Trash class="lg:col-span-3 md:col-span-5 col-span-11" />
-      <PvHeating class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Devices class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Calendar class="lg:col-span-6 md:col-span-8 col-span-11" />
-      <Lists class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Empty class="lg:col-span-3 md:col-span-11 col-span-11" />
-      <Timer class="col-span-11" />
+  <div class="overflow-auto max-h-[calc(100%-44px)] mt-2 grid grid-cols-12 grid-row-12 gap-2">
+    <div class="col-start-1 col-end-3 row-start-1 row-end-6 flex flex-col">
+      <Time>
+        <Caller class="flex-1" />
+        <Fuel />
+      </Time>
     </div>
+    <Info class="col-start-3 col-end-5 row-start-1 row-end-4" />
+    <PvHeating class="col-start-10 col-end-13 row-start-1 row-end-12" />
+    <Devices class="col-start-8 col-end-10 row-start-1 row-end-6" />
+    <Trash class="col-start-5 col-end-8 row-start-1 row-end-2" />
+    <Lists class="col-start-5 col-end-8 row-start-2 row-end-4" />
+    <Empty class="col-start-3 col-end-5 row-start-4 row-end-6" />
+    <Calendar class="col-start-1 col-end-5 row-start-6 row-end-12" />
+    <Timer class="col-start-5 col-end-10 row-start-6 row-end-12" />
   </div>
 </template>
