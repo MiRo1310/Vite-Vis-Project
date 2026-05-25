@@ -15,8 +15,9 @@ export const routes = {
   light: { path: "/light", name: "light" },
   logs: { path: "/logs", name: "logs" },
   pv: { path: "/pv", name: "pv" },
+  heatPump: { path: "/heat-pump", name: "heat-pump" },
   energy: { path: "/energy", name: "energy" },
-  tanker_koenig: { path: "/tanker_koenig", name: "tanker_koenig" },
+  tanker_koenig: { path: "/tanker_koenig", name: "tanker-koenig" },
   maps: { path: "/karten", name: "maps" },
   recipeApp: { path: "/recipe-app", name: "recipe-app" },
   recipes: { path: "/rezepte", name: "recipes" },
@@ -54,6 +55,7 @@ export const routing = [
       { component: async () => await import("@/pages/vis/tankerkoenig.vue"), ...routes.tanker_koenig },
       { component: async () => await import("@/pages/vis/energy.vue"), ...routes.energy },
       { component: async () => await import("@/pages/vis/maps.vue"), ...routes.maps },
+      { component: async () => await import("@/pages/vis/heat-pump.vue"), ...routes.heatPump },
     ],
   },
   {

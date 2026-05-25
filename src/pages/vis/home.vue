@@ -4,7 +4,7 @@ import Time from "@/components/section/home/Time.vue";
 import Trash from "@/components/section/home/Trash.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
-import PvHeating from "@/components/section/home/PvHeating.vue";
+import IobrokerValues from "@/components/section/home/IobrokerValues.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
 import { Hourglass } from "lucide-vue-next";
@@ -34,16 +34,16 @@ const appStore = useAppStore();
 
         <Lists class="flex flex-col flex-1" />
       </div>
-      <div class="lg:col-span-6 sm:col-span-7 col-span-12 flex gap-2 flex-wrap">
+      <div class="lg:col-span-7 sm:col-span-7 col-span-12 flex gap-2 flex-wrap">
         <div class="flex flex-col flex-1 gap-2">
           <Trash class="" />
           <Calendar class="flex-1" />
         </div>
-        <Info class="lg:block hidden" />
-        <Timer class="" />
+        <Info class="lg:block hidden flex-1" />
+        <Timer class="sm:block hidden" />
       </div>
 
-      <PvHeating class="lg:col-span-4 sm:col-span-6 col-span-12" />
+      <IobrokerValues class="lg:col-span-3 sm:col-span-6 col-span-12" />
       <Info class="lg:hidden block sm:col-span-6 col-span-12" />
     </div>
   </div>

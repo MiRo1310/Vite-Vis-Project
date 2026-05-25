@@ -91,6 +91,7 @@ export interface ParsedLogs {
   error: Log[];
   warn: Log[];
   info: Log[];
+  heatPump: Log[];
 }
 
 export interface SetValues {

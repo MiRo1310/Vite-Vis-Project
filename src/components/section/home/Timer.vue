@@ -16,7 +16,7 @@ const { timers } = storeToRefs(iobrokerStore);
 <template>
   <Card styling="small" color="primary" @click="useAppStore().toggleTimerVisibility()">
     <CardContent class="flex flex-row flex-wrap gap-1 w-full">
-      <CardSubcard v-for="i in 4" :key="i" class="min-w-56 flex-1 flex">
+      <CardSubcard v-for="i in 4" :key="i" class="lg:min-w-60 min-w-56 flex-1 flex">
         <div class="w-full">
           <h1 class="text-md flex justify-between">
             <span>{{ getNameByIndex(timers, i) }}</span>

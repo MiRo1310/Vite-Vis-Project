@@ -5,6 +5,7 @@ export interface LogStates {
   error: StoreValue<string>;
   warning: StoreValue<string>;
   info: StoreValue<string>;
+  heatPump: StoreValue<string>;
 }
 
 export const logStates: IdToSubscribe<LogStates> = {
@@ -13,5 +14,6 @@ export const logStates: IdToSubscribe<LogStates> = {
     { id: "logparser.0.filters.Error.json", key: "error" },
     { id: "logparser.0.filters.Info.json", key: "info" },
     { id: "logparser.0.filters.Warn.json", key: "warning" },
+    { id: "logparser.0.filters.Wärmepumpe.json", key: "heatPump" },
   ],
 };

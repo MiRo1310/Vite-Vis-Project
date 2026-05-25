@@ -96,6 +96,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
           error: toJSON<Log[]>(getStoreValString(state.logs.error)).json ?? [],
           warn: toJSON<Log[]>(getStoreValString(state.logs.warning)).json ?? [],
           info: toJSON<Log[]>(getStoreValString(state.logs.info)).json ?? [],
+          heatPump: toJSON<Log[]>(getStoreValString(state.logs.heatPump)).json ?? [],
         };
       });
     },

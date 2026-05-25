@@ -3,23 +3,12 @@ import { Card, CardContent } from "@/components/shared/card";
 import { computed } from "vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getStoreValBoolean, getStoreValNumber, getStoreValString } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { activeStatus } from "@/composables/status.ts";
+import { routes } from "@/router/routes.ts";
+import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 
-const { pv, heating, pool } = useIobrokerStore();
-
-const modus = computed(() => {
-  switch (getStoreValString(pool.mode)) {
-    case "0":
-      return "Kühlen";
-    case "1":
-      return "Heizen";
-    case "2":
-      return "Auto";
-    default:
-      return "None";
-  }
-});
+const { pv, heating, pool, energy } = useIobrokerStore();
 
 const infos = computed((): InfoTypes[] => [
   {
@@ -45,6 +34,8 @@ const infos = computed((): InfoTypes[] => [
         valueClass: getStoreValNumber(pv.activeCharging) < 0 ? "text-destructive" : getStoreValNumber(pv.activeCharging) === 0 ? "" : "text-success",
       },
       { title: "Ladezustand Batterie", value: getStoreValNumber(pv.batteryCharging), unit: "%" },
+      { title: "Bezug / Heute", value: getStoreValNumber(energy.energyReceived).toFixed(2), unit: "KWh" },
+      { title: "Einspeisung / Heute", value: getStoreValNumber(energy.energyReturned).toFixed(2), unit: "KWh" },
     ],
   },
   {
@@ -59,7 +50,7 @@ const infos = computed((): InfoTypes[] => [
     ],
   },
   {
-    route: "/heating",
+    route: routes.heating.path,
     listing: [
       { title: "Heizung", ...activeStatus.value(getStoreValBoolean(heating.active)) },
       { title: "Heizung Auto", ...activeStatus.value(getStoreValBoolean(heating.automatic)) },
@@ -72,17 +63,7 @@ const infos = computed((): InfoTypes[] => [
       { title: "Puffer Unten", value: getStoreValNumber(heating.heatingBuffer), unit: "°C" },
     ],
   },
-  {
-    listing: [
-      { title: "Wärmepumpe", ...activeStatus.value(getStoreValBoolean(pool.poolPumpSwitch)) },
-      { title: "Wärmepumpe Modus", value: modus.value },
-      { title: "Wärmepumpe Silent", ...activeStatus.value(getStoreValBoolean(pool.silent)) },
-      { title: "Wärmepumpe Bezug", value: getStoreValNumber(pool.consumption).toFixed(2), unit: "W" },
-      { title: "Wärmepumpe In", value: getStoreValNumber(pool.tempIn), unit: "°C", valueClass: "text-blue-200" },
-      { title: "Wärmepumpe Out", value: getStoreValNumber(pool.tempOut), unit: "°C", valueClass: "text-orange-200" },
-      { title: "Wärmepumpe Soll", value: getStoreValNumber(pool.tempSet), unit: "°C" },
-    ],
-  },
+  { ...heatPumpValues.value },
   {
     listing: [
       { title: "Poolpumpe", ...activeStatus.value(getStoreValBoolean(pool.poolPumpSwitch)) },
