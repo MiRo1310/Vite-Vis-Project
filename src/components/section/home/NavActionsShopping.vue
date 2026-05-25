@@ -5,11 +5,10 @@ import { ShoppingBag } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import Badge from "@/components/shared/badge/Badge.vue";
-import { Button } from "@/components/shared/button/button.variants";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { AlexaList } from "@/types/types.ts";
+import HomeActionBtn from "@/components/section/home/HomeActionBtn.vue";
 
 const { alexaLists } = storeToRefs(useIobrokerStore());
 
@@ -20,11 +19,9 @@ const createShoppinglist = computed((): AlexaList[] => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <Button class="relative">
-        Einkaufsliste
-        <ShoppingBag class="ml-2" />
-        <Badge color="green" class="ml-2" :value="createShoppinglist?.length" />
-      </Button>
+      <HomeActionBtn :title="'Einkaufsliste'" :badge="createShoppinglist?.length" class="flex-1">
+        <ShoppingBag />
+      </HomeActionBtn>
     </template>
     <template #title>
       <p>Einkaufsliste</p>

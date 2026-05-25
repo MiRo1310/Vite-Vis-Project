@@ -3,7 +3,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Card, CardContent } from "@/components/shared/card";
 import { Days, days } from "@/constants/constants.js";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
@@ -55,10 +55,7 @@ const getColor = (name: string) => {
 </script>
 <template>
   <Card styling="small" color="primary">
-    <CardHeader>
-      <CardTitle>Müllabfuhr</CardTitle>
-    </CardHeader>
-    <CardContent class="grid grid-cols-2 gap-2">
+    <CardContent class="grid grid-cols-2 gap-1">
       <CardSubcard v-for="(event, index) in trashEvents" :key="index">
         <div class="flex justify-between">
           <CardSubcardHeader class="font-bold text-xs">

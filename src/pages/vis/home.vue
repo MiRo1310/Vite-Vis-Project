@@ -6,15 +6,13 @@ import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
 import PvHeating from "@/components/section/home/PvHeating.vue";
 import Timer from "@/components/section/home/Timer.vue";
-import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
-import Lists from "@/components/section/home/Lists.vue";
 import { Hourglass } from "lucide-vue-next";
 import { useAppStore } from "@/store/app-store.js";
 import { Button } from "@/components/shared/button/button.variants";
 import Shutter from "@/components/section/home/Shutter.vue";
-import Empty from "@/components/section/home/Empty.vue";
 import Fuel from "@/components/section/home/Fuel.vue";
+import Lists from "@/components/section/home/Lists.vue";
 
 const appStore = useAppStore();
 </script>
@@ -26,20 +24,27 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  <div class="overflow-auto max-h-[calc(100%-44px)] mt-2 grid grid-cols-12 grid-row-12 gap-2">
-    <div class="col-start-1 col-end-3 row-start-1 row-end-6 flex flex-col">
-      <Time>
-        <Caller class="flex-1" />
-        <Fuel />
-      </Time>
+  <div class="mt-2 h-[calc(100%-44px)]">
+    <div class="overflow-auto h-full grid grid-cols-12 gap-2 pr-2">
+      <div class="lg:col-span-2 sm:col-span-5 col-span-12 h-full flex flex-col gap-2">
+        <Time class="flex-1">
+          <Caller class="flex-1" />
+          <Fuel />
+        </Time>
+
+        <Lists class="flex flex-col flex-1" />
+      </div>
+      <div class="lg:col-span-6 sm:col-span-7 col-span-12 flex gap-2 flex-wrap">
+        <div class="flex flex-col flex-1 gap-2">
+          <Trash class="" />
+          <Calendar class="flex-1" />
+        </div>
+        <Info class="lg:block hidden" />
+        <Timer class="" />
+      </div>
+
+      <PvHeating class="lg:col-span-4 sm:col-span-6 col-span-12" />
+      <Info class="lg:hidden block sm:col-span-6 col-span-12" />
     </div>
-    <Info class="col-start-3 col-end-5 row-start-1 row-end-4" />
-    <PvHeating class="col-start-10 col-end-13 row-start-1 row-end-12" />
-    <Devices class="col-start-8 col-end-10 row-start-1 row-end-6" />
-    <Trash class="col-start-5 col-end-8 row-start-1 row-end-2" />
-    <Lists class="col-start-5 col-end-8 row-start-2 row-end-4" />
-    <Empty class="col-start-3 col-end-5 row-start-4 row-end-6" />
-    <Calendar class="col-start-1 col-end-5 row-start-6 row-end-12" />
-    <Timer class="col-start-5 col-end-10 row-start-6 row-end-12" />
   </div>
 </template>
