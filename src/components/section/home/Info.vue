@@ -25,7 +25,7 @@ const version = import.meta.env.VITE_APP_VERSION;
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, airConditioners, landroid } = ioBrokerStore;
-const { wetter, infos: infoStore } = storeToRefs(ioBrokerStore);
+const { infos: infoStore } = storeToRefs(ioBrokerStore);
 
 const { hour } = useTime();
 const isTimeToWarn = computed(() => {
@@ -34,24 +34,6 @@ const isTimeToWarn = computed(() => {
   }
   return hour.value >= 20 || hour.value <= 6;
 });
-
-const infos1 = computed((): InfoTypes[] => [
-  {
-    listing: [
-      {
-        title: "Aussentemperatur",
-        value: wetter.value.Aussentemperatur?.val,
-        unit: "°C",
-      },
-      {
-        title: "Luftfeuchtigkeit",
-        value: wetter.value.Luftfeuchtigkeit?.val,
-        unit: "%",
-      },
-      { title: "Regen Menge", value: wetter.value.RegenMenge?.val, unit: "mm" },
-    ],
-  },
-]);
 
 const infos2 = computed((): InfoTypes[] => [
   {
@@ -76,8 +58,6 @@ const infos2 = computed((): InfoTypes[] => [
     <CardContent class="text-xs flex flex-col gap-2">
       <InfoCard :infos="{ listing: [{ title: 'Version', value: version }] }" />
       <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
-
-      <InfoCard v-for="(info, i) in infos1" :key="i" :infos="info" />
 
       <CardSubcard>
         <div
