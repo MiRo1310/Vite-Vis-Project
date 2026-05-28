@@ -3252,6 +3252,19 @@
     path-browserify "^1.0.1"
     picomatch "^4.0.4"
 
+"@vue/language-core@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-3.3.2.tgz#494d0dca8d79069a18f0fdf2b24daab259977450"
+  integrity sha512-CLwjSfHlPLhjd2qhuS3tTFtnOIWHXAM5u4X1DxmzlQ8j5bmOYlKCsSusOP7jCRJnlVg0mCTQtHU3vwFvopZGoQ==
+  dependencies:
+    "@volar/language-core" "2.4.28"
+    "@vue/compiler-dom" "^3.5.0"
+    "@vue/shared" "^3.5.0"
+    alien-signals "^3.2.0"
+    muggle-string "^0.4.1"
+    path-browserify "^1.0.1"
+    picomatch "^4.0.4"
+
 "@vue/language-plugin-pug@~3.2.2":
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/@vue/language-plugin-pug/-/language-plugin-pug-3.2.7.tgz#e4e3d8385f2309eceef8571754858d1844890e40"
@@ -3263,24 +3276,24 @@
     pug-parser "^6.0.0"
     vscode-languageserver-textdocument "^1.0.12"
 
-"@vue/language-server@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@vue/language-server/-/language-server-3.3.1.tgz#f21de2b5965de51f4a64578f3ee059ca0022f73b"
-  integrity sha512-xvWUuMvbfNkEd+Jdux0+vD1b8jV5kBT+CQHsYWZvUg4rQHsPMr88L5/Gm1yg9kJ5688pnoZfuO/ZK+57PpEt0Q==
+"@vue/language-server@^3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/language-server/-/language-server-3.3.2.tgz#30ab2fd37ae5791228d767c7f66e204069d1f3f4"
+  integrity sha512-UayGGSA0MxD2sy2oY+B7C64/JYum5NHZ1g8lnNLUz7DMHvxyVcbR86GqF3YG6qTroypC3wQ+ZDKgN8rd4t6LLg==
   dependencies:
     "@volar/language-server" "2.4.28"
-    "@vue/language-core" "3.3.1"
-    "@vue/language-service" "3.3.1"
-    "@vue/typescript-plugin" "3.3.1"
+    "@vue/language-core" "3.3.2"
+    "@vue/language-service" "3.3.2"
+    "@vue/typescript-plugin" "3.3.2"
     vscode-uri "^3.1.0"
 
-"@vue/language-service@3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@vue/language-service/-/language-service-3.3.1.tgz#8b9cee6898110223c3ada8c71809123e96bd4ad6"
-  integrity sha512-JJaS3FX7c5oTJLS1IBauk7SHtU1M0PcokIv2FbfaZf0c0PTOakPgWrGhq7QTl1BDWWy1NLBlvjf1Dc3CmYwd8g==
+"@vue/language-service@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/language-service/-/language-service-3.3.2.tgz#8b55d262333af62681ff917d8865e5b80a48589d"
+  integrity sha512-5CugK2vB/sSIwCWXGpgj5S6MDG6d2fY1aESPHqH/EY/MBB3EJe5rkuJiyMoxX/yHz2spId7n4Dm70VTI5E+C1Q==
   dependencies:
     "@volar/language-service" "2.4.28"
-    "@vue/language-core" "3.3.1"
+    "@vue/language-core" "3.3.2"
     "@vue/shared" "^3.5.0"
     path-browserify "^1.0.1"
     volar-service-css "0.0.71"
@@ -3336,16 +3349,16 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.34.tgz#665f2b2fd600f6c180668423909a6fde64cbfccd"
   integrity sha512-24uqU4OIiX29ryC3MeWid/Xf2fa2EFRUVLb77nRhk+UrTVrh/XiGtFAFmJBAtBRbjwNdsPRP+jj/OL27Eg1NDA==
 
-"@vue/typescript-plugin@3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@vue/typescript-plugin/-/typescript-plugin-3.3.1.tgz#df87adf9f4d62f3ecd54bbe2b4026335cb352f9a"
-  integrity sha512-j0OIAS1N420DOl77b7yO15yHY8v+M2fHi4ZoAm5CSPqsgev63/Gtx2jsnC88JR1blLWAfDzhVWfKw8xWKNG0pw==
+"@vue/typescript-plugin@3.3.2":
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/@vue/typescript-plugin/-/typescript-plugin-3.3.2.tgz#dbd585205c4dffd70040510d82111662faf0fee6"
+  integrity sha512-UFRDh9QbDA+qpT3U4cal/Aju1458cka8ODGjl88/vbqKuM+bXUErzUC2jbv8Ymyfey9dUacpnLJGpwNtNpcgvw==
   dependencies:
     "@volar/typescript" "2.4.28"
-    "@vue/language-core" "3.3.1"
+    "@vue/language-core" "3.3.2"
     "@vue/shared" "^3.5.0"
     path-browserify "^1.0.1"
-    vue-component-meta "3.3.1"
+    vue-component-meta "3.3.2"
 
 "@vueuse/core@^10.11.0":
   version "10.11.1"
@@ -8006,13 +8019,13 @@ vt-pbf@^3.1.3:
     "@mapbox/vector-tile" "^1.3.1"
     pbf "^3.2.1"
 
-vue-component-meta@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/vue-component-meta/-/vue-component-meta-3.3.1.tgz#38b673c63c39e3f7b6ed110607131dcafc8fe8ad"
-  integrity sha512-XoU/EXBmbMyeorbGOblhtU9h8QiDZDt3HZgYS2/eyrthJaToIkBHyn2ssjdgvPIdBWnPyqopFWaIjR9APwGppw==
+vue-component-meta@3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/vue-component-meta/-/vue-component-meta-3.3.2.tgz#76c7521435f3e37e538312b30eb9697c8597cf04"
+  integrity sha512-n2N/IpZO16it12Marp9bFBWIwkqa+ux9yHIl6yBL1lFEPL2xCML8gQ+/l6gSGIkgZwpkD9hyu/a0GMhR0pHw/Q==
   dependencies:
     "@volar/typescript" "2.4.28"
-    "@vue/language-core" "3.3.1"
+    "@vue/language-core" "3.3.2"
     path-browserify "^1.0.1"
 
 vue-demi@>=0.13.0, vue-demi@>=0.14.8, vue-demi@^0.14.6:
