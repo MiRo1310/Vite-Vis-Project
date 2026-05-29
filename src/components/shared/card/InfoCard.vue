@@ -11,14 +11,14 @@ export interface InfoTypes {
 }
 
 interface Listing {
-  title: string;
+  title?: string;
   value: number | string | undefined;
   unit?: string;
   valueClass?: HTMLAttributes["class"];
   class?: HTMLAttributes["class"];
 }
 
-defineProps<{ class: HTMLAttributes["class"]; infos: InfoTypes }>();
+defineProps<{ class?: HTMLAttributes["class"]; infos: InfoTypes }>();
 </script>
 <template>
   <CardSubcard :class="$props.class">

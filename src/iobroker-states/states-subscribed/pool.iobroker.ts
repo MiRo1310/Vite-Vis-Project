@@ -1,10 +1,10 @@
 import { StoreValue } from "@/store";
 import { IdToSubscribe } from "@/types/types.ts";
 
-export type BoolText = "true" | "false" | true | false;
+export type BoolText = "true" | "false";
 
 export interface PoolIobroker {
-  heaterState: StoreValue<BoolText>;
+  heaterState: StoreValue<boolean>;
   tempSet: StoreValue<number>;
   consumption: StoreValue<number>;
   tempIn: StoreValue<number>;

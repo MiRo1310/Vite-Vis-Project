@@ -7,7 +7,6 @@ import { shutterIdsLogoIobroker } from "./states-subscribed/shutter-ids-logo.iob
 import { windowOpenClose } from "./states-subscribed/window.iobroker.ts";
 import { pvIdsIobroker } from "./states-subscribed/pv-ids.iobroker.ts";
 import { IdToSubscribe } from "@/types/types.ts";
-import { wetter } from "./states-subscribed/wetter.iobroker.ts";
 import { landroid } from "./states-subscribed/landroid.iobroker.ts";
 import { calendar } from "./states-subscribed/calendar.iobroker.ts";
 import { heating, heatingControl } from "./states-subscribed/heating.iobroker.ts";
@@ -32,7 +31,6 @@ export const idToSubscribeOnAppStart: IdToSubscribe<any>[] = [
   timers,
   windowOpenClose,
   pvIdsIobroker,
-  wetter,
   landroid,
   calendar,
   heating,

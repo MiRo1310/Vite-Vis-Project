@@ -59,6 +59,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: PlugZap, text: "Karten", to: routes.maps.path },
   { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
   { icon: Logs, text: "Logs", to: routes.logs.path },
+  { icon: Logs, text: "Wärmepumpe", to: routes.heatPump.path },
   { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
   { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
   { icon: Utensils, text: "Rezepte", to: routes.recipes.path },

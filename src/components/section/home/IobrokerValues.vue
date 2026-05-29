@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Card, CardContent } from "@/components/shared/card";
 import { computed } from "vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getStoreValNumber } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
+import { activeStatus } from "@/composables/status.ts";
+import { routes } from "@/router/routes.ts";
+import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 
-const { pv, heating } = useIobrokerStore();
+const { pv, heating, pool, energy } = useIobrokerStore();
 
 const infos = computed((): InfoTypes[] => [
   {
@@ -28,9 +31,11 @@ const infos = computed((): InfoTypes[] => [
         title: getStoreValNumber(pv.activeCharging) > 0 ? "Batterie laden" : "Batterie entladen",
         value: getStoreValNumber(pv.activeCharging),
         unit: "W",
-        valueClass: getStoreValNumber(pv.activeCharging) < 0 ? "text-destructive" : "text-success",
+        valueClass: getStoreValNumber(pv.activeCharging) < 0 ? "text-destructive" : getStoreValNumber(pv.activeCharging) === 0 ? "" : "text-success",
       },
       { title: "Ladezustand Batterie", value: getStoreValNumber(pv.batteryCharging), unit: "%" },
+      { title: "Bezug / Heute", value: getStoreValNumber(energy.energyReceived).toFixed(2), unit: "KWh" },
+      { title: "Einspeisung / Heute", value: getStoreValNumber(energy.energyReturned).toFixed(2), unit: "KWh" },
     ],
   },
   {
@@ -45,13 +50,24 @@ const infos = computed((): InfoTypes[] => [
     ],
   },
   {
-    route: "/heating",
+    route: routes.heating.path,
     listing: [
-      { title: "Heizung", value: getStoreValNumber(heating.heatingTemperature), unit: "°C" },
+      { title: "Heizung", ...activeStatus.value(getStoreValBoolean(heating.active)) },
+      { title: "Heizung Auto", ...activeStatus.value(getStoreValBoolean(heating.automatic)) },
+      { title: "Heizung Temp", value: getStoreValNumber(heating.heatingTemperature), unit: "°C" },
+      { title: "Solar Auto", ...activeStatus.value(getStoreValBoolean(heating.autoSolar)) },
+      { title: "Solar Pumpe", ...activeStatus.value(getStoreValBoolean(heating.solarPump)) },
       { title: "Solar", value: getStoreValNumber(heating.heatingSolar), unit: "°C" },
       { title: "Puffer Oben", value: getStoreValNumber(heating.heatingBufferTop), unit: "°C" },
       { title: "Puffer Mitte", value: getStoreValNumber(heating.heatingBufferMiddle), unit: "°C" },
       { title: "Puffer Unten", value: getStoreValNumber(heating.heatingBuffer), unit: "°C" },
+    ],
+  },
+  { ...heatPumpValues.value },
+  {
+    listing: [
+      { title: "Poolpumpe", ...activeStatus.value(getStoreValBoolean(pool.poolPumpSwitch)) },
+      { title: "Poolpumpe Bezug", value: getStoreValNumber(pool.poolPumpPower), unit: "W" },
     ],
   },
 ]);
@@ -59,9 +75,6 @@ const infos = computed((): InfoTypes[] => [
 
 <template>
   <Card styling="small" color="primary">
-    <CardHeader>
-      <CardTitle> PV & Heizung</CardTitle>
-    </CardHeader>
     <CardContent>
       <InfoCard v-for="(info, i) in infos" :key="i" :infos="info" class="mt-2 first:mt-0" />
     </CardContent>

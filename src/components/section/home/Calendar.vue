@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Card, CardContent } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
@@ -48,9 +48,6 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
 
 <template>
   <Card styling="small" color="primary" @click="router.push({ name: routes.calender.name })">
-    <CardHeader>
-      <CardTitle>Familien Kalendar</CardTitle>
-    </CardHeader>
     <CardContent class="flex flex-col gap-2">
       <CalendarDay :data="today" title="Heute" />
       <CalendarDay :data="tomorrow" title="Morgen" />

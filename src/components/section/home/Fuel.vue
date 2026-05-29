@@ -10,7 +10,7 @@ const { tankerKoenig } = useIobrokerStore();
 
 <template>
   <router-link :to="routes.tanker_koenig.path">
-    <CardSubcard class="mt-2">
+    <CardSubcard class="mt-1">
       <CardSubcardHeader>Günstigster Spritpreis </CardSubcardHeader>
       <TextSeparator />
       <p class="text-[0.7rem]">{{ getStoreValString(tankerKoenig.cheapestName) }}</p>

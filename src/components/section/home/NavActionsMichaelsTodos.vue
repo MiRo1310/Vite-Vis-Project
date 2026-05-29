@@ -5,11 +5,10 @@ import { Pickaxe } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import Badge from "@/components/shared/badge/Badge.vue";
 import { AlexaList } from "@/types/types.ts";
-import { Button } from "@/components/shared/button/button.variants";
 import { toJSON } from "@michaelroling/ts-library";
 import { getStoreValString } from "@/lib/object.ts";
+import HomeActionBtn from "@/components/section/home/HomeActionBtn.vue";
 
 const { alexaLists } = storeToRefs(useIobrokerStore());
 
@@ -20,12 +19,9 @@ const totoList = computed(() => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <Button>
-        Michis Todos
-        <Pickaxe class="ml-2" />
-
-        <Badge class="ml-2" :value="totoList?.length" />
-      </Button>
+      <HomeActionBtn title="Michis Todos" :badge="totoList?.length" class="flex-1">
+        <Pickaxe />
+      </HomeActionBtn>
     </template>
     <template #title>
       <p>Michis Todos</p>

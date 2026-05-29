@@ -4,17 +4,15 @@ import Time from "@/components/section/home/Time.vue";
 import Trash from "@/components/section/home/Trash.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
-import PvHeating from "@/components/section/home/PvHeating.vue";
+import IobrokerValues from "@/components/section/home/IobrokerValues.vue";
 import Timer from "@/components/section/home/Timer.vue";
-import Devices from "@/components/section/home/Devices.vue";
 import PageHeader from "@/components/layout/PageHeader.vue";
-import Lists from "@/components/section/home/Lists.vue";
 import { Hourglass } from "lucide-vue-next";
 import { useAppStore } from "@/store/app-store.js";
 import { Button } from "@/components/shared/button/button.variants";
 import Shutter from "@/components/section/home/Shutter.vue";
-import Empty from "@/components/section/home/Empty.vue";
 import Fuel from "@/components/section/home/Fuel.vue";
+import Lists from "@/components/section/home/Lists.vue";
 
 const appStore = useAppStore();
 </script>
@@ -26,22 +24,27 @@ const appStore = useAppStore();
       <Shutter />
     </template>
   </PageHeader>
-  <div class="overflow-auto max-h-[calc(100%-44px)] mt-2">
-    <div class="grid grid-cols-11 gap-2">
-      <div class="lg:col-span-2 md:col-span-5 col-span-11 flex flex-col">
-        <Time>
+  <div class="mt-2 h-[calc(100%-44px)]">
+    <div class="overflow-auto h-full grid grid-cols-12 gap-2 pr-2">
+      <div class="lg:col-span-2 sm:col-span-5 col-span-12 h-full flex flex-col gap-2">
+        <Time class="flex-1">
           <Caller class="flex-1" />
           <Fuel />
         </Time>
+
+        <Lists class="flex flex-col flex-1" />
       </div>
-      <Info class="lg:col-span-2 md:col-span-6 col-span-11" />
-      <Trash class="lg:col-span-3 md:col-span-5 col-span-11" />
-      <PvHeating class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Devices class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Calendar class="lg:col-span-6 md:col-span-8 col-span-11" />
-      <Lists class="lg:col-span-2 md:col-span-3 col-span-11" />
-      <Empty class="lg:col-span-3 md:col-span-11 col-span-11" />
-      <Timer class="col-span-11" />
+      <div class="lg:col-span-7 sm:col-span-7 col-span-12 flex gap-2 flex-wrap">
+        <div class="flex flex-col flex-1 gap-2">
+          <Trash class="" />
+          <Calendar class="flex-1" />
+        </div>
+        <Info class="lg:block hidden flex-1" />
+        <Timer class="sm:block hidden" />
+      </div>
+
+      <IobrokerValues class="lg:col-span-3 sm:col-span-6 col-span-12" />
+      <Info class="lg:hidden block sm:col-span-6 col-span-12" />
     </div>
   </div>
 </template>

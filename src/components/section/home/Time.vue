@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useTime } from "@/composables/time.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { HTMLAttributes } from "vue";
 
 const { date, time } = useTime();
+
+defineProps<{ class?: HTMLAttributes["class"] }>();
 </script>
 <template>
-  <Card class="flex-1" styling="small" color="primary">
+  <Card styling="small" color="primary" :class="[$props.class]">
     <CardHeader>
       <CardTitle>
-        <p>{{ date }}</p>
-        <span class="text-xs">
+        <p class="leading-4">{{ date }}</p>
+        <span class="text-xs mb-1 inline-block">
           {{ time }}
         </span>
       </CardTitle>

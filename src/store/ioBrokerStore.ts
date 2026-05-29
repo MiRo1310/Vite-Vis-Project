@@ -1,7 +1,6 @@
 import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { defineStore } from "pinia";
-import { WetterIobroker } from "../iobroker-states/states-subscribed/wetter.iobroker.ts";
 import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
 import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
 import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
@@ -67,7 +66,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     time: empty<TimeStates>(),
     timers: empty<Timers>(),
     trash: empty<TrashStates>(),
-    wetter: empty<WetterIobroker>(),
     windowGlobal: empty<WindowGlobalStates>(),
     hmip: empty<HmipIobroker>(),
     tankerKoenig: empty<TankerKoenig>(),
@@ -96,6 +94,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
           error: toJSON<Log[]>(getStoreValString(state.logs.error)).json ?? [],
           warn: toJSON<Log[]>(getStoreValString(state.logs.warning)).json ?? [],
           info: toJSON<Log[]>(getStoreValString(state.logs.info)).json ?? [],
+          heatPump: toJSON<Log[]>(getStoreValString(state.logs.heatPump)).json ?? [],
         };
       });
     },

@@ -15,5 +15,5 @@ const getHoliday = computed(() => (iobrokerStore.holiday.urlaubAktiv?.val ? "Url
 </script>
 
 <template>
-  <Button class="text-accent-foreground/70" class-card=" ml-1" @click="handleHolidayClick"><UserRoundSearch /> {{ getHoliday }}</Button>
+  <Button class="text-accent-foreground/70 h-16 flex-1" @click="handleHolidayClick"><UserRoundSearch /> {{ getHoliday }}</Button>
 </template>

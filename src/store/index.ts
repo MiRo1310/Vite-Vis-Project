@@ -18,7 +18,6 @@ import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts
 import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
 import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
 import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { WetterIobroker } from "../iobroker-states/states-subscribed/wetter.iobroker.ts";
 import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { ComputedRef } from "vue";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
@@ -39,7 +38,6 @@ export interface AppStore {
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
-  wetter: WetterIobroker;
   hmip: HmipIobroker;
   idsToControl: IdsToControl;
   shutterAutoUp: IShutter;
@@ -91,6 +89,7 @@ export interface ParsedLogs {
   error: Log[];
   warn: Log[];
   info: Log[];
+  heatPump: Log[];
 }
 
 export interface SetValues {
