@@ -3,10 +3,11 @@ import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
 import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 import { Positions } from "@/components/shared/energy-flow/position.ts";
 import EnergyFlowLineWrapper from "@/components/shared/energy-flow/EnergyFlowLineWrapper.vue";
-import { HTMLAttributes, ref } from "vue";
+import { computed, HTMLAttributes, ref } from "vue";
 
 const props = defineProps<{ data: IEnergyFlow<T>[]; class?: HTMLAttributes["class"]; width: number; height: number }>();
 const animationRef = ref<null | SVGGElement>(null);
+const animationGroup = computed<SVGGElement | null>(() => animationRef.value as SVGGElement | null);
 const positions = new Positions<T>();
 </script>
 
@@ -15,7 +16,7 @@ const positions = new Positions<T>();
     <template v-for="(item, i) in data" :key="i">
       <EnergyFlowCard :energy-flow="item" :positions="positions" />
       <template v-for="(line, index) in item.lines" :key="index">
-        <EnergyFlowLineWrapper :id="i" :line :positions :animation-ref />
+        <EnergyFlowLineWrapper :id="i" :line="line" :positions="positions" :animation-ref="animationGroup" />
       </template>
     </template>
     <g ref="animationRef" id="svg-animations"></g>
