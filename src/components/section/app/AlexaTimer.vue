@@ -4,16 +4,13 @@ import { X } from "lucide-vue-next";
 import Button from "../../ui/button/Button.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { adminConnection } from "@/lib/iobroker-service.js";
-import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store/app-store.js";
 import { Timer, Timers } from "@/types/types.ts";
 import { computed } from "vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const appStore = useAppStore();
-const iobrokerStore = useIobrokerStore();
-
-const { timers } = storeToRefs(iobrokerStore);
+const { iobroker } = useIobrokerStore();
 
 const closeWindow = () => {
   appStore.toggleTimerVisibility();
@@ -26,7 +23,7 @@ const stopTimer = (index: number) => {
 };
 
 const timerLabel = computed(() => (i: number): string => {
-  const timerName = timers.value[i as keyof Timers].name?.val;
+  const timerName = iobroker.timers?.[i as keyof Timers].name?.val;
   if (!timerName || timerName === "timer") {
     return `Timer ${i}`;
   }
@@ -52,7 +49,7 @@ const timerLabel = computed(() => (i: number): string => {
             <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
               <span class="text-cardCustom-foreground">{{ timerLabel(i) }} </span>
               <span>
-                {{ (timers[i as keyof Timers] as Timer).timeString?.val }}
+                {{ (iobroker.timers?.[i as keyof Timers] as Timer).timeString?.val }}
               </span>
             </h1>
             <Button variant="outline" size="icon" @click="stopTimer(i)">
@@ -64,26 +61,26 @@ const timerLabel = computed(() => (i: number): string => {
             <div class="flex justify-between items-center w-1/2">
               <p>Startzeit:</p>
               <p class="">
-                {{ timers[i as keyof Timers].timeStart?.val }}
+                {{ iobroker.timers?.[i as keyof Timers].timeStart?.val }}
               </p>
             </div>
             <div class="flex justify-between items-center w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{ timers[i as keyof Timers].timeEnd?.val }}
+                {{ iobroker.timers?.[i as keyof Timers].timeEnd?.val }}
               </p>
             </div>
           </div>
           <div class="flex justify-between items-center">
             <p>Gerät:</p>
             <p>
-              {{ timers[i as keyof Timers].device?.val }}
+              {{ iobroker.timers?.[i as keyof Timers].device?.val }}
             </p>
           </div>
           <div class="flex justify-between items-center">
             <p>Länge:</p>
             <p>
-              {{ timers[i as keyof Timers].initialTimer?.val }}
+              {{ iobroker.timers?.[i as keyof Timers].initialTimer?.val }}
             </p>
           </div>
         </div>

@@ -94,16 +94,25 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
       const path = filterTruthy([channel, group, key]);
 
       const stateObj = new StoreValueClass({ ...state, val, id });
-      path.reduce<any>((obj, p, idx) => {
-        return (obj[p] ??= isLast(path, idx) ? stateObj : {});
-      }, iobroker);
+      let obj: any = iobroker;
 
-      this["iobroker"] = iobroker;
+      for (let i = 0; i < path.length; i++) {
+        const p = path[i];
+
+        if (isLastKey(path, i)) {
+          obj[p] = stateObj;
+        } else {
+          obj[p] ??= {}; // nur Zwischenebenen erzeugen
+          obj = obj[p];
+        }
+      }
+
+      this.iobroker = iobroker;
     },
   },
 });
 
-function isLast(array: unknown[], index: number): boolean {
+function isLastKey(array: unknown[], index: number): boolean {
   return array.length - 1 === index;
 }
 
