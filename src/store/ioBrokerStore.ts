@@ -13,7 +13,6 @@ import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batt
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
 import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { AlexaListStates, HolidayStates, TimeStates, WindowGlobalStates } from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
 import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
 import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { getStoreValString } from "@/lib/object.ts";
@@ -40,7 +39,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     heating: empty<HeatingIobroker>(),
     heatingControl: empty<HeatingControlType>(),
     heatingTimeSlot: empty<HeatingTimeSlot>(),
-    holiday: empty<HolidayStates>(),
     idsToControl: empty<IdsToControl>(),
     infos: empty<Infos>(),
     landroid: empty<LandroidIobroker>(),
@@ -52,15 +50,12 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     pool: empty<PoolIobroker>(),
     pv: empty<IPvStates>(),
     rolladen: empty<IShutter>(),
-    alexaLists: empty<AlexaListStates>(),
     showTimerCard: empty<TimerObject>(),
     subscribedIds: [],
     shutterAutoUp: empty<IShutter>(),
     shutterAutoDownTime: empty<IShutter>(),
     styles: empty<StylesType>(),
-    time: empty<TimeStates>(),
     timers: empty<Timers>(),
-    windowGlobal: empty<WindowGlobalStates>(),
     hmip: empty<HmipIobroker>(),
     tankerKoenig: empty<TankerKoenig>(),
     energy: empty<EnergyStates>(),
@@ -75,7 +70,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
       return state.iobroker.trash;
     },
     getShoppinglist(state: IoBrokerStoreState) {
-      return state.alexaLists;
+      return state.iobroker.alexaLists;
     },
     getState(state: IoBrokerStoreState) {
       return state;

@@ -3,17 +3,16 @@ import Sheet from "@/components/shared/Sheet.vue";
 import NavActionsShoppingList from "@/components/section/home/NavActionsShoppingList.vue";
 import { ShoppingBag } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { AlexaList } from "@/types/types.ts";
 import HomeActionBtn from "@/components/section/home/HomeActionBtn.vue";
 
-const { alexaLists } = storeToRefs(useIobrokerStore());
+const { iobroker } = useIobrokerStore();
 
 const createShoppinglist = computed((): AlexaList[] => {
-  return toJSON<AlexaList[]>(getStoreValString(alexaLists.value.shoppingListActive)).json ?? [];
+  return toJSON<AlexaList[]>(getStoreValString(iobroker.alexaLists?.shoppingListActive)).json ?? [];
 });
 </script>
 <template>

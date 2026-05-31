@@ -16,7 +16,7 @@ import { roomNames } from "@/constants/constants.ts";
 
 const iobrokerStore = useIobrokerStore();
 
-const { windowGlobal, time, fenster, rolladen, shutterAutoDownTime, shutterAutoUp, batteries, hmip } = storeToRefs(iobrokerStore);
+const { iobroker, fenster, rolladen, shutterAutoDownTime, shutterAutoUp, batteries, hmip } = storeToRefs(iobrokerStore);
 
 const getAvailable = (val?: XiaomiWindowSensor) => val?.available;
 
@@ -383,6 +383,8 @@ const clickRoom = (roomName: string) => {
     updateRoomInHeatingControl(roomName as RoomItems);
   }
 };
+
+const windowOpen = computed(() => getStoreValBoolean(iobroker.value.windowGlobal?.fensterOffen));
 </script>
 
 <template>
@@ -390,17 +392,15 @@ const clickRoom = (roomName: string) => {
     <div class="flex justify-between items-center mb-4">
       <p v-show="getOpenWindows === 1" class="text-muted-foreground">
         Ein Fenster oder eine Tür ist
-        <span :class="windowGlobal.fensterOffen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
+        <span :class="windowOpen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
       </p>
 
       <p v-show="getOpenWindows !== 1" class="text-foreground">
         Fenster / Türen sind
-        <span :class="{ 'text-red-500 animate-pulse': windowGlobal.fensterOffen?.val }">{{
-          windowGlobal.fensterOffen?.val ? "offen" : "geschlossen"
-        }}</span>
+        <span :class="{ 'text-red-500 animate-pulse': windowOpen }">{{ windowOpen ? "offen" : "geschlossen" }}</span>
       </p>
 
-      <p>Sonnenuntergang: {{ time.sonnenuntergang?.val }}</p>
+      <p>Sonnenuntergang: {{ iobroker.time?.sonnenuntergang?.val }}</p>
     </div>
     <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-1">
       <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />

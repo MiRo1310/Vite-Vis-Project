@@ -4,7 +4,6 @@ import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batt
 import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
-import { AlexaListStates, HolidayStates, TimeStates, WindowGlobalStates } from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
 import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
 import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
 import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
@@ -41,7 +40,6 @@ export interface IoBrokerStoreState {
   rolladen: IShutter;
   fenster: WindowType;
   pv: IPvStates;
-  alexaLists: AlexaListStates;
   pool: PoolIobroker;
   landroid: LandroidIobroker;
   calendar: CalendarIobroker;
@@ -56,9 +54,6 @@ export interface IoBrokerStoreState {
   lights: LightTypes;
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
-  holiday: HolidayStates;
-  windowGlobal: WindowGlobalStates;
-  time: TimeStates;
   showTimerCard: TimerObject;
   heatingControl: HeatingControlType;
   airConditioners: AirConditionersIobroker;
@@ -121,7 +116,7 @@ interface IoBrokerStoreActions {
 interface IoBrokerStoreGetters {
   isAdminConnected(state: IoBrokerStoreState): boolean;
   getTrash(state: IoBrokerStoreState): IobrokerChannels["trash"];
-  getShoppinglist(state: IoBrokerStoreState): AlexaListStates;
+  getShoppinglist(state: IoBrokerStoreState): IobrokerChannels["alexaLists"];
   getState(state: IoBrokerStoreState): IoBrokerStoreState;
   getIdsToControl(state: IoBrokerStoreState): IdsToControl;
   getParsedLogs(state: IoBrokerStoreState): ComputedRef<ParsedLogs>;

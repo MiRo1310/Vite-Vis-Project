@@ -55,6 +55,15 @@ export interface IobrokerChannels {
     shoppingListActive: StoreValue<string>;
     michaelsTodoList: StoreValue<string>;
   }>;
+  time: Optional<{
+    sonnenuntergang: StoreValue<boolean>;
+  }>;
+  holiday: Optional<{
+    urlaubAktiv: StoreValue<boolean>;
+  }>;
+  windowGlobal: Optional<{
+    fensterOffen: StoreValue<boolean>;
+  }>;
 }
 
 export const iobrokerData = [
@@ -75,5 +84,22 @@ export const iobrokerData = [
       { id: "alexa-shoppinglist.0.list_activ", key: "shoppingListActive" },
       { id: "alexa-shoppinglist.1.list_activ", key: "michaelsTodoList" },
     ],
+  },
+  {
+    channel: "time",
+    value: [
+      {
+        id: "0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter",
+        key: "sonnenuntergang",
+      },
+    ],
+  },
+  {
+    channel: "holiday",
+    value: [{ id: "0_userdata.0.Urlaub.Urlaub_aktiv", key: "urlaubAktiv" }],
+  },
+  {
+    channel: "windowGlobal",
+    value: [{ id: "0_userdata.0.Fenster.Sind_Fenster_offen", key: "fensterOffen" }],
   },
 ] as const satisfies readonly IobrokerSubscription[];

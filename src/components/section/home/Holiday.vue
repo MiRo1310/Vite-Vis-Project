@@ -5,13 +5,13 @@ import { adminConnection } from "@/lib/iobroker-service.js";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
-const iobrokerStore = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 const handleHolidayClick = () => {
-  adminConnection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobrokerStore.holiday.urlaubAktiv?.val);
+  adminConnection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobroker.holiday?.urlaubAktiv?.val);
 };
 
-const getHoliday = computed(() => (iobrokerStore.holiday.urlaubAktiv?.val ? "Urlaub" : "Kein Urlaub"));
+const getHoliday = computed(() => (iobroker.holiday?.urlaubAktiv?.val ? "Urlaub" : "Kein Urlaub"));
 </script>
 
 <template>
