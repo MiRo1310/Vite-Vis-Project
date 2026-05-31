@@ -11,7 +11,7 @@ import { landroid } from "./states-subscribed/landroid.iobroker.ts";
 import { calendar } from "./states-subscribed/calendar.iobroker.ts";
 import { heating, heatingControl } from "./states-subscribed/heating.iobroker.ts";
 import { logStates } from "./states-subscribed/logs.iobroker.ts";
-import { holiday, shoppingList, timeIds, trash, windowGlobal } from "./states-subscribed/diverse.iobroker.ts";
+import { holiday, shoppingList, timeIds, windowGlobal } from "./states-subscribed/diverse.iobroker.ts";
 import { airConditioners } from "./states-subscribed/air-conditioners.iobroker.ts";
 import { tankerKoenig } from "./states-subscribed/tankerkoenig.iobroker.ts";
 import { batteryIds } from "./states-subscribed/batteriesType.iobroker.ts";
@@ -35,7 +35,6 @@ export const idToSubscribeOnAppStart: IdToSubscribe<any>[] = [
   calendar,
   heating,
   logStates,
-  trash,
   shoppingList,
   holiday,
   windowGlobal,

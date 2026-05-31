@@ -21,12 +21,6 @@ export interface WindowGlobalStates {
 export interface TimeStates {
   sonnenuntergang: StoreValue<boolean>;
 }
-
-export const trash: IdToSubscribe<TrashStates> = {
-  storeFolder: "trash",
-  value: [{ id: "trashschedule.0.type.json", key: "json" }],
-};
-
 export const shoppingList: IdToSubscribe<AlexaListStates> = {
   storeFolder: "alexaLists",
   value: [

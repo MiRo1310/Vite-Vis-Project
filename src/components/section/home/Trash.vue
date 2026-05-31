@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { storeToRefs } from "pinia";
 import { Trash2 } from "lucide-vue-next";
 import { Card, CardContent } from "@/components/shared/card";
 import { Days, days } from "@/constants/constants.js";
@@ -9,8 +8,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";
 
-const iobrokerStore = useIobrokerStore();
-const { trash } = storeToRefs(iobrokerStore);
+const { iobroker } = useIobrokerStore();
 
 const transformDate = (date: number) => {
   const d = new Date(date);
@@ -26,8 +24,9 @@ interface TrashType {
 }
 
 const trashEvents = computed<TrashType[]>(() => {
-  if (trash.value.json?.val) {
-    return JSON.parse(trash.value.json.val.toString());
+  const jsonString = iobroker.trash.json?.val;
+  if (jsonString) {
+    return JSON.parse(jsonString);
   }
   return [];
 });

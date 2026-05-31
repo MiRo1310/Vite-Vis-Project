@@ -47,7 +47,6 @@ export interface IoBrokerStoreState {
   rolladen: IShutter;
   fenster: WindowType;
   pv: IPvStates;
-  trash: TrashStates;
   alexaLists: AlexaListStates;
   pool: PoolIobroker;
   landroid: LandroidIobroker;

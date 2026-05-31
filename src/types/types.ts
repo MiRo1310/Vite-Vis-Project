@@ -90,7 +90,7 @@ export interface IobrokerState {
   q: number;
 }
 
-export type IobrokerStateValue = string | number | boolean;
+export type IobrokerStateValue = string | number | boolean | null;
 
 export interface CalendarDayType {
   date: string;

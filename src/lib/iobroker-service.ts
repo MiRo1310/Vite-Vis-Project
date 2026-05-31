@@ -97,7 +97,7 @@ export function subscribeStatesInIobrokerState() {
       try {
         await adminConnection
           .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state.val;
+            let value = state.val;
 
             if (!isDefined(value)) {
               value = null;
@@ -106,7 +106,7 @@ export function subscribeStatesInIobrokerState() {
             iobrokerStore?.setValues({
               state,
               storeFolder: "iobroker",
-              val: stateId.invertValue ? invertBoolean(!!value) : value,
+              val: "invertValue" in stateId && stateId.invertValue ? invertBoolean(!!value) : value,
               id,
               key: String(item.channel),
               subKey: String(stateId.key),
