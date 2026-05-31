@@ -63,26 +63,26 @@ export interface BatteriesTypeIobroker {
   xioami_attic_left: XiaomiWindowSensor;
 }
 
-const batteryIds = {
-  channel: "batteries",
-  value: [
-    {
-      id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage",
-      group: "Shelly Plus Smoke Flur OG",
-      key: "voltage",
-    },
-    {
-      id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
-      group: "Shelly Plus Smoke Flur OG",
-      key: "percent",
-    },
-    {
-      id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware",
-      group: "Shelly Plus Smoke Flur OG",
-      key: "firmware",
-    },
-  ],
-} satisfies IobrokerSubscription;
+// const batteryIds = {
+//   channel: "batteries",
+//   value: [
+//     {
+//       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage",
+//       group: "Shelly Plus Smoke Flur OG",
+//       key: "voltage",
+//     },
+//     {
+//       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent",
+//       group: "Shelly Plus Smoke Flur OG",
+//       key: "percent",
+//     },
+//     {
+//       id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware",
+//       group: "Shelly Plus Smoke Flur OG",
+//       key: "firmware",
+//     },
+//   ],
+// } satisfies IobrokerSubscription;
 
 const HMIP: { name: keyof BatteriesTypeIobroker; id: string }[] = [
   { name: "HMIP Buero", id: "hmip.0.devices.3014F711A000201A49A55C45" },

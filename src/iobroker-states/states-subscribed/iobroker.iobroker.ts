@@ -1,6 +1,4 @@
 import { StoreValueClass } from "@/store/ioBrokerStore.ts";
-import { batteryIds } from "@/iobroker-states/states-subscribed/batteriesType.iobroker.ts";
-import type { Timer } from "@/types/types.ts";
 
 export type StoreValue<T> = StoreValueClass<T> | undefined;
 
