@@ -17,14 +17,14 @@ import { roomNames } from "@/constants/constants.ts";
 const iobrokerStore = useIobrokerStore();
 const { iobroker } = iobrokerStore;
 
-const { rolladen, shutterAutoDownTime, shutterAutoUp, batteries } = storeToRefs(iobrokerStore);
+const { shutterAutoDownTime, shutterAutoUp, batteries } = storeToRefs(iobrokerStore);
 
 const getAvailable = (val?: XiaomiWindowSensor) => val?.available;
 
 // eslint-disable-next-line complexity
 const rooms = computed((): RoomType[] => {
   const { kueche, esszimmer, wohnzimmer, schlafen, bad, abstellraumog, kinderzimmer, gaestezimmer } = notSubscribedIds;
-  const { hmip, fenster } = iobroker;
+  const { hmip, fenster, rolladen } = iobroker;
   const batterie: BatteriesTypeIobroker | undefined = batteries.value;
   if (!batterie) {
     return [];
@@ -41,7 +41,7 @@ const rooms = computed((): RoomType[] => {
           name: "Tür",
           door: true,
           isOpenStatus: getStoreValBoolean(fenster?.kuecheTuer),
-          shutterPosition: getStoreValNumber(rolladen.value.kuecheTuerPosition),
+          shutterPosition: getStoreValNumber(rolladen?.kuecheTuerPosition),
           shutterAutoDown: shutterAutoDownTime.value.kuecheTuerAuto,
           shutterAutoUpTime: shutterAutoUp.value.kuecheTuerAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.kuecheTuerAutoUp,
@@ -57,7 +57,7 @@ const rooms = computed((): RoomType[] => {
           shutterAutoDown: shutterAutoDownTime.value.kuecheFensterAuto,
           shutterAutoDownDelay: shutterAutoDownTime.value.kuecheFensterDelay,
           isOpenStatus: getStoreValBoolean(fenster?.kuecheFenster),
-          shutterPosition: getStoreValNumber(rolladen.value.kuecheFensterPosition),
+          shutterPosition: getStoreValNumber(rolladen?.kuecheFensterPosition),
           windowSensorReachable: getAvailable(batterie.xioami_kitchen_window),
         },
       ],
@@ -72,7 +72,7 @@ const rooms = computed((): RoomType[] => {
           name: "links",
           idShutterPosition: esszimmer.shutterPosition,
           isOpenStatus: getStoreValBoolean(fenster?.esszimmerLinks),
-          shutterPosition: getStoreValNumber(rolladen.value.esszimmerLinksPosition),
+          shutterPosition: getStoreValNumber(rolladen?.esszimmerLinksPosition),
           shutterAutoUpTime: shutterAutoUp.value.esszimmerLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.esszimmerLinksAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.esszimmerLinksAuto,
@@ -83,7 +83,7 @@ const rooms = computed((): RoomType[] => {
           name: "rechts",
           idShutterPosition: esszimmer.shutterPosition,
           isOpenStatus: getStoreValBoolean(fenster?.esszimmerRechts),
-          shutterPosition: getStoreValNumber(rolladen.value.esszimmerLinksPosition),
+          shutterPosition: getStoreValNumber(rolladen?.esszimmerLinksPosition),
           shutterAutoUpTime: shutterAutoUp.value.esszimmerLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.esszimmerLinksAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.esszimmerLinksAuto,
@@ -102,7 +102,7 @@ const rooms = computed((): RoomType[] => {
           name: "Ecke",
           idShutterPosition: wohnzimmer.shutterPositionCorner,
           isOpenStatus: getStoreValBoolean(fenster?.wohnzimmerEcke),
-          shutterPosition: getStoreValNumber(rolladen.value.wohnzimmerEckePosition),
+          shutterPosition: getStoreValNumber(rolladen?.wohnzimmerEckePosition),
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
           shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
@@ -113,7 +113,7 @@ const rooms = computed((): RoomType[] => {
           name: "links",
           idShutterPosition: wohnzimmer.shutterPositionLeft,
           isOpenStatus: getStoreValBoolean(fenster?.wohnzimmerLinks),
-          shutterPosition: getStoreValNumber(rolladen.value.wohnzimmerLinksPosition),
+          shutterPosition: getStoreValNumber(rolladen?.wohnzimmerLinksPosition),
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
           shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
@@ -124,7 +124,7 @@ const rooms = computed((): RoomType[] => {
           name: "mitte",
           idShutterPosition: wohnzimmer.shutterPositionCenter,
           isOpenStatus: getStoreValBoolean(fenster?.wohnzimmerMitte),
-          shutterPosition: getStoreValNumber(rolladen.value.wohnzimmerMittePosition),
+          shutterPosition: getStoreValNumber(rolladen?.wohnzimmerMittePosition),
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
           shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
@@ -135,7 +135,7 @@ const rooms = computed((): RoomType[] => {
           name: "rechts",
           idShutterPosition: wohnzimmer.shutterPositionRight,
           isOpenStatus: getStoreValBoolean(fenster?.wohnzimmerRechts),
-          shutterPosition: getStoreValNumber(rolladen.value.wohnzimmerRechtsPosition),
+          shutterPosition: getStoreValNumber(rolladen?.wohnzimmerRechtsPosition),
           shutterAutoUp: shutterAutoUp.value.wohnzimmerEckeAutoUp,
           shutterAutoUpTime: shutterAutoUp.value.wohnzimmerEckeAutoUpTime,
           shutterAutoDown: shutterAutoDownTime.value.wohnzimmerEckeAuto,
@@ -155,7 +155,7 @@ const rooms = computed((): RoomType[] => {
           name: "Fenster",
           idShutterPosition: schlafen.shutterPositionWindow,
           isOpenStatus: getStoreValBoolean(fenster?.schlafenFenster),
-          shutterPosition: getStoreValNumber(rolladen.value.schlafenFensterPosition),
+          shutterPosition: getStoreValNumber(rolladen?.schlafenFensterPosition),
           shutterAutoUpTime: shutterAutoUp.value.schlafenFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.schlafenFensterAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.schlafenFensterAuto,
@@ -167,7 +167,7 @@ const rooms = computed((): RoomType[] => {
           idShutterPosition: schlafen.shutterPositionDoor,
           door: true,
           isOpenStatus: getStoreValBoolean(fenster?.schlafenTuer),
-          shutterPosition: getStoreValNumber(rolladen.value.schlafenTuerPosition),
+          shutterPosition: getStoreValNumber(rolladen?.schlafenTuerPosition),
           shutterAutoUpTime: shutterAutoUp.value.schlafenTuerAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.schlafenTuerAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.schlafenTuerAuto,
@@ -187,7 +187,7 @@ const rooms = computed((): RoomType[] => {
           name: "",
           idShutterPosition: kinderzimmer.shutterPosition,
           isOpenStatus: getStoreValBoolean(fenster?.kinderzimmerFenster),
-          shutterPosition: getStoreValNumber(rolladen.value.kinderzimmerFensterPosition),
+          shutterPosition: getStoreValNumber(rolladen?.kinderzimmerFensterPosition),
           shutterAutoUpTime: shutterAutoUp.value.kinderzimmerFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.kinderzimmerFensterAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.kinderzimmerFensterAuto,
@@ -206,7 +206,7 @@ const rooms = computed((): RoomType[] => {
           name: "",
           idShutterPosition: bad.shutterPosition,
           isOpenStatus: getStoreValBoolean(fenster?.badFenster),
-          shutterPosition: getStoreValNumber(rolladen.value.badFensterPosition),
+          shutterPosition: getStoreValNumber(rolladen?.badFensterPosition),
           shutterAutoUpTime: shutterAutoUp.value.badFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.badFensterAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.badFensterAuto,
@@ -225,7 +225,7 @@ const rooms = computed((): RoomType[] => {
           name: "",
           idShutterPosition: gaestezimmer.shutterPosition,
           isOpenStatus: getStoreValBoolean(fenster?.gaestezimmerFenster),
-          shutterPosition: getStoreValNumber(rolladen.value.gaestezimmerFensterPosition),
+          shutterPosition: getStoreValNumber(rolladen?.gaestezimmerFensterPosition),
           shutterAutoUpTime: shutterAutoUp.value.gaestezimmerFensterAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.gaestezimmerFensterAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.gaestezimmerFensterAuto,
@@ -242,7 +242,7 @@ const rooms = computed((): RoomType[] => {
           name: "links",
           idShutterPosition: abstellraumog.shutterPositionLeft,
           isOpenStatus: getStoreValBoolean(fenster?.abstellraumOgLinks),
-          shutterPosition: getStoreValNumber(rolladen.value.abstellraumOgLinksPosition),
+          shutterPosition: getStoreValNumber(rolladen?.abstellraumOgLinksPosition),
           shutterAutoUpTime: shutterAutoUp.value.abstellraumOgLinksAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.abstellraumOgLinksAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.abstellraumOgLinksAuto,
@@ -253,7 +253,7 @@ const rooms = computed((): RoomType[] => {
           name: "rechts",
           idShutterPosition: abstellraumog.shutterPositionRight,
           isOpenStatus: getStoreValBoolean(fenster?.abstellraumOgRechts),
-          shutterPosition: getStoreValNumber(rolladen.value.abstellraumOgRechtsPosition),
+          shutterPosition: getStoreValNumber(rolladen?.abstellraumOgRechtsPosition),
           shutterAutoUpTime: shutterAutoUp.value.abstellraumOgRechtsAutoUpTime,
           shutterAutoUp: shutterAutoUp.value.abstellraumOgRechtsAutoUp,
           shutterAutoDown: shutterAutoDownTime.value.abstellraumOgRechtsAuto,

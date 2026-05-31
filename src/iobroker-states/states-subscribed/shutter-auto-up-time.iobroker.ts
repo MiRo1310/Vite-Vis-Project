@@ -7,11 +7,6 @@ export interface IShutter {
   wohnzimmerLinksAuto: StoreValue<boolean>;
   wohnzimmerRechtsAuto: StoreValue<boolean>;
 
-  wohnzimmerMittePosition: StoreValue<number>;
-  wohnzimmerEckePosition: StoreValue<number>;
-  wohnzimmerLinksPosition: StoreValue<number>;
-  wohnzimmerRechtsPosition: StoreValue<number>;
-
   wohnzimmerMitteAutoUp: StoreValue<boolean>;
   wohnzimmerEckeAutoUp: StoreValue<boolean>;
   wohnzimmerLinksAutoUp: StoreValue<boolean>;
@@ -35,26 +30,21 @@ export interface IShutter {
   kuecheFensterAutoUpTime: StoreValue<number>;
   kuecheTuerDelay: StoreValue<number>;
   kuecheFensterDelay: StoreValue<number>;
-  kuecheTuerPosition: StoreValue<number>;
-  kuecheFensterPosition: StoreValue<number>;
 
   esszimmerLinksAuto: StoreValue<boolean>;
   esszimmerLinksAutoUp: StoreValue<boolean>;
   esszimmerLinksAutoUpTime: StoreValue<number>;
   esszimmerLinksDelay: StoreValue<number>;
-  esszimmerLinksPosition: StoreValue<number>;
 
   kinderzimmerFensterAuto: StoreValue<boolean>;
   kinderzimmerFensterAutoUp: StoreValue<boolean>;
   kinderzimmerFensterAutoUpTime: StoreValue<number>;
   kinderzimmerFensterDelay: StoreValue<number>;
-  kinderzimmerFensterPosition: StoreValue<number>;
 
   gaestezimmerFensterAuto: StoreValue<boolean>;
   gaestezimmerFensterAutoUp: StoreValue<boolean>;
   gaestezimmerFensterAutoUpTime: StoreValue<number>;
   gaestezimmerFensterDelay: StoreValue<number>;
-  gaestezimmerFensterPosition: StoreValue<number>;
 
   schlafenTuerAuto: StoreValue<boolean>;
   schlafenFensterAuto: StoreValue<boolean>;
@@ -64,14 +54,11 @@ export interface IShutter {
   schlafenFensterAutoUpTime: StoreValue<number>;
   schlafenTuerDelay: StoreValue<number>;
   schlafenFensterDelay: StoreValue<number>;
-  schlafenTuerPosition: StoreValue<number>;
-  schlafenFensterPosition: StoreValue<number>;
 
   badFensterAuto: StoreValue<boolean>;
   badFensterAutoUp: StoreValue<boolean>;
   badFensterAutoUpTime: StoreValue<number>;
   badFensterDelay: StoreValue<number>;
-  badFensterPosition: StoreValue<number>;
 
   abstellraumOgLinksAuto: StoreValue<boolean>;
   abstellraumOgRechtsAuto: StoreValue<boolean>;
@@ -81,8 +68,6 @@ export interface IShutter {
   abstellraumOgRechtsAutoUpTime: StoreValue<number>;
   abstellraumOgLinksDelay: StoreValue<number>;
   abstellraumOgRechtsDelay: StoreValue<number>;
-  abstellraumOgLinksPosition: StoreValue<number>;
-  abstellraumOgRechtsPosition: StoreValue<number>;
 }
 
 export const shutterAutoUpTimeIobroker: IdToSubscribe<IShutter> = {
