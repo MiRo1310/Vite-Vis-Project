@@ -7,6 +7,7 @@ import { isDefined } from "@vueuse/core";
 import { Logger } from "@/lib/logger.ts";
 import { invertBoolean } from "@/lib/boolean.ts";
 import { IoBrokerStore } from "@/store";
+import { iobrokerData } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 let iobrokerStore: IoBrokerStore | null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -36,6 +37,7 @@ export async function init() {
     await adminConnection.waitForFirstConnection();
     useIobrokerStore().setAdminConnection(true);
     subscribeStates(idToSubscribeOnAppStart);
+    subscribeStatesInIobrokerState();
   }
 }
 
@@ -53,12 +55,12 @@ export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
 
 export function subscribeStates(states: IdsToSubscribe<any>[]) {
   states.forEach((item) => {
-    item.value.forEach((stateId) => {
+    item.value.forEach(async (stateId) => {
       if (!adminConnection || iobrokerStore?.subscribedIds.includes(stateId.id)) {
         return;
       }
       try {
-        adminConnection
+        await adminConnection
           .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
             let value: IobrokerStateValue | null = state.val;
 
@@ -73,6 +75,41 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               id,
               key: String(stateId.key),
               subKey: stateId.subKey,
+            });
+          })
+          .catch((e) => {
+            Logger(`Error subscribing to ${stateId.id}`, { e });
+          });
+        iobrokerStore?.addIdToSubscribedIds(stateId.id);
+      } catch (e) {
+        Logger("Error subscribing to", { value: stateId.id, e });
+      }
+    });
+  });
+}
+
+export function subscribeStatesInIobrokerState() {
+  iobrokerData.forEach((item) => {
+    item.value.forEach(async (stateId) => {
+      if (!adminConnection || iobrokerStore?.subscribedIds.includes(stateId.id)) {
+        return;
+      }
+      try {
+        await adminConnection
+          .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
+            let value: IobrokerStateValue | null = state.val;
+
+            if (!isDefined(value)) {
+              value = null;
+            }
+
+            iobrokerStore?.setValues({
+              state,
+              storeFolder: "iobroker",
+              val: stateId.invertValue ? invertBoolean(!!value) : value,
+              id,
+              key: String(item.channel),
+              subKey: String(stateId.key),
             });
           })
           .catch((e) => {

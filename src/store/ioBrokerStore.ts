@@ -31,6 +31,7 @@ import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.
 import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
 
@@ -71,6 +72,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     tankerKoenig: empty<TankerKoenig>(),
     energy: empty<EnergyStates>(),
     position: empty<PositionIobroker>(),
+    iobroker: empty<IobrokerChannels>(),
   }),
   getters: {
     isAdminConnected(state: IoBrokerStoreState) {
@@ -146,7 +148,6 @@ const getSubValue = ({
   state: IobrokerState;
 }) => {
   obj = obj[storeFolder];
-
   const newObj: StoreValue<typeof val> = {
     val,
     id,
