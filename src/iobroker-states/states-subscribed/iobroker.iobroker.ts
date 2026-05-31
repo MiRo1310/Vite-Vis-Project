@@ -36,43 +36,44 @@ export type IobrokerSubscription = {
   };
 }[keyof IobrokerChannels];
 
+export type Optional<T> = T | undefined;
+
 export interface IobrokerChannels {
-  system:
-    | {
-        ramIoBrokerLxc: StoreValue<string>;
-        ramLevIoBrokerLxc: StoreValue<string>;
-      }
-    | undefined;
-  trash:
-    | {
-        json: StoreValue<string>;
-      }
-    | undefined;
-  channel:
-    | {
-        test: {
-          json: StoreValue<string>;
-        };
-      }
-    | undefined;
+  system: Optional<{
+    ramIoBrokerLxc: StoreValue<string>;
+    ramLevIoBrokerLxc: StoreValue<string>;
+  }>;
+  trash: Optional<{
+    json: StoreValue<string>;
+  }>;
+  channel: Optional<{
+    test: {
+      json: StoreValue<string>;
+    };
+  }>;
+  alexaLists: Optional<{
+    shoppingListActive: StoreValue<string>;
+    michaelsTodoList: StoreValue<string>;
+  }>;
 }
 
-const iobrokerSystem = {
-  channel: "system",
-  value: [
-    { id: "proxmox.0.lxc.iobroker.mem", key: "ramIoBrokerLxc", invertValue: true },
-    { id: "proxmox.0.lxc.iobroker.mem_lev", key: "ramLevIoBrokerLxc" },
-  ],
-} satisfies IobrokerSubscription;
-
-const trash = {
-  channel: "trash",
-  value: [{ id: "trashschedule.0.type.json", key: "json" }],
-} satisfies IobrokerSubscription;
-
-const test = {
-  channel: "channel",
-  value: [{ id: "trashschedule.0.type.json", key: "json", group: "test" }],
-} satisfies IobrokerSubscription;
-
-export const iobrokerData = [iobrokerSystem, trash, test] as const satisfies readonly IobrokerSubscription[];
+export const iobrokerData = [
+  {
+    channel: "system",
+    value: [
+      { id: "proxmox.0.lxc.iobroker.mem", key: "ramIoBrokerLxc", invertValue: true },
+      { id: "proxmox.0.lxc.iobroker.mem_lev", key: "ramLevIoBrokerLxc" },
+    ],
+  },
+  {
+    channel: "trash",
+    value: [{ id: "trashschedule.0.type.json", key: "json" }],
+  },
+  {
+    channel: "alexaLists",
+    value: [
+      { id: "alexa-shoppinglist.0.list_activ", key: "shoppingListActive" },
+      { id: "alexa-shoppinglist.1.list_activ", key: "michaelsTodoList" },
+    ],
+  },
+] as const satisfies readonly IobrokerSubscription[];

@@ -37,7 +37,7 @@ export async function init() {
     await adminConnection.waitForFirstConnection();
     useIobrokerStore().setAdminConnection(true);
     subscribeStates(idToSubscribeOnAppStart);
-    subscribeStatesInIobrokerState();
+    subscribeIobrokerStates();
   }
 }
 
@@ -53,6 +53,10 @@ export function unSubscribeStates(states: IdsToSubscribe<any>[]) {
   });
 }
 
+/**
+ * @deprecated
+ * @param states
+ */
 export function subscribeStates(states: IdsToSubscribe<any>[]) {
   states.forEach((item) => {
     item.value.forEach(async (stateId) => {
@@ -88,7 +92,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
   });
 }
 
-export function subscribeStatesInIobrokerState() {
+export function subscribeIobrokerStates() {
   iobrokerData.forEach((item) => {
     item.value.forEach(async (stateId) => {
       if (!adminConnection || iobrokerStore?.subscribedIds.includes(stateId.id)) {
@@ -109,7 +113,7 @@ export function subscribeStatesInIobrokerState() {
               id,
               channel: String(item.channel),
               key: String(stateId.key),
-              group: "group" in stateId ? stateId.group : undefined,
+              group: "group" in stateId ? String(stateId.group) : undefined,
             });
           })
           .catch((e) => {

@@ -1,15 +1,6 @@
 import { StoreValue } from "@/store";
 import { IdToSubscribe } from "@/types/types.ts";
 
-export interface TrashStates {
-  json: StoreValue<string>;
-}
-
-export interface AlexaListStates {
-  shoppingListActive: StoreValue<string>;
-  michaelsTodoList: StoreValue<string>;
-}
-
 export interface HolidayStates {
   urlaubAktiv: StoreValue<boolean>;
 }
@@ -21,13 +12,6 @@ export interface WindowGlobalStates {
 export interface TimeStates {
   sonnenuntergang: StoreValue<boolean>;
 }
-export const shoppingList: IdToSubscribe<AlexaListStates> = {
-  storeFolder: "alexaLists",
-  value: [
-    { id: "alexa-shoppinglist.0.list_activ", key: "shoppingListActive" },
-    { id: "alexa-shoppinglist.1.list_activ", key: "michaelsTodoList" },
-  ],
-};
 
 export const holiday: IdToSubscribe<HolidayStates> = {
   storeFolder: "holiday",

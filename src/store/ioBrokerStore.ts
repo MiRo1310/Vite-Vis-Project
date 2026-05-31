@@ -107,7 +107,16 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     removeIdFromSubscribedIds(id: string) {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
-
+    /**
+     * @deprecated
+     * @param param0
+     * @param param0.storeFolder
+     * @param param0.val
+     * @param param0.id
+     * @param param0.key
+     * @param param0.subKey
+     * @param param0.state
+     */
     setValuesLegacy({ storeFolder, val, id, key, subKey, state }: SetValuesLegacy): void {
       this[storeFolder] = getSubValue({
         obj: this.getState,
@@ -126,27 +135,16 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
 
       const stateObj = { ...state, val, id };
 
-      let object: any = iobroker;
-
-      path.forEach((p, index) => {
-        let item:
-          | (IobrokerState & {
-              id: string;
-            })
-          | object
-          | undefined = object[p as keyof typeof object];
-        if (!item) {
-          item = lastElement(path, index) ? stateObj : {};
-        }
-        object = item;
-      });
+      path.reduce<any>((obj, p, idx) => {
+        return (obj[p] ??= isLast(path, idx) ? stateObj : {});
+      }, iobroker);
 
       this["iobroker"] = iobroker;
     },
   },
 });
 
-function lastElement(array: unknown[], index: number): boolean {
+function isLast(array: unknown[], index: number): boolean {
   return array.length - 1 === index;
 }
 
@@ -154,6 +152,17 @@ function filterTruthy<T>(items: (T | undefined)[]): T[] {
   return items.filter((i): i is T => i !== undefined);
 }
 
+/**
+ * @deprecated
+ * @param param0
+ * @param param0.obj
+ * @param param0.key
+ * @param param0.subKey
+ * @param param0.val
+ * @param param0.storeFolder
+ * @param param0.id
+ * @param param0.state
+ */
 const getSubValue = ({
   obj,
   key,

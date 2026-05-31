@@ -137,12 +137,6 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
 
-export interface TextPositionType {
-  position: number;
-  text: string;
-  id?: string;
-}
-
 export interface SelectOption {
   value: string;
   label?: string;
@@ -181,15 +175,6 @@ export interface ITableColumn<Value, TRow, CustomValue = null, F = null> {
   source: string;
   customValue?: CustomValue | null;
   callback?: F | CallbackFunktion;
-}
-
-export interface InfoType {
-  title: string;
-  value: string | number | undefined;
-  unit?: string;
-  bounce?: boolean;
-  class?: string;
-  callback?: () => void;
 }
 
 export interface NavigationType {
