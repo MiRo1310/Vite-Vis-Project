@@ -68,7 +68,7 @@ export function subscribeStates(states: IdsToSubscribe<any>[]) {
               value = null;
             }
 
-            iobrokerStore?.setValues({
+            iobrokerStore?.setValuesLegacy({
               state,
               storeFolder: item.storeFolder,
               val: stateId.invertValue ? invertBoolean(!!value) : value,
@@ -105,11 +105,11 @@ export function subscribeStatesInIobrokerState() {
 
             iobrokerStore?.setValues({
               state,
-              storeFolder: "iobroker",
               val: "invertValue" in stateId && stateId.invertValue ? invertBoolean(!!value) : value,
               id,
-              key: String(item.channel),
-              subKey: String(stateId.key),
+              channel: String(item.channel),
+              key: String(stateId.key),
+              group: "group" in stateId ? stateId.group : undefined,
             });
           })
           .catch((e) => {

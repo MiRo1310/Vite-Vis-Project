@@ -39,7 +39,7 @@ describe("iobroker store", () => {
       state: { ack: false, ts: 1, lc: 2, from: "test", q: 0, val: 123 },
     } as any;
 
-    store.setValues(payload);
+    store.setValuesLegacy(payload);
     expect(store.pv.energy).toBeDefined();
     expect(store.pv.energy.val).toBe(123);
     expect(store.pv.energy.id).toBe("pv.1");
@@ -57,11 +57,10 @@ describe("iobroker store", () => {
       state: { ack: true, ts: 10, lc: 11, from: "test", q: 0, val: "red" },
     } as any;
 
-    store.setValues(payload);
+    store.setValuesLegacy(payload);
     expect(store.lights.lamp).toBeDefined();
     expect(store.lights.lamp.color).toBeDefined();
     expect(store.lights.lamp.color.val).toBe("red");
     expect(store.lights.lamp.color.id).toBe("lamp.1");
   });
 });
-

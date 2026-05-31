@@ -32,23 +32,29 @@ type IdForChannel<T extends ChannelShape> = FlatId<T> | GroupedId<T>;
 export type IobrokerSubscription = {
   [C in keyof IobrokerChannels]: {
     channel: C;
-    value: IdForChannel<IobrokerChannels[C]>[];
+    value: IdForChannel<NonNullable<IobrokerChannels[C]>>[];
   };
 }[keyof IobrokerChannels];
 
 export interface IobrokerChannels {
-  system: {
-    ramIoBrokerLxc: StoreValue<string>;
-    ramLevIoBrokerLxc: StoreValue<string>;
-  };
-  trash: {
-    json: StoreValue<string>;
-  };
-  channel: {
-    test: {
-      json: StoreValue<string>;
-    };
-  };
+  system:
+    | {
+        ramIoBrokerLxc: StoreValue<string>;
+        ramLevIoBrokerLxc: StoreValue<string>;
+      }
+    | undefined;
+  trash:
+    | {
+        json: StoreValue<string>;
+      }
+    | undefined;
+  channel:
+    | {
+        test: {
+          json: StoreValue<string>;
+        };
+      }
+    | undefined;
 }
 
 const iobrokerSystem = {

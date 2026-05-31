@@ -18,7 +18,7 @@ import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/ai
 import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
-import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType, StoreValue } from "@/store/index.ts";
+import { IoBrokerStoreState, ParsedLogs, SetValues, SetValuesLegacy, StoreType, StoreValue } from "@/store/index.ts";
 import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
 import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
 import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
@@ -108,7 +108,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
 
-    setValues({ storeFolder, val, id, key, subKey, state }: SetValues): void {
+    setValuesLegacy({ storeFolder, val, id, key, subKey, state }: SetValuesLegacy): void {
       this[storeFolder] = getSubValue({
         obj: this.getState,
         key,
@@ -119,8 +119,40 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
         state,
       });
     },
+
+    setValues({ val, id, key, channel, group, state }: SetValues): void {
+      const iobroker = this.getState["iobroker"];
+      const path = filterTruthy([channel, group, key]);
+
+      const stateObj = { ...state, val, id };
+
+      let object: any = iobroker;
+
+      path.forEach((p, index) => {
+        let item:
+          | (IobrokerState & {
+              id: string;
+            })
+          | object
+          | undefined = object[p as keyof typeof object];
+        if (!item) {
+          item = lastElement(path, index) ? stateObj : {};
+        }
+        object = item;
+      });
+
+      this["iobroker"] = iobroker;
+    },
   },
 });
+
+function lastElement(array: unknown[], index: number): boolean {
+  return array.length - 1 === index;
+}
+
+function filterTruthy<T>(items: (T | undefined)[]): T[] {
+  return items.filter((i): i is T => i !== undefined);
+}
 
 const getSubValue = ({
   obj,

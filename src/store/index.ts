@@ -4,13 +4,7 @@ import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batt
 import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
-import {
-  AlexaListStates,
-  HolidayStates,
-  TimeStates,
-  TrashStates,
-  WindowGlobalStates,
-} from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
+import { AlexaListStates, HolidayStates, TimeStates, WindowGlobalStates } from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
 import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
 import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
 import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
@@ -93,12 +87,22 @@ export interface ParsedLogs {
   heatPump: Log[];
 }
 
-export interface SetValues {
+export interface SetValuesLegacy {
   storeFolder: keyof IoBrokerStoreState;
   val: string | number | boolean | object | null;
   id: string;
   key: string;
   subKey?: string;
+  timestamp?: boolean;
+  state: IobrokerState;
+}
+
+export interface SetValues {
+  val: string | number | boolean | object | null;
+  id: string;
+  key: string;
+  channel: string;
+  group?: string;
   timestamp?: boolean;
   state: IobrokerState;
 }
@@ -110,12 +114,13 @@ interface IoBrokerStoreActions {
   resetIdsToSubscribe(): void;
   addIdToSubscribedIds(id: string): void;
   removeIdFromSubscribedIds(id: string): void;
+  setValuesLegacy(params: SetValuesLegacy): void;
   setValues(params: SetValues): void;
 }
 
 interface IoBrokerStoreGetters {
   isAdminConnected(state: IoBrokerStoreState): boolean;
-  getTrash(state: IoBrokerStoreState): TrashStates;
+  getTrash(state: IoBrokerStoreState): IobrokerChannels["trash"];
   getShoppinglist(state: IoBrokerStoreState): AlexaListStates;
   getState(state: IoBrokerStoreState): IoBrokerStoreState;
   getIdsToControl(state: IoBrokerStoreState): IdsToControl;
