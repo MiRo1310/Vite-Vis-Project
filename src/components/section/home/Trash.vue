@@ -24,7 +24,7 @@ interface TrashType {
 }
 
 const trashEvents = computed<TrashType[]>(() => {
-  const jsonString = iobroker.trash.json?.val;
+  const jsonString = iobroker.trash?.json?.val;
   if (jsonString) {
     return JSON.parse(jsonString);
   }
