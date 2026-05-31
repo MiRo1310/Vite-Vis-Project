@@ -1,8 +1,7 @@
-import { IdsToControl, IobrokerState, Log, LogReset, TimerObject } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
-import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
@@ -15,11 +14,9 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
     alexaAction: empty<AlexaAction>(),
-    batteries: empty<BatteriesTypeIobroker>(),
     heatingTimeSlot: empty<HeatingTimeSlot>(),
     idsToControl: empty<IdsToControl>(),
     logReset: empty<LogReset>(),
-    showTimerCard: empty<TimerObject>(),
     subscribedIds: [],
     iobroker: empty<IobrokerChannels>(),
   }),

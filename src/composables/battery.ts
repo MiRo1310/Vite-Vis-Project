@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 export interface BatteryTableData {
   name: string;
@@ -12,7 +12,7 @@ export interface BatteryTableData {
   timestamp?: number;
 }
 
-const { batteries } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 type BatteryItem = {
   percent?: { ts?: number; val?: number };
@@ -22,6 +22,7 @@ type BatteryItem = {
   firmware?: { ts?: number; val?: boolean };
 };
 
+// eslint-disable-next-line complexity
 const getTimestamp = (item: BatteryItem): number =>
   item.percent?.ts ?? item.lowBat?.ts ?? item.available?.ts ?? item.voltage?.ts ?? item.firmware?.ts ?? 0;
 
@@ -33,9 +34,12 @@ const getXioamiValues = (item: BatteryItem): { available: boolean; percent: numb
   voltage: item?.voltage?.val ?? 0,
 });
 
-function getBatteryList(list: BatteriesTypeIobroker) {
+function getBatteryList(list: IobrokerChannels["batteries"]) {
   const data: BatteryTableData[] = [];
-  Object.keys(list).forEach((key) => {
+  if (!list) {
+    return;
+  }
+  Object.keys(list ?? {}).forEach((key) => {
     const item = list[key as keyof typeof list];
     const batteryItem = item as BatteryItem;
     const { available, percent, voltage } = getXioamiValues(batteryItem);
@@ -53,5 +57,5 @@ function getBatteryList(list: BatteriesTypeIobroker) {
 }
 
 export const batteryList = computed(() => {
-  return getBatteryList(batteries);
+  return getBatteryList(iobroker.batteries);
 });

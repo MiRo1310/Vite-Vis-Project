@@ -1,6 +1,5 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { idToSubscribeOnAppStart } from "../iobroker-states/index.iobroker.ts";
 import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { isDefined } from "@vueuse/core";
@@ -36,7 +35,6 @@ export async function init() {
     await adminConnection.startSocket();
     await adminConnection.waitForFirstConnection();
     useIobrokerStore().setAdminConnection(true);
-    subscribeStates(idToSubscribeOnAppStart);
     subscribeIobrokerStates();
   }
 }
