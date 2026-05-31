@@ -1,6 +1,6 @@
 import { Store, StoreDefinition } from "pinia";
 import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, TimerObject } from "@/types/types.ts";
 import { ComputedRef } from "vue";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
@@ -19,7 +19,6 @@ export interface IoBrokerStoreState {
   idsToControl: IdsToControl;
   shutterAutoUp: IShutter;
   shutterAutoDownTime: IShutter;
-  timers: Timers;
   rolladen: IShutter;
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;

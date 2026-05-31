@@ -101,11 +101,7 @@ export function subscribeIobrokerStates() {
       try {
         await adminConnection
           .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-            let value = state.val;
-
-            if (!isDefined(value)) {
-              value = null;
-            }
+            const value = state.val ?? null;
 
             iobrokerStore?.setValues({
               state,

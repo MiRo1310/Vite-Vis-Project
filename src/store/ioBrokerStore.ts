@@ -1,4 +1,4 @@
-import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
+import { IdsToControl, IobrokerState, Log, LogReset, TimerObject } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
@@ -25,7 +25,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     subscribedIds: [],
     shutterAutoUp: empty<IShutter>(),
     shutterAutoDownTime: empty<IShutter>(),
-    timers: empty<Timers>(),
     iobroker: empty<IobrokerChannels>(),
   }),
   getters: {
@@ -95,7 +94,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
       const path = filterTruthy([channel, group, key]);
 
       const stateObj = new StoreValueClass({ ...state, val, id });
-
       path.reduce<any>((obj, p, idx) => {
         return (obj[p] ??= isLast(path, idx) ? stateObj : {});
       }, iobroker);
@@ -104,6 +102,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     },
   },
 });
+
 function isLast(array: unknown[], index: number): boolean {
   return array.length - 1 === index;
 }

@@ -23,7 +23,7 @@ export interface TimerObject {
   timerAlive: StoreValue<boolean>;
 }
 
-export interface Timer {
+export type Timer = {
   timeString: StoreValue<string>;
   device: StoreValue<string>;
   timeEnd: StoreValue<string>;
@@ -31,7 +31,7 @@ export interface Timer {
   percent: StoreValue<number>;
   name: StoreValue<string>;
   initialTimer: StoreValue<string>;
-}
+};
 
 export interface Timers {
   1: Timer;

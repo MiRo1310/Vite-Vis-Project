@@ -392,6 +392,45 @@ export interface IobrokerChannels {
     cheapestPrice: StoreValue<number>;
     jsonTable: StoreValue<string>;
   }>;
+  timers: Optional<{
+    timerAlive: StoreValue<boolean>;
+    1: {
+      timeString: StoreValue<string>;
+      device: StoreValue<string>;
+      timeEnd: StoreValue<string>;
+      timeStart: StoreValue<string>;
+      percent: StoreValue<number>;
+      name: StoreValue<string>;
+      initialTimer: StoreValue<string>;
+    };
+    2: {
+      timeString: StoreValue<string>;
+      device: StoreValue<string>;
+      timeEnd: StoreValue<string>;
+      timeStart: StoreValue<string>;
+      percent: StoreValue<number>;
+      name: StoreValue<string>;
+      initialTimer: StoreValue<string>;
+    };
+    3: {
+      timeString: StoreValue<string>;
+      device: StoreValue<string>;
+      timeEnd: StoreValue<string>;
+      timeStart: StoreValue<string>;
+      percent: StoreValue<number>;
+      name: StoreValue<string>;
+      initialTimer: StoreValue<string>;
+    };
+    4: {
+      timeString: StoreValue<string>;
+      device: StoreValue<string>;
+      timeEnd: StoreValue<string>;
+      timeStart: StoreValue<string>;
+      percent: StoreValue<number>;
+      name: StoreValue<string>;
+      initialTimer: StoreValue<string>;
+    };
+  }>;
 }
 
 const heatingControl = {
@@ -453,6 +492,36 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    channel: "timers",
+    value: [
+      { id: "alexa-timer-vis.0.all_Timer.alive", key: "timerAlive" },
+      { id: "alexa-timer-vis.0.timer1.string_2", group: 1, key: "timeString" },
+      { id: "alexa-timer-vis.0.timer1.TimeEnd", group: 1, key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer1.TimeStart", group: 1, key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer1.InputDeviceName", group: 1, key: "device" },
+      { id: "alexa-timer-vis.0.timer1.name", group: 1, key: "name" },
+      { id: "alexa-timer-vis.0.timer1.initialTimer", group: 1, key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer2.string_2", group: 2, key: "timeString" },
+      { id: "alexa-timer-vis.0.timer2.TimeEnd", group: 2, key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer2.TimeStart", group: 2, key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer2.InputDeviceName", group: 2, key: "device" },
+      { id: "alexa-timer-vis.0.timer2.name", group: 2, key: "name" },
+      { id: "alexa-timer-vis.0.timer2.initialTimer", group: 2, key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer3.string_2", group: 3, key: "timeString" },
+      { id: "alexa-timer-vis.0.timer3.TimeEnd", group: 3, key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer3.TimeStart", group: 3, key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer3.InputDeviceName", group: 3, key: "device" },
+      { id: "alexa-timer-vis.0.timer3.name", group: 3, key: "name" },
+      { id: "alexa-timer-vis.0.timer3.initialTimer", group: 3, key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer4.string_2", group: 4, key: "timeString" },
+      { id: "alexa-timer-vis.0.timer4.TimeEnd", group: 4, key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer4.TimeStart", group: 4, key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer4.InputDeviceName", group: 4, key: "device" },
+      { id: "alexa-timer-vis.0.timer4.name", group: 4, key: "name" },
+      { id: "alexa-timer-vis.0.timer4.initialTimer", group: 4, key: "initialTimer" },
+    ],
+  },
   {
     channel: "tankerKoenig",
     value: [
