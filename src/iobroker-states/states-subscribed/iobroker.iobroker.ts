@@ -1,4 +1,6 @@
-import type { StoreValue } from "@/store";
+import { StoreValueClass } from "@/store/ioBrokerStore.ts";
+
+export type StoreValue<T> = StoreValueClass<T> | undefined;
 
 type Leaf = StoreValue<unknown>;
 type ChannelShape = Record<string, Leaf | Record<string, Leaf>>;

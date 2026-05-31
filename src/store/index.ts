@@ -82,7 +82,7 @@ export interface SetValuesLegacy {
 }
 
 export interface SetValues {
-  val: string | number | boolean | object | null;
+  val: string | number | boolean | null;
   id: string;
   key: string;
   channel: string;

@@ -118,7 +118,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
       const iobroker = this.getState["iobroker"];
       const path = filterTruthy([channel, group, key]);
 
-      const stateObj = { ...state, val, id };
+      const stateObj = new StoreValueClass({ ...state, val, id });
 
       path.reduce<any>((obj, p, idx) => {
         return (obj[p] ??= isLast(path, idx) ? stateObj : {});
@@ -128,9 +128,32 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     },
   },
 });
-
 function isLast(array: unknown[], index: number): boolean {
   return array.length - 1 === index;
+}
+
+export class StoreValueClass<T> {
+  public id: string;
+  public val: T;
+  public ack: boolean;
+  public ts?: number;
+  public lc?: number;
+  public from?: string;
+  public q?: number;
+
+  constructor({ id, ack, ts, val, lc, q, from }: IobrokerState & { id: string; val: T }) {
+    this.val = val;
+    this.id = id;
+    this.ack = ack;
+    this.ts = ts;
+    this.lc = lc;
+    this.from = from;
+    this.q = q;
+  }
+
+  public get(fallback: T): T {
+    return this.val ?? fallback;
+  }
 }
 
 function filterTruthy<T>(items: (T | undefined)[]): T[] {
