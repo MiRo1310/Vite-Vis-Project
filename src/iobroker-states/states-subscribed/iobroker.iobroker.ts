@@ -1,4 +1,6 @@
 import { StoreValueClass } from "@/store/ioBrokerStore.ts";
+import { batteryIds } from "@/iobroker-states/states-subscribed/batteriesType.iobroker.ts";
+import type { Timer } from "@/types/types.ts";
 
 export type StoreValue<T> = StoreValueClass<T> | undefined;
 
@@ -47,11 +49,6 @@ export interface IobrokerChannels {
   }>;
   trash: Optional<{
     json: StoreValue<string>;
-  }>;
-  channel: Optional<{
-    test: {
-      json: StoreValue<string>;
-    };
   }>;
   alexaLists: Optional<{
     shoppingListActive: StoreValue<string>;
@@ -394,7 +391,7 @@ export interface IobrokerChannels {
   }>;
   timers: Optional<{
     timerAlive: StoreValue<boolean>;
-    1: {
+    "1": {
       timeString: StoreValue<string>;
       device: StoreValue<string>;
       timeEnd: StoreValue<string>;
@@ -403,7 +400,7 @@ export interface IobrokerChannels {
       name: StoreValue<string>;
       initialTimer: StoreValue<string>;
     };
-    2: {
+    "2": {
       timeString: StoreValue<string>;
       device: StoreValue<string>;
       timeEnd: StoreValue<string>;
@@ -412,7 +409,7 @@ export interface IobrokerChannels {
       name: StoreValue<string>;
       initialTimer: StoreValue<string>;
     };
-    3: {
+    "3": {
       timeString: StoreValue<string>;
       device: StoreValue<string>;
       timeEnd: StoreValue<string>;
@@ -421,7 +418,7 @@ export interface IobrokerChannels {
       name: StoreValue<string>;
       initialTimer: StoreValue<string>;
     };
-    4: {
+    "4": {
       timeString: StoreValue<string>;
       device: StoreValue<string>;
       timeEnd: StoreValue<string>;
@@ -508,6 +505,56 @@ export interface IobrokerChannels {
     abstellraumOgLinksAuto: StoreValue<boolean>;
     abstellraumOgRechtsAuto: StoreValue<boolean>;
   }>;
+  batteries: Optional<{
+    "Shelly Plus Smoke Flur OG": {
+      percent: StoreValue<number>;
+      firmware: StoreValue<boolean>;
+      ts: number;
+    };
+    "HMIP Flur": {
+      lowBat?: StoreValue<boolean>;
+      available: StoreValue<boolean>;
+      ts: number;
+    };
+    // "HMIP Wohnzimmer links": HMIPDevice;
+    // "HMIP Wohnzimmer rechts": HMIPDevice;
+    // "HMIP Kueche": HMIPDevice;
+    // "HMIP Esszimmer": HMIPDevice;
+    // "HMIP Bad": HMIPDevice;
+    // "HMIP Gaeste WC": HMIPDevice;
+    // "HMIP Keller Waschen": HMIPDevice;
+    // "HMIP Buero": HMIPDevice;
+    // "HMIP Schlafzimmer": HMIPDevice;
+    // "HMIP Kinderzimmer": HMIPDevice;
+    // "HMIP Gaestezimmer": HMIPDevice;
+    // xioami_cellar_door: XiaomiWindowSensor;
+    // xioami_cellar_stair_window: XiaomiWindowSensor;
+    // xioami_office_window: XiaomiWindowSensor;
+    // xioami_housedoor_right: XiaomiWindowSensor;
+    // xioami_floor_right: XiaomiWindowSensor;
+    // xioami_floor_left: XiaomiWindowSensor;
+    // xioami_guest_toilet_left: XiaomiWindowSensor;
+    // xioami_guest_toilet_right: XiaomiWindowSensor;
+    // xioami_fensterkontakt_kueche_klingel: XiaomiWindowSensor;
+    // xioami_kitchen_window: XiaomiWindowSensor;
+    // xioami_kitchen_door: XiaomiWindowSensor;
+    // xioami_store_window: XiaomiWindowSensor;
+    // xioami_diner_window_right: XiaomiWindowSensor;
+    // xioami_diner_window_left: XiaomiWindowSensor;
+    // xioami_living_right: XiaomiWindowSensor;
+    // xioami_living_center: XiaomiWindowSensor;
+    // xioami_living_left: XiaomiWindowSensor;
+    // xioami_living_small: XiaomiWindowSensor;
+    // xioami_bath_window: XiaomiWindowSensor;
+    // xioami_guest_window: XiaomiWindowSensor;
+    // xioami_sleeping_door: XiaomiWindowSensor;
+    // xioami_sleeping_window: XiaomiWindowSensor;
+    // xioami_children_window: XiaomiWindowSensor;
+    // xioami_store_og_right: XiaomiWindowSensor;
+    // xioami_store_og_left: XiaomiWindowSensor;
+    // xioami_attic_right: XiaomiWindowSensor;
+    // xioami_attic_left: XiaomiWindowSensor;
+  }>;
 }
 
 const heatingControl = {
@@ -569,6 +616,16 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    channel: "batteries",
+    value: [
+      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage", group: "Shelly Plus Smoke Flur OG", key: "voltage" },
+      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent", group: "Shelly Plus Smoke Flur OG", key: "percent" },
+      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware", group: "Shelly Plus Smoke Flur OG", key: "firmware" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.lowBat", group: "HMIP Buero", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.unreach", group: "HMIP Buero", invertValue: true, key: "available" },
+    ],
+  },
   {
     // Zeitversatz Rolladen Auto herunter fahren
     channel: "shutterAutoDownTime",
@@ -660,30 +717,30 @@ export const iobrokerData = [
     channel: "timers",
     value: [
       { id: "alexa-timer-vis.0.all_Timer.alive", key: "timerAlive" },
-      { id: "alexa-timer-vis.0.timer1.string_2", group: 1, key: "timeString" },
-      { id: "alexa-timer-vis.0.timer1.TimeEnd", group: 1, key: "timeEnd" },
-      { id: "alexa-timer-vis.0.timer1.TimeStart", group: 1, key: "timeStart" },
-      { id: "alexa-timer-vis.0.timer1.InputDeviceName", group: 1, key: "device" },
-      { id: "alexa-timer-vis.0.timer1.name", group: 1, key: "name" },
-      { id: "alexa-timer-vis.0.timer1.initialTimer", group: 1, key: "initialTimer" },
-      { id: "alexa-timer-vis.0.timer2.string_2", group: 2, key: "timeString" },
-      { id: "alexa-timer-vis.0.timer2.TimeEnd", group: 2, key: "timeEnd" },
-      { id: "alexa-timer-vis.0.timer2.TimeStart", group: 2, key: "timeStart" },
-      { id: "alexa-timer-vis.0.timer2.InputDeviceName", group: 2, key: "device" },
-      { id: "alexa-timer-vis.0.timer2.name", group: 2, key: "name" },
-      { id: "alexa-timer-vis.0.timer2.initialTimer", group: 2, key: "initialTimer" },
-      { id: "alexa-timer-vis.0.timer3.string_2", group: 3, key: "timeString" },
-      { id: "alexa-timer-vis.0.timer3.TimeEnd", group: 3, key: "timeEnd" },
-      { id: "alexa-timer-vis.0.timer3.TimeStart", group: 3, key: "timeStart" },
-      { id: "alexa-timer-vis.0.timer3.InputDeviceName", group: 3, key: "device" },
-      { id: "alexa-timer-vis.0.timer3.name", group: 3, key: "name" },
-      { id: "alexa-timer-vis.0.timer3.initialTimer", group: 3, key: "initialTimer" },
-      { id: "alexa-timer-vis.0.timer4.string_2", group: 4, key: "timeString" },
-      { id: "alexa-timer-vis.0.timer4.TimeEnd", group: 4, key: "timeEnd" },
-      { id: "alexa-timer-vis.0.timer4.TimeStart", group: 4, key: "timeStart" },
-      { id: "alexa-timer-vis.0.timer4.InputDeviceName", group: 4, key: "device" },
-      { id: "alexa-timer-vis.0.timer4.name", group: 4, key: "name" },
-      { id: "alexa-timer-vis.0.timer4.initialTimer", group: 4, key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer1.string_2", group: "1", key: "timeString" },
+      { id: "alexa-timer-vis.0.timer1.TimeEnd", group: "1", key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer1.TimeStart", group: "1", key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer1.InputDeviceName", group: "1", key: "device" },
+      { id: "alexa-timer-vis.0.timer1.name", group: "1", key: "name" },
+      { id: "alexa-timer-vis.0.timer1.initialTimer", group: "1", key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer2.string_2", group: "2", key: "timeString" },
+      { id: "alexa-timer-vis.0.timer2.TimeEnd", group: "2", key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer2.TimeStart", group: "2", key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer2.InputDeviceName", group: "2", key: "device" },
+      { id: "alexa-timer-vis.0.timer2.name", group: "2", key: "name" },
+      { id: "alexa-timer-vis.0.timer2.initialTimer", group: "2", key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer3.string_2", group: "3", key: "timeString" },
+      { id: "alexa-timer-vis.0.timer3.TimeEnd", group: "3", key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer3.TimeStart", group: "3", key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer3.InputDeviceName", group: "3", key: "device" },
+      { id: "alexa-timer-vis.0.timer3.name", group: "3", key: "name" },
+      { id: "alexa-timer-vis.0.timer3.initialTimer", group: "3", key: "initialTimer" },
+      { id: "alexa-timer-vis.0.timer4.string_2", group: "4", key: "timeString" },
+      { id: "alexa-timer-vis.0.timer4.TimeEnd", group: "4", key: "timeEnd" },
+      { id: "alexa-timer-vis.0.timer4.TimeStart", group: "4", key: "timeStart" },
+      { id: "alexa-timer-vis.0.timer4.InputDeviceName", group: "4", key: "device" },
+      { id: "alexa-timer-vis.0.timer4.name", group: "4", key: "name" },
+      { id: "alexa-timer-vis.0.timer4.initialTimer", group: "4", key: "initialTimer" },
     ],
   },
   {
