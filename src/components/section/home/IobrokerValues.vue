@@ -8,8 +8,9 @@ import { activeStatus } from "@/composables/status.ts";
 import { routes } from "@/router/routes.ts";
 import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 
-const { pv, heating, pool, energy } = useIobrokerStore();
+const { pv, pool, iobroker } = useIobrokerStore();
 
+// eslint-disable-next-line complexity
 const infos = computed((): InfoTypes[] => [
   {
     route: "/pv",
@@ -34,8 +35,8 @@ const infos = computed((): InfoTypes[] => [
         valueClass: getStoreValNumber(pv.activeCharging) < 0 ? "text-destructive" : getStoreValNumber(pv.activeCharging) === 0 ? "" : "text-success",
       },
       { title: "Ladezustand Batterie", value: getStoreValNumber(pv.batteryCharging), unit: "%" },
-      { title: "Bezug / Heute", value: getStoreValNumber(energy.energyReceived).toFixed(2), unit: "KWh" },
-      { title: "Einspeisung / Heute", value: getStoreValNumber(energy.energyReturned).toFixed(2), unit: "KWh" },
+      { title: "Bezug / Heute", value: getStoreValNumber(iobroker.energy?.energyReceived).toFixed(2), unit: "KWh" },
+      { title: "Einspeisung / Heute", value: getStoreValNumber(iobroker.energy?.energyReturned).toFixed(2), unit: "KWh" },
     ],
   },
   {
@@ -52,15 +53,15 @@ const infos = computed((): InfoTypes[] => [
   {
     route: routes.heating.path,
     listing: [
-      { title: "Heizung", ...activeStatus.value(getStoreValBoolean(heating.active)) },
-      { title: "Heizung Auto", ...activeStatus.value(getStoreValBoolean(heating.automatic)) },
-      { title: "Heizung Temp", value: getStoreValNumber(heating.heatingTemperature), unit: "°C" },
-      { title: "Solar Auto", ...activeStatus.value(getStoreValBoolean(heating.autoSolar)) },
-      { title: "Solar Pumpe", ...activeStatus.value(getStoreValBoolean(heating.solarPump)) },
-      { title: "Solar", value: getStoreValNumber(heating.heatingSolar), unit: "°C" },
-      { title: "Puffer Oben", value: getStoreValNumber(heating.heatingBufferTop), unit: "°C" },
-      { title: "Puffer Mitte", value: getStoreValNumber(heating.heatingBufferMiddle), unit: "°C" },
-      { title: "Puffer Unten", value: getStoreValNumber(heating.heatingBuffer), unit: "°C" },
+      { title: "Heizung", ...activeStatus.value(getStoreValBoolean(iobroker.heating?.active)) },
+      { title: "Heizung Auto", ...activeStatus.value(getStoreValBoolean(iobroker.heating?.automatic)) },
+      { title: "Heizung Temp", value: getStoreValNumber(iobroker.heating?.heatingTemperature), unit: "°C" },
+      { title: "Solar Auto", ...activeStatus.value(getStoreValBoolean(iobroker.heating?.autoSolar)) },
+      { title: "Solar Pumpe", ...activeStatus.value(getStoreValBoolean(iobroker.heating?.solarPump)) },
+      { title: "Solar", value: getStoreValNumber(iobroker.heating?.heatingSolar), unit: "°C" },
+      { title: "Puffer Oben", value: getStoreValNumber(iobroker.heating?.heatingBufferTop), unit: "°C" },
+      { title: "Puffer Mitte", value: getStoreValNumber(iobroker.heating?.heatingBufferMiddle), unit: "°C" },
+      { title: "Puffer Unten", value: getStoreValNumber(iobroker.heating?.heatingBuffer), unit: "°C" },
     ],
   },
   { ...heatPumpValues.value },

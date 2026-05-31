@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import CardTitle from "../../shared/card/CardTitle.vue";
+import { getStoreValString } from "@/lib/object.ts";
 
-const { landroid } = storeToRefs(useIobrokerStore());
+const { iobroker } = useIobrokerStore();
 
 const status = {
   0: "Leerlauf",
@@ -90,40 +90,46 @@ const error = {
   119: "Gebietsgrenze überschritten",
   120: "Abdockfehler an der Ladestation",
 };
-const infos = computed(() => [
-  {
-    title: "Firmware",
-    value: landroid.value.firmware?.val,
-    unit: "",
-  },
-  {
-    title: `Akku ${landroid.value.batteryCharging?.val ? " läd" : " ist geladen"}`,
-    value: landroid.value.battery?.val,
-    unit: "%",
-  },
-  {
-    title: "Status",
-    value: status[landroid.value.status?.val as keyof typeof status],
-    unit: "",
-  },
-  {
-    title: "Edgecut",
-    value: landroid.value.edgecut?.val,
-    unit: "",
-    type: "bool",
-  },
-  {
-    title: "Error",
-    value: error[landroid.value.error?.val as keyof typeof error],
-    unit: "",
-  },
-  { title: "Gefahren", value: landroid.value.totalDistance?.val, unit: "m" },
-  {
-    title: "Messer in Gebrauch",
-    value: landroid.value.totalBladeTime?.val,
-    unit: "min",
-  },
-]);
+const infos = computed(() => {
+  const landroid = iobroker.landroid;
+  if (!landroid) {
+    return [];
+  }
+  return [
+    {
+      title: "Firmware",
+      value: getStoreValString(landroid.firmware),
+      unit: "",
+    },
+    {
+      title: `Akku ${landroid.batteryCharging?.val ? " läd" : " ist geladen"}`,
+      value: landroid.battery?.val,
+      unit: "%",
+    },
+    {
+      title: "Status",
+      value: status[landroid.status?.val as keyof typeof status],
+      unit: "",
+    },
+    {
+      title: "Edgecut",
+      value: landroid.edgecut?.val,
+      unit: "",
+      type: "bool",
+    },
+    {
+      title: "Error",
+      value: error[landroid.error?.val as keyof typeof error],
+      unit: "",
+    },
+    { title: "Gefahren", value: landroid.totalDistance?.val, unit: "m" },
+    {
+      title: "Messer in Gebrauch",
+      value: landroid.totalBladeTime?.val,
+      unit: "min",
+    },
+  ];
+});
 </script>
 
 <template>
@@ -133,7 +139,7 @@ const infos = computed(() => [
         <div class="flex justify-between">
           <div class="w-12">Rasenmäher</div>
           <div>
-            <OnlineOffline :status="landroid.online?.val" />
+            <OnlineOffline :status="iobroker.landroid?.online?.val" />
           </div>
         </div>
       </CardTitle>

@@ -1,11 +1,7 @@
 import { Store, StoreDefinition } from "pinia";
-import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
 import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
-import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
-import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
 import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
-import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
 import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
 import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
 import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
@@ -18,7 +14,6 @@ import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeri
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
-import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
 import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
 import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
@@ -41,9 +36,6 @@ export interface IoBrokerStoreState {
   fenster: WindowType;
   pv: IPvStates;
   pool: PoolIobroker;
-  landroid: LandroidIobroker;
-  calendar: CalendarIobroker;
-  heating: HeatingIobroker;
   logs: LogStates;
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;
@@ -55,9 +47,6 @@ export interface IoBrokerStoreState {
   lightsAdditive: LightTypesAdditive;
   styles: StylesType;
   showTimerCard: TimerObject;
-  heatingControl: HeatingControlType;
-  airConditioners: AirConditionersIobroker;
-  energy: EnergyStates;
   tankerKoenig: TankerKoenig;
   position: PositionIobroker;
   iobroker: IobrokerChannels;

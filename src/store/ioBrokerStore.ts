@@ -1,9 +1,6 @@
 import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { defineStore } from "pinia";
-import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
-import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
-import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
 import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
@@ -13,12 +10,11 @@ import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batt
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
 import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
 import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, SetValuesLegacy, StoreType, StoreValue } from "@/store/index.ts";
-import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
+
 import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
 import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
 import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
@@ -32,16 +28,11 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
     alexaAction: empty<AlexaAction>(),
-    airConditioners: empty<AirConditionersIobroker>(),
     batteries: empty<BatteriesTypeIobroker>(),
-    calendar: empty<CalendarIobroker>(),
     fenster: empty<WindowType>(),
-    heating: empty<HeatingIobroker>(),
-    heatingControl: empty<HeatingControlType>(),
     heatingTimeSlot: empty<HeatingTimeSlot>(),
     idsToControl: empty<IdsToControl>(),
     infos: empty<Infos>(),
-    landroid: empty<LandroidIobroker>(),
     lights: empty<LightTypes>(),
     lightsAdditive: empty<LightTypesAdditive>(),
     logReset: empty<LogReset>(),
@@ -58,7 +49,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     timers: empty<Timers>(),
     hmip: empty<HmipIobroker>(),
     tankerKoenig: empty<TankerKoenig>(),
-    energy: empty<EnergyStates>(),
     position: empty<PositionIobroker>(),
     iobroker: empty<IobrokerChannels>(),
   }),

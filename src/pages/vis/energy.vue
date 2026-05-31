@@ -23,7 +23,7 @@ import { TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
 
-const { pv, energy, pool } = useIobrokerStore();
+const { pv, iobroker, pool } = useIobrokerStore();
 
 const iconBattery = computed(() => {
   const value = getStoreValNumber(pv.batteryCharging);
@@ -55,8 +55,12 @@ type Ids =
   | "heat_pump"
   | "pool_pump";
 
-const data = computed(
-  (): TEnergyFlowArray<Ids> => [
+const data = computed((): TEnergyFlowArray<Ids> => {
+  const energy = iobroker.energy;
+  if (!energy) {
+    return [];
+  }
+  return [
     {
       id: "pv",
       title: "PV Gross",
@@ -140,7 +144,7 @@ const data = computed(
       lines: [],
       values: [
         {
-          value: getStoreValNumber(energy.energyReceived).toFixed(2),
+          value: getStoreValNumber(iobroker.energy?.energyReceived).toFixed(2),
           unit: "KW",
           colorHex: HexColors.RED,
           icon: { svg: ArrowRight, offsetX: -40, offsetY: -13, width: 15, height: 15, class: "text-red-200" },
@@ -373,8 +377,8 @@ const data = computed(
       ],
       values: [{ value: 0, unit: "W" }],
     },
-  ],
-);
+  ];
+});
 </script>
 
 <template>

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
-const { heatingControl } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 </script>
 <template>
-  <div class="w-full bg-cardSubcard/30 border p-2 container__table" v-html="heatingControl.visRoomStates?.val" />
+  <div class="w-full bg-cardSubcard/30 border p-2 container__table" v-html="iobroker.heatingControl?.visRoomStates?.val" />
 </template>
 
 <style lang="scss">
