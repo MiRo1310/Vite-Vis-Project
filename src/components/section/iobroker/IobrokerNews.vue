@@ -18,7 +18,7 @@ interface NewsFeed {
   conditions: string;
 }
 
-const { infos } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 const columns: DatatableColumns<NewsFeed>[] = [
   { source: "title.de", labelKey: "Title", accessorKey: "title", type: "text" },
   {
@@ -34,7 +34,7 @@ const columns: DatatableColumns<NewsFeed>[] = [
     type: "datetime",
   },
 ];
-const json = computed(() => toJSON<NewsFeed[]>(getStoreValString(infos.newsFeeds)).json ?? []);
+const json = computed(() => toJSON<NewsFeed[]>(getStoreValString(iobroker.infos?.newsFeeds)).json ?? []);
 </script>
 
 <template>

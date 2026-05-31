@@ -8,7 +8,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import { Logger } from "@/lib/logger.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
-const { iobroker, styles } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 const props = defineProps<{
   dayIndex: number;
   month: number;
@@ -60,7 +60,7 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 }
 
 const getColor = computed(() => (event: CalendarDayType): string => {
-  const jsonResponse = toJSON<JSONStyle[]>(styles?.calendarStyle?.val ?? null);
+  const jsonResponse = toJSON<JSONStyle[]>(iobroker.styles?.calendarStyle?.val ?? null);
   const json = jsonResponse.json;
   if (!Array.isArray(json)) {
     return "";

@@ -1,23 +1,12 @@
 import { Store, StoreDefinition } from "pinia";
 import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
-import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
-import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
-import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
-import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
-import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
-import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { ComputedRef } from "vue";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
-import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
-import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
-import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
 import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 export interface AppStore {
@@ -27,28 +16,16 @@ export interface AppStore {
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
-  hmip: HmipIobroker;
   idsToControl: IdsToControl;
   shutterAutoUp: IShutter;
   shutterAutoDownTime: IShutter;
   timers: Timers;
   rolladen: IShutter;
-  fenster: WindowType;
-  pv: IPvStates;
-  pool: PoolIobroker;
-  logs: LogStates;
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;
-  infos: Infos;
-  phone: PhoneStates;
   batteries: BatteriesTypeIobroker;
   alexaAction: AlexaAction;
-  lights: LightTypes;
-  lightsAdditive: LightTypesAdditive;
-  styles: StylesType;
   showTimerCard: TimerObject;
-  tankerKoenig: TankerKoenig;
-  position: PositionIobroker;
   iobroker: IobrokerChannels;
 }
 

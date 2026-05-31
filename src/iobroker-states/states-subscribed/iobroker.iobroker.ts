@@ -254,6 +254,144 @@ export interface IobrokerChannels {
 
     timeSlotBad: StoreValue<number>;
   }>;
+  hmip: Optional<{
+    children_valvePosition: StoreValue<number>;
+    children_valveActualTemp: StoreValue<number>;
+
+    floor_valvePosition: StoreValue<number>;
+    floor_valveActualTemp: StoreValue<number>;
+
+    living_right_valvePosition: StoreValue<number>;
+    living_right_valveActualTemp: StoreValue<number>;
+
+    living_left_valvePosition: StoreValue<number>;
+    living_left_valveActualTemp: StoreValue<number>;
+
+    kitchen_valvePosition: StoreValue<number>;
+    kitchen_valveActualTemp: StoreValue<number>;
+
+    guest_wc_valvePosition: StoreValue<number>;
+    guest_wc_valveActualTemp: StoreValue<number>;
+
+    bath_valvePosition: StoreValue<number>;
+    bath_valveActualTemp: StoreValue<number>;
+
+    sleeping_valvePosition: StoreValue<number>;
+    sleeping_valveActualTemp: StoreValue<number>;
+
+    dining_valvePosition: StoreValue<number>;
+    dining_valveActualTemp: StoreValue<number>;
+
+    washing_valvePosition: StoreValue<number>;
+    washing_valveActualTemp: StoreValue<number>;
+
+    guest_valvePosition: StoreValue<number>;
+    guest_valveActualTemp: StoreValue<number>;
+
+    office_valvePosition: StoreValue<number>;
+    office_valveActualTemp: StoreValue<number>;
+  }>;
+  infos: Optional<{
+    updatesJson: StoreValue<string>;
+    updatesNumber: StoreValue<number>;
+    newsFeeds: StoreValue<string>;
+    lastUpdateCheck: StoreValue<string>;
+  }>;
+  logs: Optional<{
+    error: StoreValue<string>;
+    warning: StoreValue<string>;
+    info: StoreValue<string>;
+    heatPump: StoreValue<string>;
+  }>;
+  lights: Optional<{
+    Wohnzimmer: StoreValue<boolean>;
+    Weihnachtsbaum: StoreValue<boolean>;
+    Buero_Schreibtisch: StoreValue<boolean>;
+    Buero: StoreValue<boolean>;
+    Dachboden: StoreValue<boolean>;
+    Abstellraum_OG: StoreValue<boolean>;
+    Wohnzimmer_Ecklampe: StoreValue<boolean>;
+  }>;
+
+  lightsAdditive: Optional<{
+    Wohnzimmer_Ecklampe: StoreValue<boolean>;
+  }>;
+
+  phone: Optional<{
+    ringing: StoreValue<boolean>;
+    lastCallTimestamp: StoreValue<string>;
+    lastCallerName: StoreValue<string>;
+    lastCaller: StoreValue<string>;
+    lastDuration: StoreValue<string>;
+    caller: StoreValue<string>;
+    callerName: StoreValue<string>;
+    callerTimestamp: StoreValue<string>;
+  }>;
+  pool: Optional<{
+    heaterState: StoreValue<boolean>;
+    tempSet: StoreValue<number>;
+    consumption: StoreValue<number>;
+    tempIn: StoreValue<number>;
+    tempOut: StoreValue<number>;
+    rotor: StoreValue<number>;
+    mode: StoreValue<string>;
+    status: StoreValue<boolean>;
+    poolPumpPower: StoreValue<number>;
+    poolPumpSwitch: StoreValue<boolean>;
+    silent: StoreValue<boolean>;
+  }>;
+  position: Optional<{
+    michaelCoordinates: StoreValue<string>;
+  }>;
+  pv: Optional<{
+    feedIn: StoreValue<number>;
+    batteryCharging: StoreValue<number>;
+    shellyFeedOut: StoreValue<number>;
+    smallPv: StoreValue<number>;
+    activeCharging: StoreValue<number>;
+    profit: StoreValue<number>;
+    pvGross: StoreValue<number>;
+    savedMoney: StoreValue<number>;
+    energyDayGross: StoreValue<number>;
+    energyDaySmall: StoreValue<number>;
+  }>;
+  styles: Optional<{
+    calendarStyle: StoreValue<string>;
+  }>;
+  fenster: Optional<{
+    haustuer: StoreValue<boolean>;
+    wohnzimmerEcke: StoreValue<boolean>;
+    wohnzimmerMitte: StoreValue<boolean>;
+    wohnzimmerLinks: StoreValue<boolean>;
+    wohnzimmerRechts: StoreValue<boolean>;
+    kuecheTuer: StoreValue<boolean>;
+    kuecheFenster: StoreValue<boolean>;
+    esszimmerLinks: StoreValue<boolean>;
+    esszimmerRechts: StoreValue<boolean>;
+    kinderzimmerFenster: StoreValue<boolean>;
+    gaestezimmerFenster: StoreValue<boolean>;
+    schlafenFenster: StoreValue<boolean>;
+    schlafenTuer: StoreValue<boolean>;
+    badFenster: StoreValue<boolean>;
+    flurLinks: StoreValue<boolean>;
+    flurRechts: StoreValue<boolean>;
+    gaesteWcLinks: StoreValue<boolean>;
+    gaesteWcRechts: StoreValue<boolean>;
+    bueroFenster: StoreValue<boolean>;
+    abstellraumFenster: StoreValue<boolean>;
+    abstellraumOgLinks: StoreValue<boolean>;
+    abstellraumOgRechts: StoreValue<boolean>;
+    kellerFlurFenster: StoreValue<boolean>;
+    kellerTuer: StoreValue<boolean>;
+    dachbodenLinks: StoreValue<boolean>;
+    dachbodenRechts: StoreValue<boolean>;
+  }>;
+  tankerKoenig: Optional<{
+    cheapestName: StoreValue<string>;
+    cheapestFullStreet: StoreValue<string>;
+    cheapestPrice: StoreValue<number>;
+    jsonTable: StoreValue<string>;
+  }>;
 }
 
 const heatingControl = {
@@ -315,6 +453,178 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    channel: "tankerKoenig",
+    value: [
+      { id: "tankerkoenig.0.stations.cheapest.e5.name", key: "cheapestName" },
+      { id: "tankerkoenig.0.stations.cheapest.e5.fullStreet", key: "cheapestFullStreet" },
+      { id: "tankerkoenig.0.stations.cheapest.e5.feed", key: "cheapestPrice" },
+      { id: "tankerkoenig.0.stations.jsonTable", key: "jsonTable" },
+    ],
+  },
+  {
+    channel: "fenster",
+    value: [
+      { id: "zigbee.0.00158d00049fd9ee.opened", key: "haustuer" },
+      { id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL", key: "wohnzimmerEcke" },
+      { id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", key: "wohnzimmerLinks" },
+      { id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", key: "wohnzimmerRechts" },
+      { id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL", key: "wohnzimmerMitte" },
+      { id: "alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL", key: "wohnzimmerEcke" },
+      { id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", key: "gaesteWcRechts" },
+      { id: "alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", key: "gaesteWcLinks" },
+      { id: "zigbee.0.00158d0003cb431e.opened", key: "bueroFenster" },
+      { id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "schlafenFenster" },
+      { id: "alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL", key: "schlafenTuer" },
+      { id: "alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open", key: "kellerTuer" },
+      { id: "alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "kinderzimmerFenster" },
+      { id: "alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "badFenster" },
+      { id: "alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "gaestezimmerFenster" },
+      { id: "alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL", key: "esszimmerLinks" },
+      { id: "alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL", key: "esszimmerRechts" },
+      { id: "alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL", key: "kuecheTuer" },
+      { id: "alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "kuecheFenster" },
+      { id: "alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL", key: "abstellraumFenster" },
+      { id: "alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", key: "abstellraumOgLinks" },
+      { id: "alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", key: "abstellraumOgRechts" },
+      { id: "alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", key: "dachbodenLinks" },
+      { id: "alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", key: "dachbodenRechts" },
+      { id: "alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", key: "flurLinks" },
+      { id: "alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", key: "flurRechts" },
+      { id: "alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster", key: "kellerFlurFenster" },
+    ],
+  },
+  {
+    channel: "styles",
+    value: [{ id: "0_userdata.0.vis.calendar_styles", key: "calendarStyle" }],
+  },
+  {
+    channel: "pv",
+    value: [
+      { id: "modbus.0.holdingRegisters.41069_soc", key: "batteryCharging" },
+      { id: "modbus.0.holdingRegisters.41067_Active_Power", key: "activeCharging" },
+      { id: "modbus.0.holdingRegisters.41079_grid_Power", key: "feedIn" },
+      { id: "shelly.0.shellypro3em#ec6260976f14#1.EM0.TotalActivePower", key: "shellyFeedOut" },
+      { id: "sonoff.0.Photovoltaik.ENERGY_Power", key: "smallPv" },
+      { id: "0_userdata.0.Photovoltaik.Einnahme_Einspeisung", key: "profit" },
+      { id: "fronius.0.inverter.1.P", key: "pvGross" },
+      { id: "0_userdata.0.Photovoltaik.Einsparung_durch_PV", key: "savedMoney" },
+      { id: "sonoff.0.Photovoltaik.ENERGY_Today", key: "energyDaySmall" },
+      { id: "fronius.0.inverter.1.DAY_ENERGY", key: "energyDayGross" },
+    ],
+  },
+  {
+    channel: "position",
+    value: [
+      {
+        id: "life360ng.0.people.afa1605e-1339-4bbc-921e-37b7774a75ce.gps-coordinates",
+        key: "michaelCoordinates",
+      },
+    ],
+  },
+  {
+    channel: "pool",
+    value: [
+      { id: "midas-aquatemp.0.state", key: "heaterState" },
+      { id: "midas-aquatemp.0.tempSet", key: "tempSet" },
+      { id: "midas-aquatemp.0.consumption", key: "consumption" },
+      { id: "midas-aquatemp.0.tempIn", key: "tempIn" },
+      { id: "midas-aquatemp.0.tempOut", key: "tempOut" },
+      { id: "midas-aquatemp.0.rotor", key: "rotor" },
+      { id: "midas-aquatemp.0.mode", key: "mode" },
+      { id: "midas-aquatemp.0.info.connection", key: "status" },
+      { id: "midas-aquatemp.0.silent", key: "silent" },
+      { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power", key: "poolPumpPower" },
+      { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", key: "poolPumpSwitch" },
+    ],
+  },
+  {
+    channel: "phone",
+    value: [
+      { id: "tr-064.0.callmonitor.ringing", key: "ringing" },
+      { id: "tr-064.0.callmonitor.lastCall.timestamp", key: "lastCallTimestamp" },
+      { id: "tr-064.0.callmonitor.lastCall.callerName", key: "lastCallerName" },
+      { id: "tr-064.0.callmonitor.lastCall.caller", key: "lastCaller" },
+      { id: "tr-064.0.callmonitor.lastCall.duration", key: "lastDuration" },
+      { id: "tr-064.0.callmonitor.inbound.caller", key: "caller" },
+      { id: "tr-064.0.callmonitor.inbound.callerName", key: "callerName" },
+      { id: "tr-064.0.callmonitor.inbound.timestamp", key: "callerTimestamp" },
+    ],
+  },
+  {
+    channel: "lights",
+    value: [
+      { id: "sonoff.0.Sonoff_Wohnzimmer.POWER", key: "Wohnzimmer" },
+      { id: "s7.2.DBs.DB1.M6", key: "Wohnzimmer_Ecklampe" },
+      { id: "zigbee.0.a4c138d35583a3d7.state", key: "Weihnachtsbaum" },
+      { id: "sonoff.0.Sonoff_Dachboden.POWER", key: "Dachboden" },
+      { id: "sonoff.0.Sonoff_OG_Abstellraum.POWER", key: "Abstellraum_OG" },
+      { id: "sonoff.0.Sonoff_Keller_Michi.POWER", key: "Buero" },
+      { id: "tuya.0.bfec013e9034a47a12o5so.20", key: "Buero_Schreibtisch" },
+    ],
+  },
+  {
+    channel: "lightsAdditive",
+    value: [{ id: "s7.2.DBs.DB1.Q11", key: "Wohnzimmer_Ecklampe" }],
+  },
+  {
+    channel: "logs",
+    value: [
+      { id: "logparser.0.filters.Error.json", key: "error" },
+      { id: "logparser.0.filters.Info.json", key: "info" },
+      { id: "logparser.0.filters.Warn.json", key: "warning" },
+      { id: "logparser.0.filters.Wärmepumpe.json", key: "heatPump" },
+    ],
+  },
+  {
+    channel: "infos",
+    value: [
+      { id: "admin.0.info.updatesJson", key: "updatesJson" },
+      { id: "admin.0.info.updatesNumber", key: "updatesNumber" },
+      { id: "admin.0.info.lastUpdateCheck", key: "lastUpdateCheck" },
+      { id: "admin.0.info.newsFeed", key: "newsFeeds" },
+    ],
+  },
+  {
+    channel: "hmip",
+    value: [
+      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.1.valveActualTemperature", key: "children_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.1.valvePosition", key: "children_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.1.valveActualTemperature", key: "floor_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.1.valvePosition", key: "floor_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.1.valveActualTemperature", key: "living_right_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.1.valvePosition", key: "living_right_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.1.valveActualTemperature", key: "living_left_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.1.valvePosition", key: "living_left_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.1.valveActualTemperature", key: "kitchen_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.1.valvePosition", key: "kitchen_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A499E4A06.channels.1.valveActualTemperature", key: "guest_wc_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A499E4A06.channels.1.valvePosition", key: "guest_wc_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.1.valveActualTemperature", key: "bath_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.1.valvePosition", key: "bath_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.1.valveActualTemperature", key: "sleeping_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.1.valvePosition", key: "sleeping_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.1.valveActualTemperature", key: "dining_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.1.valvePosition", key: "dining_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.1.valveActualTemperature", key: "washing_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.1.valvePosition", key: "washing_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.1.valveActualTemperature", key: "guest_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.1.valvePosition", key: "guest_valvePosition" },
+
+      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.1.valveActualTemperature", key: "office_valveActualTemp" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.1.valvePosition", key: "office_valvePosition" },
+    ],
+  },
   {
     channel: "heating",
     value: [

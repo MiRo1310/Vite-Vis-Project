@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Card, CardContent } from "@/components/shared/card";
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/iobroker-states/states-subscribed/info.iobroker";
 import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useRouter } from "vue-router";
@@ -19,13 +16,11 @@ import { activeStatus } from "@/composables/status.ts";
 
 const router = useRouter();
 
-useDynamicSubscribe(infoStates);
-
 const version = import.meta.env.VITE_APP_VERSION;
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
-const { infos: infoStore } = storeToRefs(ioBrokerStore);
+const { infos: infoStore } = ioBrokerStore.iobroker;
 
 const { hour } = useTime();
 const isTimeToWarn = computed(() => {

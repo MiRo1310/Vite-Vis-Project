@@ -1,25 +1,13 @@
-import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
 import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
 import { defineStore } from "pinia";
-import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
 import { computed } from "vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
-import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
-import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
 import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { AlexaAction } from "@/pages/vis/alexa.vue";
-import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
-import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, SetValuesLegacy, StoreType, StoreValue } from "@/store/index.ts";
-
-import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
-import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
-import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
 import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
-import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
 import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
@@ -29,27 +17,15 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     adminConnectionEstablished: false,
     alexaAction: empty<AlexaAction>(),
     batteries: empty<BatteriesTypeIobroker>(),
-    fenster: empty<WindowType>(),
     heatingTimeSlot: empty<HeatingTimeSlot>(),
     idsToControl: empty<IdsToControl>(),
-    infos: empty<Infos>(),
-    lights: empty<LightTypes>(),
-    lightsAdditive: empty<LightTypesAdditive>(),
     logReset: empty<LogReset>(),
-    logs: empty<LogStates>(),
-    phone: empty<PhoneStates>(),
-    pool: empty<PoolIobroker>(),
-    pv: empty<IPvStates>(),
     rolladen: empty<IShutter>(),
     showTimerCard: empty<TimerObject>(),
     subscribedIds: [],
     shutterAutoUp: empty<IShutter>(),
     shutterAutoDownTime: empty<IShutter>(),
-    styles: empty<StylesType>(),
     timers: empty<Timers>(),
-    hmip: empty<HmipIobroker>(),
-    tankerKoenig: empty<TankerKoenig>(),
-    position: empty<PositionIobroker>(),
     iobroker: empty<IobrokerChannels>(),
   }),
   getters: {
@@ -71,10 +47,10 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
-          error: toJSON<Log[]>(getStoreValString(state.logs.error)).json ?? [],
-          warn: toJSON<Log[]>(getStoreValString(state.logs.warning)).json ?? [],
-          info: toJSON<Log[]>(getStoreValString(state.logs.info)).json ?? [],
-          heatPump: toJSON<Log[]>(getStoreValString(state.logs.heatPump)).json ?? [],
+          error: toJSON<Log[]>(getStoreValString(state.iobroker.logs?.error)).json ?? [],
+          warn: toJSON<Log[]>(getStoreValString(state.iobroker.logs?.warning)).json ?? [],
+          info: toJSON<Log[]>(getStoreValString(state.iobroker.logs?.info)).json ?? [],
+          heatPump: toJSON<Log[]>(getStoreValString(state.iobroker.logs?.heatPump)).json ?? [],
         };
       });
     },

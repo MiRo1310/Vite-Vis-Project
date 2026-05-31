@@ -5,10 +5,11 @@ import { getStoreValBoolean, getStoreValNumber, getStoreValString } from "@/lib/
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 
-const { pool } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 const modus = computed(() => {
-  switch (getStoreValString(pool.mode)) {
+  const pool = iobroker.pool;
+  switch (getStoreValString(pool?.mode)) {
     case "0":
       return "Kühlen";
     case "1":
@@ -20,17 +21,18 @@ const modus = computed(() => {
   }
 });
 
-export const heatPumpValues = computed(
-  (): InfoTypes => ({
+export const heatPumpValues = computed((): InfoTypes => {
+  const pool = iobroker.pool;
+  return {
     route: routes.heatPump.path,
     listing: [
-      { title: "Wärmepumpe", ...activeStatus.value(getStoreValBoolean(pool.heaterState)) },
-      { title: "Wärmepumpe Silent", ...activeStatus.value(getStoreValBoolean(pool.silent)) },
+      { title: "Wärmepumpe", ...activeStatus.value(getStoreValBoolean(pool?.heaterState)) },
+      { title: "Wärmepumpe Silent", ...activeStatus.value(getStoreValBoolean(pool?.silent)) },
       { title: "Wärmepumpe Modus", value: modus.value },
-      { title: "Wärmepumpe Bezug", value: getStoreValNumber(pool.consumption).toFixed(2), unit: "W" },
-      { title: "Wärmepumpe In", value: getStoreValNumber(pool.tempIn), unit: "°C", valueClass: "text-blue-200" },
-      { title: "Wärmepumpe Out", value: getStoreValNumber(pool.tempOut), unit: "°C", valueClass: "text-orange-200" },
-      { title: "Wärmepumpe Soll", value: getStoreValNumber(pool.tempSet), unit: "°C" },
+      { title: "Wärmepumpe Bezug", value: getStoreValNumber(pool?.consumption).toFixed(2), unit: "W" },
+      { title: "Wärmepumpe In", value: getStoreValNumber(pool?.tempIn), unit: "°C", valueClass: "text-blue-200" },
+      { title: "Wärmepumpe Out", value: getStoreValNumber(pool?.tempOut), unit: "°C", valueClass: "text-orange-200" },
+      { title: "Wärmepumpe Soll", value: getStoreValNumber(pool?.tempSet), unit: "°C" },
     ],
-  }),
-);
+  };
+});

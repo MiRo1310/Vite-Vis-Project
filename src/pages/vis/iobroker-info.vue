@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/iobroker-states/states-subscribed/info.iobroker";
 import IobrokerUpdates from "@/components/section/iobroker/IobrokerUpdates.vue";
 import IobrokerNews from "@/components/section/iobroker/IobrokerNews.vue";
 import Page from "@/components/shared/page/Page.vue";
-
-useDynamicSubscribe(infoStates);
 </script>
 
 <template>
