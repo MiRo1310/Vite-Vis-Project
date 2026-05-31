@@ -7,7 +7,6 @@ import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, SetValuesLegacy, StoreType, StoreValue } from "@/store/index.ts";
-import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
@@ -20,11 +19,8 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     heatingTimeSlot: empty<HeatingTimeSlot>(),
     idsToControl: empty<IdsToControl>(),
     logReset: empty<LogReset>(),
-    rolladen: empty<IShutter>(),
     showTimerCard: empty<TimerObject>(),
     subscribedIds: [],
-    shutterAutoUp: empty<IShutter>(),
-    shutterAutoDownTime: empty<IShutter>(),
     iobroker: empty<IobrokerChannels>(),
   }),
   getters: {

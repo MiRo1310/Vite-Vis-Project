@@ -6,7 +6,6 @@ import { AlexaAction } from "@/pages/vis/alexa.vue";
 import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
 import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 export interface AppStore {
@@ -17,9 +16,6 @@ export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
   idsToControl: IdsToControl;
-  shutterAutoUp: IShutter;
-  shutterAutoDownTime: IShutter;
-  rolladen: IShutter;
   logReset: LogReset;
   heatingTimeSlot: HeatingTimeSlot;
   batteries: BatteriesTypeIobroker;

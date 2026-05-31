@@ -447,6 +447,67 @@ export interface IobrokerChannels {
     abstellraumOgRechtsPosition: StoreValue<number>;
     esszimmerLinksPosition: StoreValue<number>;
   }>;
+  shutterAutoUp: Optional<{
+    abstellraumOgLinksAutoUp: StoreValue<boolean>;
+    abstellraumOgRechtsAutoUp: StoreValue<boolean>;
+    abstellraumOgLinksAutoUpTime: StoreValue<number>;
+    abstellraumOgRechtsAutoUpTime: StoreValue<number>;
+
+    badFensterAutoUp: StoreValue<boolean>;
+    badFensterAutoUpTime: StoreValue<number>;
+    schlafenTuerAutoUp: StoreValue<boolean>;
+    schlafenFensterAutoUp: StoreValue<boolean>;
+    schlafenTuerAutoUpTime: StoreValue<number>;
+    schlafenFensterAutoUpTime: StoreValue<number>;
+    gaestezimmerFensterAutoUp: StoreValue<boolean>;
+    gaestezimmerFensterAutoUpTime: StoreValue<number>;
+    esszimmerLinksAutoUp: StoreValue<boolean>;
+    esszimmerLinksAutoUpTime: StoreValue<number>;
+    kuecheTuerAutoUp: StoreValue<boolean>;
+    kuecheFensterAutoUp: StoreValue<boolean>;
+    kuecheTuerAutoUpTime: StoreValue<number>;
+    kuecheFensterAutoUpTime: StoreValue<number>;
+    kinderzimmerFensterAutoUp: StoreValue<boolean>;
+    kinderzimmerFensterAutoUpTime: StoreValue<number>;
+    wohnzimmerMitteAutoUp: StoreValue<boolean>;
+    wohnzimmerEckeAutoUp: StoreValue<boolean>;
+    wohnzimmerLinksAutoUp: StoreValue<boolean>;
+    wohnzimmerRechtsAutoUp: StoreValue<boolean>;
+    wohnzimmerMitteAutoUpTime: StoreValue<number>;
+    wohnzimmerEckeAutoUpTime: StoreValue<number>;
+    wohnzimmerLinksAutoUpTime: StoreValue<number>;
+    wohnzimmerRechtsAutoUpTime: StoreValue<number>;
+  }>;
+  shutterAutoDownTime: Optional<{
+    wohnzimmerMitteDelay: StoreValue<number>;
+    wohnzimmerEckeDelay: StoreValue<number>;
+    wohnzimmerLinksDelay: StoreValue<number>;
+    wohnzimmerRechtsDelay: StoreValue<number>;
+    kuecheFensterDelay: StoreValue<number>;
+    kuecheTuerDelay: StoreValue<number>;
+    esszimmerLinksDelay: StoreValue<number>;
+    kinderzimmerFensterDelay: StoreValue<number>;
+    gaestezimmerFensterDelay: StoreValue<number>;
+    schlafenTuerDelay: StoreValue<number>;
+    schlafenFensterDelay: StoreValue<number>;
+    badFensterDelay: StoreValue<number>;
+    abstellraumOgLinksDelay: StoreValue<number>;
+    abstellraumOgRechtsDelay: StoreValue<number>;
+    wohnzimmerMitteAuto: StoreValue<boolean>;
+    wohnzimmerEckeAuto: StoreValue<boolean>;
+    wohnzimmerLinksAuto: StoreValue<boolean>;
+    wohnzimmerRechtsAuto: StoreValue<boolean>;
+    kuecheTuerAuto: StoreValue<boolean>;
+    kuecheFensterAuto: StoreValue<boolean>;
+    esszimmerLinksAuto: StoreValue<boolean>;
+    kinderzimmerFensterAuto: StoreValue<boolean>;
+    gaestezimmerFensterAuto: StoreValue<boolean>;
+    schlafenTuerAuto: StoreValue<boolean>;
+    schlafenFensterAuto: StoreValue<boolean>;
+    badFensterAuto: StoreValue<boolean>;
+    abstellraumOgLinksAuto: StoreValue<boolean>;
+    abstellraumOgRechtsAuto: StoreValue<boolean>;
+  }>;
 }
 
 const heatingControl = {
@@ -508,6 +569,74 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    // Zeitversatz Rolladen Auto herunter fahren
+    channel: "shutterAutoDownTime",
+    value: [
+      { id: "0_userdata.0.Rolladen.Esszimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "esszimmerLinksDelay" },
+      { id: "0_userdata.0.Rolladen.Küche.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "kuecheFensterDelay" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang_Tür", key: "schlafenTuerDelay" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "schlafenFensterDelay" },
+      { id: "0_userdata.0.Rolladen.Kinderzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "kinderzimmerFensterDelay" },
+      { id: "0_userdata.0.Rolladen.Bad.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "badFensterDelay" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "wohnzimmerEckeDelay" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "wohnzimmerLinksDelay" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "wohnzimmerMitteDelay" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "wohnzimmerRechtsDelay" },
+      { id: "0_userdata.0.Rolladen.Küche.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(Tür)", key: "kuecheTuerDelay" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(links)", key: "abstellraumOgLinksDelay" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeitversatz_herunterfahren_zum_Sonnenuntergang_(rechts)", key: "abstellraumOgRechtsDelay" },
+      { id: "0_userdata.0.Rolladen.Gästezimmer.Zeitversatz_herunterfahren_zum_Sonnenuntergang", key: "gaestezimmerFensterDelay" },
+      { id: "0_userdata.0.Rolladen.Esszimmer.Esszimmer_Rolladen_Zeitsteuerung", key: "esszimmerLinksAuto" },
+      { id: "0_userdata.0.Rolladen.Gästezimmer.Rollade_Auto_runter", key: "gaestezimmerFensterAuto" },
+      { id: "0_userdata.0.Rolladen.Küche.Fenster_Rolladen_Zeitsteuerung", key: "kuecheFensterAuto" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Schlafzimmer_Rolladen_Zeitsteuerung", key: "schlafenTuerAuto" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Schlafzimmer_Rollade_Fenster_Zeitsteuerung", key: "schlafenFensterAuto" },
+      { id: "0_userdata.0.Rolladen.Kinderzimmer.Rollade_automisch_runter", key: "kinderzimmerFensterAuto" },
+      { id: "0_userdata.0.Rolladen.Bad.Bad_Rolladen_Zeitsteuerung", key: "badFensterAuto" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung", key: "wohnzimmerEckeAuto" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung", key: "wohnzimmerLinksAuto" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung", key: "wohnzimmerMitteAuto" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Wohnzimmer_Rolladen_Zeitsteuerung", key: "wohnzimmerRechtsAuto" },
+      { id: "0_userdata.0.Rolladen.Küche.Tür_Rolladen_Zeitsteuerung", key: "kuecheTuerAuto" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Abstellraum_OG_links_Rolladen_Zeitsteuerung_aktiv", key: "abstellraumOgLinksAuto" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Abstellraum_OG_rechts_Rolladen_Zeitsteuerung_aktiv", key: "abstellraumOgRechtsAuto" },
+    ],
+  },
+  {
+    // Zeit Auto hochfahren Rolladen
+    channel: "shutterAutoUp",
+    value: [
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch", key: "wohnzimmerEckeAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch", key: "wohnzimmerLinksAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch", key: "wohnzimmerMitteAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Zeit_Rollade_hoch", key: "wohnzimmerRechtsAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch_Tür", key: "schlafenTuerAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Zeit_Rollade_hoch", key: "schlafenFensterAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Küche.Zeit_Rollade_hoch_Fenster", key: "kuecheFensterAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Küche.Zeit_Rollade_hoch_Tür", key: "kuecheTuerAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Kinderzimmer.Zeit_Rollade_hoch", key: "kinderzimmerFensterAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Esszimmer.Zeit_Rollade_hoch", key: "esszimmerLinksAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Bad.Zeit_Rollade_hoch", key: "badFensterAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeit_Rollade_hoch_rechts", key: "abstellraumOgRechtsAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Zeit_Rollade_hoch_links", key: "abstellraumOgLinksAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Gästezimmer.Zeit_Rollade_hoch", key: "gaestezimmerFensterAutoUpTime" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_links", key: "abstellraumOgLinksAutoUp" },
+      { id: "0_userdata.0.Rolladen.Abstellraum_OG.Auto_hoch_rechts", key: "abstellraumOgRechtsAutoUp" },
+      { id: "0_userdata.0.Rolladen.Bad.Rollade_Auto_hoch", key: "badFensterAutoUp" },
+      { id: "0_userdata.0.Rolladen.Esszimmer.Rollade_Auto_hoch", key: "esszimmerLinksAutoUp" },
+      { id: "0_userdata.0.Rolladen.Gästezimmer.Rollade_Auto_hoch", key: "gaestezimmerFensterAutoUp" },
+      { id: "0_userdata.0.Rolladen.Kinderzimmer.Rollade_auto_hoch", key: "kinderzimmerFensterAutoUp" },
+      { id: "0_userdata.0.Rolladen.Küche.Rollade_auto_hoch_Tür", key: "kuecheTuerAutoUp" },
+      { id: "0_userdata.0.Rolladen.Küche.Rollade_auto_hoch_fenster", key: "kuecheFensterAutoUp" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Rollade_auto_hoch_fenster", key: "schlafenFensterAutoUp" },
+      { id: "0_userdata.0.Rolladen.Schlafzimmer.Rollade_auto_hoch_tuer", key: "schlafenTuerAutoUp" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch", key: "wohnzimmerEckeAutoUp" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch", key: "wohnzimmerLinksAutoUp" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch", key: "wohnzimmerMitteAutoUp" },
+      { id: "0_userdata.0.Rolladen.Wohnzimmer.Rollade_auto_hoch", key: "wohnzimmerRechtsAutoUp" },
+    ],
+  },
   {
     channel: "rolladen",
     value: [
