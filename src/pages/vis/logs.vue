@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IdToSubscribe, Level, Log, LogReset } from "@/types/types.ts";
+import { Level, Log } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { onMounted, ref } from "vue";
@@ -7,22 +7,21 @@ import { Button } from "@/components/shared/button/button.variants";
 import { toLocaleTime } from "@/lib/time.ts";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { storeToRefs } from "pinia";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { getStoreValId } from "@/lib/object.ts";
+import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
-const { getParsedLogs } = useIobrokerStore();
-const { logReset } = storeToRefs(useIobrokerStore());
+const { getParsedLogs, iobroker } = useIobrokerStore();
 
-const statesReset: IdToSubscribe<LogReset> = {
-  storeFolder: "logReset",
+const statesReset = {
+  channel: "logReset",
   value: [
     { id: "logparser.0.filters.Error.emptyJson", key: "error" },
     { id: "logparser.0.filters.Info.emptyJson", key: "info" },
     { id: "logparser.0.filters.Warn.emptyJson", key: "warn" },
   ],
-};
+} satisfies IobrokerSubscription;
 
 onMounted(() => {
   useDynamicSubscribe(statesReset);
@@ -43,7 +42,7 @@ onMounted(() => {
 });
 
 function reset() {
-  const id = getStoreValId(logReset.value[selected.value]);
+  const id = getStoreValId(iobroker.logReset?.[selected.value]);
   if (!id) {
     return;
   }

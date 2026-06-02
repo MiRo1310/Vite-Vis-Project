@@ -199,12 +199,6 @@ export interface Log {
 
 export type Level = "info" | "warn" | "error";
 
-export interface LogReset {
-  error: StoreValue<boolean>;
-  warn: StoreValue<boolean>;
-  info: StoreValue<boolean>;
-}
-
 export type RoomItems =
   | "Esszimmer"
   | "Gäste WC"

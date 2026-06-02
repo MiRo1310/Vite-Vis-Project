@@ -3,33 +3,32 @@ import { StoreValueClass } from "@/store/ioBrokerStore.ts";
 export type StoreValue<T> = StoreValueClass<T> | undefined;
 
 type Leaf = StoreValue<unknown>;
-type ChannelShape = Record<string, Leaf | Record<string, Leaf>>;
-
-type FlatKeys<T extends ChannelShape> = {
+type FlatKeys<T> = {
   [K in keyof T]: T[K] extends Leaf ? K : never;
 }[keyof T];
 
-type GroupKeys<T extends ChannelShape> = {
-  [K in keyof T]: T[K] extends Record<string, Leaf> ? K : never;
-}[keyof T];
+type GroupKeys<T> = {
+  [K in keyof T]: T[K] extends Leaf ? never : K;
+}[keyof T] &
+  string;
 
-type FlatId<T extends ChannelShape> = {
+type FlatId<T> = {
   id: string;
-  group?: undefined; // optional, aber hier bewusst "nicht gesetzt"
+  group?: undefined;
   key: FlatKeys<T>;
   invertValue?: boolean;
 };
 
-type GroupedId<T extends ChannelShape> = {
+type GroupedId<T> = {
   [G in GroupKeys<T>]: {
     id: string;
-    group: G; // nur hier Pflicht
-    key: keyof Extract<T[G], Record<string, Leaf>>;
+    group: G;
+    key: keyof T[G];
     invertValue?: boolean;
   };
 }[GroupKeys<T>];
 
-type IdForChannel<T extends ChannelShape> = FlatId<T> | GroupedId<T>;
+type IdForChannel<T> = FlatId<T> | GroupedId<T>;
 
 export type IobrokerSubscription = {
   [C in keyof IobrokerChannels]: {
@@ -50,7 +49,7 @@ export interface XiaomiWindowSensor {
 export interface HMIPDevice {
   lowBat?: StoreValue<boolean>;
   available: StoreValue<boolean>;
-  ts: StoreValue<number>;
+  ts: number;
 }
 
 export interface IobrokerChannels {
@@ -400,6 +399,17 @@ export interface IobrokerChannels {
     cheapestPrice: StoreValue<number>;
     jsonTable: StoreValue<string>;
   }>;
+  logReset: Optional<{
+    error: StoreValue<boolean>;
+    warn: StoreValue<boolean>;
+    info: StoreValue<boolean>;
+  }>;
+  heatingTimeSlot: Optional<{
+    currentTimePeriod: StoreValue<number>;
+  }>;
+  alexaAction: Optional<{
+    alexaSpeak: StoreValue<string>;
+  }>;
   timers: Optional<{
     timerAlive: StoreValue<boolean>;
     "1": {
@@ -520,12 +530,13 @@ export interface IobrokerChannels {
     "Shelly Plus Smoke Flur OG": {
       percent: StoreValue<number>;
       firmware: StoreValue<boolean>;
-      ts: number;
+      voltage: StoreValue<number>;
+      ts: StoreValue<number>;
     };
     "HMIP Flur": {
       lowBat?: StoreValue<boolean>;
       available: StoreValue<boolean>;
-      ts: number;
+      ts: StoreValue<number>;
     };
     "HMIP Wohnzimmer links": HMIPDevice;
     "HMIP Wohnzimmer rechts": HMIPDevice;
@@ -635,114 +646,109 @@ export const iobrokerData = [
       { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware", group: "Shelly Plus Smoke Flur OG", key: "firmware" },
       { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.lowBat", group: "HMIP Buero", key: "lowBat" },
       { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.unreach", group: "HMIP Buero", invertValue: true, key: "available" },
-      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryVoltage", key: "Shelly Plus Smoke Flur OG", subKey: "voltage" },
-      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.DevicePower0.BatteryPercent", key: "Shelly Plus Smoke Flur OG", subKey: "percent" },
-      { id: "shelly.0.shellyplussmoke#a0a3b3e60d84#1.firmware", key: "Shelly Plus Smoke Flur OG", subKey: "firmware" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.lowBat", key: "HMIP Buero", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C45.channels.0.unreach", key: "HMIP Buero", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.0.lowBat", key: "HMIP Keller Waschen", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.0.unreach", key: "HMIP Keller Waschen", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.0.lowBat", key: "HMIP Flur", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.0.unreach", key: "HMIP Flur", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat", key: "HMIP Gaeste WC", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", key: "HMIP Gaeste WC", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.0.lowBat", key: "HMIP Kueche", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.0.unreach", key: "HMIP Kueche", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.0.lowBat", key: "HMIP Esszimmer", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.0.unreach", key: "HMIP Esszimmer", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.0.lowBat", key: "HMIP Wohnzimmer links", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.0.unreach", key: "HMIP Wohnzimmer links", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.0.lowBat", key: "HMIP Wohnzimmer rechts", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.0.unreach", key: "HMIP Wohnzimmer rechts", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat", key: "HMIP Bad", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", key: "HMIP Bad", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.0.lowBat", key: "HMIP Schlafzimmer", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.0.unreach", key: "HMIP Schlafzimmer", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.0.lowBat", key: "HMIP Kinderzimmer", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.0.unreach", key: "HMIP Kinderzimmer", invertValue: true, subKey: "available" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.0.lowBat", key: "HMIP Gaestezimmer", subKey: "lowBat" },
-      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.0.unreach", key: "HMIP Gaestezimmer", invertValue: true, subKey: "available" },
-      { id: "zigbee.0.00158d00045efc35.battery", key: "xioami_cellar_door", subKey: "percent" },
-      { id: "zigbee.0.00158d00045efc35.voltage", key: "xioami_cellar_door", subKey: "voltage" },
-      { id: "zigbee.0.00158d00045efc35.available", key: "xioami_cellar_door", subKey: "available" },
-      { id: "zigbee.0.00158d0002e3425d.battery", key: "xioami_cellar_stair_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0002e3425d.voltage", key: "xioami_cellar_stair_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0002e3425d.available", key: "xioami_cellar_stair_window", subKey: "available" },
-      { id: "zigbee.0.00158d0003cb431e.battery", key: "xioami_office_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0003cb431e.voltage", key: "xioami_office_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0003cb431e.available", key: "xioami_office_window", subKey: "available" },
-      { id: "zigbee.0.00158d00049fd9ee.battery", key: "xioami_housedoor_right", subKey: "percent" },
-      { id: "zigbee.0.00158d00049fd9ee.voltage", key: "xioami_housedoor_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d00049fd9ee.available", key: "xioami_housedoor_right", subKey: "available" },
-      { id: "zigbee.0.00158d000477309a.battery", key: "xioami_floor_right", subKey: "percent" },
-      { id: "zigbee.0.00158d000477309a.voltage", key: "xioami_floor_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d000477309a.available", key: "xioami_floor_right", subKey: "available" },
-      { id: "zigbee.0.00158d00047e796c.battery", key: "xioami_floor_left", subKey: "percent" },
-      { id: "zigbee.0.00158d00047e796c.voltage", key: "xioami_floor_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047e796c.available", key: "xioami_floor_left", subKey: "available" },
-      { id: "zigbee.0.00158d00047e7a16.battery", key: "xioami_guest_toilet_left", subKey: "percent" },
-      { id: "zigbee.0.00158d00047e7a16.voltage", key: "xioami_guest_toilet_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047e7a16.available", key: "xioami_guest_toilet_left", subKey: "available" },
-      { id: "zigbee.0.00158d0004a03d10.battery", key: "xioami_guest_toilet_right", subKey: "percent" },
-      { id: "zigbee.0.00158d0004a03d10.voltage", key: "xioami_guest_toilet_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004a03d10.available", key: "xioami_guest_toilet_right", subKey: "available" },
-      { id: "zigbee.0.00158d0002ec5554.battery", key: "xioami_fensterkontakt_kueche_klingel", subKey: "percent" },
-      { id: "zigbee.0.00158d0002ec5554.voltage", key: "xioami_fensterkontakt_kueche_klingel", subKey: "voltage" },
-      { id: "zigbee.0.00158d0002ec5554.available", key: "xioami_fensterkontakt_kueche_klingel", subKey: "available" },
-      { id: "zigbee.0.00158d000431445a.battery", key: "xioami_kitchen_window", subKey: "percent" },
-      { id: "zigbee.0.00158d000431445a.voltage", key: "xioami_kitchen_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d000431445a.available", key: "xioami_kitchen_window", subKey: "available" },
-      { id: "zigbee.0.00158d00047d0bcc.battery", key: "xioami_kitchen_door", subKey: "percent" },
-      { id: "zigbee.0.00158d00047d0bcc.voltage", key: "xioami_kitchen_door", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047d0bcc.available", key: "xioami_kitchen_door", subKey: "available" },
-      { id: "zigbee.0.00158d0004773713.battery", key: "xioami_store_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0004773713.voltage", key: "xioami_store_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004773713.available", key: "xioami_store_window", subKey: "available" },
-      { id: "zigbee.0.00158d0002e3376c.battery", key: "xioami_diner_window_right", subKey: "percent" },
-      { id: "zigbee.0.00158d0002e3376c.voltage", key: "xioami_diner_window_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d0002e3376c.available", key: "xioami_diner_window_right", subKey: "available" },
-      { id: "zigbee.0.00158d000477238b.battery", key: "xioami_diner_window_left", subKey: "percent" },
-      { id: "zigbee.0.00158d000477238b.voltage", key: "xioami_diner_window_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d000477238b.available", key: "xioami_diner_window_left", subKey: "available" },
-      { id: "zigbee.0.00158d00047c617c.battery", key: "xioami_living_right", subKey: "percent" },
-      { id: "zigbee.0.00158d00047c617c.voltage", key: "xioami_living_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047c617c.available", key: "xioami_living_right", subKey: "available" },
-      { id: "zigbee.0.00158d00047ebffb.battery", key: "xioami_living_center", subKey: "percent" },
-      { id: "zigbee.0.00158d00047ebffb.voltage", key: "xioami_living_center", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047ebffb.available", key: "xioami_living_center", subKey: "available" },
-      { id: "zigbee.0.00158d00047d480e.battery", key: "xioami_living_left", subKey: "percent" },
-      { id: "zigbee.0.00158d00047d480e.voltage", key: "xioami_living_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047d480e.available", key: "xioami_living_left", subKey: "available" },
-      { id: "zigbee.0.00158d0004a02290.battery", key: "xioami_living_small", subKey: "percent" },
-      { id: "zigbee.0.00158d0004a02290.voltage", key: "xioami_living_small", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004a02290.available", key: "xioami_living_small", subKey: "available" },
-      { id: "zigbee.0.00158d00047d0d78.battery", key: "xioami_bath_window", subKey: "percent" },
-      { id: "zigbee.0.00158d00047d0d78.voltage", key: "xioami_bath_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047d0d78.available", key: "xioami_bath_window", subKey: "available" },
-      { id: "zigbee.0.00158d0004772546.battery", key: "xioami_guest_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0004772546.voltage", key: "xioami_guest_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004772546.available", key: "xioami_guest_window", subKey: "available" },
-      { id: "zigbee.0.00158d0004522184.battery", key: "xioami_sleeping_door", subKey: "percent" },
-      { id: "zigbee.0.00158d0004522184.voltage", key: "xioami_sleeping_door", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004522184.available", key: "xioami_sleeping_door", subKey: "available" },
-      { id: "zigbee.0.00158d0004a027ee.battery", key: "xioami_sleeping_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0004a027ee.voltage", key: "xioami_sleeping_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004a027ee.available", key: "xioami_sleeping_window", subKey: "available" },
-      { id: "zigbee.0.00158d0004a0224b.battery", key: "xioami_children_window", subKey: "percent" },
-      { id: "zigbee.0.00158d0004a0224b.voltage", key: "xioami_children_window", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004a0224b.available", key: "xioami_children_window", subKey: "available" },
-      { id: "zigbee.0.00158d0004a0234e.battery", key: "xioami_store_og_right", subKey: "percent" },
-      { id: "zigbee.0.00158d0004a0234e.voltage", key: "xioami_store_og_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004a0234e.available", key: "xioami_store_og_right", subKey: "available" },
-      { id: "zigbee.0.00158d0004772531.battery", key: "xioami_store_og_left", subKey: "percent" },
-      { id: "zigbee.0.00158d0004772531.voltage", key: "xioami_store_og_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004772531.available", key: "xioami_store_og_left", subKey: "available" },
-      { id: "zigbee.0.00158d0004314104.battery", key: "xioami_attic_right", subKey: "percent" },
-      { id: "zigbee.0.00158d0004314104.voltage", key: "xioami_attic_right", subKey: "voltage" },
-      { id: "zigbee.0.00158d0004314104.available", key: "xioami_attic_right", subKey: "available" },
-      { id: "zigbee.0.00158d00047d0db9.battery", key: "xioami_attic_left", subKey: "percent" },
-      { id: "zigbee.0.00158d00047d0db9.voltage", key: "xioami_attic_left", subKey: "voltage" },
-      { id: "zigbee.0.00158d00047d0db9.available", key: "xioami_attic_left", subKey: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.0.lowBat", group: "HMIP Keller Waschen", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C1D.channels.0.unreach", group: "HMIP Keller Waschen", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.0.lowBat", group: "HMIP Flur", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A499E347E.channels.0.unreach", group: "HMIP Flur", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat", group: "HMIP Gaeste WC", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", group: "HMIP Gaeste WC", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.0.lowBat", group: "HMIP Kueche", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A499E49C4.channels.0.unreach", group: "HMIP Kueche", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.0.lowBat", group: "HMIP Esszimmer", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AF0.channels.0.unreach", group: "HMIP Esszimmer", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.0.lowBat", group: "HMIP Wohnzimmer links", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A499E3491.channels.0.unreach", group: "HMIP Wohnzimmer links", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.0.lowBat", group: "HMIP Wohnzimmer rechts", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C21.channels.0.unreach", group: "HMIP Wohnzimmer rechts", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat", group: "HMIP Bad", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", group: "HMIP Bad", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.0.lowBat", group: "HMIP Schlafzimmer", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55AEF.channels.0.unreach", group: "HMIP Schlafzimmer", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.0.lowBat", group: "HMIP Kinderzimmer", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55E2C.channels.0.unreach", group: "HMIP Kinderzimmer", invertValue: true, key: "available" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.0.lowBat", group: "HMIP Gaestezimmer", key: "lowBat" },
+      { id: "hmip.0.devices.3014F711A000201A49A55C2A.channels.0.unreach", group: "HMIP Gaestezimmer", invertValue: true, key: "available" },
+      { id: "zigbee.0.00158d00045efc35.battery", group: "xioami_cellar_door", key: "percent" },
+      { id: "zigbee.0.00158d00045efc35.voltage", group: "xioami_cellar_door", key: "voltage" },
+      { id: "zigbee.0.00158d00045efc35.available", group: "xioami_cellar_door", key: "available" },
+      { id: "zigbee.0.00158d0002e3425d.battery", group: "xioami_cellar_stair_window", key: "percent" },
+      { id: "zigbee.0.00158d0002e3425d.voltage", group: "xioami_cellar_stair_window", key: "voltage" },
+      { id: "zigbee.0.00158d0002e3425d.available", group: "xioami_cellar_stair_window", key: "available" },
+      { id: "zigbee.0.00158d0003cb431e.battery", group: "xioami_office_window", key: "percent" },
+      { id: "zigbee.0.00158d0003cb431e.voltage", group: "xioami_office_window", key: "voltage" },
+      { id: "zigbee.0.00158d0003cb431e.available", group: "xioami_office_window", key: "available" },
+      { id: "zigbee.0.00158d00049fd9ee.battery", group: "xioami_housedoor_right", key: "percent" },
+      { id: "zigbee.0.00158d00049fd9ee.voltage", group: "xioami_housedoor_right", key: "voltage" },
+      { id: "zigbee.0.00158d00049fd9ee.available", group: "xioami_housedoor_right", key: "available" },
+      { id: "zigbee.0.00158d000477309a.battery", group: "xioami_floor_right", key: "percent" },
+      { id: "zigbee.0.00158d000477309a.voltage", group: "xioami_floor_right", key: "voltage" },
+      { id: "zigbee.0.00158d000477309a.available", group: "xioami_floor_right", key: "available" },
+      { id: "zigbee.0.00158d00047e796c.battery", group: "xioami_floor_left", key: "percent" },
+      { id: "zigbee.0.00158d00047e796c.voltage", group: "xioami_floor_left", key: "voltage" },
+      { id: "zigbee.0.00158d00047e796c.available", group: "xioami_floor_left", key: "available" },
+      { id: "zigbee.0.00158d00047e7a16.battery", group: "xioami_guest_toilet_left", key: "percent" },
+      { id: "zigbee.0.00158d00047e7a16.voltage", group: "xioami_guest_toilet_left", key: "voltage" },
+      { id: "zigbee.0.00158d00047e7a16.available", group: "xioami_guest_toilet_left", key: "available" },
+      { id: "zigbee.0.00158d0004a03d10.battery", group: "xioami_guest_toilet_right", key: "percent" },
+      { id: "zigbee.0.00158d0004a03d10.voltage", group: "xioami_guest_toilet_right", key: "voltage" },
+      { id: "zigbee.0.00158d0004a03d10.available", group: "xioami_guest_toilet_right", key: "available" },
+      { id: "zigbee.0.00158d0002ec5554.battery", group: "xioami_fensterkontakt_kueche_klingel", key: "percent" },
+      { id: "zigbee.0.00158d0002ec5554.voltage", group: "xioami_fensterkontakt_kueche_klingel", key: "voltage" },
+      { id: "zigbee.0.00158d0002ec5554.available", group: "xioami_fensterkontakt_kueche_klingel", key: "available" },
+      { id: "zigbee.0.00158d000431445a.battery", group: "xioami_kitchen_window", key: "percent" },
+      { id: "zigbee.0.00158d000431445a.voltage", group: "xioami_kitchen_window", key: "voltage" },
+      { id: "zigbee.0.00158d000431445a.available", group: "xioami_kitchen_window", key: "available" },
+      { id: "zigbee.0.00158d00047d0bcc.battery", group: "xioami_kitchen_door", key: "percent" },
+      { id: "zigbee.0.00158d00047d0bcc.voltage", group: "xioami_kitchen_door", key: "voltage" },
+      { id: "zigbee.0.00158d00047d0bcc.available", group: "xioami_kitchen_door", key: "available" },
+      { id: "zigbee.0.00158d0004773713.battery", group: "xioami_store_window", key: "percent" },
+      { id: "zigbee.0.00158d0004773713.voltage", group: "xioami_store_window", key: "voltage" },
+      { id: "zigbee.0.00158d0004773713.available", group: "xioami_store_window", key: "available" },
+      { id: "zigbee.0.00158d0002e3376c.battery", group: "xioami_diner_window_right", key: "percent" },
+      { id: "zigbee.0.00158d0002e3376c.voltage", group: "xioami_diner_window_right", key: "voltage" },
+      { id: "zigbee.0.00158d0002e3376c.available", group: "xioami_diner_window_right", key: "available" },
+      { id: "zigbee.0.00158d000477238b.battery", group: "xioami_diner_window_left", key: "percent" },
+      { id: "zigbee.0.00158d000477238b.voltage", group: "xioami_diner_window_left", key: "voltage" },
+      { id: "zigbee.0.00158d000477238b.available", group: "xioami_diner_window_left", key: "available" },
+      { id: "zigbee.0.00158d00047c617c.battery", group: "xioami_living_right", key: "percent" },
+      { id: "zigbee.0.00158d00047c617c.voltage", group: "xioami_living_right", key: "voltage" },
+      { id: "zigbee.0.00158d00047c617c.available", group: "xioami_living_right", key: "available" },
+      { id: "zigbee.0.00158d00047ebffb.battery", group: "xioami_living_center", key: "percent" },
+      { id: "zigbee.0.00158d00047ebffb.voltage", group: "xioami_living_center", key: "voltage" },
+      { id: "zigbee.0.00158d00047ebffb.available", group: "xioami_living_center", key: "available" },
+      { id: "zigbee.0.00158d00047d480e.battery", group: "xioami_living_left", key: "percent" },
+      { id: "zigbee.0.00158d00047d480e.voltage", group: "xioami_living_left", key: "voltage" },
+      { id: "zigbee.0.00158d00047d480e.available", group: "xioami_living_left", key: "available" },
+      { id: "zigbee.0.00158d0004a02290.battery", group: "xioami_living_small", key: "percent" },
+      { id: "zigbee.0.00158d0004a02290.voltage", group: "xioami_living_small", key: "voltage" },
+      { id: "zigbee.0.00158d0004a02290.available", group: "xioami_living_small", key: "available" },
+      { id: "zigbee.0.00158d00047d0d78.battery", group: "xioami_bath_window", key: "percent" },
+      { id: "zigbee.0.00158d00047d0d78.voltage", group: "xioami_bath_window", key: "voltage" },
+      { id: "zigbee.0.00158d00047d0d78.available", group: "xioami_bath_window", key: "available" },
+      { id: "zigbee.0.00158d0004772546.battery", group: "xioami_guest_window", key: "percent" },
+      { id: "zigbee.0.00158d0004772546.voltage", group: "xioami_guest_window", key: "voltage" },
+      { id: "zigbee.0.00158d0004772546.available", group: "xioami_guest_window", key: "available" },
+      { id: "zigbee.0.00158d0004522184.battery", group: "xioami_sleeping_door", key: "percent" },
+      { id: "zigbee.0.00158d0004522184.voltage", group: "xioami_sleeping_door", key: "voltage" },
+      { id: "zigbee.0.00158d0004522184.available", group: "xioami_sleeping_door", key: "available" },
+      { id: "zigbee.0.00158d0004a027ee.battery", group: "xioami_sleeping_window", key: "percent" },
+      { id: "zigbee.0.00158d0004a027ee.voltage", group: "xioami_sleeping_window", key: "voltage" },
+      { id: "zigbee.0.00158d0004a027ee.available", group: "xioami_sleeping_window", key: "available" },
+      { id: "zigbee.0.00158d0004a0224b.battery", group: "xioami_children_window", key: "percent" },
+      { id: "zigbee.0.00158d0004a0224b.voltage", group: "xioami_children_window", key: "voltage" },
+      { id: "zigbee.0.00158d0004a0224b.available", group: "xioami_children_window", key: "available" },
+      { id: "zigbee.0.00158d0004a0234e.battery", group: "xioami_store_og_right", key: "percent" },
+      { id: "zigbee.0.00158d0004a0234e.voltage", group: "xioami_store_og_right", key: "voltage" },
+      { id: "zigbee.0.00158d0004a0234e.available", group: "xioami_store_og_right", key: "available" },
+      { id: "zigbee.0.00158d0004772531.battery", group: "xioami_store_og_left", key: "percent" },
+      { id: "zigbee.0.00158d0004772531.voltage", group: "xioami_store_og_left", key: "voltage" },
+      { id: "zigbee.0.00158d0004772531.available", group: "xioami_store_og_left", key: "available" },
+      { id: "zigbee.0.00158d0004314104.battery", group: "xioami_attic_right", key: "percent" },
+      { id: "zigbee.0.00158d0004314104.voltage", group: "xioami_attic_right", key: "voltage" },
+      { id: "zigbee.0.00158d0004314104.available", group: "xioami_attic_right", key: "available" },
+      { id: "zigbee.0.00158d00047d0db9.battery", group: "xioami_attic_left", key: "percent" },
+      { id: "zigbee.0.00158d00047d0db9.voltage", group: "xioami_attic_left", key: "voltage" },
+      { id: "zigbee.0.00158d00047d0db9.available", group: "xioami_attic_left", key: "available" },
     ],
   },
   {

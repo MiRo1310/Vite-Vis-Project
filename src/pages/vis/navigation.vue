@@ -39,12 +39,13 @@ const navigations = computed((): NavigationType[] => [
     text: "Batterie",
     to: routes.battery.path,
     badges: [
-      { value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0), color: "orange" },
+      { value: batteryList.value?.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0) ?? 0, color: "orange" },
       {
-        value: batteryList.value.reduce(
-          (prev, curr) => prev + (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
-          0,
-        ),
+        value:
+          batteryList.value?.reduce(
+            (prev, curr) => prev + (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
+            0,
+          ) ?? 0,
         color: "red",
         class: "animate-pulse",
       },
