@@ -6,15 +6,15 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
 import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { IdToSubscribe } from "@/types/types.ts";
 import { StoreValue } from "@/store";
 import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
-const { alexaAction: alexaActionStore } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 export interface AlexaDotAction {
   name: string;
@@ -31,10 +31,10 @@ export interface AlexaAction {
   alexaSpeak: StoreValue<string>;
 }
 
-const alexaAction: IdToSubscribe<AlexaAction> = {
-  storeFolder: "alexaAction",
+const alexaAction = {
+  channel: "alexaAction",
   value: [{ id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak" }],
-};
+} satisfies IobrokerSubscription;
 
 useDynamicSubscribe(alexaAction);
 
@@ -74,7 +74,7 @@ async function loadAlexaObject() {
 const actions = ref();
 
 function getMoreInfos(name: string) {
-  const jsonResponse = toJSON(alexaActionStore.alexaSpeak?.val ?? null);
+  const jsonResponse = toJSON(iobroker.alexaAction?.alexaSpeak?.val ?? null);
   const json = jsonResponse.json;
   if (!jsonResponse.isValidJson || !json) {
     return;
@@ -103,7 +103,7 @@ function callback(params: Record<string, any>) {
     actions.value[name].speak = speak;
   }
   actions.value[name][params.source] = params.checked || params.value;
-  const id = alexaActionStore.alexaSpeak?.id;
+  const id = iobroker.alexaAction?.alexaSpeak?.id;
   if (!id) {
     return;
   }

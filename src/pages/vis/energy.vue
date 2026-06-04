@@ -23,10 +23,10 @@ import { TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
 
-const { pv, energy, pool } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 const iconBattery = computed(() => {
-  const value = getStoreValNumber(pv.batteryCharging);
+  const value = getStoreValNumber(iobroker.pv?.batteryCharging);
   if (value === 100) {
     return BatteryFull;
   }
@@ -55,8 +55,13 @@ type Ids =
   | "heat_pump"
   | "pool_pump";
 
-const data = computed(
-  (): TEnergyFlowArray<Ids> => [
+// eslint-disable-next-line complexity
+const data = computed((): TEnergyFlowArray<Ids> => {
+  const { energy, pool, pv } = iobroker;
+  if (!energy) {
+    return [];
+  }
+  return [
     {
       id: "pv",
       title: "PV Gross",
@@ -68,7 +73,7 @@ const data = computed(
         {
           lineStart: { id: "pv", offsetY: 0, position: "right" },
           lineEnd: { id: "house", position: "left" },
-          value: getStoreValNumber(pv.pvGross),
+          value: getStoreValNumber(pv?.pvGross),
           options: {
             groupCount: 1,
             autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25 },
@@ -77,9 +82,9 @@ const data = computed(
         },
       ],
       values: [
-        { value: getStoreValNumber(pv.pvGross), unit: "W" },
+        { value: getStoreValNumber(pv?.pvGross), unit: "W" },
         { value: "" },
-        { value: (getStoreValNumber(pv.energyDayGross) / 1000).toFixed(2), unit: "KWh" },
+        { value: (getStoreValNumber(pv?.energyDayGross) / 1000).toFixed(2), unit: "KWh" },
       ],
     },
     {
@@ -93,7 +98,7 @@ const data = computed(
         {
           lineStart: { id: "house", position: "bottom", offsetX: -12 },
           lineEnd: { id: "balconyPv", position: "top" },
-          value: getStoreValNumber(pv.smallPv),
+          value: getStoreValNumber(pv?.smallPv),
           options: {
             reverse: "greaterThan",
             groupCount: 3,
@@ -102,7 +107,7 @@ const data = computed(
           },
         },
       ],
-      values: [{ value: pv.smallPv?.val ?? 0, unit: "W" }, { value: "" }, { value: getStoreValNumber(pv.energyDaySmall).toFixed(2), unit: "KWh" }],
+      values: [{ value: pv?.smallPv?.val ?? 0, unit: "W" }, { value: "" }, { value: getStoreValNumber(pv?.energyDaySmall).toFixed(2), unit: "KWh" }],
     },
     {
       id: "battery",
@@ -116,7 +121,7 @@ const data = computed(
         {
           lineStart: { id: "house", position: "bottom" },
           lineEnd: { id: "battery", position: "top" },
-          value: getStoreValNumber(pv.activeCharging),
+          value: getStoreValNumber(pv?.activeCharging),
           options: {
             speed: 10,
             groupCount: 1,
@@ -126,8 +131,8 @@ const data = computed(
         },
       ],
       values: [
-        { value: getStoreValNumber(pv.activeCharging), unit: "W" },
-        { value: getStoreValNumber(pv.batteryCharging), unit: "%" },
+        { value: getStoreValNumber(pv?.activeCharging), unit: "W" },
+        { value: getStoreValNumber(pv?.batteryCharging), unit: "%" },
       ],
     },
     {
@@ -140,7 +145,7 @@ const data = computed(
       lines: [],
       values: [
         {
-          value: getStoreValNumber(energy.energyReceived).toFixed(2),
+          value: getStoreValNumber(iobroker.energy?.energyReceived).toFixed(2),
           unit: "KW",
           colorHex: HexColors.RED,
           icon: { svg: ArrowRight, offsetX: -40, offsetY: -13, width: 15, height: 15, class: "text-red-200" },
@@ -160,7 +165,7 @@ const data = computed(
         {
           lineStart: { id: "powerGrid", position: "bottom" },
           lineEnd: { id: "house", position: "top" },
-          value: getStoreValNumber(pv.feedIn),
+          value: getStoreValNumber(pv?.feedIn),
           options: {
             groupCount: 1,
             reverse: "greaterThan",
@@ -168,7 +173,7 @@ const data = computed(
           },
         },
       ],
-      values: [{ value: getStoreValNumber(pv.feedIn), unit: "W" }],
+      values: [{ value: getStoreValNumber(pv?.feedIn), unit: "W" }],
     },
     {
       id: "cellar",
@@ -269,7 +274,7 @@ const data = computed(
         {
           lineStart: { id: "house", position: "right" },
           lineEnd: { id: "pool", position: "left" },
-          value: getStoreValNumberArray([pool.consumption, pool.poolPumpPower]),
+          value: getStoreValNumberArray([pool?.consumption, pool?.poolPumpPower]),
           options: {
             groupCount: 3,
             dotsPerGroup: 3,
@@ -278,7 +283,7 @@ const data = computed(
           },
         },
       ],
-      values: [{ value: getStoreValNumberArray([pool.consumption, pool.poolPumpPower]), unit: "W" }],
+      values: [{ value: getStoreValNumberArray([pool?.consumption, pool?.poolPumpPower]), unit: "W" }],
     },
     {
       id: "heat_pump",
@@ -291,7 +296,7 @@ const data = computed(
         {
           lineStart: { id: "heat_pump", position: "bottom" },
           lineEnd: { id: "pool", position: "top" },
-          value: getStoreValNumber(pool.consumption),
+          value: getStoreValNumber(pool?.consumption),
           options: {
             groupCount: 2,
             flowColorHex: { positive: HexColors.YELLOW },
@@ -302,15 +307,15 @@ const data = computed(
         },
       ],
       values: [
-        { value: getStoreValNumber(pool.consumption), unit: "W" },
+        { value: getStoreValNumber(pool?.consumption), unit: "W" },
         {
-          value: getStoreValNumber(pool.tempIn),
+          value: getStoreValNumber(pool?.tempIn),
           unit: "°C",
           colorHex: HexColors.BLUE_LIGHT,
           icon: { svg: ArrowRight, offsetX: -35, offsetY: -12, width: 15, height: 15, class: "text-blue-200" },
         },
         {
-          value: getStoreValNumber(pool.tempOut),
+          value: getStoreValNumber(pool?.tempOut),
           unit: "°C",
           colorHex: HexColors.RED,
           icon: { svg: ArrowLeft, offsetX: -35, offsetY: -12, width: 15, height: 15, class: "text-red-200" },
@@ -318,7 +323,7 @@ const data = computed(
         {
           value: "Silent",
           offsetY: 5,
-          icon: getStoreValBoolean(pool.silent)
+          icon: getStoreValBoolean(pool?.silent)
             ? { svg: Check, offsetX: 18, offsetY: -12, width: 15, height: 15, class: "text-green-200" }
             : { svg: X, offsetX: 18, offsetY: -12, width: 15, height: 15, class: "text-red-200" },
         },
@@ -330,19 +335,19 @@ const data = computed(
       title: "Poolpumpe",
       type: "react",
       react: { width: 80, height: 85 },
-      stroke: getStoreValBoolean(pool.poolPumpSwitch) ? HexColors.GREEN : HexColors.GRAY,
+      stroke: getStoreValBoolean(pool?.poolPumpSwitch) ? HexColors.GREEN : HexColors.GRAY,
       clickHandler: () => {
-        const id = getStoreValId(pool.poolPumpSwitch);
+        const id = getStoreValId(pool?.poolPumpSwitch);
         if (!id) {
           return;
         }
-        adminConnection?.setState(id, !getStoreValBoolean(pool.poolPumpSwitch));
+        adminConnection?.setState(id, !getStoreValBoolean(pool?.poolPumpSwitch));
       },
       lines: [
         {
           lineStart: { id: "pool", position: "right" },
           lineEnd: { id: "pool_pump", position: "bottom" },
-          value: getStoreValNumber(pool.poolPumpPower),
+          value: getStoreValNumber(pool?.poolPumpPower),
           options: {
             groupCount: 3,
             dotsPerGroup: 3,
@@ -351,7 +356,7 @@ const data = computed(
           },
         },
       ],
-      values: [{ value: getStoreValNumber(pool.poolPumpPower), unit: "W" }],
+      values: [{ value: getStoreValNumber(pool?.poolPumpPower), unit: "W" }],
     },
     {
       id: "car",
@@ -373,8 +378,8 @@ const data = computed(
       ],
       values: [{ value: 0, unit: "W" }],
     },
-  ],
-);
+  ];
+});
 </script>
 
 <template>

@@ -8,7 +8,7 @@ import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
-const { infos } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 interface UpdatesAsJSON {
   [key: string]: AdapterUpdate;
@@ -24,7 +24,8 @@ interface UpdatesType extends AdapterUpdate {
 }
 
 const availableUpdates = computed((): UpdatesType[] => {
-  if (!infos.updatesJson?.val) {
+  const infos = iobroker.infos;
+  if (!infos?.updatesJson?.val) {
     return [];
   }
   const json = toJSON<UpdatesAsJSON>(getStoreValString(infos.updatesJson)).json ?? {};

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Badge from "@/components/shared/badge/Badge.vue";
 import { ParsedLogs } from "@/store";
-import { Infos } from "@/iobroker-states/states-subscribed/info.iobroker";
 import { useRouter } from "vue-router";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { routes } from "@/router/routes.ts";
+import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
-defineProps<{ info: Infos; getParsedLogs: ParsedLogs }>();
+defineProps<{ info: IobrokerChannels["infos"]; getParsedLogs: ParsedLogs }>();
 
 const router = useRouter();
 </script>
@@ -15,7 +15,7 @@ const router = useRouter();
     <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: routes.iobrokerInfo.path })">
       <p>Updates</p>
       <p>
-        <Badge :value="info.updatesNumber?.val" />
+        <Badge :value="info?.updatesNumber?.val" />
       </p>
     </div>
     <div class="flex justify-between items-center cursor-pointer" @click="router.push({ path: routes.logs.path })">

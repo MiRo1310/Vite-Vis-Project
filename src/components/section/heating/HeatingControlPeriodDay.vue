@@ -5,14 +5,14 @@ import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { IdToSubscribe } from "@/types/types.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };
 }>();
-const { heatingControl, heatingTimeSlot } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 function updateData(id: string | undefined, value: string) {
   if (!id) {
@@ -21,26 +21,22 @@ function updateData(id: string | undefined, value: string) {
   adminConnection?.setState(id, { val: value, ack: false });
 }
 
-export interface HeatingTimeSlot {
-  currentTimePeriod: StoreValue<number>;
-}
+const states = {
+  channel: "heatingTimeSlot",
+  value: [
+    {
+      id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
+      key: "currentTimePeriod",
+    },
+  ],
+} satisfies IobrokerSubscription;
 
-const states: IdToSubscribe<HeatingTimeSlot>[] = [
-  {
-    storeFolder: "heatingTimeSlot",
-    value: [
-      {
-        id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
-        key: "currentTimePeriod",
-      },
-    ],
-  },
-];
 useDynamicSubscribe(states);
 
 const activeClass = computed(() => (i: number) => {
-  return i + props.day.index * 5 === heatingTimeSlot.currentTimePeriod?.val ? "bg-green-100! text-black" : "";
+  return i + props.day.index * 5 === iobroker.heatingTimeSlot?.currentTimePeriod?.val ? "bg-green-100! text-black" : "";
 });
+const heatingControl = computed(() => iobroker.heatingControl);
 </script>
 
 <template>
@@ -55,13 +51,13 @@ const activeClass = computed(() => (i: number) => {
     </div>
 
     <div v-for="i in 5" :key="i" class="flex gap-2">
-      <InputIobroker type="time" :state="heatingControl[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>" />
+      <InputIobroker type="time" :state="heatingControl?.[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>" />
 
       <Select
         :items="tempArray()"
-        :model-value="heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
+        :model-value="heatingControl?.[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
         :class="[activeClass(i), 'h-full!  m-0!']"
-        @update:model-value="updateData(heatingControl[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
+        @update:model-value="updateData(heatingControl?.[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
       />
     </div>
   </div>

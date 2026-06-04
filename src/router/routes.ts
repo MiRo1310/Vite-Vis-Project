@@ -31,6 +31,7 @@ export const routes = {
   finance: { path: "/finance", name: "finance" },
   addresses: { path: "/adressen", name: "addresses" },
   description: { path: "/beschreibung", name: "descriptions" },
+  system: { path: "/system", name: "system" },
 } as const;
 
 export const routing = [
@@ -56,6 +57,7 @@ export const routing = [
       { component: async () => await import("@/pages/vis/energy.vue"), ...routes.energy },
       { component: async () => await import("@/pages/vis/maps.vue"), ...routes.maps },
       { component: async () => await import("@/pages/vis/heat-pump.vue"), ...routes.heatPump },
+      { component: async () => await import("@/pages/vis/system.vue"), ...routes.system },
     ],
   },
   {

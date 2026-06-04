@@ -5,7 +5,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { Markers } from "@/components/shared/leaflet";
 
-const { position } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 interface Coordinates {
   lat: number;
@@ -13,7 +13,7 @@ interface Coordinates {
 }
 
 const markers = computed((): Markers[] => {
-  const json = position.michaelCoordinates?.val;
+  const json = iobroker.position?.michaelCoordinates?.val;
   if (!json) {
     return [];
   }

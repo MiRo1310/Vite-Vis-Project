@@ -2,7 +2,7 @@ import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
 import { FunctionalComponent, HTMLAttributes } from "vue";
 import { Badge } from "../components/shared/badge/badge.variants";
-import { IoBrokerStates, StoreValue } from "@/store";
+import { StoreValue } from "@/store";
 
 export interface AlexaList {
   name: string;
@@ -19,11 +19,7 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export interface TimerObject {
-  timerAlive: StoreValue<boolean>;
-}
-
-export interface Timer {
+export type Timer = {
   timeString: StoreValue<string>;
   device: StoreValue<string>;
   timeEnd: StoreValue<string>;
@@ -31,7 +27,7 @@ export interface Timer {
   percent: StoreValue<number>;
   name: StoreValue<string>;
   initialTimer: StoreValue<string>;
-}
+};
 
 export interface Timers {
   1: Timer;
@@ -60,18 +56,6 @@ export interface RoomType {
   }[];
 }
 
-export interface IdToSubscribe<TData, SubKey = string> {
-  value: Ids<TData, SubKey>[];
-  storeFolder: IoBrokerStates;
-}
-
-export interface Ids<TData, SubKey = string> {
-  id: string;
-  key: keyof TData;
-  subKey?: SubKey;
-  invertValue?: boolean; // if true, the value(boolean) will be inverted
-}
-
 export interface IdsToControl {
   tempSetId: string;
 }
@@ -90,7 +74,7 @@ export interface IobrokerState {
   q: number;
 }
 
-export type IobrokerStateValue = string | number | boolean;
+export type IobrokerStateValue = string | number | boolean | null;
 
 export interface CalendarDayType {
   date: string;
@@ -137,12 +121,6 @@ export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" |
 export type DefaultTypes = string | number | boolean | object;
 export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
 
-export interface TextPositionType {
-  position: number;
-  text: string;
-  id?: string;
-}
-
 export interface SelectOption {
   value: string;
   label?: string;
@@ -183,15 +161,6 @@ export interface ITableColumn<Value, TRow, CustomValue = null, F = null> {
   callback?: F | CallbackFunktion;
 }
 
-export interface InfoType {
-  title: string;
-  value: string | number | undefined;
-  unit?: string;
-  bounce?: boolean;
-  class?: string;
-  callback?: () => void;
-}
-
 export interface NavigationType {
   icon: FunctionalComponent;
   text: string;
@@ -213,12 +182,6 @@ export interface Log {
 }
 
 export type Level = "info" | "warn" | "error";
-
-export interface LogReset {
-  error: StoreValue<boolean>;
-  warn: StoreValue<boolean>;
-  info: StoreValue<boolean>;
-}
 
 export type RoomItems =
   | "Esszimmer"

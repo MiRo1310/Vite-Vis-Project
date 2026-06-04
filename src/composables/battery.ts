@@ -1,11 +1,6 @@
 import { computed } from "vue";
-import {
-  BatteriesTypeIobroker,
-  HMIPDevice,
-  ShellyPlusSmoke,
-  XiaomiWindowSensor,
-} from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 export interface BatteryTableData {
   name: string;
@@ -17,29 +12,42 @@ export interface BatteryTableData {
   timestamp?: number;
 }
 
-const { batteries } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
-const getTimestamp = (item: { percent?: { ts?: number }; lowBat?: { ts?: number } }): number =>
-  "percent" in item ? (item.percent?.ts ?? 0) : "lowBat" in item ? (item.lowBat?.ts ?? 0) : 0;
+type BatteryItem = {
+  percent?: { ts?: number; val?: number };
+  lowBat?: { ts?: number; val?: boolean };
+  available?: { ts?: number; val?: boolean };
+  voltage?: { ts?: number; val?: number };
+  firmware?: { ts?: number; val?: boolean };
+};
 
-const getFirmware = (item: ShellyPlusSmoke): boolean => item?.firmware?.val ?? false;
+// eslint-disable-next-line complexity
+const getTimestamp = (item: BatteryItem): number =>
+  item.percent?.ts ?? item.lowBat?.ts ?? item.available?.ts ?? item.voltage?.ts ?? item.firmware?.ts ?? 0;
 
-const getXioamiValues = (item: XiaomiWindowSensor): { available: boolean; percent: number; voltage: number } => ({
+const getFirmware = (item: BatteryItem): boolean => item?.firmware?.val ?? false;
+
+const getXioamiValues = (item: BatteryItem): { available: boolean; percent: number; voltage: number } => ({
   available: item?.available?.val ?? false,
   percent: item?.percent?.val ?? 0,
   voltage: item?.voltage?.val ?? 0,
 });
 
-function getBatteryList(list: BatteriesTypeIobroker) {
+function getBatteryList(list: IobrokerChannels["batteries"]) {
   const data: BatteryTableData[] = [];
-  Object.keys(list).forEach((key) => {
+  if (!list) {
+    return;
+  }
+  Object.keys(list ?? {}).forEach((key) => {
     const item = list[key as keyof typeof list];
-    const { available, percent, voltage } = getXioamiValues(item as XiaomiWindowSensor);
+    const batteryItem = item as BatteryItem;
+    const { available, percent, voltage } = getXioamiValues(batteryItem);
     data.push({
       name: key,
-      firmware: getFirmware(item as ShellyPlusSmoke),
-      timestamp: getTimestamp(item),
-      lowBat: (item as HMIPDevice)?.lowBat?.val ?? false,
+      firmware: getFirmware(batteryItem),
+      timestamp: getTimestamp(batteryItem),
+      lowBat: batteryItem.lowBat?.val ?? false,
       available,
       percent,
       voltage,
@@ -49,5 +57,5 @@ function getBatteryList(list: BatteriesTypeIobroker) {
 }
 
 export const batteryList = computed(() => {
-  return getBatteryList(batteries);
+  return getBatteryList(iobroker.batteries);
 });

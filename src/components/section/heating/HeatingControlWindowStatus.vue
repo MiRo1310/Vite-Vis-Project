@@ -2,9 +2,9 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import window_close from "@/public/window_closed.png";
 import window_open from "@/public/window_open.png";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 
-const { heatingControl } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 onMounted(() => {
   document.querySelectorAll("img[src='/vis.0/HeatingControl/images/fts_window_1w_open.svg']").forEach((img) => {
@@ -14,15 +14,17 @@ onMounted(() => {
     img.setAttribute("src", window_close);
   });
 });
+
+const heatingControl = computed(() => iobroker.heatingControl);
 </script>
 <template>
   <div class="p-2 pt-1 bg-color__default flex-1 bg-cardSubcard/30 border">
     <p>Fensterstatus</p>
     <div class="h-56 overflow-auto">
-      <span v-if="heatingControl.openWindowCount?.val" :class="{ bg__animation: heatingControl.openWindowCount?.val }">
-        {{ heatingControl.openWindowCount?.val }} Fenster offen
+      <span v-if="heatingControl?.openWindowCount?.val" :class="{ bg__animation: heatingControl?.openWindowCount?.val }">
+        {{ heatingControl?.openWindowCount?.val }} Fenster offen
       </span>
-      <div v-html="heatingControl.windowOpenHtmlTable?.val" />
+      <div v-html="heatingControl?.windowOpenHtmlTable?.val" />
     </div>
   </div>
 </template>

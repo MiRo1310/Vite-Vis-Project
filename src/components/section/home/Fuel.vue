@@ -5,7 +5,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getStoreValNumber, getStoreValString } from "@/lib/object.ts";
 import { routes } from "@/router/routes.ts";
-const { tankerKoenig } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 </script>
 
 <template>
@@ -13,12 +13,14 @@ const { tankerKoenig } = useIobrokerStore();
     <CardSubcard class="mt-1">
       <CardSubcardHeader>Günstigster Spritpreis </CardSubcardHeader>
       <TextSeparator />
-      <p class="text-[0.7rem]">{{ getStoreValString(tankerKoenig.cheapestName) }}</p>
-      <p class="text-[0.7rem]">{{ getStoreValString(tankerKoenig.cheapestFullStreet) }}</p>
+      <p class="text-[0.7rem]">{{ getStoreValString(iobroker.tankerKoenig?.cheapestName) }}</p>
+      <p class="text-[0.7rem]">{{ getStoreValString(iobroker.tankerKoenig?.cheapestFullStreet) }}</p>
       <p>
-        Preis Super E5: <span class="text-foreground">{{ getStoreValNumber(tankerKoenig.cheapestPrice) }} €</span>
+        Preis Super E5: <span class="text-foreground">{{ getStoreValNumber(iobroker.tankerKoenig?.cheapestPrice) }} €</span>
       </p>
-      <p v-if="tankerKoenig.cheapestPrice?.ts">Letzte Aktualisierung: {{ new Date(tankerKoenig.cheapestPrice?.ts)?.toLocaleString() }}</p>
+      <p v-if="iobroker.tankerKoenig?.cheapestPrice?.ts">
+        Letzte Aktualisierung: {{ new Date(iobroker.tankerKoenig?.cheapestPrice?.ts)?.toLocaleString() }}
+      </p>
     </CardSubcard>
   </router-link>
 </template>

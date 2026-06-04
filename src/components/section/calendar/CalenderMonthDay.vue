@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
 import { CalendarDayType } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
@@ -9,7 +8,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import { Logger } from "@/lib/logger.ts";
 import { toJSON } from "@michaelroling/ts-library";
 
-const { calendar, styles } = storeToRefs(useIobrokerStore());
+const { iobroker } = useIobrokerStore();
 const props = defineProps<{
   dayIndex: number;
   month: number;
@@ -18,11 +17,9 @@ const props = defineProps<{
 }>();
 
 const getDayValue = computed(() => {
-  if (!calendar.value.table) {
-    return;
-  }
+  const table = iobroker.calendar?.table;
   try {
-    const cal: CalendarDayType[] = JSON.parse(calendar.value.table?.val || "[]");
+    const cal: CalendarDayType[] = JSON.parse(table?.val || "[]");
     return cal.filter((day) => {
       return isDateBetween(day);
     });
@@ -63,7 +60,7 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 }
 
 const getColor = computed(() => (event: CalendarDayType): string => {
-  const jsonResponse = toJSON<JSONStyle[]>(styles.value?.calendarStyle?.val ?? null);
+  const jsonResponse = toJSON<JSONStyle[]>(iobroker.styles?.calendarStyle?.val ?? null);
   const json = jsonResponse.json;
   if (!Array.isArray(json)) {
     return "";

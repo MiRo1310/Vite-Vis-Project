@@ -2,8 +2,6 @@
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { Plus } from "lucide-vue-next";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { stylesIobroker } from "@/iobroker-states/states-subscribed/styles.iobroker";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
@@ -15,9 +13,7 @@ import { getStoreValString } from "@/lib/object.ts";
 
 const open = defineModel<boolean>("open");
 
-useDynamicSubscribe(stylesIobroker);
-
-const { styles: styling } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 export interface JSONStyle {
   name: string;
@@ -25,7 +21,7 @@ export interface JSONStyle {
 }
 
 const json = computed((): JSONStyle[] => {
-  return toJSON<JSONStyle[]>(getStoreValString(styling.calendarStyle)).json ?? [];
+  return toJSON<JSONStyle[]>(getStoreValString(iobroker.styles?.calendarStyle)).json ?? [];
 });
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
@@ -59,7 +55,7 @@ function updateToIobroker() {
     return;
   }
 
-  const id = styling?.calendarStyle?.id;
+  const id = iobroker.styles?.calendarStyle?.id;
   if (!id) {
     return;
   }

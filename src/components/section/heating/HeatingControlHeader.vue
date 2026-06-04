@@ -6,10 +6,11 @@ import { adminConnection } from "@/lib/iobroker-service.js";
 import { RoomItems, SelectOption } from "@/types/types.ts";
 import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 
-const { heatingControl } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 const items = computed((): SelectOption[] => {
-  if (!heatingControl.profileText?.val) {
+  const heatingControl = iobroker.heatingControl;
+  if (!heatingControl?.profileText?.val) {
     return [];
   }
   return heatingControl.profileText?.val?.split(";").map((item: string, index: number) => {
@@ -21,7 +22,8 @@ const items = computed((): SelectOption[] => {
 });
 
 const roomItems = computed((): SelectOption[] => {
-  if (!heatingControl.usedRoom?.val) {
+  const heatingControl = iobroker.heatingControl;
+  if (!heatingControl?.usedRoom?.val) {
     return [];
   }
   return heatingControl.usedRoom?.val?.split(";").map((item: string) => {
@@ -32,8 +34,8 @@ const roomItems = computed((): SelectOption[] => {
   });
 });
 
-const selected = ref(heatingControl.profile?.val?.toString());
-const room = ref(heatingControl.room?.val?.toString());
+const selected = ref(iobroker.heatingControl?.profile?.val?.toString());
+const room = ref(iobroker.heatingControl?.room?.val?.toString());
 
 function updateSelected(val: string | undefined, id: string | undefined) {
   if (!id) {
@@ -51,7 +53,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
       placeholder="Wähle ein Profil aus"
       :items="items"
       class="w-auto"
-      @update:model-value="updateSelected($event, heatingControl.profile?.id)"
+      @update:model-value="updateSelected($event, iobroker.heatingControl?.profile?.id)"
     />
     <p class="header__label">Raum:</p>
     <Select

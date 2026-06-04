@@ -11,6 +11,7 @@ import {
   Info,
   LampCeiling,
   Logs,
+  MonitorCog,
   PlugZap,
   SunSnow,
   Utensils,
@@ -39,12 +40,13 @@ const navigations = computed((): NavigationType[] => [
     text: "Batterie",
     to: routes.battery.path,
     badges: [
-      { value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0), color: "orange" },
+      { value: batteryList.value?.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0) ?? 0, color: "orange" },
       {
-        value: batteryList.value.reduce(
-          (prev, curr) => prev + (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
-          0,
-        ),
+        value:
+          batteryList.value?.reduce(
+            (prev, curr) => prev + (curr?.timestamp && curr?.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
+            0,
+          ) ?? 0,
         color: "red",
         class: "animate-pulse",
       },
@@ -62,6 +64,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: Logs, text: "Wärmepumpe", to: routes.heatPump.path },
   { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
   { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
+  { icon: MonitorCog, text: "System", to: routes.system.path },
   { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
 ]);
 </script>

@@ -2,10 +2,10 @@ import { adminConnection } from "../lib/iobroker-service.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { RoomItems } from "@/types/types.ts";
 
-const { heatingControl } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 export function updateRoomInHeatingControl(val: RoomItems | null) {
-  const id = heatingControl.room?.id;
+  const id = iobroker.heatingControl?.room?.id;
   if (!id || val === null) {
     return;
   }

@@ -2,31 +2,35 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import CardListing from "../../shared/card/CardListing.vue";
 import { Entries } from "@/types/types.ts";
+import { computed } from "vue";
 
-const { heating } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
-const entries: Entries[] = [
-  {
-    title: "Brennstoff vorhanden",
-    value: !heating.pelletExist?.val,
-    type: "boolean",
-  },
-  {
-    title: "Überwachung Zugeber",
-    value: !heating.watcherAdmitter?.val,
-    type: "boolean",
-  },
-  {
-    title: "Überwachung Brennstoffbehälter",
-    value: !heating.tempPelletBuffer?.val,
-    type: "boolean",
-  },
-  {
-    title: "Meldung quittiert",
-    value: !heating.confirmMessage?.val,
-    type: "boolean",
-  },
-];
+const entries = computed((): Entries[] => {
+  const heating = iobroker.heating;
+  return [
+    {
+      title: "Brennstoff vorhanden",
+      value: !heating?.pelletExist?.val,
+      type: "boolean",
+    },
+    {
+      title: "Überwachung Zugeber",
+      value: !heating?.watcherAdmitter?.val,
+      type: "boolean",
+    },
+    {
+      title: "Überwachung Brennstoffbehälter",
+      value: !heating?.tempPelletBuffer?.val,
+      type: "boolean",
+    },
+    {
+      title: "Meldung quittiert",
+      value: !heating?.confirmMessage?.val,
+      type: "boolean",
+    },
+  ];
+});
 </script>
 <template>
   <CardListing :entries="entries" title="Warnungen" />

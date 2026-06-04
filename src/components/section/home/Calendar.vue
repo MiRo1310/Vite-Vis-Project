@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
@@ -10,11 +9,11 @@ import { toJSON } from "@michaelroling/ts-library";
 import { getStoreValString } from "@/lib/object.ts";
 import { routes } from "@/router/routes.ts";
 
-const { calendar } = storeToRefs(useIobrokerStore());
+const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
 const data = computed((): CalendarDayType[] => {
-  return toJSON<CalendarDayType[]>(getStoreValString(calendar.value.table)).json ?? [];
+  return toJSON<CalendarDayType[]>(getStoreValString(iobroker.calendar?.table)).json ?? [];
 });
 
 const today = computed(() => {

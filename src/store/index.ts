@@ -1,35 +1,9 @@
 import { Store, StoreDefinition } from "pinia";
-import { AirConditionersIobroker } from "../iobroker-states/states-subscribed/air-conditioners.iobroker.ts";
-import { BatteriesTypeIobroker } from "../iobroker-states/states-subscribed/batteriesType.iobroker.ts";
-import { CalendarIobroker } from "../iobroker-states/states-subscribed/calendar.iobroker.ts";
-import { IdsToControl, IobrokerState, Log, LogReset, TimerObject, Timers } from "@/types/types.ts";
-import { HeatingControlType, HeatingIobroker } from "../iobroker-states/states-subscribed/heating.iobroker.ts";
-import {
-  AlexaListStates,
-  HolidayStates,
-  TimeStates,
-  TrashStates,
-  WindowGlobalStates,
-} from "../iobroker-states/states-subscribed/diverse.iobroker.ts";
-import { Infos } from "../iobroker-states/states-subscribed/info.iobroker.ts";
-import { LandroidIobroker } from "../iobroker-states/states-subscribed/landroid.iobroker.ts";
-import { LightTypes, LightTypesAdditive } from "../iobroker-states/states-subscribed/light.iobroker.ts";
-import { LogStates } from "../iobroker-states/states-subscribed/logs.iobroker.ts";
-import { PhoneStates } from "../iobroker-states/states-subscribed/phone.iobroker.ts";
-import { PoolIobroker } from "../iobroker-states/states-subscribed/pool.iobroker.ts";
-import { StylesType } from "../iobroker-states/states-subscribed/styles.iobroker.ts";
-import { HmipIobroker } from "../iobroker-states/states-subscribed/hmip.iobroker.ts";
+import { IdsToControl, IobrokerState, Log } from "@/types/types.ts";
 import { ComputedRef } from "vue";
-import { AlexaAction } from "@/pages/vis/alexa.vue";
-import { HeatingTimeSlot } from "@/components/section/heating/HeatingControlPeriodDay.vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { TankerKoenig } from "../iobroker-states/states-subscribed/tankerkoenig.iobroker.ts";
-import { EnergyStates } from "../iobroker-states/states-subscribed/energy.iobroker.ts";
-import { IPvStates } from "../iobroker-states/states-subscribed/pv-ids.iobroker.ts";
-import { WindowType } from "@/iobroker-states/states-subscribed/window.iobroker.ts";
-import { IShutter } from "@/iobroker-states/states-subscribed/shutter-auto-up-time.iobroker.ts";
-import { PositionIobroker } from "@/iobroker-states/states-subscribed/position.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -38,39 +12,8 @@ export interface AppStore {
 export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
-  hmip: HmipIobroker;
   idsToControl: IdsToControl;
-  shutterAutoUp: IShutter;
-  shutterAutoDownTime: IShutter;
-  timers: Timers;
-  rolladen: IShutter;
-  fenster: WindowType;
-  pv: IPvStates;
-  trash: TrashStates;
-  alexaLists: AlexaListStates;
-  pool: PoolIobroker;
-  landroid: LandroidIobroker;
-  calendar: CalendarIobroker;
-  heating: HeatingIobroker;
-  logs: LogStates;
-  logReset: LogReset;
-  heatingTimeSlot: HeatingTimeSlot;
-  infos: Infos;
-  phone: PhoneStates;
-  batteries: BatteriesTypeIobroker;
-  alexaAction: AlexaAction;
-  lights: LightTypes;
-  lightsAdditive: LightTypesAdditive;
-  styles: StylesType;
-  holiday: HolidayStates;
-  windowGlobal: WindowGlobalStates;
-  time: TimeStates;
-  showTimerCard: TimerObject;
-  heatingControl: HeatingControlType;
-  airConditioners: AirConditionersIobroker;
-  energy: EnergyStates;
-  tankerKoenig: TankerKoenig;
-  position: PositionIobroker;
+  iobroker: IobrokerChannels;
 }
 
 export type StoreValue<T> = StoreValueType<T> | undefined;
@@ -93,11 +36,11 @@ export interface ParsedLogs {
 }
 
 export interface SetValues {
-  storeFolder: keyof IoBrokerStoreState;
-  val: string | number | boolean | object | null;
+  val: string | number | boolean | null;
   id: string;
   key: string;
-  subKey?: string;
+  channel: string;
+  group?: string;
   timestamp?: boolean;
   state: IobrokerState;
 }
@@ -114,8 +57,8 @@ interface IoBrokerStoreActions {
 
 interface IoBrokerStoreGetters {
   isAdminConnected(state: IoBrokerStoreState): boolean;
-  getTrash(state: IoBrokerStoreState): TrashStates;
-  getShoppinglist(state: IoBrokerStoreState): AlexaListStates;
+  getTrash(state: IoBrokerStoreState): IobrokerChannels["trash"];
+  getShoppinglist(state: IoBrokerStoreState): IobrokerChannels["alexaLists"];
   getState(state: IoBrokerStoreState): IoBrokerStoreState;
   getIdsToControl(state: IoBrokerStoreState): IdsToControl;
   getParsedLogs(state: IoBrokerStoreState): ComputedRef<ParsedLogs>;

@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Card, CardContent } from "@/components/shared/card";
 import { useTime } from "@/composables/time.ts";
 import { computed } from "vue";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { infoStates } from "@/iobroker-states/states-subscribed/info.iobroker";
 import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import InfoCard, { InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { useRouter } from "vue-router";
@@ -19,13 +16,11 @@ import { activeStatus } from "@/composables/status.ts";
 
 const router = useRouter();
 
-useDynamicSubscribe(infoStates);
-
 const version = import.meta.env.VITE_APP_VERSION;
 
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs, airConditioners, landroid } = ioBrokerStore;
-const { infos: infoStore } = storeToRefs(ioBrokerStore);
+const { getParsedLogs, iobroker } = ioBrokerStore;
+const { infos: infoStore } = ioBrokerStore.iobroker;
 
 const { hour } = useTime();
 const isTimeToWarn = computed(() => {
@@ -35,22 +30,26 @@ const isTimeToWarn = computed(() => {
   return hour.value >= 20 || hour.value <= 6;
 });
 
-const infos2 = computed((): InfoTypes[] => [
-  {
-    listing: [
-      { title: "Klima Schlafen erreichbar", ...activeStatus.value(getStoreValBoolean(airConditioners.schlafenOnline)) },
-      { title: "Klima Schlafen aktiv", ...activeStatus.value(getStoreValBoolean(airConditioners.schlafenPowerStatus)) },
-      { title: "Klima Hannah erreichbar", ...activeStatus.value(getStoreValBoolean(airConditioners.childOnline)) },
-      { title: "Klima Hannah aktiv", ...activeStatus.value(getStoreValBoolean(airConditioners.childPowerStatus)) },
-    ],
-  },
-  {
-    listing: [
-      { title: "Rasenmäher erreichbar", ...activeStatus.value(getStoreValBoolean(landroid.online)) },
-      { title: "Rasenmäher aktiv", ...activeStatus.value(getStoreValNumber(landroid.status) !== -1 && getStoreValBoolean(landroid.online)) },
-    ],
-  },
-]);
+const infos2 = computed((): InfoTypes[] => {
+  const landroid = iobroker.landroid;
+  const airConditioners = iobroker.airConditioners;
+  return [
+    {
+      listing: [
+        { title: "Klima Schlafen erreichbar", ...activeStatus.value(getStoreValBoolean(airConditioners?.schlafenOnline)) },
+        { title: "Klima Schlafen aktiv", ...activeStatus.value(getStoreValBoolean(airConditioners?.schlafenPowerStatus)) },
+        { title: "Klima Hannah erreichbar", ...activeStatus.value(getStoreValBoolean(airConditioners?.childOnline)) },
+        { title: "Klima Hannah aktiv", ...activeStatus.value(getStoreValBoolean(airConditioners?.childPowerStatus)) },
+      ],
+    },
+    {
+      listing: [
+        { title: "Rasenmäher erreichbar", ...activeStatus.value(getStoreValBoolean(landroid?.online)) },
+        { title: "Rasenmäher aktiv", ...activeStatus.value(getStoreValNumber(landroid?.status) !== -1 && getStoreValBoolean(landroid?.online)) },
+      ],
+    },
+  ];
+});
 </script>
 
 <template>
