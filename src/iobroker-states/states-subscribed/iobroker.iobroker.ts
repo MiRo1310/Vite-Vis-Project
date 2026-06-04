@@ -341,7 +341,7 @@ export interface IobrokerChannels {
     tempIn: StoreValue<number>;
     tempOut: StoreValue<number>;
     rotor: StoreValue<number>;
-    mode: StoreValue<string>;
+    mode: StoreValue<number>;
     status: StoreValue<boolean>;
     poolPumpPower: StoreValue<number>;
     poolPumpSwitch: StoreValue<boolean>;
