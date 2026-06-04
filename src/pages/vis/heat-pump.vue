@@ -67,7 +67,7 @@ function checkAdminConnection() {
       <div v-for="(log, index) in getParsedLogs.heatPump" :key="index" class="text-2xs flex items-center gap-2">
         <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
         <span class="inline-block w-24">{{ log.from }}</span>
-        <span>{{ log.message.split(":")?.[1] }}</span>
+        <span>{{ log.message.split(":").slice(1)?.join(":") }}</span>
       </div>
     </CardSubcard>
   </Page>
