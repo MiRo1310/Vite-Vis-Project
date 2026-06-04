@@ -14,6 +14,7 @@ vi.mock("../../src/store/ioBrokerStore.ts", () => ({
 // Import nach den Mocks
 import { useDynamicSubscribe } from "../../src/composables/dynamicSubscribe";
 import { subscribeStates } from "../../src/lib/iobroker-service";
+import { IobrokerSubscription } from "../../src/iobroker-states/states-subscribed/iobroker.iobroker";
 
 describe("useDynamicSubscribe", () => {
   beforeEach(() => {
@@ -32,7 +33,7 @@ describe("useDynamicSubscribe", () => {
   });
 
   it("should call subscribeStates when given an array of states", () => {
-    const s1 = { value: [{ id: "s1" }], storeFolder: "folder1" } as any;
+    const s1: IobrokerSubscription = { value: [{ id: "s1", key: "json" }], channel: "trash" };
     const s2 = { value: [{ id: "s2" }], storeFolder: "folder2" } as any;
 
     useDynamicSubscribe([s1, s2]);

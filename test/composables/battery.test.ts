@@ -1,4 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
+// Import nach dem Mock (relativer Pfad, damit TS den Pfad während Tests auflösen kann)
+import { batteryList } from "../../src/composables/battery.ts";
 
 // Mock das Store-Modul; wir definieren die Testdaten INSIDE der Mock-Factory
 // damit Vitest's hoisting keine Referenz auf noch nicht initialisierte
@@ -32,12 +34,9 @@ vi.mock("@/store/ioBrokerStore.ts", () => {
   };
 
   return {
-    useIobrokerStore: () => ({ batteries: testBatteries }),
+    useIobrokerStore: () => ({ iobroker: { batteries: testBatteries } }),
   };
 });
-
-// Import nach dem Mock (relativer Pfad, damit TS den Pfad während Tests auflösen kann)
-import { batteryList } from "../../src/composables/battery.ts";
 
 describe("battery composable", () => {
   test("produces a table-friendly list from store batteries", () => {
@@ -47,7 +46,7 @@ describe("battery composable", () => {
     // Erwartete Einträge in der gleichen Reihenfolge wie die Keys in testBatteries
     expect(list).toHaveLength(6);
 
-    expect(list[0]).toMatchObject({
+    expect(list?.[0]).toMatchObject({
       name: "xioami_kitchen_window",
       available: true,
       percent: 85,
@@ -57,7 +56,7 @@ describe("battery composable", () => {
       lowBat: false,
     });
 
-    expect(list[1]).toMatchObject({
+    expect(list?.[1]).toMatchObject({
       name: "HMIP Flur",
       available: false,
       percent: 0,
@@ -67,7 +66,7 @@ describe("battery composable", () => {
       lowBat: true,
     });
 
-    expect(list[2]).toMatchObject({
+    expect(list?.[2]).toMatchObject({
       name: "HMIP WC",
       available: false,
       percent: 0,
@@ -77,7 +76,7 @@ describe("battery composable", () => {
       lowBat: true,
     });
 
-    expect(list[3]).toMatchObject({
+    expect(list?.[3]).toMatchObject({
       name: "Shelly Plus Smoke Flur OG",
       available: false,
       percent: 90,
@@ -87,7 +86,7 @@ describe("battery composable", () => {
       lowBat: false,
     });
 
-    expect(list[4]).toMatchObject({
+    expect(list?.[4]).toMatchObject({
       name: "xioami_kitchen_door",
       available: true,
       percent: 0,
@@ -97,7 +96,7 @@ describe("battery composable", () => {
       lowBat: false,
     });
 
-    expect(list[5]).toMatchObject({
+    expect(list?.[5]).toMatchObject({
       name: "test",
       available: false,
       percent: 0,

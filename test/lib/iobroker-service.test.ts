@@ -1,4 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+// Importiere das zu testende Modul NACH der Registrierung der Mocks
+import * as connecter from "../../src/lib/iobroker-service";
+import { IobrokerSubscription } from "../../src/iobroker-states/states-subscribed/iobroker.iobroker";
 
 // Mocks müssen vor dem Import des zu testenden Moduls registriert werden.
 vi.mock("@iobroker/socket-client", () => {
@@ -51,26 +54,24 @@ vi.mock("../../src/iobroker-states/index.iobroker.ts", () => ({
   idToSubscribeOnAppStart: [],
 }));
 
+vi.mock("../../src/iobroker-states/states-subscribed/iobroker.iobroker.ts", () => ({
+  iobrokerData: [],
+}));
+
 // Use relative path for logger mock
 vi.mock("../../src/lib/logger.ts", () => {
   const mockLogger = vi.fn();
   return { Logger: mockLogger, __mocks: { mockLogger } };
 });
 
-// Importiere das zu testende Modul NACH der Registrierung der Mocks
-import * as connecter from "../../src/lib/iobroker-service";
-
 // Testdaten für States
-const testStates = [
-  {
-    value: [
-      { id: "test.id.1", key: "key1", subKey: undefined, invertValue: false },
-      { id: "test.id.2", key: "key2", subKey: undefined, invertValue: true },
-    ],
-    storeFolder: "folder1",
-  },
-];
-
+const testStates: IobrokerSubscription = {
+  value: [
+    { id: "test.id.1", key: "abstellraumOgLinks", group: undefined, invertValue: false },
+    { id: "test.id.2", key: "json", group: undefined, invertValue: true },
+  ],
+  channel: "trash",
+};
 describe("connecter-to-iobroker", () => {
   let socketMocks: any;
   let storeMocks: any;
@@ -104,16 +105,16 @@ describe("connecter-to-iobroker", () => {
 
   it("subscribeStates ruft subscribeStateAsync und addIdToSubscribedIds auf", async () => {
     await connecter.init();
-    connecter.subscribeStates(testStates);
+    connecter.subscribeStates([testStates]);
     expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledTimes(2);
     expect(storeMocks.mockAddIdToSubscribedIds).toHaveBeenCalledTimes(2);
   });
 
   it("unSubscribeStates ruft unsubscribeState und removeIdFromSubscribedIds auf", async () => {
     await connecter.init();
-    connecter.unSubscribeStates(testStates);
+    connecter.unSubscribeStates([testStates]);
     expect(socketMocks.mockUnsubscribeState).toHaveBeenCalledTimes(2);
-    expect(storeMocks.mockRemoveIdFromSubscribedIds).toHaveBeenCalledWith("folder1");
+    expect(storeMocks.mockRemoveIdFromSubscribedIds).toHaveBeenCalledWith("trash");
   });
 
   it("init initialisiert AdminConnection und ruft setAdminConnection auf", async () => {

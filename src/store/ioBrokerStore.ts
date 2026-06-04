@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { computed } from "vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
-import { IoBrokerStoreState, ParsedLogs, SetValues, SetValuesLegacy, StoreType, StoreValue } from "@/store/index.ts";
+import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType } from "@/store/index.ts";
 import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
@@ -54,27 +54,6 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     },
     removeIdFromSubscribedIds(id: string) {
       this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
-    },
-    /**
-     * @deprecated
-     * @param param0
-     * @param param0.storeFolder
-     * @param param0.val
-     * @param param0.id
-     * @param param0.key
-     * @param param0.subKey
-     * @param param0.state
-     */
-    setValuesLegacy({ storeFolder, val, id, key, subKey, state }: SetValuesLegacy): void {
-      this[storeFolder] = getSubValue({
-        obj: this.getState,
-        key,
-        subKey,
-        val,
-        storeFolder,
-        id,
-        state,
-      });
     },
 
     setValues({ val, id, key, channel, group, state }: SetValues): void {
@@ -131,60 +110,3 @@ export class StoreValueClass<T> {
 function filterTruthy<T>(items: (T | undefined)[]): T[] {
   return items.filter((i): i is T => i !== undefined);
 }
-
-/**
- * @deprecated
- * @param param0
- * @param param0.obj
- * @param param0.key
- * @param param0.subKey
- * @param param0.val
- * @param param0.storeFolder
- * @param param0.id
- * @param param0.state
- */
-const getSubValue = ({
-  obj,
-  key,
-  subKey,
-  val,
-  storeFolder,
-  id,
-  state,
-}: {
-  obj: any;
-  key: string;
-  subKey?: string;
-  val: string | number | boolean | object | null;
-  storeFolder: string;
-  id: string;
-  timestamp?: boolean;
-  state: IobrokerState;
-}) => {
-  obj = obj[storeFolder];
-  const newObj: StoreValue<typeof val> = {
-    val,
-    id,
-    ack: state.ack,
-    ts: state.ts,
-    lc: state.lc,
-    from: state.from,
-    q: state.q,
-  };
-
-  if (!subKey) {
-    obj[key] = newObj;
-    return obj;
-  }
-
-  if (!obj[key]) {
-    obj[key] = {};
-  }
-
-  if (!obj[key][subKey]) {
-    obj[key][subKey] = {};
-  }
-
-  obj[key][subKey] = newObj;
-  return obj;
-};

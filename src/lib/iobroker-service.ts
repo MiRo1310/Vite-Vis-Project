@@ -1,8 +1,7 @@
 import { AdminConnection } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IdToSubscribe as IdsToSubscribe, IobrokerState, IobrokerStateValue } from "@/types/types.ts";
+import { IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
-import { isDefined } from "@vueuse/core";
 import { Logger } from "@/lib/logger.ts";
 import { invertBoolean } from "@/lib/boolean.ts";
 import { IoBrokerStore } from "@/store";
@@ -39,6 +38,10 @@ export async function init() {
   }
 }
 
+export function subscribeStates(states: IobrokerSubscription[]) {
+  states.forEach((item) => subscribe(item));
+}
+
 export function unSubscribeStates(states: IobrokerSubscription[]) {
   states.forEach((listObjectOfIds) => {
     listObjectOfIds.value.forEach((idObjectEntry) => {
@@ -48,45 +51,6 @@ export function unSubscribeStates(states: IobrokerSubscription[]) {
     });
 
     iobrokerStore?.removeIdFromSubscribedIds(listObjectOfIds.channel);
-  });
-}
-
-/**
- * @deprecated
- * @param states
- */
-export function subscribeStates(states: IdsToSubscribe<any>[]) {
-  states.forEach((item) => {
-    item.value.forEach(async (stateId) => {
-      if (!adminConnection || iobrokerStore?.subscribedIds.includes(stateId.id)) {
-        return;
-      }
-      try {
-        await adminConnection
-          .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-            let value: IobrokerStateValue | null = state.val;
-
-            if (!isDefined(value)) {
-              value = null;
-            }
-
-            iobrokerStore?.setValuesLegacy({
-              state,
-              storeFolder: item.storeFolder,
-              val: stateId.invertValue ? invertBoolean(!!value) : value,
-              id,
-              key: String(stateId.key),
-              subKey: stateId.subKey,
-            });
-          })
-          .catch((e) => {
-            Logger(`Error subscribing to ${stateId.id}`, { e });
-          });
-        iobrokerStore?.addIdToSubscribedIds(stateId.id);
-      } catch (e) {
-        Logger("Error subscribing to", { value: stateId.id, e });
-      }
-    });
   });
 }
 
@@ -101,26 +65,23 @@ export const subscribe = (item: IobrokerSubscription) => {
     if (!adminConnection || iobrokerStore?.subscribedIds.includes(stateId.id)) {
       return;
     }
-    try {
-      await adminConnection
-        .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
-          const value = state.val ?? null;
 
-          iobrokerStore?.setValues({
-            state,
-            val: "invertValue" in stateId && stateId.invertValue ? invertBoolean(!!value) : value,
-            id,
-            channel: String(item.channel),
-            key: String(stateId.key),
-            group: "group" in stateId ? String(stateId.group) : undefined,
-          });
-        })
-        .catch((e) => {
-          Logger(`Error subscribing to ${stateId.id}`, { e });
+    iobrokerStore?.addIdToSubscribedIds(stateId.id);
+    await adminConnection
+      .subscribeStateAsync(stateId.id, (id: string, state: IobrokerState) => {
+        const value = state.val ?? null;
+
+        iobrokerStore?.setValues({
+          state,
+          val: "invertValue" in stateId && stateId.invertValue ? invertBoolean(!!value) : value,
+          id,
+          channel: String(item.channel),
+          key: String(stateId.key),
+          group: "group" in stateId ? String(stateId.group) : undefined,
         });
-      iobrokerStore?.addIdToSubscribedIds(stateId.id);
-    } catch (e) {
-      Logger("Error subscribing to", { value: stateId.id, e });
-    }
+      })
+      .catch((e) => {
+        Logger(`Error subscribing to ${stateId.id}`, { e });
+      });
   });
 };

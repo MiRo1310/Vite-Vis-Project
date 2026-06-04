@@ -2,7 +2,7 @@ import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
 import { FunctionalComponent, HTMLAttributes } from "vue";
 import { Badge } from "../components/shared/badge/badge.variants";
-import { IoBrokerStates, StoreValue } from "@/store";
+import { StoreValue } from "@/store";
 
 export interface AlexaList {
   name: string;
@@ -17,10 +17,6 @@ export interface AlexaList {
 
 export interface GlobalObject {
   [key: string]: any;
-}
-
-export interface TimerObject {
-  timerAlive: StoreValue<boolean>;
 }
 
 export type Timer = {
@@ -58,18 +54,6 @@ export interface RoomType {
     shutterAutoDownDelay?: StoreValue<number>;
     windowSensorReachable: StoreValue<boolean>;
   }[];
-}
-
-export interface IdToSubscribe<TData, SubKey = string> {
-  value: Ids<TData, SubKey>[];
-  storeFolder: IoBrokerStates;
-}
-
-export interface Ids<TData, SubKey = string> {
-  id: string;
-  key: keyof TData;
-  subKey?: SubKey;
-  invertValue?: boolean; // if true, the value(boolean) will be inverted
 }
 
 export interface IdsToControl {

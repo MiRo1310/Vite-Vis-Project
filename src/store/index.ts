@@ -35,16 +35,6 @@ export interface ParsedLogs {
   heatPump: Log[];
 }
 
-export interface SetValuesLegacy {
-  storeFolder: keyof IoBrokerStoreState;
-  val: string | number | boolean | object | null;
-  id: string;
-  key: string;
-  subKey?: string;
-  timestamp?: boolean;
-  state: IobrokerState;
-}
-
 export interface SetValues {
   val: string | number | boolean | null;
   id: string;
@@ -62,7 +52,6 @@ interface IoBrokerStoreActions {
   resetIdsToSubscribe(): void;
   addIdToSubscribedIds(id: string): void;
   removeIdFromSubscribedIds(id: string): void;
-  setValuesLegacy(params: SetValuesLegacy): void;
   setValues(params: SetValues): void;
 }
 
