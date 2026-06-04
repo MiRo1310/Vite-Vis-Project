@@ -6,7 +6,7 @@ import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import { getStoreValBoolean, getStoreValNumber, getStoreValString } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 
 export type BoolText = "true" | "false";
 
@@ -38,7 +38,7 @@ const items = computed(() => {
     {
       title: "Modus",
       type: "text",
-      value: getMode(getStoreValString(pool?.mode)),
+      value: getMode(getStoreValNumber(pool?.mode)),
     },
     {
       title: "Verbrauch",
@@ -74,15 +74,15 @@ const items = computed(() => {
   return items;
 });
 
-const getMode = (mode: string) => {
+const getMode = (mode: number) => {
   switch (mode) {
-    case "-1":
+    case -1:
       return "Aus";
-    case "0":
+    case 0:
       return "Kühlen";
-    case "1":
+    case 1:
       return "Heizen";
-    case "2":
+    case 2:
       return "Auto";
     default:
       return "Unbekannt";
