@@ -53,10 +53,6 @@ export interface HMIPDevice {
 }
 
 export interface IobrokerChannels {
-  system: Optional<{
-    ramIoBrokerLxc: StoreValue<string>;
-    ramLevIoBrokerLxc: StoreValue<string>;
-  }>;
   trash: Optional<{
     json: StoreValue<string>;
   }>;
@@ -577,6 +573,15 @@ export interface IobrokerChannels {
     xioami_attic_right: XiaomiWindowSensor;
     xioami_attic_left: XiaomiWindowSensor;
   }>;
+  system: Optional<{
+    ramIobrokerUsed: StoreValue<number>;
+    ramIobrokerLevel: StoreValue<number>;
+    ramIobrokerMax: StoreValue<number>;
+    cpuIobroker: StoreValue<number>;
+    cpusIobroker: StoreValue<number>;
+    diskIobrokerUsage: StoreValue<number>;
+    iobrokerUptime: StoreValue<number>;
+  }>;
 }
 
 const heatingControl = {
@@ -638,6 +643,18 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    channel: "system",
+    value: [
+      { key: "ramIobrokerUsed", id: "proxmox.0.lxc.iobroker.mem" },
+      { key: "ramIobrokerLevel", id: "proxmox.0.lxc.iobroker.mem_lev" },
+      { key: "ramIobrokerMax", id: "proxmox.0.lxc.iobroker.maxmem" },
+      { key: "cpuIobroker", id: "proxmox.0.lxc.iobroker.cpu" },
+      { key: "cpusIobroker", id: "proxmox.0.lxc.iobroker.cpus" },
+      { key: "diskIobrokerUsage", id: "proxmox.0.lxc.iobroker.disk_lev" },
+      { key: "iobrokerUptime", id: "proxmox.0.lxc.iobroker.uptime" },
+    ],
+  },
   {
     channel: "batteries",
     value: [
@@ -1114,13 +1131,6 @@ export const iobrokerData = [
       { id: "worx.0.202330294701005409AD.mower.error", key: "error" },
       { id: "worx.0.202330294701005409AD.mower.edgecut", key: "edgecut" },
       { id: "worx.0.202330294701005409AD.mower.batteryCharging", key: "batteryCharging" },
-    ],
-  },
-  {
-    channel: "system",
-    value: [
-      { id: "proxmox.0.lxc.iobroker.mem", key: "ramIoBrokerLxc", invertValue: true },
-      { id: "proxmox.0.lxc.iobroker.mem_lev", key: "ramLevIoBrokerLxc" },
     ],
   },
   {

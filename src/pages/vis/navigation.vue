@@ -11,6 +11,7 @@ import {
   Info,
   LampCeiling,
   Logs,
+  MonitorCog,
   PlugZap,
   SunSnow,
   Utensils,
@@ -63,6 +64,7 @@ const navigations = computed((): NavigationType[] => [
   { icon: Logs, text: "Wärmepumpe", to: routes.heatPump.path },
   { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
   { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
+  { icon: MonitorCog, text: "System", to: routes.system.path },
   { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
 ]);
 </script>
