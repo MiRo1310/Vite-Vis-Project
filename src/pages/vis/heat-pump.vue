@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/shared/button/button.variants";
-import { toLocaleTime } from "@/lib/time.ts";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
@@ -10,6 +9,7 @@ import InfoCard from "@/components/shared/card/InfoCard.vue";
 import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 import { useToast } from "@/components/ui/toast";
 import { getStoreValBoolean } from "@/lib/object.ts";
+import LogTable from "@/components/shared/table/LogTable.vue";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 const { toast } = useToast();
@@ -63,12 +63,7 @@ function checkAdminConnection() {
     </Card>
     <Button variant="outline" size="sm" class="mt-6" @click="reset"> Zurücksetzen </Button>
     <CardSubcard class="overflow-auto mt-2">
-      <div v-if="!getParsedLogs.heatPump?.length">Es sind keine Logs vorhanden</div>
-      <div v-for="(log, index) in getParsedLogs.heatPump" :key="index" class="text-2xs flex items-center gap-2">
-        <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
-        <span class="inline-block w-24">{{ log.from }}</span>
-        <span>{{ log.message.split(":").slice(1)?.join(":") }}</span>
-      </div>
+      <LogTable :logs="getParsedLogs.heatPump" />
     </CardSubcard>
   </Page>
 </template>
