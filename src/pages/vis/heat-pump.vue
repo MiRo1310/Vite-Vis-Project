@@ -10,6 +10,8 @@ import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 import { useToast } from "@/components/ui/toast";
 import { getStoreValBoolean } from "@/lib/object.ts";
 import LogTable from "@/components/shared/table/LogTable.vue";
+import { toJSON } from "@michaelroling/ts-library";
+import { computed } from "vue";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 const { toast } = useToast();
@@ -40,6 +42,26 @@ function checkAdminConnection() {
     throw new Error("AdminConnection is nicht vorhanden");
   }
 }
+interface HeatingPumpScriptJson {
+  carChargingRequest: boolean;
+  surplus: number;
+  heaterActive: boolean;
+  surplusAboveThreshold: boolean;
+  surplusBelowThreshold: boolean;
+  delayOnRunning: boolean;
+  delayOffRunning: boolean;
+  delayOnRemainingSeconds: number;
+  delayOffRemainingSeconds: number;
+  cooldownRemainingSeconds: number;
+  lastDeactivatedAt: string;
+  nextActivationAllowedAt: string;
+  scheduleEnabled: boolean;
+  scheduleOnCron: string;
+  scheduleOffCron: string;
+  updatedAt: string;
+}
+
+const jsonData = computed(() => toJSON<HeatingPumpScriptJson>(iobroker.pool?.heaterScriptActivateJSON?.val ?? ""));
 </script>
 
 <template>
