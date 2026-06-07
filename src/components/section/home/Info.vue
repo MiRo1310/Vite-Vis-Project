@@ -5,10 +5,8 @@ import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { DataCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { useRouter } from "vue-router";
 import { routes } from "@/router/routes.ts";
 
-const router = useRouter();
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
@@ -40,21 +38,24 @@ const landroidStatusLabel = computed(() => {
 <template>
   <div class="flex flex-col gap-2 text-xs">
     <div class="grid grid-cols-2 gap-2">
-      <DataCard
-        title="Updates"
-        content-class="flex items-center gap-1.5 cursor-pointer"
-        @click="router.push(routes.iobrokerInfo.path)"
-      >
-        <span class="text-sm font-semibold">{{ infoStore?.updatesNumber?.val ?? 0 }}</span>
-        <span class="text-xs text-muted-foreground">verfügbar</span>
-      </DataCard>
-
-      <DataCard title="Logs" content-class="flex flex-wrap gap-1 cursor-pointer" @click="router.push(routes.logs.path)">
-        <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
-        <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />
-        <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info.length" color="blue" />
-        <span v-if="!getParsedLogs.error?.length && !getParsedLogs.warn?.length && !getParsedLogs.info?.length" class="text-xs text-muted-foreground">–</span>
-      </DataCard>
+      <RouterLink :to="routes.iobrokerInfo.path">
+        <DataCard title="Updates" clickable content-class="flex items-center gap-1.5">
+          <span class="text-sm font-semibold">{{ infoStore?.updatesNumber?.val ?? 0 }}</span>
+          <span class="text-xs text-muted-foreground">verfügbar</span>
+        </DataCard>
+      </RouterLink>
+      <RouterLink :to="routes.iobrokerInfo.path">
+        <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer">
+          <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
+          <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />
+          <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info.length" color="blue" />
+          <span
+            v-if="!getParsedLogs.error?.length && !getParsedLogs.warn?.length && !getParsedLogs.info?.length"
+            class="text-xs text-muted-foreground"
+            >–</span
+          >
+        </DataCard>
+      </RouterLink>
     </div>
 
     <!-- Klima -->
@@ -98,14 +99,18 @@ const landroidStatusLabel = computed(() => {
     <!-- Wärmepumpe & Pool -->
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Wärmepumpe</p>
     <div class="grid grid-cols-2 gap-2">
-      <DataCard title="Wärmepumpe" content-class="flex items-center gap-1.5">
-        <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
-        <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
-      </DataCard>
-      <DataCard title="Poolpumpe" content-class="flex items-center gap-1.5">
-        <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
-        <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "An" : "Aus" }}</span>
-      </DataCard>
+      <RouterLink :to="routes.heatPump.path">
+        <DataCard title="Wärmepumpe" clickable content-class="flex items-center gap-1.5">
+          <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
+          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+        </DataCard>
+      </RouterLink>
+      <RouterLink :to="routes.heatPump.path">
+        <DataCard title="Poolpumpe" clickable content-class="flex items-center gap-1.5">
+          <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
+          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "An" : "Aus" }}</span>
+        </DataCard>
+      </RouterLink>
     </div>
   </div>
 </template>

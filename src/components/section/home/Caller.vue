@@ -2,9 +2,7 @@
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { formatSecondsToTime } from "@/lib/time.ts";
-import TextSeparator from "@/components/shared/text/TextSeparator.vue";
-import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";
+import { DataCard } from "@/components/shared/card";
 
 const { iobroker } = useIobrokerStore();
 
@@ -14,14 +12,10 @@ const lastCallDuration = computed(() => {
 </script>
 
 <template>
-  <CardSubcard>
-    <CardSubcardHeader>Letzter Anruf von: </CardSubcardHeader>
-    <TextSeparator />
-    <div>
-      <p>{{ iobroker.phone?.lastCallerName?.val }}</p>
-      <p>{{ iobroker.phone?.lastCaller?.val }}</p>
-      <p>{{ iobroker.phone?.lastCallTimestamp?.val }}</p>
-      <p>{{ lastCallDuration }}</p>
-    </div>
-  </CardSubcard>
+  <DataCard title="Letzter Anruf" content-class="space-y-0.5">
+    <p class="text-sm font-semibold truncate">{{ iobroker.phone?.lastCallerName?.val || "–" }}</p>
+    <p class="text-xs text-muted-foreground">{{ iobroker.phone?.lastCaller?.val }}</p>
+    <p class="text-xs text-muted-foreground">{{ iobroker.phone?.lastCallTimestamp?.val }}</p>
+    <p class="text-xs text-muted-foreground">{{ lastCallDuration }}</p>
+  </DataCard>
 </template>
