@@ -5,11 +5,9 @@ import Holiday from "@/components/section/home/Holiday.vue";
 </script>
 
 <template>
-  <div class="rounded-xl border bg-card p-2 shadow-sm">
-    <div class="grid grid-cols-3 gap-1">
-      <NavActionsShoppingCard />
-      <NavActionsMichaelsTodos />
-      <Holiday />
-    </div>
+  <div class="flex items-center flex-wrap gap-2">
+    <NavActionsShoppingCard />
+    <NavActionsMichaelsTodos />
+    <Holiday />
   </div>
 </template>

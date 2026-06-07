@@ -46,13 +46,13 @@ function shortName(name: string): string {
 
 function getDotColor(name: string): string {
   if (name === "Papier Tonne") {
-    return "text-yellow-400";
+    return "text-blue-400";
   }
   if (name === "Restmüll Tonne") {
     return "text-gray-400";
   }
   if (name === "Biotonne") {
-    return "text-green-400";
+    return "text-trashBio";
   }
   if (name === "Gelbe Tonne") {
     return "text-yellow-300";
@@ -72,12 +72,10 @@ function getAnimation(daysLeft: number): string {
   <div class="grid grid-cols-2 gap-2">
     <DataCard v-for="(event, index) in trashEvents" :key="index" :title="shortName(event.name)" content-class="space-y-0.5">
       <div :class="['flex items-center gap-1.5', getAnimation(event.daysLeft)]">
-        <Trash2 class="h-3 w-3 shrink-0" :class="getDotColor(event.name)" />
-        <span class="text-sm font-semibold">{{ event.daysLeft }}d</span>
+        <Trash2 class="size-4 shrink-0" :class="getDotColor(event.name)" />
+        <span class="text-sm font-semibold">{{ event.daysLeft }} Tag(e)</span>
       </div>
-      <p class="text-xs text-muted-foreground">
-        {{ transformDate(event.nextDate) }} {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
-      </p>
+      <p class="text-xs text-muted-foreground">{{ transformDate(event.nextDate) }} {{ days[new Date(event.nextDate).getDay() as keyof Days] }}</p>
     </DataCard>
   </div>
 </template>
