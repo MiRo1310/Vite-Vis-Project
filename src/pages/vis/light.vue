@@ -2,14 +2,13 @@
 import LightCard from "@/components/section/light/LightCard.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Page from "@/components/shared/page/Page.vue";
-import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
 const { iobroker } = useIobrokerStore();
 </script>
 
 <template>
   <Page title="Licht">
-    <CardSubcard class="p-2 flex flex-wrap gap-1">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
       <LightCard
         v-for="(light, i) in Object.keys(iobroker.lights ?? {})"
         :key="i"
@@ -17,6 +16,6 @@ const { iobroker } = useIobrokerStore();
         :value-additive="iobroker.lightsAdditive?.[light as keyof typeof iobroker.lightsAdditive]?.val"
         :name="light"
       />
-    </CardSubcard>
+    </div>
   </Page>
 </template>
