@@ -24,7 +24,6 @@ const { time, date } = useTime();
 const { iobroker } = useIobrokerStore();
 const colorMode = useColorMode();
 
-const wpActive = computed(() => getStoreValBoolean(iobroker.pool?.heaterState));
 const fuelPrice = computed(() => getStoreValNumber(iobroker.tankerKoenig?.cheapestPrice));
 const shutterOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fensterOffen));
 
@@ -33,7 +32,7 @@ function toggleColorMode() {
 }
 
 const navCardClass =
-  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-25";
+  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-25 flex-1";
 </script>
 
 <template>
@@ -77,8 +76,6 @@ const navCardClass =
         />
 
         <StatusCard title="Licht" :value="getActiveLights" :active="getActiveLights === 0" :route="routes.light.path" class="shrink-0 min-w-22" />
-
-        <StatusCard title="Wärmepumpe" :value="wpActive ? 'An' : 'Aus'" :active="wpActive" :route="routes.heatPump.path" class="shrink-0 min-w-26" />
 
         <DataCard title="Sprit" class="shrink-0 min-w-22">
           <span class="text-sm font-semibold">{{ fuelPrice.toFixed(2) }}</span>

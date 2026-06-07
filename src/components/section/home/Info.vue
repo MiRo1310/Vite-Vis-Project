@@ -15,6 +15,7 @@ const { infos: infoStore } = ioBrokerStore.iobroker;
 
 const airConditioners = computed(() => iobroker.airConditioners);
 const landroid = computed(() => iobroker.landroid);
+const pool = computed(() => iobroker.pool);
 
 const landroidStatusMap: Record<number, string> = {
   0: "Leerlauf",
@@ -91,6 +92,19 @@ const landroidStatusLabel = computed(() => {
       <DataCard title="Akku">
         <span class="text-sm font-semibold">{{ landroid?.battery?.val ?? 0 }}</span>
         <span class="text-xs text-muted-foreground ml-1">%</span>
+      </DataCard>
+    </div>
+
+    <!-- Wärmepumpe & Pool -->
+    <p class="text-xs text-muted-foreground uppercase tracking-wide">Wärmepumpe</p>
+    <div class="grid grid-cols-2 gap-2">
+      <DataCard title="Wärmepumpe" content-class="flex items-center gap-1.5">
+        <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
+        <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+      </DataCard>
+      <DataCard title="Poolpumpe" content-class="flex items-center gap-1.5">
+        <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
+        <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "An" : "Aus" }}</span>
       </DataCard>
     </div>
   </div>
