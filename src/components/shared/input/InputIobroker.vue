@@ -50,7 +50,7 @@ const variants = {
 </script>
 
 <template>
-  <div :class="['relative flex items-center', { 'border-red-500': !state?.ack }]">
+  <div :class="['relative', { 'border-red-500': !state?.ack }]">
     <InputShadcn
       :type
       :class="[getVariantsClasses(variants, props)]"
@@ -58,6 +58,6 @@ const variants = {
       @update:model-value="debounceFn"
       border="none"
     />
-    <span v-if="unit" class="text-accent-foreground/50 font-bold text-xs absolute right-5 top-px">{{ unit }}</span>
+    <div v-if="unit" class="text-accent-foreground/50 font-bold text-xs absolute right-6 top-2.5">{{ unit }}</div>
   </div>
 </template>
