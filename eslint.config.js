@@ -18,8 +18,9 @@ export default defineConfig([
       "vite.config.*",
       "codegen.ts",
       "eslint.config.mjs ",
+      "CLAUDE.md",
     ],
-  },  
+  },
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },

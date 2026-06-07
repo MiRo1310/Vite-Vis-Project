@@ -348,6 +348,9 @@ export interface IobrokerChannels {
   position: Optional<{
     michaelCoordinates: StoreValue<string>;
   }>;
+  wattPilot: Optional<{
+    jsonScriptChargeLevel: StoreValue<string>;
+  }>;
   pv: Optional<{
     feedIn: StoreValue<number>;
     batteryCharging: StoreValue<number>;
@@ -645,6 +648,10 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  {
+    channel: "wattPilot",
+    value: [{ key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" }],
+  },
   {
     channel: "system",
     value: [
