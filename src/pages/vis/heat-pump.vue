@@ -3,8 +3,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/shared/button/button.variants";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import Page from "@/components/shared/page/Page.vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ToggleCard } from "@/components/shared/card";
+import { DataCard, ToggleCard } from "@/components/shared/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
@@ -14,6 +13,7 @@ import LogTable from "@/components/shared/table/LogTable.vue";
 import { toJSON } from "@michaelroling/ts-library";
 import { computed } from "vue";
 import { formatUptime } from "@/lib/system";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 const { toast } = useToast();
@@ -79,6 +79,7 @@ const jsonDataSilent = computed(() => toJSON<HeatingPumpSilentJSON>(iobroker.poo
 const pool = computed(() => iobroker.pool);
 const listing = computed(() => heatPumpValues.value.listing);
 
+
 function statusDot(active?: boolean): string {
   return active ? "bg-green-400" : "bg-red-400";
 }
@@ -114,44 +115,24 @@ function formatDate(iso?: string): string {
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
           <div class="grid grid-cols-4 gap-2">
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">WP Status</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2 flex items-center gap-1.5">
-                <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.heaterState))]" />
-                <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
-              </CardContent>
-            </Card>
+            <DataCard title="WP Status" content-class="flex items-center gap-1.5">
+              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.heaterState))]" />
+              <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+            </DataCard>
 
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Silent</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2 flex items-center gap-1.5">
-                <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.silent))]" />
-                <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.silent) ? "An" : "Aus" }}</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Silent" content-class="flex items-center gap-1.5">
+              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.silent))]" />
+              <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.silent) ? "An" : "Aus" }}</span>
+            </DataCard>
 
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Modus</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2">
-                <span class="text-sm font-semibold">{{ listing?.[2]?.value ?? "–" }}</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Modus">
+              <span class="text-sm font-semibold">{{ listing?.[2]?.value ?? "–" }}</span>
+            </DataCard>
 
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Bezug</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2">
-                <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.consumption).toFixed(0) }}</span>
-                <span class="text-xs text-muted-foreground ml-1">W</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Bezug">
+              <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.consumption).toFixed(0) }}</span>
+              <span class="text-xs text-muted-foreground ml-1">W</span>
+            </DataCard>
           </div>
         </div>
 
@@ -159,170 +140,131 @@ function formatDate(iso?: string): string {
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Temperaturen</p>
           <div class="grid grid-cols-3 gap-2">
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Eingang</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2">
-                <span class="text-sm font-semibold text-blue-300">{{ getStoreValNumber(pool?.tempIn).toFixed(1) }}</span>
-                <span class="text-xs text-muted-foreground ml-1">°C</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Eingang">
+              <span class="text-sm font-semibold text-blue-300">{{ getStoreValNumber(pool?.tempIn).toFixed(1) }}</span>
+              <span class="text-xs text-muted-foreground ml-1">°C</span>
+            </DataCard>
 
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Ausgang</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2">
-                <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(pool?.tempOut).toFixed(1) }}</span>
-                <span class="text-xs text-muted-foreground ml-1">°C</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Ausgang">
+              <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(pool?.tempOut).toFixed(1) }}</span>
+              <span class="text-xs text-muted-foreground ml-1">°C</span>
+            </DataCard>
 
-            <Card class="py-0 gap-0">
-              <CardHeader class="px-3 pt-2 pb-0">
-                <CardTitle class="text-xs text-muted-foreground">Soll</CardTitle>
-              </CardHeader>
-              <CardContent class="px-3 pt-1 pb-2">
-                <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.tempSet).toFixed(1) }}</span>
-                <span class="text-xs text-muted-foreground ml-1">°C</span>
-              </CardContent>
-            </Card>
+            <DataCard title="Soll">
+              <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.tempSet).toFixed(1) }}</span>
+              <span class="text-xs text-muted-foreground ml-1">°C</span>
+            </DataCard>
+          </div>
+        </div>
+
+        <!-- Einstellungen -->
+        <div>
+          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
+          <div class="grid grid-cols-2 gap-2">
+            <DataCard title="Solltemperatur" content-class="pt-0.5">
+              <InputIobroker :state="pool?.tempSet" unit="°C" />
+            </DataCard>
           </div>
         </div>
 
         <!-- Automatisierung -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <Card class="py-0 gap-0">
-            <CardHeader class="px-3 pt-2 pb-0">
-              <CardTitle class="text-xs font-medium text-muted-foreground">Überschuss</CardTitle>
-            </CardHeader>
-            <CardContent class="px-3 pt-1 pb-2 space-y-2">
-              <div class="flex items-baseline gap-1">
-                <span class="text-xl font-bold">{{ jsonDataActivate?.surplus ?? 0 }}</span>
-                <span class="text-xs text-muted-foreground">W</span>
+          <DataCard title="Überschuss" content-class="space-y-2">
+            <div class="flex items-baseline gap-1">
+              <span class="text-xl font-bold">{{ jsonDataActivate?.surplus ?? 0 }}</span>
+              <span class="text-xs text-muted-foreground">W</span>
+            </div>
+            <Progress :model-value="Math.min(Math.max(jsonDataActivate?.surplus ?? 0, 0), 5000) / 50" class="h-1.5" />
+            <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                <span class="text-muted-foreground">Über Schwellwert</span>
               </div>
-              <Progress :model-value="Math.min(Math.max(jsonDataActivate?.surplus ?? 0, 0), 5000) / 50" class="h-1.5" />
-              <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-                <div class="flex items-center gap-1.5">
-                  <span
-                    :class="[
-                      'h-1.5 w-1.5 rounded-full shrink-0',
-                      jsonDataActivate?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30',
-                    ]"
-                  />
-                  <span class="text-muted-foreground">Über Schwellwert</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <span
-                    :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']"
-                  />
-                  <span class="text-muted-foreground">Unter Schwellwert</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <span
-                    :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']"
-                  />
-                  <span class="text-muted-foreground">Auto lädt</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.heaterActive ? 'bg-green-400' : 'bg-muted-foreground/30']" />
-                  <span class="text-muted-foreground">Heizung aktiv</span>
-                </div>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']" />
+                <span class="text-muted-foreground">Unter Schwellwert</span>
               </div>
-            </CardContent>
-          </Card>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span class="text-muted-foreground">Auto lädt</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.heaterActive ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                <span class="text-muted-foreground">Heizung aktiv</span>
+              </div>
+            </div>
+          </DataCard>
 
-          <Card class="py-0 gap-0">
-            <CardHeader class="px-3 pt-2 pb-0">
-              <CardTitle class="text-xs font-medium text-muted-foreground">Verzögerungen</CardTitle>
-            </CardHeader>
-            <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Einschalten</span>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOnRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOnRemainingSeconds) }}</span>
-                </div>
+          <DataCard title="Verzögerungen" content-class="space-y-1.5 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Einschalten</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOnRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOnRemainingSeconds) }}</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Ausschalten</span>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOffRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOffRemainingSeconds) }}</span>
-                </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Ausschalten</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOffRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOffRemainingSeconds) }}</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Cooldown</span>
-                <span class="font-medium">{{ formatUptime(jsonDataActivate?.cooldownRemainingSeconds) }}</span>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Cooldown</span>
+              <span class="font-medium">{{ formatUptime(jsonDataActivate?.cooldownRemainingSeconds) }}</span>
+            </div>
+          </DataCard>
 
-          <Card class="py-0 gap-0">
-            <CardHeader class="px-3 pt-2 pb-0">
-              <CardTitle class="text-xs font-medium text-muted-foreground">Silent Mode</CardTitle>
-            </CardHeader>
-            <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Batterie entladen</span>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.dischargeBattery ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ jsonDataSilent?.dischargeBattery ? "Ja" : "Nein" }}</span>
-                </div>
+          <DataCard title="Silent Mode" content-class="space-y-1.5 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Batterie entladen</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.dischargeBattery ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span class="font-medium">{{ jsonDataSilent?.dischargeBattery ? "Ja" : "Nein" }}</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Timeout aktiv</span>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.timeoutRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ formatUptime(jsonDataSilent?.timeoutRemainingSeconds) }}</span>
-                </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Timeout aktiv</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.timeoutRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span class="font-medium">{{ formatUptime(jsonDataSilent?.timeoutRemainingSeconds) }}</span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </DataCard>
 
-          <Card class="py-0 gap-0">
-            <CardHeader class="px-3 pt-2 pb-0">
-              <CardTitle class="text-xs font-medium text-muted-foreground">Zeitplan</CardTitle>
-            </CardHeader>
-            <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Aktiviert</span>
-                <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.scheduleEnabled ? 'bg-green-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ jsonDataActivate?.scheduleEnabled ? "Ja" : "Nein" }}</span>
-                </div>
+          <DataCard title="Zeitplan" content-class="space-y-1.5 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Aktiviert</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.scheduleEnabled ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                <span class="font-medium">{{ jsonDataActivate?.scheduleEnabled ? "Ja" : "Nein" }}</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Einschalten</span>
-                <span class="font-mono">{{ jsonDataActivate?.scheduleOnCron ?? "–" }}</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-muted-foreground">Ausschalten</span>
-                <span class="font-mono">{{ jsonDataActivate?.scheduleOffCron ?? "–" }}</span>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Einschalten</span>
+              <span class="font-mono">{{ jsonDataActivate?.scheduleOnCron ?? "–" }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-muted-foreground">Ausschalten</span>
+              <span class="font-mono">{{ jsonDataActivate?.scheduleOffCron ?? "–" }}</span>
+            </div>
+          </DataCard>
 
-          <Card class="py-0 gap-0">
-            <CardHeader class="px-3 pt-2 pb-0">
-              <CardTitle class="text-xs font-medium text-muted-foreground">Zeitstempel</CardTitle>
-            </CardHeader>
-            <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
-              <div class="flex justify-between items-center gap-2">
-                <span class="text-muted-foreground shrink-0">Deaktiviert</span>
-                <span class="font-medium">{{ formatDate(jsonDataActivate?.lastDeactivatedAt) }}</span>
-              </div>
-              <div class="flex justify-between items-center gap-2">
-                <span class="text-muted-foreground shrink-0">Nächste Aktivierung</span>
-                <span class="font-medium">{{ formatDate(jsonDataActivate?.nextActivationAllowedAt) }}</span>
-              </div>
-              <div class="flex justify-between items-center gap-2">
-                <span class="text-muted-foreground shrink-0">Aktualisiert</span>
-                <span class="font-medium">{{ formatDate(jsonDataActivate?.updatedAt) }}</span>
-              </div>
-            </CardContent>
-          </Card>
+          <DataCard title="Zeitstempel" content-class="space-y-1.5 text-xs">
+            <div class="flex justify-between items-center gap-2">
+              <span class="text-muted-foreground shrink-0">Deaktiviert</span>
+              <span class="font-medium">{{ formatDate(jsonDataActivate?.lastDeactivatedAt) }}</span>
+            </div>
+            <div class="flex justify-between items-center gap-2">
+              <span class="text-muted-foreground shrink-0">Nächste Aktivierung</span>
+              <span class="font-medium">{{ formatDate(jsonDataActivate?.nextActivationAllowedAt) }}</span>
+            </div>
+            <div class="flex justify-between items-center gap-2">
+              <span class="text-muted-foreground shrink-0">Aktualisiert</span>
+              <span class="font-medium">{{ formatDate(jsonDataActivate?.updatedAt) }}</span>
+            </div>
+          </DataCard>
         </div>
       </TabsContent>
 
