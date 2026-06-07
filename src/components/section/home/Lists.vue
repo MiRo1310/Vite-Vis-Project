@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { Card, CardContent } from "@/components/shared/card";
 import NavActionsShoppingCard from "@/components/section/home/NavActionsShopping.vue";
 import NavActionsMichaelsTodos from "@/components/section/home/NavActionsMichaelsTodos.vue";
 import Holiday from "@/components/section/home/Holiday.vue";
 </script>
 
 <template>
-  <Card styling="small" color="primary">
-    <CardContent class="text-xs flex flex-row flex-wrap gap-1 text-foreground">
+  <div class="rounded-xl border bg-card p-2 shadow-sm">
+    <div class="grid grid-cols-3 gap-1">
       <NavActionsShoppingCard />
       <NavActionsMichaelsTodos />
       <Holiday />
-    </CardContent>
-  </Card>
+    </div>
+  </div>
 </template>

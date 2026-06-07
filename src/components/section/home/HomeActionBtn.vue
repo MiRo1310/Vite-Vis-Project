@@ -7,11 +7,9 @@ defineProps<{ badge?: number; title?: string; class?: HTMLAttributes["class"] }>
 </script>
 
 <template>
-  <Button :class="['relative  h-24! p-2!', $props.class]">
-    <div class="flex flex-col items-center gap-2">
-      <span class="text-xs">{{ title }}</span>
-      <slot />
-      <Badge v-if="badge" color="green" :value="badge" />
-    </div>
+  <Button :class="['relative h-14! p-2! flex-col gap-1', $props.class]">
+    <slot />
+    <span class="text-[11px] leading-tight">{{ title }}</span>
+    <Badge v-if="badge" color="green" :value="badge" />
   </Button>
 </template>

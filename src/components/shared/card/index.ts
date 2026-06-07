@@ -6,3 +6,5 @@ export { default as CardContent } from "./CardContent.vue";
 export { default as CardFooter } from "./CardFooter.vue";
 export { default as ToggleCard } from "./ToggleCard.vue";
 export { default as DataCard } from "./DataCard.vue";
+export { default as StatusCard } from "./StatusCard.vue";
+export { default as SectionGroup } from "./SectionGroup.vue";
