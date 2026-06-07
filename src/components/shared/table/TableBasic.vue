@@ -15,6 +15,7 @@ const props = defineProps<{
   columns: CustomColumnDef<TData, TValue>[];
   data: TData[];
   class?: string;
+  wrapperClass?: string;
   loading: boolean;
 }>();
 
@@ -40,8 +41,8 @@ const table = useVueTable({
 });
 </script>
 <template>
-  <Table :class="props.class">
-    <TableHeader>
+  <Table :class="props.class" :wrapper-class="props.wrapperClass">
+    <TableHeader class="sticky top-0 z-10 bg-card">
       <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
         <TableHead
           v-for="(header, index) in headerGroup.headers"

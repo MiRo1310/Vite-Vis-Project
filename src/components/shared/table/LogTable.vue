@@ -3,7 +3,7 @@ import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { Log } from "@/types/types.ts";
 
-defineProps<{ logs: Log[] }>();
+defineProps<{ logs: Log[]; wrapperClass?: string }>();
 
 const columns: DatatableColumns<Log>[] = [
   { source: "ts", labelKey: "Zeit", type: "datetime" },
@@ -13,5 +13,5 @@ const columns: DatatableColumns<Log>[] = [
 </script>
 
 <template>
-  <TableBasic :columns="getColumns(columns)" :data="logs" :loading="false" />
+  <TableBasic :columns="getColumns(columns)" :data="logs" :loading="false" :wrapper-class="wrapperClass" />
 </template>

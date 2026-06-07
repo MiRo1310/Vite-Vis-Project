@@ -291,9 +291,7 @@ function formatDate(iso?: string): string {
         <div class="flex justify-end mb-2">
           <Button variant="destructive" size="sm" @click="reset">Zurücksetzen</Button>
         </div>
-        <div class="overflow-auto">
-          <LogTable :logs="getParsedLogs.heatPump" />
-        </div>
+        <LogTable :logs="getParsedLogs.heatPump" wrapper-class="max-h-[calc(100vh-220px)]" />
       </TabsContent>
     </Tabs>
   </Page>
