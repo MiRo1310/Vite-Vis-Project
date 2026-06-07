@@ -2,17 +2,14 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { Trash2 } from "lucide-vue-next";
-import { Card, CardContent } from "@/components/shared/card";
+import { DataCard } from "@/components/shared/card";
 import { Days, days } from "@/constants/constants.js";
-import TextSeparator from "@/components/shared/text/TextSeparator.vue";
-import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import CardSubcardHeader from "@/components/shared/card/CardSubcardHeader.vue";
 
 const { iobroker } = useIobrokerStore();
 
 const transformDate = (date: number) => {
   const d = new Date(date);
-  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
+  return `${d.getDate()}.${d.getMonth() + 1}.`;
 };
 
 interface TrashType {
@@ -31,46 +28,54 @@ const trashEvents = computed<TrashType[]>(() => {
   return [];
 });
 
-const getAnimation = (days: number) => {
-  if (days <= 1) {
-    return "animate-pulse";
-  }
-};
-
-const getColor = (name: string) => {
+function shortName(name: string): string {
   if (name === "Papier Tonne") {
-    return "bg-trashPapier/50 text-black";
+    return "Papier";
   }
   if (name === "Restmüll Tonne") {
-    return "text-cardCustom-text/70 bg-black";
+    return "Restmüll";
   }
   if (name === "Biotonne") {
-    return "bg-trashBio/50 text-black";
+    return "Bio";
   }
   if (name === "Gelbe Tonne") {
-    return "bg-trashGelb/50 text-black";
+    return "Gelb";
   }
-};
+  return name;
+}
+
+function getDotColor(name: string): string {
+  if (name === "Papier Tonne") {
+    return "text-blue-400";
+  }
+  if (name === "Restmüll Tonne") {
+    return "text-gray-400";
+  }
+  if (name === "Biotonne") {
+    return "text-trashBio";
+  }
+  if (name === "Gelbe Tonne") {
+    return "text-yellow-300";
+  }
+  return "text-muted-foreground";
+}
+
+function getAnimation(daysLeft: number): string {
+  if (daysLeft <= 1) {
+    return "animate-pulse";
+  }
+  return "";
+}
 </script>
+
 <template>
-  <Card styling="small" color="primary">
-    <CardContent class="grid grid-cols-2 gap-1">
-      <CardSubcard v-for="(event, index) in trashEvents" :key="index">
-        <div class="flex justify-between">
-          <CardSubcardHeader class="font-bold text-xs">
-            {{ event.name }}
-          </CardSubcardHeader>
-          <Trash2 :class="['inline-block ml-2 p-1 rounded-md', getColor(event.name), getAnimation(event.daysLeft)]" />
-        </div>
-        <TextSeparator />
-        <div>
-          <p>in {{ event.daysLeft }} Tagen</p>
-          <p>am {{ transformDate(event.nextDate) }}</p>
-          <p>
-            {{ days[new Date(event.nextDate).getDay() as keyof Days] }}
-          </p>
-        </div>
-      </CardSubcard>
-    </CardContent>
-  </Card>
+  <div class="grid grid-cols-2 gap-2">
+    <DataCard v-for="(event, index) in trashEvents" :key="index" :title="shortName(event.name)" content-class="space-y-0.5">
+      <div :class="['flex items-center gap-1.5', getAnimation(event.daysLeft)]">
+        <Trash2 class="size-4 shrink-0" :class="getDotColor(event.name)" />
+        <span class="text-sm font-semibold">{{ event.daysLeft }} Tag(e)</span>
+      </div>
+      <p class="text-xs text-muted-foreground">{{ transformDate(event.nextDate) }} {{ days[new Date(event.nextDate).getDay() as keyof Days] }}</p>
+    </DataCard>
+  </div>
 </template>

@@ -84,19 +84,35 @@ Die shadcn `Card` hat standardmäßig `py-6 gap-6` — das ist für Dashboard-An
 ```
 
 ### Seitenstruktur mit Tabs
-Seiten mit viel Inhalt (Daten + Logs) werden mit `Tabs` aufgeteilt:
-- **Tab "Daten"**: alle Metrikkarten
-- **Tab "Logs"**: LogTable mit fixem Header
+Seiten mit viel Inhalt werden mit `Tabs` aufgeteilt. Typische Tab-Kombinationen:
+- **Daten + Logs** (z.B. Wärmepumpe, System)
+- **Daten + Diagramme** (z.B. Heizung, PV, Energie)
 
 ```vue
 <Tabs default-value="daten">
   <TabsList class="mb-3">
     <TabsTrigger value="daten">Daten</TabsTrigger>
-    <TabsTrigger value="logs">Logs</TabsTrigger>
+    <TabsTrigger value="diagramme">Diagramme</TabsTrigger>
   </TabsList>
   <TabsContent value="daten" class="space-y-3"> … </TabsContent>
-  <TabsContent value="logs"> … </TabsContent>
+  <TabsContent value="diagramme" class="space-y-3"> … </TabsContent>
 </Tabs>
+```
+
+Innerhalb eines Tab-Contents immer `class="space-y-3"` für gleichmäßigen Abstand zwischen Abschnitten. Jeder Abschnitt beginnt mit einer `<p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">` Überschrift gefolgt von einem Grid.
+
+**Seiten-Grid für DataCards:** `grid grid-cols-2 sm:grid-cols-4 gap-2` — 2 Spalten auf Mobile, 4 auf Desktop.
+
+**Seiten nutzen `Page`-Wrapper** aus `@/components/shared/page/Page.vue` für Titel + PageHeader-Navigation. Buttons für Sub-Routen kommen in den `#header`-Slot:
+```vue
+<Page title="Heizung">
+  <template #header>
+    <RouterLink :to="routes.heatingControl.path">
+      <Button variant="outline" size="sm">Steuerung</Button>
+    </RouterLink>
+  </template>
+  <Tabs …> … </Tabs>
+</Page>
 ```
 
 ### Abschnitts-Überschriften
@@ -126,12 +142,22 @@ Für alle reinen Anzeigewerte `DataCard` aus `@/components/shared/card` verwende
 
 <!-- Mit zusätzlichen Content-Klassen (z.B. flex für Dot + Text): -->
 <DataCard title="Status" content-class="flex items-center gap-1.5">
-  <span class="h-2 w-2 rounded-full bg-green-400" />
+  <StatusDot :active="true" />
   <span class="text-sm font-semibold">An</span>
+</DataCard>
+
+<!-- Klickbar mit Button-Hover-Effekt: -->
+<DataCard title="Updates" clickable @click="navigate">
+  <span class="text-sm font-semibold">3</span>
 </DataCard>
 ```
 
 `DataCard` kapselt das Padding-Konzept (`py-0 gap-0`, `px-3 pt-2 pb-0` Header, `px-3 pt-1 pb-2` Content) und reduziert Boilerplate von ~10 auf 3 Zeilen pro Karte.
+
+Props:
+- `title` — Kartenüberschrift (muted, xs)
+- `content-class` — zusätzliche Klassen für den Content-Bereich
+- `clickable` — aktiviert `hover:bg-accent hover:text-accent-foreground` + Fokus-Ring (identisch zu Button outline-Hover)
 
 ### Editierbare ioBroker-Werte (`InputIobroker`)
 Für schreibbare ioBroker-States **niemals** ein rohes Input oder `InputShadcn` mit eigenem Watcher/Debounce bauen — stattdessen `InputIobroker` aus `@/components/shared/input` nutzen:
