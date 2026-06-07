@@ -89,6 +89,7 @@ const navCardClass =
       <!-- Linke Spalte: Kalender + Müll + Listen -->
       <div class="lg:col-span-3 sm:col-span-5 col-span-12 h-full flex flex-col gap-2 overflow-auto">
         <Calendar class="flex-1" />
+        <Caller />
         <Trash />
         <Lists />
       </div>
@@ -102,7 +103,6 @@ const navCardClass =
       <!-- Rechte Spalte: Info + Caller + Fuel -->
       <div class="lg:col-span-4 col-span-12 h-full flex flex-col gap-2 overflow-auto">
         <Info class="flex-1" />
-        <Caller />
         <Fuel />
       </div>
     </div>

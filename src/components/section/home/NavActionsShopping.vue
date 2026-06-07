@@ -18,7 +18,7 @@ const createShoppinglist = computed((): AlexaList[] => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <HomeActionBtn :title="'Einkaufsliste'" :badge="createShoppinglist?.length" class="flex-1 h-full">
+      <HomeActionBtn :title="'Einkaufsliste'" :badge="createShoppinglist?.length">
         <ShoppingBag />
       </HomeActionBtn>
     </template>
