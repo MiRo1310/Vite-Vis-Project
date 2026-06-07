@@ -65,7 +65,17 @@ interface HeatingPumpScriptJson {
   updatedAt: string;
 }
 
-const jsonData = computed(() => toJSON<HeatingPumpScriptJson>(iobroker.pool?.heaterScriptActivateJSON?.val ?? "").json);
+interface HeatingPumpSilentJSON {
+  silentMode: boolean;
+  power: number;
+  dischargeBattery: boolean;
+  timeoutRunning: boolean;
+  timeoutRemainingSeconds: number;
+  updatedAt: string;
+}
+
+const jsonDataActivate = computed(() => toJSON<HeatingPumpScriptJson>(iobroker.pool?.heaterScriptActivateJSON?.val ?? "").json);
+const jsonDataSilent = computed(() => toJSON<HeatingPumpSilentJSON>(iobroker.pool?.heaterSilentScriptJSON?.val ?? "").json);
 const pool = computed(() => iobroker.pool);
 const listing = computed(() => heatPumpValues.value.listing);
 
@@ -91,7 +101,6 @@ function formatDate(iso?: string): string {
 
       <!-- TAB: Daten -->
       <TabsContent value="daten" class="space-y-3">
-
         <!-- Aktionen -->
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Aktionen</p>
@@ -190,25 +199,34 @@ function formatDate(iso?: string): string {
             </CardHeader>
             <CardContent class="px-3 pt-1 pb-2 space-y-2">
               <div class="flex items-baseline gap-1">
-                <span class="text-xl font-bold">{{ jsonData?.surplus ?? 0 }}</span>
+                <span class="text-xl font-bold">{{ jsonDataActivate?.surplus ?? 0 }}</span>
                 <span class="text-xs text-muted-foreground">W</span>
               </div>
-              <Progress :model-value="Math.min(Math.max(jsonData?.surplus ?? 0, 0), 5000) / 50" class="h-1.5" />
+              <Progress :model-value="Math.min(Math.max(jsonDataActivate?.surplus ?? 0, 0), 5000) / 50" class="h-1.5" />
               <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonData?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                  <span
+                    :class="[
+                      'h-1.5 w-1.5 rounded-full shrink-0',
+                      jsonDataActivate?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30',
+                    ]"
+                  />
                   <span class="text-muted-foreground">Über Schwellwert</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonData?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']" />
+                  <span
+                    :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']"
+                  />
                   <span class="text-muted-foreground">Unter Schwellwert</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonData?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                  <span
+                    :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']"
+                  />
                   <span class="text-muted-foreground">Auto lädt</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonData?.heaterActive ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                  <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.heaterActive ? 'bg-green-400' : 'bg-muted-foreground/30']" />
                   <span class="text-muted-foreground">Heizung aktiv</span>
                 </div>
               </div>
@@ -223,20 +241,42 @@ function formatDate(iso?: string): string {
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Einschalten</span>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonData?.delayOnRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ formatUptime(jsonData?.delayOnRemainingSeconds) }}</span>
+                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOnRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                  <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOnRemainingSeconds) }}</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Ausschalten</span>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonData?.delayOffRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ formatUptime(jsonData?.delayOffRemainingSeconds) }}</span>
+                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.delayOffRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                  <span class="font-medium">{{ formatUptime(jsonDataActivate?.delayOffRemainingSeconds) }}</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Cooldown</span>
-                <span class="font-medium">{{ formatUptime(jsonData?.cooldownRemainingSeconds) }}</span>
+                <span class="font-medium">{{ formatUptime(jsonDataActivate?.cooldownRemainingSeconds) }}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card class="py-0 gap-0">
+            <CardHeader class="px-3 pt-2 pb-0">
+              <CardTitle class="text-xs font-medium text-muted-foreground">Silent Mode</CardTitle>
+            </CardHeader>
+            <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-muted-foreground">Batterie entladen</span>
+                <div class="flex items-center gap-1.5">
+                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.dischargeBattery ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                  <span class="font-medium">{{ jsonDataSilent?.dischargeBattery ? "Ja" : "Nein" }}</span>
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-muted-foreground">Timeout aktiv</span>
+                <div class="flex items-center gap-1.5">
+                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataSilent?.timeoutRunning ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                  <span class="font-medium">{{ formatUptime(jsonDataSilent?.timeoutRemainingSeconds) }}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -249,17 +289,17 @@ function formatDate(iso?: string): string {
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Aktiviert</span>
                 <div class="flex items-center gap-1.5">
-                  <span :class="['h-1.5 w-1.5 rounded-full', jsonData?.scheduleEnabled ? 'bg-green-400' : 'bg-muted-foreground/30']" />
-                  <span class="font-medium">{{ jsonData?.scheduleEnabled ? "Ja" : "Nein" }}</span>
+                  <span :class="['h-1.5 w-1.5 rounded-full', jsonDataActivate?.scheduleEnabled ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                  <span class="font-medium">{{ jsonDataActivate?.scheduleEnabled ? "Ja" : "Nein" }}</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Einschalten</span>
-                <span class="font-mono">{{ jsonData?.scheduleOnCron ?? "–" }}</span>
+                <span class="font-mono">{{ jsonDataActivate?.scheduleOnCron ?? "–" }}</span>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-muted-foreground">Ausschalten</span>
-                <span class="font-mono">{{ jsonData?.scheduleOffCron ?? "–" }}</span>
+                <span class="font-mono">{{ jsonDataActivate?.scheduleOffCron ?? "–" }}</span>
               </div>
             </CardContent>
           </Card>
@@ -271,15 +311,15 @@ function formatDate(iso?: string): string {
             <CardContent class="px-3 pt-1 pb-2 space-y-1.5 text-xs">
               <div class="flex justify-between items-center gap-2">
                 <span class="text-muted-foreground shrink-0">Deaktiviert</span>
-                <span class="font-medium">{{ formatDate(jsonData?.lastDeactivatedAt) }}</span>
+                <span class="font-medium">{{ formatDate(jsonDataActivate?.lastDeactivatedAt) }}</span>
               </div>
               <div class="flex justify-between items-center gap-2">
                 <span class="text-muted-foreground shrink-0">Nächste Aktivierung</span>
-                <span class="font-medium">{{ formatDate(jsonData?.nextActivationAllowedAt) }}</span>
+                <span class="font-medium">{{ formatDate(jsonDataActivate?.nextActivationAllowedAt) }}</span>
               </div>
               <div class="flex justify-between items-center gap-2">
                 <span class="text-muted-foreground shrink-0">Aktualisiert</span>
-                <span class="font-medium">{{ formatDate(jsonData?.updatedAt) }}</span>
+                <span class="font-medium">{{ formatDate(jsonDataActivate?.updatedAt) }}</span>
               </div>
             </CardContent>
           </Card>
