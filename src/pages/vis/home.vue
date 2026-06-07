@@ -40,7 +40,7 @@ const appStore = useAppStore();
           <Calendar class="flex-1" />
         </div>
         <Info class="lg:block hidden flex-1" />
-        <Timer class="sm:block hidden" />
+        <Timer class="sm:block hidden w-full" />
       </div>
 
       <IobrokerValues class="lg:col-span-3 sm:col-span-6 col-span-12" />

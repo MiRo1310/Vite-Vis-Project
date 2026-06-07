@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Level, Log } from "@/types/types.ts";
+import { Level } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { toLocaleTime } from "@/lib/time.ts";
 import { adminConnection } from "@/lib/iobroker-service.js";
 import Badge from "@/components/shared/badge/Badge.vue";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { getStoreValId } from "@/lib/object.ts";
 import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import LogTable from "@/components/shared/table/LogTable.vue";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 
@@ -72,12 +72,7 @@ function reset() {
     </div>
 
     <CardSubcard class="overflow-auto mt-2">
-      <div v-if="!getParsedLogs[selected]?.length">Es sind keine Logs vorhanden</div>
-      <div v-for="(log, index) in getParsedLogs[selected] as Log[]" :key="index" class="text-2xs w-200">
-        <span class="w-28 inline-block">{{ toLocaleTime(log.ts) }}</span>
-        <span class="inline-block w-24">{{ log.from }}</span>
-        {{ log.message }}
-      </div>
+      <LogTable :logs="getParsedLogs[selected]" />
     </CardSubcard>
   </Page>
 </template>

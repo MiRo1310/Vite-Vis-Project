@@ -342,6 +342,8 @@ export interface IobrokerChannels {
     poolPumpPower: StoreValue<number>;
     poolPumpSwitch: StoreValue<boolean>;
     silent: StoreValue<boolean>;
+    heaterScriptActivateJSON: StoreValue<string>;
+    heaterSilentScriptJSON: StoreValue<string>;
   }>;
   position: Optional<{
     michaelCoordinates: StoreValue<string>;
@@ -968,6 +970,8 @@ export const iobrokerData = [
       { id: "midas-aquatemp.0.silent", key: "silent" },
       { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power", key: "poolPumpPower" },
       { id: "shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", key: "poolPumpSwitch" },
+      { id: "0_userdata.0.Wärmepumpe.Wärmepumpe_schalten_script", key: "heaterScriptActivateJSON" },
+      { id: "0_userdata.0.Wärmepumpe.SilentModeScriptJson", key: "heaterSilentScriptJSON" },
     ],
   },
   {
