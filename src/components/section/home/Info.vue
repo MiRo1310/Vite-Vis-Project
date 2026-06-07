@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import InfoUpdatesLogs from "@/components/section/home/InfoUpdatesLogs.vue";
 import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { DataCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
+import Badge from "@/components/shared/badge/Badge.vue";
+import { useRouter } from "vue-router";
+import { routes } from "@/router/routes.ts";
 
+const router = useRouter();
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
@@ -35,7 +38,23 @@ const landroidStatusLabel = computed(() => {
 
 <template>
   <div class="flex flex-col gap-2 text-xs">
-    <InfoUpdatesLogs :info="infoStore" :get-parsed-logs="getParsedLogs" />
+    <div class="grid grid-cols-2 gap-2">
+      <DataCard
+        title="Updates"
+        content-class="flex items-center gap-1.5 cursor-pointer"
+        @click="router.push(routes.iobrokerInfo.path)"
+      >
+        <span class="text-sm font-semibold">{{ infoStore?.updatesNumber?.val ?? 0 }}</span>
+        <span class="text-xs text-muted-foreground">verfügbar</span>
+      </DataCard>
+
+      <DataCard title="Logs" content-class="flex flex-wrap gap-1 cursor-pointer" @click="router.push(routes.logs.path)">
+        <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
+        <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />
+        <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info.length" color="blue" />
+        <span v-if="!getParsedLogs.error?.length && !getParsedLogs.warn?.length && !getParsedLogs.info?.length" class="text-xs text-muted-foreground">–</span>
+      </DataCard>
+    </div>
 
     <!-- Klima -->
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Klima</p>

@@ -42,18 +42,18 @@ const fuelPrice = computed(() => getStoreValNumber(iobroker.tankerKoenig?.cheape
   <div class="mt-2 h-[calc(100%-44px)] flex flex-col gap-2">
     <!-- Statusleiste: kein flex-wrap, horizontal scrollbar -->
     <div class="flex gap-2 shrink-0 overflow-x-auto pb-1">
-      <DataCard title="Zeit" class="shrink-0">
+      <DataCard title="Zeit" class="shrink-0 min-w-30">
         <p class="text-sm font-semibold leading-tight">{{ time }}</p>
         <p class="text-xs text-muted-foreground leading-tight">{{ date }}</p>
       </DataCard>
 
-      <StatusCard title="Fenster" :value="getOpenWindows ?? 0" :active="(getOpenWindows ?? 0) === 0" :route="routes.window.path" class="shrink-0" />
+      <StatusCard title="Fenster" :value="getOpenWindows ?? 0" :active="(getOpenWindows ?? 0) === 0" :route="routes.window.path" class="shrink-0 min-w-22" />
 
-      <StatusCard title="Licht" :value="getActiveLights" :active="getActiveLights === 0" :route="routes.light.path" class="shrink-0" />
+      <StatusCard title="Licht" :value="getActiveLights" :active="getActiveLights === 0" :route="routes.light.path" class="shrink-0 min-w-22" />
 
-      <StatusCard title="Wärmepumpe" :value="wpActive ? 'An' : 'Aus'" :active="wpActive" :route="routes.heatPump.path" class="shrink-0" />
+      <StatusCard title="Wärmepumpe" :value="wpActive ? 'An' : 'Aus'" :active="wpActive" :route="routes.heatPump.path" class="shrink-0 min-w-26" />
 
-      <DataCard title="Sprit" class="shrink-0">
+      <DataCard title="Sprit" class="shrink-0 min-w-22">
         <span class="text-sm font-semibold">{{ fuelPrice.toFixed(2) }}</span>
         <span class="text-xs text-muted-foreground ml-1">€</span>
       </DataCard>
@@ -71,7 +71,7 @@ const fuelPrice = computed(() => getStoreValNumber(iobroker.tankerKoenig?.cheape
       <!-- Mittlere Spalte: IobrokerValues + Timer -->
       <div class="lg:col-span-5 sm:col-span-7 col-span-12 h-full flex flex-col gap-2 overflow-hidden">
         <IobrokerValues class="flex-1 min-h-0" />
-        <Timer class="shrink-0 hidden sm:block" />
+        <Timer class="shrink-0 hidden sm:grid!" />
       </div>
 
       <!-- Rechte Spalte: Info + Caller + Fuel -->
