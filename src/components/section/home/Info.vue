@@ -44,7 +44,7 @@ const landroidStatusLabel = computed(() => {
           <span class="text-xs text-muted-foreground">verfügbar</span>
         </DataCard>
       </RouterLink>
-      <RouterLink :to="routes.iobrokerInfo.path">
+      <RouterLink :to="routes.logs.path">
         <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer">
           <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
           <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />

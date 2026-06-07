@@ -350,6 +350,7 @@ export interface IobrokerChannels {
   }>;
   wattPilot: Optional<{
     jsonScriptChargeLevel: StoreValue<string>;
+    autoCharging: StoreValue<boolean>;
   }>;
   pv: Optional<{
     feedIn: StoreValue<number>;
@@ -650,7 +651,10 @@ function addItems() {
 export const iobrokerData = [
   {
     channel: "wattPilot",
-    value: [{ key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" }],
+    value: [
+      { key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" },
+      { key: "autoCharging", id: "0_userdata.0.Wattpilot.autoCharging" },
+    ],
   },
   {
     channel: "system",
