@@ -29,7 +29,7 @@
     "@graphql-codegen/typescript-vue-apollo": "^5.0.1",
     "@headlessui/vue": "^1.7.23",
     "@influxdata/influxdb-client": "^1.35.0",
-    "@iobroker/socket-client": "^5.1.2",
+    "@iobroker/socket-client": "^5.1.4",
     "@iobroker/types": "^7.1.2",
     "@michaelroling/ts-library": "^1.0.7",
     "@radix-icons/vue": "^1.0.0",

@@ -1437,10 +1437,10 @@
   dependencies:
     "@swc/helpers" "^0.5.0"
 
-"@iobroker/socket-client@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-5.1.2.tgz#e927c6fffe4eac6487100e22f1d78bdd656e7425"
-  integrity sha512-+9j+4N99VJLM/wmNNeHnPRUZTYmahd7mPtZvWGphu/NTjDPc8BZ+nNjzGOrXWpRFo1ePPDELywleDpLxz905nA==
+"@iobroker/socket-client@^5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-5.1.4.tgz#fd1746816f004bc84f210fc2095ae0d1e32cec06"
+  integrity sha512-Q16Vjz01g8chkzRoNdcddObzAa6QBNsK9pvxI08QDP0YzXRMs3sYvCvziXn3q6bWRvpcGPLS6x/HnyON+QvhpQ==
 
 "@iobroker/types@^7.1.2":
   version "7.1.2"
