@@ -30,10 +30,12 @@ src/
   components/
     ui/           # shadcn-Komponenten (Card, Progress, Tabs, Dialog, …)
     shared/       # Wiederverwendbare App-Komponenten (Page, Button, ToggleCard, …)
-      card/       # ToggleCard und andere Card-Varianten
-      table/      # TableBasic, LogTable, …
-    section/      # Seitenspezifische Abschnitte (home/, …)
-    layout/       # Layout-Komponenten (PageHeader, …)
+      card/       # DataCard, ToggleCard
+      input/      # InputIobroker (debounced, ack-aware)
+      page/       # Page.vue — Seitenwrapper mit Titel + Icon-Nav
+      table/      # TableBasic, LogTable
+    section/      # Seitenspezifische Abschnitte (home/, alexa/, light/, …)
+    layout/       # DarkMode-Toggle (wird von Page.vue eingebunden)
   lib/            # Reine Utility-Funktionen (testbar, kein Vue-Overhead)
   pages/vis/      # Seiten (home.vue, system.vue, heat-pump.vue, …)
   store/          # Pinia Stores (ioBrokerStore, app-store, …)
@@ -103,17 +105,21 @@ Innerhalb eines Tab-Contents immer `class="space-y-3"` für gleichmäßigen Abst
 
 **Seiten-Grid für DataCards:** `grid grid-cols-2 sm:grid-cols-4 gap-2` — 2 Spalten auf Mobile, 4 auf Desktop.
 
-**Seiten nutzen `Page`-Wrapper** aus `@/components/shared/page/Page.vue` für Titel + PageHeader-Navigation. Buttons für Sub-Routen kommen in den `#header`-Slot:
+**Seiten nutzen `Page`-Wrapper** aus `@/components/shared/page/Page.vue` für Titel + PageHeader-Navigation. Buttons für Sub-Routen kommen in den `#header`-Slot. `Page.vue` selbst enthält einen kompakten Icon-Button-Strip (Plane → Navigation, Home → Startseite, DarkMode-Toggle) als einheitliche Navigation auf jeder Seite:
+
 ```vue
 <Page title="Heizung">
   <template #header>
-    <RouterLink :to="routes.heatingControl.path">
-      <Button variant="outline" size="sm">Steuerung</Button>
-    </RouterLink>
+    <!-- Button muss RouterLink wrappen (asChild), nicht umgekehrt: -->
+    <Button variant="outline" size="sm" as-child>
+      <RouterLink :to="routes.heatingControl.path">Steuerung</RouterLink>
+    </Button>
   </template>
   <Tabs …> … </Tabs>
 </Page>
 ```
+
+**`as-child`-Regel:** Immer `Button as-child > RouterLink`, nie `RouterLink > Button as-child`. Letzteres verhindert korrekte Klassen-Weitergabe.
 
 ### Abschnitts-Überschriften
 Vor jeder Card-Gruppe eine kleine Label-Zeile:
@@ -177,9 +183,19 @@ Editierbare Werte kommen in eine eigene **Einstellungen**-Sektion, nicht in die 
 ### Klickbare Aktionskarten (`ToggleCard`)
 Für schaltbare Geräte keine Buttons, sondern `ToggleCard` aus `@/components/shared/card`:
 ```vue
+<!-- Standard (grün aktiv / rot inaktiv) — z.B. Wärmepumpe, Heizung: -->
 <ToggleCard title="Gerätename" :active="boolean" @click="toggleFn" />
+
+<!-- Licht-Variante (gelb aktiv mit Glow / neutral inaktiv): -->
+<ToggleCard color="yellow" title="Licht Name" :active="boolean" @click="toggleFn" />
 ```
-Die Karte zeigt farbigen Border (grün/rot), Status-Dot und "An"/"Aus" Text. Hover-Effekt via `hover:bg-accent`.
+
+Props:
+- `title` — Kartenüberschrift
+- `active` — Zustand
+- `color?: "green" | "yellow"` — Standard `green`: aktiv=grüner Border+Dot, inaktiv=roter Border+Dot. `yellow`: aktiv=gelber Border+Dot+Glow, inaktiv=kein Border, gemuteter Dot
+
+Farbkonvention: `green` für On/Off-Geräte (Pumpen, Heizung), `yellow` für Lichtquellen.
 
 ### Temperaturwerte
 - Eingang: `text-blue-300`
@@ -188,6 +204,28 @@ Die Karte zeigt farbigen Border (grün/rot), Status-Dot und "An"/"Aus" Text. Hov
 
 ### Destruktive Aktionen
 Buttons die Daten löschen/zurücksetzen: `variant="destructive"`.
+
+### Inline-Inputs neben Switch/Checkbox
+Wenn ein kleines Zahlenfeld inline neben einem `Switch` steht, **kein `InputShadcn`** verwenden — der Wrapper-Div hat `h-7` aber der innere `<input>` ist fix `h-9`, was `items-center`-Alignment bricht. Stattdessen natives `<input>` mit expliziter Höhe:
+
+```vue
+<input
+  v-model.number="value"
+  type="number"
+  class="w-14 h-6 rounded-md border border-input bg-transparent text-xs text-center focus:outline-none focus:ring-1 focus:ring-ring"
+  @change="onUpdate"
+/>
+```
+
+### Tailwind responsive Konflikte
+Wenn eine Klasse wie `hidden sm:block` auf einem Element ein Grid-Layout überschreibt, Tailwind `!`-Modifier nutzen:
+```vue
+<!-- Falsch: sm:block überschreibt display:grid -->
+<div class="hidden sm:grid grid-cols-2">
+
+<!-- Richtig: !important verhindert Überschreibung -->
+<div class="hidden sm:grid! grid-cols-2">
+```
 
 ---
 

@@ -79,7 +79,6 @@ const jsonDataSilent = computed(() => toJSON<HeatingPumpSilentJSON>(iobroker.poo
 const pool = computed(() => iobroker.pool);
 const listing = computed(() => heatPumpValues.value.listing);
 
-
 function statusDot(active?: boolean): string {
   return active ? "bg-green-400" : "bg-red-400";
 }
@@ -177,15 +176,21 @@ function formatDate(iso?: string): string {
             <Progress :model-value="Math.min(Math.max(jsonDataActivate?.surplus ?? 0, 0), 5000) / 50" class="h-1.5" />
             <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
               <div class="flex items-center gap-1.5">
-                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+                <span
+                  :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusAboveThreshold ? 'bg-green-400' : 'bg-muted-foreground/30']"
+                />
                 <span class="text-muted-foreground">Über Schwellwert</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']" />
+                <span
+                  :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.surplusBelowThreshold ? 'bg-red-400' : 'bg-muted-foreground/30']"
+                />
                 <span class="text-muted-foreground">Unter Schwellwert</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <span :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']" />
+                <span
+                  :class="['h-1.5 w-1.5 rounded-full shrink-0', jsonDataActivate?.carChargingRequest ? 'bg-yellow-400' : 'bg-muted-foreground/30']"
+                />
                 <span class="text-muted-foreground">Auto lädt</span>
               </div>
               <div class="flex items-center gap-1.5">
@@ -195,7 +200,7 @@ function formatDate(iso?: string): string {
             </div>
           </DataCard>
 
-          <DataCard title="Verzögerungen" content-class="space-y-1.5 text-xs">
+          <DataCard title="Verzögerungen Ein / Ausschalten" content-class="space-y-1.5 text-xs">
             <div class="flex justify-between items-center">
               <span class="text-muted-foreground">Einschalten</span>
               <div class="flex items-center gap-1.5">

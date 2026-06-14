@@ -109,15 +109,27 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Wärmepumpe</p>
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Wärmepumpe" clickable content-class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
-          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+        <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
+          <div class="flex items-center gap-1.5">
+            <StatusDot :active="getStoreValBoolean(pool?.heaterOnline)" />
+            <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterOnline) ? "Online" : "Offline" }}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
+            <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+          </div>
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Poolpumpe" clickable content-class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
-          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "An" : "Aus" }}</span>
+        <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
+          <div class="flex items-center gap-1.5">
+            <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
+            <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "Online" : "Offline" }}</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <StatusDot :active="getStoreValNumber(pool?.poolPumpPower) > 40" />
+            <span class="text-xs font-semibold">{{ getStoreValNumber(pool?.poolPumpPower) > 40 ? "An" : "Aus" }}</span>
+          </div>
         </DataCard>
       </RouterLink>
     </div>

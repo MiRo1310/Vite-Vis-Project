@@ -332,6 +332,7 @@ export interface IobrokerChannels {
   }>;
   pool: Optional<{
     heaterState: StoreValue<boolean>;
+    heaterOnline: StoreValue<boolean>;
     tempSet: StoreValue<number>;
     consumption: StoreValue<number>;
     tempIn: StoreValue<number>;
@@ -971,6 +972,7 @@ export const iobrokerData = [
     channel: "pool",
     value: [
       { id: "midas-aquatemp.0.state", key: "heaterState" },
+      { id: "midas-aquatemp.0.online", key: "heaterOnline" },
       { id: "midas-aquatemp.0.tempSet", key: "tempSet" },
       { id: "midas-aquatemp.0.consumption", key: "consumption" },
       { id: "midas-aquatemp.0.tempIn", key: "tempIn" },
