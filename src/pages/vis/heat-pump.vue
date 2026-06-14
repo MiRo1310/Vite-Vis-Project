@@ -96,20 +96,12 @@ function formatDate(iso?: string): string {
     <Tabs default-value="daten">
       <TabsList class="mb-3">
         <TabsTrigger value="daten">Daten</TabsTrigger>
+        <TabsTrigger value="aktionen">Aktionen</TabsTrigger>
         <TabsTrigger value="logs">Logs</TabsTrigger>
       </TabsList>
 
       <!-- TAB: Daten -->
       <TabsContent value="daten" class="space-y-3">
-        <!-- Aktionen -->
-        <div>
-          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Aktionen</p>
-          <div class="grid grid-cols-2 gap-2">
-            <ToggleCard title="Wärmepumpe" :active="getStoreValBoolean(pool?.heaterState)" @click="toggleHeater" />
-            <ToggleCard title="Poolpumpe" :active="getStoreValBoolean(pool?.poolPumpSwitch)" @click="togglePump" />
-          </div>
-        </div>
-
         <!-- Status -->
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
@@ -152,16 +144,6 @@ function formatDate(iso?: string): string {
             <DataCard title="Soll">
               <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.tempSet).toFixed(1) }}</span>
               <span class="text-xs text-muted-foreground ml-1">°C</span>
-            </DataCard>
-          </div>
-        </div>
-
-        <!-- Einstellungen -->
-        <div>
-          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
-          <div class="grid grid-cols-2 gap-2">
-            <DataCard title="Solltemperatur" content-class="pt-0.5">
-              <InputIobroker :state="pool?.tempSet" unit="°C" />
             </DataCard>
           </div>
         </div>
@@ -270,6 +252,25 @@ function formatDate(iso?: string): string {
               <span class="font-medium">{{ formatDate(jsonDataActivate?.updatedAt) }}</span>
             </div>
           </DataCard>
+        </div>
+      </TabsContent>
+
+      <!-- TAB: Aktionen -->
+      <TabsContent value="aktionen" class="space-y-3">
+        <div>
+          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
+          <div class="grid grid-cols-2 gap-2">
+            <ToggleCard title="Wärmepumpe" :active="getStoreValBoolean(pool?.heaterState)" @click="toggleHeater" />
+            <ToggleCard title="Poolpumpe" :active="getStoreValBoolean(pool?.poolPumpSwitch)" @click="togglePump" />
+          </div>
+        </div>
+        <div>
+          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Temperaturen</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <DataCard title="Solltemperatur" content-class="pt-0.5">
+              <InputIobroker :state="pool?.tempSet" unit="°C" />
+            </DataCard>
+          </div>
         </div>
       </TabsContent>
 

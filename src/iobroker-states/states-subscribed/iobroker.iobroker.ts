@@ -650,6 +650,7 @@ function addItems() {
 }
 
 export const iobrokerData = [
+  { ...heatingControl },
   {
     channel: "wattPilot",
     value: [
