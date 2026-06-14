@@ -9,6 +9,9 @@ import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
 import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 import { Button } from "@/components/shared/button/button.variants";
+import DataCard from "@/components/shared/card/DataCard.vue";
+import HeatingControlPeriod from "@/components/section/heating/HeatingControlPeriod.vue";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { roomNames } from "@/constants/constants.ts";
 import { XiaomiWindowSensor } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
@@ -389,21 +392,25 @@ const windowOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fens
 
 <template>
   <Page v-if="!selectedRoom" title="Räume">
-    <div class="flex justify-between items-center mb-4">
-      <p v-show="getOpenWindows === 1" class="text-muted-foreground">
-        Ein Fenster oder eine Tür ist
-        <span :class="windowOpen ? 'text-red-500 animate-pulse' : ''" class="ml-1">offen </span>
-      </p>
+    <div class="space-y-3">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <DataCard title="Fenster / Türen" content-class="flex items-center gap-1.5">
+          <span :class="['h-2 w-2 rounded-full shrink-0', windowOpen ? 'bg-red-400' : 'bg-green-400']" />
+          <span class="text-sm font-semibold">
+            {{ getOpenWindows === 0 ? "alle zu" : getOpenWindows === 1 ? "1 offen" : `${getOpenWindows} offen` }}
+          </span>
+        </DataCard>
+        <DataCard title="Sonnenuntergang">
+          <span class="text-sm font-semibold">{{ iobroker.time?.sonnenuntergang?.val }}</span>
+        </DataCard>
+      </div>
 
-      <p v-show="getOpenWindows !== 1" class="text-foreground">
-        Fenster / Türen sind
-        <span :class="{ 'text-red-500 animate-pulse': windowOpen }">{{ windowOpen ? "offen" : "geschlossen" }}</span>
-      </p>
-
-      <p>Sonnenuntergang: {{ iobroker.time?.sonnenuntergang?.val }}</p>
-    </div>
-    <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-1">
-      <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
+      <div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Räume</p>
+        <div class="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2">
+          <RoomMinimal v-for="room in rooms" :room :key="room.name" @click-room="clickRoom" />
+        </div>
+      </div>
     </div>
   </Page>
 
@@ -411,6 +418,17 @@ const windowOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fens
     <template #header>
       <Button variant="outline" @click="selectedName = null">Zurück</Button>
     </template>
-    <WindowCard :window="selectedRoom" />
+    <Tabs default-value="fenster">
+      <TabsList class="mb-3">
+        <TabsTrigger value="fenster">Fenster / Rolladen</TabsTrigger>
+        <TabsTrigger value="heizung">Heizung</TabsTrigger>
+      </TabsList>
+      <TabsContent value="fenster" class="space-y-3">
+        <WindowCard :window="selectedRoom" />
+      </TabsContent>
+      <TabsContent value="heizung" class="space-y-3">
+        <HeatingControlPeriod />
+      </TabsContent>
+    </Tabs>
   </Page>
 </template>
