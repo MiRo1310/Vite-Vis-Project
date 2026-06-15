@@ -395,7 +395,7 @@ const windowOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fens
     <div class="space-y-3">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <DataCard title="Fenster / Türen" content-class="flex items-center gap-1.5">
-          <span :class="['h-2 w-2 rounded-full shrink-0', windowOpen ? 'bg-red-400' : 'bg-green-400']" />
+          <span :class="['h-2 w-2 rounded-full shrink-0', windowOpen ? 'bg-yellow-400' : 'bg-green-400']" />
           <span class="text-sm font-semibold">
             {{ getOpenWindows === 0 ? "alle zu" : getOpenWindows === 1 ? "1 offen" : `${getOpenWindows} offen` }}
           </span>

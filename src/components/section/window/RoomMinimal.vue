@@ -11,7 +11,7 @@ const emits = defineEmits(["clickRoom"]);
   <Card
     :class="[
       'py-0 gap-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground border',
-      room.windows.some((w) => w.isOpenStatus) ? 'border-destructive' : 'border-border',
+      room.windows.some((w) => w.isOpenStatus) ? 'border-yellow-400' : 'border-border',
     ]"
     @click="emits('clickRoom', room.name)"
   >
@@ -31,9 +31,7 @@ const emits = defineEmits(["clickRoom"]);
               :class="['h-1.5 w-1.5 rounded-full shrink-0', h?.val ? 'bg-yellow-400' : 'bg-green-400']"
             />
           </div>
-          <span v-if="room.temp?.some((t) => t != null)" class="text-xs font-semibold">
-            {{ room.temp.filter((t) => t != null).join(" / ") }}°C
-          </span>
+          <span v-if="room.temp?.some((t) => t != null)" class="text-xs font-semibold"> {{ room.temp.filter((t) => t != null).join(" / ") }}°C </span>
         </div>
       </div>
     </CardHeader>
@@ -46,8 +44,8 @@ const emits = defineEmits(["clickRoom"]);
             <span class="text-muted-foreground">Sensor</span>
           </div>
           <div class="flex items-center gap-1">
-            <span :class="['h-1.5 w-1.5 rounded-full shrink-0', w.isOpenStatus ? 'bg-red-400' : 'bg-green-400']" />
-            <span :class="w.isOpenStatus ? 'text-red-400 font-medium' : ''">{{ w.isOpenStatus ? "offen" : "zu" }}</span>
+            <span :class="['h-1.5 w-1.5 rounded-full shrink-0', w.isOpenStatus ? 'bg-yellow-400' : 'bg-green-400']" />
+            <span :class="w.isOpenStatus ? 'text-yellow-400 font-medium' : ''">{{ w.isOpenStatus ? "offen" : "zu" }}</span>
           </div>
           <div v-if="room.shutter" class="flex items-center gap-1">
             <span class="text-muted-foreground">Rollade</span>
