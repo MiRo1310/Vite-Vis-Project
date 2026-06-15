@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RoomType } from "@/types/types.ts";
-import WindowImage from "@/components/section/window/WindowImage.vue";
-import ShutterImage from "@/components/section/window/ShutterImage.vue";
 
 defineProps<{ room: RoomType }>();
 
@@ -41,15 +39,20 @@ const emits = defineEmits(["clickRoom"]);
     </CardHeader>
     <CardContent class="px-3 pt-1 pb-2">
       <div class="flex flex-wrap gap-3">
-        <div v-for="(w, i) in room.windows" :key="i" class="flex flex-col items-center gap-0.5">
+        <div v-for="(w, i) in room.windows" :key="i" class="flex flex-col gap-0.5 text-xs min-w-15">
+          <span v-if="w.name" class="text-muted-foreground font-medium">{{ w.name }}</span>
           <div class="flex items-center gap-1">
-            <span
-              :class="['h-1.5 w-1.5 rounded-full shrink-0', w.windowSensorReachable?.val ? 'bg-green-400' : 'bg-muted-foreground/30']"
-            />
-            <span v-if="w.name" class="text-xs text-muted-foreground">{{ w.name }}</span>
+            <span :class="['h-1.5 w-1.5 rounded-full shrink-0', w.windowSensorReachable?.val ? 'bg-green-400' : 'bg-muted-foreground/30']" />
+            <span class="text-muted-foreground">Sensor</span>
           </div>
-          <WindowImage :is-open="w.isOpenStatus ?? false" />
-          <ShutterImage v-if="room.shutter" :position="w.shutterPosition" />
+          <div class="flex items-center gap-1">
+            <span :class="['h-1.5 w-1.5 rounded-full shrink-0', w.isOpenStatus ? 'bg-red-400' : 'bg-green-400']" />
+            <span :class="w.isOpenStatus ? 'text-red-400 font-medium' : ''">{{ w.isOpenStatus ? "offen" : "zu" }}</span>
+          </div>
+          <div v-if="room.shutter" class="flex items-center gap-1">
+            <span class="text-muted-foreground">Rollade</span>
+            <span class="font-medium">{{ w.shutterPosition ?? "–" }}%</span>
+          </div>
         </div>
       </div>
     </CardContent>
