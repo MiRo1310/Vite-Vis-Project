@@ -2,12 +2,13 @@
 import { adminConnection } from "@/lib/iobroker-service.js";
 import { ref, watchEffect } from "vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
-import { StoreValue } from "@/store";
 import Page from "@/components/shared/page/Page.vue";
-import AlexaDotCard from "@/components/section/alexa/AlexaDotCard.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { InputShadcn } from "@/components/ui/input";
 
 const { iobroker } = useIobrokerStore();
 
@@ -20,10 +21,6 @@ export interface AlexaDotAction {
   washerVolume?: number;
   tel?: boolean;
   telVolume?: number;
-}
-
-export interface AlexaAction {
-  alexaSpeak: StoreValue<string>;
 }
 
 const alexaAction = {
@@ -48,7 +45,6 @@ const getAlexInfos = async (id: string): Promise<{ name: string | undefined; spe
 
 async function loadAlexaObject() {
   const ids = await getAlexaEnum();
-
   if (ids) {
     for (const id of ids) {
       const { name, speak } = await getAlexInfos(id);
@@ -88,7 +84,7 @@ watchEffect(() => {
   }
 });
 
-function updateDot(dot: AlexaDotAction, source: string, value: boolean | number) {
+function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boolean | number) {
   if (!actions.value) {
     actions.value = {};
   }
@@ -99,6 +95,10 @@ function updateDot(dot: AlexaDotAction, source: string, value: boolean | number)
     actions.value[dot.name].speak = dot.speak;
   }
   actions.value[dot.name][source] = value;
+  const dotInData = alexaData.value.find((d) => d.name === dot.name);
+  if (dotInData) {
+    (dotInData as Record<string, any>)[source] = value;
+  }
   const id = iobroker.alexaAction?.alexaSpeak?.id;
   if (!id) {
     return;
@@ -109,14 +109,63 @@ function updateDot(dot: AlexaDotAction, source: string, value: boolean | number)
 
 <template>
   <Page title="Alexa Dots">
-    <div v-if="loading" class="text-xs text-muted-foreground">Lädt…</div>
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-      <AlexaDotCard
-        v-for="dot in alexaData"
-        :key="dot.name"
-        :dot="dot"
-        @update="(source, value) => updateDot(dot, source, value)"
-      />
+    <p v-if="loading" class="text-sm text-muted-foreground">Lade...</p>
+    <div v-else class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <Card v-for="dot in alexaData" :key="dot.name" class="py-0 gap-0">
+        <CardHeader class="px-3 pt-2 pb-0">
+          <div class="flex items-center gap-2">
+            <img src="@/public/echo_dot3.png" alt="Echo Dot" class="w-8" />
+            <CardTitle class="text-sm font-semibold">{{ dot.name }}</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent class="px-3 pt-2 pb-2 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-muted-foreground">Klingel</span>
+            <div class="flex items-center gap-2">
+              <Switch :checked="dot.bell ?? false" @update:checked="updateDot(dot, 'bell', $event)" />
+              <InputShadcn
+                type="number"
+                :model-value="dot.bellVolume ?? 40"
+                class="w-16 h-7 text-xs"
+                :step="10"
+                :min="0"
+                :max="100"
+                @update:model-value="updateDot(dot, 'bellVolume', Number($event))"
+              />
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-muted-foreground">Waschmaschine</span>
+            <div class="flex items-center gap-2">
+              <Switch :checked="dot.washer ?? false" @update:checked="updateDot(dot, 'washer', $event)" />
+              <InputShadcn
+                type="number"
+                :model-value="dot.washerVolume ?? 40"
+                class="w-16 h-7 text-xs"
+                :step="10"
+                :min="0"
+                :max="100"
+                @update:model-value="updateDot(dot, 'washerVolume', Number($event))"
+              />
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-muted-foreground">Telefon</span>
+            <div class="flex items-center gap-2">
+              <Switch :checked="dot.tel ?? false" @update:checked="updateDot(dot, 'tel', $event)" />
+              <InputShadcn
+                type="number"
+                :model-value="dot.telVolume ?? 40"
+                class="w-16 h-7! text-xs"
+                :step="10"
+                :min="0"
+                :max="100"
+                @update:model-value="updateDot(dot, 'telVolume', Number($event))"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   </Page>
 </template>
