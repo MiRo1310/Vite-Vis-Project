@@ -16,7 +16,7 @@ import { getOpenWindows } from "@/composables/windows.ts";
 import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
+import { getStoreValBoolean } from "@/lib/object.ts";
 import { computed } from "vue";
 
 const appStore = useAppStore();
@@ -24,7 +24,6 @@ const { time, date } = useTime();
 const { iobroker } = useIobrokerStore();
 const colorMode = useColorMode();
 
-const fuelPrice = computed(() => getStoreValNumber(iobroker.tankerKoenig?.cheapestPrice));
 const shutterOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fensterOffen));
 
 function toggleColorMode() {
@@ -76,11 +75,6 @@ const navCardClass =
         />
 
         <StatusCard title="Licht" :value="getActiveLights" :active="getActiveLights === 0" :route="routes.light.path" class="shrink-0 min-w-22" />
-
-        <DataCard title="Sprit" class="shrink-0 min-w-22">
-          <span class="text-sm font-semibold">{{ fuelPrice.toFixed(2) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">€</span>
-        </DataCard>
       </div>
     </div>
 
@@ -89,6 +83,7 @@ const navCardClass =
       <!-- Linke Spalte: Kalender + Müll + Listen -->
       <div class="lg:col-span-3 sm:col-span-5 col-span-12 h-full flex flex-col gap-2 overflow-auto">
         <Calendar class="flex-1" />
+        <Caller />
         <Trash />
         <Lists />
       </div>
@@ -102,7 +97,6 @@ const navCardClass =
       <!-- Rechte Spalte: Info + Caller + Fuel -->
       <div class="lg:col-span-4 col-span-12 h-full flex flex-col gap-2 overflow-auto">
         <Info class="flex-1" />
-        <Caller />
         <Fuel />
       </div>
     </div>

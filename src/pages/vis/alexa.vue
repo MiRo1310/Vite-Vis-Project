@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { adminConnection } from "@/lib/iobroker-service.js";
 import { ref, watchEffect } from "vue";
-import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
-import TableAlexaName from "@/components/section/alexa/tableAlexaName.vue";
-import TableSwitch from "@/components/shared/table-cell/TableSwitch.vue";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import { StoreValue } from "@/store";
-import TableNumberInput from "@/components/shared/table-cell/TableNumberInput.vue";
 import Page from "@/components/shared/page/Page.vue";
-import CardSubcard from "@/components/shared/card/CardSubcard.vue";
+import AlexaDotCard from "@/components/section/alexa/AlexaDotCard.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
@@ -93,89 +88,35 @@ watchEffect(() => {
   }
 });
 
-function callback(params: Record<string, any>) {
-  const name: keyof typeof actions.value = params.row.original.name;
-  const speak: keyof typeof actions.value = params.row.original.speak;
-  if (!actions.value?.[name]) {
-    actions.value[name] = {};
+function updateDot(dot: AlexaDotAction, source: string, value: boolean | number) {
+  if (!actions.value) {
+    actions.value = {};
   }
-  if (!actions.value[name]?.speak) {
-    actions.value[name].speak = speak;
+  if (!actions.value[dot.name]) {
+    actions.value[dot.name] = {};
   }
-  actions.value[name][params.source] = params.checked || params.value;
+  if (!actions.value[dot.name].speak) {
+    actions.value[dot.name].speak = dot.speak;
+  }
+  actions.value[dot.name][source] = value;
   const id = iobroker.alexaAction?.alexaSpeak?.id;
   if (!id) {
     return;
   }
   adminConnection?.setState(id, toJsonString(actions.value), true);
 }
-
-const columns: DatatableColumns<AlexaDotAction>[] = [
-  {
-    source: "name",
-    type: "component",
-    component: TableAlexaName,
-    accessorKey: "name",
-    labelKey: "Echo Dot",
-  },
-  {
-    source: "bell",
-    type: "component",
-    component: TableSwitch,
-    accessorKey: "bell",
-    labelKey: "Klingel",
-    callback,
-  },
-  {
-    source: "bellVolume",
-    type: "component",
-    component: TableNumberInput,
-    accessorKey: "bellVolume",
-    labelKey: "Klingel Lautstärke",
-    customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
-    callback,
-  },
-  {
-    source: "washer",
-    type: "component",
-    component: TableSwitch,
-    accessorKey: "washer",
-    labelKey: "Waschmaschine",
-    callback,
-  },
-  {
-    source: "washerVolume",
-    type: "component",
-    component: TableNumberInput,
-    accessorKey: "washerVolume",
-    labelKey: "Waschmaschine Lautstärke",
-    customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
-    callback,
-  },
-  {
-    source: "tel",
-    type: "component",
-    component: TableSwitch,
-    accessorKey: "tel",
-    labelKey: "Telefon",
-    callback,
-  },
-  {
-    source: "telVolume",
-    type: "component",
-    component: TableNumberInput,
-    accessorKey: "telVolume",
-    labelKey: "Telefon Lautstärke",
-    customValue: { step: 10, min: 0, max: 100, defaultValue: 40 },
-    callback,
-  },
-];
 </script>
 
 <template>
   <Page title="Alexa Dots">
-    <CardSubcard>
-      <TableBasic v-if="!loading" :columns="getColumns(columns)" :data="alexaData" :loading="false" />
-    </CardSubcard>
+    <div v-if="loading" class="text-xs text-muted-foreground">Lädt…</div>
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      <AlexaDotCard
+        v-for="dot in alexaData"
+        :key="dot.name"
+        :dot="dot"
+        @update="(source, value) => updateDot(dot, source, value)"
+      />
+    </div>
   </Page>
 </template>

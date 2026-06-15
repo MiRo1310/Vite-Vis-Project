@@ -332,6 +332,7 @@ export interface IobrokerChannels {
   }>;
   pool: Optional<{
     heaterState: StoreValue<boolean>;
+    heaterOnline: StoreValue<boolean>;
     tempSet: StoreValue<number>;
     consumption: StoreValue<number>;
     tempIn: StoreValue<number>;
@@ -350,6 +351,7 @@ export interface IobrokerChannels {
   }>;
   wattPilot: Optional<{
     jsonScriptChargeLevel: StoreValue<string>;
+    autoCharging: StoreValue<boolean>;
   }>;
   pv: Optional<{
     feedIn: StoreValue<number>;
@@ -650,7 +652,10 @@ function addItems() {
 export const iobrokerData = [
   {
     channel: "wattPilot",
-    value: [{ key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" }],
+    value: [
+      { key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" },
+      { key: "autoCharging", id: "0_userdata.0.Wattpilot.autoCharging" },
+    ],
   },
   {
     channel: "system",
@@ -967,6 +972,7 @@ export const iobrokerData = [
     channel: "pool",
     value: [
       { id: "midas-aquatemp.0.state", key: "heaterState" },
+      { id: "midas-aquatemp.0.online", key: "heaterOnline" },
       { id: "midas-aquatemp.0.tempSet", key: "tempSet" },
       { id: "midas-aquatemp.0.consumption", key: "consumption" },
       { id: "midas-aquatemp.0.tempIn", key: "tempIn" },

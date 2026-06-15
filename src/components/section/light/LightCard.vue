@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { Card } from "@/components/shared/card";
-import Svg from "@/components/shared/image/Svg.vue";
+import ToggleCard from "@/components/shared/card/ToggleCard.vue";
 import { StoreValue } from "@/store";
-import { computed, HTMLAttributes } from "vue";
+import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker-service.js";
 
 const props = defineProps<{
   light: StoreValue<boolean>;
   name: string;
-  class?: HTMLAttributes["class"];
   valueAdditive?: boolean | undefined;
 }>();
 
@@ -24,25 +22,5 @@ function handleClickLight() {
 </script>
 
 <template>
-  <Card styling="default" :class="['rounded-none p-0 w-60 flex-1 min-w-[16rem]', props.class]" @click="handleClickLight">
-    <div class="flex">
-      <div class="w-1/2 flex justify-center py-2">
-        <Svg :name="isActive ? 'lightOn' : 'lightOff'" :class="['w-12 h-12', isActive ? 'animate-pulse text-yellow-400' : '']" />
-      </div>
-      <div class="w-1/2 border-l-2 border-color__default text-color__default p-2 my-2 text-sm min-h-[55px]">
-        {{ name.replace(/_/g, " ") }}
-      </div>
-    </div>
-    <div>
-      <p
-        :class="{
-          'text-center rounded-sm mx-2 mb-2 text-xs ': true,
-          'bg-yellow-400 text-color__default': isActive,
-          'bg-color__default': !isActive,
-        }"
-      >
-        {{ isActive ? "- eingeschaltet -" : "- ausgeschaltet -" }}
-      </p>
-    </div>
-  </Card>
+  <ToggleCard color="yellow" :title="name.replace(/_/g, ' ')" :active="!!isActive" @click="handleClickLight" />
 </template>

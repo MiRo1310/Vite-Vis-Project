@@ -39,8 +39,8 @@ const variants = {
   <div :class="['relative', props.class]">
     <input
       v-model="modelValue"
-      :type
-      :placeholder
+      :type="type"
+      :placeholder="placeholder"
       :class="
         twMerge([
           'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
@@ -49,7 +49,7 @@ const variants = {
         ])
       "
     />
-    <span v-if="props.type === 'number'" class="absolute right-1 top-2">
+    <span v-if="props.type === 'number'" class="absolute right-3 top-1.5">
       <ChevronUp class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countUp" />
       <ChevronDown class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countDown" />
     </span>

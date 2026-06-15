@@ -6,10 +6,20 @@ import { DataCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
+import { toJSON } from "@michaelroling/ts-library";
+import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
+
+interface WattPilotJson {
+  charging: boolean;
+  ampere: number | null;
+  einphasig: boolean | null;
+}
+
+const wallbox = computed(() => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
 
 const airConditioners = computed(() => iobroker.airConditioners);
 const landroid = computed(() => iobroker.landroid);
@@ -44,7 +54,7 @@ const landroidStatusLabel = computed(() => {
           <span class="text-xs text-muted-foreground">verfügbar</span>
         </DataCard>
       </RouterLink>
-      <RouterLink :to="routes.iobrokerInfo.path">
+      <RouterLink :to="routes.logs.path">
         <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer">
           <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
           <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />
@@ -62,24 +72,16 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Klima</p>
     <div class="grid grid-cols-2 gap-2">
       <DataCard title="Schlafen" content-class="space-y-1">
-        <div class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(airConditioners?.schlafenOnline)" size="sm" />
-          <span class="text-xs">{{ getStoreValBoolean(airConditioners?.schlafenOnline) ? "Online" : "Offline" }}</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(airConditioners?.schlafenPowerStatus)" size="sm" />
-          <span class="text-xs">{{ getStoreValBoolean(airConditioners?.schlafenPowerStatus) ? "An" : "Aus" }}</span>
-        </div>
+        <OnlineActiveRows
+          :online="getStoreValBoolean(airConditioners?.schlafenOnline)"
+          :active="getStoreValBoolean(airConditioners?.schlafenOnline)"
+        />
       </DataCard>
       <DataCard title="Kinderzimmer" content-class="space-y-1">
-        <div class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(airConditioners?.childOnline)" size="sm" />
-          <span class="text-xs">{{ getStoreValBoolean(airConditioners?.childOnline) ? "Online" : "Offline" }}</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(airConditioners?.childPowerStatus)" size="sm" />
-          <span class="text-xs">{{ getStoreValBoolean(airConditioners?.childPowerStatus) ? "An" : "Aus" }}</span>
-        </div>
+        <OnlineActiveRows
+          :online="getStoreValBoolean(airConditioners?.childOnline)"
+          :active="getStoreValBoolean(airConditioners?.childPowerStatus)"
+        />
       </DataCard>
     </div>
 
@@ -97,18 +99,33 @@ const landroidStatusLabel = computed(() => {
     </div>
 
     <!-- Wärmepumpe & Pool -->
-    <p class="text-xs text-muted-foreground uppercase tracking-wide">Wärmepumpe</p>
+    <p class="text-xs text-muted-foreground uppercase tracking-wide">Pool</p>
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Wärmepumpe" clickable content-class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(pool?.heaterState)" />
-          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+        <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
+          <OnlineActiveRows :online="getStoreValBoolean(pool?.heaterOnline)" :active="getStoreValBoolean(pool?.heaterState)" />
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Poolpumpe" clickable content-class="flex items-center gap-1.5">
-          <StatusDot :active="getStoreValBoolean(pool?.poolPumpSwitch)" />
-          <span class="text-xs font-semibold">{{ getStoreValBoolean(pool?.poolPumpSwitch) ? "An" : "Aus" }}</span>
+        <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
+          <OnlineActiveRows :online="getStoreValBoolean(pool?.poolPumpSwitch)" :active="getStoreValNumber(pool?.poolPumpPower) > 40" />
+        </DataCard>
+      </RouterLink>
+    </div>
+
+    <!-- Wallbox -->
+    <p class="text-xs text-muted-foreground uppercase tracking-wide">Wallbox</p>
+    <div class="grid grid-cols-2 gap-2">
+      <RouterLink :to="routes.wattPilot.path">
+        <DataCard title="Laden" clickable content-class="flex items-center gap-1.5">
+          <StatusDot :active="wallbox?.charging ?? false" />
+          <span class="text-xs font-semibold">{{ wallbox?.charging ? "Aktiv" : "Inaktiv" }}</span>
+        </DataCard>
+      </RouterLink>
+      <RouterLink :to="routes.wattPilot.path">
+        <DataCard title="Leistung" clickable content-class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-xs font-semibold">{{ wallbox?.einphasig ? "1-phasig" : "3-phasig" }}</span>
+          <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
         </DataCard>
       </RouterLink>
     </div>

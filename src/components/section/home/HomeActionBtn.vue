@@ -7,7 +7,7 @@ defineProps<{ badge?: number; title?: string; class?: HTMLAttributes["class"] }>
 </script>
 
 <template>
-  <Button :class="['relative h-14! p-2! flex-1 min-w-24', $props.class]">
+  <Button :class="['relative h-full max-h-20  p-2! flex-1 min-w-24', $props.class]">
     <div class="flex items-center flex-wrap gap-2">
       <slot />
       <span class="text-[11px] leading-tight">{{ title }}</span>
