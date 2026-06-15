@@ -8,7 +8,7 @@ import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
 
 const { iobroker } = useIobrokerStore();
 
-const items = computed((): SelectOption[] => {
+const profiles = computed((): SelectOption[] => {
   const heatingControl = iobroker.heatingControl;
   if (!heatingControl?.profileText?.val) {
     return [];
@@ -51,7 +51,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
     <Select
       v-model:model-value="selected"
       placeholder="Wähle ein Profil aus"
-      :items="items"
+      :items="profiles"
       class="w-auto"
       @update:model-value="updateSelected($event, iobroker.heatingControl?.profile?.id)"
     />

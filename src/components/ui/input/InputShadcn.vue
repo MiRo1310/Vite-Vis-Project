@@ -36,20 +36,21 @@ const variants = {
 </script>
 
 <template>
-  <div :class="['relative', props.class]">
+  <div class="relative">
     <input
       v-model="modelValue"
       :type="type"
       :placeholder="placeholder"
       :class="
-        twMerge([
+        twMerge(
           'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
           'border border-input focus:outline-hidden focus:ring-0',
-          getVariantsClasses(variants, props),
-        ])
+          getVariantsClasses(variants, props) as string,
+          props.class as string,
+        )
       "
     />
-    <span v-if="props.type === 'number'" class="absolute right-3 top-1.5">
+    <span v-if="props.type === 'number'" class="absolute right-1 top-1/2 -translate-y-1/2 flex flex-col">
       <ChevronUp class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countUp" />
       <ChevronDown class="w-3 h-3 hover:bg-muted-foreground hover:text-white cursor-pointer" @click="countDown" />
     </span>
