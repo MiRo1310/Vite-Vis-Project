@@ -352,6 +352,7 @@ export interface IobrokerChannels {
   wattPilot: Optional<{
     jsonScriptChargeLevel: StoreValue<string>;
     autoCharging: StoreValue<boolean>;
+    totalCharging: StoreValue<number>;
   }>;
   pv: Optional<{
     feedIn: StoreValue<number>;
@@ -656,6 +657,7 @@ export const iobrokerData = [
     value: [
       { key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" },
       { key: "autoCharging", id: "0_userdata.0.Wattpilot.autoCharging" },
+      { key: "totalCharging", id: "fronius-wattpilot.0.energyCounterTotal" },
     ],
   },
   {

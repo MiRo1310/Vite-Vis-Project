@@ -5,7 +5,7 @@ import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { computed } from "vue";
-import { getStoreValBoolean } from "@/lib/object.ts";
+import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
 import Date from "@/components/shared/date-time/Date.vue";
 
@@ -13,6 +13,8 @@ const { iobroker } = useIobrokerStore();
 
 interface WattPilotJson {
   charging: boolean;
+  carConnected: boolean;
+  allowCharging: boolean;
   aktuellerIndex: number;
   ampere: number | null;
   einphasig: boolean | null;
@@ -64,6 +66,14 @@ const setPhase = (onePhase: boolean) => {
           <StatusDot :active="data?.charging ?? false" />
           <span class="text-sm font-semibold">{{ data?.charging ? "Aktiv" : "Inaktiv" }}</span>
         </DataCard>
+        <DataCard title="Auto verbunden" content-class="flex items-center gap-1.5">
+          <StatusDot :active="data?.carConnected ?? false" />
+          <span class="text-sm font-semibold">{{ data?.carConnected ? "Verbunden" : "Nicht verbunden" }}</span>
+        </DataCard>
+        <DataCard title="Laden freigegeben" content-class="flex items-center gap-1.5">
+          <StatusDot :active="data?.allowCharging ?? false" />
+          <span class="text-sm font-semibold">{{ data?.allowCharging ? "Freigegeben" : "Nicht freigegeben" }}</span>
+        </DataCard>
         <DataCard title="Modus">
           <span class="text-sm font-semibold">{{ data != null ? (modeLabel[data.aktuellerIndex] ?? `Index ${data.aktuellerIndex}`) : "–" }}</span>
         </DataCard>
@@ -95,6 +105,17 @@ const setPhase = (onePhase: boolean) => {
         <DataCard title="Überschuss">
           <span class="text-sm font-semibold text-orange-300">{{ data?.ueberschuss ?? 0 }}</span>
           <span class="text-xs text-muted-foreground ml-1">W</span>
+        </DataCard>
+      </div>
+      <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <DataCard title="Ladeleistung">
+          <span class="text-sm font-semibold">{{ getStoreValNumber(iobroker.wattPilot?.totalCharging) / 1000 }}</span>
+          <span class="text-xs text-muted-foreground ml-1">KW</span>
+        </DataCard>
+        <DataCard title="Ladeleistung">
+          <span class="text-sm font-semibold">{{ (getStoreValNumber(iobroker.wattPilot?.totalCharging) / 1000) * 0.32 }}</span>
+          <span class="text-xs text-muted-foreground ml-1">€</span>
         </DataCard>
       </div>
 
