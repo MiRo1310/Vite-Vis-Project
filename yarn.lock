@@ -1467,10 +1467,10 @@
   resolved "https://registry.yarnpkg.com/@iobroker/socket-client/-/socket-client-5.2.0.tgz#8b957b21f65dfc6f6951ff1c94a0acd39fa9b3fa"
   integrity sha512-1g7NZLG48wajMX5DCnwohdVByu6exOKXL6LiWsu1KRaz/MSbvJ8lm/KKAVvRBJhgZMLq/z7wJsjvBIgoAiMfaQ==
 
-"@iobroker/types@^7.1.2":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@iobroker/types/-/types-7.1.2.tgz#8afa3c939a1c039ee3bec953e14710b40db9f30d"
-  integrity sha512-6ci2ow3cHoIDIQEQh48lCG08MzgUdH8SGL5ks3kl2UBA2yAfSn5lEWs3BPoGiJS9wYTsBfKMas2fUHmTU1/A4g==
+"@iobroker/types@^7.2.2":
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/@iobroker/types/-/types-7.2.2.tgz#820f32123460aa043ad9dca676abd718426acc99"
+  integrity sha512-GR+sp+4DUZmuV3EpSJchTlJ6fqjHVEJJ/IQlMDc4j/oRENkSV5UTpRFxcDL5oy+Dj1+urdNUgHJdOzMzbV06Tw==
 
 "@johnsoncodehk/pug-beautify@^0.2.2":
   version "0.2.2"
