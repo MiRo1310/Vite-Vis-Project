@@ -55,7 +55,7 @@
     "dotenv": "^17.4.2",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "graphql": "^16.13.2",
-    "graphql-tag": "^2.12.6",
+    "graphql-tag": "^2.12.7",
     "leaflet": "^1.9.4",
     "lucide-vue-next": "^1.0.0",
     "path": "^0.12.7",
