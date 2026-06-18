@@ -929,14 +929,14 @@
     change-case-all "^2.1.0"
     tslib "^2.8.0"
 
-"@graphql-codegen/typescript-operations@^6.0.3":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-6.0.3.tgz#23966ec2236833841d527cbeeeadcc09e2ba605e"
-  integrity sha512-5gnHdBgKkpKJOiqyKo37UfwigNtezfN94UI/NnyCROl6oDAyt0A+1VeS5cBlgRECdD/TQ1vjHCu14B41Sl7yLw==
+"@graphql-codegen/typescript-operations@^6.0.3", "@graphql-codegen/typescript-operations@^6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-6.0.4.tgz#98a176d755372488c400ff4e49988eddfaa007bb"
+  integrity sha512-YUmnmZcJ6wMcC2VmTE7gw18zoG4S1VF1aJmaupDrBnwfKGA5BmdKrA6k2Wj6ZkUDOduHI60l/cmZBRtqel4VtQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.0.1"
     "@graphql-codegen/schema-ast" "^6.0.1"
-    "@graphql-codegen/visitor-plugin-common" "^7.0.3"
+    "@graphql-codegen/visitor-plugin-common" "^7.1.0"
     auto-bind "^5.0.0"
     tslib "^2.8.0"
 
@@ -978,10 +978,10 @@
     parse-filepath "^1.0.2"
     tslib "^2.8.0"
 
-"@graphql-codegen/visitor-plugin-common@^7.0.3", "@graphql-codegen/visitor-plugin-common@^7.0.4":
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.0.4.tgz#d0ab0f80dd2a29b1786a4a270ccf2f1ffaf1d5b9"
-  integrity sha512-IESwu40Gpl+9x5vRGLsaYAWM9KRobnN74h+SB4EtfDrt0V87Q74ZzWZGmuS2m6A/fq7E/bS6YgSEMVACjaRUVw==
+"@graphql-codegen/visitor-plugin-common@^7.0.3", "@graphql-codegen/visitor-plugin-common@^7.0.4", "@graphql-codegen/visitor-plugin-common@^7.1.0":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-7.1.1.tgz#15686db8ee59f6e7e7160e24691b8b1bb76bdf1a"
+  integrity sha512-MGZBXmp1i+45aw0GRH+BBpOI8ic8Ay/OJ5zGeZH6SLhSB/uxhwTjjOxkxazR8dqzKTbk7hFPhIXcXhkFP2v2eA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^7.0.1"
     "@graphql-tools/optimize" "^2.0.0"
