@@ -1,4 +1,4 @@
-import { AdminConnection } from "@iobroker/socket-client";
+import { AdminConnection, PROGRESS } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
@@ -28,12 +28,14 @@ export async function init() {
     port: IOBROKER_WS_PORT,
     admin5only: false,
     autoSubscribes: [],
+    onProgress: (progress) => {
+      useIobrokerStore().setAdminConnection(progress === PROGRESS.READY);
+    },
   });
 
   if (adminConnection) {
     await adminConnection.startSocket();
     await adminConnection.waitForFirstConnection();
-    useIobrokerStore().setAdminConnection(true);
     subscribeIobrokerStates();
   }
 }
@@ -48,9 +50,8 @@ export function unSubscribeStates(states: IobrokerSubscription[]) {
       if (adminConnection) {
         adminConnection.unsubscribeState(idObjectEntry.id);
       }
+      iobrokerStore?.removeIdFromSubscribedIds(idObjectEntry.id);
     });
-
-    iobrokerStore?.removeIdFromSubscribedIds(listObjectOfIds.channel);
   });
 }
 
