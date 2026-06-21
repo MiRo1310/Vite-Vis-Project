@@ -51,9 +51,7 @@ const version = import.meta.env.VITE_APP_VERSION;
     <!-- PV -->
     <TabsContent value="pv" class="flex-1 min-h-0 overflow-auto space-y-3">
       <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.pv.path)">
-          → PV Seite
-        </button>
+        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.pv.path)">→ PV Seite</button>
       </div>
 
       <div class="grid grid-cols-2 gap-2">
@@ -219,14 +217,12 @@ const version = import.meta.env.VITE_APP_VERSION;
     <!-- System -->
     <TabsContent value="system" class="flex-1 min-h-0 overflow-auto space-y-3">
       <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push('/system')">
-          → System Seite
-        </button>
+        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push('/system')">→ System Seite</button>
       </div>
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Version">
-          <span class="text-sm font-semibold">{{ version }}</span>
+          <span class="text-sm font-semibold">{{ version ?? "-" }}</span>
         </DataCard>
 
         <DataCard title="Uptime">

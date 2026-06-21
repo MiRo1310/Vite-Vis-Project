@@ -352,6 +352,7 @@ export interface IobrokerChannels {
   wattPilot: Optional<{
     jsonScriptChargeLevel: StoreValue<string>;
     autoCharging: StoreValue<boolean>;
+    totalCharging: StoreValue<number>;
   }>;
   pv: Optional<{
     feedIn: StoreValue<number>;
@@ -589,6 +590,9 @@ export interface IobrokerChannels {
     diskIobrokerUsage: StoreValue<number>;
     iobrokerUptime: StoreValue<number>;
   }>;
+  car: Optional<{
+    battery: StoreValue<number>;
+  }>;
 }
 
 const heatingControl = {
@@ -656,7 +660,12 @@ export const iobrokerData = [
     value: [
       { key: "jsonScriptChargeLevel", id: "0_userdata.0.Wattpilot.WattpilotScriptJson" },
       { key: "autoCharging", id: "0_userdata.0.Wattpilot.autoCharging" },
+      { key: "totalCharging", id: "fronius-wattpilot.0.energyCounterTotal" },
     ],
+  },
+  {
+    channel: "car",
+    value: [{ key: "battery", id: "bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio" }],
   },
   {
     channel: "system",
