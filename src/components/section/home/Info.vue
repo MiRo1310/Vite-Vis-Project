@@ -8,18 +8,13 @@ import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
+import { WattPilotJson } from "@/types/types.ts";
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
 
-interface WattPilotJson {
-  charging: boolean;
-  ampere: number | null;
-  einphasig: boolean | null;
-}
-
-const wallbox = computed(() => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
+const wallbox = computed((): WattPilotJson | null => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
 
 const airConditioners = computed(() => iobroker.airConditioners);
 const landroid = computed(() => iobroker.landroid);
@@ -123,9 +118,13 @@ const landroidStatusLabel = computed(() => {
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Leistung" clickable content-class="flex items-center gap-1.5 flex-wrap">
-          <span class="text-xs font-semibold">{{ wallbox?.einphasig ? "1-phasig" : "3-phasig" }}</span>
-          <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
+        <DataCard title="Ladeleistung" clickable content-class="">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span v-if="wallbox?.charging" class="text-xs font-semibold"> {{ wallbox?.chargingPowerW }}W</span>
+            <span v-else class="text-xs font-semibold"> -</span>
+            <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
+          </div>
+          <p>{{ iobroker.car?.battery?.val ?? "-" }}%</p>
         </DataCard>
       </RouterLink>
     </div>

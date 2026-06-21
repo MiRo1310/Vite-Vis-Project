@@ -195,3 +195,20 @@ export type RoomItems =
   | "Wohnzimmer"
   | "Keller Michael"
   | "Keller Waschen";
+
+export interface WattPilotJson {
+  charging: boolean;
+  stopReasons: string[];
+  carConnected: boolean;
+  allowCharging: boolean;
+  currentIndex: number;
+  ampere: number | null;
+  singlePhase: boolean | null;
+  phases: 1 | 3 | null;
+  chargingPowerW: number | null;
+  gridPower: number;
+  batteryPower: number;
+  startupHoldActive: boolean;
+  startupHoldRemainingSeconds: number;
+  updatedAt: string;
+}
