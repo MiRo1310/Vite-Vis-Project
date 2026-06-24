@@ -14,7 +14,7 @@ vi.mock("../../src/store/ioBrokerStore.ts", () => ({
 // Import nach den Mocks
 import { useDynamicSubscribe } from "../../src/composables/dynamicSubscribe";
 import { subscribeStates } from "../../src/lib/iobroker-service";
-import { IobrokerSubscription } from "../../src/iobroker-states/states-subscribed/iobroker.iobroker";
+import { IobrokerSubscription } from "../../src/iobroker-states/subscribed-states.iobroker";
 
 describe("useDynamicSubscribe", () => {
   beforeEach(() => {

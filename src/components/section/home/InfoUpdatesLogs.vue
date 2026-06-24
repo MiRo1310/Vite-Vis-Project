@@ -4,7 +4,7 @@ import { ParsedLogs } from "@/store";
 import { useRouter } from "vue-router";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { routes } from "@/router/routes.ts";
-import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker";
 
 defineProps<{ info: IobrokerChannels["infos"]; getParsedLogs: ParsedLogs }>();
 

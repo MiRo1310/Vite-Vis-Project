@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 export interface BatteryTableData {
   name: string;

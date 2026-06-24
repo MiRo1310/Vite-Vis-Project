@@ -2,7 +2,7 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { RoomItems, RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
-import { notSubscribedIds } from "@/iobroker-states/states-not-subscribed/states.iobroker";
+import { notSubscribedIds } from "@/iobroker-states/action-states.iobroker";
 import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
 import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
@@ -14,7 +14,7 @@ import HeatingControlPeriod from "@/components/section/heating/HeatingControlPer
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { roomNames } from "@/constants/constants.ts";
-import { XiaomiWindowSensor } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { XiaomiWindowSensor } from "@/iobroker-states/subscribed-states.iobroker";
 
 const iobrokerStore = useIobrokerStore();
 const { iobroker } = iobrokerStore;

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Importiere das zu testende Modul NACH der Registrierung der Mocks
 import * as connecter from "../../src/lib/iobroker-service";
-import { IobrokerSubscription } from "../../src/iobroker-states/states-subscribed/iobroker.iobroker";
+import { IobrokerSubscription } from "../../src/iobroker-states/subscribed-states.iobroker";
 
 // Mocks müssen vor dem Import des zu testenden Moduls registriert werden.
 vi.mock("@iobroker/socket-client", () => {

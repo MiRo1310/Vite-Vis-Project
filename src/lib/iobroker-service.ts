@@ -5,7 +5,7 @@ import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { Logger } from "@/lib/logger.ts";
 import { invertBoolean } from "@/lib/boolean.ts";
 import { IoBrokerStore } from "@/store";
-import { iobrokerData, IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { iobrokerData, IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 let iobrokerStore: IoBrokerStore | null;
 document.addEventListener("DOMContentLoaded", () => {

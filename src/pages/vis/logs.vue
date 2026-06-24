@@ -9,7 +9,7 @@ import Badge from "@/components/shared/badge/Badge.vue";
 import Page from "@/components/shared/page/Page.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { getStoreValId } from "@/lib/object.ts";
-import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
 import LogTable from "@/components/shared/table/LogTable.vue";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();

@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { getStoreValString } from "@/lib/object.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType } from "@/store/index.ts";
-import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
 
@@ -59,7 +59,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     setValues({ val, id, key, channel, group, state }: SetValues): void {
       const iobroker = this.getState["iobroker"];
       const path = filterTruthy([channel, group, key]);
-
+      //TODO zweimal ist da val drin
       const stateObj = new StoreValueClass({ ...state, val, id });
       let obj: any = iobroker;
 

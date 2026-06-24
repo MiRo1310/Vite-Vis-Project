@@ -5,7 +5,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import Page from "@/components/shared/page/Page.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { InputShadcn } from "@/components/ui/input";

@@ -7,7 +7,7 @@ import { adminConnection } from "@/lib/iobroker-service.js";
 import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };

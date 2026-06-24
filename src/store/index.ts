@@ -3,7 +3,7 @@ import { IdsToControl, IobrokerState, Log } from "@/types/types.ts";
 import { ComputedRef } from "vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 export interface AppStore {
   showTimer: boolean;
