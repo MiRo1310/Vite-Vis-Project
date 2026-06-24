@@ -1,4 +1,5 @@
 import { IdsToControl } from "@/types/types.ts";
+import { BaseValue } from "@/store/valueClasses.ts";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType } from "@/store/index.ts";
@@ -62,14 +63,19 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     setValues({ val, id, key, channel, group, state, valueClass }: SetValues): void {
       const iobroker = this.getState["iobroker"];
       const path = filterTruthy([channel, group, key]);
-      const stateObj = new valueClass({ ...state, val, id });
       let obj: any = iobroker;
 
       for (let i = 0; i < path.length; i++) {
         const p = path[i];
 
         if (isLastKey(path, i)) {
-          obj[p] = stateObj;
+          // Im statischen Schema existiert die Instanz bereits (Skeleton) - nur aktualisieren.
+          // Bei rein dynamischen Subscriptions (außerhalb des Schemas) wird sie hier neu angelegt.
+          if (obj[p] instanceof BaseValue) {
+            obj[p].update({ ...state, val, id });
+          } else {
+            obj[p] = new valueClass({ ...state, val, id });
+          }
         } else {
           obj[p] ??= {}; // nur Zwischenebenen erzeugen
           obj = obj[p];

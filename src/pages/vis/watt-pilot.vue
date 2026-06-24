@@ -5,7 +5,6 @@ import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { toJSON } from "@michaelroling/ts-library";
 import { computed } from "vue";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { adminConnection } from "@/lib/iobroker-service.ts";
 import Date from "@/components/shared/date-time/Date.vue";
 import { WattPilotJson } from "@/types/types.ts";
@@ -35,12 +34,7 @@ const toggleAutoCharging = () => {
   <Page title="Wallbox">
     <div class="space-y-3 mt-4">
       <div class="flex items-center flex-wrap gap-2">
-        <ToggleCard
-          title="Wallbox Überschussladen"
-          class="flex-1"
-          :active="getStoreValBoolean(iobroker.wattPilot?.autoCharging)"
-          @click="toggleAutoCharging"
-        />
+        <ToggleCard title="Wallbox Überschussladen" class="flex-1" :active="iobroker.wattPilot.autoCharging.get()" @click="toggleAutoCharging" />
       </div>
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -91,7 +85,7 @@ const toggleAutoCharging = () => {
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <DataCard title="Ladeleistung">
-          <span class="text-sm font-semibold">{{ getStoreValNumber(iobroker.wattPilot.totalCharging) / 1000 }}</span>
+          <span class="text-sm font-semibold">{{ iobroker.wattPilot.totalCharging.get() / 1000 }}</span>
           <span class="text-xs text-muted-foreground ml-1">KW</span>
         </DataCard>
         <DataCard title="Ladeleistung">
