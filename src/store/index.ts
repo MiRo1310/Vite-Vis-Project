@@ -4,6 +4,7 @@ import { ComputedRef } from "vue";
 import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { ValueClassCtor } from "@/store/valueClasses.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -43,6 +44,7 @@ export interface SetValues {
   group?: string;
   timestamp?: boolean;
   state: IobrokerState;
+  valueClass?: ValueClassCtor;
 }
 
 export type IoBrokerStates = keyof IoBrokerStoreState;
@@ -53,6 +55,7 @@ interface IoBrokerStoreActions {
   addIdToSubscribedIds(id: string): void;
   removeIdFromSubscribedIds(id: string): void;
   setValues(params: SetValues): void;
+  setInitialValues(values: IobrokerChannels): void;
 }
 
 interface IoBrokerStoreGetters {

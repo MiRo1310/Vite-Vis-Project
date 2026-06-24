@@ -7,22 +7,13 @@ import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { colors } from "@/config/colors";
 import { adminConnection } from "@/lib/iobroker-service.js";
-import { SelectOption } from "@/types/types.ts";
-import { toJSON } from "@michaelroling/ts-library";
-import { getStoreValString } from "@/lib/object.ts";
+import { SelectOption, JSONStyle } from "@/types/types.ts";
 
 const open = defineModel<boolean>("open");
 
 const { iobroker } = useIobrokerStore();
 
-export interface JSONStyle {
-  name: string;
-  color: string;
-}
-
-const json = computed((): JSONStyle[] => {
-  return toJSON<JSONStyle[]>(getStoreValString(iobroker.styles?.calendarStyle)).json ?? [];
-});
+const json = computed((): JSONStyle[] => iobroker.styles?.calendarStyle?.parsed ?? []);
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 

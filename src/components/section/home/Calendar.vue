@@ -5,16 +5,12 @@ import { computed } from "vue";
 import { CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/CalenderDay.vue";
-import { toJSON } from "@michaelroling/ts-library";
-import { getStoreValString } from "@/lib/object.ts";
 import { routes } from "@/router/routes.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
-const data = computed((): CalendarDayType[] => {
-  return toJSON<CalendarDayType[]>(getStoreValString(iobroker.calendar?.table)).json ?? [];
-});
+const data = computed((): CalendarDayType[] => iobroker.calendar?.table?.parsed ?? []);
 
 const today = computed(() => {
   if (data.value) {

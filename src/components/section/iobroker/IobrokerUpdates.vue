@@ -5,42 +5,22 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { getStoreValString } from "@/lib/object.ts";
-import { toJSON } from "@michaelroling/ts-library";
+import { AdapterUpdate } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
-
-interface UpdatesAsJSON {
-  [key: string]: AdapterUpdate;
-}
-
-interface AdapterUpdate {
-  availableVersion: string;
-  installedVersion: string;
-}
 
 interface UpdatesType extends AdapterUpdate {
   name: string;
 }
 
 const availableUpdates = computed((): UpdatesType[] => {
-  const infos = iobroker.infos;
-  if (!infos?.updatesJson?.val) {
-    return [];
-  }
-  const json = toJSON<UpdatesAsJSON>(getStoreValString(infos.updatesJson)).json ?? {};
+  const json = iobroker.infos?.updatesJson?.parsed ?? {};
 
-  const jsonArray: UpdatesType[] = [];
-  if (json) {
-    Object.keys(json).forEach((key) => {
-      jsonArray.push({
-        name: key,
-        availableVersion: json[key].availableVersion,
-        installedVersion: json[key].installedVersion,
-      });
-    });
-  }
-  return jsonArray;
+  return Object.keys(json).map((key) => ({
+    name: key,
+    availableVersion: json[key].availableVersion,
+    installedVersion: json[key].installedVersion,
+  }));
 });
 
 const columns: DatatableColumns<UpdatesType>[] = [

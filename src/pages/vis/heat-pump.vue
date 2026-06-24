@@ -10,7 +10,6 @@ import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
 import { useToast } from "@/components/ui/toast";
 import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import LogTable from "@/components/shared/table/LogTable.vue";
-import { toJSON } from "@michaelroling/ts-library";
 import { computed } from "vue";
 import { formatUptime } from "@/lib/system";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
@@ -46,36 +45,8 @@ function checkAdminConnection() {
   }
 }
 
-interface HeatingPumpScriptJson {
-  carChargingRequest: boolean;
-  surplus: number;
-  heaterActive: boolean;
-  surplusAboveThreshold: boolean;
-  surplusBelowThreshold: boolean;
-  delayOnRunning: boolean;
-  delayOffRunning: boolean;
-  delayOnRemainingSeconds: number;
-  delayOffRemainingSeconds: number;
-  cooldownRemainingSeconds: number;
-  lastDeactivatedAt: string;
-  nextActivationAllowedAt: string;
-  scheduleEnabled: boolean;
-  scheduleOnCron: string;
-  scheduleOffCron: string;
-  updatedAt: string;
-}
-
-interface HeatingPumpSilentJSON {
-  silentMode: boolean;
-  power: number;
-  dischargeBattery: boolean;
-  timeoutRunning: boolean;
-  timeoutRemainingSeconds: number;
-  updatedAt: string;
-}
-
-const jsonDataActivate = computed(() => toJSON<HeatingPumpScriptJson>(iobroker.pool?.heaterScriptActivateJSON?.val ?? "").json);
-const jsonDataSilent = computed(() => toJSON<HeatingPumpSilentJSON>(iobroker.pool?.heaterSilentScriptJSON?.val ?? "").json);
+const jsonDataActivate = computed(() => iobroker.pool?.heaterScriptActivateJSON?.parsed);
+const jsonDataSilent = computed(() => iobroker.pool?.heaterSilentScriptJSON?.parsed);
 const pool = computed(() => iobroker.pool);
 const listing = computed(() => heatPumpValues.value.listing);
 

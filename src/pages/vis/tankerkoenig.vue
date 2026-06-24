@@ -5,30 +5,19 @@ import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { computed } from "vue";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
-
-interface IJson {
-  station: string;
-  status: string;
-  e5: number;
-  differenceE5: number;
-  e10: number;
-  differenceE10: number;
-  diesel: number;
-  differenceDiesel: number;
-  discount: string;
-}
+import { TankerkoenigStation } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
 const parsedJson = computed(() => {
-  const table = iobroker.tankerKoenig?.jsonTable?.val;
-  if (!table) {
+  const stations = iobroker.tankerKoenig?.jsonTable?.parsed;
+  if (!stations) {
     return [];
   }
-  return (JSON.parse(table) as IJson[])?.sort((a, b) => a.e5 - b.e5);
+  return [...stations].sort((a, b) => a.e5 - b.e5);
 });
 
-const columns: DatatableColumns<IJson>[] = [
+const columns: DatatableColumns<TankerkoenigStation>[] = [
   { source: "station", labelKey: "Name", sortable: true },
   { source: "status", labelKey: "Offen/geschlossen" },
   { source: "e5", labelKey: "Super E5", sortable: true },
