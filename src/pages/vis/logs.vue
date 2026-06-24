@@ -11,15 +11,16 @@ import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { getStoreValId } from "@/lib/object.ts";
 import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
 import LogTable from "@/components/shared/table/LogTable.vue";
+import { BooleanValue } from "@/store/valueClasses.ts";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 
 const statesReset = {
   channel: "logReset",
   value: [
-    { id: "logparser.0.filters.Error.emptyJson", key: "error" },
-    { id: "logparser.0.filters.Info.emptyJson", key: "info" },
-    { id: "logparser.0.filters.Warn.emptyJson", key: "warn" },
+    { id: "logparser.0.filters.Error.emptyJson", key: "error", valueClass: BooleanValue },
+    { id: "logparser.0.filters.Info.emptyJson", key: "info", valueClass: BooleanValue },
+    { id: "logparser.0.filters.Warn.emptyJson", key: "warn", valueClass: BooleanValue },
   ],
 } satisfies IobrokerSubscription;
 

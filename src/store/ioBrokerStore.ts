@@ -1,9 +1,8 @@
-import { IdsToControl, IobrokerState, Log } from "@/types/types.ts";
-import { JsonValue } from "@/store/valueClasses.ts";
+import { IdsToControl } from "@/types/types.ts";
 import { defineStore } from "pinia";
 import { computed } from "vue";
 import { IoBrokerStoreState, ParsedLogs, SetValues, StoreType } from "@/store/index.ts";
-import { createEmptyIobrokerSkeleton, iobrokerData, IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { createEmptyIobrokerSkeleton, IobrokerChannels, iobrokerData } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 const empty = <T>() => ({}) as T;
 
@@ -35,10 +34,10 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
-          error: parseLog(state.iobroker.logs?.error),
-          warn: parseLog(state.iobroker.logs?.warning),
-          info: parseLog(state.iobroker.logs?.info),
-          heatPump: parseLog(state.iobroker.logs?.heatPump),
+          error: state.iobroker.logs.error?.parsed ?? [],
+          warn: state.iobroker.logs.warning?.parsed ?? [],
+          info: state.iobroker.logs.info?.parsed ?? [],
+          heatPump: state.iobroker.logs.heatPump?.parsed ?? [],
         };
       });
     },
@@ -63,8 +62,7 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     setValues({ val, id, key, channel, group, state, valueClass }: SetValues): void {
       const iobroker = this.getState["iobroker"];
       const path = filterTruthy([channel, group, key]);
-      const ValueCtor = valueClass ?? StoreValueClass;
-      const stateObj = new ValueCtor({ ...state, val, id });
+      const stateObj = new valueClass({ ...state, val, id });
       let obj: any = iobroker;
 
       for (let i = 0; i < path.length; i++) {
@@ -83,36 +81,8 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
   },
 });
 
-function parseLog(value: JsonValue<Log[]> | undefined): Log[] {
-  return value?.parsed ?? [];
-}
-
 function isLastKey(array: unknown[], index: number): boolean {
   return array.length - 1 === index;
-}
-
-export class StoreValueClass<T> {
-  public id: string;
-  public val: T;
-  public ack: boolean;
-  public ts?: number;
-  public lc?: number;
-  public from?: string;
-  public q?: number;
-
-  constructor({ id, ack, ts, val, lc, q, from }: IobrokerState & { id: string; val: T }) {
-    this.val = val;
-    this.id = id;
-    this.ack = ack;
-    this.ts = ts;
-    this.lc = lc;
-    this.from = from;
-    this.q = q;
-  }
-
-  public get(fallback: T): T {
-    return this.val ?? fallback;
-  }
 }
 
 function filterTruthy<T>(items: (T | undefined)[]): T[] {

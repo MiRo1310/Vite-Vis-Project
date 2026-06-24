@@ -29,17 +29,31 @@ export abstract class BaseValue<T> {
     this.q = state.q;
   }
 
-  public get(fallback: T): T {
-    return this.val ?? fallback;
+  public abstract get(fallback: T): T;
+}
+
+export class NumberValue extends BaseValue<number> {
+  public get(fallback?: number): number {
+    return this.val ?? fallback ?? 0;
+  }
+}
+export class BooleanValue extends BaseValue<boolean> {
+  public get(fallback?: boolean): boolean {
+    return this.val ?? fallback ?? false;
+  }
+}
+export class StringValue extends BaseValue<string> {
+  public get(fallback?: string): string {
+    return this.val ?? fallback ?? "";
   }
 }
 
-export class NumberValue extends BaseValue<number> {}
-export class BooleanValue extends BaseValue<boolean> {}
-export class StringValue extends BaseValue<string> {}
-
 export class JsonValue<T> extends BaseValue<string> {
   #cache?: { raw: string; parsed: T | null };
+
+  public get(fallback: string): string {
+    return this.val ?? fallback;
+  }
 
   public get parsed(): T | null {
     if (!this.#cache || this.#cache.raw !== this.val) {

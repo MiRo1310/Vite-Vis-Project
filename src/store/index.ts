@@ -44,10 +44,8 @@ export interface SetValues {
   group?: string;
   timestamp?: boolean;
   state: IobrokerState;
-  valueClass?: ValueClassCtor;
+  valueClass: ValueClassCtor;
 }
-
-export type IoBrokerStates = keyof IoBrokerStoreState;
 
 interface IoBrokerStoreActions {
   setAdminConnection(val: boolean): void;

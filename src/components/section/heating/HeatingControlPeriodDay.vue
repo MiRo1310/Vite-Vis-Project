@@ -8,6 +8,7 @@ import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
+import { NumberValue } from "@/store/valueClasses.ts";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };
@@ -27,6 +28,7 @@ const states = {
     {
       id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
       key: "currentTimePeriod",
+      valueClass: NumberValue,
     },
   ],
 } satisfies IobrokerSubscription;

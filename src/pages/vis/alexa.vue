@@ -6,6 +6,7 @@ import Page from "@/components/shared/page/Page.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
+import { StringValue } from "@/store/valueClasses.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { InputShadcn } from "@/components/ui/input";
@@ -25,7 +26,7 @@ export interface AlexaDotAction {
 
 const alexaAction = {
   channel: "alexaAction",
-  value: [{ id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak" }],
+  value: [{ id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak", valueClass: StringValue }],
 } satisfies IobrokerSubscription;
 
 useDynamicSubscribe(alexaAction);

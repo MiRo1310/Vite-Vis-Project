@@ -79,7 +79,7 @@ export const subscribe = (item: IobrokerSubscription) => {
           channel: String(item.channel),
           key: String(stateId.key),
           group: "group" in stateId ? String(stateId.group) : undefined,
-          valueClass: "valueClass" in stateId ? stateId.valueClass : undefined,
+          valueClass: stateId.valueClass,
         });
       })
       .catch((e) => {

@@ -91,7 +91,7 @@ const toggleAutoCharging = () => {
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <DataCard title="Ladeleistung">
-          <span class="text-sm font-semibold">{{ getStoreValNumber(iobroker.wattPilot?.totalCharging) / 1000 }}</span>
+          <span class="text-sm font-semibold">{{ getStoreValNumber(iobroker.wattPilot.totalCharging) / 1000 }}</span>
           <span class="text-xs text-muted-foreground ml-1">KW</span>
         </DataCard>
         <DataCard title="Ladeleistung">

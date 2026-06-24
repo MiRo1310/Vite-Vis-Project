@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import { useIobrokerStore } from "../../src/store/ioBrokerStore";
 import { SetValues } from "../../src/store";
+import { NumberValue, StringValue } from "../../src/store/valueClasses";
 
 describe("iobroker store", () => {
   beforeEach(() => {
@@ -38,6 +39,7 @@ describe("iobroker store", () => {
       val: 123,
       id: "pv.1",
       state: { ack: false, ts: 1, lc: 2, from: "test", q: 0, val: 123 },
+      valueClass: NumberValue,
     };
 
     store.setValues(payload);
@@ -56,6 +58,7 @@ describe("iobroker store", () => {
       val: "red",
       id: "lamp.1",
       state: { ack: true, ts: 10, lc: 11, from: "test", q: 0, val: "red" },
+      valueClass: StringValue,
     };
 
     store.setValues(payload);
