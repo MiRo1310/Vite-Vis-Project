@@ -1,7 +1,6 @@
 import { computed } from "vue";
-import { Timers } from "@/types/types.ts";
 
-export const getNameByIndex = computed(() => (timers: Timers, index: number): string => {
-  const timerName = timers[index as keyof Timers]?.name?.val;
+export const getNameByIndex = computed(() => (timers: { [key: number]: { name?: { value: string } } }, index: number): string => {
+  const timerName = timers[index]?.name?.value;
   return timerName && timerName !== "Timer" ? timerName : `Timer ${index}`;
 });

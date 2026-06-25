@@ -4,7 +4,6 @@ import { computed } from "vue";
 import { Trash2 } from "lucide-vue-next";
 import { DataCard } from "@/components/shared/card";
 import { Days, days } from "@/constants/constants.js";
-import { TrashType } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -13,7 +12,7 @@ const transformDate = (date: number) => {
   return `${d.getDate()}.${d.getMonth() + 1}.`;
 };
 
-const trashEvents = computed<TrashType[]>(() => iobroker.trash?.json?.parsed ?? []);
+const trashEvents = computed(() => iobroker.trash.json.parsed([]));
 
 function shortName(name: string): string {
   if (name === "Papier Tonne") {

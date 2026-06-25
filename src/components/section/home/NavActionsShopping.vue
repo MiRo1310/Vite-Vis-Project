@@ -4,17 +4,13 @@ import NavActionsShoppingList from "@/components/section/home/NavActionsShopping
 import { ShoppingBag } from "lucide-vue-next";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { getStoreValString } from "@/lib/object.ts";
-import { toJSON } from "@michaelroling/ts-library";
-import { AlexaList } from "@/types/types.ts";
 import HomeActionBtn from "@/components/section/home/HomeActionBtn.vue";
 
 const { iobroker } = useIobrokerStore();
 
-const createShoppinglist = computed((): AlexaList[] => {
-  return toJSON<AlexaList[]>(getStoreValString(iobroker.alexaLists?.shoppingListActive)).json ?? [];
-});
+const createShoppinglist = computed(() => iobroker.alexaLists.shoppingListActive.parsed([]));
 </script>
+
 <template>
   <Sheet :show-footer="false">
     <template #trigger>

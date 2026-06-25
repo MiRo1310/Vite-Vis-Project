@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import ToggleCard from "@/components/shared/card/ToggleCard.vue";
-import { StoreValue } from "@/store";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker-service.js";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import { IValueOf } from "@/store/valueClasses.ts";
 
 const props = defineProps<{
-  light: StoreValue<boolean>;
+  light: IValueOf<boolean>;
   name: string;
   valueAdditive?: boolean | undefined;
 }>();
@@ -17,7 +17,7 @@ function handleClickLight() {
   if (!id) {
     return;
   }
-  adminConnection?.setState(id, props.valueAdditive !== undefined ? true : !isActive.value);
+  ioBrokerService.connection?.setState(id, props.valueAdditive !== undefined ? true : !isActive.value);
 }
 </script>
 

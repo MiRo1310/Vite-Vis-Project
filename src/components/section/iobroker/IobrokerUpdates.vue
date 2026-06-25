@@ -14,7 +14,7 @@ interface UpdatesType extends AdapterUpdate {
 }
 
 const availableUpdates = computed((): UpdatesType[] => {
-  const json = iobroker.infos?.updatesJson?.parsed ?? {};
+  const json = iobroker.infos.updatesJson.parsed({});
 
   return Object.keys(json).map((key) => ({
     name: key,

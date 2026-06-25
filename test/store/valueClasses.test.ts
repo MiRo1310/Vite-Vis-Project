@@ -1,51 +1,67 @@
-import { describe, expect, it } from "vitest";
-import { BooleanValue, JsonValue, NumberValue, StringValue } from "../../src/store/valueClasses";
+import { describe, expect, it, vi } from "vitest";
 
-const baseState = { id: "test.id", ack: true, ts: 1, lc: 2, from: "test", q: 0 };
+// Break circular dependency: valueClasses → io-broker-service → ioBrokerStore → subscribed-states → valueClasses
+vi.mock("../../src/lib/io-broker-service", () => ({
+  ioBrokerService: {
+    subscribe: vi.fn().mockResolvedValue(undefined),
+    connection: undefined,
+  },
+}));
+
+import { BooleanValue, JsonValue, NumberValue, StringValue } from "../../src/store/valueClasses";
+import { IobrokerState } from "../../src/types/types";
+
+const id = "test.id";
+
+const state = (val: any, ack = true): IobrokerState => ({ val, ack, ts: 0, lc: 0, from: "", q: 0 });
 
 describe("valueClasses", () => {
   it("NumberValue/BooleanValue/StringValue store id/val/ack from the incoming state", () => {
-    const num = new NumberValue({ ...baseState, val: 42 });
+    const num = new NumberValue(id, 42);
     expect(num.val).toBe(42);
     expect(num.id).toBe("test.id");
-    expect(num.ack).toBe(true);
+    expect(num.ack).toBe(false);
 
-    const bool = new BooleanValue({ ...baseState, val: true });
+    const bool = new BooleanValue(id, true);
     expect(bool.val).toBe(true);
 
-    const str = new StringValue({ ...baseState, val: "hello" });
+    const str = new StringValue(id, "hello");
     expect(str.val).toBe("hello");
   });
 
   it("update() mutates the instance in place", () => {
-    const num = new NumberValue({ ...baseState, val: 1 });
-    num.update({ ...baseState, val: 2, ack: false });
+    const num = new NumberValue(id, 1);
+    num.update(state(2, false));
     expect(num.val).toBe(2);
     expect(num.ack).toBe(false);
   });
 
-  it("get() falls back when val is nullish", () => {
-    const num = new NumberValue({ ...baseState, val: undefined as unknown as number });
-    expect(num.get(99)).toBe(99);
+  it("value getter falls back when val is nullish", () => {
+    const num = new NumberValue(id, undefined as unknown as number);
+    expect(num.value).toBe(0);
   });
 
   it("JsonValue.parsed parses valid JSON", () => {
-    const json = new JsonValue<{ a: number }>({ ...baseState, val: '{"a":1}' });
-    expect(json.parsed).toEqual({ a: 1 });
+    //eslint-disable-next-line
+    const json = new JsonValue<{ a: number }>(id, '{"a":1}');
+    expect(json.parsed({} as { a: number })).toEqual({ a: 1 });
   });
 
-  it("JsonValue.parsed returns null for invalid JSON", () => {
-    const json = new JsonValue<{ a: number }>({ ...baseState, val: "not-json" });
-    expect(json.parsed).toBeNull();
+  it("JsonValue.parsed returns fallback for invalid JSON", () => {
+    const json = new JsonValue<{ a: number }>(id, "not-json");
+    const fallback = { a: 0 };
+    expect(json.parsed(fallback)).toBe(fallback);
   });
 
   it("JsonValue.parsed caches the result until val changes", () => {
-    const json = new JsonValue<{ a: number }>({ ...baseState, val: '{"a":1}' });
-    const first = json.parsed;
-    expect(json.parsed).toBe(first);
-
-    json.update({ ...baseState, val: '{"a":2}' });
-    expect(json.parsed).toEqual({ a: 2 });
-    expect(json.parsed).not.toBe(first);
+    //eslint-disable-next-line
+    const json = new JsonValue<{ a: number }>(id, '{"a":1}');
+    const fallback = {} as { a: number };
+    const first = json.parsed(fallback);
+    expect(json.parsed(fallback)).toBe(first);
+    //eslint-disable-next-line
+    json.update(state('{"a":2}'));
+    expect(json.parsed(fallback)).toEqual({ a: 2 });
+    expect(json.parsed(fallback)).not.toBe(first);
   });
 });

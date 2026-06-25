@@ -14,7 +14,7 @@ const props = defineProps<{
 }>();
 
 const getDayValue = computed(() => {
-  const cal = iobroker.calendar?.table?.parsed ?? [];
+  const cal = iobroker.calendar?.table?.parsed([]) as CalendarDayType[];
   return cal.filter((day) => isDateBetween(day));
 });
 
@@ -49,7 +49,7 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 }
 
 const getColor = computed(() => (event: CalendarDayType): string => {
-  const json: JSONStyle[] = iobroker.styles?.calendarStyle?.parsed ?? [];
+  const json = iobroker.styles?.calendarStyle?.parsed([]) as JSONStyle[];
 
   for (const key of json) {
     if (event.event.includes(key.name)) {

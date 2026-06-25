@@ -2,7 +2,7 @@ import { Row } from "@tanstack/vue-table";
 import { ApolloQueryResult } from "@apollo/client";
 import { FunctionalComponent, HTMLAttributes } from "vue";
 import { Badge } from "../components/shared/badge/badge.variants";
-import { StoreValue } from "@/store";
+import { IValueOf } from "@/store/valueClasses.ts";
 
 export interface AlexaList {
   name: string;
@@ -19,28 +19,11 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export type Timer = {
-  timeString: StoreValue<string>;
-  device: StoreValue<string>;
-  timeEnd: StoreValue<string>;
-  timeStart: StoreValue<string>;
-  percent: StoreValue<number>;
-  name: StoreValue<string>;
-  initialTimer: StoreValue<string>;
-};
-
-export interface Timers {
-  1: Timer;
-  2: Timer;
-  3: Timer;
-  4: Timer;
-}
-
 export interface RoomType {
   name: string;
   shutter: boolean;
-  batteryHeating?: StoreValue<boolean>[];
-  bellStatus?: StoreValue<boolean>;
+  batteryHeating?: IValueOf<boolean>[];
+  bellStatus?: IValueOf<boolean>;
   temp?: (number | undefined)[];
   windows: {
     name: string;
@@ -48,11 +31,11 @@ export interface RoomType {
     isOpenStatus?: boolean;
     door?: boolean;
     shutterPosition?: number;
-    shutterAutoDown?: StoreValue<boolean>;
-    shutterAutoUp?: StoreValue<boolean>;
-    shutterAutoUpTime?: StoreValue<number>;
-    shutterAutoDownDelay?: StoreValue<number>;
-    windowSensorReachable: StoreValue<boolean>;
+    shutterAutoDown?: IValueOf<boolean>;
+    shutterAutoUp?: IValueOf<boolean>;
+    shutterAutoUpTime?: IValueOf<number>;
+    shutterAutoDownDelay?: IValueOf<number>;
+    windowSensorReachable?: IValueOf<boolean>;
   }[];
 }
 

@@ -10,7 +10,7 @@ import { TankerkoenigStation } from "@/types/types.ts";
 const { iobroker } = useIobrokerStore();
 
 const parsedJson = computed(() => {
-  const stations = iobroker.tankerKoenig?.jsonTable?.parsed;
+  const stations = iobroker.tankerKoenig.jsonTable.parsed([]);
   if (!stations) {
     return [];
   }

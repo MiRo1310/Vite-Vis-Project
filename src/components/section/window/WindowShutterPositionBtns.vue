@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
-import { adminConnection } from "@/lib/iobroker-service.js";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
 const props = defineProps<{ idShutterPosition: string }>();
 
 const handleClick = (i: number) => {
+  const adminConnection = ioBrokerService.connection;
   if (adminConnection) {
     adminConnection.setState(props.idShutterPosition, 100 - (i - 1) * 20);
   }

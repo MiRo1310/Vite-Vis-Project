@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatUptime, miBToGiB } from "./system";
+import { formatUptime, miBToGiB } from "../src/lib/system";
 
 describe("miBToGiB", () => {
   it("converts MiB to GiB with 2 decimal places", () => {

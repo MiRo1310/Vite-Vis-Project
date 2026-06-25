@@ -23,7 +23,7 @@ const { time, date } = useTime();
 const { iobroker } = useIobrokerStore();
 const colorMode = useColorMode();
 
-const shutterOpen = computed(() => iobroker.windowGlobal.fensterOffen.get());
+const shutterOpen = computed(() => iobroker.windowGlobal.fensterOffen.value);
 
 function toggleColorMode() {
   colorMode.value = colorMode.value === "light" ? "dark" : "light";
@@ -35,9 +35,9 @@ const navCardClass =
 
 <template>
   <div class="h-full flex flex-col gap-2 pb-0">
-    <!-- Statusleiste: mobile = column (nav oben, cards unten), desktop = row -->
+    <!--    Statusleiste: mobile = column (nav oben, cards unten), desktop = row-->
     <div v-component="'Statusleiste'" class="flex flex-col sm:flex-row sm:items-stretch gap-2 shrink-0">
-      <!-- Navigations-Cards (oben auf mobile, rechts auf desktop) -->
+      <!--      Navigations-Cards (oben auf mobile, rechts auf desktop)-->
       <div class="flex gap-2 overflow-x-auto sm:order-last sm:ml-auto shrink-0">
         <div :class="navCardClass" @click="appStore.toggleTimerVisibility">
           <span class="text-xs text-muted-foreground whitespace-nowrap w-full">Timer</span>

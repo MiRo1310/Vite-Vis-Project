@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
-import { StoreValue } from "@/store";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
+import { IValueOf } from "@/store/valueClasses.ts";
 
 defineProps<{
   online: boolean;
   powerWh: number;
   title: string;
-  tempSet: StoreValue<number>;
+  tempSet: IValueOf<number> | undefined;
   tempIs: number;
-  power: StoreValue<boolean>;
+  power: IValueOf<boolean>;
 }>();
 </script>
 

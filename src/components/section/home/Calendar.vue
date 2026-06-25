@@ -10,7 +10,7 @@ import { routes } from "@/router/routes.ts";
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
-const data = computed((): CalendarDayType[] => iobroker.calendar?.table?.parsed ?? []);
+const data = computed(() => iobroker.calendar.table.parsed([]));
 
 const today = computed(() => {
   if (data.value) {

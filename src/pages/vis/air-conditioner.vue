@@ -9,21 +9,19 @@ const airConditioners = computed(() => iobroker.airConditioners);
 
 <template>
   <AirConditioner
-    :online="airConditioners?.schlafenOnline?.val ?? false"
+    :online="airConditioners.schlafenOnline.value"
     title="Schlafzimmer"
-    :power-wh="airConditioners?.schlafenPower?.val ?? 0"
-    :temp-is="airConditioners?.schlafenIsTemp?.val ?? 0"
-    :temp-set="airConditioners?.schlafenSetTemp"
-    :power="airConditioners?.schlafenPowerStatus"
+    :power-wh="airConditioners.schlafenPower.value"
+    :temp-is="airConditioners.schlafenIsTemp.value"
+    :temp-set="airConditioners.schlafenSetTemp"
+    :power="airConditioners.schlafenPowerStatus"
   />
   <AirConditioner
     :online="airConditioners?.childOnline?.val ?? false"
     title="Kinderzimmer"
-    :power-wh="airConditioners?.childPower?.val ?? 0"
-    :temp-is="airConditioners?.childIsTemp?.val ?? 0"
-    :temp-set="airConditioners?.childSetTemp"
-    :power="airConditioners?.childPowerStatus"
+    :power-wh="airConditioners.childPower.value"
+    :temp-is="airConditioners.childIsTemp.value"
+    :temp-set="airConditioners.childSetTemp"
+    :power="airConditioners.childPowerStatus"
   />
 </template>
-
-<style scoped lang="scss"></style>

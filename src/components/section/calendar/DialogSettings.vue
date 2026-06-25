@@ -6,14 +6,13 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { colors } from "@/config/colors";
-import { adminConnection } from "@/lib/iobroker-service.js";
 import { SelectOption, JSONStyle } from "@/types/types.ts";
 
 const open = defineModel<boolean>("open");
 
 const { iobroker } = useIobrokerStore();
 
-const json = computed((): JSONStyle[] => iobroker.styles?.calendarStyle?.parsed ?? []);
+const json = computed(() => iobroker.styles.calendarStyle.parsed([]));
 
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
@@ -46,11 +45,7 @@ function updateToIobroker() {
     return;
   }
 
-  const id = iobroker.styles?.calendarStyle?.id;
-  if (!id) {
-    return;
-  }
-  adminConnection?.setState(id, JSON.stringify(modifiedObj.value));
+  iobroker.styles.calendarStyle.setState(JSON.stringify(modifiedObj.value));
 }
 
 function reset() {

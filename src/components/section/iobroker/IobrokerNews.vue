@@ -2,21 +2,9 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { IobrokerLanguages } from "@/types/types.ts";
 import { computed } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { getStoreValString } from "@/lib/object.ts";
-import { toJSON } from "@michaelroling/ts-library";
-
-interface NewsFeed {
-  title: Record<IobrokerLanguages, string>;
-  content: Record<IobrokerLanguages, string>;
-  id: string;
-  class: string;
-  "fa-icon": string;
-  created: string;
-  conditions: string;
-}
+import { NewsFeed } from "@/components/section/iobroker/index.ts";
 
 const { iobroker } = useIobrokerStore();
 const columns: DatatableColumns<NewsFeed>[] = [
@@ -34,7 +22,8 @@ const columns: DatatableColumns<NewsFeed>[] = [
     type: "datetime",
   },
 ];
-const json = computed(() => toJSON<NewsFeed[]>(getStoreValString(iobroker.infos?.newsFeeds)).json ?? []);
+
+const json = computed(() => iobroker.infos.newsFeeds.parsed([]));
 </script>
 
 <template>

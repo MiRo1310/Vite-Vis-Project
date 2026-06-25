@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/ui/button";
-import { adminConnection } from "@/lib/iobroker-service.js";
 import { computed } from "vue";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
 defineProps<{ class: string }>();
 
@@ -11,10 +11,10 @@ const { iobroker } = useIobrokerStore();
 const heatingControl = computed(() => iobroker.heatingControl);
 
 function resetStatus() {
-  const room = iobroker.heatingControl?.room?.val;
+  const room = iobroker.heatingControl.room.val;
   if (room) {
     const id = `heatingcontrol.0.Rooms.${room}.ResetManual`;
-    adminConnection?.setState(id, true, false);
+    ioBrokerService.connection?.setState(id, true, false);
   }
 }
 </script>

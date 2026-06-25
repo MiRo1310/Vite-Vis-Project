@@ -1,52 +1,34 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/shared/button/button.variants";
-import { adminConnection } from "@/lib/iobroker-service.js";
 import Page from "@/components/shared/page/Page.vue";
 import { DataCard, ToggleCard } from "@/components/shared/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
-import { useToast } from "@/components/ui/toast";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import LogTable from "@/components/shared/table/LogTable.vue";
 import { computed } from "vue";
 import { formatUptime } from "@/lib/system";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import { HeatingPumpScriptJson, HeatingPumpSilentJSON } from "@/types/types.ts";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
-const { toast } = useToast();
 
 function reset() {
-  adminConnection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
+  ioBrokerService.connection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
 }
 
 async function toggleHeater() {
-  checkAdminConnection();
-  const id = iobroker.pool?.heaterState?.id;
-  if (!id) {
-    return;
-  }
-  await adminConnection?.setState(id, !getStoreValBoolean(iobroker.pool?.heaterState), false);
+  iobroker.pool.heaterState.toggle();
 }
 
 async function togglePump() {
-  const id = iobroker.pool?.poolPumpSwitch?.id;
-  if (!id) {
-    return;
-  }
-  await adminConnection?.setState(id, !getStoreValBoolean(iobroker.pool?.poolPumpSwitch), false);
+  iobroker.pool.poolPumpSwitch.toggle();
 }
 
-function checkAdminConnection() {
-  if (!adminConnection) {
-    toast({ title: "AdminConnection ist nicht vorhanden", variant: "destructive" });
-    throw new Error("AdminConnection is nicht vorhanden");
-  }
-}
-
-const jsonDataActivate = computed(() => iobroker.pool?.heaterScriptActivateJSON?.parsed);
-const jsonDataSilent = computed(() => iobroker.pool?.heaterSilentScriptJSON?.parsed);
+const jsonDataActivate = computed(() => iobroker.pool.heaterScriptActivateJSON.parsed({} as HeatingPumpScriptJson));
+const jsonDataSilent = computed(() => iobroker.pool.heaterSilentScriptJSON.parsed({} as HeatingPumpSilentJSON));
 const pool = computed(() => iobroker.pool);
 const listing = computed(() => heatPumpValues.value.listing);
 
@@ -78,13 +60,13 @@ function formatDate(iso?: string): string {
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
           <div class="grid grid-cols-4 gap-2">
             <DataCard title="WP Status" content-class="flex items-center gap-1.5">
-              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.heaterState))]" />
-              <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.heaterState) ? "An" : "Aus" }}</span>
+              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(pool.heaterState.value)]" />
+              <span class="text-sm font-semibold">{{ pool.heaterState.value ? "An" : "Aus" }}</span>
             </DataCard>
 
             <DataCard title="Silent" content-class="flex items-center gap-1.5">
-              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(getStoreValBoolean(pool?.silent))]" />
-              <span class="text-sm font-semibold">{{ getStoreValBoolean(pool?.silent) ? "An" : "Aus" }}</span>
+              <span :class="['h-2 w-2 rounded-full shrink-0', statusDot(pool.silent.value)]" />
+              <span class="text-sm font-semibold">{{ pool.silent.value ? "An" : "Aus" }}</span>
             </DataCard>
 
             <DataCard title="Modus">
@@ -92,7 +74,7 @@ function formatDate(iso?: string): string {
             </DataCard>
 
             <DataCard title="Bezug">
-              <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.consumption).toFixed(0) }}</span>
+              <span class="text-sm font-semibold">{{ pool.consumption.value.toFixed(0) }}</span>
               <span class="text-xs text-muted-foreground ml-1">W</span>
             </DataCard>
           </div>
@@ -103,17 +85,17 @@ function formatDate(iso?: string): string {
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Temperaturen</p>
           <div class="grid grid-cols-3 gap-2">
             <DataCard title="Eingang">
-              <span class="text-sm font-semibold text-blue-300">{{ getStoreValNumber(pool?.tempIn).toFixed(1) }}</span>
+              <span class="text-sm font-semibold text-blue-300">{{ pool.tempIn.value.toFixed(1) }}</span>
               <span class="text-xs text-muted-foreground ml-1">°C</span>
             </DataCard>
 
             <DataCard title="Ausgang">
-              <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(pool?.tempOut).toFixed(1) }}</span>
+              <span class="text-sm font-semibold text-orange-300">{{ pool.tempOut.value.toFixed(1) }}</span>
               <span class="text-xs text-muted-foreground ml-1">°C</span>
             </DataCard>
 
             <DataCard title="Soll">
-              <span class="text-sm font-semibold">{{ getStoreValNumber(pool?.tempSet).toFixed(1) }}</span>
+              <span class="text-sm font-semibold">{{ pool.tempSet.value.toFixed(1) }}</span>
               <span class="text-xs text-muted-foreground ml-1">°C</span>
             </DataCard>
           </div>
@@ -231,8 +213,8 @@ function formatDate(iso?: string): string {
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
           <div class="grid grid-cols-2 gap-2">
-            <ToggleCard title="Wärmepumpe" :active="getStoreValBoolean(pool?.heaterState)" @click="toggleHeater" />
-            <ToggleCard title="Poolpumpe" :active="getStoreValBoolean(pool?.poolPumpSwitch)" @click="togglePump" />
+            <ToggleCard title="Wärmepumpe" :active="pool.heaterState.value" @click="toggleHeater" />
+            <ToggleCard title="Poolpumpe" :active="pool.poolPumpSwitch.value" @click="togglePump" />
           </div>
         </div>
         <div>

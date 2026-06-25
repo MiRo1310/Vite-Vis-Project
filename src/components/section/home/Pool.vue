@@ -6,7 +6,6 @@ import { computed } from "vue";
 import CardTitle from "@/components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 
 export type BoolText = "true" | "false";
 
@@ -20,54 +19,53 @@ interface Items {
   function?: (value: string | number) => void;
 }
 
-// eslint-disable-next-line complexity
 const items = computed(() => {
   const pool = iobroker.pool;
-  const status = getStoreValBoolean(pool?.status);
+  const status = pool.status.value;
   const items: Items[] = [
     {
       title: "Heizung aktiv",
       type: "bool",
-      value: getStoreValNumber(pool?.consumption) > 30,
+      value: pool.consumption.value > 30,
     },
     {
       title: "Pool Heizung durch Zeitplan aktiv",
       type: "bool",
-      value: pool?.heaterState?.val ?? "false",
+      value: pool.heaterState.value,
     },
     {
       title: "Modus",
       type: "text",
-      value: getMode(getStoreValNumber(pool?.mode)),
+      value: getMode(pool.mode.value),
     },
     {
       title: "Verbrauch",
       type: "number",
-      value: status ? getStoreValNumber(pool?.consumption) : 0,
+      value: status ? pool.consumption.value : 0,
       unit: "W",
     },
     {
       title: "Wunschtemperatur",
       type: "input",
-      value: getStoreValNumber(pool?.tempSet),
+      value: pool.tempSet.value,
       unit: "°C",
     },
     {
       title: "Temperatur Eingang",
       type: "text",
-      value: status ? getStoreValNumber(pool?.tempIn) : 0,
+      value: status ? pool.tempIn.value : 0,
       unit: "°C",
     },
     {
       title: "Temperatur Ausgang",
       type: "text",
-      value: status ? getStoreValNumber(pool?.tempOut) : 0,
+      value: status ? pool.tempOut.value : 0,
       unit: "°C",
     },
     {
       title: "Lüfterdrehzahl",
       type: "text",
-      value: getStoreValNumber(pool?.rotor),
+      value: pool.rotor.value,
       unit: "Rpm",
     },
   ];

@@ -1,4 +1,7 @@
+import { ref, markRaw, type Ref } from "vue";
 import { toJSON } from "@michaelroling/ts-library";
+import { IobrokerState } from "@/types/types.ts";
+import { ioBrokerService, IoBrokerService } from "@/lib/io-broker-service.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -12,52 +15,133 @@ export interface ValueState<T> {
   q?: number;
 }
 
-export abstract class BaseValue<T> {
-  public id: string;
-  public val: T | undefined;
-  public ack: boolean;
-  public ts?: number;
-  public lc?: number;
-  public from?: string;
-  public q?: number;
+export interface IValueOf<T> {
+  readonly value: T;
+  readonly id: string;
+  readonly ts: number | undefined;
+  readonly val: T | undefined;
+  readonly ack: boolean;
+  setState(val: string | number | boolean | null, ack?: boolean): void;
+  toggle(ack?: boolean): void;
+}
 
-  constructor({ id, ack = false, ts, val, lc, q, from }: ValueState<T>) {
-    this.val = val;
+export abstract class BaseValue<T> implements IValueOf<T> {
+  public readonly id: string;
+  protected readonly _valRef: Ref<T | undefined>;
+  protected _ack: boolean = false;
+  protected _ts?: number;
+  protected _lc?: number;
+  protected _from?: string;
+  protected _q?: number;
+  private ioBrokerService: IoBrokerService;
+
+  public get val(): T | undefined {
+    return this._valRef.value;
+  }
+
+  protected set val(v: T | undefined) {
+    this._valRef.value = v;
+  }
+
+  constructor(id: string, val?: T) {
+    markRaw(this);
+    this._valRef = ref(val) as Ref<T | undefined>;
     this.id = id;
-    this.ack = ack;
-    this.ts = ts;
-    this.lc = lc;
-    this.from = from;
-    this.q = q;
+    this._ack = false;
+
+    this.ioBrokerService = ioBrokerService;
+
+    void this.ioBrokerService.subscribe({ id: this.id, cb: this.update });
   }
 
-  public update({ val, ack = false, ts, lc, q, from }: ValueState<T>): void {
-    this.val = val;
-    this.ack = ack;
-    this.ts = ts;
-    this.lc = lc;
-    this.from = from;
-    this.q = q;
+  public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
+    this.val = val as T;
+    this._ack = ack;
+    this._ts = ts;
+    this._lc = lc;
+    this._from = from;
+    this._q = q;
+  };
+
+  public get ack() {
+    return this._ack;
   }
 
-  public abstract get(fallback: T): T;
+  public get ts() {
+    return this._ts;
+  }
+
+  public get lc() {
+    return this._lc;
+  }
+
+  public get from() {
+    return this._from;
+  }
+
+  public get q() {
+    return this._q;
+  }
+
+  public abstract get value(): T;
+
+  public setState(val: string | number | boolean | null, ack = false) {
+    this.ioBrokerService.connection?.setState(this.id, val, ack);
+  }
+
+  public toggle(ack = false) {
+    this.ioBrokerService.connection?.setState(this.id, !this.val, ack);
+  }
 }
 
 export class NumberValue extends BaseValue<number> {
-  public get(fallback?: number): number {
-    return this.val ?? fallback ?? 0;
+  constructor(
+    id: string,
+    val?: number,
+    private unit?: string,
+  ) {
+    super(id, val);
+  }
+
+  public get value(): number {
+    return this._valRef.value ?? 0;
+  }
+
+  public get valueWithUnit(): string {
+    return this.val + " " + this.unit;
   }
 }
 
 export class BooleanValue extends BaseValue<boolean> {
-  public get(fallback?: boolean): boolean {
-    return this.val ?? fallback ?? false;
+  constructor(
+    id: string,
+    val?: boolean,
+    private invert = false,
+  ) {
+    super(id, val);
+  }
+
+  public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
+    this.val = this.invert ? !val : (val as boolean);
+    this._ack = ack;
+    this._ts = ts;
+    this._lc = lc;
+    this._from = from;
+    this._q = q;
+  };
+
+  public get value(): boolean {
+    return this.val ?? false;
   }
 }
 
 export class StringValue extends BaseValue<string> {
-  public get(fallback?: string): string {
-    return this.val ?? fallback ?? "";
+  public get(): string {
+    return this.val ?? "";
+  }
+
+  public get value(): string {
+    return this._valRef.value ?? "";
   }
 }
 
@@ -66,6 +150,10 @@ export class JsonValue<T> extends BaseValue<string> {
 
   public get(fallback?: string): string {
     return this.val ?? fallback ?? "";
+  }
+
+  public get value(): string {
+    return this._valRef.value ?? "";
   }
 
   public parsed(fallback: T): T {

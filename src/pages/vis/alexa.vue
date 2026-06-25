@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { adminConnection } from "@/lib/iobroker-service.js";
 import { ref, watchEffect } from "vue";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import Page from "@/components/shared/page/Page.vue";
 import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerSubscription } from "@/iobroker-states/subscribed-states.iobroker";
-import { StringValue } from "@/store/valueClasses.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { InputShadcn } from "@/components/ui/input";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -24,23 +21,16 @@ export interface AlexaDotAction {
   telVolume?: number;
 }
 
-const alexaAction = {
-  channel: "alexaAction",
-  value: [{ id: "0_userdata.0.Alexa.Ausgaben_auf_Geräten", key: "alexaSpeak", valueClass: StringValue }],
-} satisfies IobrokerSubscription;
-
-useDynamicSubscribe(alexaAction);
-
 const loading = ref(false);
 const alexaData = ref<AlexaDotAction[]>([]);
 
 async function getAlexaEnum(): Promise<any[]> {
-  const res = await adminConnection?.getObject("enum.functions.alexa");
+  const res = await ioBrokerService.connection?.getObject("enum.functions.alexa");
   return res ? (res.common.members as string[]) : [];
 }
 
 const getAlexInfos = async (id: string): Promise<{ name: string | undefined; speak: string }> => {
-  const res = await adminConnection?.getObject(id);
+  const res = await ioBrokerService.connection?.getObject(id);
   return { name: res?.common.name, speak: `${res._id}.Commands.speak` };
 };
 
@@ -79,7 +69,7 @@ function getMoreInfos(name: string) {
 }
 
 watchEffect(() => {
-  if (adminConnection && alexaData.value.length === 0) {
+  if (ioBrokerService.connection && alexaData.value.length === 0) {
     loading.value = true;
     loadAlexaObject();
   }
@@ -100,11 +90,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
   if (dotInData) {
     (dotInData as Record<string, any>)[source] = value;
   }
-  const id = iobroker.alexaAction?.alexaSpeak?.id;
-  if (!id) {
-    return;
-  }
-  adminConnection?.setState(id, toJsonString(actions.value), true);
+  iobroker.alexaAction.alexaSpeak.setState(toJsonString(actions.value), true);
 }
 </script>
 

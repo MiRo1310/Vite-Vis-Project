@@ -4,13 +4,13 @@ import { DataCard, ToggleCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker-service.ts";
 import Date from "@/components/shared/date-time/Date.vue";
 import { wattpilotElectricitySurplus } from "@/composables/wattpilotElectricitySurplus.ts";
+import { WattPilotJson } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
-const data = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed());
+const data = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const modeLabel: Record<number, string> = {
   0: "Aus",
@@ -20,11 +20,7 @@ const modeLabel: Record<number, string> = {
 };
 
 const toggleAutoCharging = () => {
-  const autoCharging = iobroker.wattPilot?.autoCharging;
-  if (!autoCharging) {
-    return;
-  }
-  adminConnection?.setState(autoCharging.id, !autoCharging.val, true);
+  iobroker.wattPilot.autoCharging.toggle(true);
 };
 </script>
 
@@ -32,7 +28,7 @@ const toggleAutoCharging = () => {
   <Page title="Wallbox">
     <div class="space-y-3 mt-4">
       <div class="flex items-center flex-wrap gap-2">
-        <ToggleCard title="Wallbox Überschussladen" class="flex-1" :active="iobroker.wattPilot.autoCharging.get()" @click="toggleAutoCharging" />
+        <ToggleCard title="Wallbox Überschussladen" class="flex-1" :active="iobroker.wattPilot.autoCharging.value" @click="toggleAutoCharging" />
       </div>
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -83,7 +79,7 @@ const toggleAutoCharging = () => {
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <DataCard title="Ladeleistung">
-          <span class="text-sm font-semibold">{{ iobroker.wattPilot.totalCharging.get() / 1000 }}</span>
+          <span class="text-sm font-semibold">{{ iobroker.wattPilot.totalCharging.value / 1000 }}</span>
           <span class="text-xs text-muted-foreground ml-1">KW</span>
         </DataCard>
         <DataCard title="Ladeleistung">

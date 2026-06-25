@@ -1,6 +1,5 @@
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerChannels } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 export interface BatteryTableData {
   name: string;
@@ -14,27 +13,29 @@ export interface BatteryTableData {
 
 const { iobroker } = useIobrokerStore();
 
+type ValueLike<T> = { value: T; ts?: number };
+
 type BatteryItem = {
-  percent?: { ts?: number; val?: number };
-  lowBat?: { ts?: number; val?: boolean };
-  available?: { ts?: number; val?: boolean };
-  voltage?: { ts?: number; val?: number };
-  firmware?: { ts?: number; val?: boolean };
+  percent?: ValueLike<number>;
+  lowBat?: ValueLike<boolean>;
+  available?: ValueLike<boolean>;
+  voltage?: ValueLike<number>;
+  firmware?: ValueLike<boolean>;
 };
 
 // eslint-disable-next-line complexity
 const getTimestamp = (item: BatteryItem): number =>
   item.percent?.ts ?? item.lowBat?.ts ?? item.available?.ts ?? item.voltage?.ts ?? item.firmware?.ts ?? 0;
 
-const getFirmware = (item: BatteryItem): boolean => item?.firmware?.val ?? false;
+const getFirmware = (item: BatteryItem): boolean => item?.firmware?.value ?? false;
 
 const getXioamiValues = (item: BatteryItem): { available: boolean; percent: number; voltage: number } => ({
-  available: item?.available?.val ?? false,
-  percent: item?.percent?.val ?? 0,
-  voltage: item?.voltage?.val ?? 0,
+  available: item?.available?.value ?? false,
+  percent: item?.percent?.value ?? 0,
+  voltage: item?.voltage?.value ?? 0,
 });
 
-function getBatteryList(list: IobrokerChannels["batteries"]) {
+function getBatteryList(list: Record<string, Partial<BatteryItem>>) {
   const data: BatteryTableData[] = [];
   if (!list) {
     return;
@@ -47,7 +48,7 @@ function getBatteryList(list: IobrokerChannels["batteries"]) {
       name: key,
       firmware: getFirmware(batteryItem),
       timestamp: getTimestamp(batteryItem),
-      lowBat: batteryItem.lowBat?.val ?? false,
+      lowBat: batteryItem.lowBat?.value ?? false,
       available,
       percent,
       voltage,
@@ -57,5 +58,5 @@ function getBatteryList(list: IobrokerChannels["batteries"]) {
 }
 
 export const batteryList = computed(() => {
-  return getBatteryList(iobroker.batteries);
+  return getBatteryList(iobroker.batteries as Record<string, Partial<BatteryItem>>);
 });
