@@ -3,16 +3,14 @@ import Page from "@/components/shared/page/Page.vue";
 import { DataCard, ToggleCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { toJSON } from "@michaelroling/ts-library";
 import { computed } from "vue";
 import { adminConnection } from "@/lib/iobroker-service.ts";
 import Date from "@/components/shared/date-time/Date.vue";
-import { WattPilotJson } from "@/types/types.ts";
 import { wattpilotElectricitySurplus } from "@/composables/wattpilotElectricitySurplus.ts";
 
 const { iobroker } = useIobrokerStore();
 
-const data = computed(() => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
+const data = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed());
 
 const modeLabel: Record<number, string> = {
   0: "Aus",

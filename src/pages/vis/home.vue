@@ -16,7 +16,6 @@ import { getOpenWindows } from "@/composables/windows.ts";
 import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getStoreValBoolean } from "@/lib/object.ts";
 import { computed } from "vue";
 
 const appStore = useAppStore();
@@ -24,7 +23,7 @@ const { time, date } = useTime();
 const { iobroker } = useIobrokerStore();
 const colorMode = useColorMode();
 
-const shutterOpen = computed(() => getStoreValBoolean(iobroker.windowGlobal?.fensterOffen));
+const shutterOpen = computed(() => iobroker.windowGlobal.fensterOffen.get());
 
 function toggleColorMode() {
   colorMode.value = colorMode.value === "light" ? "dark" : "light";

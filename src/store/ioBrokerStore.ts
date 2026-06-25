@@ -35,10 +35,10 @@ export const useIobrokerStore: StoreType = defineStore("iobrokerStore", {
     getParsedLogs(state: IoBrokerStoreState) {
       return computed((): ParsedLogs => {
         return {
-          error: state.iobroker.logs.error?.parsed ?? [],
-          warn: state.iobroker.logs.warning?.parsed ?? [],
-          info: state.iobroker.logs.info?.parsed ?? [],
-          heatPump: state.iobroker.logs.heatPump?.parsed ?? [],
+          error: state.iobroker.logs.error.parsed([]),
+          warn: state.iobroker.logs.warning.parsed([]),
+          info: state.iobroker.logs.info.parsed([]),
+          heatPump: state.iobroker.logs.heatPump.parsed([]),
         };
       });
     },

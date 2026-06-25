@@ -68,11 +68,11 @@ export class JsonValue<T> extends BaseValue<string> {
     return this.val ?? fallback ?? "";
   }
 
-  public get parsed(): T | null {
+  public parsed(fallback: T): T {
     if (!this.#cache || this.#cache.raw !== this.val) {
       this.#cache = { raw: this.val, parsed: this.val === undefined ? null : toJSON<T>(this.val).json };
     }
-    return this.#cache.parsed;
+    return this.#cache.parsed ?? fallback;
   }
 }
 
