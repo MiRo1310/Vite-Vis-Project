@@ -50,6 +50,6 @@ const addNewProductGroup = () => {
 
 <template>
   <div class="flex justify-end">
-    <Button class="mt-2" variant="warning" @click.prevent="addNewProductGroup">Neue Produktgruppe anlegen</Button>
+    <Button class="mt-2" variant="outline" @click.prevent="addNewProductGroup">Neue Produktgruppe anlegen</Button>
   </div>
 </template>

@@ -64,21 +64,34 @@ const lastRecipes = computed(() => {
   }
   return recipeStore.getFilterLastRecipes(groupedRecipesByCategory.value);
 });
+
+const totalRecipeCount = computed(() =>
+  Object.values(groupedRecipesByCategory.value ?? {}).reduce((acc, group) => acc + group.length, 0),
+);
 </script>
 
 <template>
-  <p class="mb-1">Zuletzt geöffnete Rezepte</p>
-  <div v-if="lastRecipes.length" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-6 gap-2 mb-4">
-    <div v-for="recipe in lastRecipes" :key="recipe.id" @click="navigate(recipe)" class="border-2 p-2 rounded-md bg-card cursor-pointer">
-      <RecipeCard :recipe />
+  <div class="overflow-y-auto h-full pb-4">
+    <div class="flex items-baseline gap-3 mb-5 pt-1">
+      <h1 class="text-xl font-bold tracking-tight">Rezepte</h1>
+      <span v-if="totalRecipeCount" class="text-xs text-muted-foreground">{{ totalRecipeCount }} Rezepte</span>
     </div>
-  </div>
 
-  <div v-for="(group, categoryName) in groupedRecipesByCategory" :key="categoryName" class="mb-4">
-    <p class="mb-1">{{ categoryName }}</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 3xl:grid-cols-6 gap-2">
-      <div v-for="recipe in group" :key="recipe.id" @click="navigate(recipe)" class="border-2 p-2 rounded-md bg-card cursor-pointer">
-        <RecipeCard :recipe />
+    <div v-if="lastRecipes.length" class="mb-6">
+      <p class="text-xs text-muted-foreground uppercase tracking-wide mb-2">Zuletzt geöffnet</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+        <div v-for="recipe in lastRecipes" :key="recipe.id" class="cursor-pointer h-full" @click="navigate(recipe)">
+          <RecipeCard :recipe />
+        </div>
+      </div>
+    </div>
+
+    <div v-for="(group, categoryName) in groupedRecipesByCategory" :key="categoryName" class="mb-6">
+      <p class="text-xs text-muted-foreground uppercase tracking-wide mb-2">{{ categoryName }}</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
+        <div v-for="recipe in group" :key="recipe.id" class="cursor-pointer h-full" @click="navigate(recipe)">
+          <RecipeCard :recipe />
+        </div>
       </div>
     </div>
   </div>

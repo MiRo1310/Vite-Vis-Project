@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import RecipeProductProperties from "@/components/section/recipe/RecipeProductProperties.vue";
 import { computed } from "vue";
-import Badge from "@/components/shared/badge/Badge.vue";
 import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import { routes } from "@/router/routes.ts";
 
@@ -21,22 +20,19 @@ const calculatedKcal = computed(() => {
 </script>
 
 <template>
-  <div class="py-0.5 relative rounded-none m-0 border border-accent">
-    <div class="flex justify-between">
-      <div class="flex items-baseline space-x-4">
-        <div class="ml-6 flex items-baseline space-x-4 flex-1">
-          <RouterLink :to="{ name: routes.products.name, query: { productId: ingredient.productId } }" class="flex"
-            ><span class="text-sm underline">{{ ingredient?.product?.name }}</span>
-          </RouterLink>
-          <p class="text-xs">{{ ingredient?.description }}</p>
-        </div>
+  <div class="py-1 px-3 relative border-b border-border/50 last:border-0 bg-card">
+    <div class="flex items-start justify-between gap-2 pl-5">
+      <div class="min-w-0">
+        <RouterLink :to="{ name: routes.products.name, query: { productId: ingredient.productId } }" class="inline-flex">
+          <span class="text-sm font-medium hover:text-orange-600 dark:hover:text-orange-400 transition-colors">{{ ingredient?.product?.name }}</span>
+        </RouterLink>
+        <p v-if="ingredient?.description" class="text-xs text-muted-foreground mt-0.5">{{ ingredient?.description }}</p>
       </div>
-      <div class="flex items-center gap-2 mr-1">
-        <Badge :value="calculatedAmount" :unit="ingredient?.unit" color="orange" class="ingredient__badge" />
-        <Badge :value="calculatedKcal" unit="kcal" class="ingredient__badge" />
+      <div class="flex items-baseline gap-2 shrink-0">
+        <span class="text-sm font-semibold text-orange-600 dark:text-orange-400">{{ calculatedAmount }} {{ ingredient?.unit }}</span>
+        <span class="text-xs text-muted-foreground">{{ calculatedKcal }} kcal</span>
       </div>
     </div>
-
     <RecipeProductProperties v-if="ingredient.product" :product="ingredient.product" />
   </div>
 </template>

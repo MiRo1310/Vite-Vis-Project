@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import CollapsibleShared from "@/components/shared/collapsible/CollapsibleShared.vue";
-import { Button } from "@/components/shared/button/button.variants";
 import { computed, ref } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { type GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";
+import { ChevronDown, ChevronRight } from "lucide-vue-next";
 
 type ProductType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number]["product"];
 const props = defineProps<{ product: ProductType }>();
@@ -12,38 +11,42 @@ const { getCategoryNameById } = useProductCategories();
 
 const isOpen = ref(false);
 
-const information = computed((): Array<{ name: string; value?: string | number | null; classCell?: string }> => {
-  const product = props.product;
-
-  if (!product) {
+const nutrients = computed(() => {
+  const p = props.product;
+  if (!p) {
     return [];
   }
-
   return [
-    { name: "Kategorie", value: getCategoryNameById(product.category ?? "") },
-    { name: "Kohlenhydrate", value: product.carbs },
-    { name: "Fett", value: product.fat },
-    { name: "Kalorien", value: product.kcal },
-    { name: "Protein", value: product.protein },
-    { name: "Salz", value: product.salt },
-    { name: "Zucker", value: product.sugar },
-  ];
+    { name: "Kategorie", value: p.category ? getCategoryNameById(p.category) : null, unit: "" },
+    { name: "Kalorien", value: p.kcal, unit: "kcal" },
+    { name: "Kohlenhydrate", value: p.carbs, unit: "g" },
+    { name: "Fett", value: p.fat, unit: "g" },
+    { name: "Protein", value: p.protein, unit: "g" },
+    { name: "Zucker", value: p.sugar, unit: "g" },
+    { name: "Salz", value: p.salt, unit: "g" },
+  ].filter((n) => n.value !== null && n.value !== "" && n.value !== 0);
 });
 </script>
 
 <template>
-  <CollapsibleShared v-model:open="isOpen" :class="{ 'h-0': !isOpen }">
-    <template #trigger>
-      <Button as="div" size="iconRow" :icon="isOpen ? 'chevronDown' : 'chevronRight'" variant="outline" class="z-10 absolute left-px top-px" />
-    </template>
-    <template #content>
-      <p class="ml-1 text-xs">Produkt Eigenschaften</p>
-      <div v-if="product" class="flex space-x-6 bg-accent p-2 mx-1 text-sm">
-        <div v-for="info in information" :key="info.name">
-          <p class="font-bold text-muted-foreground min-h-8">{{ info.name }}</p>
-          <p :class="['whitespace-nowrap', info?.classCell]">{{ info.value }}</p>
-        </div>
+  <div
+    class="absolute left-0 inset-y-0 w-5 flex items-center justify-center text-muted-foreground/30 hover:text-muted-foreground hover:bg-muted/20 transition-colors cursor-pointer"
+    @click.stop="isOpen = !isOpen"
+  >
+    <ChevronDown v-if="isOpen" class="h-3 w-3" />
+    <ChevronRight v-else class="h-3 w-3" />
+  </div>
+  <div v-show="isOpen" class="mt-2 pl-5 pb-2">
+    <p class="text-xs text-muted-foreground mb-1.5">Nährwerte (pro 100 g)</p>
+    <div class="flex flex-wrap gap-1.5">
+      <div
+        v-for="n in nutrients"
+        :key="n.name"
+        class="flex items-center gap-1 rounded-md bg-muted/50 dark:bg-muted/30 px-2 py-1"
+      >
+        <span class="text-xs text-muted-foreground">{{ n.name }}:</span>
+        <span class="text-xs font-semibold">{{ n.value }} {{ n.unit }}</span>
       </div>
-    </template>
-  </CollapsibleShared>
+    </div>
+  </div>
 </template>

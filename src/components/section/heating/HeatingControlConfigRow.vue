@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Checkbox } from "@/components/ui/checkbox";
-import Select from "@/components/shared/select/Select.vue";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import { InputShadcn } from "@/components/ui/input";
 import { type SelectOption } from "@/types/types.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
@@ -45,7 +45,7 @@ const updateData = async (val: string | number | boolean | undefined, id: string
         <span class="ml-1 text-xs">{{ row.input.textBehind }}</span>
       </span>
       <div class="w-18">
-        <Select
+        <SelectComponent
           :items="row.select.items"
           :model-value="row.select.selected"
           :placeholder="row.select.placeholder || ''"

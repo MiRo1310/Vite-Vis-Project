@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Select from "@/components/shared/select/Select.vue";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { type HTMLAttributes, watchEffect } from "vue";
 import { type SelectOption } from "@/types/types.ts";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
@@ -31,7 +30,7 @@ const modelValue = defineModel<string>("modelValue", {
   set: (v) => {
     const found = props.items.find((i) => i.id === v || i.value === v || i.label === v);
     if (found) {
-      return found.id;
+      return found.id ?? found.value;
     } else {
       return v;
     }
@@ -62,7 +61,7 @@ const variants = {
 </script>
 
 <template>
-  <Select v-model="modelValue" :disabled :items="items" :class="getVariantsClasses(variants, props)">
+  <Select v-model="modelValue" :disabled>
     <SelectTrigger :class="[getVariantsClasses(variants, props), $props.class]">
       <SelectValue :placeholder="placeholder" />
     </SelectTrigger>

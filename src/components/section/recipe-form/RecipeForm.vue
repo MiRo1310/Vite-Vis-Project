@@ -21,12 +21,14 @@ import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Logger } from "@/lib/logger.ts";
 import { type TRecipeDescriptionLike, type TRecipeHeaderProductLike, type TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
 import { removeDescriptions } from "@/components/section/recipe-form/removeDescriptions.ts";
-import RecipeFormFooter from "@/components/section/recipe-form/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
 import { removeProductGroups } from "@/components/section/recipe-form/removeProductGroups.ts";
 import RecipeCategoryFormSelect from "@/components/section/recipe-form/RecipeCategoryFormSelect.vue";
 import { deepCopy } from "@michaelroling/ts-library";
 import { newIdPrefix } from "@/components/section/recipe-form/utils.ts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Check } from "lucide-vue-next";
+import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
 
 type TRecipeQuery = GetRecipeByIdQuery["recipe"];
 export type TFormValues = typeof form.values;
@@ -355,6 +357,7 @@ const toDetails = async (id: string): Promise<boolean> => {
 const resetForm = () => {
   recipeStore.setShouldValidate(false);
   resetRecipeInStore();
+  currentStep.value = 1;
 
   if (!recipeId.value) {
     valueToForm();
@@ -401,46 +404,141 @@ const addDescription = () => {
 
   saveToFormDescriptions([...descriptionsCopy, newItem]);
 };
+
+const currentStep = ref(1);
+
+const stepCircle = (step: number): string => {
+  const base = "h-7 w-7 rounded-full flex items-center justify-center transition-colors shrink-0";
+  if (currentStep.value === step) {
+    return `${base} bg-orange-500 text-white`;
+  }
+  if (currentStep.value > step) {
+    return `${base} bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400`;
+  }
+  return `${base} bg-muted text-muted-foreground`;
+};
+
+const goNext = () => {
+  currentStep.value = Math.min(currentStep.value + 1, 3);
+};
 </script>
 
 <template>
-  <div class="max-h-full overflow-auto -mr-2">
-    <Form class-content="h-full" @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit" v-component="'recipe-form'">
-      <div class="flex md:flex-row flex-col w-full h-full gap-2 pr-1">
-        <div class="flex-col flex-1 h-full">
-          <FormInput label="Rezeptname" name="name" class="flex-1" />
+  <div class="max-h-full overflow-auto -mr-2 pb-2 pr-1">
 
-          <div class="flex gap-2 items-start flex-wrap">
-            <FormInput label="Portionen" name="portions" type="number" />
-            <FormInput label="Zubereitungszeit (min)" name="preparationTimeMin" type="number" />
-            <FormInput label="Gesamtzeit (min)" name="totalTimeMin" type="number" />
-            <RecipeCategoryFormSelect />
-          </div>
+    <!-- Hero Banner -->
+    <div class="rounded-xl bg-gradient-to-br from-orange-500/10 via-amber-400/5 to-transparent border border-border/60 mb-4 p-4">
+      <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+        {{ recipeId ? "Rezept bearbeiten" : "Neues Rezept" }}
+      </p>
+      <h1 class="text-xl font-bold tracking-tight">
+        {{ form.values.name || "Unbenanntes Rezept" }}
+      </h1>
+      <RecipeMetaInfo
+        :preparation-time-min="form.values.preparationTimeMin"
+        :total-time-min="form.values.totalTimeMin"
+        :portions="form.values.portions"
+        class="mt-1.5"
+      />
+    </div>
 
-          <div
-            v-for="(description, index) in formDescriptions"
-            :key="description.position ?? description.id ?? index"
-            class="bg-accent rounded-lg p-2 mt-2"
-          >
-            <RecipeDescription :index />
-            <RecipeRemoveDescription :description :form />
-          </div>
-          <div class="flex justify-end mt-2 gap-2">
-            <Button variant="warning" @click.prevent="addDescription">Neuen Rezept Text hinzufügen</Button>
-          </div>
+    <!-- Step Indicator -->
+    <div class="flex items-start mb-5 px-2">
+      <button type="button" class="flex flex-col items-center gap-1 shrink-0" @click="currentStep = 1">
+        <div :class="stepCircle(1)">
+          <Check v-if="currentStep > 1" class="h-3.5 w-3.5" />
+          <span v-else class="text-xs font-bold">1</span>
         </div>
+        <span class="text-xs whitespace-nowrap" :class="currentStep >= 1 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Grunddaten</span>
+      </button>
+      <div class="flex-1 h-px mt-3.5 mx-2" :class="currentStep > 1 ? 'bg-orange-400/60' : 'bg-border'" />
+      <button type="button" class="flex flex-col items-center gap-1 shrink-0" @click="currentStep = 2">
+        <div :class="stepCircle(2)">
+          <Check v-if="currentStep > 2" class="h-3.5 w-3.5" />
+          <span v-else class="text-xs font-bold">2</span>
+        </div>
+        <span class="text-xs whitespace-nowrap" :class="currentStep >= 2 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Beschreibung</span>
+      </button>
+      <div class="flex-1 h-px mt-3.5 mx-2" :class="currentStep > 2 ? 'bg-orange-400/60' : 'bg-border'" />
+      <button type="button" class="flex flex-col items-center gap-1 shrink-0" @click="currentStep = 3">
+        <div :class="stepCircle(3)">
+          <span class="text-xs font-bold">3</span>
+        </div>
+        <span class="text-xs whitespace-nowrap" :class="currentStep >= 3 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Zutaten</span>
+      </button>
+    </div>
 
-        <div class="md:w-120 w-full">
-          <RecipeFormFooter @abort="resetForm" v-model:back-to-recipe="navigateBackToRecipeDetails" />
-          <div v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="mb-2">
+    <Form @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
+
+      <!-- Schritt 1: Grunddaten -->
+      <div v-show="currentStep === 1" class="flex flex-col gap-3">
+        <Card class="py-0 gap-0">
+          <CardContent class="px-4 pt-3 pb-4 flex flex-col gap-3">
+            <FormInput label="Rezeptname" name="name" />
+            <div class="grid grid-cols-2 gap-3">
+              <FormInput label="Portionen" name="portions" type="number" />
+              <RecipeCategoryFormSelect />
+              <FormInput label="Vorbereitung (min)" name="preparationTimeMin" type="number" />
+              <FormInput label="Gesamtzeit (min)" name="totalTimeMin" type="number" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <!-- Schritt 2: Beschreibung -->
+      <div v-show="currentStep === 2" class="flex flex-col gap-3">
+        <Card
+          v-for="(description, index) in formDescriptions"
+          :key="description.position ?? description.id ?? index"
+          class="py-0 gap-0"
+        >
+          <CardHeader class="px-4 pt-2 pb-0 flex flex-row items-center justify-between space-y-0">
+            <CardTitle class="text-xs text-muted-foreground uppercase tracking-wide">Schritt {{ index + 1 }}</CardTitle>
+            <RecipeRemoveDescription :description :form />
+          </CardHeader>
+          <CardContent class="px-4 pt-2 pb-3">
+            <RecipeDescription :index />
+          </CardContent>
+        </Card>
+        <button
+          type="button"
+          class="w-full rounded-lg border border-dashed border-border/60 py-3 text-sm text-muted-foreground hover:border-orange-400/60 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-500/5 transition-colors"
+          @click.prevent="addDescription"
+        >
+          + Beschreibung hinzufügen
+        </button>
+      </div>
+
+      <!-- Schritt 3: Zutaten -->
+      <div v-show="currentStep === 3" class="flex flex-col gap-3">
+        <Card
+          v-for="oneBasedIndex in recipeStore.getProductGroupsCount"
+          :key="oneBasedIndex"
+          class="py-0 gap-0"
+        >
+          <CardContent class="px-3 pt-2 pb-3">
             <RecipeProductGroup :recipe :group-index="toZeroBasedIndex(oneBasedIndex)" :form />
-          </div>
+          </CardContent>
+        </Card>
+        <AddNewProductGroup :form />
+      </div>
 
-          <AddNewProductGroup :form />
+      <!-- Navigation -->
+      <div class="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
+        <Button v-if="currentStep > 1" type="button" variant="outline" size="sm" @click.prevent="currentStep--">
+          ← Zurück
+        </Button>
+        <div v-else />
+        <div class="flex gap-2">
+          <Button type="button" variant="default" size="sm" @click.stop="resetForm">Zurücksetzen</Button>
+          <Button v-if="currentStep < 3" type="button" size="sm" @click.prevent="goNext">Weiter →</Button>
+          <template v-else>
+            <Button type="submit" variant="outline" size="sm">Speichern</Button>
+            <Button type="submit" size="sm" @click="navigateBackToRecipeDetails = true">Speichern & zurück</Button>
+          </template>
         </div>
       </div>
 
-      <RecipeFormFooter v-if="formProducts.length" @abort="resetForm" class="mt-2" v-model:back-to-recipe="navigateBackToRecipeDetails" />
     </Form>
   </div>
 </template>

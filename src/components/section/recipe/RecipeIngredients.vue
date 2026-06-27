@@ -3,7 +3,6 @@ import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
 import Input from "@/components/shared/input/Input.vue";
 import { computed, ref } from "vue";
-import Badge from "@/components/shared/badge/Badge.vue";
 
 type RecipeType = GetRecipeDetailsQuery["recipe"];
 
@@ -36,27 +35,31 @@ const groupByGroupPosition = computed(() => {
 </script>
 
 <template>
-  <div class="flex-1 max-w-full overflow-y-auto" v-component="'RecipeIngredients'">
-    <h2 class="font-bold text-xl">Zutaten für {{ portions }} Portionen</h2>
-    <div class="flex items-center justify-between mt-2 mr-1">
-      <div class="flex items-center space-x-2">
-        <Input v-model:model-value="customPortions" class="w-16" type="number" />
-        <label>Portionen anpassen</label>
+  <div class="flex-1 max-w-full overflow-y-auto">
+    <p class="text-xs text-muted-foreground uppercase tracking-wide mb-3">Zutaten</p>
+
+    <div class="flex items-center justify-between gap-3 bg-muted/40 rounded-lg px-3 py-2.5 mb-4">
+      <div class="flex items-center gap-2">
+        <Input v-model:model-value="customPortions" class="w-16 h-7 text-center" type="number" />
+        <span class="text-sm text-muted-foreground">Portionen</span>
       </div>
-      <div>
-        <label class="mr-2">Gesamt Kalorien pro Portion</label>
-        <Badge :value="getTotalKcal" unit="kcal/p" />
+      <div class="text-right">
+        <p class="text-xs text-muted-foreground leading-none mb-0.5">Gesamt</p>
+        <p class="text-sm font-semibold">{{ getTotalKcal }} kcal</p>
       </div>
     </div>
-    <div v-for="(ingredients, index) in Object.values(groupByGroupPosition)" :key="index">
-      <div class="mt-2 mb-1 h-8 flex items-center justify-between bg-popover px-1 py-1">
-        <p v-if="recipe?.recipeHeaderProducts" class="font-semibold underline">
-          {{ recipe.recipeHeaderProducts.find((h) => h.position === index)?.text }}
+
+    <div v-for="(ingredients, index) in Object.values(groupByGroupPosition)" :key="index" class="mb-4">
+      <div class="flex items-center justify-between mb-2">
+        <p v-if="recipe?.recipeHeaderProducts" class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {{ recipe.recipeHeaderProducts.find((h) => h.position === index)?.text || `Gruppe ${index + 1}` }}
         </p>
-        <Badge :value="Math.ceil(getTotalKcalForSection(ingredients) / portions)" unit="kcal/p" />
+        <span class="text-xs text-muted-foreground">{{ Math.ceil(getTotalKcalForSection(ingredients) / portions) }} kcal/P</span>
       </div>
-      <div v-for="(ingredient, i) in ingredients" :key="i">
-        <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />
+      <div class="rounded-lg border border-border/60 overflow-hidden">
+        <template v-for="(ingredient, i) in ingredients" :key="i">
+          <RecipeIngredient v-if="ingredient" :ingredient :custom-portions :portions />
+        </template>
       </div>
     </div>
   </div>

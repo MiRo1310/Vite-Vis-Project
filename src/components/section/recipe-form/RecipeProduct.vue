@@ -66,26 +66,25 @@ const open = defineModel("dialogOpen", { default: false });
         <div class="flex justify-between items-center p-1 flex-1 mr-6" data-component="product-summary">
           <div>
             <span>{{ index + 1 }}.</span>
-            <span class="ml-2 text-amber-600 dark:text-amber-300">{{ productLabel }}</span>
-
+            <span class="ml-2 text-orange-600 dark:text-orange-400">{{ productLabel }}</span>
             <span class="text-xs font-bold ml-2">{{ product?.description }}</span>
           </div>
           <span class="font-semibold">{{ product?.amount }} <ProductUnit :id="product?.activeUnitId" /> </span>
         </div>
         <slot />
       </div>
-      <DialogContent>
-        <DialogTitle> Ein Produkt anlegen </DialogTitle>
-        <RecipeProductDialogContent
-          :product
-          :counted-products
-          :recipe
-          :groupIndex
-          @remove-product-id="emits('removeProductId', $event)"
-          @submit="updateProduct"
-          v-model:open="open"
-        />
-      </DialogContent>
     </DialogTrigger>
+    <DialogContent>
+      <DialogTitle> Ein Produkt anlegen </DialogTitle>
+      <RecipeProductDialogContent
+        :product
+        :counted-products
+        :recipe
+        :groupIndex
+        @remove-product-id="emits('removeProductId', $event)"
+        @submit="updateProduct"
+        v-model:open="open"
+      />
+    </DialogContent>
   </Dialog>
 </template>

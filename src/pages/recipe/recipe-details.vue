@@ -7,6 +7,7 @@ import { graphql } from "@/api/gql";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
 import { Button } from "@/components/shared/button/button.variants";
 import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
+import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -74,28 +75,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <RecipeTimer />
-  <div class="flex items-start gap-2 justify-between">
-    <div class="flex items-baseline gap-x-6 text-xs text-blue-200 flex-wrap">
-      <span class="text-foreground text-xl! md:w-auto w-full md:inline inline-block">{{ result?.recipe?.name }}</span>
-      <span
-        >Zubereitungszeit:
-        <span v-if="result?.recipe?.preparationTimeMin">{{ result?.recipe?.preparationTimeMin }} min</span>
-        <span v-else> - </span>
-      </span>
-      <span>
-        Gesamtzeit:
-        <span v-if="result?.recipe?.totalTimeMin">{{ result?.recipe?.totalTimeMin }} min</span>
-        <span v-else> - </span>
-      </span>
+  <div class="overflow-y-auto h-full pb-4">
+    <RecipeTimer />
+    <div class="rounded-xl bg-gradient-to-br from-orange-500/10 via-amber-400/5 to-transparent border border-border/60 mb-4 p-4">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <h1 class="text-2xl font-bold leading-tight tracking-tight mb-2.5">{{ result?.recipe?.name }}</h1>
+          <RecipeMetaInfo
+            :preparation-time-min="result?.recipe?.preparationTimeMin"
+            :total-time-min="result?.recipe?.totalTimeMin"
+            :portions="result?.recipe?.portions"
+            :kcal="result?.recipe?.totalKcal"
+          />
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
+          <DeleteRecipe :recipe-id="recipeId">
+            <Button variant="destructive" size="icon" icon="remove" />
+          </DeleteRecipe>
+        </div>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
-      <DeleteRecipe :recipe-id="recipeId">
-        <Button variant="outline" size="icon" icon="remove" />
-      </DeleteRecipe>
-    </div>
-  </div>
 
-  <RecipeContent :recipe="result?.recipe" />
+    <RecipeContent :recipe="result?.recipe" />
+  </div>
 </template>

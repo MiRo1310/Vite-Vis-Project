@@ -184,7 +184,7 @@ const newProductIdToOpenModal = ref("");
     </RecipeProduct>
   </div>
   <div class="flex justify-end mt-2 space-x-2">
-    <Button variant="warning" @click.prevent="addNewProduct">Neues Produkt anlegen</Button>
+    <Button variant="outline" @click.prevent="addNewProduct">Neues Produkt anlegen</Button>
     <Button
       size="icon"
       variant="destructive"

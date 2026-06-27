@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Select from "@/components/shared/select/Select.vue";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
@@ -33,7 +33,7 @@ const heatingControl = computed(() => iobroker.heatingControlDay);
         :state="heatingControl[day.val as keyof typeof heatingControl][String(i) as keyof (typeof heatingControl)['Mon']].time"
       />
 
-      <Select
+      <SelectComponent
         :items="tempArray()"
         :model-value="heatingControl[day.val as keyof typeof heatingControl][String(i) as keyof (typeof heatingControl)['Mon']].temp?.val?.toString()"
         :class="[activeClass(i), 'h-full!  m-0!']"
