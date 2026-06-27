@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
-import { Entries } from "@/types/types.ts";
+import { type Entries } from "@/types/types.ts";
 import ValueWithUnit from "@/components/shared/ValueWithUnit.vue";
 
 const props = defineProps<{

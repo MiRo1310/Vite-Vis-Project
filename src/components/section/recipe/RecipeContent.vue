@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
+import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import RecipeTexts from "@/components/section/recipe/RecipeTexts.vue";
 import RecipeIngredients from "@/components/section/recipe/RecipeIngredients.vue";

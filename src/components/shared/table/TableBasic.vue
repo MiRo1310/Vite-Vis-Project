@@ -12,7 +12,7 @@ type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
   headerClass?: string;
 };
 const props = defineProps<{
-  columns: CustomColumnDef<TData, TValue>[];
+  columns: Array<CustomColumnDef<TData, TValue>>;
   data: TData[];
   class?: string;
   wrapperClass?: string;

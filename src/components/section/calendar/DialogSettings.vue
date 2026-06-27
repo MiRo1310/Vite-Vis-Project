@@ -6,7 +6,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";
 import { colors } from "@/config/colors";
-import { SelectOption, JSONStyle } from "@/types/types.ts";
+import { type SelectOption, type JSONStyle } from "@/types/types.ts";
 
 const open = defineModel<boolean>("open");
 
@@ -17,12 +17,12 @@ const json = computed(() => iobroker.styles.calendarStyle.parsed([]));
 const modifiedObj = ref<JSONStyle[] | undefined>(undefined);
 
 function updateHandler(val: { input: string; select: SelectOption; index: number }) {
-  if (val.select?.class === "" || !val.input || (val?.input as string) === "") {
+  if (val.select.class === "" || !val.input || val.input === "") {
     return;
   }
 
-  const jsonCopy = modifiedObj.value || ([...json.value] as JSONStyle[]);
-  let jsonCopyElement = jsonCopy[val.index];
+  const jsonCopy = modifiedObj.value ?? [...json.value];
+  let jsonCopyElement = jsonCopy[val.index] as JSONStyle | undefined;
 
   if (!jsonCopyElement && modifiedObj.value) {
     jsonCopyElement = modifiedObj.value[val.index];
@@ -30,14 +30,15 @@ function updateHandler(val: { input: string; select: SelectOption; index: number
     addValueToObj(jsonCopyElement, val);
     return;
   }
-
-  addValueToObj(jsonCopyElement, val);
+  if (jsonCopyElement) {
+    addValueToObj(jsonCopyElement, val);
+  }
   modifiedObj.value = jsonCopy;
 }
 
 function addValueToObj(obj: JSONStyle, val: { input: string; select: SelectOption; index: number }) {
-  obj.name = val?.input;
-  obj.color = val.select?.class ?? "";
+  obj.name = val.input;
+  obj.color = val.select.class ?? "";
 }
 
 function updateToIobroker() {
@@ -60,7 +61,7 @@ function addNewRow() {
 }
 
 function deleteRow(index: number) {
-  const jsonCopy = modifiedObj.value || ([...json.value] as JSONStyle[]);
+  const jsonCopy = modifiedObj.value ?? ([...json.value] as JSONStyle[]);
   jsonCopy.splice(index, 1);
   modifiedObj.value = jsonCopy;
 }

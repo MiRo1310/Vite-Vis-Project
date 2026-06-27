@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import TableData, {
-  TableCellType,
+  type TableCellType,
 } from "@/components/shared/table-cell/TableCell.vue";
 
 export interface TableListingType {

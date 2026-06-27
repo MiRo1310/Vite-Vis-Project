@@ -11,12 +11,12 @@ import { computed } from "vue";
 import { formatUptime } from "@/lib/system";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
-import { HeatingPumpScriptJson, HeatingPumpSilentJSON } from "@/types/types.ts";
+import { type HeatingPumpScriptJson, type HeatingPumpSilentJSON } from "@/types/types.ts";
 
 const { getParsedLogs, iobroker } = useIobrokerStore();
 
-function reset() {
-  ioBrokerService.connection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
+async function reset() {
+  await ioBrokerService.connection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
 }
 
 async function toggleHeater() {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { HTMLAttributes, ref } from "vue";
+import { type HTMLAttributes, ref } from "vue";
 import { Card } from "@/components/ui/card";
-import { FileData } from "@/types/types";
+import { type FileData } from "@/types/types";
 
 const props = defineProps<{ label?: string; class?: HTMLAttributes["class"] }>();
 
@@ -32,12 +32,12 @@ const saveFiles = (files: FileList) => (fileList.value = files);
 
 const saveFileData = (files: FileList) => {
   Array.from(files).forEach((file) => {
-    fileData.value.push({ name: file.name, url: URL.createObjectURL(file) });
+    fileData.value?.push({ name: file.name, url: URL.createObjectURL(file) });
   });
 };
 
-const fileData = defineModel<FileData[]>("fileData", { default: [] });
-const fileList = defineModel<FileList>("fileList", { default: [] });
+const fileData = defineModel<FileData[]>("fileData");
+const fileList = defineModel<FileList>("fileList");
 </script>
 
 <template>

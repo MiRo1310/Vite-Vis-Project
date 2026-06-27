@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { computed } from "vue";
 import { cn } from "@/lib/utils";
-import { ChartConfig } from "@/components/ui/chart";
+import { type ChartConfig } from "@/components/ui/chart";
 
 const props = withDefaults(
   defineProps<{
@@ -31,15 +31,18 @@ const props = withDefaults(
 // const chartContext = useChart(null)
 
 const payload = computed(() => {
-  return Object.entries(props.payload)
-    .map(([key, value]) => {
-      // const key = `${props.nameKey || item.name || item.dataKey || "value"}`
-      const itemConfig = props.config[key];
-      const indicatorColor = props.config[key]?.color ?? props.payload.fill;
+  return (
+    Object.entries(props.payload)
+      .map(([key, value]) => {
+        // const key = `${props.nameKey || item.name || item.dataKey || "value"}`
+        const itemConfig = props.config[key];
+        const indicatorColor = props.config[key].color ?? props.payload.fill;
 
-      return { key, value, itemConfig, indicatorColor, date: props.payload?.date };
-    })
-    .filter((i) => i.itemConfig);
+        return { key, value, itemConfig, indicatorColor, date: props.payload.date };
+      })
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      .filter((i) => i.itemConfig)
+  );
 });
 
 const nestLabel = computed(() => Object.keys(props.payload).length === 1 && props.indicator !== "dot");
@@ -50,7 +53,7 @@ const tooltipLabel = computed(() => {
   if (props.labelFormatter && props.x !== undefined) {
     return props.labelFormatter(props.x);
   }
-  return props.labelKey ? props.config[props.labelKey]?.label || props.payload[props.labelKey] : props.x;
+  return props.labelKey ? (props.config[props.labelKey].label ?? props.payload[props.labelKey]) : props.x;
 });
 </script>
 

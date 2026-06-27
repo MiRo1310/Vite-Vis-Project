@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Skeleton } from "@/components/ui/skeleton";
-import { HtmlHTMLAttributes } from "vue";
+import { type HtmlHTMLAttributes } from "vue";
 
 withDefaults(defineProps<{ loading: boolean; class?: HtmlHTMLAttributes["class"]; singleSkeleton?: boolean; lines?: number }>(), {
   lines: 3,

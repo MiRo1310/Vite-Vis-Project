@@ -1,4 +1,4 @@
-import { FluxTableMetaData, InfluxDB, QueryApi } from "@influxdata/influxdb-client";
+import { type FluxTableMetaData, InfluxDB, type QueryApi } from "@influxdata/influxdb-client";
 import { onBeforeUnmount, ref } from "vue";
 import { Logger } from "@/lib/logger.ts";
 import { isDefined } from "@vueuse/core";
@@ -20,15 +20,15 @@ export class InfluxDBClient {
   private readonly bucket: string;
   private readonly intervallSec: number;
   private readonly measurement: string[];
-  private readonly range: number | undefined;
+  private readonly range: number | null;
   private readonly intervalLoad: boolean;
   private readonly valueType: "boolean" | "number";
   private intervall: ReturnType<typeof setInterval> | null = null;
   private stop = new Date().toISOString();
   private start = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   private windowPeriod = "1m";
-  private result = ref<Record<string, any>[]>([]);
-  private resultTemp: Record<string, any>[] = [];
+  private result = ref<Array<Record<string, any>>>([]);
+  private resultTemp: Array<Record<string, any>> = [];
   private isFetching = false;
 
   private api: QueryApi;
@@ -37,20 +37,18 @@ export class InfluxDBClient {
     measurement: string[],
     options?: { type?: "boolean" | "number"; rangeSec?: number; intervall?: number; bucket?: string; url?: string; token?: string; org?: string },
   ) {
-    if (!options) {
-      options = {};
-    }
+    options ??= {};
 
     this.url = options.url ?? (import.meta.env.VITE_INFLUX_DB_URL as string);
     this.token = options.token ?? (import.meta.env.VITE_INFLUX_DB_TOKEN as string);
     this.org = options.org ?? (import.meta.env.VITE_INFLUX_DB_ORG as string);
     this.bucket = options.bucket ?? "iobroker";
-    this.range = options.rangeSec;
+    this.range = options.rangeSec ?? null;
     this.intervalLoad = this.range !== null;
     this.valueType = options.type ?? "number";
 
     this.measurement = measurement;
-    this.intervallSec = options?.intervall ?? 60;
+    this.intervallSec = options.intervall ?? 60;
     this.api = new InfluxDB({ url: this.url, token: this.token }).getQueryApi(this.org);
   }
 

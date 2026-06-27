@@ -7,11 +7,12 @@ import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
 const { iobroker } = useIobrokerStore();
 
-const handleHolidayClick = () => {
-  ioBrokerService.connection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobroker.holiday?.urlaubAktiv?.val);
+const handleHolidayClick = async () => {
+  await ioBrokerService.connection?.setState("0_userdata.0.Urlaub.Urlaub_aktiv", !iobroker.holiday.urlaubAktiv.val);
 };
 
-const getHoliday = computed(() => (iobroker.holiday?.urlaubAktiv?.val ? "Urlaub" : "Kein Urlaub"));
+//TODO neue methode in BooleanValue
+const getHoliday = computed(() => (iobroker.holiday.urlaubAktiv.value ? "Urlaub" : "Kein Urlaub"));
 </script>
 
 <template>

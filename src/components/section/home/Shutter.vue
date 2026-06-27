@@ -9,8 +9,8 @@ import { routes } from "@/router/routes.ts";
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
-const handleWindowClick = () => {
-  router.push({ path: routes.window.path });
+const handleWindowClick = async () => {
+  await router.push({ path: routes.window.path });
 };
 
 const getWindowStyle = computed(() => {

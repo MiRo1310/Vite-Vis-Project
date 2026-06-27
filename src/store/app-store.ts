@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { AppStore } from "@/store/index.ts";
+import { type AppStore } from "@/store/index.ts";
 
 export const useAppStore = defineStore("appStore", {
   state: (): AppStore => ({

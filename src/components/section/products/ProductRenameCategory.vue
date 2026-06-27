@@ -26,7 +26,7 @@ const rename = async () => {
     return;
   }
 
-  await mutate({ id: props.id || "", name: newCategory.value || "" });
+  await mutate({ id: props.id ?? "", name: newCategory.value ?? "" });
   newCategory.value = "";
 };
 

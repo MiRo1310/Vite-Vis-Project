@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils.ts";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 
-const backToRecipe = defineModel("backToRecipe", { default: false });
+const backToRecipe = defineModel<boolean>("backToRecipe", { default: false });
 
 const emits = defineEmits(["abort"]);
 </script>

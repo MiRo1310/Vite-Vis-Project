@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { toLocaleTime } from "@/lib/time.ts";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlexaList } from "@/types/types.ts";
+import { type AlexaList } from "@/types/types.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import Button from "@/components/shared/button/Button.vue";
+import { X } from "lucide-vue-next";
 
 defineProps<{ list: AlexaList[] }>();
 
-const removeItem = (id: string) => {
+const removeItem = async (id: string) => {
   const adminConnection = ioBrokerService.connection;
   if (adminConnection) {
-    adminConnection.setState(id, true);
+    await adminConnection.setState(id, true);
   }
 };
 </script>

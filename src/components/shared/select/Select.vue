@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { HTMLAttributes, watchEffect } from "vue";
-import { SelectOption } from "@/types/types.ts";
+import { SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Select from "@/components/shared/select/Select.vue";
+import { type HTMLAttributes, watchEffect } from "vue";
+import { type SelectOption } from "@/types/types.ts";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 const props = defineProps<{
@@ -30,7 +31,7 @@ const modelValue = defineModel<string>("modelValue", {
   set: (v) => {
     const found = props.items.find((i) => i.id === v || i.value === v || i.label === v);
     if (found) {
-      return found.id ?? found.value ?? found.label;
+      return found.id;
     } else {
       return v;
     }
@@ -46,8 +47,8 @@ watchEffect(() => {
 
 function getFocusClass(item: SelectOption) {
   let string = "";
-  if (typeof item?.class === "string") {
-    item?.class?.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
+  if (typeof item.class === "string") {
+    item.class.split(" ").forEach((cl: string) => (string += `focus:${cl} `));
   }
   return string;
 }
@@ -61,7 +62,7 @@ const variants = {
 </script>
 
 <template>
-  <Select v-model="modelValue" :disabled>
+  <Select v-model="modelValue" :disabled :items="items" :class="getVariantsClasses(variants, props)">
     <SelectTrigger :class="[getVariantsClasses(variants, props), $props.class]">
       <SelectValue :placeholder="placeholder" />
     </SelectTrigger>

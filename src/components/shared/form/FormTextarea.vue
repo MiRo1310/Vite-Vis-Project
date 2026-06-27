@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 import { Textarea } from "@/components/ui/textarea";
 
 withDefaults(

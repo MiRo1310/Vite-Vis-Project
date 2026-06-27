@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import Page from "@/components/shared/page/Page.vue";
-import { batteryList, BatteryTableData } from "@/composables/battery.ts";
+import { batteryList, type BatteryTableData } from "@/composables/battery.ts";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 
-const columns: DatatableColumns<BatteryTableData>[] = [
+const columns: Array<DatatableColumns<BatteryTableData>> = [
   { source: "name", labelKey: "Name", type: "text", accessorKey: "name" },
   {
     source: "percent",

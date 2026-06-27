@@ -2,6 +2,7 @@ type ConsoleType = "log" | "info" | "warn" | "error" | "debug";
 const debugMode = false;
 // eslint-disable-next-line complexity
 export const Logger = (t: string, options?: { value?: unknown; e?: any; type?: ConsoleType; useDebugMode?: boolean }): void => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!options?.useDebugMode || (options?.useDebugMode && debugMode)) {
     // eslint-disable-next-line no-console
     console[options?.type ?? "log"](t, " ", options?.value);
@@ -10,7 +11,7 @@ export const Logger = (t: string, options?: { value?: unknown; e?: any; type?: C
     }
     if (options.e.message) {
       // eslint-disable-next-line no-console
-      console[options?.type ?? "log"](`Error message: ${options.e.message}`);
+      console[options.type ?? "log"](`Error message: ${options.e.message}`);
     }
     if (options.e.stack) {
       // eslint-disable-next-line no-console

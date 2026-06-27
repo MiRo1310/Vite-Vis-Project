@@ -6,7 +6,7 @@ export interface AggregatedPerDay {
   key: string;
 }
 
-export const xDomainSynchronized = computed(() => (dates: { date: Date }[][]): Date[] | undefined => {
+export const xDomainSynchronized = computed(() => (dates: Array<Array<{ date: Date }>>): Date[] | undefined => {
   const all = dates.flat();
   if (!all.length) {
     return;

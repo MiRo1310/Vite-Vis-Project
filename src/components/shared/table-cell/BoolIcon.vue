@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Check, X } from "lucide-vue-next";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 defineProps<{
   value: boolean | "true" | "false" | undefined;

@@ -12,7 +12,6 @@ const props = withDefaults(
   }>(),
   {
     class: "",
-    modelValue: "",
     defaultValue: "",
     debounceMs: 500,
   },
@@ -32,9 +31,9 @@ const updateHandler = (payload: string | number) => {
   emits("update:modelValue", internalValue.value);
 };
 
-const updateInternal = (payload: string | number) => {
+const updateInternal = async (payload: string | number) => {
   internalValue.value = payload;
-  debounceFn(payload);
+  await debounceFn(payload);
 };
 
 const resetInternal = () => {

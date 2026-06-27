@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 

@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
-import { HasOptionalNameAndId, SelectOption } from "@/types/types";
+import { type HasOptionalNameAndId, type SelectOption } from "@/types/types";
 
 function hasOptionalNameAndId<T>(item: T): item is T & HasOptionalNameAndId {
   return isDefined((item as HasOptionalNameAndId).name) && isDefined((item as HasOptionalNameAndId).id);

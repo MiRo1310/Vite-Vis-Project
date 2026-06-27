@@ -7,7 +7,7 @@ import { DataCard } from "@/components/shared/card";
 const { iobroker } = useIobrokerStore();
 
 const lastCallDuration = computed(() => {
-  return formatSecondsToTime(Number(iobroker.phone?.lastDuration?.val) || 0);
+  return formatSecondsToTime(Number(iobroker.phone.lastDuration.value) || 0);
 });
 </script>
 

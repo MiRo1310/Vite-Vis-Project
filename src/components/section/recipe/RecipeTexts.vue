@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
+import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 
 type DescriptionType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeDescriptions"];
 

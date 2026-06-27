@@ -1,17 +1,17 @@
 import { BooleanValue, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
 import {
-  AlexaList,
-  CalendarDayType,
-  HeatingPumpScriptJson,
-  HeatingPumpSilentJSON,
-  JSONStyle,
-  Log,
-  TankerkoenigStation,
-  TrashType,
-  UpdatesAsJSON,
-  WattPilotJson,
+  type AlexaList,
+  type CalendarDayType,
+  type HeatingPumpScriptJson,
+  type HeatingPumpSilentJSON,
+  type JSONStyle,
+  type Log,
+  type TankerkoenigStation,
+  type TrashType,
+  type UpdatesAsJSON,
+  type WattPilotJson,
 } from "@/types/types.ts";
-import { NewsFeed } from "@/components/section/iobroker";
+import { type NewsFeed } from "@/components/section/iobroker";
 
 export const iobrokerTree = {
   logReset: {

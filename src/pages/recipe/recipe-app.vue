@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Toaster from "../../components/ui/toast/Toaster.vue";
 import ResponsiveNavigation from "@/components/shared/responsiveNav/ResponsiveNavigation.vue";
-import { INavigation } from "@/components/shared/responsiveNav";
+import { type INavigation } from "@/components/shared/responsiveNav";
 import { routes } from "@/router/routes.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { githubNavigation } from "@/config/config.ts";

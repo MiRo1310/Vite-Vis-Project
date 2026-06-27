@@ -1,9 +1,9 @@
 import { AdminConnection, PROGRESS } from "@iobroker/socket-client";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerState } from "@/types/types.ts";
+import { type IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { Logger } from "@/lib/logger.ts";
-import { IoBrokerStore } from "@/store";
+import { type IoBrokerStore } from "@/store";
 
 interface SubscriberValue {
   id: string;
@@ -14,7 +14,6 @@ export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
   private ioBrokerStore: IoBrokerStore | undefined;
-  constructor() {}
 
   public loadScript(src: string) {
     const script = document.createElement("script");
@@ -36,11 +35,9 @@ export class IoBrokerService {
       },
     });
 
-    if (this.adminConnection) {
-      await this.adminConnection.startSocket();
-      await this.adminConnection.waitForFirstConnection();
-      this.subscribeIobrokerStates();
-    }
+    await this.adminConnection.startSocket();
+    await this.adminConnection.waitForFirstConnection();
+    this.subscribeIobrokerStates();
   }
   public get connection() {
     return this.adminConnection;
@@ -65,8 +62,8 @@ export class IoBrokerService {
   }
 
   private subscribeIobrokerStates() {
-    this.queuedIds.forEach(async (item) => {
-      await this.subscribeId(item);
+    this.queuedIds.forEach((item) => {
+      void this.subscribeId(item);
     });
   }
 

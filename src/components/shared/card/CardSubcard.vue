@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 </script>

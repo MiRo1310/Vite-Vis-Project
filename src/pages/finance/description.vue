@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import { Card } from "@/components/shared/card";
 import Navigation from "@/components/section/finance/Navigation.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
@@ -8,7 +8,7 @@ import { graphql } from "@/api/gql";
 import AddDescription from "@/components/section/finance/AddDescription.vue";
 import DescriptionAction from "@/components/section/finance/DescriptionAction.vue";
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
-import { DescriptionsQuery } from "@/api/gql/graphql.ts";
+import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
 
 const { result, loading } = useQuery(
   graphql(`
@@ -21,7 +21,7 @@ const { result, loading } = useQuery(
   `),
 );
 
-const columns: DatatableColumns<DescriptionsQuery["description"][number]>[] = [
+const columns: Array<DatatableColumns<DescriptionsQuery["description"][number]>> = [
   {
     source: "text",
     labelKey: "Beschreibung",

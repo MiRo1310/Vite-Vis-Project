@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import EnergyFlowLine from "@/components/shared/energy-flow/EnergyFlowLine.vue";
-import { ILineObject } from "@/components/shared/energy-flow/index.ts";
+import { type ILineObject } from "@/components/shared/energy-flow/index.ts";
 import { Line } from "@/components/shared/energy-flow/line.ts";
-import { Positions } from "@/components/shared/energy-flow/position.ts";
+import { type Positions } from "@/components/shared/energy-flow/position.ts";
 import { computed } from "vue";
 import { sumNumbers } from "@/lib/number.ts";
 

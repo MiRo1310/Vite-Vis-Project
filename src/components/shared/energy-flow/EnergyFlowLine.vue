@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
-import { Point, TParticleShape } from "@/components/shared/energy-flow/index.ts";
+import { type Point, type TParticleShape } from "@/components/shared/energy-flow/index.ts";
 
 const props = defineProps<{
   id: string;
@@ -98,18 +98,18 @@ const pathRef = ref<SVGPathElement | null>(null);
 const pathLength = ref(0);
 
 const particles = ref<
-  {
+  Array<{
     animationPosition: number;
     offset: number;
-  }[]
+  }>
 >([]);
 
 const positions = ref<
-  {
+  Array<{
     x: number;
     y: number;
     angle: number;
-  }[]
+  }>
 >([]);
 
 function buildParticles() {

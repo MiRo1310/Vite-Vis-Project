@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useRouter } from "vue-router";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 const props = defineProps<{
   title: string;
@@ -14,9 +14,9 @@ const props = defineProps<{
 
 const router = useRouter();
 
-function handleClick() {
+async function handleClick() {
   if (props.route) {
-    router.push(props.route);
+    await router.push(props.route);
   }
 }
 </script>

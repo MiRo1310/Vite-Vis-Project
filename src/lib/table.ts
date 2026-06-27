@@ -1,10 +1,10 @@
-import { h, HTMLAttributes } from "vue";
+import { h, type HTMLAttributes } from "vue";
 import { ArrowUpDown } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import TableCell from "@/components/shared/table-cell/TableCell.vue";
 import { Checkbox } from "@/components/ui/checkbox";
 import { clsx } from "clsx";
-import { Pathes } from "@/types/types.ts";
+import { type Pathes } from "@/types/types.ts";
 import { cn } from "@/lib/utils.ts";
 
 export interface DatatableColumns<T> {
@@ -26,10 +26,10 @@ export interface DatatableColumns<T> {
 
 export type CustomValue = string | number | boolean | undefined | object;
 
-export const getColumns = (columns: DatatableColumns<any>[]) => {
+export const getColumns = (columns: Array<DatatableColumns<any>>) => {
   return columns.map((column: DatatableColumns<any>) => {
     return {
-      accessorKey: column.accessorKey || column.source || column.labelKey,
+      accessorKey: (column.accessorKey ?? column.source) || column.labelKey,
       headerClass: column.headerClass,
       source: column.source,
 
@@ -37,8 +37,8 @@ export const getColumns = (columns: DatatableColumns<any>[]) => {
       header: getHeader({
         source: column.source,
         label: column.labelKey,
-        sortable: column?.sortable,
-        className: cn(column?.className),
+        sortable: column.sortable,
+        className: cn(column.className),
         type: column.type ?? "text",
       }),
       cell: getCell({
@@ -108,7 +108,7 @@ const getCell = (obj: DataTableCellCreator) => {
       unit: obj.unit,
       decimal: obj.decimal,
       unitAdditive: obj.unitAdditive,
-      reverse: obj?.reverse,
+      reverse: obj.reverse,
     });
   }
   if (obj.type === "html") {
@@ -174,7 +174,7 @@ const getTableCell = ({
       {
         class: clsx({
           "font-medium": true,
-          [className || ""]: true,
+          [className ?? ""]: true,
         }),
       },
       h(component, {
@@ -194,7 +194,7 @@ const getComponent = (
   source: string,
   className: string | undefined,
   customValue: CustomValue | undefined,
-  callback?: (params: Record<string, any>) => void | undefined,
+  callback?: (params: Record<string, any>) => void,
 ) => {
   return ({ row }: any) => {
     const value = getValueByPath(row.original, source);
@@ -203,7 +203,7 @@ const getComponent = (
       {
         class: clsx({
           "font-medium": true,
-          [className || ""]: true,
+          [className ?? ""]: true,
         }),
       },
       h(component, {

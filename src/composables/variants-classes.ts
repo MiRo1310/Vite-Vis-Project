@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 
 type Variants = Record<string, Record<string, string>>;
 
-export const getVariantsClasses = <T>(variants: Variants, props: Record<string, unknown>, excludedVariants?: (keyof T)[]) => {
+export const getVariantsClasses = <T>(variants: Variants, props: Record<string, unknown>, excludedVariants?: Array<keyof T>) => {
   const classes: string[] = [];
   Object.keys(variants).forEach((variant) => {
     if (isExcluded<T>(variant as keyof T, excludedVariants)) {
@@ -15,7 +15,7 @@ export const getVariantsClasses = <T>(variants: Variants, props: Record<string, 
   return twMerge(classes);
 };
 
-const isExcluded = <T>(variant: keyof T, excludedVariants?: (keyof T)[]) => {
+const isExcluded = <T>(variant: keyof T, excludedVariants?: Array<keyof T>) => {
   if (!excludedVariants) {
     return false;
   }

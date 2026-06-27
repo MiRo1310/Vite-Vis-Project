@@ -5,10 +5,11 @@ import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { DescriptionsQuery } from "@/api/gql/graphql.ts";
+import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { Textarea } from "@/components/ui/textarea";
-import { ITableColumn } from "@/types/types.ts";
+import { type ITableColumn } from "@/types/types.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
 const { mutate } = useMutation(
   graphql(`
@@ -34,12 +35,12 @@ const { mutate: updateMutation } = useMutation(
   },
 );
 
-const remove = () => {
+const remove = async () => {
   const id = props.value;
   if (!id) {
     return;
   }
-  mutate(
+  await mutate(
     { id },
     {
       refetchQueries: ["Descriptions"],
@@ -47,14 +48,14 @@ const remove = () => {
   );
 };
 
-const update = () => {
+const update = async () => {
   dialogUpdateOpen.value = false;
   const id = props.value;
 
   if (!description.value || !id) {
     return;
   }
-  updateMutation(
+  await updateMutation(
     {
       id,
       text: description.value,
@@ -73,7 +74,7 @@ const clear = () => {
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
-const description = ref(props.row.original.text ?? "");
+const description = ref(props.row.original.text);
 </script>
 
 <template>

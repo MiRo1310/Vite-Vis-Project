@@ -2,12 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
-const props = defineProps<{ idShutterPosition: string }>();
+const props = defineProps<{ shutterPosition: string }>();
 
-const handleClick = (i: number) => {
+const handleClick = async (i: number) => {
   const adminConnection = ioBrokerService.connection;
   if (adminConnection) {
-    adminConnection.setState(props.idShutterPosition, 100 - (i - 1) * 20);
+    await adminConnection.setState(props.shutterPosition, 100 - (i - 1) * 20);
   }
 };
 </script>

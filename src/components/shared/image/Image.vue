@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import fallback from "@/assets/images/fall-back-img.png";
-import { ref, Ref, watchEffect } from "vue";
+import { ref, type Ref, watchEffect } from "vue";
 
 interface ImageProps {
   src: string;
