@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import ValueWithUnit from "@/components/shared/ValueWithUnit.vue";
-import { RoutePath } from "@/router/routes.ts";
-import Listing from "@/pages/finance/listing.vue";
+import { type RoutePath } from "@/router/routes.ts";
+import type Listing from "@/pages/finance/listing.vue";
 
 export interface InfoTypes {
   route?: RoutePath;

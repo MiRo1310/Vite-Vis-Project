@@ -1,4 +1,4 @@
-import { SelectOption } from "@/types/types.ts";
+import { type SelectOption } from "@/types/types.ts";
 
 export const colors: SelectOption[] = [
   { value: "Orange", class: "bg-[#fb1]" },

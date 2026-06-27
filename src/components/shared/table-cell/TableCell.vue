@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import DateTimeText from "@/components/shared/table-cell/DateTimeText.vue";
 import DateText from "@/components/shared/table-cell/DateText.vue";

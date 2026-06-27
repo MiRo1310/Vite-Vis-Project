@@ -2,7 +2,7 @@
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
-import { IValueOf } from "@/store/valueClasses.ts";
+import { type IValueOf } from "@/store/valueClasses.ts";
 
 defineProps<{
   online: boolean;

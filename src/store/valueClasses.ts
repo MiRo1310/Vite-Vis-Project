@@ -1,7 +1,7 @@
 import { ref, markRaw, type Ref } from "vue";
 import { toJSON } from "@michaelroling/ts-library";
-import { IobrokerState } from "@/types/types.ts";
-import { ioBrokerService, IoBrokerService } from "@/lib/io-broker-service.ts";
+import { type IobrokerState } from "@/types/types.ts";
+import { ioBrokerService, type IoBrokerService } from "@/lib/io-broker-service.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -86,11 +86,11 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   public abstract get value(): T;
 
   public setState(val: string | number | boolean | null, ack = false) {
-    this.ioBrokerService.connection?.setState(this.id, val, ack);
+    void this.ioBrokerService.connection?.setState(this.id, val, ack);
   }
 
   public toggle(ack = false) {
-    this.ioBrokerService.connection?.setState(this.id, !this.val, ack);
+    void this.ioBrokerService.connection?.setState(this.id, !this.val, ack);
   }
 }
 

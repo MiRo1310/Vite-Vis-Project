@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTime } from "@/composables/time.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 const { date, time } = useTime();
 

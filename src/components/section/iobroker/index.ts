@@ -1,4 +1,4 @@
-import { IobrokerLanguages } from "@/types/types.ts";
+import { type IobrokerLanguages } from "@/types/types.ts";
 
 export interface NewsFeed {
   title: Record<IobrokerLanguages, string>;

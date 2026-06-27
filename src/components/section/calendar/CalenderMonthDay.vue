@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed, ref } from "vue";
-import { CalendarDayType, JSONStyle } from "@/types/types.ts";
+import { type CalendarDayType } from "@/types/types.ts";
 import CalenderMonthDayDialog from "@/components/section/calendar/CalendarMonthDayDialog.vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
@@ -14,7 +14,7 @@ const props = defineProps<{
 }>();
 
 const getDayValue = computed(() => {
-  const cal = iobroker.calendar?.table?.parsed([]) as CalendarDayType[];
+  const cal = iobroker.calendar.table.parsed([]);
   return cal.filter((day) => isDateBetween(day));
 });
 
@@ -49,7 +49,7 @@ function isNotStartAtMidNight(date: Date, param: number): boolean {
 }
 
 const getColor = computed(() => (event: CalendarDayType): string => {
-  const json = iobroker.styles?.calendarStyle?.parsed([]) as JSONStyle[];
+  const json = iobroker.styles.calendarStyle.parsed([]);
 
   for (const key of json) {
     if (event.event.includes(key.name)) {
@@ -62,7 +62,7 @@ const getColor = computed(() => (event: CalendarDayType): string => {
 const open = ref(false);
 
 const dialogHandler = () => {
-  if (!getDayValue.value?.length) {
+  if (!getDayValue.value.length) {
     return;
   }
   open.value = true;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { RoomItems, RoomType } from "@/types/types.ts";
+import { type RoomItems, type RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { notSubscribedIds } from "@/iobroker-states/action-states.iobroker";
 import { computed, ref } from "vue";
@@ -20,9 +20,6 @@ const rooms = computed((): RoomType[] => {
   const { kueche, esszimmer, wohnzimmer, schlafen, bad, abstellraumog, kinderzimmer, gaestezimmer } = notSubscribedIds;
   const { hmip, fenster, rolladen, shutterAutoUp, shutterAutoDownTime, batteries } = iobroker;
 
-  if (!batteries) {
-    return [];
-  }
   return [
     {
       name: "Küche",
@@ -59,7 +56,7 @@ const rooms = computed((): RoomType[] => {
     {
       name: "Esszimmer",
       shutter: true,
-      batteryHeating: [batteries["HMIP Esszimmer"]?.lowBat],
+      batteryHeating: [batteries["HMIP Esszimmer"].lowBat],
       temp: [hmip.dining_valveActualTemp.value],
       windows: [
         {
@@ -143,7 +140,7 @@ const rooms = computed((): RoomType[] => {
       name: "Schlafzimmer",
       shutter: true,
       batteryHeating: [batteries["HMIP Schlafzimmer"].lowBat],
-      temp: [hmip?.sleeping_valveActualTemp.value],
+      temp: [hmip.sleeping_valveActualTemp.value],
       windows: [
         {
           name: "Fenster",
@@ -175,7 +172,7 @@ const rooms = computed((): RoomType[] => {
       name: "Kinderzimmer",
       shutter: true,
       batteryHeating: [batteries["HMIP Kinderzimmer"].lowBat],
-      temp: [hmip?.children_valveActualTemp.value],
+      temp: [hmip.children_valveActualTemp.value],
       windows: [
         {
           name: "",
@@ -194,7 +191,7 @@ const rooms = computed((): RoomType[] => {
       name: "Bad",
       shutter: true,
       batteryHeating: [batteries["HMIP Bad"].lowBat],
-      temp: [hmip?.bath_valveActualTemp.value],
+      temp: [hmip.bath_valveActualTemp.value],
       windows: [
         {
           name: "",
@@ -213,7 +210,7 @@ const rooms = computed((): RoomType[] => {
       name: "Gästezimmer",
       shutter: true,
       batteryHeating: [batteries["HMIP Gaestezimmer"].lowBat],
-      temp: [hmip?.guest_valveActualTemp.value],
+      temp: [hmip.guest_valveActualTemp.value],
       windows: [
         {
           name: "",
@@ -307,7 +304,7 @@ const rooms = computed((): RoomType[] => {
     {
       name: "Gäste-WC",
       shutter: false,
-      temp: [hmip?.guest_wc_valveActualTemp.value],
+      temp: [hmip.guest_wc_valveActualTemp.value],
       windows: [
         {
           name: "links",
@@ -373,11 +370,11 @@ const selectedName = ref<string | null>(null);
 
 const selectedRoom = computed(() => rooms.value.find((room) => room.name === selectedName.value));
 
-const clickRoom = (roomName: string) => {
+const clickRoom = async (roomName: string) => {
   selectedName.value = roomName;
 
   if (roomNames.includes(roomName as RoomItems)) {
-    iobroker.heatingControl.room.setState(roomName);
+    await iobroker.heatingControl.room.setState(roomName);
   }
 };
 

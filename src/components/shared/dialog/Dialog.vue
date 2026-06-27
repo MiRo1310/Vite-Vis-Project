@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { HTMLAttributes, ref, watchEffect } from "vue";
+import { type HTMLAttributes, ref, watchEffect } from "vue";
 
 const props = withDefaults(
   defineProps<{

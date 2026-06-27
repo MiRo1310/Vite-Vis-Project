@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RoomType } from "@/types/types.ts";
+import { type RoomType } from "@/types/types.ts";
 
 defineProps<{ room: RoomType }>();
 

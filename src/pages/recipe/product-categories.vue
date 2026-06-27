@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Header from "@/components/section/header/Header.vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import AddCategory from "@/components/section/product-categories/AddCategory.vue";
 import { ref } from "vue";
 import CategoryUpdate from "@/components/section/product-categories/CategoryUpdate.vue";
-import { ProductCategoriesQuery } from "@/api/gql/graphql.ts";
+import { type ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import CategoryRemove from "@/components/section/product-categories/CategoryRemove.vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { routes } from "@/router/routes";
@@ -13,7 +13,7 @@ import { Button } from "@/components/shared/button/button.variants";
 
 const { result, loading } = useProductCategories();
 
-const columns: DatatableColumns<ProductCategoriesQuery["productCategories"][number]>[] = [
+const columns: Array<DatatableColumns<ProductCategoriesQuery["productCategories"][number]>> = [
   { source: "name", labelKey: "Name" },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryUpdate },
   { source: "id", labelKey: "", type: "component", headerClass: "w-6", component: CategoryRemove },

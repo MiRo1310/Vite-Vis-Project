@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DataCard } from "@/components/shared/card";
 import { Switch } from "@/components/ui/switch";
-import { AlexaDotAction } from "@/pages/vis/alexa.vue";
+import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { ref, watch } from "vue";
 
 const props = defineProps<{ dot: AlexaDotAction }>();

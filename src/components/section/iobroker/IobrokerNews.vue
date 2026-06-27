@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { computed } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { NewsFeed } from "@/components/section/iobroker/index.ts";
+import { type NewsFeed } from "@/components/section/iobroker/index.ts";
 
 const { iobroker } = useIobrokerStore();
-const columns: DatatableColumns<NewsFeed>[] = [
+const columns: Array<DatatableColumns<NewsFeed>> = [
   { source: "title.de", labelKey: "Title", accessorKey: "title", type: "text" },
   {
     source: "content.de",

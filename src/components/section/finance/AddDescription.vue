@@ -25,12 +25,12 @@ const clearInputs = () => {
   text.value = "";
 };
 
-const addDescriptionHandler = () => {
+const addDescriptionHandler = async () => {
   if (!text.value) {
     return;
   }
 
-  mutate({
+  await mutate({
     text: text.value,
   });
   toast({

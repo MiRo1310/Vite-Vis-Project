@@ -8,8 +8,7 @@ export const invalidateCache = async (fieldName: string) => {
     apolloClient.cache.evict({ id: "ROOT_QUERY", fieldName });
     // Entferne dereferenzierte Einträge
     apolloClient.cache.gc();
-    // Optional: refetch alle aktiven observable queries
-    if (apolloClient.reFetchObservableQueries) {
+    if (typeof apolloClient.reFetchObservableQueries === "function") {
       await apolloClient.reFetchObservableQueries();
     }
   } catch (e) {

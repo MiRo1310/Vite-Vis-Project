@@ -1,16 +1,13 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import HeatingControlConfigRow, { RowHeatingConfig } from "./HeatingControlConfigRow.vue";
+import HeatingControlConfigRow, { type RowHeatingConfig } from "./HeatingControlConfigRow.vue";
 import { tempArray } from "@/lib/object.ts";
 
 const { iobroker } = useIobrokerStore();
 
 const rows = computed((): RowHeatingConfig[] => {
   const heatingControl = iobroker.heatingControl;
-  if (!heatingControl) {
-    return [];
-  }
   return [
     {
       checkbox: {

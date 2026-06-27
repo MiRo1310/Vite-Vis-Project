@@ -27,21 +27,18 @@ type BatteryItem = {
 const getTimestamp = (item: BatteryItem): number =>
   item.percent?.ts ?? item.lowBat?.ts ?? item.available?.ts ?? item.voltage?.ts ?? item.firmware?.ts ?? 0;
 
-const getFirmware = (item: BatteryItem): boolean => item?.firmware?.value ?? false;
+const getFirmware = (item: BatteryItem): boolean => item.firmware?.value ?? false;
 
 const getXioamiValues = (item: BatteryItem): { available: boolean; percent: number; voltage: number } => ({
-  available: item?.available?.value ?? false,
-  percent: item?.percent?.value ?? 0,
-  voltage: item?.voltage?.value ?? 0,
+  available: item.available?.value ?? false,
+  percent: item.percent?.value ?? 0,
+  voltage: item.voltage?.value ?? 0,
 });
 
 function getBatteryList(list: Record<string, Partial<BatteryItem>>) {
   const data: BatteryTableData[] = [];
-  if (!list) {
-    return;
-  }
-  Object.keys(list ?? {}).forEach((key) => {
-    const item = list[key as keyof typeof list];
+  Object.keys(list).forEach((key) => {
+    const item = list[key];
     const batteryItem = item as BatteryItem;
     const { available, percent, voltage } = getXioamiValues(batteryItem);
     data.push({
@@ -58,5 +55,5 @@ function getBatteryList(list: Record<string, Partial<BatteryItem>>) {
 }
 
 export const batteryList = computed(() => {
-  return getBatteryList(iobroker.batteries as Record<string, Partial<BatteryItem>>);
+  return getBatteryList(iobroker.batteries);
 });

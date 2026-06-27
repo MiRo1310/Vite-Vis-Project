@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defaultLocale } from "@/config/config.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { TRecipe } from "@/store";
+import { type TRecipe } from "@/store";
 
 defineProps<{ recipe: TRecipe }>();
 </script>

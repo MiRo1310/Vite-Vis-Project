@@ -1,4 +1,4 @@
-import { InfoTypes } from "@/components/shared/card/InfoCard.vue";
+import { type InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { routes } from "@/router/routes.ts";
 import { activeStatus } from "@/composables/status.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";

@@ -91,9 +91,6 @@ const error = {
 };
 const infos = computed(() => {
   const landroid = iobroker.landroid;
-  if (!landroid) {
-    return [];
-  }
   return [
     {
       title: "Firmware",

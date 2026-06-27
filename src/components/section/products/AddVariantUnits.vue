@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Button from "@/components/shared/button/Button.vue";
 import { onMounted, ref } from "vue";
-import { GetProductByIdQuery, ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
+import { type GetProductByIdQuery, type ProductUnitCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 import { Label } from "@/components/ui/label";
-import { InputOption } from "@/types/types.ts";
+import { type InputOption } from "@/types/types.ts";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
-import { TForm } from "@/components/section/recipe-form";
+import { type TForm } from "@/components/section/recipe-form";
 
 type TUnit = ProductUnitCreateOrUpdateDtoInput & { index: number; isDefault?: boolean };
 
@@ -38,7 +38,7 @@ const addVariant = () => {
 };
 
 const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index: number }) => {
-  if (unitVariant?.id) {
+  if (unitVariant.id) {
     productUnitsToRemove.value.push(unitVariant.id);
   }
 

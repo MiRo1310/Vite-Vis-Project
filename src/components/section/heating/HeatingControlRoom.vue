@@ -10,11 +10,11 @@ const { iobroker } = useIobrokerStore();
 
 const heatingControl = computed(() => iobroker.heatingControl);
 
-function resetStatus() {
+async function resetStatus() {
   const room = iobroker.heatingControl.room.val;
   if (room) {
     const id = `heatingcontrol.0.Rooms.${room}.ResetManual`;
-    ioBrokerService.connection?.setState(id, true, false);
+    await ioBrokerService.connection?.setState(id, true, false);
   }
 }
 </script>

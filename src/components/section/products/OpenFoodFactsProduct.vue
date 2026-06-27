@@ -6,13 +6,11 @@ import { Input } from "@/components/shared/input/input.variants";
 import { Button } from "@/components/shared/button/button.variants";
 import { isDefined } from "@vueuse/core";
 import { Undo } from "lucide-vue-next";
-import { TProduct } from "@/components/section/products/index.ts";
+import { type TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ ean: string }>();
 
-const product = defineModel<TProduct>("modelValue", {
-  default: [],
-});
+const product = defineModel<TProduct>("modelValue");
 
 const localProductsByCodeQuery = graphql(`
   query localProductsByCode($code: String!) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Badge from "@/components/shared/badge/Badge.vue";
 import { Button } from "@/components/shared/button/button.variants.ts";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 defineProps<{ badge?: number; title?: string; class?: HTMLAttributes["class"] }>();
 </script>

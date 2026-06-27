@@ -1,8 +1,8 @@
-import { Row } from "@tanstack/vue-table";
-import { ApolloQueryResult } from "@apollo/client";
-import { FunctionalComponent, HTMLAttributes } from "vue";
-import { Badge } from "../components/shared/badge/badge.variants";
-import { IValueOf } from "@/store/valueClasses.ts";
+import { type Row } from "@tanstack/vue-table";
+import { type ApolloQueryResult } from "@apollo/client";
+import { type FunctionalComponent, type HTMLAttributes } from "vue";
+import { type Badge } from "../components/shared/badge/badge.variants";
+import { type IValueOf } from "@/store/valueClasses.ts";
 
 export interface AlexaList {
   name: string;
@@ -22,10 +22,10 @@ export interface GlobalObject {
 export interface RoomType {
   name: string;
   shutter: boolean;
-  batteryHeating?: IValueOf<boolean>[];
+  batteryHeating?: Array<IValueOf<boolean>>;
   bellStatus?: IValueOf<boolean>;
-  temp?: (number | undefined)[];
-  windows: {
+  temp?: Array<number | undefined>;
+  windows: Array<{
     name: string;
     idShutterPosition?: string;
     isOpenStatus?: boolean;
@@ -36,7 +36,7 @@ export interface RoomType {
     shutterAutoUpTime?: IValueOf<number>;
     shutterAutoDownDelay?: IValueOf<number>;
     windowSensorReachable?: IValueOf<boolean>;
-  }[];
+  }>;
 }
 
 export interface IdsToControl {
@@ -102,7 +102,7 @@ export interface Entries {
 export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
 
 export type DefaultTypes = string | number | boolean | object;
-export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
+export type CallbackFunktion = (args?: DefaultTypes) => Promise<void> | DefaultTypes;
 
 export interface SelectOption {
   value: string;
@@ -149,11 +149,11 @@ export interface NavigationType {
   text: string;
   to: string;
   externalLink?: boolean;
-  badges?: {
+  badges?: Array<{
     value: number;
     color: Badge["color"];
     class?: HTMLAttributes["class"];
-  }[];
+  }>;
 }
 
 export interface Log {

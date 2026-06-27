@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import AddAddress from "@/components/section/finance/AddAddress.vue";
 import { Card } from "@/components/shared/card";
 import AddressAction from "@/components/section/finance/AddressAction.vue";
 import Navigation from "@/components/section/finance/Navigation.vue";
-import { AddressesQuery } from "@/api/gql/graphql.ts";
+import { type AddressesQuery } from "@/api/gql/graphql.ts";
 
 const { result, loading } = useQuery(
   graphql(`
@@ -22,7 +22,7 @@ const { result, loading } = useQuery(
   `),
 );
 
-const columns: DatatableColumns<AddressesQuery["addresses"][number]>[] = [
+const columns: Array<DatatableColumns<AddressesQuery["addresses"][number]>> = [
   {
     source: "name",
     labelKey: "Name",
