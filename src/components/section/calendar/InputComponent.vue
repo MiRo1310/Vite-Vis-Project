@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
-import Select from "@/components/shared/select/Select.vue";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import { colors } from "@/config/colors";
 import { Button } from "@/components/shared/button/button.variants";
 import { Trash2 } from "lucide-vue-next";
@@ -25,7 +25,7 @@ function update() {
 
 <template>
   <InputShadcn v-model:model-value="inputValue" placeholder="Suche nach diesem Text" @update:model-value="update" type="text" />
-  <Select
+  <SelectComponent
     v-model:selected-obj="selected"
     :items="colors"
     :selected="selected?.label || selected?.value"

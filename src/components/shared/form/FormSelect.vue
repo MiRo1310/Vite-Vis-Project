@@ -2,7 +2,7 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { type HTMLAttributes } from "vue";
 import { type SelectOption } from "@/types/types";
-import Select from "@/components/shared/select/Select.vue";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 
 withDefaults(
   defineProps<{
@@ -11,16 +11,12 @@ withDefaults(
     placeholder?: string;
     class?: HTMLAttributes["class"];
     selectOptions?: SelectOption[];
-    defaultVal?: string;
-    width?: string;
     disabled?: boolean;
   }>(),
   {
     placeholder: "",
     class: "",
     selectOptions: () => [],
-    defaultVal: "",
-    width: undefined,
   },
 );
 </script>
@@ -32,7 +28,7 @@ withDefaults(
         <span>{{ label }}</span>
       </FormLabel>
       <FormControl>
-        <Select v-bind="componentField" :items="selectOptions" :placeholder :default-val :width :disabled class="w-full" />
+        <SelectComponent v-bind="componentField" :items="selectOptions" :placeholder :disabled class="w-full" />
       </FormControl>
       <FormDescription />
       <FormMessage />

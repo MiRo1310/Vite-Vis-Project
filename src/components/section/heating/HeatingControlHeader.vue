@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import Select from "@/components/shared/select/Select.vue";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import { type RoomItems, type SelectOption } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
@@ -43,7 +43,7 @@ function updateSelected(val: string | undefined) {
 <template>
   <div class="flex flex-wrap items-center gap-4">
     <p class="text-sm font-semibold text-popover-foreground">Aktives Profil</p>
-    <Select
+    <SelectComponent
       v-model:model-value="selected"
       placeholder="Wähle ein Profil aus"
       :items="profiles"
@@ -51,7 +51,7 @@ function updateSelected(val: string | undefined) {
       @update:model-value="updateSelected($event)"
     />
     <p class="header__label">Raum:</p>
-    <Select
+    <SelectComponent
       v-model:model-value="room"
       placeholder="Wähle einen Raum"
       :items="roomItems"
