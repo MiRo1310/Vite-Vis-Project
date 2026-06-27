@@ -2,7 +2,7 @@
 import RecipeProductProperties from "@/components/section/recipe/RecipeProductProperties.vue";
 import { computed } from "vue";
 import Badge from "@/components/shared/badge/Badge.vue";
-import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
+import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import { routes } from "@/router/routes.ts";
 
 type Ingredient = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number];

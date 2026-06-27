@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 const props = defineProps<{ value?: string | number; unit?: string; class?: HTMLAttributes["class"] }>();
 </script>

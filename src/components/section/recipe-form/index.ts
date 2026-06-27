@@ -1,4 +1,4 @@
-import { useForm } from "vee-validate";
+import { type useForm } from "vee-validate";
 
 export interface IRecipeDescriptionCreateOrUpdate {
   header?: string;

@@ -5,15 +5,14 @@ import { DataCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
-import { toJSON } from "@michaelroling/ts-library";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
-import { WattPilotJson } from "@/types/types.ts";
+import { type WattPilotJson } from "@/types/types.ts";
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
 
-const wallbox = computed((): WattPilotJson | null => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
+const wallbox = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const airConditioners = computed(() => iobroker.airConditioners);
 const landroid = computed(() => iobroker.landroid);

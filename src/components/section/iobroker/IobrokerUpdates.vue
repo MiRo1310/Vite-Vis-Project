@@ -2,10 +2,10 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
-import { AdapterUpdate } from "@/types/types.ts";
+import { type AdapterUpdate } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -23,7 +23,7 @@ const availableUpdates = computed((): UpdatesType[] => {
   }));
 });
 
-const columns: DatatableColumns<UpdatesType>[] = [
+const columns: Array<DatatableColumns<UpdatesType>> = [
   {
     source: "name",
     labelKey: "Name",

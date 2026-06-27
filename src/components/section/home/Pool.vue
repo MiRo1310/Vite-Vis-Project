@@ -22,7 +22,7 @@ interface Items {
 const items = computed(() => {
   const pool = iobroker.pool;
   const status = pool.status.value;
-  const items: Items[] = [
+  const i: Items[] = [
     {
       title: "Heizung aktiv",
       type: "bool",
@@ -69,7 +69,7 @@ const items = computed(() => {
       unit: "Rpm",
     },
   ];
-  return items;
+  return i;
 });
 
 const getMode = (mode: number) => {

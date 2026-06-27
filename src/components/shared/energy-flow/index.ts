@@ -1,13 +1,13 @@
-import { FunctionalComponent } from "vue";
-import { LucideProps } from "lucide-vue-next";
-import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
+import { type FunctionalComponent } from "vue";
+import { type LucideProps } from "lucide-vue-next";
+import { type HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 export interface Point {
   x: number;
   y: number;
 }
 
-export type TEnergyFlowArray<T extends PropertyKey> = IEnergyFlow<T>[];
+export type TEnergyFlowArray<T extends PropertyKey> = Array<IEnergyFlow<T>>;
 
 export interface IEnergyFlow<T extends PropertyKey> {
   id: T;
@@ -15,7 +15,7 @@ export interface IEnergyFlow<T extends PropertyKey> {
   title?: string;
   icon?: IEnergyFlowIcon;
   values: IEnergyFlowCardValue[];
-  lines: ILineObject<T>[];
+  lines: Array<ILineObject<T>>;
   padding?: number;
   fillColor?: string;
   stroke?: HexColors;

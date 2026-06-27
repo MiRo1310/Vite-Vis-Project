@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NavigationType } from "@/types/types.ts";
+import { type NavigationType } from "@/types/types.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { Button } from "@/components/shared/button/button.variants";
 

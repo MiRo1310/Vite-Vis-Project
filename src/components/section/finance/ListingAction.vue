@@ -5,7 +5,7 @@ import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { TravelCostQuery } from "@/api/gql/graphql.ts";
+import { type TravelCostQuery } from "@/api/gql/graphql.ts";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { useForm } from "vee-validate";
 import { formSchemaListing } from "@/components/section/finance/schema.form.js";
@@ -14,8 +14,9 @@ import FormFooter from "@/components/shared/form/FormFooter.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
-import { ITableColumn } from "@/types/types.ts";
+import { type ITableColumn } from "@/types/types.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
 
 const { mutate } = useMutation(
@@ -42,8 +43,8 @@ const { mutate: updateMutation } = useMutation(
   },
 );
 
-const remove = () => {
-  mutate(
+const remove = async () => {
+  await mutate(
     { id: props.value },
     {
       refetchQueries: ["TravelCost"],
@@ -66,7 +67,7 @@ const dialogUpdateOpen = ref(false);
 
 const onSubmit = form.handleSubmit(async (values) => {
   dialogUpdateOpen.value = false;
-  updateMutation(
+  await updateMutation(
     {
       id: props.value,
       date: values.date,

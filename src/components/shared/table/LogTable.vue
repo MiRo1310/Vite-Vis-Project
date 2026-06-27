@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { Log } from "@/types/types.ts";
+import { type Log } from "@/types/types.ts";
 
 defineProps<{ logs: Log[]; wrapperClass?: string }>();
 
-const columns: DatatableColumns<Log>[] = [
+const columns: Array<DatatableColumns<Log>> = [
   { source: "ts", labelKey: "Zeit", type: "datetime" },
   { source: "from", labelKey: "Quelle", type: "text" },
   { source: "message", labelKey: "Nachricht", type: "text" },

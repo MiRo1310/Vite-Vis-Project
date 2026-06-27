@@ -6,7 +6,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import Date from "@/components/shared/date-time/Date.vue";
 import { wattpilotElectricitySurplus } from "@/composables/wattpilotElectricitySurplus.ts";
-import { WattPilotJson } from "@/types/types.ts";
+import { type WattPilotJson } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -19,8 +19,8 @@ const modeLabel: Record<number, string> = {
   3: "Max",
 };
 
-const toggleAutoCharging = () => {
-  iobroker.wattPilot.autoCharging.toggle(true);
+const toggleAutoCharging = async () => {
+  await iobroker.wattPilot.autoCharging.toggle(true);
 };
 </script>
 

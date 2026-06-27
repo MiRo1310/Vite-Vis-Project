@@ -3,7 +3,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { Trash2 } from "lucide-vue-next";
 import { DataCard } from "@/components/shared/card";
-import { Days, days } from "@/constants/constants.js";
+import { type Days, days } from "@/constants/constants.js";
 
 const { iobroker } = useIobrokerStore();
 

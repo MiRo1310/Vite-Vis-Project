@@ -14,7 +14,7 @@ export const removeRecipeProducts = async (productIds: string[]) => {
     `),
   );
 
-  const results: Array<unknown> = [];
+  const results: unknown[] = [];
 
   for (const id of productIds) {
     if (id.includes(newIdPrefix)) {

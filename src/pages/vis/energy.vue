@@ -18,7 +18,7 @@ import {
   Torus,
   X,
 } from "lucide-vue-next";
-import { TEnergyFlowArray } from "@/components/shared/energy-flow";
+import { type TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 const { iobroker } = useIobrokerStore();
@@ -55,9 +55,6 @@ type Ids =
 
 const data = computed((): TEnergyFlowArray<Ids> => {
   const { energy, pool, pv } = iobroker;
-  if (!energy) {
-    return [];
-  }
   return [
     {
       id: "pv",
@@ -100,7 +97,7 @@ const data = computed((): TEnergyFlowArray<Ids> => {
           },
         },
       ],
-      values: [{ value: pv?.smallPv?.val ?? 0, unit: "W" }, { value: "" }, { value: pv.energyDaySmall.value.toFixed(2), unit: "KWh" }],
+      values: [{ value: pv.smallPv.val ?? 0, unit: "W" }, { value: "" }, { value: pv.energyDaySmall.value.toFixed(2), unit: "KWh" }],
     },
     {
       id: "battery",

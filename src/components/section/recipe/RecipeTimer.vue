@@ -3,13 +3,13 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { computed } from "vue";
-import { Timer } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { type Timer } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { getNameByIndex } from "@/composables/timer.ts";
 
 const { iobroker } = useIobrokerStore();
 
 const filteredTimers = computed(() => {
-  return Object.values(iobroker.timers ?? {}).filter((timer): timer is Timer => "timeString" in timer && !!(timer as Timer).timeString?.value);
+  return Object.values(iobroker.timers).filter((timer): timer is Timer => "timeString" in timer && !!(timer as Timer).timeString.value);
 });
 </script>
 

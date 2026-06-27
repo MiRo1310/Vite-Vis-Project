@@ -6,9 +6,10 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input/input.variants";
-import { AddressesQuery } from "@/api/gql/graphql.ts";
-import { ITableColumn } from "@/types/types.ts";
+import { type AddressesQuery } from "@/api/gql/graphql.ts";
+import { type ITableColumn } from "@/types/types.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, AddressesQuery["addresses"][number]>>();
 const { mutate } = useMutation(
   graphql(`
@@ -37,8 +38,8 @@ const { mutate: updateMutation } = useMutation(
   },
 );
 
-const remove = () => {
-  mutate(
+const remove = async () => {
+  await mutate(
     { id: props.value },
     {
       refetchQueries: ["Addresses"],
@@ -46,9 +47,9 @@ const remove = () => {
   );
 };
 
-const update = () => {
+const update = async () => {
   dialogUpdateOpen.value = false;
-  updateMutation(
+  await updateMutation(
     {
       id: props.value,
       name: name.value,

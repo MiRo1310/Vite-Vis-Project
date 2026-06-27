@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GetRecipeDetailsQuery } from "@/api/gql/graphql";
+import { type GetRecipeDetailsQuery } from "@/api/gql/graphql";
 import RecipeIngredient from "@/components/section/recipe/RecipeIngredient.vue";
 import Input from "@/components/shared/input/Input.vue";
 import { computed, ref } from "vue";
@@ -18,15 +18,15 @@ const getTotalKcalForSection = computed(
   () =>
     (ingredients: NonNullable<RecipeType>["recipeProducts"]): number =>
       ingredients.reduce((acc, curr) => {
-        return acc + (curr.kcal ?? 0);
-      }, 0) ?? 0,
+        return acc + curr.kcal;
+      }, 0),
 );
 
 const groupByGroupPosition = computed(() => {
   const groups: Record<number, NonNullable<RecipeType>["recipeProducts"]> = {};
   props.recipe?.recipeProducts.forEach((ingredient) => {
-    const groupPosition = ingredient.groupPosition ?? 0;
-    if (!groups[groupPosition]) {
+    const groupPosition = ingredient.groupPosition;
+    if (!(groupPosition in groups)) {
       groups[groupPosition] = [];
     }
     groups[groupPosition].push(ingredient);

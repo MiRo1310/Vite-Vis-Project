@@ -1,6 +1,6 @@
-import { IdsToControl } from "@/types/types.ts";
+import { type IdsToControl } from "@/types/types.ts";
 import { defineStore } from "pinia";
-import { IoBrokerStoreState, ParsedLogs, StoreType } from "@/store/index.ts";
+import { type IoBrokerStoreState, type ParsedLogs, type StoreType } from "@/store/index.ts";
 import { iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
 
 export const useIobrokerStore = defineStore("iobrokerStore", {

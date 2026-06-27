@@ -1,5 +1,5 @@
 import { Home, Plane, ScrollText } from "lucide-vue-next";
-import { NavigationType } from "@/types/types.ts";
+import { type NavigationType } from "@/types/types.ts";
 import { routes } from "@/router/routes.ts";
 
 type Navigations = "home" | "navigation" | "lists";

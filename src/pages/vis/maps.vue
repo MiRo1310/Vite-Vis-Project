@@ -3,7 +3,7 @@ import Page from "@/components/shared/page/Page.vue";
 import LeafletMaps from "@/components/shared/leaflet/Leaflet-maps.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { Markers } from "@/components/shared/leaflet";
+import { type Markers } from "@/components/shared/leaflet";
 
 const { iobroker } = useIobrokerStore();
 
@@ -13,7 +13,7 @@ interface Coordinates {
 }
 
 const markers = computed((): Markers[] => {
-  const json = iobroker.position?.michaelCoordinates?.val;
+  const json = iobroker.position.michaelCoordinates.val;
   if (!json) {
     return [];
   }

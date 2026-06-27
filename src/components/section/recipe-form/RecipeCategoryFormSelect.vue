@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 import { computed } from "vue";
-import { SelectOption } from "@/types/types.ts";
+import { type SelectOption } from "@/types/types.ts";
 import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
 const { result } = useRecipeCategories();
 
 const options = computed(() => {
   return (
-    result?.value?.recipeCategories.map((category) => ({
+    result.value?.recipeCategories.map((category) => ({
       label: category.name,
       value: category.id,
     })) ?? ([] as SelectOption[])

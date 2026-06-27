@@ -5,10 +5,11 @@ import { useMutation } from "@vue/apollo-composable";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input/input.variants";
-import { ITableColumn } from "@/types/types.ts";
+import { type ITableColumn } from "@/types/types.ts";
 import DialogFooterActions from "@/components/section/product-categories/DialogFooterActions.vue";
-import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
+import { type RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, RecipeCategoriesQuery["recipeCategories"][number]>>();
 
 const { mutate } = useMutation(
@@ -21,12 +22,12 @@ const { mutate } = useMutation(
   `),
 );
 
-const update = () => {
+const update = async () => {
   dialogUpdateOpen.value = false;
   if (!props.value) {
     return;
   }
-  mutate(
+  await mutate(
     {
       id: props.value,
       name: name.value,
@@ -44,7 +45,7 @@ const clear = () => {
 
 const dialogUpdateOpen = ref(false);
 
-const name = ref(props.row.original.name ?? "");
+const name = ref(props.row.original.name);
 </script>
 
 <template>

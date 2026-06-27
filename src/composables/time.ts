@@ -2,27 +2,15 @@ import { ref } from "vue";
 
 let timeFunc: null | ReturnType<typeof timer> = null;
 export const useTime = () => {
-  if (!timeFunc) {
-    timeFunc = timer();
-  }
+  timeFunc ??= timer();
   return timeFunc;
 };
 
 const timer = () => {
-  const d = new Date();
-  const weekdays = [
-    "Sonntag",
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag",
-  ];
-  const time = ref<string | null>(d.toLocaleTimeString());
-  const date = ref<string | null>(
-    weekdays[d.getDay()] + " " + d.toLocaleDateString(),
-  );
+  const newDate = new Date();
+  const weekdays = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
+  const time = ref<string | null>(newDate.toLocaleTimeString());
+  const date = ref<string | null>(weekdays[newDate.getDay()] + " " + newDate.toLocaleDateString());
   const hour = ref<number | null>(null);
   const minute = ref(0);
   const weekday = ref("");

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import windowOpen from "@/public/window_open.png";
 import windowClosed from "@/public/window_closed.png";
-import { HTMLAttributes } from "vue";
+import { type HTMLAttributes } from "vue";
 
 defineProps<{ isOpen: boolean; class?: HTMLAttributes["class"] }>();
 </script>

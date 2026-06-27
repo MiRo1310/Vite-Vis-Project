@@ -2,29 +2,29 @@
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Select from "@/components/shared/select/Select.vue";
-import { RoomItems, SelectOption } from "@/types/types.ts";
+import { type RoomItems, type SelectOption } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
 const profiles = computed((): SelectOption[] => {
   const heatingControl = iobroker.heatingControl;
-  if (!heatingControl?.profileText?.val) {
+  if (!heatingControl.profileText.val) {
     return [];
   }
-  return heatingControl.profileText?.val?.split(";").map((item: string, index: number) => {
+  return heatingControl.profileText.value.split(";").map((item: string, index: number) => {
     return {
       label: item,
-      value: heatingControl.profileValue?.val?.split(";")[index] || "",
+      value: heatingControl.profileValue.value.split(";")[index] || "",
     };
   });
 });
 
 const roomItems = computed((): SelectOption[] => {
   const heatingControl = iobroker.heatingControl;
-  if (!heatingControl?.usedRoom?.val) {
+  if (!heatingControl.usedRoom.val) {
     return [];
   }
-  return heatingControl.usedRoom?.val?.split(";").map((item: string) => {
+  return heatingControl.usedRoom.val.split(";").map((item: string) => {
     return {
       label: item,
       value: item,
@@ -32,8 +32,8 @@ const roomItems = computed((): SelectOption[] => {
   });
 });
 
-const selected = ref(iobroker.heatingControl?.profile?.val?.toString());
-const room = ref(iobroker.heatingControl?.room?.val?.toString());
+const selected = ref(iobroker.heatingControl.profile.value.toString());
+const room = ref(iobroker.heatingControl.room.value.toString());
 
 function updateSelected(val: string | undefined) {
   iobroker.heatingControl.profile.setState(val ?? null);

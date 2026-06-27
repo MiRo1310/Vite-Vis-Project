@@ -1,4 +1,4 @@
-import { ILineEndPoint, TPositions } from "@/components/shared/energy-flow/index.ts";
+import { type ILineEndPoint, type TPositions } from "@/components/shared/energy-flow/index.ts";
 
 export class PositionHandler<T> {
   private readonly id: T;
@@ -57,18 +57,17 @@ export class Positions<T extends PropertyKey> {
   }
 
   public getPositionsById(id: T) {
-    return (
-      this.positions[id]?.getPosition() ?? {
-        left: 0,
-        top: 0,
-        right: 0,
-        bottom: 0,
-        heightCenter: 0,
-        widthCenter: 0,
-        height: 0,
-        width: 0,
-      }
-    );
+    return this.positions[id].getPosition();
+    // ?? {
+    //   left: 0,
+    //   top: 0,
+    //   right: 0,
+    //   bottom: 0,
+    //   heightCenter: 0,
+    //   widthCenter: 0,
+    //   height: 0,
+    //   width: 0,
+    // }
   }
 
   public getCoordinates(line: ILineEndPoint<T>) {

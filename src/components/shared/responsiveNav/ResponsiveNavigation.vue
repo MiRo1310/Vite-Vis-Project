@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/shared/button/button.variants";
 import { Menu } from "lucide-vue-next";
-import { INavigation } from "@/components/shared/responsiveNav/index.ts";
+import { type INavigation } from "@/components/shared/responsiveNav/index.ts";
 import { useRoute } from "vue-router";
 
 const route = useRoute();

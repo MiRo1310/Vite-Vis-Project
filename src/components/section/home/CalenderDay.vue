@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarDayType } from "@/types/types.ts";
+import { type CalendarDayType } from "@/types/types.ts";
 import { getLocalTimeString } from "@/lib/date.ts";
 
 defineProps<{ data: CalendarDayType[]; title: string }>();

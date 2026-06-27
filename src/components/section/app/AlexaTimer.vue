@@ -6,7 +6,7 @@ import { useAppStore } from "@/store/app-store.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { computed } from "vue";
-import { Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { type Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const appStore = useAppStore();
@@ -16,15 +16,15 @@ const closeWindow = () => {
   appStore.toggleTimerVisibility();
 };
 
-const stopTimer = (index: number) => {
+const stopTimer = async (index: number) => {
   const adminConnection = ioBrokerService.connection;
   if (adminConnection) {
-    adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);
+    await adminConnection.setState(`alexa-timer-vis.0.${"timer" + [index]}.Reset`, true);
   }
 };
 
 const timerLabel = computed(() => (i: number): string => {
-  const timerName = iobroker.timers?.[i as keyof Timers].name?.value;
+  const timerName = iobroker.timers[i as keyof Timers].name.value;
   if (!timerName || timerName === "timer") {
     return `Timer ${i}`;
   }

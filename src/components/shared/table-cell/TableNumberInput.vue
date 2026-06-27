@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
-import { Row } from "@tanstack/vue-table";
-import { AlexaDotAction } from "@/pages/vis/alexa.vue";
+import { type Row } from "@tanstack/vue-table";
+import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { ref, watchEffect } from "vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 

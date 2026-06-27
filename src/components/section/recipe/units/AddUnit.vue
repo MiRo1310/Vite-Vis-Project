@@ -29,17 +29,18 @@ const addUnit = async () => {
     .map((u) => u.trim())
     .filter((u) => u);
 
-  unitArray.forEach((unit, index) => {
-    if (result.value?.units?.find((c) => c.name === unit)) {
-      return;
+  for (const unit of unitArray) {
+    const index = unitArray.indexOf(unit);
+    if (result.value?.units.find((c) => c.name === unit)) {
+      continue;
     }
-    mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: [refetchQueryUnits] } : undefined);
-  });
+    await mutate({ name: unit }, index === unitArray.length - 1 ? { refetchQueries: [refetchQueryUnits] } : undefined);
+  }
 
   newUnit.value = "";
 };
 
-const unitExists = computed(() => isDefined(result.value?.units?.find((c) => c.name === newUnit.value)));
+const unitExists = computed(() => isDefined(result.value?.units.find((c) => c.name === newUnit.value)));
 const newUnit = ref("");
 </script>
 

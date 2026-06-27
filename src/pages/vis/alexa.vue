@@ -36,7 +36,7 @@ const getAlexInfos = async (id: string): Promise<{ name: string | undefined; spe
 
 async function loadAlexaObject() {
   const ids = await getAlexaEnum();
-  if (ids) {
+  if (ids.length) {
     for (const id of ids) {
       const { name, speak } = await getAlexInfos(id);
       if (!name) {
@@ -56,13 +56,13 @@ async function loadAlexaObject() {
 const actions = ref();
 
 function getMoreInfos(name: string) {
-  const jsonResponse = toJSON(iobroker.alexaAction?.alexaSpeak?.val ?? null);
+  const jsonResponse = toJSON(iobroker.alexaAction.alexaSpeak.val ?? null);
   const json = jsonResponse.json;
   if (!jsonResponse.isValidJson || !json) {
     return;
   }
   actions.value = json;
-  if (typeof json === "object" && json[name as keyof typeof json]) {
+  if (typeof json === "object" && name in json) {
     return json[name as keyof typeof json];
   }
   return;
@@ -71,7 +71,7 @@ function getMoreInfos(name: string) {
 watchEffect(() => {
   if (ioBrokerService.connection && alexaData.value.length === 0) {
     loading.value = true;
-    loadAlexaObject();
+    void loadAlexaObject();
   }
 });
 

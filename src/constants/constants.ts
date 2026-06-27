@@ -1,4 +1,4 @@
-import { RoomItems } from "@/types/types.ts";
+import { type RoomItems } from "@/types/types.ts";
 
 export const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
 export const weekdays: Weekdays[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];

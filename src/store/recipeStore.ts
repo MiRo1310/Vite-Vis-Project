@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
-import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { IRecipeGroupToDelete, IRecipeStore, TRecipe } from "@/store/index.ts";
+import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
+import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
+import { type IRecipeGroupToDelete, type IRecipeStore, type TRecipe } from "@/store/index.ts";
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({
@@ -83,7 +83,7 @@ export const useRecipeStore = defineStore("recipeStore", {
       saveToLocalStore(this.lastRecipes);
     },
     getFilterLastRecipes(groups: TGroupedRecipesByCategory) {
-      this.lastRecipes = this.lastRecipes.filter((r) => Object.values(groups)?.some((g) => g.some((p) => p.id === r.id)));
+      this.lastRecipes = this.lastRecipes.filter((r) => Object.values(groups).some((g) => g.some((p) => p.id === r.id)));
       saveToLocalStore(this.lastRecipes);
       return this.lastRecipes;
     },

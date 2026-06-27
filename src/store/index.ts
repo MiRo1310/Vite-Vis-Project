@@ -1,9 +1,9 @@
-import { Store, StoreDefinition } from "pinia";
-import { IdsToControl, IobrokerState, Log } from "@/types/types.ts";
-import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
-import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
-import { ValueClassCtor } from "@/store/valueClasses.ts";
+import { type Store, type StoreDefinition } from "pinia";
+import { type IdsToControl, type IobrokerState, type Log } from "@/types/types.ts";
+import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
+import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
+import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { type ValueClassCtor } from "@/store/valueClasses.ts";
 
 export interface AppStore {
   showTimer: boolean;

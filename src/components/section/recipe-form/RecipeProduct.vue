@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { SelectOption } from "@/types/types";
+import { type SelectOption } from "@/types/types";
 import { getSelectableOptions } from "@/composables/querys/options.ts";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import RecipeProductDialogContent from "@/components/section/recipe-form/RecipeProductDialogContent.vue";
-import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
-import { TForm } from "@/components/section/recipe-form/index.ts";
+import { type GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
+import { type TForm } from "@/components/section/recipe-form/index.ts";
 import ProductUnit from "@/components/section/recipe-form/ProductUnit.vue";
-import { fieldsRecipe, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
+import { fieldsRecipe, type TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 
 const props = defineProps<{
   index: number;
@@ -49,7 +49,7 @@ const { result } = useQuery(
 
 const selectableProducts = computed((): SelectOption[] => getSelectableOptions(result.value?.products));
 
-const productLabel = computed(() => selectableProducts.value.find((option) => option.value === props.product?.productId)?.label);
+const productLabel = computed(() => selectableProducts.value.find((option) => option.value === props.product.productId)?.label);
 
 const updateProduct = (product: TProductSchema) => {
   const index = props.form.values[fieldsRecipe.products].findIndex((p: TProductSchema) => p.id === product.id);

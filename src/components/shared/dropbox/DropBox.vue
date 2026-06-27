@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { HTMLAttributes, ref } from "vue";
+import { type HTMLAttributes, ref } from "vue";
 import { Card } from "@/components/ui/card";
-import { FileData } from "@/types/types";
+import { type FileData } from "@/types/types";
 
 const props = defineProps<{ label?: string; class?: HTMLAttributes["class"] }>();
 

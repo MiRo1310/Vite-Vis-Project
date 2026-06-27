@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Button, { ButtonVariants } from "@/components/shared/button/Button.vue";
+import Button, { type ButtonVariants } from "@/components/shared/button/Button.vue";
 import { computed } from "vue";
-import { ButtonVariantProps } from "@/components/shared/button/button.variants.js";
-import { IValueOf } from "@/store/valueClasses.ts";
+import { type ButtonVariantProps } from "@/components/shared/button/button.variants.js";
+import { type IValueOf } from "@/store/valueClasses.ts";
 
 const props = defineProps<
   {
@@ -10,18 +10,19 @@ const props = defineProps<
     state: IValueOf<boolean>;
     ack?: boolean;
     icon?: keyof ButtonVariants["icons"];
+    // eslint-disable-next-line vue/no-unused-properties
   } & ButtonVariantProps
 >();
 
 const handleClick = () => {
-  props.state.setState(!props.state?.val, props.ack);
+  props.state.setState(!props.state.val, props.ack);
 };
 
 const getAction = computed<keyof ButtonVariants["action"]>(() => {
-  if (props.state?.ack === false) {
+  if (!props.state.ack) {
     return "ackFalse";
   }
-  return props.state?.val ? "on" : "off";
+  return props.state.val ? "on" : "off";
 });
 </script>
 

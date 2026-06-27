@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
+import { type ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, ChartTooltipContent, componentToString } from "@/components/ui/chart";
 
 import { VisAxis, VisLine, VisXYContainer } from "@unovis/vue";
 import { ref } from "vue";

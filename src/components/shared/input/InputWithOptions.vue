@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, HTMLAttributes, ref, watch } from "vue";
+import { computed, type HTMLAttributes, ref, watch } from "vue";
 import { cn } from "@/lib/utils";
-import { InputOption } from "@/types/types.ts";
+import { type InputOption } from "@/types/types.ts";
 import { X } from "lucide-vue-next";
 import { variantsInputWithOptions } from "@/components/shared/input/input.variants.js";
 
@@ -23,13 +23,12 @@ defineOptions({ inheritAttrs: false });
 const modelValue = defineModel<string | number>("modelValue", { default: "" });
 
 const getOptionByName = (name: string): InputOption | undefined =>
-  props.options?.find((option) => option.name.toLocaleLowerCase() === name.toLocaleLowerCase());
+  props.options.find((option) => option.name.toLocaleLowerCase() === name.toLocaleLowerCase());
 const getNameByValue = (value: string | number): string | undefined =>
-  props.options?.find((option) => String(option.value).toLocaleLowerCase() === String(value).toLocaleLowerCase())?.name;
-const getReturnValueFromOption = (option: InputOption): string | number => option.value ?? option.name;
+  props.options.find((option) => String(option.value).toLocaleLowerCase() === String(value).toLocaleLowerCase())?.name;
+const getReturnValueFromOption = (option: InputOption): string | number => option.value;
 
-const includesPartOfName = (value: string): boolean =>
-  props.options?.some((o) => o.name.toLocaleLowerCase().includes(value.toLocaleLowerCase())) ?? false;
+const includesPartOfName = (value: string): boolean => props.options.some((o) => o.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 
 const isExactOption = ref(false);
 const internalValue = ref<string | number>(handleModelValueChange(modelValue.value));
@@ -111,7 +110,7 @@ const resetModelValue = () => {
 };
 
 const hasExactName = (name: string): boolean => {
-  const exact = !!props.options?.some((o) => o.name.toLocaleLowerCase() === name.toLocaleLowerCase());
+  const exact = props.options.some((o) => o.name.toLocaleLowerCase() === name.toLocaleLowerCase());
   isExactOption.value = exact;
   return exact;
 };

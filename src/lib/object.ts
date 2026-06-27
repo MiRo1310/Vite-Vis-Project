@@ -1,4 +1,4 @@
-import { SelectOption } from "@/types/types.ts";
+import { type SelectOption } from "@/types/types.ts";
 
 export function tempArray() {
   const array: SelectOption[] = [];

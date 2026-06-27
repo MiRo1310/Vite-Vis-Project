@@ -3,10 +3,11 @@ import DialogAddUpdateProduct from "@/components/section/products/DialogAddUpdat
 import { computed, onMounted, ref } from "vue";
 import { graphql } from "@/api/gql";
 import { useLazyQuery } from "@vue/apollo-composable";
-import { GetProductsQuery } from "@/api/gql/graphql.ts";
-import { ITableColumn } from "@/types/types.ts";
+import { type GetProductsQuery } from "@/api/gql/graphql.ts";
+import { type ITableColumn } from "@/types/types.ts";
 import { useRouteQuery } from "@vueuse/router";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, GetProductsQuery["productsGrouped"][number]["value"][number], string | undefined>>();
 const productId = useRouteQuery("productId", null);
 const dialogOpen = defineModel<boolean>("dialogOpen");
@@ -39,25 +40,25 @@ const getProductByIdQuery = graphql(`
 
 const { load, result, onResult, refetch } = useLazyQuery(getProductByIdQuery);
 const newProduct = ref(true);
-onMounted(() => {
+onMounted(async () => {
   const id = props.customValue;
   if (id) {
-    getProduct(id);
+    await getProduct(id);
     productId.value = null;
   }
 });
 
-const clickHandler = () => {
-  const id = props.row.original?.id;
+const clickHandler = async () => {
+  const id = props.row.original.id;
   if (id) {
-    getProduct(id);
+    await getProduct(id);
   }
 };
 
-const getProduct = (id: string) => {
+const getProduct = async (id: string) => {
   newProduct.value = false;
-  load(getProductByIdQuery, { id });
-  refetch({ id });
+  await load(getProductByIdQuery, { id });
+  await refetch({ id });
 };
 
 onResult(() => {

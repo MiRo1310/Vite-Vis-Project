@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GlobalObject } from "@/types/types.ts";
+import { type GlobalObject } from "@/types/types.ts";
 import { computed, ref, watch } from "vue";
 
 const props = defineProps({

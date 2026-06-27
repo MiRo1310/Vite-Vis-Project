@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { HTMLAttributes } from "vue";
-import { HTMLInputTypesEnum } from "@/enum/enum";
+import { type HTMLAttributes } from "vue";
+import { type HTMLInputTypesEnum } from "@/enum/enum";
 import InputWithOptions from "@/components/shared/input/InputWithOptions.vue";
-import { InputOption } from "@/types/types.ts";
+import { type InputOption } from "@/types/types.ts";
 
 withDefaults(
   defineProps<{
