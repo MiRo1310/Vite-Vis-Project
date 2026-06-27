@@ -32,12 +32,12 @@ const saveFiles = (files: FileList) => (fileList.value = files);
 
 const saveFileData = (files: FileList) => {
   Array.from(files).forEach((file) => {
-    fileData.value.push({ name: file.name, url: URL.createObjectURL(file) });
+    fileData.value?.push({ name: file.name, url: URL.createObjectURL(file) });
   });
 };
 
-const fileData = defineModel<FileData[]>("fileData", { default: [] });
-const fileList = defineModel<FileList>("fileList", { default: [] });
+const fileData = defineModel<FileData[]>("fileData");
+const fileList = defineModel<FileList>("fileList");
 </script>
 
 <template>

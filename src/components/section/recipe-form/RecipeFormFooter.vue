@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils.ts";
 
 defineProps<{ class?: HTMLAttributes["class"] }>();
 
-const backToRecipe = defineModel("backToRecipe", { default: false });
+const backToRecipe = defineModel<boolean>("backToRecipe", { default: false });
 
 const emits = defineEmits(["abort"]);
 </script>

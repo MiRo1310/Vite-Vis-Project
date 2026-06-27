@@ -10,9 +10,7 @@ import { type TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ ean: string }>();
 
-const product = defineModel<TProduct>("modelValue", {
-  default: [],
-});
+const product = defineModel<TProduct>("modelValue");
 
 const localProductsByCodeQuery = graphql(`
   query localProductsByCode($code: String!) {
