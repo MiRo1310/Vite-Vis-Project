@@ -2,7 +2,7 @@
 import { Button } from "@/components/shared/button/button.variants";
 
 import { computed, watch } from "vue";
-import { TForm } from "@/components/section/recipe-form";
+import { type TForm } from "@/components/section/recipe-form";
 
 const props = defineProps<{ name: string; value?: string | number | boolean | null; unit?: string; form: TForm }>();
 

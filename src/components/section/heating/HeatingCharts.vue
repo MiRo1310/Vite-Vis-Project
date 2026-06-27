@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed, ref } from "vue";
 import { isDefined } from "@vueuse/core";
-import { AggregatedPerDay, aggregatePerDay } from "@/composables/charts.ts";
+import { type AggregatedPerDay, aggregatePerDay } from "@/composables/charts.ts";
 import ChartStepAfter from "@/components/shared/chart/ChartStepAfter.vue";
 import { localDateStringToDate } from "@/lib/date.ts";
 import HeatingLineChart from "@/components/section/heating/HeatingLineChart.vue";
@@ -20,33 +20,29 @@ const result = client.get();
 const chartData = computed(() => {
   const key = measurements[0];
 
-  return (
-    result.value
-      .filter((item) => isDefined(item[key]))
-      .map((item) => ({
-        date: new Date(item.time),
-        value: item[key] ? 1 : 0,
-        key,
-      })) ?? []
-  );
+  return result.value
+    .filter((item) => isDefined(item[key]))
+    .map((item) => ({
+      date: new Date(item.time),
+      value: item[key] ? 1 : 0,
+      key,
+    }));
 });
 
 const chartDataHeating = computed(() => {
   const key = measurements[1];
 
-  return (
-    result.value
-      .filter((item) => isDefined(item[key]))
-      .map((item) => ({
-        date: new Date(item.time),
-        value: item[key] ? 1 : 0,
-        key,
-      })) ?? []
-  );
+  return result.value
+    .filter((item) => isDefined(item[key]))
+    .map((item) => ({
+      date: new Date(item.time),
+      value: item[key] ? 1 : 0,
+      key,
+    }));
 });
 
 const combineValues = computed(() => (list: AggregatedPerDay[][]) => {
-  const combined: { date: Date; value1: number; value2: number }[] = [];
+  const combined: Array<{ date: Date; value1: number; value2: number }> = [];
   list.forEach((item, index) => {
     item.forEach((agg) => {
       const date = localDateStringToDate(agg.localeDateString);

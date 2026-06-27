@@ -4,16 +4,16 @@ import Form from "@/components/shared/form/Form.vue";
 import RecipeProductName from "@/components/section/recipe-form/RecipeProductName.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
-import { SelectOption } from "@/types/types.ts";
+import { type SelectOption } from "@/types/types.ts";
 import { ref, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
-import { formSchemaProduct, TProductSchema } from "@/components/section/recipe-form/schema.form.js";
+import { formSchemaProduct, type TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { isDefined } from "@vueuse/core";
 import { useRecipeStore } from "@/store/recipeStore.ts";
-import { GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
+import { type GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import { routes } from "@/router/routes.ts";
 import { useRouter } from "vue-router";
@@ -40,20 +40,21 @@ const { result: productUnits } = useQuery(
   `),
 );
 
-const defaultProduct: TProductSchema = {
-  productId: "",
-  description: "",
-  amount: 0,
-  groupPosition: 0,
-  id: undefined,
-  activeUnitId: "",
-  position: 0,
-  sortOrder: 0,
-};
+// const defaultProduct: TProductSchema = {
+//   productId: "",
+//   description: "",
+//   amount: 0,
+//   groupPosition: 0,
+//   id: undefined,
+//   activeUnitId: "",
+//   position: 0,
+//   sortOrder: 0,
+// };
 
 const form = useForm({
   validationSchema: formSchemaProduct,
-  initialValues: props.product ?? defaultProduct,
+  initialValues: props.product,
+  // ?? defaultProduct,
   name: "ProductForm",
   validateOnMount: false,
 });
@@ -94,9 +95,9 @@ const router = useRouter();
 
 const recipeStore = useRecipeStore();
 
-const goToProduct = () => {
+const goToProduct = async () => {
   recipeStore.setDirectlyOpenNewProductModal(true);
-  router.push({ name: routes.products.name });
+  await router.push({ name: routes.products.name });
 };
 
 const selectableUnitOptions = ref<SelectOption[]>([]);

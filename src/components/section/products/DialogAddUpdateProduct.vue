@@ -8,7 +8,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { computed, onMounted, ref, watch } from "vue";
 import AddVariantUnits from "@/components/section/products/AddVariantUnits.vue";
-import { GetProductByIdQuery, ProductCreateDtoInput } from "@/api/gql/graphql";
+import { type GetProductByIdQuery, type ProductCreateDtoInput } from "@/api/gql/graphql";
 import { graphql } from "@/api/gql";
 import { useUnits } from "@/composables/querys/units.ts";
 import { formSchemaProduct } from "@/components/section/products/schema.form.js";
@@ -19,7 +19,7 @@ import { useToast } from "@/components/ui/toast";
 import OpenFoodFactsProduct from "@/components/section/products/OpenFoodFactsProduct.vue";
 import OpenFoodFactsValueUpdater from "@/components/section/products/OpenFoodFactsValueUpdater.vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { TProduct } from "@/components/section/products/index.ts";
+import { type TProduct } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
 
@@ -95,11 +95,11 @@ const form = useForm({
 });
 
 const openFoodFactsProduct = ref<TProduct | undefined>();
-const ean = ref("");
+const eanRef = ref("");
 
 onMounted(() => {
   if (props.data?.ean) {
-    ean.value = props.data.ean;
+    eanRef.value = props.data.ean;
   }
 });
 
@@ -187,7 +187,7 @@ const addAllValuesToForm = ref(false);
   <DialogShared v-model:dialog-open="dialogOpen" title="Ein neues Lebensmittel hinzufügen">
     <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
       <div class="max-h-[70vh] overflow-auto">
-        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean
+        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean="eanRef"
           ><Button @click.prevent="addAllValuesToForm = true">Alles hinzufügen</Button>
         </OpenFoodFactsProduct>
 

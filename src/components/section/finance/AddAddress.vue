@@ -30,11 +30,11 @@ const clearInputs = () => {
   street.value = "";
   city.value = "";
 };
-const addAddressHandler = () => {
+const addAddressHandler = async () => {
   if (!name.value && !street.value && !city.value) {
     return;
   }
-  mutate({
+  await mutate({
     name: name.value ?? "",
     street: street.value ?? "",
     city: city.value ?? "",

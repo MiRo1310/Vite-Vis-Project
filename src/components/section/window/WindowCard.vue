@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { Switch } from "@/components/ui/switch";
-import { adminConnection } from "@/lib/iobroker-service.js";
-import { RoomType } from "@/types/types.ts";
+import { type RoomType } from "@/types/types.ts";
 import DataCard from "@/components/shared/card/DataCard.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import WindowShutterPositionBtns from "@/components/section/window/WindowShutterPositionBtns.vue";
+import { type IValueOf } from "@/store/valueClasses.ts";
 
 defineProps<{ window: RoomType }>();
 
-const updateHandler = (value: number | string | boolean, id: string) => {
-  if (adminConnection) {
-    adminConnection.setState(id, value);
-  }
+const updateHandler = async (value: number | string | boolean, iValue?: IValueOf<boolean>) => {
+  iValue?.setState(value);
 };
 </script>
 
@@ -20,12 +18,7 @@ const updateHandler = (value: number | string | boolean, id: string) => {
     <div>
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Fenster</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <DataCard
-          v-for="(w, i) in window.windows"
-          :key="i"
-          :title="w.name || 'Fenster'"
-          content-class="flex items-center gap-1.5"
-        >
+        <DataCard v-for="(w, i) in window.windows" :key="i" :title="w.name || 'Fenster'" content-class="flex items-center gap-1.5">
           <span :class="['h-2 w-2 rounded-full shrink-0', w.isOpenStatus ? 'bg-red-400' : 'bg-green-400']" />
           <span class="text-sm font-semibold">{{ w.isOpenStatus ? "offen" : "geschlossen" }}</span>
         </DataCard>
@@ -42,22 +35,22 @@ const updateHandler = (value: number | string | boolean, id: string) => {
               <span class="text-sm font-semibold">{{ w.shutterPosition ?? "n/a" }}%</span>
             </DataCard>
           </div>
-          <WindowShutterPositionBtns v-if="w.idShutterPosition" :idShutterPosition="w.idShutterPosition" />
+          <WindowShutterPositionBtns v-if="w.idShutterPosition" :shutterPosition="w.idShutterPosition" />
           <p class="text-xs text-muted-foreground uppercase tracking-wide mt-1 mb-1">Einstellungen</p>
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <Switch :checked="w.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoDown?.id ?? '')" />
+                <Switch :checked="w.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoDown)" />
                 <span class="text-xs text-muted-foreground">Auto runter</span>
               </div>
               <InputIobroker :state="w.shutterAutoDownDelay" unit="min" :ack="true" />
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <Switch :checked="w.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoUp?.id ?? '')" />
+                <Switch :checked="w.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoUp)" />
                 <span class="text-xs text-muted-foreground">Auto hoch</span>
               </div>
-              <InputIobroker :state="w.shutterAutoUpTime" type="time" :ack="true" />
+              <InputIobroker :id="w.shutterAutoUpTime?.id" :state="w.shutterAutoUpTime" type="time" :ack="true" />
             </div>
           </div>
         </div>

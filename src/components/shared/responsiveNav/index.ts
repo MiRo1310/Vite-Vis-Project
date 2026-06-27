@@ -1,4 +1,4 @@
-import { RouteParamsRawGeneric } from "vue-router";
+import { type RouteParamsRawGeneric } from "vue-router";
 
 export interface INavigation {
   label: string;

@@ -1,16 +1,16 @@
 import {
-  IAutoSpeed,
-  IBoxValues,
-  IEnergyFlowAnchorSegment,
-  ILineEndPoint,
-  Point,
-  TParticleShape,
-  TReverse,
+  type IAutoSpeed,
+  type IBoxValues,
+  type IEnergyFlowAnchorSegment,
+  type ILineEndPoint,
+  type Point,
+  type TParticleShape,
+  type TReverse,
 } from "@/components/shared/energy-flow/index.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 import { isDefined } from "@vueuse/core";
 import { computed } from "vue";
-import { Positions } from "@/components/shared/energy-flow/position.ts";
+import { type Positions } from "@/components/shared/energy-flow/position.ts";
 
 export class Line<T extends PropertyKey> {
   private static flowColorDefault = HexColors.GREEN;
@@ -279,7 +279,7 @@ export class Line<T extends PropertyKey> {
       case "left":
         exitPoint = { x: position.x - segmentLength, y: position.y };
         break;
-      default:
+      case "right":
         exitPoint = { x: position.x + segmentLength, y: position.y };
         break;
     }
@@ -303,7 +303,7 @@ export class Line<T extends PropertyKey> {
 
     for (const route of candidates) {
       if (route && !this.collides(route)) {
-        return route ?? [];
+        return route;
       }
     }
     return [];

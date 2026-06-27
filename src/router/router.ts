@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteLocationNormalizedLoadedGeneric } from "vue-router";
+import { createRouter, createWebHistory, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 import { routing } from "@/router/routes.ts";
 import { ref } from "vue";
 

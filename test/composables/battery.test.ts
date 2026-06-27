@@ -1,34 +1,30 @@
 import { describe, expect, test, vi } from "vitest";
-// Import nach dem Mock (relativer Pfad, damit TS den Pfad während Tests auflösen kann)
 import { batteryList } from "../../src/composables/battery.ts";
 
-// Mock das Store-Modul; wir definieren die Testdaten INSIDE der Mock-Factory
-// damit Vitest's hoisting keine Referenz auf noch nicht initialisierte
-// Variablen erzeugt.
 vi.mock("@/store/ioBrokerStore.ts", () => {
   const testBatteries = {
     xioami_kitchen_window: {
-      percent: { val: 85, ts: 123 },
-      available: { val: true },
-      voltage: { val: 3.7 },
+      percent: { value: 85, ts: 123 },
+      available: { value: true },
+      voltage: { value: 3.7 },
     },
     "HMIP Flur": {
-      lowBat: { val: true, ts: 200 },
-      available: { val: false },
+      lowBat: { value: true, ts: 200 },
+      available: { value: false },
     },
     "HMIP WC": {
-      lowBat: { val: true },
-      available: { val: false },
+      lowBat: { value: true },
+      available: { value: false },
     },
     "Shelly Plus Smoke Flur OG": {
-      percent: { val: 90, ts: 300 },
-      firmware: { val: true },
-      voltage: { val: 3.5 },
+      percent: { value: 90, ts: 300 },
+      firmware: { value: true },
+      voltage: { value: 3.5 },
     },
     xioami_kitchen_door: {
       percent: {},
-      available: { val: true },
-      voltage: { val: 3.7 },
+      available: { value: true },
+      voltage: { value: 3.7 },
     },
     test: {},
   };
@@ -43,7 +39,6 @@ describe("battery composable", () => {
     const list = batteryList.value;
 
     expect(Array.isArray(list)).toBe(true);
-    // Erwartete Einträge in der gleichen Reihenfolge wie die Keys in testBatteries
     expect(list).toHaveLength(6);
 
     expect(list?.[0]).toMatchObject({

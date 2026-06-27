@@ -8,18 +8,18 @@ import { useLazyQuery, useMutation } from "@vue/apollo-composable";
 import RecipeDescription from "@/components/section/recipe-form/RecipeDescription.vue";
 import RecipeProductGroup from "@/components/section/recipe-form/RecipeProductGroup.vue";
 import AddNewProductGroup from "@/components/section/recipe-form/AddNewGroup.vue";
-import { OnResult } from "@/types/types";
+import { type OnResult } from "@/types/types";
 import { useRecipeStore } from "@/store/recipeStore";
 import { useToast } from "@/components/ui/toast/use-toast";
-import { GetRecipeByIdQuery, RecipeCreateDtoInput, RecipeUpdateDtoInput } from "@/api/gql/graphql";
-import { schemaForm, TDescriptionSchema, TProductSchema } from "@/components/section/recipe-form/schema.form";
+import { type GetRecipeByIdQuery, type RecipeCreateDtoInput, type RecipeUpdateDtoInput } from "@/api/gql/graphql";
+import { schemaForm, type TDescriptionSchema, type TProductSchema } from "@/components/section/recipe-form/schema.form";
 import { useRoute, useRouter } from "vue-router";
 import RecipeRemoveDescription from "@/components/section/recipe-form/RecipeRemoveDescription.vue";
 import { graphql } from "@/api/gql";
 import { routes } from "@/router/routes.ts";
 import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 import { Logger } from "@/lib/logger.ts";
-import { TRecipeDescriptionLike, TRecipeHeaderProductLike, TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
+import { type TRecipeDescriptionLike, type TRecipeHeaderProductLike, type TRecipeProductLike } from "@/components/section/recipe-form/index.ts";
 import { removeDescriptions } from "@/components/section/recipe-form/removeDescriptions.ts";
 import RecipeFormFooter from "@/components/section/recipe-form/RecipeFormFooter.vue";
 import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
@@ -145,9 +145,6 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-  if (!form.values) {
-    return;
-  }
   recipeStore.saveRecipeInProgress(deepCopy<TFormValues>(form.values) ?? {}, recipeId.value);
 });
 
@@ -197,7 +194,7 @@ const cloneProducts = (items: TRecipeProductLike[] = []): TProductSchema[] =>
     activeUnitId: item.activeUnitId ?? "",
     position: item.position ?? index,
     sortOrder: item.sortOrder,
-  })) ?? [];
+  }));
 
 const recipeToFormValues = (recipe?: TRecipeQuery): TFormValues => {
   return {
@@ -229,20 +226,20 @@ const valueToForm = (formValues?: TFormValues) => {
   const headers = getFormValueOrDefault("headersProductArray", formValues);
   const name = getFormValueOrDefault("name", formValues);
 
-  const normalizedHeaders = (headers ?? []).map((h, i) => ({
+  const normalizedHeaders = headers.map((h, i) => ({
     text: h.text,
     position: h.position ?? i,
     id: h.id,
   }));
 
-  const normalizedProducts = (products ?? []).map((item, index) => ({
-    amount: item.amount ?? 0,
+  const normalizedProducts = products.map((item, index) => ({
+    amount: item.amount,
     description: item.description ?? "",
     groupPosition: item.groupPosition,
     productId: item.productId,
     unit: "",
     id: item.id ?? undefined,
-    activeUnitId: item.activeUnitId ?? "",
+    activeUnitId: item.activeUnitId,
     position: index,
     sortOrder: item.sortOrder,
   }));
@@ -287,7 +284,7 @@ const cleanUpFormProducts = (products?: TProductSchema[]): RecipeCreateDtoInput[
 const onSubmit = form.handleSubmit(async (values) => {
   const dto: RecipeCreateDtoInput = {
     name: values.name,
-    portions: values.portions ?? 0,
+    portions: values.portions,
     preparationTimeMin: values.preparationTimeMin ?? null,
     totalTimeMin: values.totalTimeMin ?? null,
     recipeCategoryId: values.recipeCategoryId ?? null,
@@ -301,20 +298,20 @@ const onSubmit = form.handleSubmit(async (values) => {
     Logger("Creating new recipe");
     const result = await mutate({ dto });
 
-    const recipeId = result?.data?.createRecipe.id;
+    const id = result?.data?.createRecipe.id;
     const description = values.name;
 
     toast({
       title: "Das Rezept wurde gespeichert",
       description: description,
     });
-    if (!recipeId) {
+    if (!id) {
       return;
     }
-    const willNavigateToDetails = await toDetails(recipeId);
+    const willNavigateToDetails = await toDetails(id);
 
     if (!willNavigateToDetails) {
-      await router.push({ name: routes.editRecipe.name, params: { id: recipeId } });
+      await router.push({ name: routes.editRecipe.name, params: { id } });
     }
 
     return;
@@ -379,12 +376,12 @@ const enterPress = async () => {
 };
 
 watchEffect(() => {
-  if (!formProducts.value?.length) {
+  if (!formProducts.value.length) {
     recipeStore.setProductGroupCount(0);
     return 0;
   }
   recipeStore.setProductGroupCount(
-    formProducts.value?.reduce((acc, curr) => {
+    formProducts.value.reduce((acc, curr) => {
       return curr.groupPosition > acc ? curr.groupPosition : acc;
     }, 0) + 1,
   );

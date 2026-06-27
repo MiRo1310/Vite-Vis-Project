@@ -1,8 +1,8 @@
-import { Row } from "@tanstack/vue-table";
-import { ApolloQueryResult } from "@apollo/client";
-import { FunctionalComponent, HTMLAttributes } from "vue";
-import { Badge } from "../components/shared/badge/badge.variants";
-import { StoreValue } from "@/store";
+import { type Row } from "@tanstack/vue-table";
+import { type ApolloQueryResult } from "@apollo/client";
+import { type FunctionalComponent, type HTMLAttributes } from "vue";
+import { type Badge } from "../components/shared/badge/badge.variants";
+import { type IValueOf } from "@/store/valueClasses.ts";
 
 export interface AlexaList {
   name: string;
@@ -19,41 +19,24 @@ export interface GlobalObject {
   [key: string]: any;
 }
 
-export type Timer = {
-  timeString: StoreValue<string>;
-  device: StoreValue<string>;
-  timeEnd: StoreValue<string>;
-  timeStart: StoreValue<string>;
-  percent: StoreValue<number>;
-  name: StoreValue<string>;
-  initialTimer: StoreValue<string>;
-};
-
-export interface Timers {
-  1: Timer;
-  2: Timer;
-  3: Timer;
-  4: Timer;
-}
-
 export interface RoomType {
   name: string;
   shutter: boolean;
-  batteryHeating?: StoreValue<boolean>[];
-  bellStatus?: StoreValue<boolean>;
-  temp?: (number | undefined)[];
-  windows: {
+  batteryHeating?: Array<IValueOf<boolean>>;
+  bellStatus?: IValueOf<boolean>;
+  temp?: Array<number | undefined>;
+  windows: Array<{
     name: string;
     idShutterPosition?: string;
     isOpenStatus?: boolean;
     door?: boolean;
     shutterPosition?: number;
-    shutterAutoDown?: StoreValue<boolean>;
-    shutterAutoUp?: StoreValue<boolean>;
-    shutterAutoUpTime?: StoreValue<number>;
-    shutterAutoDownDelay?: StoreValue<number>;
-    windowSensorReachable: StoreValue<boolean>;
-  }[];
+    shutterAutoDown?: IValueOf<boolean>;
+    shutterAutoUp?: IValueOf<boolean>;
+    shutterAutoUpTime?: IValueOf<number>;
+    shutterAutoDownDelay?: IValueOf<number>;
+    windowSensorReachable?: IValueOf<boolean>;
+  }>;
 }
 
 export interface IdsToControl {
@@ -119,7 +102,7 @@ export interface Entries {
 export type IobrokerLanguages = "en" | "de" | "ru" | "pt" | "nl" | "fr" | "it" | "es" | "pl" | "uk" | "zh-cn";
 
 export type DefaultTypes = string | number | boolean | object;
-export type CallbackFunktion = (args?: DefaultTypes) => void | DefaultTypes;
+export type CallbackFunktion = (args?: DefaultTypes) => Promise<void> | DefaultTypes;
 
 export interface SelectOption {
   value: string;
@@ -166,11 +149,11 @@ export interface NavigationType {
   text: string;
   to: string;
   externalLink?: boolean;
-  badges?: {
+  badges?: Array<{
     value: number;
     color: Badge["color"];
     class?: HTMLAttributes["class"];
-  }[];
+  }>;
 }
 
 export interface Log {
@@ -211,4 +194,66 @@ export interface WattPilotJson {
   startupHoldActive: boolean;
   startupHoldRemainingSeconds: number;
   updatedAt: string;
+}
+
+export interface HeatingPumpScriptJson {
+  carChargingRequest: boolean;
+  surplus: number;
+  heaterActive: boolean;
+  surplusAboveThreshold: boolean;
+  surplusBelowThreshold: boolean;
+  delayOnRunning: boolean;
+  delayOffRunning: boolean;
+  delayOnRemainingSeconds: number;
+  delayOffRemainingSeconds: number;
+  cooldownRemainingSeconds: number;
+  lastDeactivatedAt: string;
+  nextActivationAllowedAt: string;
+  scheduleEnabled: boolean;
+  scheduleOnCron: string;
+  scheduleOffCron: string;
+  updatedAt: string;
+}
+
+export interface HeatingPumpSilentJSON {
+  silentMode: boolean;
+  power: number;
+  dischargeBattery: boolean;
+  timeoutRunning: boolean;
+  timeoutRemainingSeconds: number;
+  updatedAt: string;
+}
+
+export interface TrashType {
+  name: string;
+  nextDate: number;
+  _color: string;
+  timestamp: string;
+  daysLeft: number;
+}
+
+export interface AdapterUpdate {
+  availableVersion: string;
+  installedVersion: string;
+}
+
+export interface UpdatesAsJSON {
+  [key: string]: AdapterUpdate;
+}
+
+export interface JSONStyle {
+  name: string;
+  color: string;
+}
+
+export interface TankerkoenigStation {
+  station: string;
+  status: string;
+  e5: number;
+  differenceE5: number;
+  e10: number;
+  differenceE10: number;
+  diesel: number;
+  differenceDiesel: number;
+  discount: string;
 }

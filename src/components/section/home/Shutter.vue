@@ -5,17 +5,16 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useRouter } from "vue-router";
 import { Button } from "@/components/shared/button/button.variants";
 import { routes } from "@/router/routes.ts";
-import { getStoreValBoolean } from "@/lib/object.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
-const handleWindowClick = () => {
-  router.push({ path: routes.window.path });
+const handleWindowClick = async () => {
+  await router.push({ path: routes.window.path });
 };
 
 const getWindowStyle = computed(() => {
-  if (getStoreValBoolean(iobroker.windowGlobal?.fensterOffen)) {
+  if (iobroker.windowGlobal.fensterOffen.value) {
     return "text-yellow-500";
   }
   return "text-green-500";

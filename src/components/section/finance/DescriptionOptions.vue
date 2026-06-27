@@ -2,7 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
-import { SelectOption } from "@/types/types.ts";
+import { type SelectOption } from "@/types/types.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
 
 const { result } = useQuery(

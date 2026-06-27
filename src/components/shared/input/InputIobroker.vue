@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
-import { StoreValue } from "@/store";
+import { type IValueOf } from "@/store/valueClasses.ts";
 import { useDebounceFn } from "@vueuse/core";
-import { adminConnection } from "@/lib/iobroker-service.js";
 import { watch } from "vue";
-import { InputType } from "@/components/ui/input/InputShadcn.vue";
+import { type InputType } from "@/components/ui/input/InputShadcn.vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
+import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
 const props = withDefaults(
   defineProps<{
     type?: InputType;
     unit?: "°C" | "Wh" | "%" | "min";
-    state: StoreValue<string | number>;
+    state: IValueOf<string | number> | undefined;
     debounce?: number;
     ack?: boolean;
     // eslint-disable-next-line vue/no-unused-properties
@@ -25,19 +25,19 @@ const modelValue = defineModel<string | number>();
 watch(
   () => props.state?.val,
   () => {
-    modelValue.value = props.state?.val?.toString() || "";
+    modelValue.value = props.state?.val?.toString() ?? "";
   },
   { immediate: true },
 );
 
 const debounceFn = useDebounceFn(() => setState(), props.debounce);
 
-const setState = () => {
+const setState = async () => {
   const id = props.state?.id;
   if (!modelValue.value || !id) {
     return;
   }
-  adminConnection?.setState(id, modelValue.value, props.ack);
+  await ioBrokerService.connection?.setState(id, modelValue.value, props.ack);
 };
 
 const variants = {

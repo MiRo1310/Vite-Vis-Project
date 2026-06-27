@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import "leaflet/dist/leaflet.css";
 import { LMap, LMarker, LPopup, LTileLayer } from "@vue-leaflet/vue-leaflet";
-import { LatLngBoundsExpression, LatLngTuple, Map as LeafletMap } from "leaflet";
+import { type LatLngBoundsExpression, type LatLngTuple, type Map as LeafletMap } from "leaflet";
 import { computed, ref, watch } from "vue";
-import { Markers } from "@/components/shared/leaflet/index.ts";
+import { type Markers } from "@/components/shared/leaflet/index.ts";
 
 // const customIcon = L.icon({
 //   iconRetinaUrl: markerIcon,

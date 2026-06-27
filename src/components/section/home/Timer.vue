@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useAppStore } from "@/store/app-store.js";
-import { Timers } from "@/types/types.ts";
+import { type Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { getNameByIndex } from "@/composables/timer.ts";
 import { DataCard } from "@/components/shared/card";
 
@@ -18,10 +18,10 @@ const { iobroker } = useIobrokerStore();
       content-class="space-y-0.5"
     >
       <span class="text-sm font-semibold font-mono tabular-nums">
-        {{ iobroker.timers?.[i as keyof Timers]?.timeString?.val || "–" }}
+        {{ iobroker.timers?.[i as keyof Timers]?.timeString?.value || "–" }}
       </span>
       <p class="text-xs text-muted-foreground truncate">
-        {{ iobroker.timers?.[i as keyof Timers]?.device?.val || "–" }}
+        {{ iobroker.timers?.[i as keyof Timers]?.device?.value || "–" }}
       </p>
     </DataCard>
   </div>

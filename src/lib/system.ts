@@ -1,12 +1,14 @@
+import { isDefined } from "@vueuse/core";
+
 export function miBToGiB(val?: number): string {
-  if (val === undefined || val === null) {
+  if (!isDefined(val)) {
     return "0 GB";
   }
   return (val / 1024).toFixed(2) + " GB";
 }
 
 export function formatUptime(val?: number): string {
-  if (val === undefined || val === null) {
+  if (!isDefined(val)) {
     return "–";
   }
   const d = Math.floor(val / 86400);

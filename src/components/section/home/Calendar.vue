@@ -2,33 +2,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { CalendarDayType } from "@/types/types.ts";
+import { type CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/CalenderDay.vue";
-import { toJSON } from "@michaelroling/ts-library";
-import { getStoreValString } from "@/lib/object.ts";
 import { routes } from "@/router/routes.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
 
-const data = computed((): CalendarDayType[] => {
-  return toJSON<CalendarDayType[]>(getStoreValString(iobroker.calendar?.table)).json ?? [];
-});
+const data = computed(() => iobroker.calendar.table.parsed([]));
 
 const today = computed(() => {
-  if (data.value) {
-    return data.value.filter((day) => {
-      return day.date.includes("Heute") || isInTimeRange(day);
-    });
-  }
-  return [];
+  return data.value.filter((day) => {
+    return day.date.includes("Heute") || isInTimeRange(day);
+  });
 });
 
 const tomorrow = computed(() => {
-  if (!data.value) {
-    return [];
-  }
   return data.value.filter((day) => {
     return day.date.includes("Morgen") || isInTimeRange(day, 1);
   });

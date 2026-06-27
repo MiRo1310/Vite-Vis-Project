@@ -1,4 +1,4 @@
-import { RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
+import { type RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql";
 
 interface INameId {
   name?: string | null;
@@ -12,10 +12,10 @@ export const getElementByPosition = (
   return array.find((element) => element.position === position);
 };
 
-export const getNameById = <T extends INameId | null>(id?: string, array?: T[] | null): string => array?.find((item) => item?.id === id)?.name || "";
+export const getNameById = <T extends INameId | null>(id?: string, array?: T[] | null): string => array?.find((item) => item?.id === id)?.name ?? "";
 
 export const getIdByName = <T extends INameId | null>(name?: string, array?: T[] | null): string =>
-  array?.find((item) => item?.name === name)?.id || "";
+  array?.find((item) => item?.name === name)?.id ?? "";
 
 export const newIdPrefix = "NEW_ID_TEMP_";
 

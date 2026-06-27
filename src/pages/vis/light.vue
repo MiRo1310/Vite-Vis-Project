@@ -13,7 +13,7 @@ const { iobroker } = useIobrokerStore();
         v-for="(light, i) in Object.keys(iobroker.lights ?? {})"
         :key="i"
         :light="iobroker.lights?.[light as keyof typeof iobroker.lights]"
-        :value-additive="iobroker.lightsAdditive?.[light as keyof typeof iobroker.lightsAdditive]?.val"
+        :value-additive="light in iobroker.lightsAdditive ? iobroker.lightsAdditive[light as keyof typeof iobroker.lightsAdditive].value : false"
         :name="light"
       />
     </div>

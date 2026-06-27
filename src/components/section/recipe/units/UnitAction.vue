@@ -6,11 +6,12 @@ import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input/input.variants";
-import { UnitsQuery } from "@/api/gql/graphql.ts";
+import { type UnitsQuery } from "@/api/gql/graphql.ts";
 import description from "@/pages/finance/description.vue";
-import { ITableColumn } from "@/types/types.ts";
+import { type ITableColumn } from "@/types/types.ts";
 import { refetchQueryUnits } from "@/composables/querys/units.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, UnitsQuery["units"][number]>>();
 const refetchQueries = [refetchQueryUnits];
 
@@ -47,12 +48,12 @@ const remove = async () => {
   );
 };
 
-const update = () => {
+const update = async () => {
   dialogUpdateOpen.value = false;
   if (!props.value) {
     return;
   }
-  updateMutation(
+  await updateMutation(
     {
       id: props.value,
       name: name.value,
@@ -72,7 +73,7 @@ const clear = () => {
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
-const name = ref(props.row.original.name ?? "");
+const name = ref(props.row.original.name);
 </script>
 
 <template>

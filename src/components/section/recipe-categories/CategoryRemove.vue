@@ -4,9 +4,10 @@ import { graphql } from "@/api/gql";
 import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import { ref } from "vue";
-import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
-import { ITableColumn } from "@/types/types.ts";
+import { type RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
+import { type ITableColumn } from "@/types/types.ts";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, RecipeCategoriesQuery["recipeCategories"][number]>>();
 
 const { mutate } = useMutation(

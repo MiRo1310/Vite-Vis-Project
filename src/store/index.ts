@@ -1,9 +1,9 @@
-import { Store, StoreDefinition } from "pinia";
-import { IdsToControl, IobrokerState, Log } from "@/types/types.ts";
-import { ComputedRef } from "vue";
-import { TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
-import { TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { IobrokerChannels } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
+import { type Store, type StoreDefinition } from "pinia";
+import { type IdsToControl, type IobrokerState, type Log } from "@/types/types.ts";
+import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
+import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
+import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { type ValueClassCtor } from "@/store/valueClasses.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -13,19 +13,7 @@ export interface IoBrokerStoreState {
   adminConnectionEstablished: boolean;
   subscribedIds: string[];
   idsToControl: IdsToControl;
-  iobroker: IobrokerChannels;
-}
-
-export type StoreValue<T> = StoreValueType<T> | undefined;
-
-export interface StoreValueType<T> {
-  val: T | undefined;
-  id: string;
-  ack: boolean;
-  ts?: number;
-  lc?: number;
-  from?: string;
-  q?: number;
+  iobroker: typeof iobrokerTree;
 }
 
 export interface ParsedLogs {
@@ -43,25 +31,23 @@ export interface SetValues {
   group?: string;
   timestamp?: boolean;
   state: IobrokerState;
+  valueClass: ValueClassCtor;
 }
-
-export type IoBrokerStates = keyof IoBrokerStoreState;
 
 interface IoBrokerStoreActions {
   setAdminConnection(val: boolean): void;
   resetIdsToSubscribe(): void;
   addIdToSubscribedIds(id: string): void;
   removeIdFromSubscribedIds(id: string): void;
-  setValues(params: SetValues): void;
 }
 
 interface IoBrokerStoreGetters {
   isAdminConnected(state: IoBrokerStoreState): boolean;
-  getTrash(state: IoBrokerStoreState): IobrokerChannels["trash"];
-  getShoppinglist(state: IoBrokerStoreState): IobrokerChannels["alexaLists"];
+  getTrash(state: IoBrokerStoreState): (typeof iobrokerTree)["trash"];
+  getShoppinglist(state: IoBrokerStoreState): (typeof iobrokerTree)["alexaLists"];
   getState(state: IoBrokerStoreState): IoBrokerStoreState;
   getIdsToControl(state: IoBrokerStoreState): IdsToControl;
-  getParsedLogs(state: IoBrokerStoreState): ComputedRef<ParsedLogs>;
+  getParsedLogs(state: IoBrokerStoreState): ParsedLogs;
 }
 
 export type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;

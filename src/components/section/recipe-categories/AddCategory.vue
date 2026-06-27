@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
-import { RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
+import { type RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
@@ -24,10 +24,10 @@ const { mutate } = useMutation(
   { refetchQueries: ["recipeCategories"], awaitRefetchQueries: true },
 );
 
-watch(update, (newVal) => {
+watch(update, async (newVal) => {
   if (newVal) {
     update.value = false;
-    addNewCategory();
+    await addNewCategory();
   }
 });
 
@@ -42,7 +42,7 @@ async function addNewCategory(): Promise<void> {
       .map((u) => u.trim())
       .filter((u) => u);
     for (const category of categoryArray) {
-      if (props.result?.find((c) => c.name === category)) {
+      if (props.result.find((c) => c.name === category)) {
         existInDb.value = true;
         continue;
       }
@@ -61,7 +61,7 @@ async function addNewCategory(): Promise<void> {
 
 const disabled = computed((): boolean => newCategory.value === "" || categoryExists.value);
 
-const categoryExists = computed(() => isDefined(props.result?.find((c) => c.name === newCategory.value)));
+const categoryExists = computed(() => isDefined(props.result.find((c) => c.name === newCategory.value)));
 </script>
 
 <template>

@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { DataCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
-import { toJSON } from "@michaelroling/ts-library";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
-import { WattPilotJson } from "@/types/types.ts";
+import { type WattPilotJson } from "@/types/types.ts";
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
 
-const wallbox = computed((): WattPilotJson | null => toJSON<WattPilotJson>(iobroker.wattPilot?.jsonScriptChargeLevel?.val ?? "").json);
+const wallbox = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const airConditioners = computed(() => iobroker.airConditioners);
 const landroid = computed(() => iobroker.landroid);
@@ -35,7 +33,7 @@ const landroidStatusMap: Record<number, string> = {
 };
 
 const landroidStatusLabel = computed(() => {
-  const code = getStoreValNumber(landroid.value?.status);
+  const code = landroid.value.status.value;
   return landroidStatusMap[code] ?? `Status ${code}`;
 });
 </script>
@@ -45,7 +43,7 @@ const landroidStatusLabel = computed(() => {
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.iobrokerInfo.path">
         <DataCard title="Updates" clickable content-class="flex items-center gap-1.5">
-          <span class="text-sm font-semibold">{{ infoStore?.updatesNumber?.val ?? 0 }}</span>
+          <span class="text-sm font-semibold">{{ infoStore.updatesNumber.value }}</span>
           <span class="text-xs text-muted-foreground">verfügbar</span>
         </DataCard>
       </RouterLink>
@@ -67,16 +65,10 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Klima</p>
     <div class="grid grid-cols-2 gap-2">
       <DataCard title="Schlafen" content-class="space-y-1">
-        <OnlineActiveRows
-          :online="getStoreValBoolean(airConditioners?.schlafenOnline)"
-          :active="getStoreValBoolean(airConditioners?.schlafenOnline)"
-        />
+        <OnlineActiveRows :online="airConditioners.schlafenOnline.value" :active="airConditioners.schlafenOnline.value" />
       </DataCard>
       <DataCard title="Kinderzimmer" content-class="space-y-1">
-        <OnlineActiveRows
-          :online="getStoreValBoolean(airConditioners?.childOnline)"
-          :active="getStoreValBoolean(airConditioners?.childPowerStatus)"
-        />
+        <OnlineActiveRows :online="airConditioners.childOnline.value" :active="airConditioners.childPowerStatus.value" />
       </DataCard>
     </div>
 
@@ -84,11 +76,11 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Rasenmäher</p>
     <div class="grid grid-cols-2 gap-2">
       <DataCard title="Status" content-class="flex items-center gap-1.5">
-        <StatusDot :active="getStoreValBoolean(landroid?.online)" />
+        <StatusDot :active="landroid.online.value" />
         <span class="text-xs font-semibold truncate">{{ landroidStatusLabel }}</span>
       </DataCard>
       <DataCard title="Akku">
-        <span class="text-sm font-semibold">{{ landroid?.battery?.val ?? 0 }}</span>
+        <span class="text-sm font-semibold">{{ landroid.battery.value ?? 0 }}</span>
         <span class="text-xs text-muted-foreground ml-1">%</span>
       </DataCard>
     </div>
@@ -98,12 +90,12 @@ const landroidStatusLabel = computed(() => {
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="getStoreValBoolean(pool?.heaterOnline)" :active="getStoreValBoolean(pool?.heaterState)" />
+          <OnlineActiveRows :online="pool.heaterOnline.value" :active="pool.heaterState.value" />
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="getStoreValBoolean(pool?.poolPumpSwitch)" :active="getStoreValNumber(pool?.poolPumpPower) > 40" />
+          <OnlineActiveRows :online="pool.poolPumpSwitch.value" :active="pool.poolPumpPower.value > 40" />
         </DataCard>
       </RouterLink>
     </div>
@@ -124,7 +116,7 @@ const landroidStatusLabel = computed(() => {
             <span v-else class="text-xs font-semibold"> -</span>
             <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
           </div>
-          <p>{{ iobroker.car?.battery?.val ?? "-" }}%</p>
+          <p>{{ iobroker.car.battery.val ?? "-" }}%</p>
         </DataCard>
       </RouterLink>
     </div>

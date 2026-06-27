@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { cn } from "@/lib/utils";
 import { useVModel } from "@vueuse/core";
-import { HTMLInputTypesEnum } from "@/enum/enum";
+import { type HTMLInputTypesEnum } from "@/enum/enum";
 
 const props = withDefaults(
   defineProps<{

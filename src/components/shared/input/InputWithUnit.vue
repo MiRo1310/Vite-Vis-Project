@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
-import { HTMLAttributes } from "vue";
-import { InputType } from "@/components/ui/input/InputShadcn.vue";
+import { type HTMLAttributes } from "vue";
+import { type InputType } from "@/components/ui/input/InputShadcn.vue";
 
 const props = withDefaults(
   defineProps<{

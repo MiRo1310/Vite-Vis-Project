@@ -1,5 +1,4 @@
-import { SelectOption } from "@/types/types.ts";
-import { StoreValue } from "@/store";
+import { type SelectOption } from "@/types/types.ts";
 
 export function tempArray() {
   const array: SelectOption[] = [];
@@ -17,13 +16,3 @@ export function tempArray() {
   }
   return array;
 }
-
-export const getStoreValNumber = (storeValue: StoreValue<number> | undefined): number => storeValue?.val ?? 0;
-export const getStoreValNumberArray = (arr: StoreValue<number>[] | undefined): number[] =>
-  arr?.reduce((prev, curr): number[] => {
-    prev.push(curr?.val ?? 0);
-    return prev;
-  }, []) ?? [];
-export const getStoreValBoolean = (storeValue: StoreValue<boolean> | undefined): boolean => storeValue?.val ?? false;
-export const getStoreValString = (storeValue: StoreValue<string> | undefined): string => storeValue?.val ?? "";
-export const getStoreValId = (storeValue: StoreValue<unknown> | undefined): string | undefined => storeValue?.id;

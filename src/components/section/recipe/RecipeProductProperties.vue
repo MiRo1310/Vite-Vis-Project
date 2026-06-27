@@ -3,7 +3,7 @@ import CollapsibleShared from "@/components/shared/collapsible/CollapsibleShared
 import { Button } from "@/components/shared/button/button.variants";
 import { computed, ref } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
-import { GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";
+import { type GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";
 
 type ProductType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number]["product"];
 const props = defineProps<{ product: ProductType }>();
@@ -12,7 +12,7 @@ const { getCategoryNameById } = useProductCategories();
 
 const isOpen = ref(false);
 
-const information = computed((): { name: string; value?: string | number | null; classCell?: string }[] => {
+const information = computed((): Array<{ name: string; value?: string | number | null; classCell?: string }> => {
   const product = props.product;
 
   if (!product) {
@@ -20,7 +20,7 @@ const information = computed((): { name: string; value?: string | number | null;
   }
 
   return [
-    { name: "Kategorie", value: getCategoryNameById(product.category || "") },
+    { name: "Kategorie", value: getCategoryNameById(product.category ?? "") },
     { name: "Kohlenhydrate", value: product.carbs },
     { name: "Fett", value: product.fat },
     { name: "Kalorien", value: product.kcal },

@@ -2,31 +2,29 @@
 import { computed, ref } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Select from "@/components/shared/select/Select.vue";
-import { adminConnection } from "@/lib/iobroker-service.js";
-import { RoomItems, SelectOption } from "@/types/types.ts";
-import { updateRoomInHeatingControl } from "@/composables/heatingControl.ts";
+import { type RoomItems, type SelectOption } from "@/types/types.ts";
 
 const { iobroker } = useIobrokerStore();
 
 const profiles = computed((): SelectOption[] => {
   const heatingControl = iobroker.heatingControl;
-  if (!heatingControl?.profileText?.val) {
+  if (!heatingControl.profileText.val) {
     return [];
   }
-  return heatingControl.profileText?.val?.split(";").map((item: string, index: number) => {
+  return heatingControl.profileText.value.split(";").map((item: string, index: number) => {
     return {
       label: item,
-      value: heatingControl.profileValue?.val?.split(";")[index] || "",
+      value: heatingControl.profileValue.value.split(";")[index] || "",
     };
   });
 });
 
 const roomItems = computed((): SelectOption[] => {
   const heatingControl = iobroker.heatingControl;
-  if (!heatingControl?.usedRoom?.val) {
+  if (!heatingControl.usedRoom.val) {
     return [];
   }
-  return heatingControl.usedRoom?.val?.split(";").map((item: string) => {
+  return heatingControl.usedRoom.val.split(";").map((item: string) => {
     return {
       label: item,
       value: item,
@@ -34,14 +32,11 @@ const roomItems = computed((): SelectOption[] => {
   });
 });
 
-const selected = ref(iobroker.heatingControl?.profile?.val?.toString());
-const room = ref(iobroker.heatingControl?.room?.val?.toString());
+const selected = ref(iobroker.heatingControl.profile.value.toString());
+const room = ref(iobroker.heatingControl.room.value.toString());
 
-function updateSelected(val: string | undefined, id: string | undefined) {
-  if (!id) {
-    return;
-  }
-  adminConnection?.setState(id, val);
+function updateSelected(val: string | undefined) {
+  iobroker.heatingControl.profile.setState(val ?? null);
 }
 </script>
 
@@ -53,7 +48,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
       placeholder="Wähle ein Profil aus"
       :items="profiles"
       class="w-auto"
-      @update:model-value="updateSelected($event, iobroker.heatingControl?.profile?.id)"
+      @update:model-value="updateSelected($event)"
     />
     <p class="header__label">Raum:</p>
     <Select
@@ -61,7 +56,7 @@ function updateSelected(val: string | undefined, id: string | undefined) {
       placeholder="Wähle einen Raum"
       :items="roomItems"
       class="w-auto"
-      @update:model-value="updateRoomInHeatingControl(($event as RoomItems) ?? null)"
+      @update:model-value="iobroker.heatingControl.room.setState(($event as RoomItems) ?? null)"
     />
   </div>
 </template>

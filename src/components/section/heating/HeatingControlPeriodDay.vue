@@ -1,42 +1,19 @@
 <script lang="ts" setup>
 import Select from "@/components/shared/select/Select.vue";
-import { StoreValue } from "@/store";
 import { tempArray } from "@/lib/object.ts";
 import { computed } from "vue";
-import { adminConnection } from "@/lib/iobroker-service.js";
-import { useDynamicSubscribe } from "@/composables/dynamicSubscribe.ts";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { IobrokerSubscription } from "@/iobroker-states/states-subscribed/iobroker.iobroker.ts";
 
 const props = defineProps<{
   day: { val: string; label: string; index: number };
 }>();
 const { iobroker } = useIobrokerStore();
 
-function updateData(id: string | undefined, value: string) {
-  if (!id) {
-    return;
-  }
-  adminConnection?.setState(id, { val: value, ack: false });
-}
-
-const states = {
-  channel: "heatingTimeSlot",
-  value: [
-    {
-      id: "heatingcontrol.0.vis.RoomValues.CurrentTimePeriod",
-      key: "currentTimePeriod",
-    },
-  ],
-} satisfies IobrokerSubscription;
-
-useDynamicSubscribe(states);
-
 const activeClass = computed(() => (i: number) => {
-  return i + props.day.index * 5 === iobroker.heatingTimeSlot?.currentTimePeriod?.val ? "bg-green-100! text-black" : "";
+  return i + props.day.index * 5 === iobroker.heatingTimeSlot.currentTimePeriod.val ? "bg-green-100! text-black" : "";
 });
-const heatingControl = computed(() => iobroker.heatingControl);
+const heatingControl = computed(() => iobroker.heatingControlDay);
 </script>
 
 <template>
@@ -51,13 +28,20 @@ const heatingControl = computed(() => iobroker.heatingControl);
     </div>
 
     <div v-for="i in 5" :key="i" class="flex gap-2">
-      <InputIobroker type="time" :state="heatingControl?.[`${day.val}.${i}.time` as keyof typeof heatingControl] as StoreValue<number>" />
+      <InputIobroker
+        type="time"
+        :state="heatingControl[day.val as keyof typeof heatingControl][String(i) as keyof (typeof heatingControl)['Mon']].time"
+      />
 
       <Select
         :items="tempArray()"
-        :model-value="heatingControl?.[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.val?.toString()"
+        :model-value="heatingControl[day.val as keyof typeof heatingControl][String(i) as keyof (typeof heatingControl)['Mon']].temp?.val?.toString()"
         :class="[activeClass(i), 'h-full!  m-0!']"
-        @update:model-value="updateData(heatingControl?.[`${day.val}.${i}.temp` as keyof typeof heatingControl]?.id, $event?.toString() ?? '')"
+        @update:model-value="
+          heatingControl[day.val as keyof typeof heatingControl][String(i) as keyof (typeof heatingControl)['Mon']].temp.setState(
+            $event?.toString() ?? '',
+          )
+        "
       />
     </div>
   </div>

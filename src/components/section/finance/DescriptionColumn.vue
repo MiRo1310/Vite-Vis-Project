@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { DescriptionsQuery } from "@/api/gql/graphql.ts";
-import { ITableColumn } from "@/types/types.ts";
+import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
+import { type ITableColumn } from "@/types/types.ts";
 import { onMounted, ref, watch } from "vue";
 
+// eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
 
 const column = ref<null | HTMLElement>(null);

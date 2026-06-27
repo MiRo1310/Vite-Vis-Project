@@ -14,6 +14,7 @@ export default defineConfig([
       "**/node_modules/",
       "**/src/api/gql/",
       "**/src/components/ui/",
+      "**/*.d.ts",
       "tailwind.config.js",
       "vite.config.*",
       "codegen.ts",
@@ -29,11 +30,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
-  tseslint.configs.recommended,
+  tseslint.configs.strict,
   pluginVue.configs["flat/essential"],
   {
     files: ["**/*.{js,mjs,cjs,ts,tsx,vue}"],
     rules: {
+      // Basis
       eqeqeq: "error",
       "no-console": "warn",
       curly: "error",
@@ -42,10 +44,21 @@ export default defineConfig([
       "prefer-const": "error",
       semi: ["error", "always"],
       quotes: ["error", "double"],
+
+      // Variablen-Shadowing verhindern
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": "error",
+
+      // TypeScript
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports", fixStyle: "inline-type-imports" }],
+      "@typescript-eslint/prefer-optional-chain": "error",
+      "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
+
+      // Vue
       "vue/multi-word-component-names": "off",
-      "vue/no-unused-components": "warn",
+      "vue/no-unused-components": "error",
       "vue/no-mutating-props": "error",
       "vue/no-unused-properties": [
         "error",
@@ -55,10 +68,38 @@ export default defineConfig([
           ignorePublicMembers: false,
         },
       ],
+      // "vue/no-v-html": "warn",
+
       complexity: ["error", 10],
     },
     languageOptions: {
       parserOptions: { parser: tseslint.parser },
+    },
+  },
+  {
+    // Typ-aware Regeln — brauchen TypeScript-Projektinformationen
+    files: ["**/*.{ts,tsx,vue}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: [".vue"],
+      },
+    },
+    rules: {
+      // Unnötige Optional-Chains / Conditions
+      "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
+
+      // Async-Fehler abfangen
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }],
+
+      // Nullish-Coalescing bevorzugen (kein || für null-Checks)
+      "@typescript-eslint/prefer-nullish-coalescing": ["error", { ignorePrimitives: { boolean: true } }],
+
+      // Switch muss exhaustiv sein
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
     },
   },
 ]);

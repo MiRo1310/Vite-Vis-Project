@@ -4,7 +4,7 @@ import { graphql } from "@/api/gql";
 import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { routes } from "@/router/routes.ts";
-import { RecipesQuery } from "@/api/gql/graphql.ts";
+import { type RecipesQuery } from "@/api/gql/graphql.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import RecipeCard from "@/components/section/recipe/RecipeCard.vue";
 
@@ -43,13 +43,14 @@ const navigate = async (recipe: TGroupedRecipesByCategory[number][number]) => {
 
 const groupedRecipesByCategory = computed((): TGroupedRecipesByCategory | undefined => {
   return result.value?.recipes.reduce((acc, cur) => {
-    const categoryName = cur?.recipeCategory?.name ?? "Keiner Kategorie zugeordnet";
+    const categoryName = cur.recipeCategory?.name ?? "Keiner Kategorie zugeordnet";
     if (categoryName in acc) {
       acc[categoryName].push(cur);
     } else {
       acc[categoryName] = [cur];
     }
     return acc;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   }, {} as TGroupedRecipesByCategory);
 });
 

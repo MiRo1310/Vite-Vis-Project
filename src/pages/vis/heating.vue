@@ -7,7 +7,6 @@ import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { routes } from "@/router/routes.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getStoreValBoolean, getStoreValNumber } from "@/lib/object.ts";
 import { computed } from "vue";
 
 const { iobroker } = useIobrokerStore();
@@ -30,55 +29,54 @@ const heating = computed(() => iobroker.heating);
 
       <!-- Tab: Daten -->
       <TabsContent value="daten" class="space-y-3">
-
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard title="Automatik" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.automatic)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.automatic) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.automatic.value" />
+            <span class="text-sm font-semibold">{{ heating.automatic.value ? "An" : "Aus" }}</span>
           </DataCard>
           <DataCard title="Heizung aktiv" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.active)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.active) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.active.value" />
+            <span class="text-sm font-semibold">{{ heating.active.value ? "An" : "Aus" }}</span>
           </DataCard>
           <DataCard title="Brennstoff" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.level)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.level) ? "Ok" : "Leer" }}</span>
+            <StatusDot :active="heating.level.value" />
+            <span class="text-sm font-semibold">{{ heating.level.value ? "Ok" : "Leer" }}</span>
           </DataCard>
           <DataCard title="Solar Auto" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.autoSolar)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.autoSolar) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.autoSolar.value" />
+            <span class="text-sm font-semibold">{{ heating.autoSolar.value ? "An" : "Aus" }}</span>
           </DataCard>
         </div>
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Temperaturen</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard title="Heizung">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.heatingTemperature).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.heatingTemperature.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Solar">
-            <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(heating?.heatingSolar).toFixed(1) }}</span>
+            <span class="text-sm font-semibold text-orange-300">{{ heating.heatingSolar.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Puffer oben">
-            <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(heating?.heatingBufferTop).toFixed(1) }}</span>
+            <span class="text-sm font-semibold text-orange-300">{{ heating.heatingBufferTop.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Puffer mitte">
-            <span class="text-sm font-semibold text-orange-300">{{ getStoreValNumber(heating?.heatingBufferMiddle).toFixed(1) }}</span>
+            <span class="text-sm font-semibold text-orange-300">{{ heating.heatingBufferMiddle.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Puffer unten">
-            <span class="text-sm font-semibold text-blue-300">{{ getStoreValNumber(heating?.heatingBuffer).toFixed(1) }}</span>
+            <span class="text-sm font-semibold text-blue-300">{{ heating.heatingBuffer.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Solar Max heute">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.solarMaxToday).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.solarMaxToday.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Solar Max">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.solarMax).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.solarMax.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
         </div>
@@ -86,75 +84,74 @@ const heating = computed(() => iobroker.heating);
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Motoren / Pumpen</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard title="Schnecke" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.snail)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.snail) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.snail.value" />
+            <span class="text-sm font-semibold">{{ heating.snail.value ? "An" : "Aus" }}</span>
           </DataCard>
           <DataCard title="Förderspirale" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.spiral)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.spiral) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.spiral.value" />
+            <span class="text-sm font-semibold">{{ heating.spiral.value ? "An" : "Aus" }}</span>
           </DataCard>
           <DataCard title="Pumpe Solar" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.solarPump)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.solarPump) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.solarPump.value" />
+            <span class="text-sm font-semibold">{{ heating.solarPump.value ? "An" : "Aus" }}</span>
           </DataCard>
           <DataCard title="Heizung Zusatz" content-class="flex items-center gap-1.5">
-            <StatusDot :active="getStoreValBoolean(heating?.heatingPump)" />
-            <span class="text-sm font-semibold">{{ getStoreValBoolean(heating?.heatingPump) ? "An" : "Aus" }}</span>
+            <StatusDot :active="heating.heatingPump.value" />
+            <span class="text-sm font-semibold">{{ heating.heatingPump.value ? "An" : "Aus" }}</span>
           </DataCard>
         </div>
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Warnungen</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard title="Brennstoff" content-class="flex items-center gap-1.5">
-            <StatusDot :active="!getStoreValBoolean(heating?.pelletExist)" />
-            <span class="text-sm font-semibold">{{ !getStoreValBoolean(heating?.pelletExist) ? "Ok" : "Fehler" }}</span>
+            <StatusDot :active="!heating.pelletExist.value" />
+            <span class="text-sm font-semibold">{{ !heating.pelletExist.value ? "Ok" : "Fehler" }}</span>
           </DataCard>
           <DataCard title="Zugeber" content-class="flex items-center gap-1.5">
-            <StatusDot :active="!getStoreValBoolean(heating?.watcherAdmitter)" />
-            <span class="text-sm font-semibold">{{ !getStoreValBoolean(heating?.watcherAdmitter) ? "Ok" : "Fehler" }}</span>
+            <StatusDot :active="!heating.watcherAdmitter.value" />
+            <span class="text-sm font-semibold">{{ !heating.watcherAdmitter.value ? "Ok" : "Fehler" }}</span>
           </DataCard>
           <DataCard title="Behälter" content-class="flex items-center gap-1.5">
-            <StatusDot :active="!getStoreValBoolean(heating?.tempPelletBuffer)" />
-            <span class="text-sm font-semibold">{{ !getStoreValBoolean(heating?.tempPelletBuffer) ? "Ok" : "Fehler" }}</span>
+            <StatusDot :active="!heating.tempPelletBuffer.value" />
+            <span class="text-sm font-semibold">{{ !heating.tempPelletBuffer.value ? "Ok" : "Fehler" }}</span>
           </DataCard>
           <DataCard title="Meldung quit." content-class="flex items-center gap-1.5">
-            <StatusDot :active="!getStoreValBoolean(heating?.confirmMessage)" />
-            <span class="text-sm font-semibold">{{ !getStoreValBoolean(heating?.confirmMessage) ? "Ok" : "Offen" }}</span>
+            <StatusDot :active="!heating.confirmMessage.value" />
+            <span class="text-sm font-semibold">{{ !heating.confirmMessage.value ? "Ok" : "Offen" }}</span>
           </DataCard>
         </div>
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard title="Max. Befüllzeit">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.maxTimeToFill) }}</span>
+            <span class="text-sm font-semibold">{{ heating.maxTimeToFill.value }}</span>
             <span class="text-xs text-muted-foreground ml-1">s</span>
           </DataCard>
           <DataCard title="Nachlauf Spirale">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.offsetFilling) }}</span>
+            <span class="text-sm font-semibold">{{ heating.offsetFilling.value }}</span>
             <span class="text-xs text-muted-foreground ml-1">s</span>
           </DataCard>
           <DataCard title="Pumpe an ab">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.tempPumpOn).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.tempPumpOn.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Pumpe aus ab">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.tempPumpOff).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.tempPumpOff.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Diff. Solar/Puffer">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.diffSolarBuffer).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.diffSolarBuffer.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Min. Solar temp.">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.minFillTemp).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.minFillTemp.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
           <DataCard title="Max. Puffer temp.">
-            <span class="text-sm font-semibold">{{ getStoreValNumber(heating?.maxFillTemp).toFixed(1) }}</span>
+            <span class="text-sm font-semibold">{{ heating.maxFillTemp.value.toFixed(1) }}</span>
             <span class="text-xs text-muted-foreground ml-1">°C</span>
           </DataCard>
         </div>
-
       </TabsContent>
 
       <!-- Tab: Diagramme -->

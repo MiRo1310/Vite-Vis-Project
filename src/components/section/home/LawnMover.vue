@@ -5,7 +5,6 @@ import { computed } from "vue";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import CardTitle from "../../shared/card/CardTitle.vue";
-import { getStoreValString } from "@/lib/object.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -92,40 +91,37 @@ const error = {
 };
 const infos = computed(() => {
   const landroid = iobroker.landroid;
-  if (!landroid) {
-    return [];
-  }
   return [
     {
       title: "Firmware",
-      value: getStoreValString(landroid.firmware),
+      value: landroid.firmware.value,
       unit: "",
     },
     {
-      title: `Akku ${landroid.batteryCharging?.val ? " läd" : " ist geladen"}`,
-      value: landroid.battery?.val,
+      title: `Akku ${landroid.batteryCharging.val ? " läd" : " ist geladen"}`,
+      value: landroid.battery.val,
       unit: "%",
     },
     {
       title: "Status",
-      value: status[landroid.status?.val as keyof typeof status],
+      value: status[landroid.status.val as keyof typeof status],
       unit: "",
     },
     {
       title: "Edgecut",
-      value: landroid.edgecut?.val,
+      value: landroid.edgecut.val,
       unit: "",
       type: "bool",
     },
     {
       title: "Error",
-      value: error[landroid.error?.val as keyof typeof error],
+      value: error[landroid.error.val as keyof typeof error],
       unit: "",
     },
-    { title: "Gefahren", value: landroid.totalDistance?.val, unit: "m" },
+    { title: "Gefahren", value: landroid.totalDistance.val, unit: "m" },
     {
       title: "Messer in Gebrauch",
-      value: landroid.totalBladeTime?.val,
+      value: landroid.totalBladeTime.val,
       unit: "min",
     },
   ];
@@ -139,7 +135,7 @@ const infos = computed(() => {
         <div class="flex justify-between">
           <div class="w-12">Rasenmäher</div>
           <div>
-            <OnlineOffline :status="iobroker.landroid?.online?.val" />
+            <OnlineOffline :status="iobroker.landroid.online.val" />
           </div>
         </div>
       </CardTitle>

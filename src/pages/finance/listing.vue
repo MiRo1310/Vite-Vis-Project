@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import { graphql } from "@/api/gql";
 import { useLazyQuery } from "@vue/apollo-composable";
 import AddListing from "@/components/section/finance/AddListing.vue";
@@ -11,7 +11,7 @@ import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
 import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
-import { TravelCostFilterInput, TravelCostQuery, TravelCostSortInput } from "@/api/gql/graphql.ts";
+import { type TravelCostFilterInput, type TravelCostQuery, type TravelCostSortInput } from "@/api/gql/graphql.ts";
 import { getTotalByPrice } from "@/pages/finance/utils.ts";
 
 const filter = computed((): TravelCostFilterInput => {
@@ -38,17 +38,17 @@ const query = graphql(`
 `);
 const { result, load, loading } = useLazyQuery(query);
 
-onMounted(() => {
-  load(query, { order: order, where: filter.value }, { fetchPolicy: "network-only" });
+onMounted(async () => {
+  await load(query, { order: order, where: filter.value }, { fetchPolicy: "network-only" });
 });
 
 const year = ref(new Date().getFullYear());
-const updateYear = (y: number) => {
+const updateYear = async (y: number) => {
   year.value = y;
-  load(query, { order, where: filter.value }, { fetchPolicy: "network-only" });
+  await load(query, { order, where: filter.value }, { fetchPolicy: "network-only" });
 };
 
-const columns: DatatableColumns<TravelCostQuery["travelCost"][number]>[] = [
+const columns: Array<DatatableColumns<TravelCostQuery["travelCost"][number]>> = [
   { source: "date", labelKey: "Datum", type: "date" },
   { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress },
   { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn },

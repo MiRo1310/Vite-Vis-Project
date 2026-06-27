@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="T extends string">
 import EnergyFlowCard from "@/components/shared/energy-flow/EnergyFlowCard.vue";
-import { IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
+import { type IEnergyFlow } from "@/components/shared/energy-flow/index.ts";
 import { Positions } from "@/components/shared/energy-flow/position.ts";
 import EnergyFlowLineWrapper from "@/components/shared/energy-flow/EnergyFlowLineWrapper.vue";
-import { computed, HTMLAttributes, ref } from "vue";
+import { computed, type HTMLAttributes, ref } from "vue";
 
-const props = defineProps<{ data: IEnergyFlow<T>[]; class?: HTMLAttributes["class"]; width: number; height: number }>();
+const props = defineProps<{ data: Array<IEnergyFlow<T>>; class?: HTMLAttributes["class"]; width: number; height: number }>();
 const animationRef = ref<null | SVGGElement>(null);
 const animationGroup = computed<SVGGElement | null>(() => animationRef.value as SVGGElement | null);
 const positions = new Positions<T>();

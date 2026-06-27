@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import PageSection from "@/components/shared/page-section/PageSection.vue";
 import { computed, onMounted, ref } from "vue";
 import Header from "@/components/section/header/Header.vue";
 import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
-import { GetProductsQuery } from "@/api/gql/graphql.ts";
+import { type GetProductsQuery } from "@/api/gql/graphql.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import ProductAddUpdate from "@/components/section/products/ProductAddUpdate.vue";
@@ -17,7 +17,7 @@ import { routes } from "@/router/routes.ts";
 import { useUnits } from "@/composables/querys/units.ts";
 
 useUnits();
-const productId = useRouteQuery("productId", null);
+const productId = useRouteQuery<string | null>("productId", null);
 
 const { refetch } = useProductCategories();
 
@@ -25,8 +25,8 @@ const recipeStore = useRecipeStore();
 
 const dialogOpen = ref(false);
 
-onMounted(() => {
-  refetch();
+onMounted(async () => {
+  await refetch();
   if (productId.value) {
     dialogOpen.value = true;
   }
@@ -73,7 +73,7 @@ const {
   { fetchPolicy: "network-only" },
 );
 
-const columns: DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>[] = [
+const columns: Array<DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>> = [
   { source: "name", labelKey: "Name", type: "component", component: ProductAddUpdate },
   { source: "ean", labelKey: "Ean" },
   { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
@@ -107,8 +107,8 @@ const toggleFilter = (key: string) => {
   selectedFilter.value = selectedFilter.value.filter((f) => f !== key);
 };
 
-const refetchHandler = (search: string) => {
-  refetchProductsGrouped({ where: { value: { some: { name: { contains: search } } } } });
+const refetchHandler = async (search: string) => {
+  await refetchProductsGrouped({ where: { value: { some: { name: { contains: search } } } } });
 };
 
 type TGroupedProducts = GetProductsQuery["productsGrouped"];
@@ -128,11 +128,11 @@ const groupedProducts = computed((): IProducts => {
       .reduce(
         (acc, curr) => {
           if (length.group1 <= length.group2) {
-            length.group1 += curr.value?.length ?? 0;
+            length.group1 += curr.value.length;
             acc.group1.push(curr);
             return acc;
           }
-          length.group2 += curr.value?.length ?? 0;
+          length.group2 += curr.value.length;
           acc.group2.push(curr);
           return acc;
         },
