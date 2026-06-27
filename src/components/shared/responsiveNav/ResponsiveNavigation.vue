@@ -36,7 +36,7 @@ defineProps<{ navigations: INavigation[] }>();
             <RouterLink
               v-else
               :to="{ name: nav.routeName, params: { ...nav.params } }"
-              :class="['w-full', route.name === nav.routeName ? 'underline text-yellow-500' : '']"
+              :class="['w-full', route.name === nav.routeName ? 'text-orange-600 dark:text-orange-400 font-medium' : '']"
             >
               <Button :disabled="nav.disabled" variant="ghost">
                 {{ nav.label }}
