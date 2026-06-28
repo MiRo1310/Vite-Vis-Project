@@ -14,8 +14,13 @@ export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
   private ioBrokerStore: IoBrokerStore | undefined;
+  private scriptLoaded = false;
 
   public loadScript(src: string) {
+    if (this.scriptLoaded) {
+      return;
+    }
+    this.scriptLoaded = true;
     const script = document.createElement("script");
     script.src = src;
     script.onload = () => this.init();

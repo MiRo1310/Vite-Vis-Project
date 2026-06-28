@@ -6,6 +6,7 @@ import { useNotificationStore } from "@/store/notification-store.ts";
 import { type TRoute } from "@/router/routes.ts";
 import { NotificationMessage } from "@/lib/notificationMessage.ts";
 import { type TNotificationType } from "@/types/notification.ts";
+import { Logger } from "@/lib/logger.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -134,12 +135,10 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 }
 
 export class NumberValue extends BaseValue<number> {
-  constructor(
-    id: string,
-    private unit?: string,
-    obj?: BaseValueOptions<number>,
-  ) {
+  private readonly unit?: string;
+  constructor(id: string, obj?: BaseValueOptions<number> & { unit?: string }) {
     super(id, obj);
+    this.unit = obj?.unit;
   }
 
   public get value(): number {
@@ -161,7 +160,7 @@ export class BooleanValue extends BaseValue<boolean> {
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
-    this.val = this.invert ? !val : (val as boolean);
+    this.val = val as boolean;
     this._ack = ack;
     this._ts = ts;
     this._lc = lc;
@@ -171,7 +170,7 @@ export class BooleanValue extends BaseValue<boolean> {
   };
 
   public get value(): boolean {
-    return this.val ?? false;
+    return (this.invert ? !this.val : this.val) ?? this.invert;
   }
 }
 
@@ -226,14 +225,13 @@ export class NotificationOnChange<T> implements IOnChange<T> {
   public update(val: T) {
     try {
       const store = useNotificationStore();
-      console.log("[NotificationOnChange] update", this.id, val, store);
       if (this.showMessageOn(val)) {
         store.addNotification(this.notificationMessage);
       } else if (this.removeMessageOn(val)) {
         store.removeNotification(this.id);
       }
     } catch (e) {
-      console.error("[NotificationOnChange] error for", this.id, e);
+      Logger(`[NotificationOnChange] error for: ${this.id},  ${e}`, { type: "error" });
     }
   }
 }
