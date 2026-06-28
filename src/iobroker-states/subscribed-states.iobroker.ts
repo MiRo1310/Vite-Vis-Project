@@ -1,4 +1,4 @@
-import { BooleanValue, JsonValue, NumberValue, OnChange, StringValue } from "@/store/valueClasses.ts";
+import { BooleanValue, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
 import {
   type AlexaList,
   type CalendarDayType,
@@ -12,7 +12,7 @@ import {
   type WattPilotJson,
 } from "@/types/types.ts";
 import { type NewsFeed } from "@/components/section/iobroker";
-import { NotificationMessage, useNotificationStore } from "@/store/notification-store.ts";
+import { routes } from "@/router/routes.ts";
 
 export const iobrokerTree = {
   logReset: {
@@ -368,18 +368,18 @@ export const iobrokerTree = {
     wohnzimmerMitte: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL"),
     gaesteWcRechts: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
     gaesteWcLinks: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    bueroFenster: () => {
-      const id = "zigbee.0.00158d0003cb431e.opened";
-      new BooleanValue(id, false, {
-        onChange: new OnChange<boolean>((val) => {
-          if (val) {
-            useNotificationStore().addNotification(new NotificationMessage(id, "Büro Fenster geöffnet", "info", 5, new Date(), true));
-          } else {
-            useNotificationStore().removeNotification(id);
-          }
-        }),
-      });
-    },
+    bueroFenster: new BooleanValue("zigbee.0.00158d0003cb431e.opened", false, {
+      notificationOnChange: {
+        message: "Büro Fenster geöffnet",
+        type: "info",
+        priority: 5,
+        statusBoolean: true,
+        showMessageOn: (val) => val,
+        removeMessageOn: (val) => !val,
+        route: routes.window,
+      },
+    }),
+
     schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
     schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
     kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open"),
@@ -482,32 +482,26 @@ export const iobrokerTree = {
     office_valvePosition: new NumberValue("hmip.0.devices.3014F711A000201A49A55C45.channels.1.valvePosition"),
   },
   heating: {
-    automatic: () => {
-      const id = "s7.0.DBs.DB1.I6_-_NQ5";
-      return new BooleanValue(id, false, {
-        onChange: new OnChange<boolean>((val) => {
-          if (val) {
-            useNotificationStore().removeNotification(id);
-          } else {
-            useNotificationStore().addNotification(new NotificationMessage(id, "Heizung Automatik ausgeschaltet", "error", 100, new Date()));
-          }
-        }),
-      });
-    },
+    automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5", false, {
+      notificationOnChange: {
+        message: "Heizung Automatik ausgeschaltet",
+        type: "warning",
+        priority: 100,
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+      },
+    }),
     level: new BooleanValue("s7.0.DBs.DB1.I5_-_NQ2"),
     active: new BooleanValue("s7.0.DBs.DB1.NQ13"),
-    autoSolar: () => {
-      const id = "s7.0.DBs.DB1.NQ15";
-      return new BooleanValue(id, false, {
-        onChange: new OnChange<boolean>((val) => {
-          if (val) {
-            useNotificationStore().removeNotification(id);
-          } else {
-            useNotificationStore().addNotification(new NotificationMessage(id, "Solar Automatik ausgeschaltet", "error", 99, new Date()));
-          }
-        }),
-      });
-    },
+    autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15", false, {
+      notificationOnChange: {
+        message: "Solar Automatik ausgeschaltet",
+        type: "warning",
+        priority: 99,
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+      },
+    }),
     heatingTemperature: new NumberValue("s7.0.DBs.DB1.B059"),
     heatingSolar: new NumberValue("s7.0.DBs.DB1.B054"),
     heatingBuffer: new NumberValue("s7.0.DBs.DB1.B068"),

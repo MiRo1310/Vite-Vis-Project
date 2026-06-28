@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { isDefined } from "@vueuse/core";
+import { type TNotificationType } from "@/store/valueClasses.ts";
+import { type TRoute } from "@/router/routes.ts";
 
 export interface NotificationStore {
   notifications: NotificationMessage[];
@@ -19,6 +21,9 @@ export const useNotificationStore = defineStore("notificationStore", {
       this.notifications.sort((a, b) => b.priority - a.priority);
     },
     addNotification(notification: NotificationMessage) {
+      if (this.notifications.some((n) => notification.id === n.id)) {
+        return;
+      }
       this.notifications.push(notification);
       this.sortByPriority();
     },
@@ -32,10 +37,11 @@ export class NotificationMessage {
   constructor(
     private _id: string,
     private _message: string,
-    private _type: "success" | "error" | "info" | "warning",
+    private _type: TNotificationType,
     private _priority: number,
     private _date: Date,
     private _statusBoolean?: boolean | undefined,
+    private _route?: TRoute,
   ) {}
 
   public get hasStatus(): boolean {
@@ -59,6 +65,9 @@ export class NotificationMessage {
   }
   public get id() {
     return this._id;
+  }
+  public get route(): TRoute | undefined {
+    return this._route;
   }
 
   public get getNotificationClass() {

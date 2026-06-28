@@ -3,7 +3,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { type RoomItems, type RoomType } from "@/types/types.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { notSubscribedIds } from "@/iobroker-states/action-states.iobroker";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";
 import RoomMinimal from "@/components/section/window/RoomMinimal.vue";
 import WindowCard from "@/components/section/window/WindowCard.vue";
@@ -12,7 +12,6 @@ import DataCard from "@/components/shared/card/DataCard.vue";
 import HeatingControlPeriod from "@/components/section/heating/HeatingControlPeriod.vue";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { roomNames } from "@/constants/constants.ts";
-import { NotificationMessage, useNotificationStore } from "@/store/notification-store.ts";
 
 const iobrokerStore = useIobrokerStore();
 const { iobroker } = iobrokerStore;

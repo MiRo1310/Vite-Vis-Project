@@ -2,6 +2,8 @@ import { ref, markRaw, type Ref } from "vue";
 import { toJSON } from "@michaelroling/ts-library";
 import { type IobrokerState } from "@/types/types.ts";
 import { ioBrokerService, type IoBrokerService } from "@/lib/io-broker-service.ts";
+import { NotificationMessage, useNotificationStore } from "@/store/notification-store.ts";
+import { type TRoute } from "@/router/routes.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -25,9 +27,20 @@ export interface IValueOf<T> {
   toggle(ack?: boolean): void;
 }
 
+export type TNotificationType = "success" | "error" | "info" | "warning";
+
 interface BaseValueOptions<T> {
   val?: T;
-  onChange?: OnChange<T>;
+  onChange?: IOnChange<T>;
+  notificationOnChange?: {
+    message: string;
+    type: TNotificationType;
+    priority: number;
+    statusBoolean?: boolean;
+    showMessageOn: (val: T) => boolean;
+    removeMessageOn: (val: T) => boolean;
+    route?: TRoute;
+  };
 }
 
 export abstract class BaseValue<T> implements IValueOf<T> {
@@ -39,7 +52,8 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   protected _from?: string;
   protected _q?: number;
   private ioBrokerService: IoBrokerService;
-  private onChange?: OnChange<T>;
+  private onChange?: IOnChange<T>;
+  private NotificationOnChange?: NotificationOnChange<T>;
 
   public get val(): T | undefined {
     return this._valRef.value;
@@ -55,10 +69,27 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this.id = id;
     this._ack = false;
     this.onChange = obj?.onChange;
+    if (obj?.notificationOnChange) {
+      const { message, showMessageOn, statusBoolean, removeMessageOn, priority, type, route } = obj.notificationOnChange;
+      this.NotificationOnChange = new NotificationOnChange<T>(
+        this.id,
+        new NotificationMessage(this.id, message, type, priority, new Date(), statusBoolean ?? false, route),
+        showMessageOn,
+        removeMessageOn,
+      );
+    }
 
     this.ioBrokerService = ioBrokerService;
 
     void this.ioBrokerService.subscribe({ id: this.id, cb: this.update });
+  }
+
+  protected triggerHandlers(): void {
+    if (this.val === undefined) {
+      return;
+    }
+    this.onChange?.update(this.val);
+    this.NotificationOnChange?.update(this.val);
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
@@ -68,7 +99,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this._lc = lc;
     this._from = from;
     this._q = q;
-    this.onChange?.update(this.val);
+    this.triggerHandlers();
   };
 
   public get ack() {
@@ -136,6 +167,7 @@ export class BooleanValue extends BaseValue<boolean> {
     this._lc = lc;
     this._from = from;
     this._q = q;
+    this.triggerHandlers();
   };
 
   public get value(): boolean {
@@ -172,10 +204,37 @@ export class JsonValue<T> extends BaseValue<string> {
   }
 }
 
-export class OnChange<T> {
+export interface IOnChange<T> {
+  update(val: T): void;
+}
+
+export class OnChange<T> implements IOnChange<T> {
   public constructor(private cb: (val: T) => void) {}
   public update(val: T) {
     this.cb(val);
+  }
+}
+
+export class NotificationOnChange<T> implements IOnChange<T> {
+  public constructor(
+    private id: string,
+    private notificationMessage: NotificationMessage,
+    private showMessageOn: (val: T) => boolean,
+    private removeMessageOn: (val: T) => boolean,
+  ) {}
+
+  public update(val: T) {
+    try {
+      const store = useNotificationStore();
+      console.log("[NotificationOnChange] update", this.id, val, store);
+      if (this.showMessageOn(val)) {
+        store.addNotification(this.notificationMessage);
+      } else if (this.removeMessageOn(val)) {
+        store.removeNotification(this.id);
+      }
+    } catch (e) {
+      console.error("[NotificationOnChange] error for", this.id, e);
+    }
   }
 }
 

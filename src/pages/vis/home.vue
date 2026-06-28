@@ -17,8 +17,6 @@ import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Notifications from "@/components/section/home/Notifications.vue";
 
 const appStore = useAppStore();
@@ -67,9 +65,9 @@ const navCardClass =
           <p class="text-sm font-semibold leading-tight">{{ time }}</p>
           <p class="text-xs text-muted-foreground leading-tight">{{ date }}</p>
         </DataCard>
-
-        <Notifications />
-
+        <RouterLink :to="routes.notifications.path" class="flex-1">
+          <Notifications />
+        </RouterLink>
         <StatusCard
           title="Fenster"
           :value="getOpenWindows ?? 0"
