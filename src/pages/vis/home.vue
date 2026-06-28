@@ -17,6 +17,9 @@ import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import StatusDot from "@/components/shared/display/StatusDot.vue";
+import Notifications from "@/components/section/home/Notifications.vue";
 
 const appStore = useAppStore();
 const { time, date } = useTime();
@@ -59,11 +62,13 @@ const navCardClass =
       </div>
 
       <!-- Datenkarten (unten auf mobile, links auf desktop) -->
-      <div class="flex gap-2 overflow-x-auto sm:order-first flex-1">
+      <div class="flex gap-2 overflow-x-auto flex-1 sm:order-first">
         <DataCard title="Zeit" class="shrink-0 min-w-30 flex-1">
           <p class="text-sm font-semibold leading-tight">{{ time }}</p>
           <p class="text-xs text-muted-foreground leading-tight">{{ date }}</p>
         </DataCard>
+
+        <Notifications />
 
         <StatusCard
           title="Fenster"

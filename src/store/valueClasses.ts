@@ -25,6 +25,11 @@ export interface IValueOf<T> {
   toggle(ack?: boolean): void;
 }
 
+interface BaseValueOptions<T> {
+  val?: T;
+  onChange?: OnChange<T>;
+}
+
 export abstract class BaseValue<T> implements IValueOf<T> {
   public readonly id: string;
   protected readonly _valRef: Ref<T | undefined>;
@@ -34,6 +39,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   protected _from?: string;
   protected _q?: number;
   private ioBrokerService: IoBrokerService;
+  private onChange?: OnChange<T>;
 
   public get val(): T | undefined {
     return this._valRef.value;
@@ -43,11 +49,12 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this._valRef.value = v;
   }
 
-  constructor(id: string, val?: T) {
+  constructor(id: string, obj?: BaseValueOptions<T>) {
     markRaw(this);
-    this._valRef = ref(val) as Ref<T | undefined>;
+    this._valRef = ref(obj?.val) as Ref<T | undefined>;
     this.id = id;
     this._ack = false;
+    this.onChange = obj?.onChange;
 
     this.ioBrokerService = ioBrokerService;
 
@@ -61,6 +68,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this._lc = lc;
     this._from = from;
     this._q = q;
+    this.onChange?.update(this.val);
   };
 
   public get ack() {
@@ -97,10 +105,10 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 export class NumberValue extends BaseValue<number> {
   constructor(
     id: string,
-    val?: number,
     private unit?: string,
+    obj?: BaseValueOptions<number>,
   ) {
-    super(id, val);
+    super(id, obj);
   }
 
   public get value(): number {
@@ -115,10 +123,10 @@ export class NumberValue extends BaseValue<number> {
 export class BooleanValue extends BaseValue<boolean> {
   constructor(
     id: string,
-    val?: boolean,
-    private invert = false,
+    private readonly invert: boolean = false,
+    obj?: BaseValueOptions<boolean>,
   ) {
-    super(id, val);
+    super(id, obj);
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
@@ -161,6 +169,13 @@ export class JsonValue<T> extends BaseValue<string> {
       this.#cache = { raw: this.val, parsed: this.val === undefined ? null : toJSON<T>(this.val).json };
     }
     return this.#cache.parsed ?? fallback;
+  }
+}
+
+export class OnChange<T> {
+  public constructor(private cb: (val: T) => void) {}
+  public update(val: T) {
+    this.cb(val);
   }
 }
 
