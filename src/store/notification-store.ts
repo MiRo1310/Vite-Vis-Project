@@ -15,6 +15,9 @@ export const useNotificationStore = defineStore("notificationStore", {
     getFirstNotification(state) {
       return state.notifications[0];
     },
+    getInfoNotificationsLength(state) {
+      return state.notifications.filter((n) => n.type === "info").length;
+    },
   },
   actions: {
     sortByPriority() {

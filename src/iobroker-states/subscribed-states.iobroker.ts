@@ -387,7 +387,17 @@ export const iobrokerTree = {
     badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
     gaestezimmerFenster: new BooleanValue("alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
     esszimmerLinks: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL"),
-    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL"),
+    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL", false, {
+      notificationOnChange: {
+        message: "Esszimmer Fenster rechts geöffnet",
+        type: "info",
+        priority: 5,
+        statusBoolean: true,
+        showMessageOn: (val) => val,
+        removeMessageOn: (val) => !val,
+        route: routes.window,
+      },
+    }),
     kuecheTuer: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
     kuecheFenster: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
     abstellraumFenster: new BooleanValue("alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
