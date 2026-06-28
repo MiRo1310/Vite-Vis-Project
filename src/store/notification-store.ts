@@ -1,28 +1,40 @@
 import { defineStore } from "pinia";
-import { isDefined } from "@vueuse/core";
-import { type TNotificationType } from "@/store/valueClasses.ts";
-import { type TRoute } from "@/router/routes.ts";
+import { type NotificationMessage } from "@/lib/notificationMessage.ts";
+import { type TNotificationType } from "@/types/notification.ts";
+import { type UnwrapRef } from "vue";
 
 export interface NotificationStore {
   notifications: NotificationMessage[];
+}
+function filterByType(notifications: Array<UnwrapRef<NotificationMessage>>, type: TNotificationType): Array<UnwrapRef<NotificationMessage>> {
+  return notifications.filter((n) => n.type === type);
 }
 
 export const useNotificationStore = defineStore("notificationStore", {
   state: (): NotificationStore => ({
     notifications: [],
   }),
+
   getters: {
     getFirstNotification(state) {
       return state.notifications[0];
     },
-    getInfoNotificationsLength(state) {
-      return state.notifications.filter((n) => n.type === "info").length;
+    getNotificationsFromHighestType(state) {
+      const error = filterByType(state.notifications, "error");
+      const warnings = filterByType(state.notifications, "warning");
+      const success = filterByType(state.notifications, "success");
+      const info = filterByType(state.notifications, "info");
+      return error.length ? error : warnings.length ? warnings : success.length ? success : info.length ? info : [];
+    },
+    getNotificationsByType() {
+      return (type: TNotificationType) => this.notifications.filter((n) => n.type === type);
     },
   },
   actions: {
     sortByPriority() {
       this.notifications.sort((a, b) => b.priority - a.priority);
     },
+
     addNotification(notification: NotificationMessage) {
       if (this.notifications.some((n) => notification.id === n.id)) {
         return;
@@ -35,54 +47,3 @@ export const useNotificationStore = defineStore("notificationStore", {
     },
   },
 });
-
-export class NotificationMessage {
-  constructor(
-    private _id: string,
-    private _message: string,
-    private _type: TNotificationType,
-    private _priority: number,
-    private _date: Date,
-    private _statusBoolean?: boolean | undefined,
-    private _route?: TRoute,
-  ) {}
-
-  public get hasStatus(): boolean {
-    return isDefined(this._statusBoolean);
-  }
-
-  public get message() {
-    return this._message;
-  }
-  public get priority() {
-    return this._priority;
-  }
-  public get type() {
-    return this._type;
-  }
-  public get status() {
-    return this._statusBoolean ?? false;
-  }
-  public get date() {
-    return this._date;
-  }
-  public get id() {
-    return this._id;
-  }
-  public get route(): TRoute | undefined {
-    return this._route;
-  }
-
-  public get getNotificationClass() {
-    switch (this._type) {
-      case "success":
-        return "success";
-      case "error":
-        return "border border-destructive animate-pulse";
-      case "info":
-        return "info";
-      case "warning":
-        return "border border-yellow-400 animate-pulse";
-    }
-  }
-}

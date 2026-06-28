@@ -381,7 +381,17 @@ export const iobrokerTree = {
     }),
 
     schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
+    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL", false, {
+      notificationOnChange: {
+        message: "Schlafzimmer Tür geöffnet",
+        type: "info",
+        priority: 5,
+        statusBoolean: true,
+        showMessageOn: (val) => val,
+        removeMessageOn: (val) => !val,
+        route: routes.window,
+      },
+    }),
     kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open"),
     kinderzimmerFenster: new BooleanValue("alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
     badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),

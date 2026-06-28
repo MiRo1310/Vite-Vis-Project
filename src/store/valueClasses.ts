@@ -2,8 +2,10 @@ import { ref, markRaw, type Ref } from "vue";
 import { toJSON } from "@michaelroling/ts-library";
 import { type IobrokerState } from "@/types/types.ts";
 import { ioBrokerService, type IoBrokerService } from "@/lib/io-broker-service.ts";
-import { NotificationMessage, useNotificationStore } from "@/store/notification-store.ts";
+import { useNotificationStore } from "@/store/notification-store.ts";
 import { type TRoute } from "@/router/routes.ts";
+import { NotificationMessage } from "@/lib/notificationMessage.ts";
+import { type TNotificationType } from "@/types/notification.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -26,8 +28,6 @@ export interface IValueOf<T> {
   setState(val: string | number | boolean | null, ack?: boolean): void;
   toggle(ack?: boolean): void;
 }
-
-export type TNotificationType = "success" | "error" | "info" | "warning";
 
 interface BaseValueOptions<T> {
   val?: T;

@@ -4,8 +4,8 @@ import { useNotificationStore } from "@/store/notification-store.ts";
 import { Card, CardContent } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { computed } from "vue";
-import { type TNotificationType } from "@/store/valueClasses.ts";
 import { useRouter } from "vue-router";
+import { type TNotificationType } from "@/types/notification.ts";
 
 const notificationStore = useNotificationStore();
 
