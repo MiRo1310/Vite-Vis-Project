@@ -160,9 +160,12 @@ export class NumberValue extends BaseValue<number> {
 
 export class BooleanValue extends BaseValue<boolean> {
   private readonly invert: boolean;
-  constructor(id: string, obj?: BaseValueOptions<boolean> & { invert?: boolean }) {
+  private readonly mapping?: { true: string; false: string };
+
+  constructor(id: string, obj?: BaseValueOptions<boolean> & { invert?: boolean; mapping?: { true: string; false: string } }) {
     super(id, obj);
     this.invert = obj?.invert ?? false;
+    this.mapping = obj?.mapping;
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
@@ -174,6 +177,18 @@ export class BooleanValue extends BaseValue<boolean> {
     this._q = q;
     this.triggerHandlers();
   };
+
+  public get mapped(): string {
+    if (!this.mapping) {
+      Logger("Please provide a mapping for the boolean value", { type: "warn" });
+      return this.value.toString();
+    }
+    return this.value ? this.mapping["true"] : this.mapping["false"];
+  }
+
+  public mapAs(trueLabel: string, falseLabel: string): string {
+    return this.value ? trueLabel : falseLabel;
+  }
 
   public get value(): boolean {
     return (this.invert ? !this.val : this.val) ?? this.invert;

@@ -4,7 +4,7 @@ import { isDefined } from "@vueuse/core";
 
 defineProps<{
   val: string | number;
-  unit: string;
+  unit?: string;
   decimalPlaces?: number;
   valueClass?: HTMLAttributes["class"];
 }>();

@@ -4,11 +4,11 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { DataCard } from "@/components/shared/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { routes } from "@/router/routes.ts";
 import { useRouter } from "vue-router";
 import { formatUptime, miBToGiB } from "@/lib/system";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
+import DotWithValue from "@/components/shared/display/DotWithValue.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -118,23 +118,19 @@ const version = import.meta.env.VITE_APP_VERSION;
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Heizung" content-class="flex items-center gap-1.5">
-          <StatusDot :active="heating.active.value" />
-          <span class="text-sm font-semibold">{{ heating.active.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="heating.active" />
         </DataCard>
         <DataCard title="Auto" content-class="flex items-center gap-1.5">
-          <StatusDot :active="heating.automatic.value" />
-          <span class="text-sm font-semibold">{{ heating.automatic.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="heating.automatic" />
         </DataCard>
         <DataCard title="Temperatur">
           <MetricValue v-bind="heating.heatingTemperature.valAndUnit" />
         </DataCard>
         <DataCard title="Solar Auto" content-class="flex items-center gap-1.5">
-          <StatusDot :active="heating.autoSolar.value" />
-          <span class="text-sm font-semibold">{{ heating.autoSolar.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="heating.autoSolar" />
         </DataCard>
         <DataCard title="Solar Pumpe" content-class="flex items-center gap-1.5">
-          <StatusDot :active="heating.solarPump.value" />
-          <span class="text-sm font-semibold">{{ heating.solarPump.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="heating.solarPump" />
         </DataCard>
         <DataCard title="Solar">
           <MetricValue v-bind="heating.heatingSolar.valAndUnit" />
@@ -161,15 +157,13 @@ const version = import.meta.env.VITE_APP_VERSION;
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Wärmepumpe" content-class="flex items-center gap-1.5">
-          <StatusDot :active="pool.heaterState.value" />
-          <span class="text-sm font-semibold">{{ pool.heaterState.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="pool.heaterState" />
         </DataCard>
         <DataCard title="Silent" content-class="flex items-center gap-1.5">
-          <StatusDot :active="pool.silent.value" />
-          <span class="text-sm font-semibold">{{ pool.silent.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="pool.silent" />
         </DataCard>
         <DataCard title="Modus">
-          <span class="text-sm font-semibold">{{ wpModus }}</span>
+          <MetricValue :val="wpModus" unit="" />
         </DataCard>
         <DataCard title="WP Bezug">
           <MetricValue v-bind="pool.consumption.valAndUnit" :decimal-places="0" />
@@ -184,8 +178,7 @@ const version = import.meta.env.VITE_APP_VERSION;
           <MetricValue v-bind="pool.tempSet.valAndUnit" :decimal-places="1" />
         </DataCard>
         <DataCard title="Poolpumpe" content-class="flex items-center gap-1.5">
-          <StatusDot :active="pool.poolPumpSwitch.value" />
-          <span class="text-sm font-semibold">{{ pool.poolPumpSwitch.value ? "An" : "Aus" }}</span>
+          <DotWithValue :value="pool.poolPumpSwitch" />
         </DataCard>
         <DataCard title="Pumpe Bezug">
           <MetricValue v-bind="pool.poolPumpPower.valAndUnit" :decimal-places="0" />
@@ -201,11 +194,11 @@ const version = import.meta.env.VITE_APP_VERSION;
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Version">
-          <span class="text-sm font-semibold">{{ version ?? "-" }}</span>
+          <MetricValue :val="version ?? '-'" />
         </DataCard>
 
         <DataCard title="Uptime">
-          <span class="text-sm font-semibold">{{ formatUptime(system.iobrokerUptime.value) }}</span>
+          <MetricValue :val="formatUptime(system.iobrokerUptime.value)" />
         </DataCard>
 
         <DataCard title="RAM" content-class="space-y-1">
