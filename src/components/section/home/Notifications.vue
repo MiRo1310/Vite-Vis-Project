@@ -32,7 +32,7 @@ onUnmounted(() => {
     <CardHeader class="px-3 pt-2 pb-0">
       <CardTitle class="text-xs text-muted-foreground flex items-center justify-between w-full">
         <span>Benachrichtigungen</span>
-        <div class="flex items-center gap-1.5">
+        <div v-if="store.getNotificationsFromHighestType.length" class="flex items-center gap-1.5">
           <span class="tabular-nums">{{ currentIndex + 1 }}/{{ store.getNotificationsFromHighestType.length }}</span>
         </div>
       </CardTitle>

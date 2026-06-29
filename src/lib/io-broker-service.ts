@@ -14,15 +14,20 @@ export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
   private ioBrokerStore: IoBrokerStore | undefined;
-  private scriptLoaded = false;
+  private readonly isScriptPresent: () => boolean;
+
+  constructor(isScriptPresent = () => !!document.querySelector(".ioBroker")) {
+    this.isScriptPresent = isScriptPresent;
+  }
 
   public loadScript(src: string) {
-    if (this.scriptLoaded) {
+    if (this.isScriptPresent()) {
       return;
     }
-    this.scriptLoaded = true;
+
     const script = document.createElement("script");
     script.src = src;
+    script.classList.add("ioBroker");
     script.onload = () => this.init();
     document.body.appendChild(script);
   }

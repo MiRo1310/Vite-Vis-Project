@@ -7,7 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { routes } from "@/router/routes.ts";
 import { useRouter } from "vue-router";
-import { miBToGiB, formatUptime } from "@/lib/system";
+import { formatUptime, miBToGiB } from "@/lib/system";
+import MetricValue from "@/components/shared/display/MetricValue.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -55,31 +56,27 @@ const version = import.meta.env.VITE_APP_VERSION;
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Grosse PV">
-          <span class="text-sm font-semibold">{{ pv.pvGross.value.toFixed(0) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">W</span>
+          <MetricValue v-bind="pv.pvGross.valAndUnit" :decimal-places="0" />
         </DataCard>
         <DataCard title="Kleine PV">
-          <span class="text-sm font-semibold">{{ pv.smallPv.value.toFixed(0) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">W</span>
+          <MetricValue v-bind="pv.smallPv.valAndUnit" :decimal-places="0" />
         </DataCard>
 
-        <DataCard :title="feedIn >= 0 ? 'Einspeisung' : 'Bezug'" content-class="flex items-center gap-1.5">
-          <span :class="['text-sm font-semibold', feedIn >= 0 ? 'text-green-400' : 'text-destructive']">
-            {{ Math.abs(feedIn).toFixed(0) }}
-          </span>
-          <span class="text-xs text-muted-foreground">W</span>
+        <DataCard :title="feedIn >= 0 ? 'Einspeisung' : 'Bezug'">
+          <MetricValue :val="Math.abs(feedIn)" unit="W" :decimal-places="0" :value-class="feedIn >= 0 ? 'text-green-400' : 'text-destructive'" />
         </DataCard>
 
-        <DataCard :title="charging > 0 ? 'Batterie laden' : 'Batterie entladen'" content-class="flex items-center gap-1.5">
-          <span :class="['text-sm font-semibold', charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : '']">
-            {{ Math.abs(charging).toFixed(0) }}
-          </span>
-          <span class="text-xs text-muted-foreground">W</span>
+        <DataCard :title="charging > 0 ? 'Batterie laden' : 'Batterie entladen'">
+          <MetricValue
+            :val="Math.abs(charging)"
+            unit="W"
+            :decimal-places="0"
+            :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
+          />
         </DataCard>
 
         <DataCard title="Ladezustand" content-class="flex items-center gap-1.5">
-          <span class="text-sm font-semibold">{{ pv.batteryCharging.value }}</span>
-          <span class="text-xs text-muted-foreground">%</span>
+          <MetricValue v-bind="pv.batteryCharging.valAndUnit" :decimal-places="0" />
         </DataCard>
       </div>
     </TabsContent>
@@ -94,26 +91,19 @@ const version = import.meta.env.VITE_APP_VERSION;
 
       <div class="grid grid-cols-2 gap-2">
         <DataCard title="Bezug heute">
-          <span class="text-sm font-semibold text-destructive">{{ energy.energyReceived.value.toFixed(2) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">kWh</span>
+          <MetricValue v-bind="energy.energyReceived.valAndUnit" :decimal-places="2" />
         </DataCard>
         <DataCard title="Einspeisung heute">
-          <span class="text-sm font-semibold text-green-400">{{ energy.energyReturned.value.toFixed(2) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">kWh</span>
+          <MetricValue v-bind="energy.energyReturned.valAndUnit" :decimal-places="2" value-class="text-green-400" />
         </DataCard>
         <DataCard title="Verkauft">
-          <span class="text-sm font-semibold text-green-400">{{ pv.profit.value.toFixed(2) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">€</span>
+          <MetricValue v-bind="pv.profit.valAndUnit" :decimal-places="2" value-class="text-green-400" />
         </DataCard>
         <DataCard title="Genutzt">
-          <span class="text-sm font-semibold">
-            {{ (pv.savedMoney.value - pv.profit.value).toFixed(2) }}
-          </span>
-          <span class="text-xs text-muted-foreground ml-1">€</span>
+          <MetricValue :val="pv.savedMoney.value - pv.profit.value" unit="€" :decimal-places="2" />
         </DataCard>
         <DataCard title="Ersparnis">
-          <span class="text-sm font-semibold text-green-400">{{ pv.savedMoney.value.toFixed(2) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">€</span>
+          <MetricValue v-bind="pv.savedMoney.valAndUnit" :decimal-places="2" value-class="text-green-400" />
         </DataCard>
       </div>
     </TabsContent>
@@ -136,8 +126,7 @@ const version = import.meta.env.VITE_APP_VERSION;
           <span class="text-sm font-semibold">{{ heating.automatic.value ? "An" : "Aus" }}</span>
         </DataCard>
         <DataCard title="Temperatur">
-          <span class="text-sm font-semibold">{{ heating.heatingTemperature.value }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="heating.heatingTemperature.valAndUnit" />
         </DataCard>
         <DataCard title="Solar Auto" content-class="flex items-center gap-1.5">
           <StatusDot :active="heating.autoSolar.value" />
@@ -148,20 +137,16 @@ const version = import.meta.env.VITE_APP_VERSION;
           <span class="text-sm font-semibold">{{ heating.solarPump.value ? "An" : "Aus" }}</span>
         </DataCard>
         <DataCard title="Solar">
-          <span class="text-sm font-semibold">{{ heating.heatingSolar.value }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="heating.heatingSolar.valAndUnit" />
         </DataCard>
         <DataCard title="Puffer Oben">
-          <span class="text-sm font-semibold text-orange-300">{{ heating.heatingBufferTop.value }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="heating.heatingBufferTop.valAndUnit" value-class="text-orange-300" />
         </DataCard>
         <DataCard title="Puffer Mitte">
-          <span class="text-sm font-semibold text-orange-300">{{ heating.heatingBufferMiddle.value }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="heating.heatingBufferMiddle.valAndUnit" value-class="text-orange-300" />
         </DataCard>
         <DataCard title="Puffer Unten">
-          <span class="text-sm font-semibold text-blue-300">{{ heating.heatingBuffer.value }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="heating.heatingBuffer.valAndUnit" value-class="text-blue-300" />
         </DataCard>
       </div>
     </TabsContent>
@@ -187,28 +172,23 @@ const version = import.meta.env.VITE_APP_VERSION;
           <span class="text-sm font-semibold">{{ wpModus }}</span>
         </DataCard>
         <DataCard title="WP Bezug">
-          <span class="text-sm font-semibold">{{ pool.consumption.value.toFixed(0) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">W</span>
+          <MetricValue v-bind="pool.consumption.valAndUnit" :decimal-places="0" />
         </DataCard>
         <DataCard title="Eingang">
-          <span class="text-sm font-semibold text-blue-300">{{ pool.tempIn.value.toFixed(1) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="pool.tempIn.valAndUnit" :decimal-places="1" value-class="text-blue-300" />
         </DataCard>
         <DataCard title="Ausgang">
-          <span class="text-sm font-semibold text-orange-300">{{ pool.tempOut.value.toFixed(1) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="pool.tempOut.valAndUnit" :decimal-places="1" value-class="text-orange-300" />
         </DataCard>
         <DataCard title="Soll">
-          <span class="text-sm font-semibold">{{ pool.tempSet.value.toFixed(1) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">°C</span>
+          <MetricValue v-bind="pool.tempSet.valAndUnit" :decimal-places="1" />
         </DataCard>
         <DataCard title="Poolpumpe" content-class="flex items-center gap-1.5">
           <StatusDot :active="pool.poolPumpSwitch.value" />
           <span class="text-sm font-semibold">{{ pool.poolPumpSwitch.value ? "An" : "Aus" }}</span>
         </DataCard>
         <DataCard title="Pumpe Bezug">
-          <span class="text-sm font-semibold">{{ pool.poolPumpPower.value.toFixed(0) }}</span>
-          <span class="text-xs text-muted-foreground ml-1">W</span>
+          <MetricValue v-bind="pool.poolPumpPower.valAndUnit" :decimal-places="0" />
         </DataCard>
       </div>
     </TabsContent>
@@ -229,27 +209,18 @@ const version = import.meta.env.VITE_APP_VERSION;
         </DataCard>
 
         <DataCard title="RAM" content-class="space-y-1">
-          <div class="flex items-baseline gap-1">
-            <span class="text-sm font-semibold">{{ system.ramIobrokerLevel.value.toFixed(0) }}</span>
-            <span class="text-xs text-muted-foreground">%</span>
-          </div>
+          <MetricValue v-bind="system.ramIobrokerLevel.valAndUnit" :decimal-places="0" />
           <p class="text-xs text-muted-foreground">{{ miBToGiB(system.ramIobrokerUsed.value) }} / {{ miBToGiB(system.ramIobrokerMax.value) }}</p>
           <Progress :model-value="system.ramIobrokerLevel.value" class="h-1.5" />
         </DataCard>
 
         <DataCard title="CPU" content-class="space-y-1">
-          <div class="flex items-baseline gap-1">
-            <span class="text-sm font-semibold">{{ system.cpuIobroker.value.toFixed(0) }}</span>
-            <span class="text-xs text-muted-foreground">%</span>
-          </div>
+          <MetricValue v-bind="system.cpuIobroker.valAndUnit" :decimal-places="0" />
           <Progress :model-value="system.cpuIobroker.value" class="h-1.5" />
         </DataCard>
 
         <DataCard title="Disk" content-class="space-y-1">
-          <div class="flex items-baseline gap-1">
-            <span class="text-sm font-semibold">{{ system.diskIobrokerUsage.value.toFixed(0) }}</span>
-            <span class="text-xs text-muted-foreground">%</span>
-          </div>
+          <MetricValue v-bind="system.diskIobrokerUsage.valAndUnit" :decimal-places="0" />
           <Progress :model-value="system.diskIobrokerUsage.value" class="h-1.5" />
         </DataCard>
       </div>

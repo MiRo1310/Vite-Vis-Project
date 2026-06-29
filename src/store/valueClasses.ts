@@ -152,6 +152,10 @@ export class NumberValue extends BaseValue<number> {
   public get valueWithUnit(): string {
     return this.val + " " + this.unit;
   }
+
+  public get valAndUnit() {
+    return { unit: this.unit ?? "", val: this.value };
+  }
 }
 
 export class BooleanValue extends BaseValue<boolean> {

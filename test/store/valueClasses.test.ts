@@ -22,7 +22,7 @@ describe("valueClasses", () => {
     expect(num.id).toBe("test.id");
     expect(num.ack).toBe(false);
 
-    const bool = new BooleanValue(id, true);
+    const bool = new BooleanValue(id, { invert: true });
     expect(bool.value).toBe(true);
 
     const str = new StringValue(id, { val: "hello" });
