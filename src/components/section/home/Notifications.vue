@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useNotificationStore } from "@/store/notification-store.ts";
 import { computed, onMounted, onUnmounted, ref } from "vue";
+
 const store = useNotificationStore();
 
 const currentIndex = ref(0);
@@ -15,7 +16,7 @@ let interval: null | number = null;
 onMounted(() => {
   interval = setInterval(() => {
     currentIndex.value = (currentIndex.value + 1) % store.getNotificationsFromHighestType.length;
-  }, 10000);
+  }, 5000);
 });
 
 onUnmounted(() => {
@@ -29,7 +30,12 @@ onUnmounted(() => {
 <template>
   <Card :class="['py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden', notification?.getNotificationClass]">
     <CardHeader class="px-3 pt-2 pb-0">
-      <CardTitle class="text-xs text-muted-foreground">Benachrichtigungen</CardTitle>
+      <CardTitle class="text-xs text-muted-foreground flex items-center justify-between w-full">
+        <span>Benachrichtigungen</span>
+        <div class="flex items-center gap-1.5">
+          <span class="tabular-nums">{{ currentIndex + 1 }}/{{ store.getNotificationsFromHighestType.length }}</span>
+        </div>
+      </CardTitle>
     </CardHeader>
     <div class="relative overflow-hidden">
       <Transition name="slide">

@@ -1,4 +1,4 @@
-import { BooleanValue, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
+import { BooleanValue, type INotificationOnChange, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
 import {
   type AlexaList,
   type CalendarDayType,
@@ -14,7 +14,24 @@ import {
 import { type NewsFeed } from "@/components/section/iobroker";
 import { routes } from "@/router/routes.ts";
 
+const notificationWindow: Omit<INotificationOnChange<boolean>, "message"> = {
+  priority: 5,
+  statusBoolean: true,
+  route: routes.window,
+};
+
 export const iobrokerTree = {
+  alexa2: {
+    connection: new BooleanValue("alexa2.0.info.connection", {
+      notificationOnChange: {
+        message: "Alexa2 Adapter Fehler",
+        type: "error",
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+        priority: 100,
+      },
+    }),
+  },
   logReset: {
     error: new BooleanValue("logparser.0.filters.Error.emptyJson"),
     info: new BooleanValue("logparser.0.filters.Info.emptyJson"),
@@ -361,43 +378,97 @@ export const iobrokerTree = {
     jsonTable: new JsonValue<TankerkoenigStation[]>("tankerkoenig.0.stations.jsonTable"),
   },
   fenster: {
-    haustuer: new BooleanValue("zigbee.0.00158d00049fd9ee.opened"),
-    wohnzimmerEcke: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL"),
-    wohnzimmerLinks: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    wohnzimmerRechts: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    wohnzimmerMitte: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL"),
-    gaesteWcRechts: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    gaesteWcLinks: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    bueroFenster: new BooleanValue("zigbee.0.00158d0003cb431e.opened", false, {
+    haustuer: new BooleanValue("zigbee.0.00158d00049fd9ee.opened", {
+      notificationOnChange: {
+        message: "Haustür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerEcke: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster Ecke geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerLinks: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerRechts: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerMitte: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster mitte geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaesteWcRechts: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gäste WC rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaesteWcLinks: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gäste WC links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    bueroFenster: new BooleanValue("zigbee.0.00158d0003cb431e.opened", {
       notificationOnChange: {
         message: "Büro Fenster geöffnet",
-        type: "info",
-        priority: 5,
-        statusBoolean: true,
-        showMessageOn: (val) => val,
-        removeMessageOn: (val) => !val,
-        route: routes.window,
+        ...notificationWindow,
       },
     }),
-
-    schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL", false, {
+    schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Schlafzimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL", {
       notificationOnChange: {
         message: "Schlafzimmer Tür geöffnet",
-        type: "info",
-        priority: 5,
-        statusBoolean: true,
-        showMessageOn: (val) => val,
-        removeMessageOn: (val) => !val,
-        route: routes.window,
+        ...notificationWindow,
       },
     }),
-    kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open"),
-    kinderzimmerFenster: new BooleanValue("alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    gaestezimmerFenster: new BooleanValue("alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    esszimmerLinks: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL"),
-    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL", false, {
+    kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open", {
+      notificationOnChange: {
+        message: "Keller Tür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kinderzimmerFenster: new BooleanValue("alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Kinderzimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Bad Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaestezimmerFenster: new BooleanValue("alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gästezimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    esszimmerLinks: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Esszimmer Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL", {
       notificationOnChange: {
         message: "Esszimmer Fenster rechts geöffnet",
         type: "info",
@@ -408,16 +479,66 @@ export const iobrokerTree = {
         route: routes.window,
       },
     }),
-    kuecheTuer: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
-    kuecheFenster: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    abstellraumFenster: new BooleanValue("alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    abstellraumOgLinks: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    abstellraumOgRechts: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    dachbodenLinks: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    dachbodenRechts: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    flurLinks: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    flurRechts: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    kellerFlurFenster: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster"),
+    kuecheTuer: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL", {
+      notificationOnChange: {
+        message: "Küche Tür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kuecheFenster: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Küche Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumFenster: new BooleanValue("alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumOgLinks: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum OG Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumOgRechts: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum OG Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    dachbodenLinks: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Dachboden links Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    dachbodenRechts: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Dachboden rechts Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    flurLinks: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Flur Links Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    flurRechts: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Flur Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kellerFlurFenster: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster", {
+      notificationOnChange: {
+        message: "Keller Fenster Treppe geöffnet",
+        ...notificationWindow,
+      },
+    }),
   },
   styles: {
     calendarStyle: new JsonValue<JSONStyle[]>("0_userdata.0.vis.calendar_styles"),
@@ -502,7 +623,7 @@ export const iobrokerTree = {
     office_valvePosition: new NumberValue("hmip.0.devices.3014F711A000201A49A55C45.channels.1.valvePosition"),
   },
   heating: {
-    automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5", false, {
+    automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5", {
       notificationOnChange: {
         message: "Heizung Automatik ausgeschaltet",
         type: "warning",
@@ -513,7 +634,7 @@ export const iobrokerTree = {
     }),
     level: new BooleanValue("s7.0.DBs.DB1.I5_-_NQ2"),
     active: new BooleanValue("s7.0.DBs.DB1.NQ13"),
-    autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15", false, {
+    autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15", {
       notificationOnChange: {
         message: "Solar Automatik ausgeschaltet",
         type: "warning",

@@ -33,15 +33,17 @@ export interface IValueOf<T> {
 interface BaseValueOptions<T> {
   val?: T;
   onChange?: IOnChange<T>;
-  notificationOnChange?: {
-    message: string;
-    type: TNotificationType;
-    priority: number;
-    statusBoolean?: boolean;
-    showMessageOn: (val: T) => boolean;
-    removeMessageOn: (val: T) => boolean;
-    route?: TRoute;
-  };
+  notificationOnChange?: INotificationOnChange<T>;
+}
+
+export interface INotificationOnChange<T> {
+  message: string;
+  type?: TNotificationType;
+  priority: number;
+  statusBoolean?: boolean;
+  showMessageOn?: (val: T) => boolean;
+  removeMessageOn?: (val: T) => boolean;
+  route?: TRoute;
 }
 
 export abstract class BaseValue<T> implements IValueOf<T> {
@@ -55,6 +57,8 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   private ioBrokerService: IoBrokerService;
   private onChange?: IOnChange<T>;
   private NotificationOnChange?: NotificationOnChange<T>;
+  private defaultShowMessageOn: (val: T) => boolean = (val: T) => !!val;
+  private defaultRemoveMessageOn: (val: T) => boolean = (val: T) => !val;
 
   public get val(): T | undefined {
     return this._valRef.value;
@@ -74,9 +78,9 @@ export abstract class BaseValue<T> implements IValueOf<T> {
       const { message, showMessageOn, statusBoolean, removeMessageOn, priority, type, route } = obj.notificationOnChange;
       this.NotificationOnChange = new NotificationOnChange<T>(
         this.id,
-        new NotificationMessage(this.id, message, type, priority, new Date(), statusBoolean ?? false, route),
-        showMessageOn,
-        removeMessageOn,
+        new NotificationMessage(this.id, message, type ?? "info", priority, new Date(), statusBoolean ?? false, route),
+        showMessageOn ?? this.defaultShowMessageOn,
+        removeMessageOn ?? this.defaultRemoveMessageOn,
       );
     }
 
@@ -151,12 +155,10 @@ export class NumberValue extends BaseValue<number> {
 }
 
 export class BooleanValue extends BaseValue<boolean> {
-  constructor(
-    id: string,
-    private readonly invert: boolean = false,
-    obj?: BaseValueOptions<boolean>,
-  ) {
+  private readonly invert: boolean;
+  constructor(id: string, obj?: BaseValueOptions<boolean> & { invert?: boolean }) {
     super(id, obj);
+    this.invert = obj?.invert ?? false;
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
