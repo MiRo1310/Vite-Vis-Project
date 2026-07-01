@@ -2,6 +2,11 @@ import { ref, markRaw, type Ref } from "vue";
 import { toJSON } from "@michaelroling/ts-library";
 import { type IobrokerState } from "@/types/types.ts";
 import { ioBrokerService, type IoBrokerService } from "@/lib/io-broker-service.ts";
+import { useNotificationStore } from "@/store/notification-store.ts";
+import { type TRoute } from "@/router/routes.ts";
+import { NotificationMessage } from "@/lib/notificationMessage.ts";
+import { type TNotificationType } from "@/types/notification.ts";
+import { Logger } from "@/lib/logger.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -25,6 +30,22 @@ export interface IValueOf<T> {
   toggle(ack?: boolean): void;
 }
 
+interface BaseValueOptions<T> {
+  val?: T;
+  onChange?: IOnChange<T>;
+  notificationOnChange?: INotificationOnChange<T>;
+}
+
+export interface INotificationOnChange<T> {
+  message: string;
+  type?: TNotificationType;
+  priority: number;
+  statusBoolean?: boolean;
+  showMessageOn?: (val: T) => boolean;
+  removeMessageOn?: (val: T) => boolean;
+  route?: TRoute;
+}
+
 export abstract class BaseValue<T> implements IValueOf<T> {
   public readonly id: string;
   protected readonly _valRef: Ref<T | undefined>;
@@ -34,6 +55,10 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   protected _from?: string;
   protected _q?: number;
   private ioBrokerService: IoBrokerService;
+  private onChange?: IOnChange<T>;
+  private NotificationOnChange?: NotificationOnChange<T>;
+  private defaultShowMessageOn: (val: T) => boolean = (val: T) => !!val;
+  private defaultRemoveMessageOn: (val: T) => boolean = (val: T) => !val;
 
   public get val(): T | undefined {
     return this._valRef.value;
@@ -43,15 +68,33 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this._valRef.value = v;
   }
 
-  constructor(id: string, val?: T) {
+  constructor(id: string, obj?: BaseValueOptions<T>) {
     markRaw(this);
-    this._valRef = ref(val) as Ref<T | undefined>;
+    this._valRef = ref(obj?.val) as Ref<T | undefined>;
     this.id = id;
     this._ack = false;
+    this.onChange = obj?.onChange;
+    if (obj?.notificationOnChange) {
+      const { message, showMessageOn, statusBoolean, removeMessageOn, priority, type, route } = obj.notificationOnChange;
+      this.NotificationOnChange = new NotificationOnChange<T>(
+        this.id,
+        new NotificationMessage(this.id, message, type ?? "info", priority, new Date(), statusBoolean ?? false, route),
+        showMessageOn ?? this.defaultShowMessageOn,
+        removeMessageOn ?? this.defaultRemoveMessageOn,
+      );
+    }
 
     this.ioBrokerService = ioBrokerService;
 
     void this.ioBrokerService.subscribe({ id: this.id, cb: this.update });
+  }
+
+  protected triggerHandlers(): void {
+    if (this.val === undefined) {
+      return;
+    }
+    this.onChange?.update(this.val);
+    this.NotificationOnChange?.update(this.val);
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
@@ -61,6 +104,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this._lc = lc;
     this._from = from;
     this._q = q;
+    this.triggerHandlers();
   };
 
   public get ack() {
@@ -95,12 +139,10 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 }
 
 export class NumberValue extends BaseValue<number> {
-  constructor(
-    id: string,
-    val?: number,
-    private unit?: string,
-  ) {
-    super(id, val);
+  private readonly unit?: string;
+  constructor(id: string, obj?: BaseValueOptions<number> & { unit?: string }) {
+    super(id, obj);
+    this.unit = obj?.unit;
   }
 
   public get value(): number {
@@ -110,28 +152,46 @@ export class NumberValue extends BaseValue<number> {
   public get valueWithUnit(): string {
     return this.val + " " + this.unit;
   }
+
+  public get valAndUnit() {
+    return { unit: this.unit ?? "", val: this.value };
+  }
 }
 
 export class BooleanValue extends BaseValue<boolean> {
-  constructor(
-    id: string,
-    val?: boolean,
-    private invert = false,
-  ) {
-    super(id, val);
+  private readonly invert: boolean;
+  private readonly mapping?: { true: string; false: string };
+
+  constructor(id: string, obj?: BaseValueOptions<boolean> & { invert?: boolean; mapping?: { true: string; false: string } }) {
+    super(id, obj);
+    this.invert = obj?.invert ?? false;
+    this.mapping = obj?.mapping;
   }
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
-    this.val = this.invert ? !val : (val as boolean);
+    this.val = val as boolean;
     this._ack = ack;
     this._ts = ts;
     this._lc = lc;
     this._from = from;
     this._q = q;
+    this.triggerHandlers();
   };
 
+  public get mapped(): string {
+    if (!this.mapping) {
+      Logger("Please provide a mapping for the boolean value", { type: "warn" });
+      return this.value.toString();
+    }
+    return this.value ? this.mapping["true"] : this.mapping["false"];
+  }
+
+  public mapAs(trueLabel: string, falseLabel: string): string {
+    return this.value ? trueLabel : falseLabel;
+  }
+
   public get value(): boolean {
-    return this.val ?? false;
+    return (this.invert ? !this.val : this.val) ?? this.invert;
   }
 }
 
@@ -161,6 +221,39 @@ export class JsonValue<T> extends BaseValue<string> {
       this.#cache = { raw: this.val, parsed: this.val === undefined ? null : toJSON<T>(this.val).json };
     }
     return this.#cache.parsed ?? fallback;
+  }
+}
+
+export interface IOnChange<T> {
+  update(val: T): void;
+}
+
+export class OnChange<T> implements IOnChange<T> {
+  public constructor(private cb: (val: T) => void) {}
+  public update(val: T) {
+    this.cb(val);
+  }
+}
+
+export class NotificationOnChange<T> implements IOnChange<T> {
+  public constructor(
+    private id: string,
+    private notificationMessage: NotificationMessage,
+    private showMessageOn: (val: T) => boolean,
+    private removeMessageOn: (val: T) => boolean,
+  ) {}
+
+  public update(val: T) {
+    try {
+      const store = useNotificationStore();
+      if (this.showMessageOn(val)) {
+        store.addNotification(this.notificationMessage);
+      } else if (this.removeMessageOn(val)) {
+        store.removeNotification(this.id);
+      }
+    } catch (e) {
+      Logger(`[NotificationOnChange] error for: ${this.id},  ${e}`, { type: "error" });
+    }
   }
 }
 

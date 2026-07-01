@@ -1,4 +1,4 @@
-import { BooleanValue, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
+import { BooleanValue, type INotificationOnChange, JsonValue, NumberValue, StringValue } from "@/store/valueClasses.ts";
 import {
   type AlexaList,
   type CalendarDayType,
@@ -12,8 +12,26 @@ import {
   type WattPilotJson,
 } from "@/types/types.ts";
 import { type NewsFeed } from "@/components/section/iobroker";
+import { routes } from "@/router/routes.ts";
+
+const notificationWindow: Omit<INotificationOnChange<boolean>, "message"> = {
+  priority: 5,
+  statusBoolean: true,
+  route: routes.window,
+};
 
 export const iobrokerTree = {
+  alexa2: {
+    connection: new BooleanValue("alexa2.0.info.connection", {
+      notificationOnChange: {
+        message: "Alexa2 Adapter Fehler",
+        type: "error",
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+        priority: 100,
+      },
+    }),
+  },
   logReset: {
     error: new BooleanValue("logparser.0.filters.Error.emptyJson"),
     info: new BooleanValue("logparser.0.filters.Info.emptyJson"),
@@ -24,28 +42,28 @@ export const iobrokerTree = {
   },
   alexaAction: { alexaSpeak: new StringValue("0_userdata.0.Alexa.Ausgaben_auf_Geräten") },
   pv: {
-    feedIn: new NumberValue("modbus.0.holdingRegisters.41079_grid_Power", 0),
-    batteryCharging: new NumberValue("modbus.0.holdingRegisters.41069_soc"),
-    activeCharging: new NumberValue("modbus.0.holdingRegisters.41067_Active_Power"),
+    feedIn: new NumberValue("modbus.0.holdingRegisters.41079_grid_Power", { unit: "W" }),
+    batteryCharging: new NumberValue("modbus.0.holdingRegisters.41069_soc", { unit: "%" }),
+    activeCharging: new NumberValue("modbus.0.holdingRegisters.41067_Active_Power", { unit: "W" }),
     shellyFeedOut: new NumberValue("shelly.0.shellypro3em#ec6260976f14#1.EM0.TotalActivePower"),
-    smallPv: new NumberValue("sonoff.0.Photovoltaik.ENERGY_Power"),
-    profit: new NumberValue("0_userdata.0.Photovoltaik.Einnahme_Einspeisung"),
-    pvGross: new NumberValue("fronius.0.inverter.1.P"),
-    savedMoney: new NumberValue("0_userdata.0.Photovoltaik.Einsparung_durch_PV"),
+    smallPv: new NumberValue("sonoff.0.Photovoltaik.ENERGY_Power", { unit: "W" }),
+    profit: new NumberValue("0_userdata.0.Photovoltaik.Einnahme_Einspeisung", { unit: "€" }),
+    pvGross: new NumberValue("fronius.0.inverter.1.P", { unit: "W" }),
+    savedMoney: new NumberValue("0_userdata.0.Photovoltaik.Einsparung_durch_PV", { unit: "€" }),
     energyDaySmall: new NumberValue("sonoff.0.Photovoltaik.ENERGY_Today"),
     energyDayGross: new NumberValue("fronius.0.inverter.1.DAY_ENERGY"),
   },
   system: {
     ramIobrokerUsed: new NumberValue("proxmox.0.lxc.iobroker.mem"),
-    ramIobrokerLevel: new NumberValue("proxmox.0.lxc.iobroker.mem_lev"),
+    ramIobrokerLevel: new NumberValue("proxmox.0.lxc.iobroker.mem_lev", { unit: "%" }),
     ramIobrokerMax: new NumberValue("proxmox.0.lxc.iobroker.maxmem"),
-    cpuIobroker: new NumberValue("proxmox.0.lxc.iobroker.cpu"),
+    cpuIobroker: new NumberValue("proxmox.0.lxc.iobroker.cpu", { unit: "%" }),
     cpusIobroker: new NumberValue("proxmox.0.lxc.iobroker.cpus"),
-    diskIobrokerUsage: new NumberValue("proxmox.0.lxc.iobroker.disk_lev"),
+    diskIobrokerUsage: new NumberValue("proxmox.0.lxc.iobroker.disk_lev", { unit: "%" }),
     iobrokerUptime: new NumberValue("proxmox.0.lxc.iobroker.uptime"),
   },
   wattPilot: {
-    jsonScriptChargeLevel: new JsonValue<WattPilotJson>("0_userdata.0.Wattpilot.WattpilotScriptJson", ""),
+    jsonScriptChargeLevel: new JsonValue<WattPilotJson>("0_userdata.0.Wattpilot.WattpilotScriptJson"),
     autoCharging: new BooleanValue("0_userdata.0.Wattpilot.autoCharging"),
     totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal"),
   },
@@ -60,51 +78,51 @@ export const iobrokerTree = {
     },
     "HMIP Buero": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C45.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C45.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C45.channels.0.unreach"),
     },
     "HMIP Keller Waschen": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C1D.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C1D.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C1D.channels.0.unreach"),
     },
     "HMIP Flur": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A499E347E.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E347E.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E347E.channels.0.unreach"),
     },
     "HMIP Gaeste WC": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach"),
     },
     "HMIP Kueche": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A499E49C4.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E49C4.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E49C4.channels.0.unreach"),
     },
     "HMIP Esszimmer": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AF0.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AF0.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AF0.channels.0.unreach"),
     },
     "HMIP Wohnzimmer links": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A499E3491.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E3491.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A499E3491.channels.0.unreach"),
     },
     "HMIP Wohnzimmer rechts": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C21.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C21.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C21.channels.0.unreach"),
     },
     "HMIP Bad": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55A77.channels.0.unreach"),
     },
     "HMIP Schlafzimmer": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AEF.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AEF.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55AEF.channels.0.unreach"),
     },
     "HMIP Kinderzimmer": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55E2C.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55E2C.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55E2C.channels.0.unreach"),
     },
     "HMIP Gaestezimmer": {
       lowBat: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C2A.channels.0.lowBat"),
-      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C2A.channels.0.unreach", undefined, true),
+      available: new BooleanValue("hmip.0.devices.3014F711A000201A49A55C2A.channels.0.unreach"),
     },
     xioami_cellar_door: {
       percent: new NumberValue("zigbee.0.00158d00045efc35.battery"),
@@ -360,32 +378,167 @@ export const iobrokerTree = {
     jsonTable: new JsonValue<TankerkoenigStation[]>("tankerkoenig.0.stations.jsonTable"),
   },
   fenster: {
-    haustuer: new BooleanValue("zigbee.0.00158d00049fd9ee.opened"),
-    wohnzimmerEcke: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL"),
-    wohnzimmerLinks: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    wohnzimmerRechts: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    wohnzimmerMitte: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL"),
-    gaesteWcRechts: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    gaesteWcLinks: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    bueroFenster: new BooleanValue("zigbee.0.00158d0003cb431e.opened"),
-    schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
-    kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open"),
-    kinderzimmerFenster: new BooleanValue("alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    gaestezimmerFenster: new BooleanValue("alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    esszimmerLinks: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL"),
-    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL"),
-    kuecheTuer: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL"),
-    kuecheFenster: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    abstellraumFenster: new BooleanValue("alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL"),
-    abstellraumOgLinks: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    abstellraumOgRechts: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    dachbodenLinks: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    dachbodenRechts: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    flurLinks: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL"),
-    flurRechts: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL"),
-    kellerFlurFenster: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster"),
+    haustuer: new BooleanValue("zigbee.0.00158d00049fd9ee.opened", {
+      notificationOnChange: {
+        message: "Haustür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerEcke: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster klein open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster Ecke geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerLinks: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerRechts: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    wohnzimmerMitte: new BooleanValue("alias.0.Wohnzimmer.Xiaomi AqaraSensoren.Fenster mitte open.ACTUAL", {
+      notificationOnChange: {
+        message: "Wohnzimmer Fenster mitte geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaesteWcRechts: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gäste WC rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaesteWcLinks: new BooleanValue("alias.0.Gäste WC.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gäste WC links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    bueroFenster: new BooleanValue("zigbee.0.00158d0003cb431e.opened", {
+      notificationOnChange: {
+        message: "Büro Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    schlafenFenster: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Schlafzimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    schlafenTuer: new BooleanValue("alias.0.Schlafzimmer.Xiaomi AqaraSensoren.Tür open.ACTUAL", {
+      notificationOnChange: {
+        message: "Schlafzimmer Tür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kellerTuer: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Tür open.Kellertür open", {
+      notificationOnChange: {
+        message: "Keller Tür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kinderzimmerFenster: new BooleanValue("alias.0.Kinderzimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Kinderzimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    badFenster: new BooleanValue("alias.0.Bad.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Bad Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    gaestezimmerFenster: new BooleanValue("alias.0.Gästezimmer.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Gästezimmer Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    esszimmerLinks: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Esszimmer Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    esszimmerRechts: new BooleanValue("alias.0.Esszimmer.Xiaomi AqaraSensoren.Rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Esszimmer Fenster rechts geöffnet",
+        type: "info",
+        priority: 5,
+        statusBoolean: true,
+        showMessageOn: (val) => val,
+        removeMessageOn: (val) => !val,
+        route: routes.window,
+      },
+    }),
+    kuecheTuer: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Tür open.ACTUAL", {
+      notificationOnChange: {
+        message: "Küche Tür geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kuecheFenster: new BooleanValue("alias.0.Küche.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Küche Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumFenster: new BooleanValue("alias.0.Abstellraum.Xiaomi AqaraSensoren.Fenster open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumOgLinks: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum OG Fenster links geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    abstellraumOgRechts: new BooleanValue("alias.0.Abstellraum OG.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Abstellraum OG Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    dachbodenLinks: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Dachboden links Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    dachbodenRechts: new BooleanValue("alias.0.Dachboden.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Dachboden rechts Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    flurLinks: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster links open.ACTUAL", {
+      notificationOnChange: {
+        message: "Flur Links Fenster geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    flurRechts: new BooleanValue("alias.0.Flur.Xiaomi AqaraSensoren.Fenster rechts open.ACTUAL", {
+      notificationOnChange: {
+        message: "Flur Fenster rechts geöffnet",
+        ...notificationWindow,
+      },
+    }),
+    kellerFlurFenster: new BooleanValue("alias.0.Keller.Xiaomi AqaraSensoren.Keller Treppe.Fenster.KellerTreppe Fenster", {
+      notificationOnChange: {
+        message: "Keller Fenster Treppe geöffnet",
+        ...notificationWindow,
+      },
+    }),
   },
   styles: {
     calendarStyle: new JsonValue<JSONStyle[]>("0_userdata.0.vis.calendar_styles"),
@@ -394,18 +547,18 @@ export const iobrokerTree = {
     michaelCoordinates: new StringValue("life360ng.0.people.afa1605e-1339-4bbc-921e-37b7774a75ce.gps-coordinates"),
   },
   pool: {
-    heaterState: new BooleanValue("midas-aquatemp.0.state"),
+    heaterState: new BooleanValue("midas-aquatemp.0.state", { mapping: { true: "An", false: "Aus" } }),
     heaterOnline: new BooleanValue("midas-aquatemp.0.online"),
-    tempSet: new NumberValue("midas-aquatemp.0.tempSet"),
-    consumption: new NumberValue("midas-aquatemp.0.consumption"),
-    tempIn: new NumberValue("midas-aquatemp.0.tempIn"),
-    tempOut: new NumberValue("midas-aquatemp.0.tempOut"),
+    tempSet: new NumberValue("midas-aquatemp.0.tempSet", { unit: "°C" }),
+    consumption: new NumberValue("midas-aquatemp.0.consumption", { unit: "W" }),
+    tempIn: new NumberValue("midas-aquatemp.0.tempIn", { unit: "°C" }),
+    tempOut: new NumberValue("midas-aquatemp.0.tempOut", { unit: "°C" }),
     rotor: new NumberValue("midas-aquatemp.0.rotor"),
     mode: new NumberValue("midas-aquatemp.0.mode"),
     status: new BooleanValue("midas-aquatemp.0.info.connection"),
-    silent: new BooleanValue("midas-aquatemp.0.silent"),
-    poolPumpPower: new NumberValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power"),
-    poolPumpSwitch: new BooleanValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch"),
+    silent: new BooleanValue("midas-aquatemp.0.silent", { mapping: { true: "An", false: "Aus" } }),
+    poolPumpPower: new NumberValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power", { unit: "W" }),
+    poolPumpSwitch: new BooleanValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", { mapping: { true: "An", false: "Aus" } }),
     heaterScriptActivateJSON: new JsonValue<HeatingPumpScriptJson>("0_userdata.0.Wärmepumpe.Wärmepumpe_schalten_script"),
     heaterSilentScriptJSON: new JsonValue<HeatingPumpSilentJSON>("0_userdata.0.Wärmepumpe.SilentModeScriptJson"),
   },
@@ -470,15 +623,33 @@ export const iobrokerTree = {
     office_valvePosition: new NumberValue("hmip.0.devices.3014F711A000201A49A55C45.channels.1.valvePosition"),
   },
   heating: {
-    automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5"),
+    automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5", {
+      mapping: { true: "An", false: "Aus" },
+      notificationOnChange: {
+        message: "Heizung Automatik ausgeschaltet",
+        type: "warning",
+        priority: 100,
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+      },
+    }),
     level: new BooleanValue("s7.0.DBs.DB1.I5_-_NQ2"),
-    active: new BooleanValue("s7.0.DBs.DB1.NQ13"),
-    autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15"),
-    heatingTemperature: new NumberValue("s7.0.DBs.DB1.B059"),
-    heatingSolar: new NumberValue("s7.0.DBs.DB1.B054"),
-    heatingBuffer: new NumberValue("s7.0.DBs.DB1.B068"),
-    heatingBufferMiddle: new NumberValue("mqtt.0.oeg.43_T6_Puffer_Mitte_Ist-Wert"),
-    heatingBufferTop: new NumberValue("mqtt.0.oeg.42_T5_Puffer_Brauchwasser_Ist-Wert"),
+    active: new BooleanValue("s7.0.DBs.DB1.NQ13", { mapping: { true: "An", false: "Aus" } }),
+    autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15", {
+      mapping: { true: "An", false: "Aus" },
+      notificationOnChange: {
+        message: "Solar Automatik ausgeschaltet",
+        type: "warning",
+        priority: 99,
+        showMessageOn: (val) => !val,
+        removeMessageOn: (val) => val,
+      },
+    }),
+    heatingTemperature: new NumberValue("s7.0.DBs.DB1.B059", { unit: "°C" }),
+    heatingSolar: new NumberValue("s7.0.DBs.DB1.B054", { unit: "°C" }),
+    heatingBuffer: new NumberValue("s7.0.DBs.DB1.B068", { unit: "°C" }),
+    heatingBufferMiddle: new NumberValue("mqtt.0.oeg.43_T6_Puffer_Mitte_Ist-Wert", { unit: "°C" }),
+    heatingBufferTop: new NumberValue("mqtt.0.oeg.42_T5_Puffer_Brauchwasser_Ist-Wert", { unit: "°C" }),
     solarMaxToday: new NumberValue("s7.0.DBs.DB1.B076"),
     solarMax: new NumberValue("s7.0.DBs.DB1.B085"),
     pelletExist: new BooleanValue("s7.0.DBs.DB1.NQ12"),
@@ -494,15 +665,15 @@ export const iobrokerTree = {
     diffSolarBuffer: new NumberValue("s7.0.DBs.DB1.B067"),
     minFillTemp: new NumberValue("s7.0.DBs.DB1.B069"),
     maxFillTemp: new NumberValue("s7.0.DBs.DB1.B056"),
-    solarPump: new BooleanValue("s7.0.DBs.DB1.Q3_-_NQ10"),
+    solarPump: new BooleanValue("s7.0.DBs.DB1.Q3_-_NQ10", { mapping: { true: "An", false: "Aus" } }),
     heatingPump: new BooleanValue("s7.0.DBs.DB1.Q4_-_NQ11"),
   },
   energy: {
     Waschmaschine: new NumberValue("sonoff.0.Steckdose_Waschmaschine .ENERGY_Power"),
     Kuehltruhe: new NumberValue("sonoff.0.Tasmota Kühltruhe.ENERGY_Power"),
     Rack: new NumberValue("sonoff.0.Tasmota Server.ENERGY_Power"),
-    energyReceived: new NumberValue("0_userdata.0.Photovoltaik.Bezug_Tag"),
-    energyReturned: new NumberValue("0_userdata.0.Photovoltaik.Einspeisung_Tag"),
+    energyReceived: new NumberValue("0_userdata.0.Photovoltaik.Bezug_Tag", { unit: "kWh" }),
+    energyReturned: new NumberValue("0_userdata.0.Photovoltaik.Einspeisung_Tag", { unit: "kWh" }),
   },
   calendar: {
     table: new JsonValue<CalendarDayType[]>("ical.1.data.table"),

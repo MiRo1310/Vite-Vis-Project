@@ -1,4 +1,5 @@
 export type RoutePath = (typeof routes)[keyof typeof routes]["path"];
+export type TRoute = (typeof routes)[keyof typeof routes];
 
 export const routes = {
   home: { path: "/", name: "home" },
@@ -14,6 +15,7 @@ export const routes = {
   calender: { path: "/kalender", name: "calender" },
   light: { path: "/light", name: "light" },
   logs: { path: "/logs", name: "logs" },
+  notifications: { path: "/notifications", name: "notifications" },
   pv: { path: "/pv", name: "pv" },
   heatPump: { path: "/heat-pump", name: "heat-pump" },
   energy: { path: "/energy", name: "energy" },
@@ -60,6 +62,7 @@ export const routing = [
       { component: async () => await import("@/pages/vis/heat-pump.vue"), ...routes.heatPump },
       { component: async () => await import("@/pages/vis/system.vue"), ...routes.system },
       { component: async () => await import("@/pages/vis/watt-pilot.vue"), ...routes.wattPilot },
+      { component: async () => await import("@/pages/vis/notifications.vue"), ...routes.notifications },
     ],
   },
   {

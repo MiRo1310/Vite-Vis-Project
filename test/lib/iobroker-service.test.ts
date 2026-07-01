@@ -63,6 +63,7 @@ describe("IoBrokerService", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    document.querySelectorAll(".ioBroker").forEach((el) => el.remove());
   });
 
   it("loadScript fügt ein Script-Tag zum Body hinzu", () => {

@@ -374,7 +374,7 @@ const clickRoom = async (roomName: string) => {
   selectedName.value = roomName;
 
   if (roomNames.includes(roomName as RoomItems)) {
-    await iobroker.heatingControl.room.setState(roomName);
+    iobroker.heatingControl.room.setState(roomName);
   }
 };
 
