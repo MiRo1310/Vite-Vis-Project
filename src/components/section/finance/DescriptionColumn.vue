@@ -21,12 +21,19 @@ onMounted(() => {
       }
       const columns = tr.querySelectorAll(".text-muted-foreground, [data-type='number'], button");
 
+      if (tr.querySelector(".isValid[data-state='unchecked']")) {
+        setColor(columns, tr, "text-red-300");
+        return;
+      }
+
       if (value.toLocaleLowerCase().includes("fahrtkosten")) {
         setColor(columns, tr, "text-orange-400");
+        return;
       }
 
       if (value.toLocaleLowerCase().includes("rechnung")) {
         setColor(columns, tr, "text-blue-400");
+        return;
       }
     },
     { immediate: true },
