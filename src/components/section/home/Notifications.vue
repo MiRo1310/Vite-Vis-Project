@@ -29,7 +29,10 @@ onUnmounted(() => {
 
 <template>
   <Card
-    :class="['py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden w-80', notification?.getNotificationClass]"
+    :class="[
+      'py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden xl:w-110 sm:w-80 sm:flex-0 flex-1',
+      notification?.getNotificationClass,
+    ]"
   >
     <CardHeader class="px-3 pt-2 pb-0">
       <CardTitle class="text-xs text-muted-foreground flex items-center justify-between w-full">

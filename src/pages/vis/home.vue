@@ -31,7 +31,7 @@ function toggleColorMode() {
 }
 
 const navCardClass =
-  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-25 flex-1";
+  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-15 flex-1";
 </script>
 
 <template>
@@ -61,11 +61,11 @@ const navCardClass =
 
       <!-- Datenkarten (unten auf mobile, links auf desktop) -->
       <div class="flex gap-2 overflow-x-auto flex-1 sm:order-first">
-        <DataCard title="Zeit" class="shrink-0 min-w-30 flex-1">
+        <DataCard title="Zeit" class="shrink-0 min-w-30 flex-1 md:block hidden">
           <p class="text-sm font-semibold leading-tight">{{ time }}</p>
           <p class="text-xs text-muted-foreground leading-tight">{{ date }}</p>
         </DataCard>
-        <RouterLink :to="routes.notifications.path" class="flex-1">
+        <RouterLink :to="routes.notifications.path" class="sm:flex-0 flex-1">
           <Notifications />
         </RouterLink>
         <StatusCard
@@ -73,10 +73,16 @@ const navCardClass =
           :value="getOpenWindows ?? 0"
           :active="(getOpenWindows ?? 0) === 0"
           :route="routes.window.path"
-          class="shrink-0 min-w-22"
+          class="shrink-0 min-w-22 sm:block hidden"
         />
 
-        <StatusCard title="Licht" :value="getActiveLights" :active="getActiveLights === 0" :route="routes.light.path" class="shrink-0 min-w-22" />
+        <StatusCard
+          title="Licht"
+          :value="getActiveLights"
+          :active="getActiveLights === 0"
+          :route="routes.light.path"
+          class="shrink-0 min-w-22 sm:block hidden"
+        />
       </div>
     </div>
 
