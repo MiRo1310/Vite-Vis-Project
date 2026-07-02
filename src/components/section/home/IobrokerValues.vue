@@ -189,7 +189,9 @@ const version = import.meta.env.VITE_APP_VERSION;
     <!-- System -->
     <TabsContent value="system" class="flex-1 min-h-0 overflow-auto space-y-3">
       <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push('/system')">→ System Seite</button>
+        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.system.path)">
+          → System Seite
+        </button>
       </div>
 
       <div class="grid grid-cols-2 gap-2">
