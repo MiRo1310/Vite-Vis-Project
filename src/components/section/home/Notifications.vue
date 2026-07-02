@@ -28,7 +28,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Card :class="['py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden', notification?.getNotificationClass]">
+  <Card
+    :class="['py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden w-80', notification?.getNotificationClass]"
+  >
     <CardHeader class="px-3 pt-2 pb-0">
       <CardTitle class="text-xs text-muted-foreground flex items-center justify-between w-full">
         <span>Benachrichtigungen</span>
@@ -43,7 +45,7 @@ onUnmounted(() => {
           <CardContent class="pt-1 pb-2 flex gap-1.5 px-0">
             <div v-if="notification" class="px-3 pt-1 pb-2 flex items-center gap-1.5">
               <StatusDot v-if="notification.hasStatus" :active="notification.status" />
-              <span class="text-sm font-semibold">{{ notification.message }}</span>
+              <span class="text-sm font-semibold inline-block truncate whitespace-nowrap w-72">{{ notification.message }}</span>
             </div>
           </CardContent>
         </div>
