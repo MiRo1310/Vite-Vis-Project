@@ -13,6 +13,8 @@ import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vu
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
 import { type TravelCostFilterInput, type TravelCostQuery, type TravelCostSortInput } from "@/api/gql/graphql.ts";
 import { getTotalByPrice } from "@/pages/finance/utils.ts";
+import FinanceListingTableIsValid from "@/components/section/finance/FinanceListingTableIsValid.vue";
+import FinanceListingTableHasInvoice from "@/components/section/finance/FinanceListingTableHasInvoice.vue";
 
 const filter = computed((): TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
@@ -27,6 +29,8 @@ const query = graphql(`
       addressId
       date
       description
+      isValidated
+      hasInvoice
       price
       address {
         name
@@ -58,6 +62,20 @@ const columns: Array<DatatableColumns<TravelCostQuery["travelCost"][number]>> = 
     type: "number",
     unit: "€",
     className: "text-right",
+  },
+  {
+    source: "isValidated",
+    labelKey: "Geprüft",
+    type: "component",
+    className: "text-right",
+    component: FinanceListingTableIsValid,
+  },
+  {
+    source: "hasInvoice",
+    labelKey: "Rechnung",
+    type: "component",
+    className: "text-right",
+    component: FinanceListingTableHasInvoice,
   },
   {
     source: "id",
@@ -97,7 +115,13 @@ const total = computed(() => {
   .print-none {
     display: none;
   }
-  table th:last-child {
+
+  td:nth-child(5),
+  th:nth-child(5),
+  td:nth-child(6),
+  th:nth-child(6),
+  td:last-child,
+  th:last-child {
     display: none;
   }
 }

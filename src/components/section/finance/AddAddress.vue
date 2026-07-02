@@ -18,7 +18,7 @@ const { mutate } = useMutation(
       }
     }
   `),
-  { refetchQueries: ["Addresses"] },
+  { refetchQueries: ["Addresses", "AddressListing"] },
 );
 
 const name = ref<string>();
