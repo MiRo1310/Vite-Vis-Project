@@ -21,7 +21,7 @@ onMounted(() => {
       }
       const columns = tr.querySelectorAll(".text-muted-foreground, [data-type='number'], button");
 
-      if (tr.querySelector(".isValid[data-state='unchecked']")) {
+      if (tr.querySelector(".isValid[data-state='unchecked']") || tr.querySelector(".hasInvoice[data-state='unchecked']")) {
         setColor(columns, tr, "text-red-300");
         return;
       }
