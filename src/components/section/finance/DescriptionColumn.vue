@@ -27,7 +27,7 @@ onMounted(() => {
       }
 
       if (value.toLocaleLowerCase().includes("fahrtkosten")) {
-        setColor(columns, tr, "text-orange-400");
+        setColor(columns, tr, "text-green-400");
         return;
       }
 
