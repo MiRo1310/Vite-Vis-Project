@@ -91,6 +91,7 @@ jobs:
           LANG: de_DE.UTF-8
           TZ: Europe/Berlin
           VITE_GRAPHQL_URL: http://localhost:5095/graphql
+          VITE_IOBROKER_HOST: 127.0.0.1
         with:
           build: yarn run build
           start: yarn run preview -- --port 5173 --strictPort
