@@ -5,6 +5,7 @@ import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";
+import { removeMultipleSpaces } from "@/lib/string.ts";
 
 const { toast } = useToast();
 
@@ -35,9 +36,9 @@ const addAddressHandler = async () => {
     return;
   }
   await mutate({
-    name: name.value ?? "",
-    street: street.value ?? "",
-    city: city.value ?? "",
+    name: name.value ? removeMultipleSpaces(name.value) : "",
+    street: street.value ? removeMultipleSpaces(street.value) : "",
+    city: city.value ? removeMultipleSpaces(city.value) : "",
   });
   toast({
     title: "Die Adresse wurde zur Liste hinzugefügt",

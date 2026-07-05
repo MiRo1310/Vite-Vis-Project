@@ -59,7 +59,7 @@ const handleDescriptionChange = (value?: string) => {
       <FormDate name="date" label="Datum" />
       <FormInput name="price" label="Betrag" type="number" :min="0" :step="0.01" />
 
-      <AddressOptions />
+      <AddressOptions class="w-100" />
       <div class="w-full">
         <DescriptionOptions @update:model-value="handleDescriptionChange($event)" />
         <FormTextarea name="description" label="Beschreibung" />

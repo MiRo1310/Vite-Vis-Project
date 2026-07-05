@@ -8,6 +8,7 @@ import { ref } from "vue";
 import { Input } from "@/components/shared/input/input.variants";
 import { type AddressesQuery } from "@/api/gql/graphql.ts";
 import { type ITableColumn } from "@/types/types.ts";
+import { removeMultipleSpaces } from "@/lib/string.ts";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, AddressesQuery["addresses"][number]>>();
@@ -39,27 +40,17 @@ const { mutate: updateMutation } = useMutation(
 );
 
 const remove = async () => {
-  await mutate(
-    { id: props.value },
-    {
-      refetchQueries: ["Addresses"],
-    },
-  );
+  await mutate({ id: props.value });
 };
 
 const update = async () => {
   dialogUpdateOpen.value = false;
-  await updateMutation(
-    {
-      id: props.value,
-      name: name.value,
-      street: street.value,
-      city: city.value,
-    },
-    {
-      refetchQueries: ["Addresses"],
-    },
-  );
+  await updateMutation({
+    id: props.value,
+    name: removeMultipleSpaces(name.value),
+    street: removeMultipleSpaces(street.value),
+    city: removeMultipleSpaces(city.value),
+  });
 };
 
 const dialogOpen = ref(false);
