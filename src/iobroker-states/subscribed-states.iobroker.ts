@@ -712,7 +712,7 @@ export const iobrokerTree = {
     sonnenuntergang: new BooleanValue("0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter"),
   },
   holiday: {
-    urlaubAktiv: new BooleanValue("0_userdata.0.Urlaub.Urlaub_aktiv"),
+    urlaubAktiv: new BooleanValue("0_userdata.0.Urlaub.Urlaub_aktiv", { mapping: { true: "Urlaub", false: "Kein Urlaub" } }),
   },
   windowGlobal: {
     fensterOffen: new BooleanValue("0_userdata.0.Fenster.Sind_Fenster_offen"),

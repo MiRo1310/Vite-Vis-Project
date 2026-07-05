@@ -31,7 +31,7 @@ function toggleColorMode() {
 }
 
 const navCardClass =
-  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-15 flex-1";
+  "flex flex-col items-center gap-1 rounded-xl border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-20 flex-1";
 </script>
 
 <template>

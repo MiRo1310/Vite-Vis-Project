@@ -14,8 +14,8 @@ const createShoppinglist = computed(() => iobroker.alexaLists.shoppingListActive
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <HomeActionBtn :title="'Einkaufsliste'" :badge="createShoppinglist?.length">
-        <ShoppingBag />
+      <HomeActionBtn title="Einkaufsliste" :badge="createShoppinglist?.length">
+        <ShoppingBag class="size-4" />
       </HomeActionBtn>
     </template>
     <template #title>

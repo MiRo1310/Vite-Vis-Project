@@ -15,12 +15,12 @@ const totoList = computed(() => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <HomeActionBtn title="Michis Todos" :badge="totoList?.length" class="flex-1">
-        <Pickaxe />
+      <HomeActionBtn title="Michis Todo" :badge="totoList?.length" class="flex-1">
+        <Pickaxe class="size-4" />
       </HomeActionBtn>
     </template>
     <template #title>
-      <p>Michis Todos</p>
+      <p>Michis Todo</p>
     </template>
     <template #content>
       <div class="h-[92vh] overflow-y-auto">
