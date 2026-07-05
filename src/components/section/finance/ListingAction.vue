@@ -44,12 +44,7 @@ const { mutate: updateMutation } = useMutation(
 );
 
 const remove = async () => {
-  await mutate(
-    { id: props.value },
-    {
-      refetchQueries: ["TravelCost"],
-    },
-  );
+  await mutate({ id: props.value });
 };
 
 const form = useForm({
@@ -67,18 +62,13 @@ const dialogUpdateOpen = ref(false);
 
 const onSubmit = form.handleSubmit(async (values) => {
   dialogUpdateOpen.value = false;
-  await updateMutation(
-    {
-      id: props.value,
-      date: values.date,
-      description: values.description,
-      price: Number(String(values.price)),
-      addressId: values.addressId,
-    },
-    {
-      refetchQueries: ["TravelCost"],
-    },
-  );
+  await updateMutation({
+    id: props.value,
+    date: values.date,
+    description: values.description,
+    price: Number(String(values.price)),
+    addressId: values.addressId,
+  });
   form.resetForm();
 });
 </script>

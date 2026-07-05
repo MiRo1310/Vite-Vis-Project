@@ -40,27 +40,17 @@ const { mutate: updateMutation } = useMutation(
 );
 
 const remove = async () => {
-  await mutate(
-    { id: props.value },
-    {
-      refetchQueries: ["Addresses"],
-    },
-  );
+  await mutate({ id: props.value });
 };
 
 const update = async () => {
   dialogUpdateOpen.value = false;
-  await updateMutation(
-    {
-      id: props.value,
-      name: removeMultipleSpaces(name.value),
-      street: removeMultipleSpaces(street.value),
-      city: removeMultipleSpaces(city.value),
-    },
-    {
-      refetchQueries: ["Addresses"],
-    },
-  );
+  await updateMutation({
+    id: props.value,
+    name: removeMultipleSpaces(name.value),
+    street: removeMultipleSpaces(street.value),
+    city: removeMultipleSpaces(city.value),
+  });
 };
 
 const dialogOpen = ref(false);
