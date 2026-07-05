@@ -93,7 +93,7 @@ jobs:
           VITE_GRAPHQL_URL: http://localhost:5095/graphql
         with:
           build: yarn run build
-          start: yarn run dev   
+          start: yarn run preview -- --port 5173 --strictPort
       
   cypress-component:
     runs-on: ubuntu-latest
