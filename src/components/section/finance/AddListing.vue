@@ -56,8 +56,8 @@ const handleDescriptionChange = (value?: string) => {
 <template>
   <Form @update:on-submit="onSubmit">
     <div class="my-4 flex gap-4 flex-wrap">
-      <FormDate name="date" label="Datum" />
-      <FormInput name="price" label="Betrag" type="number" :min="0" :step="0.01" />
+      <FormDate name="date" label="Datum" e2e="listing-date" />
+      <FormInput name="price" label="Betrag" type="number" :min="0" :step="0.01" e2e="listing-price" />
 
       <AddressOptions />
       <div class="w-full">
@@ -65,7 +65,7 @@ const handleDescriptionChange = (value?: string) => {
         <FormTextarea name="description" label="Beschreibung" />
       </div>
 
-      <Button type="submit" variant="outline">Hinzufügen</Button>
+      <Button type="submit" variant="outline" data-e2e="listing-submit">Hinzufügen</Button>
     </div>
   </Form>
 </template>

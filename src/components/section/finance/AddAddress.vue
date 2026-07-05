@@ -48,9 +48,9 @@ const addAddressHandler = async () => {
 
 <template>
   <div class="my-4 flex gap-4 flex-wrap">
-    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-120" />
-    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-120" />
-    <Input type="text" placeholder="City" v-model:model-value="city" class="w-120" />
-    <Button icon="add" variant="outline" size="icon" @click="addAddressHandler" />
+    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-120" e2e="address-name" />
+    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-120" e2e="address-street" />
+    <Input type="text" placeholder="City" v-model:model-value="city" class="w-120" e2e="address-city" />
+    <Button icon="add" variant="outline" size="icon" @click="addAddressHandler" data-e2e="address-submit" />
   </div>
 </template>
