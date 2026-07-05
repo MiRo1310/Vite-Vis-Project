@@ -51,6 +51,8 @@ jobs:
           
         ports:
           - 5095:5095
+        options: >-
+          --restart=on-failure:10
 
     steps:
       - name: Checkout
@@ -91,9 +93,7 @@ jobs:
           VITE_GRAPHQL_URL: http://localhost:5095/graphql
         with:
           build: yarn run build
-          start: yarn run dev
-    needs:
-      - build
+          start: yarn run dev   
       
   cypress-component:
     runs-on: ubuntu-latest
@@ -113,10 +113,8 @@ jobs:
       - name: Cypress run Component Tests
         uses: cypress-io/github-action@v7
         with:         
-          component: 'true'           
-    needs:      
-      - build  
-      
+          component: 'true'    
+         
   build:
     runs-on: ubuntu-latest
     strategy:
