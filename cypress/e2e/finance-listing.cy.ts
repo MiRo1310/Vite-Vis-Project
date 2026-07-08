@@ -1,4 +1,4 @@
-import { routes } from "../../src/router/routes";
+import { routes } from "@/router/routes.ts";
 
 describe("Finance Listing (GraphQL Integration)", () => {
   it("loads travel costs from the real backend without a GraphQL error", () => {
