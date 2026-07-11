@@ -7,6 +7,8 @@ import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 import { type WattPilotJson } from "@/types/types.ts";
+import { chargingTime } from "@/composables/battery.ts";
+import MetricValue from "@/components/shared/display/MetricValue.vue";
 
 const ioBrokerStore = useIobrokerStore();
 const { getParsedLogs, iobroker } = ioBrokerStore;
@@ -104,19 +106,30 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Wallbox</p>
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Laden" class="h-full" clickable content-class="flex items-center gap-1.5">
-          <StatusDot :active="wallbox?.charging ?? false" />
-          <span class="text-xs font-semibold">{{ wallbox?.charging ? "Aktiv" : "Inaktiv" }}</span>
+        <DataCard title="Laden" class="h-full" clickable>
+          <div class="flex items-center gap-1.5">
+            <StatusDot :active="wallbox?.charging ?? false" />
+            <span class="text-xs font-semibold">{{ wallbox?.charging ? "Aktiv" : "Inaktiv" }}</span>
+          </div>
+          <span v-if="wallbox?.chargingPowerW" class="text-xs font-semibold"> {{ wallbox.chargingPowerW }} W</span>
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.wattPilot.path">
         <DataCard title="Ladeleistung" clickable content-class="">
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <span v-if="wallbox?.charging" class="text-xs font-semibold"> {{ wallbox?.chargingPowerW }}W</span>
-            <span v-else class="text-xs font-semibold"> -</span>
-            <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
-          </div>
+          <div class="flex items-center gap-1.5 flex-wrap"></div>
           <p>{{ iobroker.car.battery.valueWithUnit ?? "-" }}</p>
+
+          <MetricValue
+            :val="
+              chargingTime({
+                chargingLimit: 80,
+                batteryCapacity: 81,
+                currentBatteryPercent: iobroker.car.battery.value,
+                currentPowerW: wallbox?.chargingPowerW ?? 0,
+              })
+            "
+            unit="Std"
+          />
         </DataCard>
       </RouterLink>
     </div>

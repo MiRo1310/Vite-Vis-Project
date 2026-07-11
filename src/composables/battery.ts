@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { formatSecondsToTime } from "@/lib/time.ts";
 
 export interface BatteryTableData {
   name: string;
@@ -56,4 +57,22 @@ function getBatteryList(list: Record<string, Partial<BatteryItem>>) {
 
 export const batteryList = computed(() => {
   return getBatteryList(iobroker.batteries);
+});
+
+export interface IChargingTimeData {
+  batteryCapacity: number;
+  currentBatteryPercent: number;
+  currentPowerW: number;
+  chargingLimit?: number;
+}
+
+export const chargingTime = computed(() => ({ batteryCapacity, chargingLimit = 100, currentPowerW, currentBatteryPercent }: IChargingTimeData) => {
+  const percentToLoad = chargingLimit - currentBatteryPercent;
+  const kwToLoad = (batteryCapacity * percentToLoad) / 100;
+  if (currentPowerW && currentPowerW > 0) {
+    const hours = kwToLoad / (currentPowerW / 1000);
+
+    return formatSecondsToTime(hours * 3600);
+  }
+  return "-";
 });

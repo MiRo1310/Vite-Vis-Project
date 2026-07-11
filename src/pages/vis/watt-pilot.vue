@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Page from "@/components/shared/page/Page.vue";
-import { DataCard, ToggleCard } from "@/components/shared/card";
+import { Card, CardContent, DataCard, ToggleCard } from "@/components/shared/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
@@ -9,6 +9,7 @@ import Date from "@/components/shared/date-time/Date.vue";
 import { priceKW, wattpilotElectricitySurplus } from "@/composables/wattpilotElectricitySurplus.ts";
 import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
+import { chargingTime } from "@/composables/battery.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -87,22 +88,51 @@ const toggleAutoCharging = async () => {
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Auto</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <DataCard title="Ladeleistung">
+          <DataCard title="Batterie Ladestatus">
             <MetricValue :number-value="iobroker.car.battery" />
+          </DataCard>
+          <DataCard title="Geschätzte Restladedauer">
+            <MetricValue
+              :val="
+                chargingTime({
+                  chargingLimit: 80,
+                  batteryCapacity: 81,
+                  currentBatteryPercent: iobroker.car.battery.value,
+                  currentPowerW: data?.chargingPowerW ?? 0,
+                })
+              "
+              unit="Std"
+            />
           </DataCard>
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <DataCard title="Ladeleistung">
-            <MetricValue :val="iobroker.wattPilot.totalCharging.value / 1000" unit="KW" />
-          </DataCard>
-          <DataCard :title="`Überschussladen Einsparung - ${priceKW}€/KW`">
-            <MetricValue :val="wattpilotElectricitySurplus" unit="€" />
-          </DataCard>
-          <DataCard title="Vergleich Benzinpreis - 2.00€/l - 8l/100km">
-            <MetricValue :val="(iobroker.wattPilot.totalCharging.value / 1000 / 16) * 2 * 8" unit="€" />
-          </DataCard>
-        </div>
+        <Card class="py-0 gap-0">
+          <CardContent class="px-3 py-1 divide-y divide-border">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+              <div>
+                <p class="text-sm font-medium">Ladeleistung gesamt</p>
+                <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie.</p>
+              </div>
+              <MetricValue :val="iobroker.wattPilot.totalCharging.value / 1000" unit="KW" />
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+              <div>
+                <p class="text-sm font-medium">Überschussladen Einsparung</p>
+                <p class="text-xs text-muted-foreground">
+                  Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit {{ priceKW }}€/KW.
+                </p>
+              </div>
+              <MetricValue :val="wattpilotElectricitySurplus" unit="€" value-class="text-green-400" />
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+              <div>
+                <p class="text-sm font-medium">Vergleich Benzinpreis</p>
+                <p class="text-xs text-muted-foreground">Was die geladene Energiemenge mit einem Benziner (2,00€/l, 8l/100km) gekostet hätte.</p>
+              </div>
+              <MetricValue :val="(iobroker.wattPilot.totalCharging.value / 1000 / 16) * 2 * 8" unit="€" />
+            </div>
+          </CardContent>
+        </Card>
 
         <p v-if="data?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="data.updatedAt" /></p>
       </TabsContent>

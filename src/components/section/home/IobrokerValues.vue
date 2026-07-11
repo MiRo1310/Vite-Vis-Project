@@ -9,6 +9,7 @@ import { useRouter } from "vue-router";
 import { formatUptime, miBToGiB } from "@/lib/system";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import DotWithValue from "@/components/shared/display/DotWithValue.vue";
+import { chargingTime } from "@/composables/battery.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -74,9 +75,14 @@ const version = import.meta.env.VITE_APP_VERSION;
             :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
           />
         </DataCard>
-
         <DataCard title="Ladezustand" content-class="flex items-center gap-1.5">
           <MetricValue v-bind="pv.batteryCharging.valAndUnit" :decimal-places="0" />
+        </DataCard>
+        <DataCard title="Geschätzte Restladedauer">
+          <MetricValue
+            :val="chargingTime({ batteryCapacity: 6.5, currentBatteryPercent: pv.batteryCharging.value, currentPowerW: Math.abs(charging) })"
+            unit="Std"
+          />
         </DataCard>
       </div>
     </TabsContent>
