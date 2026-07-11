@@ -116,7 +116,7 @@ const landroidStatusLabel = computed(() => {
             <span v-else class="text-xs font-semibold"> -</span>
             <span v-if="wallbox?.ampere != null" class="text-xs text-muted-foreground">· {{ wallbox.ampere }} A</span>
           </div>
-          <p>{{ iobroker.car.battery.val ?? "-" }}%</p>
+          <p>{{ iobroker.car.battery.valueWithUnit ?? "-" }}</p>
         </DataCard>
       </RouterLink>
     </div>

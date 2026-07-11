@@ -68,7 +68,7 @@ export const iobrokerTree = {
     totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal"),
   },
   car: {
-    battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio"),
+    battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio", { unit: "%" }),
   },
   batteries: {
     "Shelly Plus Smoke Flur OG": {
