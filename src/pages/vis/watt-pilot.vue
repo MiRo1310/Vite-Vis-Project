@@ -20,7 +20,7 @@ const modeLabel: Record<number, string> = {
 };
 
 const toggleAutoCharging = async () => {
-  await iobroker.wattPilot.autoCharging.toggle(true);
+  iobroker.wattPilot.autoCharging.toggle(true);
 };
 </script>
 

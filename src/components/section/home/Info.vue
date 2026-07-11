@@ -104,7 +104,7 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Wallbox</p>
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Laden" clickable content-class="flex items-center gap-1.5">
+        <DataCard title="Laden" class="h-full" clickable content-class="flex items-center gap-1.5">
           <StatusDot :active="wallbox?.charging ?? false" />
           <span class="text-xs font-semibold">{{ wallbox?.charging ? "Aktiv" : "Inaktiv" }}</span>
         </DataCard>
