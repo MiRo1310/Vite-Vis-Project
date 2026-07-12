@@ -13,7 +13,7 @@ import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { type HeatingPumpScriptJson, type HeatingPumpSilentJSON } from "@/types/types.ts";
 
-const { getParsedLogs, iobroker } = useIobrokerStore();
+const { iobroker } = useIobrokerStore();
 
 async function reset() {
   await ioBrokerService.connection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
@@ -232,7 +232,7 @@ function formatDate(iso?: string): string {
         <div class="flex justify-end mb-2">
           <Button variant="destructive" size="sm" @click="reset">Zurücksetzen</Button>
         </div>
-        <LogTable :logs="getParsedLogs.heatPump" wrapper-class="max-h-[calc(100vh-220px)]" />
+        <LogTable :logs="iobroker.logs.heatPump.parsed([])" wrapper-class="max-h-[calc(100vh-220px)]" />
       </TabsContent>
     </Tabs>
   </Page>

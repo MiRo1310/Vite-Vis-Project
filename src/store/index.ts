@@ -43,11 +43,7 @@ interface IoBrokerStoreActions {
 
 interface IoBrokerStoreGetters {
   isAdminConnected(state: IoBrokerStoreState): boolean;
-  getTrash(state: IoBrokerStoreState): (typeof iobrokerTree)["trash"];
-  getShoppinglist(state: IoBrokerStoreState): (typeof iobrokerTree)["alexaLists"];
-  getState(state: IoBrokerStoreState): IoBrokerStoreState;
   getIdsToControl(state: IoBrokerStoreState): IdsToControl;
-  getParsedLogs(state: IoBrokerStoreState): ParsedLogs;
 }
 
 export type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;

@@ -11,7 +11,7 @@ import { chargingTime } from "@/composables/battery.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 
 const ioBrokerStore = useIobrokerStore();
-const { getParsedLogs, iobroker } = ioBrokerStore;
+const { iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
 
 const wallbox = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
@@ -51,11 +51,11 @@ const landroidStatusLabel = computed(() => {
       </RouterLink>
       <RouterLink :to="routes.logs.path">
         <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer">
-          <Badge v-if="getParsedLogs.error?.length" :value="getParsedLogs.error.length" color="red" />
-          <Badge v-if="getParsedLogs.warn?.length" :value="getParsedLogs.warn.length" color="orange" />
-          <Badge v-if="getParsedLogs.info?.length" :value="getParsedLogs.info.length" color="blue" />
+          <Badge v-if="iobroker.logs.error.parsed([]).length" :value="iobroker.logs.error.parsed([]).length" color="red" />
+          <Badge v-if="iobroker.logs.warning.parsed([]).length" :value="iobroker.logs.warning.parsed([]).length" color="orange" />
+          <Badge v-if="iobroker.logs.info.parsed([]).length" :value="iobroker.logs.info.parsed([]).length" color="blue" />
           <span
-            v-if="!getParsedLogs.error?.length && !getParsedLogs.warn?.length && !getParsedLogs.info?.length"
+            v-if="!iobroker.logs.error.parsed([]).length && !iobroker.logs.warning.parsed([]).length && !iobroker.logs.info.parsed([]).length"
             class="text-xs text-muted-foreground"
             >–</span
           >
