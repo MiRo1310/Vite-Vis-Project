@@ -31,9 +31,5 @@
     "src/directives/*.d.ts",
     "node_modules/cypress/types/cypress-global-vars.d.ts"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
