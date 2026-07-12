@@ -21,14 +21,12 @@ vi.mock("@iobroker/socket-client", () => {
 
 vi.mock("../../src/store/ioBrokerStore.ts", () => {
   const mockSetAdminConnection = vi.fn();
-  const mockAddIdToSubscribedIds = vi.fn();
   return {
     useIobrokerStore: () => ({
       setAdminConnection: mockSetAdminConnection,
-      addIdToSubscribedIds: mockAddIdToSubscribedIds,
       subscribedIds: [],
     }),
-    __mocks: { mockSetAdminConnection, mockAddIdToSubscribedIds },
+    __mocks: { mockSetAdminConnection },
   };
 });
 
@@ -58,7 +56,6 @@ describe("IoBrokerService", () => {
     socketMocks.mockStartSocket.mockClear();
     socketMocks.mockWaitForFirstConnection.mockClear();
     storeMocks.mockSetAdminConnection.mockClear();
-    storeMocks.mockAddIdToSubscribedIds.mockClear();
   });
 
   afterEach(() => {
@@ -97,7 +94,7 @@ describe("IoBrokerService", () => {
     await service.subscribe({ id: "test.id.1", cb });
 
     expect(socketMocks.mockSubscribeStateAsync).not.toHaveBeenCalled();
-    expect(storeMocks.mockAddIdToSubscribedIds).not.toHaveBeenCalled();
+    expect((service as any).subscribedIds).toHaveLength(0);
   });
 
   it("subscribe ruft subscribeStateAsync und addIdToSubscribedIds nach init auf", async () => {
@@ -114,7 +111,7 @@ describe("IoBrokerService", () => {
     await service.subscribe({ id: "test.id.1", cb });
 
     expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledWith("test.id.1", expect.any(Function));
-    expect(storeMocks.mockAddIdToSubscribedIds).toHaveBeenCalledWith("test.id.1");
+    expect((service as any).subscribedIds).toContainEqual({ id: "test.id.1", cb });
   });
 
   it("gequeuete subscriptions werden nach init verarbeitet", async () => {
@@ -132,7 +129,7 @@ describe("IoBrokerService", () => {
     }
 
     expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledTimes(2);
-    expect(storeMocks.mockAddIdToSubscribedIds).toHaveBeenCalledTimes(2);
+    expect((service as any).subscribedIds).toHaveLength(2);
   });
 
   it("connection ist undefined vor init", () => {
