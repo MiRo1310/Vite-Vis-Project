@@ -7,6 +7,9 @@ import { DefaultApolloClient } from "@vue/apollo-composable";
 import "@michaelroling/ts-library";
 import { vComponent, vE2E } from "@/directives/directives.ts";
 import { router } from "@/router/router.ts";
+import { registerSW } from "virtual:pwa-register";
+
+registerSW({ immediate: true });
 
 const app = createApp(App);
 
