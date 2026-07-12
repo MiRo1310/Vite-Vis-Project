@@ -50,7 +50,6 @@ const groupedRecipesByCategory = computed((): TGroupedRecipesByCategory | undefi
       acc[categoryName] = [cur];
     }
     return acc;
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   }, {} as TGroupedRecipesByCategory);
 });
 
@@ -65,9 +64,7 @@ const lastRecipes = computed(() => {
   return recipeStore.getFilterLastRecipes(groupedRecipesByCategory.value);
 });
 
-const totalRecipeCount = computed(() =>
-  Object.values(groupedRecipesByCategory.value ?? {}).reduce((acc, group) => acc + group.length, 0),
-);
+const totalRecipeCount = computed(() => Object.values(groupedRecipesByCategory.value ?? {}).reduce((acc, group) => acc + group.length, 0));
 </script>
 
 <template>
