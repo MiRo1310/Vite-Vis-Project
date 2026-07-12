@@ -27,6 +27,33 @@ jobs:
         
   cypress-e2e:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: app
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=15     
+      backend:
+        image: ghcr.io/miro1310/recipe:latest
+        credentials:
+          username: miro1310
+          password: ${{ secrets.GHCR_PAT }}
+        env:
+          ConnectionStrings__AppDbConnectionString: "Server=mysql;Database=app;User=root;Password=root;"
+          ConnectionStrings__FinanceDbConnectionString: "Server=mysql;Database=app;User=root;Password=root;"
+          
+        ports:
+          - 5095:5095
+        options: >-
+          --restart=on-failure:10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -39,17 +66,35 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        
+
+      - name: Debug backend container
+        run: |
+          docker ps -a
+          docker logs $(docker ps -aq --filter ancestor=ghcr.io/miro1310/recipe:latest)
+
+      - name: Wait for backend GraphQL endpoint
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:5095/graphql; then
+              echo "Backend is up"
+              exit 0
+            fi
+            echo "Waiting for backend... ($i)"
+            sleep 2
+          done
+          echo "Backend did not become ready in time"
+          exit 1
+
       - name: Cypress run E2E Tests
         uses: cypress-io/github-action@v7
         env:
           LANG: de_DE.UTF-8
           TZ: Europe/Berlin
-        with:         
+          VITE_GRAPHQL_URL: http://localhost:5095/graphql
+          VITE_IOBROKER_HOST: 127.0.0.1
+        with:
           build: yarn run build
-          start: yarn run dev     
-    needs:      
-      - build     
+          start: yarn run preview -- --port 5173 --strictPort
       
   cypress-component:
     runs-on: ubuntu-latest
@@ -69,10 +114,8 @@ jobs:
       - name: Cypress run Component Tests
         uses: cypress-io/github-action@v7
         with:         
-          component: 'true'           
-    needs:      
-      - build  
-      
+          component: 'true'    
+         
   build:
     runs-on: ubuntu-latest
     strategy:

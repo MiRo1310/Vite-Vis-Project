@@ -1,7 +1,7 @@
 // Konfigurationswerte
 import { type INavigation } from "@/components/shared/responsiveNav";
 
-export const IOBROKER_HOST = "192.168.1.81";
+export const IOBROKER_HOST = import.meta.env.VITE_IOBROKER_HOST ?? "192.168.1.81";
 export const IOBROKER_ADMIN_PORT = "8081";
 export const IOBROKER_WS_PORT = "8084";
 

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
-import { routing } from "@/router/routes.ts";
+import { routing } from "@/router/routing.ts";
 import { ref } from "vue";
 
 export const router = createRouter({
