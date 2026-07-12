@@ -18,7 +18,6 @@ withDefaults(
     options: InputOption[];
     optionsId: string;
     disabled?: boolean;
-    e2e?: string;
     exactOptionRequired?: boolean;
     alwaysReturnName?: boolean;
   }>(),
@@ -30,7 +29,6 @@ withDefaults(
     labelRight: "",
     label: "",
     classInput: "",
-    e2e: undefined,
   },
 );
 </script>
@@ -51,7 +49,6 @@ withDefaults(
           :options
           :options-id
           :disabled
-          :e2e
           :class="$props.classInput"
           :exact-option-required
           :always-return-name

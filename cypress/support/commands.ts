@@ -25,22 +25,22 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import { vE2E } from "../../src/directives/directives";
+import { vE2E } from "@/directives/directives.ts";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { mount } from "cypress/vue";
+import { type mount } from "cypress/vue";
 
 export interface IComponentOptions {
   global?: { directives: Record<string, any> };
 }
 
 Cypress.Commands.add("mountE2E", (component, options?: Parameters<typeof mount>[1]) => {
-  options = options || {};
+  options = options ?? {};
   return cy.mount(component, {
     global: {
       directives: {
         e2e: vE2E,
-        ...(options.global?.directives || {}),
+        ...(options.global?.directives ?? {}),
       },
       ...options.global,
     },
