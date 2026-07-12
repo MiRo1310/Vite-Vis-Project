@@ -14,6 +14,7 @@ export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
   private ioBrokerStore: IoBrokerStore | undefined;
+  private subscribedIds: SubscriberValue[] = [];
   private readonly isScriptPresent: () => boolean;
 
   constructor(isScriptPresent = () => !!document.querySelector(".ioBroker")) {
@@ -77,11 +78,12 @@ export class IoBrokerService {
     });
   }
 
-  private async subscribeId({ id, cb }: SubscriberValue) {
+  private async subscribeId(val: SubscriberValue) {
+    const { id, cb } = val;
     if (!this.adminConnection || !this.ioBrokerStore) {
       return;
     }
-    this.ioBrokerStore.addIdToSubscribedIds(id);
+    this.addSubscriberId(val);
     await this.adminConnection
       .subscribeStateAsync(id, (_id: string, state: IobrokerState) => {
         cb(state);
@@ -89,6 +91,14 @@ export class IoBrokerService {
       .catch((e) => {
         Logger(`Error subscribing to ${id}`, { e });
       });
+  }
+
+  private addSubscriberId(subscriberValue: SubscriberValue) {
+    this.subscribedIds.push(subscriberValue);
+  }
+
+  public resetSubscribedIds() {
+    this.subscribedIds = [];
   }
 }
 

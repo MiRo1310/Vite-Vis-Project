@@ -7,7 +7,6 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   state: (): IoBrokerStoreState => ({
     adminConnectionEstablished: false,
     idsToControl: {} as IdsToControl,
-    subscribedIds: [],
     iobroker: iobrokerTree,
   }),
   getters: {
@@ -17,15 +16,6 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
   actions: {
     setAdminConnection(val: boolean) {
       this.adminConnectionEstablished = val;
-    },
-    resetIdsToSubscribe() {
-      this.subscribedIds = [];
-    },
-    addIdToSubscribedIds(id: string) {
-      this.subscribedIds.push(id);
-    },
-    removeIdFromSubscribedIds(id: string) {
-      this.subscribedIds = this.subscribedIds.filter((i) => i !== id);
     },
   },
 }) as unknown as StoreType;
