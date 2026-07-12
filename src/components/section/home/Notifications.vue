@@ -8,6 +8,7 @@ const store = useNotificationStore();
 
 const currentIndex = ref(0);
 const notification = computed(() => {
+  console.log(store.getNotificationsFromHighestType[currentIndex.value]);
   return store.getNotificationsFromHighestType[currentIndex.value];
 });
 

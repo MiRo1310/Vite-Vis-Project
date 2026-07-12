@@ -46,6 +46,7 @@ export default defineConfig({
       "@": "/src",
     },
   },
+  publicDir: "src/public",
   base: "/",
   build: {
     rolldownOptions: {
