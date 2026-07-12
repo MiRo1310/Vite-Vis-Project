@@ -374,7 +374,7 @@ export const iobrokerTree = {
   tankerKoenig: {
     cheapestName: new StringValue("tankerkoenig.0.stations.cheapest.e5.name"),
     cheapestFullStreet: new StringValue("tankerkoenig.0.stations.cheapest.e5.fullStreet"),
-    cheapestPrice: new NumberValue("tankerkoenig.0.stations.cheapest.e5.feed"),
+    cheapestPrice: new NumberValue("tankerkoenig.0.stations.cheapest.e5.feed", { unit: "€" }),
     jsonTable: new JsonValue<TankerkoenigStation[]>("tankerkoenig.0.stations.jsonTable"),
   },
   fenster: {

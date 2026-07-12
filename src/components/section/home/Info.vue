@@ -115,9 +115,8 @@ const landroidStatusLabel = computed(() => {
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Ladeleistung" clickable content-class="">
-          <div class="flex items-center gap-1.5 flex-wrap"></div>
-          <p>{{ iobroker.car.battery.valueWithUnit ?? "-" }}</p>
+        <DataCard title="Ladeleistung" clickable content-class="flex flex-col gap-1.5">
+          <MetricValue :number-value="iobroker.car.battery" />
 
           <MetricValue
             :val="

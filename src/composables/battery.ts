@@ -66,7 +66,7 @@ export interface IChargingTimeData {
   chargingLimit?: number;
 }
 
-export const chargingTime = computed(() => ({ batteryCapacity, chargingLimit = 100, currentPowerW, currentBatteryPercent }: IChargingTimeData) => {
+export const chargingTime = ({ batteryCapacity, chargingLimit = 100, currentPowerW, currentBatteryPercent }: IChargingTimeData) => {
   const percentToLoad = chargingLimit - currentBatteryPercent;
   const kwToLoad = (batteryCapacity * percentToLoad) / 100;
   if (currentPowerW && currentPowerW > 0) {
@@ -74,5 +74,11 @@ export const chargingTime = computed(() => ({ batteryCapacity, chargingLimit = 1
 
     return formatSecondsToTime(hours * 3600);
   }
+  if (currentPowerW && currentPowerW < 0) {
+    const kwInBattery = (batteryCapacity * currentBatteryPercent) / 100;
+    const hours = kwInBattery / (currentPowerW / 1000);
+
+    return formatSecondsToTime(hours * 3600);
+  }
   return "-";
-});
+};

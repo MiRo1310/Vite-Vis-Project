@@ -13,6 +13,8 @@ import { chargingTime } from "@/composables/battery.ts";
 
 const { iobroker } = useIobrokerStore();
 
+const lPer100Km = 8;
+
 const data = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const modeLabel: Record<number, string> = {
@@ -105,6 +107,7 @@ const toggleAutoCharging = async () => {
             />
           </DataCard>
         </div>
+
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
         <Card class="py-0 gap-0">
           <CardContent class="px-3 py-1 divide-y divide-border">
@@ -127,9 +130,16 @@ const toggleAutoCharging = async () => {
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
               <div>
                 <p class="text-sm font-medium">Vergleich Benzinpreis</p>
-                <p class="text-xs text-muted-foreground">Was die geladene Energiemenge mit einem Benziner (2,00€/l, 8l/100km) gekostet hätte.</p>
+                <p class="text-xs text-muted-foreground">
+                  {{
+                    `Was die geladene Energiemenge mit einem Benziner (${iobroker.tankerKoenig.cheapestPrice.value}€/l, ${lPer100Km}l/100km) gekostet hätte.`
+                  }}
+                </p>
               </div>
-              <MetricValue :val="(iobroker.wattPilot.totalCharging.value / 1000 / 16) * 2 * 8" unit="€" />
+              <MetricValue
+                :val="((iobroker.wattPilot.totalCharging.value / 1000 / 16) * iobroker.tankerKoenig.cheapestPrice.value * lPer100Km).toFixed(2)"
+                unit="€"
+              />
             </div>
           </CardContent>
         </Card>

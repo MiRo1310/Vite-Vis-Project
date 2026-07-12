@@ -78,9 +78,10 @@ const version = import.meta.env.VITE_APP_VERSION;
         <DataCard title="Ladezustand" content-class="flex items-center gap-1.5">
           <MetricValue v-bind="pv.batteryCharging.valAndUnit" :decimal-places="0" />
         </DataCard>
-        <DataCard title="Geschätzte Restladedauer">
+        <DataCard :title="charging > 0 ? 'Geschätzte Restladedauer' : 'Geschätzte Restentladedauer'">
           <MetricValue
-            :val="chargingTime({ batteryCapacity: 6.5, currentBatteryPercent: pv.batteryCharging.value, currentPowerW: Math.abs(charging) })"
+            :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
+            :val="chargingTime({ batteryCapacity: 6.5, currentBatteryPercent: pv.batteryCharging.value, currentPowerW: charging })"
             unit="Std"
           />
         </DataCard>
