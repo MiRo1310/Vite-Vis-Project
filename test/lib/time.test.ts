@@ -34,5 +34,9 @@ describe("formatSecondsToTime", () => {
   it("pads minutes and seconds with leading zeros", () => {
     expect(formatSecondsToTime(65)).toBe("00:01:05");
   });
+
+  it("truncates fractional seconds instead of appending decimals", () => {
+    expect(formatSecondsToTime(10276.190476190475238)).toBe("02:51:16");
+  });
 });
 

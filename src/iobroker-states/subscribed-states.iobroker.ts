@@ -68,7 +68,7 @@ export const iobrokerTree = {
     totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal"),
   },
   car: {
-    battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio"),
+    battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio", { unit: "%" }),
   },
   batteries: {
     "Shelly Plus Smoke Flur OG": {
@@ -374,7 +374,7 @@ export const iobrokerTree = {
   tankerKoenig: {
     cheapestName: new StringValue("tankerkoenig.0.stations.cheapest.e5.name"),
     cheapestFullStreet: new StringValue("tankerkoenig.0.stations.cheapest.e5.fullStreet"),
-    cheapestPrice: new NumberValue("tankerkoenig.0.stations.cheapest.e5.feed"),
+    cheapestPrice: new NumberValue("tankerkoenig.0.stations.cheapest.e5.feed", { unit: "€" }),
     jsonTable: new JsonValue<TankerkoenigStation[]>("tankerkoenig.0.stations.jsonTable"),
   },
   fenster: {

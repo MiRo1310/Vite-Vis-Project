@@ -57,17 +57,19 @@ export class Positions<T extends PropertyKey> {
   }
 
   public getPositionsById(id: T) {
-    return this.positions[id].getPosition();
-    // ?? {
-    //   left: 0,
-    //   top: 0,
-    //   right: 0,
-    //   bottom: 0,
-    //   heightCenter: 0,
-    //   widthCenter: 0,
-    //   height: 0,
-    //   width: 0,
-    // }
+    const val = this.positions[id] as PositionHandler<T> | undefined;
+    return (
+      val?.getPosition() ?? {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        heightCenter: 0,
+        widthCenter: 0,
+        height: 0,
+        width: 0,
+      }
+    );
   }
 
   public getCoordinates(line: ILineEndPoint<T>) {
