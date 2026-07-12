@@ -76,7 +76,7 @@ export const chargingTime = ({ batteryCapacity, chargingLimit = 100, currentPowe
   }
   if (currentPowerW && currentPowerW < 0) {
     const kwInBattery = (batteryCapacity * currentBatteryPercent) / 100;
-    const hours = kwInBattery / (currentPowerW / 1000);
+    const hours = kwInBattery / (-currentPowerW / 1000);
 
     return formatSecondsToTime(hours * 3600);
   }
