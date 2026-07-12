@@ -1,4 +1,4 @@
-import { type Store, type StoreDefinition } from "pinia";
+import { type StoreDefinition } from "pinia";
 import { type IdsToControl } from "@/types/types.ts";
 import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
@@ -9,7 +9,6 @@ export interface AppStore {
 }
 
 export interface IoBrokerStoreState {
-  adminConnectionEstablished: boolean;
   idsToControl: IdsToControl;
   iobroker: typeof iobrokerTree;
 }
@@ -24,7 +23,6 @@ interface IoBrokerStoreGetters {
 }
 
 export type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
-export type IoBrokerStore = Store<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
 
 export interface IRecipeGroupToDelete {
   groupPosition: number;

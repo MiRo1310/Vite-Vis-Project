@@ -1,9 +1,7 @@
-import { AdminConnection, PROGRESS } from "@iobroker/socket-client";
-import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
+import { AdminConnection } from "@iobroker/socket-client";
 import { type IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { Logger } from "@/lib/logger.ts";
-import { type IoBrokerStore } from "@/store";
 
 interface SubscriberValue {
   id: string;
@@ -13,7 +11,7 @@ interface SubscriberValue {
 export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
-  private ioBrokerStore: IoBrokerStore | undefined;
+
   private subscribedIds: SubscriberValue[] = [];
   private readonly isScriptPresent: () => boolean;
 
@@ -34,16 +32,12 @@ export class IoBrokerService {
   }
 
   private async init() {
-    this.ioBrokerStore = useIobrokerStore();
     this.adminConnection = new AdminConnection({
       protocol: "ws:",
       host: IOBROKER_HOST,
       port: IOBROKER_WS_PORT,
       admin5only: false,
       autoSubscribes: [],
-      onProgress: (progress) => {
-        useIobrokerStore().setAdminConnection(progress === PROGRESS.READY);
-      },
     });
 
     await this.adminConnection.startSocket();
@@ -80,7 +74,7 @@ export class IoBrokerService {
 
   private async subscribeId(val: SubscriberValue) {
     const { id, cb } = val;
-    if (!this.adminConnection || !this.ioBrokerStore) {
+    if (!this.adminConnection) {
       return;
     }
     this.addSubscriberId(val);

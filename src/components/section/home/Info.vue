@@ -14,11 +14,7 @@ const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
 
-const wallbox = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
-
-const airConditioners = computed(() => iobroker.airConditioners);
-const landroid = computed(() => iobroker.landroid);
-const pool = computed(() => iobroker.pool);
+const wallboxJson = computed((): WattPilotJson => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const landroidStatusMap: Record<number, string> = {
   0: "Leerlauf",
@@ -35,7 +31,7 @@ const landroidStatusMap: Record<number, string> = {
 };
 
 const landroidStatusLabel = computed(() => {
-  const code = landroid.value.status.value;
+  const code = iobroker.landroid.status.value;
   return landroidStatusMap[code] ?? `Status ${code}`;
 });
 </script>
@@ -67,10 +63,10 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Klima</p>
     <div class="grid grid-cols-2 gap-2">
       <DataCard title="Schlafen" content-class="space-y-1">
-        <OnlineActiveRows :online="airConditioners.schlafenOnline.value" :active="airConditioners.schlafenOnline.value" />
+        <OnlineActiveRows :online="iobroker.airConditioners.schlafenOnline.value" :active="iobroker.airConditioners.schlafenOnline.value" />
       </DataCard>
       <DataCard title="Kinderzimmer" content-class="space-y-1">
-        <OnlineActiveRows :online="airConditioners.childOnline.value" :active="airConditioners.childPowerStatus.value" />
+        <OnlineActiveRows :online="iobroker.airConditioners.childOnline.value" :active="iobroker.airConditioners.childPowerStatus.value" />
       </DataCard>
     </div>
 
@@ -78,11 +74,11 @@ const landroidStatusLabel = computed(() => {
     <p class="text-xs text-muted-foreground uppercase tracking-wide">Rasenmäher</p>
     <div class="grid grid-cols-2 gap-2">
       <DataCard title="Status" content-class="flex items-center gap-1.5">
-        <StatusDot :active="landroid.online.value" />
+        <StatusDot :active="iobroker.landroid.online.value" />
         <span class="text-xs font-semibold truncate">{{ landroidStatusLabel }}</span>
       </DataCard>
       <DataCard title="Akku">
-        <span class="text-sm font-semibold">{{ landroid.battery.value ?? 0 }}</span>
+        <span class="text-sm font-semibold">{{ iobroker.landroid.battery.value ?? 0 }}</span>
         <span class="text-xs text-muted-foreground ml-1">%</span>
       </DataCard>
     </div>
@@ -92,12 +88,12 @@ const landroidStatusLabel = computed(() => {
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="pool.heaterOnline.value" :active="pool.heaterState.value" />
+          <OnlineActiveRows :online="iobroker.pool.heaterOnline.value" :active="iobroker.pool.heaterState.value" />
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="pool.poolPumpSwitch.value" :active="pool.poolPumpPower.value > 40" />
+          <OnlineActiveRows :online="iobroker.pool.poolPumpSwitch.value" :active="iobroker.pool.poolPumpPower.value > 40" />
         </DataCard>
       </RouterLink>
     </div>
@@ -108,14 +104,14 @@ const landroidStatusLabel = computed(() => {
       <RouterLink :to="routes.wattPilot.path">
         <DataCard title="Laden" class="h-full" clickable>
           <div class="flex items-center gap-1.5">
-            <StatusDot :active="wallbox?.charging ?? false" />
-            <span class="text-xs font-semibold">{{ wallbox?.charging ? "Aktiv" : "Inaktiv" }}</span>
+            <StatusDot :active="wallboxJson?.charging ?? false" />
+            <span class="text-xs font-semibold">{{ wallboxJson?.charging ? "Aktiv" : "Inaktiv" }}</span>
           </div>
-          <span v-if="wallbox?.chargingPowerW" class="text-xs font-semibold"> {{ wallbox.chargingPowerW }} W</span>
+          <span v-if="wallboxJson?.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Ladeleistung" clickable content-class="flex flex-col gap-1.5">
+        <DataCard title="Ladestatus" clickable content-class="flex flex-col gap-1.5">
           <MetricValue :number-value="iobroker.car.battery" />
 
           <MetricValue
@@ -124,7 +120,7 @@ const landroidStatusLabel = computed(() => {
                 chargingLimit: 80,
                 batteryCapacity: 81,
                 currentBatteryPercent: iobroker.car.battery.value,
-                currentPowerW: wallbox?.chargingPowerW ?? 0,
+                currentPowerW: wallboxJson?.chargingPowerW ?? 0,
               })
             "
             unit="Std"

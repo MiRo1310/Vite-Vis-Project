@@ -19,6 +19,7 @@ onUnmounted(() => {
   useTime().clear();
 });
 </script>
+
 <template>
   <Toaster />
   <router-view />
