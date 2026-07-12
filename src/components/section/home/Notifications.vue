@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useNotificationStore } from "@/store/notification-store.ts";
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import { isDefined } from "@vueuse/core";
 
 const store = useNotificationStore();
 
 const currentIndex = ref(0);
 const notification = computed(() => {
-  console.log(store.getNotificationsFromHighestType[currentIndex.value]);
   return store.getNotificationsFromHighestType[currentIndex.value];
 });
 
@@ -45,7 +45,7 @@ onUnmounted(() => {
     </CardHeader>
     <div class="relative overflow-hidden">
       <Transition name="slide">
-        <div v-if="currentIndex" :key="currentIndex">
+        <div v-if="isDefined(currentIndex)" :key="currentIndex">
           <CardContent class="pt-1 pb-2 flex gap-1.5 px-0">
             <div v-if="notification" class="px-3 pt-1 pb-2 flex items-center gap-1.5">
               <StatusDot v-if="notification.hasStatus" :active="notification.status" />
