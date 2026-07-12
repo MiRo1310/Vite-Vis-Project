@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { AdminConnection } from "@iobroker/socket-client";
 import { type IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
@@ -6,6 +7,7 @@ import { Logger } from "@/lib/logger.ts";
 interface SubscriberValue {
   id: string;
   cb: (state: IobrokerState) => void;
+  done?: boolean;
 }
 
 export class IoBrokerService {
@@ -13,6 +15,8 @@ export class IoBrokerService {
   private queuedIds: SubscriberValue[] = [];
 
   private subscribedIds: SubscriberValue[] = [];
+  public readonly subscribedIdsCount = ref(0);
+  public readonly subscribedDoneIdsCount = ref(0);
   private readonly isScriptPresent: () => boolean;
 
   constructor(isScriptPresent = () => !!document.querySelector(".ioBroker")) {
@@ -80,6 +84,10 @@ export class IoBrokerService {
     this.addSubscriberId(val);
     await this.adminConnection
       .subscribeStateAsync(id, (_id: string, state: IobrokerState) => {
+        if (!val.done) {
+          val.done = true;
+          this.subscribedDoneIdsCount.value++;
+        }
         cb(state);
       })
       .catch((e) => {
@@ -89,10 +97,13 @@ export class IoBrokerService {
 
   private addSubscriberId(subscriberValue: SubscriberValue) {
     this.subscribedIds.push(subscriberValue);
+    this.subscribedIdsCount.value = this.subscribedIds.length;
   }
 
   public resetSubscribedIds() {
     this.subscribedIds = [];
+    this.subscribedIdsCount.value = 0;
+    this.subscribedDoneIdsCount.value = 0;
   }
 }
 
