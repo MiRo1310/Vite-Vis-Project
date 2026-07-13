@@ -45,9 +45,9 @@ onUnmounted(() => {
     </CardHeader>
     <div class="relative overflow-hidden">
       <Transition name="slide">
-        <div v-if="isDefined(currentIndex)" :key="currentIndex">
+        <div v-if="notification" :key="currentIndex">
           <CardContent class="pt-1 pb-2 flex gap-1.5 px-0">
-            <div v-if="notification" class="px-3 pt-1 pb-2 flex items-center gap-1.5">
+            <div class="px-3 pt-1 pb-2 flex items-center gap-1.5">
               <StatusDot v-if="notification.hasStatus" :active="notification.status" />
               <span class="text-sm font-semibold inline-block truncate whitespace-nowrap w-72">{{ notification.message }}</span>
             </div>
