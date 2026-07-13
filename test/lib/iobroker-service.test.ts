@@ -34,6 +34,11 @@ describe("IoBrokerService", () => {
   let socketMocks: any;
 
   beforeEach(async () => {
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    });
+
     const socketMod = await import("@iobroker/socket-client");
     socketMocks = (socketMod as any).__mocks;
 
@@ -45,6 +50,7 @@ describe("IoBrokerService", () => {
   });
 
   afterEach(() => {
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
     document.querySelectorAll(".ioBroker").forEach((el) => el.remove());
   });
@@ -116,5 +122,37 @@ describe("IoBrokerService", () => {
     adminConnection.onProgress(4);
 
     expect(service.isAdminConnected).toBe(true);
+  });
+
+  it("subscribedIdsCount und subscribedDoneIdsCount werden beim Subscriben hochgezählt", async () => {
+    await initService();
+
+    const cb = vi.fn();
+    await service.subscribe({ id: "test.id.1", cb });
+
+    expect(service.subscribedIdsCount.value).toBe(1);
+    expect(service.subscribedDoneIdsCount.value).toBe(0);
+
+    const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
+    stateHandler("test.id.1", { val: 1, ack: true });
+
+    expect(service.subscribedDoneIdsCount.value).toBe(1);
+
+    stateHandler("test.id.1", { val: 2, ack: true });
+    expect(service.subscribedDoneIdsCount.value).toBe(1);
+  });
+
+  it("resetSubscribedIds setzt beide Zähler zurück", async () => {
+    await initService();
+
+    const cb = vi.fn();
+    await service.subscribe({ id: "test.id.1", cb });
+    const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
+    stateHandler("test.id.1", { val: 1, ack: true });
+
+    service.resetSubscribedIds();
+
+    expect(service.subscribedIdsCount.value).toBe(0);
+    expect(service.subscribedDoneIdsCount.value).toBe(0);
   });
 });
