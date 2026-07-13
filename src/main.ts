@@ -8,8 +8,12 @@ import "@michaelroling/ts-library";
 import { vComponent, vE2E } from "@/directives/directives.ts";
 import { router } from "@/router/router.ts";
 import { registerSW } from "virtual:pwa-register";
+import { reloadWhenHidden } from "@/lib/pwaUpdate.ts";
 
-registerSW({ immediate: true });
+registerSW({
+  immediate: true,
+  onNeedReload: () => reloadWhenHidden(),
+});
 
 const app = createApp(App);
 
