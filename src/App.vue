@@ -17,6 +17,7 @@ useColorMode();
 useIobrokerStore();
 
 onMounted(async () => {
+  ioBrokerService.resetSubscribedIds();
   useNotificationStore(); // Store vor dem ersten Socket-Callback initialisieren
   ioBrokerService.loadScript(socketIo);
 });

@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { AdminConnection, PROGRESS } from "@iobroker/socket-client";
 import { type IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
@@ -13,6 +14,11 @@ export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
   private adminConnectionEstablished = false;
+  private subscribedIds: SubscriberValue[] = [];
+  private doneCount = 0;
+  private countFlushScheduled = false;
+  public readonly subscribedIdsCount = ref(0);
+  public readonly subscribedDoneIdsCount = ref(0);
   private readonly isScriptPresent: () => boolean;
 
   constructor(isScriptPresent = () => !!document.querySelector(".ioBroker")) {
@@ -68,17 +74,51 @@ export class IoBrokerService {
     });
   }
 
-  private async subscribeId({ id, cb }: SubscriberValue) {
+  private async subscribeId(val: SubscriberValue) {
+    const { id, cb } = val;
     if (!this.adminConnection) {
       return;
     }
+    this.addSubscriberId(val);
     await this.adminConnection
       .subscribeStateAsync(id, (_id: string, state: IobrokerState) => {
+        if (!val.done) {
+          val.done = true;
+          this.doneCount++;
+          this.scheduleCountFlush();
+        }
         cb(state);
       })
       .catch((e) => {
         Logger(`Error subscribing to ${id}`, { e });
       });
+  }
+
+  private addSubscriberId(subscriberValue: SubscriberValue) {
+    this.subscribedIds.push(subscriberValue);
+    this.scheduleCountFlush();
+  }
+
+  // Hunderte States lösen ihre subscribeStateAsync-Antwort einzeln und zeitversetzt aus.
+  // Ohne Bündelung würde jede einzelne Antwort einen eigenen Vue-Re-Render auslösen.
+  // requestAnimationFrame begrenzt das Schreiben in die Refs auf max. 1x pro Frame.
+  private scheduleCountFlush() {
+    if (this.countFlushScheduled) {
+      return;
+    }
+    this.countFlushScheduled = true;
+    requestAnimationFrame(() => {
+      this.subscribedIdsCount.value = this.subscribedIds.length;
+      this.subscribedDoneIdsCount.value = this.doneCount;
+      this.countFlushScheduled = false;
+    });
+  }
+
+  public resetSubscribedIds() {
+    this.subscribedIds = [];
+    this.doneCount = 0;
+    this.subscribedIdsCount.value = 0;
+    this.subscribedDoneIdsCount.value = 0;
   }
 }
 

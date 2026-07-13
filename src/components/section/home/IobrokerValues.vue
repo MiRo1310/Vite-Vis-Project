@@ -10,7 +10,8 @@ import { formatUptime, miBToGiB } from "@/lib/system";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import DotWithValue from "@/components/shared/display/DotWithValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
-import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import SubscriptionProgress from "@/components/section/home/SubscriptionProgress.vue";
+
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -38,12 +39,6 @@ const wpModus = computed(() => {
 });
 
 const version = import.meta.env.VITE_APP_VERSION;
-
-const subscriptionProgress = computed(() => {
-  const total = ioBrokerService.subscribedIdsCount.value;
-  const done = ioBrokerService.subscribedDoneIdsCount.value;
-  return total > 0 ? (done / total) * 100 : 0;
-});
 </script>
 
 <template>
@@ -234,10 +229,7 @@ const subscriptionProgress = computed(() => {
         </DataCard>
       </div>
       <div>
-        <DataCard title="Subscribed IDs" content-class="space-y-1">
-          <MetricValue :val="`${ioBrokerService.subscribedDoneIdsCount.value} / ${ioBrokerService.subscribedIdsCount.value}`" />
-          <Progress :model-value="subscriptionProgress" class="h-1.5" />
-        </DataCard>
+        <SubscriptionProgress />
       </div>
     </TabsContent>
   </Tabs>
