@@ -9,6 +9,9 @@ export const useIobrokerStore = defineStore("iobrokerStore", {
     iobroker: iobrokerTree,
   }),
   getters: {
+    getTrash: (state) => state.iobroker.trash,
+    getShoppinglist: (state) => state.iobroker.alexaLists,
+    getState: (state) => state as IoBrokerStoreState,
     getIdsToControl: (state) => state.idsToControl,
   },
   actions: {},

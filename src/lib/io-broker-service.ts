@@ -1,5 +1,4 @@
-import { ref } from "vue";
-import { AdminConnection } from "@iobroker/socket-client";
+import { AdminConnection, PROGRESS } from "@iobroker/socket-client";
 import { type IobrokerState } from "@/types/types.ts";
 import { IOBROKER_HOST, IOBROKER_WS_PORT } from "@/config/config.ts";
 import { Logger } from "@/lib/logger.ts";
@@ -13,10 +12,7 @@ interface SubscriberValue {
 export class IoBrokerService {
   private adminConnection: AdminConnection | undefined;
   private queuedIds: SubscriberValue[] = [];
-
-  private subscribedIds: SubscriberValue[] = [];
-  public readonly subscribedIdsCount = ref(0);
-  public readonly subscribedDoneIdsCount = ref(0);
+  private adminConnectionEstablished = false;
   private readonly isScriptPresent: () => boolean;
 
   constructor(isScriptPresent = () => !!document.querySelector(".ioBroker")) {
@@ -42,6 +38,9 @@ export class IoBrokerService {
       port: IOBROKER_WS_PORT,
       admin5only: false,
       autoSubscribes: [],
+      onProgress: (progress) => {
+        this.adminConnectionEstablished = progress === PROGRESS.READY;
+      },
     });
 
     await this.adminConnection.startSocket();
@@ -51,16 +50,9 @@ export class IoBrokerService {
   public get connection() {
     return this.adminConnection;
   }
-  // public unSubscribeStates(states: IobrokerSubscription[]) {
-  //   states.forEach((listObjectOfIds) => {
-  //     listObjectOfIds.value.forEach((idObjectEntry) => {
-  //       if (this.adminConnection) {
-  //         this.adminConnection.unsubscribeState(idObjectEntry.id);
-  //       }
-  //       this.ioBrokerStore?.removeIdFromSubscribedIds(idObjectEntry.id);
-  //     });
-  //   });
-  // }
+  public get isAdminConnected() {
+    return this.adminConnectionEstablished;
+  }
 
   public async subscribe(subscriberValue: SubscriberValue) {
     if (!this.adminConnection) {
@@ -76,34 +68,17 @@ export class IoBrokerService {
     });
   }
 
-  private async subscribeId(val: SubscriberValue) {
-    const { id, cb } = val;
+  private async subscribeId({ id, cb }: SubscriberValue) {
     if (!this.adminConnection) {
       return;
     }
-    this.addSubscriberId(val);
     await this.adminConnection
       .subscribeStateAsync(id, (_id: string, state: IobrokerState) => {
-        if (!val.done) {
-          val.done = true;
-          this.subscribedDoneIdsCount.value++;
-        }
         cb(state);
       })
       .catch((e) => {
         Logger(`Error subscribing to ${id}`, { e });
       });
-  }
-
-  private addSubscriberId(subscriberValue: SubscriberValue) {
-    this.subscribedIds.push(subscriberValue);
-    this.subscribedIdsCount.value = this.subscribedIds.length;
-  }
-
-  public resetSubscribedIds() {
-    this.subscribedIds = [];
-    this.subscribedIdsCount.value = 0;
-    this.subscribedDoneIdsCount.value = 0;
   }
 }
 
