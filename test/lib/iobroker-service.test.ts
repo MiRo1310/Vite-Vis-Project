@@ -6,27 +6,17 @@ vi.mock("@iobroker/socket-client", () => {
   const mockStartSocket = vi.fn(() => Promise.resolve());
   const mockWaitForFirstConnection = vi.fn(() => Promise.resolve());
 
-  const AdminConnection = vi.fn().mockImplementation(function (this: any) {
+  const AdminConnection = vi.fn().mockImplementation(function (this: any, options: any) {
     this.subscribeStateAsync = mockSubscribeStateAsync;
     this.startSocket = mockStartSocket;
     this.waitForFirstConnection = mockWaitForFirstConnection;
+    this.onProgress = options?.onProgress;
   });
 
   return {
     AdminConnection,
     PROGRESS: { READY: 4, CONNECTED: 2 },
     __mocks: { mockSubscribeStateAsync, mockStartSocket, mockWaitForFirstConnection },
-  };
-});
-
-vi.mock("../../src/store/ioBrokerStore.ts", () => {
-  const mockSetAdminConnection = vi.fn();
-  return {
-    useIobrokerStore: () => ({
-      setAdminConnection: mockSetAdminConnection,
-      subscribedIds: [],
-    }),
-    __mocks: { mockSetAdminConnection },
   };
 });
 
@@ -42,26 +32,33 @@ vi.mock("../../src/config/config.ts", () => ({
 describe("IoBrokerService", () => {
   let service: IoBrokerService;
   let socketMocks: any;
-  let storeMocks: any;
 
   beforeEach(async () => {
     const socketMod = await import("@iobroker/socket-client");
     socketMocks = (socketMod as any).__mocks;
-    const storeMod = await import("../../src/store/ioBrokerStore.ts");
-    storeMocks = (storeMod as any).__mocks;
 
     service = new IoBrokerService();
 
     socketMocks.mockSubscribeStateAsync.mockClear();
     socketMocks.mockStartSocket.mockClear();
     socketMocks.mockWaitForFirstConnection.mockClear();
-    storeMocks.mockSetAdminConnection.mockClear();
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
     document.querySelectorAll(".ioBroker").forEach((el) => el.remove());
   });
+
+  async function initService() {
+    const script = document.createElement("script");
+    vi.spyOn(document, "createElement").mockReturnValue(script);
+    vi.spyOn(document.body, "appendChild").mockImplementation(() => script);
+
+    service.loadScript("/test.js");
+    if (script.onload) {
+      await (script.onload as any)(new Event("load"));
+    }
+  }
 
   it("loadScript fügt ein Script-Tag zum Body hinzu", () => {
     const appendChildSpy = vi.spyOn(document.body, "appendChild");
@@ -75,15 +72,7 @@ describe("IoBrokerService", () => {
   });
 
   it("startet socket connection nach loadScript onload", async () => {
-    const script = document.createElement("script");
-    vi.spyOn(document, "createElement").mockReturnValue(script);
-    vi.spyOn(document.body, "appendChild").mockImplementation(() => script);
-
-    service.loadScript("/test.js");
-
-    if (script.onload) {
-      await (script.onload as any)(new Event("load"));
-    }
+    await initService();
 
     expect(socketMocks.mockStartSocket).toHaveBeenCalled();
     expect(socketMocks.mockWaitForFirstConnection).toHaveBeenCalled();
@@ -94,24 +83,15 @@ describe("IoBrokerService", () => {
     await service.subscribe({ id: "test.id.1", cb });
 
     expect(socketMocks.mockSubscribeStateAsync).not.toHaveBeenCalled();
-    expect((service as any).subscribedIds).toHaveLength(0);
   });
 
-  it("subscribe ruft subscribeStateAsync und addIdToSubscribedIds nach init auf", async () => {
-    const script = document.createElement("script");
-    vi.spyOn(document, "createElement").mockReturnValue(script);
-    vi.spyOn(document.body, "appendChild").mockImplementation(() => script);
-
-    service.loadScript("/test.js");
-    if (script.onload) {
-      await (script.onload as any)(new Event("load"));
-    }
+  it("subscribe ruft subscribeStateAsync nach init auf", async () => {
+    await initService();
 
     const cb = vi.fn();
     await service.subscribe({ id: "test.id.1", cb });
 
     expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledWith("test.id.1", expect.any(Function));
-    expect((service as any).subscribedIds).toContainEqual({ id: "test.id.1", cb });
   });
 
   it("gequeuete subscriptions werden nach init verarbeitet", async () => {
@@ -119,20 +99,22 @@ describe("IoBrokerService", () => {
     service.subscribe({ id: "queued.id.1", cb });
     service.subscribe({ id: "queued.id.2", cb });
 
-    const script = document.createElement("script");
-    vi.spyOn(document, "createElement").mockReturnValue(script);
-    vi.spyOn(document.body, "appendChild").mockImplementation(() => script);
-
-    service.loadScript("/test.js");
-    if (script.onload) {
-      await (script.onload as any)(new Event("load"));
-    }
+    await initService();
 
     expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledTimes(2);
-    expect((service as any).subscribedIds).toHaveLength(2);
   });
 
   it("connection ist undefined vor init", () => {
     expect(service.connection).toBeUndefined();
+  });
+
+  it("isAdminConnected wird über onProgress gesetzt", async () => {
+    expect(service.isAdminConnected).toBe(false);
+
+    await initService();
+    const adminConnection = service.connection as any;
+    adminConnection.onProgress(4);
+
+    expect(service.isAdminConnected).toBe(true);
   });
 });
