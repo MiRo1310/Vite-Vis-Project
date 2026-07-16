@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useNotificationStore } from "@/store/notification-store.ts";
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { isDefined } from "@vueuse/core";
 
 const store = useNotificationStore();
 
