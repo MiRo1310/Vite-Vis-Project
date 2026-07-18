@@ -15,7 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/shared/button/button.variants";
-import { ArrowLeft, BookOpen, Github, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "lucide-vue-next";
+import { ArrowLeft, BookOpen, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "lucide-vue-next";
+import GithubIcon from "@/components/shared/icons/GithubIcon.vue";
 
 const recipeStore = useRecipeStore();
 const route = useRoute();
@@ -117,7 +118,7 @@ const navClass = (routeName: string): string =>
                 </DropdownMenuItem>
                 <DropdownMenuItem v-if="githubNavigation.href">
                   <a :href="githubNavigation.href" target="_blank" class="flex items-center gap-2 w-full">
-                    <Github class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <GithubIcon class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                     GitHub
                   </a>
                 </DropdownMenuItem>
