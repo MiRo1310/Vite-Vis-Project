@@ -19,14 +19,6 @@ async function reset() {
   await ioBrokerService.connection?.setState("logparser.0.filters.Wärmepumpe.emptyJson", true, false);
 }
 
-async function toggleHeater() {
-  iobroker.pool.heaterState.toggle();
-}
-
-async function togglePump() {
-  iobroker.pool.poolPumpSwitch.toggle();
-}
-
 const jsonDataActivate = computed(() => iobroker.pool.heaterScriptActivateJSON.parsed({} as HeatingPumpScriptJson));
 const jsonDataSilent = computed(() => iobroker.pool.heaterSilentScriptJSON.parsed({} as HeatingPumpSilentJSON));
 const pool = computed(() => iobroker.pool);
@@ -183,11 +175,11 @@ function formatDate(iso?: string): string {
             </div>
             <div class="flex justify-between items-center">
               <span class="text-muted-foreground">Einschalten</span>
-              <span class="font-mono">{{ jsonDataActivate?.scheduleOnCron ?? "–" }}</span>
+              <span class="font-mono">{{ iobroker.pool.heaterTurnOnAt.value }}</span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-muted-foreground">Ausschalten</span>
-              <span class="font-mono">{{ jsonDataActivate?.scheduleOffCron ?? "–" }}</span>
+              <span class="font-mono">{{ iobroker.pool.heaterTurnOffAt.value }}</span>
             </div>
           </DataCard>
 
@@ -213,8 +205,8 @@ function formatDate(iso?: string): string {
         <div>
           <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
           <div class="grid grid-cols-2 gap-2">
-            <ToggleCard title="Wärmepumpe" :active="pool.heaterState.value" @click="toggleHeater" />
-            <ToggleCard title="Poolpumpe" :active="pool.poolPumpSwitch.value" @click="togglePump" />
+            <ToggleCard title="Wärmepumpe" :boolean-value="pool.heaterState" />
+            <ToggleCard title="Poolpumpe" :boolean-value="pool.poolPumpSwitch" />
           </div>
         </div>
         <div>
@@ -222,6 +214,20 @@ function formatDate(iso?: string): string {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <DataCard title="Solltemperatur" content-class="pt-0.5">
               <InputIobroker :state="pool?.tempSet" unit="°C" />
+            </DataCard>
+          </div>
+          <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5 mt-4">Zeitpläne</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
+            <ToggleCard title="Zeitplan aktiv" :boolean-value="iobroker.pool.heaterPumpCronActive" />
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
+            <DataCard title="Anschalten um" content-class="pt-0.5">
+              <InputIobroker type="time" :state="iobroker.pool.heaterTurnOnAt" />
+              <span class="text-xs">Schedule -> {{ jsonDataActivate?.scheduleOnCron ?? "-" }}</span>
+            </DataCard>
+            <DataCard title="Ausschalten um " content-class="pt-0.5">
+              <InputIobroker type="time" :state="iobroker.pool.heaterTurnOffAt" />
+              <span class="text-xs">Schedule -> {{ jsonDataActivate?.scheduleOffCron ?? "-" }}</span>
             </DataCard>
           </div>
         </div>

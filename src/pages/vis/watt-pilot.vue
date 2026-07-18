@@ -23,10 +23,6 @@ const modeLabel: Record<number, string> = {
   2: "Min+Eco",
   3: "Max",
 };
-
-const toggleAutoCharging = async () => {
-  iobroker.wattPilot.autoCharging.toggle(true);
-};
 </script>
 
 <template>
@@ -150,7 +146,7 @@ const toggleAutoCharging = async () => {
       <TabsContent value="einstellungen" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
         <div class="flex items-center flex-wrap gap-2">
-          <ToggleCard title="Wallbox Überschussladen" class="flex-1" :active="iobroker.wattPilot.autoCharging.value" @click="toggleAutoCharging" />
+          <ToggleCard title="Wallbox Überschussladen" class="flex-1" :boolean-value="iobroker.wattPilot.autoCharging" :ack="true" />
         </div>
       </TabsContent>
     </Tabs>

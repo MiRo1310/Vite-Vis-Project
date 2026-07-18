@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ToggleCard from "@/components/shared/card/ToggleCard.vue";
+import ToggleCardManual from "@/components/shared/card/ToggleCardManual.vue";
 import { computed } from "vue";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { type IValueOf } from "@/store/valueClasses.ts";
@@ -22,5 +22,5 @@ async function handleClickLight() {
 </script>
 
 <template>
-  <ToggleCard color="yellow" :title="name.replace(/_/g, ' ')" :active="!!isActive" @click="handleClickLight" />
+  <ToggleCardManual color="yellow" :title="name.replace(/_/g, ' ')" :active="!!isActive" @click="handleClickLight" />
 </template>
