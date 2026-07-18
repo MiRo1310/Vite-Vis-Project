@@ -3,7 +3,7 @@ import Info from "@/components/section/home/Info.vue";
 import Trash from "@/components/section/home/Trash.vue";
 import Calendar from "@/components/section/home/Calendar.vue";
 import Caller from "@/components/section/home/Caller.vue";
-import IobrokerValues from "@/components/section/home/IobrokerValues.vue";
+import HomeCenteredTabs from "@/components/section/home/HomeCenteredTabs.vue";
 import Timer from "@/components/section/home/Timer.vue";
 import Fuel from "@/components/section/home/Fuel.vue";
 import Lists from "@/components/section/home/Lists.vue";
@@ -26,7 +26,7 @@ import NavigationRow from "@/components/section/home/NavigationRow.vue";
 
       <!-- Mittlere Spalte: IobrokerValues + Timer -->
       <div class="lg:col-span-5 sm:col-span-7 col-span-12 h-full flex flex-col gap-2 overflow-hidden">
-        <IobrokerValues class="flex-1 min-h-0" />
+        <HomeCenteredTabs class="flex-1 min-h-0" />
         <Timer class="shrink-0 hidden sm:grid!" />
       </div>
 

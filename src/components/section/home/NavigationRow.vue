@@ -28,7 +28,7 @@ const navCardClass =
 
 <template>
   <!--    Statusleiste: mobile = column (nav oben, cards unten), desktop = row-->
-  <div v-component="'Statusleiste'" class="flex flex-col sm:flex-row sm:items-stretch gap-2 shrink-0">
+  <div class="flex flex-col sm:flex-row sm:items-stretch gap-2 shrink-0">
     <!--      Navigations-Cards (oben auf mobile, rechts auf desktop)-->
     <div class="flex gap-2 overflow-x-auto sm:order-last sm:ml-auto shrink-0">
       <div :class="navCardClass" @click="appStore.toggleTimerVisibility">
