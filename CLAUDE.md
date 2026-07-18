@@ -53,7 +53,7 @@ src/
 
 ### Utility-Funktionen
 - Logik-Funktionen gehören in `src/lib/`, **nicht** direkt in `<script setup>`.
-- Jede Lib-Datei bekommt eine gleichnamige `.spec.ts`-Datei (z.B. `system.ts` → `system.spec.ts`).
+- Jede Lib-Datei bekommt eine Testdatei unter `test/`, die die `src/`-Struktur spiegelt — **niemals** co-located neben der Quelldatei (z.B. `src/lib/system.ts` → `test/lib/system.test.ts`).
 - Lib-Funktionen müssen pure sein (kein Vue-State, keine Composables) damit Vitest sie direkt testen kann.
 
 ### ESLint
@@ -265,7 +265,7 @@ const data = computed(() => toJSON<MyType>(iobroker.pool?.someJSON?.val ?? "").j
 
 ## Tests
 
-- **Unit-Tests:** Vitest, Dateien als `*.spec.ts` neben der Quelldatei in `src/lib/`.
+- **Unit-Tests:** Vitest, Dateien als `*.test.ts` unter `test/`, Ordnerstruktur spiegelt `src/` (z.B. `src/lib/string.ts` → `test/lib/string.test.ts`, `src/store/appStore.ts` → `test/store/appStore.test.ts`). **Nie** eine Testdatei direkt neben der Quelldatei in `src/` ablegen.
 - **E2E / Component-Tests:** Cypress in `cypress/`.
 - Tests werden mit `yarn test` oder `yarn coverage` ausgeführt.
-- Testbeispiel: `src/lib/system.spec.ts` für `miBToGiB` und `formatUptime`.
+- Testbeispiel: `test/lib/time.test.ts` für Funktionen aus `src/lib/time.ts`.
