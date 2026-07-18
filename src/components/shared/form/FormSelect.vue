@@ -12,11 +12,13 @@ withDefaults(
     class?: HTMLAttributes["class"];
     selectOptions?: SelectOption[];
     disabled?: boolean;
+    e2e?: string;
   }>(),
   {
     placeholder: "",
     class: "",
     selectOptions: () => [],
+    e2e: undefined,
   },
 );
 </script>
@@ -28,7 +30,7 @@ withDefaults(
         <span>{{ label }}</span>
       </FormLabel>
       <FormControl>
-        <SelectComponent v-bind="componentField" :items="selectOptions" :placeholder :disabled class="w-full" />
+        <SelectComponent v-bind="componentField" :items="selectOptions" :placeholder :disabled :e2e class="w-full" />
       </FormControl>
       <FormDescription />
       <FormMessage />

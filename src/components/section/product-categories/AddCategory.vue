@@ -77,9 +77,10 @@ const categoryExists = computed(() => isDefined(props.result.find((c) => c.name 
         placeholder="Kategorie hinzu, Komma separiert"
         @keyup.enter="addNewCategory"
         type="text"
+        v-e2e="'add-category-input'"
       />
       <p v-if="categoryExists" class="text-sm font-medium text-destructive mt-2">Die Kategorie existiert schon</p>
     </div>
-    <Button variant="outline" size="icon" icon="add" :disabled @click.prevent="addNewCategory" />
+    <Button variant="outline" size="icon" icon="add" :disabled v-e2e="'add-category-submit'" @click.prevent="addNewCategory" />
   </div>
 </template>

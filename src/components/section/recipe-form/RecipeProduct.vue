@@ -62,7 +62,7 @@ const open = defineModel("dialogOpen", { default: false });
 <template>
   <Dialog v-if="product" v-model:open="open">
     <DialogTrigger class="w-full">
-      <div class="flex justify-between items-center px-2 cursor-pointer">
+      <div class="flex justify-between items-center px-2 cursor-pointer" v-e2e="'recipe-product-trigger'">
         <div class="flex justify-between items-center p-1 flex-1 mr-6" data-component="product-summary">
           <div>
             <span>{{ index + 1 }}.</span>

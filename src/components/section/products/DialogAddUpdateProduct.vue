@@ -195,9 +195,15 @@ const addAllValuesToForm = ref(false);
           <FormInput label="Ean" name="ean" />
         </OpenFoodFactsValueUpdater>
         <div class="flex gap-2 items-baseline mb-4">
-          <FormInput label="Produkt" name="name" class="flex-1" />
+          <FormInput label="Produkt" name="name" class="flex-1" e2e="product-name" />
 
-          <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" />
+          <FormSelect
+            label="Kategorie"
+            placeholder="Wähle eine Kategorie"
+            name="category"
+            :select-options="selectableOptions"
+            e2e="product-category"
+          />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
           <OpenFoodFactsValueUpdater
@@ -271,7 +277,7 @@ const addAllValuesToForm = ref(false);
         />
       </div>
       <template #footer>
-        <FormFooter @update:close="closeDialog" />
+        <FormFooter @update:close="closeDialog" e2e="product-submit" />
       </template>
     </Form>
   </DialogShared>

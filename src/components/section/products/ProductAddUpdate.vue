@@ -76,5 +76,5 @@ const showDialog = computed((): boolean => {
 
 <template>
   <DialogAddUpdateProduct v-if="showDialog" v-model:dialog-open="dialogOpen" :data="result?.product" />
-  <span class="underline cursor-pointer" @click="clickHandler">{{ value }}</span>
+  <span class="underline cursor-pointer text-muted-foreground" @click="clickHandler">{{ value }}</span>
 </template>
