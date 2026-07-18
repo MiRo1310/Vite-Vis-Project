@@ -8,5 +8,5 @@ const val = computed(() => (isDefined(props.value) ? String(parseFloat(String(pr
 </script>
 
 <template>
-  <p>{{ val }} {{ value ? unit : "" }}</p>
+  <p class="text-muted-foreground">{{ val }} {{ value ? unit : "" }}</p>
 </template>

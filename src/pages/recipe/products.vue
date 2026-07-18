@@ -150,7 +150,7 @@ const groupedProducts = computed((): IProducts => {
           <Button as="div" variant="outline">Zu den Produktkategorien</Button>
         </RouterLink>
 
-        <Button variant="outline" icon="add" size="icon" @click="dialogOpen = !dialogOpen" />
+        <Button variant="outline" icon="add" size="icon" v-e2e="'products-add'" @click="dialogOpen = !dialogOpen" />
       </div>
     </Header>
 
@@ -169,7 +169,7 @@ const groupedProducts = computed((): IProducts => {
         <template v-for="product in groupedProducts.group1" :key="product.key">
           <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
             {{ product.key }}
-            <div class="bg-accent rounded-md px-2 pb-2 mt-1">
+            <div class="rounded-md pb-2 mt-1">
               <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
             </div>
           </div>
@@ -179,7 +179,7 @@ const groupedProducts = computed((): IProducts => {
         <template v-for="product in groupedProducts.group2" :key="product.key">
           <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
             {{ product.key }}
-            <div class="bg-accent rounded-md px-2 pb-2 mt-1">
+            <div class="rounded-md pb-2 mt-1">
               <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
             </div>
           </div>

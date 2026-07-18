@@ -15,19 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/shared/button/button.variants";
-import {
-  ArrowLeft,
-  BookOpen,
-  Github,
-  LayoutGrid,
-  MoreHorizontal,
-  Package,
-  Pencil,
-  Plus,
-  Ruler,
-  Tag,
-  UtensilsCrossed,
-} from "lucide-vue-next";
+import { ArrowLeft, BookOpen, Github, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "lucide-vue-next";
 
 const recipeStore = useRecipeStore();
 const route = useRoute();
@@ -46,10 +34,9 @@ const navClass = (routeName: string): string =>
       <!-- Navigation Header -->
       <header class="fixed top-0 z-50 w-full h-12 border-b border-border/60 bg-background/95 backdrop-blur-sm">
         <div class="flex items-center gap-1 px-3 h-full">
-
           <!-- Brand -->
           <div class="flex items-center gap-2 mr-3 shrink-0">
-            <div class="h-7 w-7 rounded-lg bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center shrink-0">
+            <div class="h-7 w-7 rounded-lg bg-linear-to-br from-orange-500 to-amber-400 flex items-center justify-center shrink-0">
               <UtensilsCrossed class="h-3.5 w-3.5 text-white" />
             </div>
             <span class="font-semibold text-sm hidden sm:block">Kochbuch</span>
@@ -69,17 +56,8 @@ const navClass = (routeName: string): string =>
                 <span class="hidden sm:inline">Neu</span>
               </RouterLink>
             </Button>
-            <Button
-              v-if="lastRecipe"
-              variant="ghost"
-              size="sm"
-              as-child
-              :class="navClass(routes.editRecipe.name)"
-            >
-              <RouterLink
-                :to="{ name: routes.editRecipe.name, params: { id: lastRecipe.id } }"
-                class="flex items-center min-w-0"
-              >
+            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child :class="navClass(routes.editRecipe.name)">
+              <RouterLink :to="{ name: routes.editRecipe.name, params: { id: lastRecipe.id } }" class="flex items-center min-w-0">
                 <Pencil class="h-3.5 w-3.5 mr-1.5 shrink-0" />
                 <span class="hidden sm:inline truncate max-w-36">{{ lastRecipe.name }}</span>
               </RouterLink>
@@ -89,18 +67,8 @@ const navClass = (routeName: string): string =>
           <!-- Right Side -->
           <div class="flex items-center gap-1 shrink-0">
             <!-- Back to last recipe detail -->
-            <Button
-              v-if="lastRecipe"
-              variant="ghost"
-              size="sm"
-              as-child
-              class="hidden md:flex"
-              :class="navClass(routes.recipeDetails.name)"
-            >
-              <RouterLink
-                :to="{ name: routes.recipeDetails.name, params: { recipeId: lastRecipe.id } }"
-                class="flex items-center"
-              >
+            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child class="hidden md:flex" :class="navClass(routes.recipeDetails.name)">
+              <RouterLink :to="{ name: routes.recipeDetails.name, params: { recipeId: lastRecipe.id } }" class="flex items-center">
                 <ArrowLeft class="h-3.5 w-3.5 mr-1.5 shrink-0" />
                 Zurück
               </RouterLink>

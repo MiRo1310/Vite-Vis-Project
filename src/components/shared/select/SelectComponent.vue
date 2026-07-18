@@ -11,9 +11,12 @@ const props = defineProps<{
   class?: HTMLAttributes["class"];
   disableHover?: boolean;
   disabled?: boolean;
+  e2e?: string;
   // eslint-disable-next-line vue/no-unused-properties
   border?: keyof (typeof variants)["border"];
 }>();
+
+const itemE2e = (item: SelectOption): string | undefined => (props.e2e ? `${props.e2e}-${item.label}` : undefined);
 
 const modelValue = defineModel<string>("modelValue", {
   get: (m) => {
@@ -62,7 +65,7 @@ const variants = {
 
 <template>
   <Select v-model="modelValue" :disabled>
-    <SelectTrigger :class="[getVariantsClasses(variants, props), $props.class]">
+    <SelectTrigger v-e2e="e2e" :class="[getVariantsClasses(variants, props), $props.class]">
       <SelectValue :placeholder="placeholder" />
     </SelectTrigger>
     <SelectContent>
@@ -74,6 +77,7 @@ const variants = {
           v-for="(item, index) in items"
           :key="index"
           :value="item.value"
+          v-e2e="itemE2e(item)"
           :class="[
             `border-${item?.class || 'accent'}`,
 

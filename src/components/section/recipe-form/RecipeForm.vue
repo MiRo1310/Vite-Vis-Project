@@ -460,7 +460,7 @@ const goNext = () => {
         <span class="text-xs whitespace-nowrap" :class="currentStep >= 2 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Beschreibung</span>
       </button>
       <div class="flex-1 h-px mt-3.5 mx-2" :class="currentStep > 2 ? 'bg-orange-400/60' : 'bg-border'" />
-      <button type="button" class="flex flex-col items-center gap-1 shrink-0" @click="currentStep = 3">
+      <button type="button" class="flex flex-col items-center gap-1 shrink-0" v-e2e="'recipe-step-ingredients'" @click="currentStep = 3">
         <div :class="stepCircle(3)">
           <span class="text-xs font-bold">3</span>
         </div>
@@ -474,7 +474,7 @@ const goNext = () => {
       <div v-show="currentStep === 1" class="flex flex-col gap-3">
         <Card class="py-0 gap-0">
           <CardContent class="px-4 pt-3 pb-4 flex flex-col gap-3">
-            <FormInput label="Rezeptname" name="name" />
+            <FormInput label="Rezeptname" name="name" e2e="recipe-name" />
             <div class="grid grid-cols-2 gap-3">
               <FormInput label="Portionen" name="portions" type="number" />
               <RecipeCategoryFormSelect />
