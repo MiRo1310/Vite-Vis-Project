@@ -32,6 +32,9 @@ const landroidStatusMap: Record<number, string> = {
 
 const landroidStatusLabel = computed(() => {
   const code = iobroker.landroid.status.value;
+  if (!iobroker.landroid.online.value) {
+    return "Offline";
+  }
   return landroidStatusMap[code] ?? `Status ${code}`;
 });
 </script>
@@ -78,8 +81,8 @@ const landroidStatusLabel = computed(() => {
         <span class="text-xs font-semibold truncate">{{ landroidStatusLabel }}</span>
       </DataCard>
       <DataCard title="Akku">
-        <span class="text-sm font-semibold">{{ iobroker.landroid.battery.value ?? 0 }}</span>
-        <span class="text-xs text-muted-foreground ml-1">%</span>
+        <MetricValue v-if="iobroker.landroid.online.value" :number-value="iobroker.landroid.battery" />
+        <span v-else>-</span>
       </DataCard>
     </div>
 

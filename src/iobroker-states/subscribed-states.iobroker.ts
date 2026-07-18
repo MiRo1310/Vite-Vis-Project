@@ -691,7 +691,7 @@ export const iobrokerTree = {
     childSetTemp: new NumberValue("tuya.0.bf57f6b83543b4f45dwh13.5"),
   },
   landroid: {
-    battery: new NumberValue("worx.0.202330294701005409AD.mower.batteryState"),
+    battery: new NumberValue("worx.0.202330294701005409AD.mower.batteryState", { unit: "%" }),
     totalDistance: new NumberValue("worx.0.202330294701005409AD.mower.totalDistance"),
     totalBladeTime: new NumberValue("worx.0.202330294701005409AD.mower.totalBladeTime"),
     status: new NumberValue("worx.0.202330294701005409AD.mower.status"),
