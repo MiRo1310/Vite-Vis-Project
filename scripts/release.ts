@@ -1,5 +1,5 @@
 import fs from "fs";
-import { copyDataToRemote, ensureCleanWorktree, run } from "./utils.ts";
+import { copyDataToRemote, ensureCleanWorktree, rollbackRelease, run } from "./utils.ts";
 
 ensureCleanWorktree();
 
@@ -16,13 +16,19 @@ const valid = ["patch", "minor", "major"];
 
 const versionType = valid.includes(arg) ? arg : "patch";
 
-run(`npm version ${versionType}`);
+const versionBefore = JSON.parse(fs.readFileSync("package.json", "utf-8")).version;
 
-// Version holen (z. B. aus package.json)
+try {
+  run(`npm version ${versionType}`);
 
-const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
-const version = pkg.version;
-copyDataToRemote(version);
+  // Version holen (z. B. aus package.json)
+  const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+  const version = pkg.version;
+  copyDataToRemote(version);
 
-// Git aktualisieren
-run("git push --follow-tags");
+  // Git aktualisieren
+  run("git push --follow-tags");
+} catch (err) {
+  rollbackRelease(versionBefore);
+  throw err;
+}

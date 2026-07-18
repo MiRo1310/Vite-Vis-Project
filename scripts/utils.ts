@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import fs from "fs";
 import { loadEnv } from "vite";
 
 export function copyDataToRemote(version: string): void {
@@ -93,6 +94,27 @@ export async function getVersionTypeInteractive(): Promise<string> {
   } finally {
     rl.close();
   }
+}
+
+export function rollbackRelease(previousVersion: string): void {
+  const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+  const failedVersion = pkg.version;
+
+  if (failedVersion === previousVersion) {
+    // npm version hat noch nichts committet — nichts zum Rückgängigmachen.
+    return;
+  }
+
+  // eslint-disable-next-line no-console
+  console.error(`❌ Release fehlgeschlagen — Rollback von Commit und Tag v${failedVersion}`);
+
+  try {
+    execSync(`git tag -d v${failedVersion}`, { stdio: "inherit" });
+  } catch {
+    // Tag existiert eventuell nicht, z. B. wenn nur der Commit erstellt wurde.
+  }
+
+  execSync("git reset --hard HEAD~1", { stdio: "inherit" });
 }
 
 export function ensureCleanWorktree(): void {
