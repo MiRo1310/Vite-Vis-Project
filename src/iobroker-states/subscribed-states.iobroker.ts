@@ -561,6 +561,8 @@ export const iobrokerTree = {
     poolPumpSwitch: new BooleanValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", { mapping: { true: "An", false: "Aus" } }),
     heaterScriptActivateJSON: new JsonValue<HeatingPumpScriptJson>("0_userdata.0.Wärmepumpe.Wärmepumpe_schalten_script"),
     heaterSilentScriptJSON: new JsonValue<HeatingPumpSilentJSON>("0_userdata.0.Wärmepumpe.SilentModeScriptJson"),
+    heaterTurnOnAt: new StringValue("0_userdata.0.Wärmepumpe.turnOnAt"),
+    heaterTurnOffAt: new StringValue("0_userdata.0.Wärmepumpe.turnOffAt"),
   },
   phone: {
     ringing: new BooleanValue("tr-064.0.callmonitor.ringing"),

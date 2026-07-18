@@ -183,11 +183,11 @@ function formatDate(iso?: string): string {
             </div>
             <div class="flex justify-between items-center">
               <span class="text-muted-foreground">Einschalten</span>
-              <span class="font-mono">{{ jsonDataActivate?.scheduleOnCron ?? "–" }}</span>
+              <span class="font-mono">{{ iobroker.pool.heaterTurnOnAt.value }}</span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-muted-foreground">Ausschalten</span>
-              <span class="font-mono">{{ jsonDataActivate?.scheduleOffCron ?? "–" }}</span>
+              <span class="font-mono">{{ iobroker.pool.heaterTurnOffAt.value }}</span>
             </div>
           </DataCard>
 
@@ -222,6 +222,16 @@ function formatDate(iso?: string): string {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <DataCard title="Solltemperatur" content-class="pt-0.5">
               <InputIobroker :state="pool?.tempSet" unit="°C" />
+            </DataCard>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
+            <DataCard title="Anschalten um" content-class="pt-0.5">
+              <InputIobroker type="time" :state="iobroker.pool.heaterTurnOnAt" />
+              <span class="font-medium text-sm">{{ jsonDataActivate?.scheduleOnCron ?? "-" }}</span>
+            </DataCard>
+            <DataCard title="Ausschalten um " content-class="pt-0.5">
+              <InputIobroker type="time" :state="iobroker.pool.heaterTurnOffAt" />
+              <span class="font-medium text-sm">{{ jsonDataActivate?.scheduleOffCron ?? "-" }}</span>
             </DataCard>
           </div>
         </div>
