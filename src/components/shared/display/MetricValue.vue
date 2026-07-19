@@ -3,22 +3,26 @@ import { computed, type HTMLAttributes, type UnwrapRef } from "vue";
 import { isDefined } from "@vueuse/core";
 import { type NumberValue } from "@/store/valueClasses.ts";
 
-const props = defineProps<{
-  val?: string | number;
-  unit?: string;
-  numberValue?: UnwrapRef<NumberValue>;
-  decimalPlaces?: number;
-  valueClass?: HTMLAttributes["class"];
-}>();
+const props = withDefaults(
+  defineProps<{
+    val?: string | number;
+    unit?: string;
+    numberValue?: UnwrapRef<NumberValue>;
+    decimalPlaces?: number;
+    valueClass?: HTMLAttributes["class"];
+    math?: (val: number) => number;
+  }>(),
+  { math: (val: number) => val },
+);
 
 const value = computed(() => {
   const decimalPlaces = props.decimalPlaces;
   const val = props.val;
   if (isDefined(props.val)) {
-    return isDefined(decimalPlaces) && typeof val === "number" ? val.toFixed(decimalPlaces) : val;
+    return isDefined(decimalPlaces) && typeof val === "number" ? props.math(val).toFixed(decimalPlaces) : val;
   }
   if (props.numberValue) {
-    return props.numberValue.value;
+    return props.math(props.numberValue.value);
   }
   return "-";
 });
