@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toast";
 import { useColorMode } from "@vueuse/core";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import PwaUpdate from "@/components/layout/PwaUpdate.vue";
+import ErrorBoundary from "@/components/layout/ErrorBoundary.vue";
 
 useColorMode();
 
@@ -29,7 +30,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <PwaUpdate />
-  <Toaster />
-  <router-view />
+  <ErrorBoundary>
+    <PwaUpdate />
+    <Toaster />
+    <router-view />
+  </ErrorBoundary>
 </template>

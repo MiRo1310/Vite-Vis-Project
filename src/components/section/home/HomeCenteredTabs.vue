@@ -12,6 +12,7 @@ import DotWithValue from "@/components/shared/display/DotWithValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
 import SubscriptionProgress from "@/components/section/home/SubscriptionProgress.vue";
 import Surplus from "@/components/section/pv/Surplus.vue";
+import VisVersion from "@/components/section/iobroker/VisVersion.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -36,8 +37,6 @@ const wpModus = computed(() => {
       return "Inaktiv";
   }
 });
-
-const version = import.meta.env.VITE_APP_VERSION;
 </script>
 
 <template>
@@ -201,9 +200,7 @@ const version = import.meta.env.VITE_APP_VERSION;
       </div>
 
       <div class="grid grid-cols-2 gap-2">
-        <DataCard title="Version">
-          <MetricValue :val="version ?? '-'" />
-        </DataCard>
+        <VisVersion />
 
         <DataCard title="Uptime">
           <MetricValue :val="formatUptime(system.iobrokerUptime.value)" />
