@@ -11,6 +11,7 @@ import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
 import { getMostExpensiveFuelPrice } from "@/composables/fuel.ts";
+import Surplus from "@/components/section/pv/Surplus.vue";
 
 const { iobroker } = useIobrokerStore();
 
@@ -82,10 +83,7 @@ const modeLabel: Record<number, string> = {
             </span>
             <span class="text-xs text-muted-foreground ml-1">W</span>
           </DataCard>
-          <DataCard title="Überschuss">
-            <span class="text-sm font-semibold text-green-400">{{ (data?.gridPower ?? 0) < 0 ? 0 : data?.gridPower }}</span>
-            <span class="text-xs text-muted-foreground ml-1">W</span>
-          </DataCard>
+          <Surplus />
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Auto</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -123,7 +121,7 @@ const modeLabel: Record<number, string> = {
                 <p class="text-sm font-medium">Ladeleistung aus Netz</p>
                 <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie aus dem Netz.</p>
               </div>
-              <MetricValue :number-value="iobroker.wattPilot.totalChargingFromGrid" />
+              <MetricValue :number-value="iobroker.wattPilot.totalChargingFromGrid" :decimal-places="3" value-class="text-orange-300" />
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
