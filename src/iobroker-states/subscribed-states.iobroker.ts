@@ -65,7 +65,8 @@ export const iobrokerTree = {
   wattPilot: {
     jsonScriptChargeLevel: new JsonValue<WattPilotJson>("0_userdata.0.Wattpilot.WattpilotScriptJson"),
     autoCharging: new BooleanValue("0_userdata.0.Wattpilot.autoCharging"),
-    totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal"),
+    totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal", { unit: "KWh" }),
+    totalChargingFromGrid: new NumberValue("0_userdata.0.Wattpilot.gridSuppliedEnergy", { unit: "KWh" }),
   },
   car: {
     battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio", { unit: "%" }),

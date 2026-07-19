@@ -6,10 +6,11 @@ import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import Date from "@/components/shared/date-time/Date.vue";
-import { priceKW, wattpilotElectricitySurplus } from "@/composables/wattpilotElectricitySurplus.ts";
+import { priceKW, wpElectricityGridPrice, wpElectricityPrices } from "@/composables/wpElectricityPrices.ts";
 import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
+import { getMostExpensiveFuelPrice } from "@/composables/fuel.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -27,12 +28,14 @@ const modeLabel: Record<number, string> = {
 
 <template>
   <Page title="Wallbox">
-    <Tabs default-value="daten" class="mt-4">
-      <TabsList class="mb-3">
-        <TabsTrigger value="daten">Daten</TabsTrigger>
-        <TabsTrigger value="einstellungen">Einstellungen</TabsTrigger>
-      </TabsList>
-
+    <Tabs default-value="daten" class="mr-2">
+      <div class="sticky top-0 z-10 bg-background flex justify-between items-center">
+        <TabsList class="mb-3">
+          <TabsTrigger value="daten">Daten</TabsTrigger>
+          <TabsTrigger value="einstellungen">Einstellungen</TabsTrigger>
+        </TabsList>
+        <p v-if="data?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="data.updatedAt" /></p>
+      </div>
       <TabsContent value="daten" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -112,8 +115,25 @@ const modeLabel: Record<number, string> = {
                 <p class="text-sm font-medium">Ladeleistung gesamt</p>
                 <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie.</p>
               </div>
-              <MetricValue :val="iobroker.wattPilot.totalCharging.value / 1000" unit="KW" />
+              <MetricValue :number-value="iobroker.wattPilot.totalCharging" :math="(val) => val / 1000" />
             </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+              <div>
+                <p class="text-sm font-medium">Ladeleistung aus Netz</p>
+                <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie aus dem Netz.</p>
+              </div>
+              <MetricValue :number-value="iobroker.wattPilot.totalChargingFromGrid" />
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+              <div>
+                <p class="text-sm font-medium">Netzbezug Kosten</p>
+                <p class="text-xs text-muted-foreground">Kosten für den Bezug von Netzstrom, berechnet mit {{ priceKW }}€/KW.</p>
+              </div>
+              <MetricValue :val="wpElectricityGridPrice" unit="€" value-class="text-orange-300" />
+            </div>
+
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
               <div>
                 <p class="text-sm font-medium">Überschussladen Einsparung</p>
@@ -121,26 +141,34 @@ const modeLabel: Record<number, string> = {
                   Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit {{ priceKW }}€/KW.
                 </p>
               </div>
-              <MetricValue :val="wattpilotElectricitySurplus" unit="€" value-class="text-green-400" />
+              <MetricValue :val="wpElectricityPrices" unit="€" value-class="text-green-400" />
             </div>
+
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
               <div>
                 <p class="text-sm font-medium">Vergleich Benzinpreis</p>
                 <p class="text-xs text-muted-foreground">
                   {{
-                    `Was die geladene Energiemenge mit einem Benziner (${iobroker.tankerKoenig.cheapestPrice.value}€/l, ${lPer100Km}l/100km) gekostet hätte.`
+                    `Was die geladene Energiemenge mit einem Benziner (${lPer100Km}l/100km) gekostet hätte. Als Preis wird der aktuell günstigste Preis genommen`
                   }}
                 </p>
               </div>
-              <MetricValue
-                :val="((iobroker.wattPilot.totalCharging.value / 1000 / 16) * iobroker.tankerKoenig.cheapestPrice.value * lPer100Km).toFixed(2)"
-                unit="€"
-              />
+              <div class="space-x-2">
+                <span class="text-xs text-muted-foreground">( {{ iobroker.tankerKoenig.cheapestPrice.value }} €/l )</span>
+                <MetricValue
+                  :val="((iobroker.wattPilot.totalCharging.value / 1000 / 16) * iobroker.tankerKoenig.cheapestPrice.value * lPer100Km).toFixed(2)"
+                  unit="€"
+                />
+                <span>-</span>
+                <span class="text-xs text-muted-foreground">( {{ getMostExpensiveFuelPrice }} €/l )</span>
+                <MetricValue
+                  :val="((iobroker.wattPilot.totalCharging.value / 1000 / 16) * getMostExpensiveFuelPrice * lPer100Km).toFixed(2)"
+                  unit="€"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
-
-        <p v-if="data?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="data.updatedAt" /></p>
       </TabsContent>
 
       <TabsContent value="einstellungen" class="space-y-3">
