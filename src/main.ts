@@ -8,11 +8,11 @@ import "@michaelroling/ts-library";
 import { vE2E } from "@/directives/directives.ts";
 import { router } from "@/router/router.ts";
 import { registerSW } from "virtual:pwa-register";
-import { reloadWhenHidden } from "@/lib/pwaUpdate.ts";
+import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 
 registerSW({
   immediate: true,
-  onNeedReload: () => reloadWhenHidden(),
+  onNeedReload: () => usePwaUpdateSingleton.notifyUpdate(),
 });
 
 const app = createApp(App);

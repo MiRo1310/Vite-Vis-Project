@@ -7,6 +7,7 @@ import { socketIo } from "@/config/config.ts";
 import { Toaster } from "@/components/ui/toast";
 import { useColorMode } from "@vueuse/core";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import PwaUpdate from "@/components/layout/PwaUpdate.vue";
 
 useColorMode();
 
@@ -28,6 +29,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <PwaUpdate />
   <Toaster />
   <router-view />
 </template>

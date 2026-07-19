@@ -9,6 +9,7 @@ import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 import { type WattPilotJson } from "@/types/types.ts";
 import { chargingTime } from "@/composables/battery.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
+import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 
 const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;
@@ -44,10 +45,10 @@ const landroidStatusLabel = computed(() => {
     <div class="grid grid-cols-2 gap-2">
       <RouterLink :to="routes.iobrokerInfo.path">
         <DataCard title="Updates" clickable content-class="flex items-center gap-1.5">
-          <span class="text-sm font-semibold">{{ infoStore.updatesNumber.value }}</span>
-          <span class="text-xs text-muted-foreground">verfügbar</span>
+          <MetricValue :val="infoStore.updatesNumber.value + (usePwaUpdateSingleton.updateAvailable.value ? 1 : 0)" unit="verfügbar" />
         </DataCard>
       </RouterLink>
+
       <RouterLink :to="routes.logs.path">
         <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer" class="h-full">
           <Badge v-if="iobroker.logs.error.parsed([]).length" :value="iobroker.logs.error.parsed([]).length" color="red" />
