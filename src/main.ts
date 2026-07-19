@@ -13,6 +13,14 @@ import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 registerSW({
   immediate: true,
   onNeedReload: () => usePwaUpdateSingleton.notifyUpdate(),
+  onRegisteredSW(_swUrl, registration) {
+    if (!registration) {
+      return;
+    }
+    setInterval(async () => {
+      await registration.update();
+    }, 15 * 60_000);
+  },
 });
 
 const app = createApp(App);
