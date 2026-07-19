@@ -11,7 +11,7 @@ import MetricValue from "@/components/shared/display/MetricValue.vue";
 import DotWithValue from "@/components/shared/display/DotWithValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
 import SubscriptionProgress from "@/components/section/home/SubscriptionProgress.vue";
-
+import Surplus from "@/components/section/pv/Surplus.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -22,7 +22,6 @@ const heating = computed(() => iobroker.heating);
 const pool = computed(() => iobroker.pool);
 const system = computed(() => iobroker.system);
 
-const feedIn = computed(() => pv.value.feedIn.value);
 const charging = computed(() => pv.value.activeCharging.value);
 
 const wpModus = computed(() => {
@@ -65,9 +64,7 @@ const version = import.meta.env.VITE_APP_VERSION;
           <MetricValue v-bind="pv.smallPv.valAndUnit" :decimal-places="0" />
         </DataCard>
 
-        <DataCard :title="feedIn >= 0 ? 'Einspeisung' : 'Bezug'">
-          <MetricValue :val="Math.abs(feedIn)" unit="W" :decimal-places="0" :value-class="feedIn >= 0 ? 'text-green-400' : 'text-destructive'" />
-        </DataCard>
+        <Surplus />
 
         <DataCard :title="charging > 0 ? 'Batterie laden' : 'Batterie entladen'">
           <MetricValue

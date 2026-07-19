@@ -16,16 +16,19 @@ const props = withDefaults(
 );
 
 const value = computed(() => {
-  const decimalPlaces = props.decimalPlaces;
-  const val = props.val;
   if (isDefined(props.val)) {
-    return isDefined(decimalPlaces) && typeof val === "number" ? props.math(val).toFixed(decimalPlaces) : val;
+    return formatNumber(props.val);
   }
   if (props.numberValue) {
-    return props.math(props.numberValue.value);
+    return formatNumber(props.math(props.numberValue.value));
   }
   return "-";
 });
+
+function formatNumber(val: number | string) {
+  const decimalPlaces = props.decimalPlaces;
+  return isDefined(decimalPlaces) && typeof val === "number" ? props.math(val).toFixed(decimalPlaces) : val;
+}
 
 const _unit = computed(() => {
   const u = props.numberValue?.valAndUnit;
