@@ -1,55 +1,64 @@
 <script setup lang="ts">
-import { computed, onErrorCaptured, ref } from "vue";
+import { h, onErrorCaptured, ref } from "vue";
 import { useToast } from "@/components/ui/toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import DialogShared from "@/components/shared/dialog/DialogShared.vue";
+import ErrorToast from "@/components/layout/error/ErrorToast.vue";
+import ErrorDetails from "@/components/layout/error/ErrorDetails.vue";
 
 const { toast } = useToast();
-const error = ref();
+const error = ref<unknown>(null);
+const detailsOpen = ref(false);
+const showErrorPage = ref(false);
 
-// Fehler aus dem Vue-Komponentenbaum: Baum gilt als potentiell kaputt,
-// deshalb Fallback-UI statt nur Toast (siehe #error-Slot unten)
-onErrorCaptured((err) => {
+function reportError(err: unknown, openPageDirectly: boolean) {
   error.value = err;
+  // eslint-disable-next-line no-console
+  console.error("[ErrorBoundary]", err);
+
+  if (openPageDirectly) {
+    showErrorPage.value = true;
+    return;
+  }
+
+  toast({
+    title: "Fehler",
+    description: h(ErrorToast, { error: err, onDetails: () => (detailsOpen.value = true) }),
+    variant: "destructive",
+    duration: 20000,
+  });
+}
+
+// Vue-Komponentenbaum gilt als potentiell kaputt -> sofort die volle Error-Seite zeigen
+onErrorCaptured((err) => {
+  reportError(err, true);
   return false;
 });
 
-function reload() {
-  window.location.reload();
-}
-
-// Globale JS-Fehler / unhandled Rejections betreffen nicht zwingend den Vue-Baum,
-// daher genügt hier ein Toast statt die App auszublenden
+// Globale JS-Fehler / unhandled Rejections betreffen nicht zwingend den Vue-Baum
+// -> nur ein Toast, Details per Klick
 window.addEventListener("error", (event) => {
-  toast({ title: "JS-Error", description: event.error?.message ?? event.message, variant: "destructive" });
+  reportError(event.error ?? new Error(event.message), false);
 });
 
 window.addEventListener("unhandledrejection", (event) => {
-  toast({ title: "Unhandled Rejection", description: String(event.reason), variant: "destructive" });
+  reportError(event.reason, false);
 });
-
-const slotProps = computed(() => {
-  if (!error.value) {
-    return {};
-  }
-  return { error: error.value };
-});
-
-const slotName = computed(() => (error.value ? "error" : "default"));
 </script>
 <template>
-  <slot :name="slotName" v-bind="slotProps">
-    <div class="flex h-screen w-screen items-center justify-center p-4">
-      <Card class="max-w-md py-0 gap-0">
-        <CardHeader class="px-4 pt-3 pb-0">
-          <CardTitle class="text-sm text-destructive">Ein Fehler ist aufgetreten</CardTitle>
-        </CardHeader>
-        <CardContent class="px-4 pt-2 pb-4 space-y-3">
-          <p class="text-xs text-muted-foreground wrap-break-word">{{ error?.message }}</p>
-          <pre><code>{{error}}</code></pre>
-          <Button size="sm" @click="reload">Seite neu laden</Button>
-        </CardContent>
-      </Card>
-    </div>
-  </slot>
+  <div v-if="showErrorPage" class="flex h-screen w-screen items-center justify-center p-4">
+    <Card class="w-full max-w-lg py-0 gap-0">
+      <CardHeader class="px-4 pt-3 pb-0">
+        <CardTitle class="text-sm text-destructive">Ein Fehler ist aufgetreten</CardTitle>
+      </CardHeader>
+      <CardContent class="px-4 pt-2 pb-4">
+        <ErrorDetails :error="error" />
+      </CardContent>
+    </Card>
+  </div>
+  <slot v-else />
+
+  <DialogShared v-model:dialogOpen="detailsOpen" title="Fehlerdetails">
+    <ErrorDetails :error="error" />
+  </DialogShared>
 </template>
