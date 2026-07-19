@@ -10,6 +10,8 @@ import { router } from "@/router/router.ts";
 import { registerSW } from "virtual:pwa-register";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 
+usePwaUpdateSingleton.setTime(new Date());
+
 registerSW({
   immediate: true,
   onNeedReload: () => usePwaUpdateSingleton.notifyUpdate(),
@@ -17,9 +19,11 @@ registerSW({
     if (!registration) {
       return;
     }
+
     setInterval(async () => {
       await registration.update();
-    }, 15 * 60_000);
+      usePwaUpdateSingleton.setTime(new Date());
+    }, usePwaUpdateSingleton.updateInterval);
   },
 });
 
