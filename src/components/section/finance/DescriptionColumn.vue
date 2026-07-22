@@ -8,6 +8,10 @@ const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][
 
 const column = ref<null | HTMLElement>(null);
 
+function isAnyUnchecked(tr: any) {
+  return tr.querySelector(".isValid[data-state='unchecked']") || tr.querySelector(".hasInvoice[data-state='unchecked']");
+}
+
 onMounted(() => {
   watch(
     () => props.value,
@@ -19,26 +23,27 @@ onMounted(() => {
       if (!tr) {
         return;
       }
-      const columns = tr.querySelectorAll(".text-muted-foreground, [data-type='number'], button");
+      const columns = tr.querySelectorAll(".listing__cell *");
 
-      if (tr.querySelector(".isValid[data-state='unchecked']") || tr.querySelector(".hasInvoice[data-state='unchecked']")) {
-        setColor(columns, tr, "text-red-300");
+      if (isAnyUnchecked(tr)) {
+        setColor(columns, tr, "text-red-300!");
         return;
       }
-
-      if (value.toLocaleLowerCase().includes("fahrtkosten")) {
-        setColor(columns, tr, "text-green-400");
-        return;
-      }
-
-      if (value.toLocaleLowerCase().includes("rechnung")) {
-        setColor(columns, tr, "text-blue-400");
-        return;
-      }
+      colorMapping.forEach(([keyword, color]) => {
+        if (value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())) {
+          setColor(columns, tr, color);
+          return;
+        }
+      });
     },
     { immediate: true },
   );
 });
+
+const colorMapping = [
+  ["fahrtkosten", "text-green-400!"],
+  ["rechnung", "text-blue-400!"],
+];
 
 const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, color: string) => {
   columns?.forEach((col) => {
@@ -46,7 +51,6 @@ const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, co
       return;
     }
 
-    col.classList.remove("text-muted-foreground");
     col.classList.add(color);
   });
 };
