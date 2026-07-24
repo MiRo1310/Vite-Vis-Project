@@ -106,7 +106,7 @@ const modeLabel: Record<number, string> = {
         </div>
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
-        <Card class="py-0 gap-0">
+        <Card class="py-0 gap-0 rounded-md">
           <CardContent class="px-3 py-1 divide-y divide-border">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
               <div>
@@ -147,7 +147,7 @@ const modeLabel: Record<number, string> = {
                 <p class="text-sm font-medium">Vergleich Benzinpreis</p>
                 <p class="text-xs text-muted-foreground">
                   {{
-                    `Was die geladene Energiemenge mit einem Benziner (${lPer100Km}l/100km) gekostet hätte. Als Preis wird der aktuell günstigste Preis genommen`
+                    `Was die geladene Energiemenge mit einem Benziner (${lPer100Km}l/100km) gekostet hätte. Als Preis wird der aktuell günstigste und teuerste Preis genommen`
                   }}
                 </p>
               </div>

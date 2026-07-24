@@ -17,10 +17,9 @@ const { applyUpdate, updateAvailable, updateTime } = usePwaUpdateSingleton;
     <Button v-if="updateAvailable" variant="blue" size="full" @click="applyUpdate" class="mb-2"
       >Update vorhanden !!! Klicke zum aktualisieren
     </Button>
-    <Button v-else class="mb-2" variant="outline" @click="applyUpdate()">Seite neu laden</Button>
 
     <div class="flex flex-row flex-wrap gap-2 w-full mb-2">
-      <Button @click="usePwaUpdateSingleton.applyUpdate()" class="h-20">Seite neu laden</Button>
+      <Button @click="applyUpdate()" class="h-20">Seite neu laden</Button>
       <VisVersion class="flex-1" />
     </div>
     <div class="flex flex-wrap gap-2">
