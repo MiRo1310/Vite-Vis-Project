@@ -19,7 +19,7 @@ const { applyUpdate, updateAvailable, updateTime } = usePwaUpdateSingleton;
     </Button>
 
     <div class="flex flex-row flex-wrap gap-2 w-full mb-2">
-      <Button @click="usePwaUpdateSingleton.applyUpdate()" class="h-20">Seite neu laden</Button>
+      <Button @click="applyUpdate()" class="h-20">Seite neu laden</Button>
       <VisVersion class="flex-1" />
     </div>
     <div class="flex flex-wrap gap-2">

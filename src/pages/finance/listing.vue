@@ -53,15 +53,15 @@ const updateYear = async (y: number) => {
 };
 
 const columns: Array<DatatableColumns<TravelCostQuery["travelCost"][number]>> = [
-  { source: "date", labelKey: "Datum", type: "date" },
-  { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress },
-  { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn },
+  { source: "date", labelKey: "Datum", type: "date", className: "listing__cell" },
+  { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress, className: "listing__cell" },
+  { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn, className: "listing__cell" },
   {
     source: "price",
     labelKey: "Betrag",
     type: "number",
     unit: "€",
-    className: "text-right",
+    className: "text-right listing__cell",
   },
   {
     source: "isValidated",
