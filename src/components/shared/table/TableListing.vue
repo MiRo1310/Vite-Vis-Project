@@ -1,8 +1,6 @@
-<script setup lang="ts" generic="TData, TValue">
+<script setup lang="ts">
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import TableData, {
-  type TableCellType,
-} from "@/components/shared/table-cell/TableCell.vue";
+import TableData, { type TableCellType } from "@/components/shared/table-cell/TableCell.vue";
 
 export interface TableListingType {
   val: boolean | number | string | null;
