@@ -52,6 +52,38 @@ export class IoBrokerService {
     await this.adminConnection.startSocket();
     await this.adminConnection.waitForFirstConnection();
     this.subscribeIobrokerStates();
+    document.addEventListener("visibilitychange", this.onVisibilityChange);
+  }
+
+  // Nach einem Reconnect (z.B. Display war aus) subscribed die Library nur neu,
+  // ohne den aktuellen Wert zu holen (siehe Connection.js _subscribe). Werte, die sich
+  // seit dem letzten Push nicht mehr geändert haben, bleiben dadurch dauerhaft veraltet.
+  // Beim Sichtbarwerden holen wir daher die States aktiv nach.
+  private onVisibilityChange = () => {
+    if (document.visibilityState === "visible") {
+      void this.refreshSubscribedStates();
+    }
+  };
+
+  private async refreshSubscribedStates() {
+    if (!this.adminConnection || !this.adminConnectionEstablished) {
+      return;
+    }
+    const ids = [...new Set(this.subscribedIds.map((item) => item.id))];
+    if (!ids.length) {
+      return;
+    }
+    try {
+      const states = await this.adminConnection.getStates(ids);
+      this.subscribedIds.forEach((item) => {
+        const state = states[item.id];
+        if (state) {
+          item.cb(state);
+        }
+      });
+    } catch (e) {
+      Logger("Error refreshing states after visibility change", { e });
+    }
   }
   public get connection() {
     return this.adminConnection;
