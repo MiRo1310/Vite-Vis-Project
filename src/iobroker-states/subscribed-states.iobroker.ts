@@ -64,7 +64,7 @@ export const iobrokerTree = {
   },
   wattPilot: {
     jsonScriptChargeLevel: new JsonValue<WattPilotJson>("0_userdata.0.Wattpilot.WattpilotScriptJson"),
-    autoCharging: new BooleanValue("0_userdata.0.Wattpilot.autoCharging"),
+    chargingStatus: new StringValue("0_userdata.0.Wattpilot.Ladezustand"),
     totalCharging: new NumberValue("fronius-wattpilot.0.energyCounterTotal", { unit: "KWh" }),
     totalChargingFromGrid: new NumberValue("0_userdata.0.Wattpilot.gridSuppliedEnergy", { unit: "KWh" }),
   },

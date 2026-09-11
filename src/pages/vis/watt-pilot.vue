@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Page from "@/components/shared/page/Page.vue";
-import { Card, CardContent, DataCard, ToggleCard } from "@/components/shared/card";
+import { Card, CardContent, DataCard } from "@/components/shared/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
@@ -12,6 +12,8 @@ import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
 import { getMostExpensiveFuelPrice } from "@/composables/fuel.ts";
 import Surplus from "@/components/section/pv/Surplus.vue";
+import { ChargingStatusEnum } from "@/enum/enum.ts";
+import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 
 const { iobroker } = useIobrokerStore();
 
@@ -45,8 +47,8 @@ const modeLabel: Record<number, string> = {
             <span class="text-sm font-semibold">{{ data?.charging ? "Aktiv" : "Inaktiv" }}</span>
           </DataCard>
           <DataCard title="Überschussladen" content-class="flex items-center gap-1.5">
-            <StatusDot :active="iobroker.wattPilot.autoCharging.value" />
-            <span class="text-sm font-semibold">{{ iobroker.wattPilot.autoCharging.value ? "Aktiv" : "Inaktiv" }}</span>
+            <StatusDot :active="iobroker.wattPilot.chargingStatus.value === ChargingStatusEnum.AUTO" />
+            <span class="text-sm font-semibold">{{ iobroker.wattPilot.chargingStatus.value === ChargingStatusEnum.AUTO ? "Aktiv" : "Inaktiv" }}</span>
           </DataCard>
           <DataCard title="Auto verbunden" content-class="flex items-center gap-1.5">
             <StatusDot :active="data?.carConnected ?? false" />
@@ -172,7 +174,15 @@ const modeLabel: Record<number, string> = {
       <TabsContent value="einstellungen" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
         <div class="flex items-center flex-wrap gap-2">
-          <ToggleCard title="Wallbox Überschussladen" class="flex-1" :boolean-value="iobroker.wattPilot.autoCharging" :ack="true" />
+          <ButtonStringIobroker
+            v-for="(statusEnum, i) in ChargingStatusEnum"
+            :key="i"
+            class="capitalize"
+            :state="iobroker.wattPilot.chargingStatus"
+            :value="statusEnum"
+            use-active
+            >{{ statusEnum }}</ButtonStringIobroker
+          >
         </div>
       </TabsContent>
     </Tabs>

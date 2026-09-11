@@ -20,3 +20,10 @@ export enum HTMLInputTypesEnum {
   tel = "tel",
   color = "color",
 }
+
+export enum ChargingStatusEnum {
+  AUTO = "auto",
+  "1P6A" = "1 Phase 6a",
+  "1P8A" = "1 Phase 8a",
+  "1P10A" = "1 Phase 10a",
+}
