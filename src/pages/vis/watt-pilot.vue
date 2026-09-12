@@ -14,6 +14,8 @@ import { getMostExpensiveFuelPrice } from "@/composables/fuel.ts";
 import Surplus from "@/components/section/pv/Surplus.vue";
 import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
+import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
+import { filterEnum } from "@/lib/enum.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -27,63 +29,91 @@ const modeLabel: Record<number, string> = {
   2: "Min+Eco",
   3: "Max",
 };
+
+const isAutoCharging = computed(() => iobroker.wattPilot.chargingMode.value === ChargingStatusEnum.AUTO);
+
+const { clickTab, activeTab } = tabToLocalStorage({ defaultTab: "daten", id: "wattpilot" });
+
+const statusCards = computed((): Array<{ title: string; active?: boolean; text: string }> => {
+  return [
+    { title: "Laden", active: data.value.charging, text: data.value.charging ? "Aktiv" : "Inaktiv" },
+    { title: "Überschussladen", active: isAutoCharging.value, text: isAutoCharging.value ? "Aktiv" : "Inaktiv" },
+    { title: "Auto verbunden", active: data.value.carConnected, text: data.value.carConnected ? "Verbunden" : "Nicht verbunden" },
+    { title: "Laden freigegeben", active: data.value.allowCharging, text: data.value.allowCharging ? "Freigegeben" : "Nicht freigegeben" },
+    { title: "Modus", text: modeLabel[data.value.currentIndex] ?? `Index ${data.value.currentIndex}` },
+    { title: "Phasen", text: `${data.value.phases ?? "–"}` },
+    { title: "Stop-Gründe", text: data.value.stopReasons.length ? data.value.stopReasons.join(", ") : "–" },
+  ];
+});
+
+const powerCards = computed((): Array<{ title: string; value: number | string; unit: string; valueClass?: string }> => {
+  return [
+    { title: "Ladeleistung", value: data.value.chargingPowerW ?? 0, unit: "W", valueClass: "text-green-400" },
+    { title: "Strom", value: data.value.ampere ?? "–", unit: "A" },
+    {
+      title: "Netzbezug",
+      value: data.value.gridPower > 0 ? 0 : -data.value.gridPower,
+      unit: "W",
+      valueClass: data.value.gridPower > 0 ? "" : "text-orange-300",
+    },
+  ];
+});
+
+const valueRows = computed((): Array<{ title: string; description: string; metricProps: InstanceType<typeof MetricValue>["$props"] }> => {
+  return [
+    {
+      title: "Ladeleistung gesamt",
+      description: "Insgesamt über die Wallbox geladene Energie.",
+      metricProps: { numberValue: iobroker.wattPilot.totalCharging, math: (val: number) => val / 1000 },
+    },
+    {
+      title: "Ladeleistung aus Netz",
+      description: "Insgesamt über die Wallbox geladene Energie aus dem Netz.",
+      metricProps: { numberValue: iobroker.wattPilot.totalChargingFromGrid, decimalPlaces: 3, valueClass: "text-orange-300" },
+    },
+    {
+      title: "Netzbezug Kosten",
+      description: `Kosten für den Bezug von Netzstrom, berechnet mit ${priceKW}€/KW.`,
+      metricProps: { val: wpElectricityGridPrice.value, unit: "€", valueClass: "text-orange-300" },
+    },
+    {
+      title: "Überschussladen Einsparung",
+      description: `Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit ${priceKW}€/KW.`,
+      metricProps: { val: wpElectricityPrices.value, unit: "€", valueClass: "text-green-400" },
+    },
+  ];
+});
 </script>
 
 <template>
   <Page title="Wallbox">
-    <Tabs default-value="daten" class="mr-2">
+    <Tabs default-value="daten" :model-value="activeTab" class="mr-2">
       <div class="sticky top-0 z-10 bg-background flex justify-between items-center">
         <TabsList class="mb-3">
-          <TabsTrigger value="daten">Daten</TabsTrigger>
-          <TabsTrigger value="einstellungen">Einstellungen</TabsTrigger>
+          <TabsTrigger value="daten" @click="clickTab('daten')">Daten</TabsTrigger>
+          <TabsTrigger value="werte" @click="clickTab('werte')">Werte</TabsTrigger>
         </TabsList>
         <p v-if="data?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="data.updatedAt" /></p>
       </div>
       <TabsContent value="daten" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <DataCard title="Laden" content-class="flex items-center gap-1.5">
-            <StatusDot :active="data?.charging ?? false" />
-            <span class="text-sm font-semibold">{{ data?.charging ? "Aktiv" : "Inaktiv" }}</span>
-          </DataCard>
-          <DataCard title="Überschussladen" content-class="flex items-center gap-1.5">
-            <StatusDot :active="iobroker.wattPilot.chargingStatus.value === ChargingStatusEnum.AUTO" />
-            <span class="text-sm font-semibold">{{ iobroker.wattPilot.chargingStatus.value === ChargingStatusEnum.AUTO ? "Aktiv" : "Inaktiv" }}</span>
-          </DataCard>
-          <DataCard title="Auto verbunden" content-class="flex items-center gap-1.5">
-            <StatusDot :active="data?.carConnected ?? false" />
-            <span class="text-sm font-semibold">{{ data?.carConnected ? "Verbunden" : "Nicht verbunden" }}</span>
-          </DataCard>
-          <DataCard title="Laden freigegeben" content-class="flex items-center gap-1.5">
-            <StatusDot :active="data?.allowCharging ?? false" />
-            <span class="text-sm font-semibold">{{ data?.allowCharging ? "Freigegeben" : "Nicht freigegeben" }}</span>
-          </DataCard>
-          <DataCard title="Modus">
-            <span class="text-sm font-semibold">{{ data != null ? (modeLabel[data.currentIndex] ?? `Index ${data.currentIndex}`) : "–" }}</span>
-          </DataCard>
-          <DataCard title="Phasen">
-            <span class="text-sm font-semibold">{{ data?.phases ?? "–" }}</span>
-          </DataCard>
-          <DataCard title="Stop-Gründe">
-            <span class="text-sm font-semibold">{{ data?.stopReasons?.length ? data.stopReasons.join(", ") : "–" }}</span>
+          <DataCard
+            v-for="status in statusCards"
+            :title="status.title"
+            :key="status.title"
+            :content-class="status.active !== undefined ? 'flex items-center gap-1.5' : undefined"
+          >
+            <StatusDot v-if="status.active !== undefined" :active="status.active" />
+            <span class="text-sm font-semibold">{{ status.text }}</span>
           </DataCard>
         </div>
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Leistung</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <DataCard title="Ladeleistung">
-            <span class="text-sm font-semibold text-green-400">{{ data?.chargingPowerW ?? 0 }}</span>
-            <span class="text-xs text-muted-foreground ml-1">W</span>
-          </DataCard>
-          <DataCard title="Strom">
-            <span class="text-sm font-semibold">{{ data?.ampere ?? "–" }}</span>
-            <span class="text-xs text-muted-foreground ml-1">A</span>
-          </DataCard>
-          <DataCard title="Netzbezug">
-            <span class="text-sm font-semibold" :class="(data?.gridPower ?? 0) > 0 ? '' : 'text-orange-300'">
-              {{ (data?.gridPower ?? 0) > 0 ? 0 : -(data?.gridPower ?? 0) }}
-            </span>
-            <span class="text-xs text-muted-foreground ml-1">W</span>
+          <DataCard v-for="power in powerCards" :title="power.title" :key="power.title">
+            <span class="text-sm font-semibold" :class="power.valueClass">{{ power.value }}</span>
+            <span class="text-xs text-muted-foreground ml-1">{{ power.unit }}</span>
           </DataCard>
           <Surplus />
         </div>
@@ -105,43 +135,74 @@ const modeLabel: Record<number, string> = {
               unit="Std"
             />
           </DataCard>
+          <DataCard title="Batterie Ladeziel Standart">
+            <MetricValue :number-value="iobroker.car.batteryStandardTarget" />
+          </DataCard>
+          <DataCard title="Batterie Ladeziel schnell">
+            <MetricValue :number-value="iobroker.car.batteryQuickTarget" />
+          </DataCard>
         </div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
+        <div class="flex items-center flex-wrap gap-2">
+          <ButtonStringIobroker
+            class="capitalize min-w-17.5"
+            active-border="success"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum.AUTO"
+            use-active
+            >{{ ChargingStatusEnum.AUTO }}</ButtonStringIobroker
+          >
+          <ButtonStringIobroker
+            class="capitalize min-w-17.5"
+            active-border="danger"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum.DISABLED"
+            use-active
+            >{{ ChargingStatusEnum.DISABLED }}</ButtonStringIobroker
+          >
+        </div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit einer Phase</p>
+        <div class="flex items-center flex-wrap gap-2">
+          <ButtonStringIobroker
+            v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['3P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
+            :key="i"
+            class="capitalize min-w-17.5"
+            active-border="success"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
+            use-active
+            >{{ statusEnum }}</ButtonStringIobroker
+          >
+        </div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit Drei Phasen</p>
+        <div class="flex items-center flex-wrap gap-2">
+          <ButtonStringIobroker
+            v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['1P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
+            :key="i"
+            class="capitalize min-w-17.5"
+            active-border="success"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
+            use-active
+            >{{ statusEnum }}</ButtonStringIobroker
+          >
+        </div>
+      </TabsContent>
 
+      <TabsContent value="werte" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Werte</p>
         <Card class="py-0 gap-0 rounded-md">
           <CardContent class="px-3 py-1 divide-y divide-border">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
+            <div
+              v-for="row in valueRows"
+              :key="row.title"
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2"
+            >
               <div>
-                <p class="text-sm font-medium">Ladeleistung gesamt</p>
-                <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie.</p>
+                <p class="text-sm font-medium">{{ row.title }}</p>
+                <p class="text-xs text-muted-foreground">{{ row.description }}</p>
               </div>
-              <MetricValue :number-value="iobroker.wattPilot.totalCharging" :math="(val) => val / 1000" />
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
-              <div>
-                <p class="text-sm font-medium">Ladeleistung aus Netz</p>
-                <p class="text-xs text-muted-foreground">Insgesamt über die Wallbox geladene Energie aus dem Netz.</p>
-              </div>
-              <MetricValue :number-value="iobroker.wattPilot.totalChargingFromGrid" :decimal-places="3" value-class="text-orange-300" />
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
-              <div>
-                <p class="text-sm font-medium">Netzbezug Kosten</p>
-                <p class="text-xs text-muted-foreground">Kosten für den Bezug von Netzstrom, berechnet mit {{ priceKW }}€/KW.</p>
-              </div>
-              <MetricValue :val="wpElectricityGridPrice" unit="€" value-class="text-orange-300" />
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
-              <div>
-                <p class="text-sm font-medium">Überschussladen Einsparung</p>
-                <p class="text-xs text-muted-foreground">
-                  Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit {{ priceKW }}€/KW.
-                </p>
-              </div>
-              <MetricValue :val="wpElectricityPrices" unit="€" value-class="text-green-400" />
+              <MetricValue v-bind="row.metricProps" />
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2.5 first:pt-2 last:pb-2">
@@ -169,21 +230,6 @@ const modeLabel: Record<number, string> = {
             </div>
           </CardContent>
         </Card>
-      </TabsContent>
-
-      <TabsContent value="einstellungen" class="space-y-3">
-        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
-        <div class="flex items-center flex-wrap gap-2">
-          <ButtonStringIobroker
-            v-for="(statusEnum, i) in ChargingStatusEnum"
-            :key="i"
-            class="capitalize"
-            :state="iobroker.wattPilot.chargingStatus"
-            :value="statusEnum"
-            use-active
-            >{{ statusEnum }}</ButtonStringIobroker
-          >
-        </div>
       </TabsContent>
     </Tabs>
   </Page>

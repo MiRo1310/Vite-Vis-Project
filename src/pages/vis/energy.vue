@@ -39,19 +39,7 @@ const iconBattery = computed(() => {
 });
 
 type Ids =
-  | "pv"
-  | "balconyPv"
-  | "washer"
-  | "car"
-  | "server"
-  | "house"
-  | "battery"
-  | "powerGrid"
-  | "cellar"
-  | "freezer"
-  | "pool"
-  | "heat_pump"
-  | "pool_pump";
+  "pv" | "balconyPv" | "washer" | "car" | "server" | "house" | "battery" | "powerGrid" | "cellar" | "freezer" | "pool" | "heat_pump" | "pool_pump";
 
 const data = computed((): TEnergyFlowArray<Ids> => {
   const { energy, pool, pv } = iobroker;
@@ -70,7 +58,7 @@ const data = computed((): TEnergyFlowArray<Ids> => {
           value: pv.pvGross.value,
           options: {
             groupCount: 1,
-            autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 3000, min: 1000, activeTab: true, maxSpeed: 75, minSpeed: 25 },
             reverse: "lessThan",
           },
         },

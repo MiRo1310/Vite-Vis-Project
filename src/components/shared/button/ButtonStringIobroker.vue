@@ -12,6 +12,7 @@ const props = defineProps<
     ack?: boolean;
     icon?: keyof ButtonVariants["icons"];
     useActive?: boolean;
+    activeBorder?: keyof typeof border;
     // eslint-disable-next-line vue/no-unused-properties
   } & ButtonVariantProps
 >();
@@ -26,10 +27,23 @@ const getAction = computed<keyof ButtonVariants["action"]>(() => {
   }
   return props.state.val ? "on" : "off";
 });
+
+const border = {
+  default: "border-white/70!",
+  danger: "!border-red-500",
+  success: "!border-green-500",
+};
 </script>
 
 <template>
-  <Button :variant :size :icon @click="handleClick" :action="getAction" :class="useActive && state.value === value ? 'border-white/70!' : ''">
+  <Button
+    :variant
+    :size
+    :icon
+    @click="handleClick"
+    :action="getAction"
+    :class="useActive && state.value === value ? (activeBorder ? border[activeBorder] : border.default) : ''"
+  >
     <span class="text-sm text-muted-foreground">{{ label }} <slot /></span>
   </Button>
 </template>
