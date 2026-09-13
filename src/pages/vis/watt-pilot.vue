@@ -2,6 +2,7 @@
 import Page from "@/components/shared/page/Page.vue";
 import { Card, CardContent, DataCard } from "@/components/shared/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
@@ -16,6 +17,7 @@ import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 import { filterEnum } from "@/lib/enum.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const { iobroker } = useIobrokerStore();
 
@@ -115,6 +117,15 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
             <span class="text-sm font-semibold" :class="power.valueClass">{{ power.value }}</span>
             <span class="text-xs text-muted-foreground ml-1">{{ power.unit }}</span>
           </DataCard>
+          <DataCard title="Netzbezug-Freigabe genutzt" content-class="space-y-1.5">
+            <div>
+              <span class="text-sm font-semibold">{{ data.gridDrawAllowanceUsedPercent }} </span>
+              <span class="text-xs text-muted-foreground ml-1">% / </span>
+              <span class="text-sm font-semibold"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.value }} </span>
+              <span class="text-xs text-muted-foreground ml-1"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.unit }} </span>
+            </div>
+            <Progress :model-value="Math.min(Math.max(data.gridDrawAllowanceUsedPercent ?? 0, 0), 100)" class="h-1.5" />
+          </DataCard>
           <Surplus />
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Auto</p>
@@ -142,6 +153,16 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
             <MetricValue :number-value="iobroker.car.batteryQuickTarget" />
           </DataCard>
         </div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
+
+        <p class="text-[10px] text-muted-foreground">Darf aus dem Netz gezogen werden bei Überschuss</p>
+
+        <InputIobroker
+          :state="iobroker.wattPilot.gridDrawAllowanceWatt"
+          :unit="iobroker.wattPilot.gridDrawAllowanceWatt.unit"
+          class="w-40"
+          :step="100"
+        />
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
         <div class="flex items-center flex-wrap gap-2">
           <ButtonStringIobroker

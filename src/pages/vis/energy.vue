@@ -58,7 +58,7 @@ const data = computed((): TEnergyFlowArray<Ids> => {
           value: pv.pvGross.value,
           options: {
             groupCount: 1,
-            autoSpeed: { max: 3000, min: 1000, activeTab: true, maxSpeed: 75, minSpeed: 25 },
+            autoSpeed: { max: 3000, min: 1000, active: true, maxSpeed: 75, minSpeed: 25 },
             reverse: "lessThan",
           },
         },

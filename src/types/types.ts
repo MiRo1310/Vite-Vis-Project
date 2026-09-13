@@ -193,6 +193,7 @@ export interface WattPilotJson {
   batteryPower: number;
   startupHoldActive: boolean;
   startupHoldRemainingSeconds: number;
+  gridDrawAllowanceUsedPercent: number;
   updatedAt: string;
 }
 
