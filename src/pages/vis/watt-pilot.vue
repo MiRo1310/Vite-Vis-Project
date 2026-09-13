@@ -2,6 +2,7 @@
 import Page from "@/components/shared/page/Page.vue";
 import { Card, CardContent, DataCard } from "@/components/shared/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
@@ -16,6 +17,7 @@ import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 import { filterEnum } from "@/lib/enum.ts";
+import InputIobroker from "@/components/shared/input/InputIobroker.vue";
 
 const { iobroker } = useIobrokerStore();
 
@@ -83,6 +85,31 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
     },
   ];
 });
+
+const CHARGE_CURVE = {
+  [ChargingStatusEnum["1P6A"]]: 1380,
+  [ChargingStatusEnum["1P7A"]]: 1610,
+  [ChargingStatusEnum["1P8A"]]: 1840,
+  [ChargingStatusEnum["1P9A"]]: 2070,
+  [ChargingStatusEnum["1P10A"]]: 2300,
+  [ChargingStatusEnum["1P11A"]]: 2530,
+  [ChargingStatusEnum["1P12A"]]: 2760,
+  [ChargingStatusEnum["1P13A"]]: 2990,
+  [ChargingStatusEnum["1P14A"]]: 3220,
+  [ChargingStatusEnum["1P15A"]]: 3450,
+  [ChargingStatusEnum["1P16A"]]: 3680,
+  [ChargingStatusEnum["3P6A"]]: 4140,
+  [ChargingStatusEnum["3P7A"]]: 4830,
+  [ChargingStatusEnum["3P8A"]]: 5520,
+  [ChargingStatusEnum["3P9A"]]: 6210,
+  [ChargingStatusEnum["3P10A"]]: 6900,
+  [ChargingStatusEnum["3P11A"]]: 7590,
+  [ChargingStatusEnum["3P12A"]]: 8280,
+  [ChargingStatusEnum["3P13A"]]: 8970,
+  [ChargingStatusEnum["3P14A"]]: 9660,
+  [ChargingStatusEnum["3P15A"]]: 10350,
+  [ChargingStatusEnum["3P16A"]]: 11040,
+};
 </script>
 
 <template>
@@ -115,6 +142,15 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
             <span class="text-sm font-semibold" :class="power.valueClass">{{ power.value }}</span>
             <span class="text-xs text-muted-foreground ml-1">{{ power.unit }}</span>
           </DataCard>
+          <DataCard title="Netzbezug-Freigabe genutzt" content-class="space-y-1.5">
+            <div>
+              <span class="text-sm font-semibold">{{ data.gridDrawAllowanceUsedPercent }} </span>
+              <span class="text-xs text-muted-foreground ml-1">% / </span>
+              <span class="text-sm font-semibold"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.value }} </span>
+              <span class="text-xs text-muted-foreground ml-1"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.unit }} </span>
+            </div>
+            <Progress :model-value="Math.min(Math.max(data.gridDrawAllowanceUsedPercent ?? 0, 0), 100)" class="h-1.5" />
+          </DataCard>
           <Surplus />
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Auto</p>
@@ -142,6 +178,16 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
             <MetricValue :number-value="iobroker.car.batteryQuickTarget" />
           </DataCard>
         </div>
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
+
+        <p class="text-[10px] text-muted-foreground">Darf aus dem Netz gezogen werden bei Überschuss</p>
+
+        <InputIobroker
+          :state="iobroker.wattPilot.gridDrawAllowanceWatt"
+          :unit="iobroker.wattPilot.gridDrawAllowanceWatt.unit"
+          class="w-40"
+          :step="100"
+        />
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
         <div class="flex items-center flex-wrap gap-2">
           <ButtonStringIobroker
@@ -166,12 +212,13 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
           <ButtonStringIobroker
             v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['3P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
             :key="i"
-            class="capitalize min-w-17.5"
+            class="capitalize min-w-28"
             active-border="success"
             :state="iobroker.wattPilot.chargingMode"
             :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
             use-active
-            >{{ statusEnum }}</ButtonStringIobroker
+            >{{ statusEnum.replace("1P", "") }} =>
+            {{ CHARGE_CURVE[ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum] as keyof typeof CHARGE_CURVE] }}</ButtonStringIobroker
           >
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit Drei Phasen</p>
@@ -179,12 +226,13 @@ const valueRows = computed((): Array<{ title: string; description: string; metri
           <ButtonStringIobroker
             v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['1P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
             :key="i"
-            class="capitalize min-w-17.5"
+            class="capitalize min-w-28"
             active-border="success"
             :state="iobroker.wattPilot.chargingMode"
             :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
             use-active
-            >{{ statusEnum }}</ButtonStringIobroker
+            >{{ statusEnum.replace("3P", "") }} =>
+            {{ CHARGE_CURVE[ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum] as keyof typeof CHARGE_CURVE] }}</ButtonStringIobroker
           >
         </div>
       </TabsContent>

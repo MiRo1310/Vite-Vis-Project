@@ -20,7 +20,7 @@ export class Line<T extends PropertyKey> {
   private readonly lineEnd: ILineEndPoint<T>;
   private readonly lineStart: ILineEndPoint<T>;
   private readonly autoSpeed: IAutoSpeed = {
-    activeTab: false,
+    active: false,
     max: 100,
     min: 0,
     maxSpeed: 100,

@@ -13,6 +13,7 @@ const props = withDefaults(
     type?: InputType;
     placeholder?: string;
     border?: keyof typeof variants.border;
+    step?: number;
   }>(),
   {
     defaultValue: 0,
@@ -24,8 +25,8 @@ const props = withDefaults(
 );
 
 const modelValue = defineModel<string | number>("modelValue");
-const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + 1);
-const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - 1);
+const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + (props.step ?? 1));
+const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - (props.step ?? 1));
 
 const variants = {
   border: {
@@ -41,9 +42,10 @@ const variants = {
       v-model="modelValue"
       :type="type"
       :placeholder="placeholder"
+      :step="step"
       :class="
         twMerge(
-          'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
+          'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
           'border border-input focus:outline-hidden focus:ring-0',
           getVariantsClasses(variants, props) as string,
           props.class as string,
