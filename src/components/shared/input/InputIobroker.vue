@@ -10,10 +10,11 @@ import { ioBrokerService } from "@/lib/io-broker-service.ts";
 const props = withDefaults(
   defineProps<{
     type?: InputType;
-    unit?: "°C" | "Wh" | "%" | "min";
+    unit?: string;
     state: IValueOf<string | number> | undefined;
     debounce?: number;
     ack?: boolean;
+    step?: number;
     // eslint-disable-next-line vue/no-unused-properties
     color?: keyof typeof variants.color;
   }>(),
@@ -53,6 +54,7 @@ const variants = {
   <div :class="['relative', { 'border-red-500': !state?.ack }]">
     <InputShadcn
       :type
+      :step
       :class="[getVariantsClasses(variants, props)]"
       v-model:model-value="modelValue"
       @update:model-value="debounceFn"

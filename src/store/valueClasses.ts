@@ -139,10 +139,10 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 }
 
 export class NumberValue extends BaseValue<number> {
-  private readonly unit?: string;
+  private readonly _unit?: string;
   constructor(id: string, obj?: BaseValueOptions<number> & { unit?: string }) {
     super(id, obj);
-    this.unit = obj?.unit;
+    this._unit = obj?.unit;
   }
 
   public get value(): number {
@@ -150,11 +150,15 @@ export class NumberValue extends BaseValue<number> {
   }
 
   public get valueWithUnit(): string {
-    return this.val + " " + this.unit;
+    return this.val + " " + this._unit;
   }
 
   public get valAndUnit() {
-    return { unit: this.unit ?? "", val: this.value };
+    return { unit: this._unit ?? "", val: this.value };
+  }
+
+  public get unit(): string | undefined {
+    return this._unit;
   }
 }
 

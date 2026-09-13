@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import ButtonIobroker from "@/components/shared/button/ButtonIobroker.vue";
+import ButtonBoolIobroker from "@/components/shared/button/ButtonBoolIobroker.vue";
 import { type IValueOf } from "@/store/valueClasses.ts";
 
 defineProps<{
@@ -27,7 +27,7 @@ defineProps<{
         <p>Ist: {{ tempIs }} °C</p>
       </div>
       <div class="flex justify-between items-center w-full">
-        <ButtonIobroker variant="outline" size="icon" :state="power" icon="power" />
+        <ButtonBoolIobroker variant="outline" size="icon" :state="power" icon="power" />
         <InputIobroker :state="tempSet" unit="°C" />
       </div>
     </div>

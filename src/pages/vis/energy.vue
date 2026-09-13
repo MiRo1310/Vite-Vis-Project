@@ -39,19 +39,7 @@ const iconBattery = computed(() => {
 });
 
 type Ids =
-  | "pv"
-  | "balconyPv"
-  | "washer"
-  | "car"
-  | "server"
-  | "house"
-  | "battery"
-  | "powerGrid"
-  | "cellar"
-  | "freezer"
-  | "pool"
-  | "heat_pump"
-  | "pool_pump";
+  "pv" | "balconyPv" | "washer" | "car" | "server" | "house" | "battery" | "powerGrid" | "cellar" | "freezer" | "pool" | "heat_pump" | "pool_pump";
 
 const data = computed((): TEnergyFlowArray<Ids> => {
   const { energy, pool, pv } = iobroker;
