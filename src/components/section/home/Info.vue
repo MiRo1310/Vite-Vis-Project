@@ -7,9 +7,9 @@ import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 import { type WattPilotJson } from "@/types/types.ts";
-import { chargingTime } from "@/composables/battery.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
+import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
 
 const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;
@@ -117,18 +117,7 @@ const landroidStatusLabel = computed(() => {
       <RouterLink :to="routes.wattPilot.path">
         <DataCard title="Ladestatus" clickable content-class="flex flex-col gap-1.5">
           <MetricValue :number-value="iobroker.car.battery" />
-
-          <MetricValue
-            :val="
-              chargingTime({
-                chargingLimit: 80,
-                batteryCapacity: 81,
-                currentBatteryPercent: iobroker.car.battery.value,
-                currentPowerW: wallboxJson?.chargingPowerW ?? 0,
-              })
-            "
-            unit="Std"
-          />
+          <CarCharging :data="wallboxJson" />
         </DataCard>
       </RouterLink>
     </div>

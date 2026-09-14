@@ -10,20 +10,20 @@ import Date from "@/components/shared/date-time/Date.vue";
 import { priceKW, wpElectricityGridPrice, wpElectricityPrices } from "@/composables/wpElectricityPrices.ts";
 import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
-import { chargingTime } from "@/composables/battery.ts";
 import { getMostExpensiveFuelPrice } from "@/composables/fuel.ts";
 import Surplus from "@/components/section/pv/Surplus.vue";
 import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 import { filterEnum } from "@/lib/enum.ts";
-import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
+import WattPillotGridDrawAllowance from "@/components/section/watt-pilot-and-car/WattPillotGridDrawAllowance.vue";
 
 const { iobroker } = useIobrokerStore();
 
 const lPer100Km = 8;
 
-const data = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
+const wallboxJson = computed(() => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const modeLabel: Record<number, string> = {
   0: "Aus",
@@ -38,25 +38,29 @@ const { clickTab, activeTab } = tabToLocalStorage({ defaultTab: "daten", id: "wa
 
 const statusCards = computed((): Array<{ title: string; active?: boolean; text: string }> => {
   return [
-    { title: "Laden", active: data.value.charging, text: data.value.charging ? "Aktiv" : "Inaktiv" },
+    { title: "Laden", active: wallboxJson.value.charging, text: wallboxJson.value.charging ? "Aktiv" : "Inaktiv" },
     { title: "Überschussladen", active: isAutoCharging.value, text: isAutoCharging.value ? "Aktiv" : "Inaktiv" },
-    { title: "Auto verbunden", active: data.value.carConnected, text: data.value.carConnected ? "Verbunden" : "Nicht verbunden" },
-    { title: "Laden freigegeben", active: data.value.allowCharging, text: data.value.allowCharging ? "Freigegeben" : "Nicht freigegeben" },
-    { title: "Modus", text: modeLabel[data.value.currentIndex] ?? `Index ${data.value.currentIndex}` },
-    { title: "Phasen", text: `${data.value.phases ?? "–"}` },
-    { title: "Stop-Gründe", text: data.value.stopReasons.length ? data.value.stopReasons.join(", ") : "–" },
+    { title: "Auto verbunden", active: wallboxJson.value.carConnected, text: wallboxJson.value.carConnected ? "Verbunden" : "Nicht verbunden" },
+    {
+      title: "Laden freigegeben",
+      active: wallboxJson.value.allowCharging,
+      text: wallboxJson.value.allowCharging ? "Freigegeben" : "Nicht freigegeben",
+    },
+    { title: "Modus", text: modeLabel[wallboxJson.value.currentIndex] ?? `Index ${wallboxJson.value.currentIndex}` },
+    { title: "Phasen", text: `${wallboxJson.value.phases ?? "–"}` },
+    { title: "Stop-Gründe", text: wallboxJson.value.stopReasons.length ? wallboxJson.value.stopReasons.join(", ") : "–" },
   ];
 });
 
 const powerCards = computed((): Array<{ title: string; value: number | string; unit: string; valueClass?: string }> => {
   return [
-    { title: "Ladeleistung", value: data.value.chargingPowerW ?? 0, unit: "W", valueClass: "text-green-400" },
-    { title: "Strom", value: data.value.ampere ?? "–", unit: "A" },
+    { title: "Ladeleistung", value: wallboxJson.value.chargingPowerW ?? 0, unit: "W", valueClass: "text-green-400" },
+    { title: "Strom", value: wallboxJson.value.ampere ?? "–", unit: "A" },
     {
       title: "Netzbezug",
-      value: data.value.gridPower > 0 ? 0 : -data.value.gridPower,
+      value: wallboxJson.value.gridPower > 0 ? 0 : -wallboxJson.value.gridPower,
       unit: "W",
-      valueClass: data.value.gridPower > 0 ? "" : "text-orange-300",
+      valueClass: wallboxJson.value.gridPower > 0 ? "" : "text-orange-300",
     },
   ];
 });
@@ -120,7 +124,7 @@ const CHARGE_CURVE = {
           <TabsTrigger value="daten" @click="clickTab('daten')">Daten</TabsTrigger>
           <TabsTrigger value="werte" @click="clickTab('werte')">Werte</TabsTrigger>
         </TabsList>
-        <p v-if="data?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="data.updatedAt" /></p>
+        <p v-if="wallboxJson?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="wallboxJson.updatedAt" /></p>
       </div>
       <TabsContent value="daten" class="space-y-3">
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
@@ -144,12 +148,12 @@ const CHARGE_CURVE = {
           </DataCard>
           <DataCard title="Netzbezug-Freigabe genutzt" content-class="space-y-1.5">
             <div>
-              <span class="text-sm font-semibold">{{ data.gridDrawAllowanceUsedPercent }} </span>
+              <span class="text-sm font-semibold">{{ wallboxJson.gridDrawAllowanceUsedPercent }} </span>
               <span class="text-xs text-muted-foreground ml-1">% / </span>
               <span class="text-sm font-semibold"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.value }} </span>
               <span class="text-xs text-muted-foreground ml-1"> {{ iobroker.wattPilot.gridDrawAllowanceWatt.unit }} </span>
             </div>
-            <Progress :model-value="Math.min(Math.max(data.gridDrawAllowanceUsedPercent ?? 0, 0), 100)" class="h-1.5" />
+            <Progress :model-value="Math.min(Math.max(wallboxJson.gridDrawAllowanceUsedPercent ?? 0, 0), 100)" class="h-1.5" />
           </DataCard>
           <Surplus />
         </div>
@@ -159,19 +163,9 @@ const CHARGE_CURVE = {
             <MetricValue :number-value="iobroker.car.battery" />
           </DataCard>
           <DataCard title="Geschätzte Restladedauer">
-            <MetricValue
-              :val="
-                chargingTime({
-                  chargingLimit: 80,
-                  batteryCapacity: 81,
-                  currentBatteryPercent: iobroker.car.battery.value,
-                  currentPowerW: data?.chargingPowerW ?? 0,
-                })
-              "
-              unit="Std"
-            />
+            <CarCharging :data="wallboxJson" />
           </DataCard>
-          <DataCard title="Batterie Ladeziel Standart">
+          <DataCard title="Batterie Ladeziel Standard">
             <MetricValue :number-value="iobroker.car.batteryStandardTarget" />
           </DataCard>
           <DataCard title="Batterie Ladeziel schnell">
@@ -180,14 +174,8 @@ const CHARGE_CURVE = {
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
 
-        <p class="text-[10px] text-muted-foreground">Darf aus dem Netz gezogen werden bei Überschuss</p>
+        <WattPillotGridDrawAllowance :iobroker="iobroker" />
 
-        <InputIobroker
-          :state="iobroker.wattPilot.gridDrawAllowanceWatt"
-          :unit="iobroker.wattPilot.gridDrawAllowanceWatt.unit"
-          class="w-40"
-          :step="100"
-        />
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
         <div class="flex items-center flex-wrap gap-2">
           <ButtonStringIobroker
