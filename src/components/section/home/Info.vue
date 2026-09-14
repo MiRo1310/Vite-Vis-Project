@@ -9,7 +9,7 @@ import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
-import CarCharging from "@/pages/vis/CarCharging.vue";
+import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
 
 const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;

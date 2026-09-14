@@ -16,8 +16,8 @@ import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 import { filterEnum } from "@/lib/enum.ts";
-import InputIobroker from "@/components/shared/input/InputIobroker.vue";
-import CarCharging from "./CarCharging.vue";
+import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
+import WattPillotGridDrawAllowance from "@/components/section/watt-pilot-and-car/WattPillotGridDrawAllowance.vue";
 
 const { iobroker } = useIobrokerStore();
 
@@ -174,14 +174,8 @@ const CHARGE_CURVE = {
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
 
-        <p class="text-[10px] text-muted-foreground">Darf aus dem Netz gezogen werden bei Überschuss</p>
+        <WattPillotGridDrawAllowance :iobroker="iobroker" />
 
-        <InputIobroker
-          :state="iobroker.wattPilot.gridDrawAllowanceWatt"
-          :unit="iobroker.wattPilot.gridDrawAllowanceWatt.unit"
-          class="w-40"
-          :step="100"
-        />
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
         <div class="flex items-center flex-wrap gap-2">
           <ButtonStringIobroker
