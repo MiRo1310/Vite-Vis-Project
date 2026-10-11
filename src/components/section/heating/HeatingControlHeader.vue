@@ -41,7 +41,7 @@ function updateSelected(val: string | undefined) {
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-4">
+  <div class="flex flex-wrap items-center gap-4 mr-2">
     <p class="text-sm font-semibold text-popover-foreground">Aktives Profil</p>
     <SelectComponent
       v-model:model-value="selected"

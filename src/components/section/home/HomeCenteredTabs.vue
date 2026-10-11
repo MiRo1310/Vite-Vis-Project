@@ -40,7 +40,7 @@ const wpModus = computed(() => {
 </script>
 
 <template>
-  <Tabs default-value="pv" class="h-full flex flex-col">
+  <Tabs default-value="pv" class="h-full flex flex-col max-[600px]:h-auto">
     <TabsList class="shrink-0 w-full">
       <TabsTrigger value="pv" class="flex-1 text-[11px] px-1">PV</TabsTrigger>
       <TabsTrigger value="energie" class="flex-1 text-[11px] px-1">Energie</TabsTrigger>
@@ -50,7 +50,7 @@ const wpModus = computed(() => {
     </TabsList>
 
     <!-- PV -->
-    <TabsContent value="pv" class="flex-1 min-h-0 overflow-auto space-y-3">
+    <TabsContent value="pv" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
       <div class="flex justify-end">
         <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.pv.path)">→ PV Seite</button>
       </div>
@@ -87,7 +87,7 @@ const wpModus = computed(() => {
     </TabsContent>
 
     <!-- Energie -->
-    <TabsContent value="energie" class="flex-1 min-h-0 overflow-auto space-y-3">
+    <TabsContent value="energie" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
       <div class="flex justify-end">
         <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.energy.path)">
           → Energie Seite
@@ -114,7 +114,7 @@ const wpModus = computed(() => {
     </TabsContent>
 
     <!-- Heizung -->
-    <TabsContent value="heizung" class="flex-1 min-h-0 overflow-auto space-y-3">
+    <TabsContent value="heizung" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
       <div class="flex justify-end">
         <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.heating.path)">
           → Heizung Seite
@@ -153,7 +153,7 @@ const wpModus = computed(() => {
     </TabsContent>
 
     <!-- Pool / WP -->
-    <TabsContent value="pool" class="flex-1 min-h-0 overflow-auto space-y-3">
+    <TabsContent value="pool" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
       <div class="flex justify-end">
         <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.heatPump.path)">
           → WP Seite
@@ -192,7 +192,7 @@ const wpModus = computed(() => {
     </TabsContent>
 
     <!-- System -->
-    <TabsContent value="system" class="flex-1 min-h-0 overflow-auto space-y-3">
+    <TabsContent value="system" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
       <div class="flex justify-end">
         <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.system.path)">
           → System Seite
