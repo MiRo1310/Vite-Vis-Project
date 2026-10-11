@@ -1,4 +1,5 @@
-import { type Row } from "@tanstack/vue-table";
+import { type Row, type RowData } from "@tanstack/vue-table";
+import { type AppTableFeatures } from "@/lib/table-features";
 import { type ApolloQueryResult } from "@apollo/client";
 import { type FunctionalComponent, type HTMLAttributes } from "vue";
 import { type Badge } from "../components/shared/badge/badge.variants";
@@ -136,9 +137,9 @@ export type Pathes<T> = T extends object
   : "";
 type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
 
-export interface ITableColumn<Value, TRow, CustomValue = null, F = null> {
+export interface ITableColumn<Value, TRow extends RowData, CustomValue = null, F = null> {
   value: Value;
-  row: Row<TRow>;
+  row: Row<AppTableFeatures, TRow>;
   source: string;
   customValue?: CustomValue | null;
   callback?: F | CallbackFunktion;

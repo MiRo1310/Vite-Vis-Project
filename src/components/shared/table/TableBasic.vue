@@ -1,43 +1,28 @@
-<script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef, SortingState } from "@tanstack/vue-table";
-import { FlexRender, getCoreRowModel, getSortedRowModel, useVueTable } from "@tanstack/vue-table";
+<script setup lang="ts" generic="TData extends RowData">
+import type { ColumnDef, RowData } from "@tanstack/vue-table";
+import { FlexRender, useTable } from "@tanstack/vue-table";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import TableCell from "@/components/shared/table/TableCell.vue";
 import Skeleton from "@/components/shared/skeleton/Skeleton.vue";
-import { valueUpdater } from "@/lib/utils";
-import { ref } from "vue";
+import { appTableFeatures, type AppTableFeatures } from "@/lib/table-features";
+import { toRef } from "vue";
 
-type CustomColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
+type CustomColumnDef<TData extends RowData> = ColumnDef<AppTableFeatures, TData, any> & {
   width?: string;
   headerClass?: string;
 };
 const props = defineProps<{
-  columns: Array<CustomColumnDef<TData, TValue>>;
+  columns: Array<CustomColumnDef<TData>>;
   data: TData[];
   class?: string;
   wrapperClass?: string;
   loading: boolean;
 }>();
 
-const sorting = ref<SortingState>([]);
-
-const table = useVueTable({
-  get data() {
-    return props.data;
-  },
-  get columns() {
-    return props.columns;
-  },
-  getCoreRowModel: getCoreRowModel(),
-  getSortedRowModel: getSortedRowModel(),
-  onSortingChange: (updaterOrValue) => {
-    valueUpdater(updaterOrValue, sorting);
-  },
-  state: {
-    get sorting() {
-      return sorting.value;
-    },
-  },
+const table = useTable<AppTableFeatures, TData>({
+  features: appTableFeatures,
+  data: toRef(props, "data"),
+  columns: toRef(props, "columns"),
 });
 </script>
 <template>
