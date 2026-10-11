@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { reloadWhenHidden } from "@/lib/pwaUpdate.ts";
 
 const usePwaUpdate = () => {
   const updateAvailable = ref(false);
@@ -7,6 +8,7 @@ const usePwaUpdate = () => {
 
   function notifyUpdate() {
     updateAvailable.value = true;
+    reloadWhenHidden();
   }
 
   function applyUpdate() {
