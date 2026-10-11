@@ -14,7 +14,7 @@ const dialogOpen = defineModel<boolean>("dialogOpen");
           {{ description }}
         </DialogDescription>
       </DialogHeader>
-      <div class="flex-1 h-full">
+      <div class="flex-1 h-full min-h-0 overflow-hidden">
         <slot />
       </div>
       <DialogFooter><slot name="footer" /></DialogFooter>
