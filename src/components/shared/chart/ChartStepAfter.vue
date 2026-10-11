@@ -12,12 +12,12 @@ interface ChartDataPoint {
 
 const props = defineProps<{ label: string; chartData: ChartDataPoint[]; synchronize: ChartDataPoint[][] }>();
 
-const chartConfig = {
+const chartConfig: ChartConfig = {
   value: {
     label: props.label,
     color: "var(--chart-1)",
   },
-} satisfies ChartConfig;
+};
 
 type Data = ChartDataPoint;
 </script>

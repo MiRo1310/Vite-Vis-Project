@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { InputShadcn } from "@/components/ui/input";
 import { type Row } from "@tanstack/vue-table";
+import { type AppTableFeatures } from "@/lib/table-features";
 import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { ref, watchEffect } from "vue";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const props = defineProps<{
   value: string | number;
-  row: Row<AlexaDotAction>;
+  row: Row<AppTableFeatures, AlexaDotAction>;
   source: string;
   customValue: {
     step?: number;

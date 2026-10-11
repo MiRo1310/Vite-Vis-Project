@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { type Row } from "@tanstack/vue-table";
+import { type AppTableFeatures } from "@/lib/table-features";
 import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
 import { Switch } from "@/components/ui/switch";
 import { ref } from "vue";
 
 const props = defineProps<{
   value: boolean | undefined;
-  row: Row<AlexaDotAction>;
+  row: Row<AppTableFeatures, AlexaDotAction>;
   source: string;
   callback: (params: Record<string, any>) => void;
 }>();

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { type CustomValue } from "@/lib/table.ts";
 import { type Row } from "@tanstack/vue-table";
+import { type AppTableFeatures } from "@/lib/table-features";
 import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
 
 defineProps<{
   value: string;
   // eslint-disable-next-line vue/no-unused-properties
-  row: Row<AlexaDotAction>;
+  row: Row<AppTableFeatures, AlexaDotAction>;
   // eslint-disable-next-line vue/no-unused-properties
   source: string;
   // eslint-disable-next-line vue/no-unused-properties
