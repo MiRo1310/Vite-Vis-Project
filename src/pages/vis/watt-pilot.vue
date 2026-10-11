@@ -15,7 +15,8 @@ import Surplus from "@/components/section/pv/Surplus.vue";
 import { ChargingStatusEnum } from "@/enum/enum.ts";
 import ButtonStringIobroker from "@/components/shared/button/ButtonStringIobroker.vue";
 import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
-import { filterEnum } from "@/lib/enum.ts";
+import { chargingModeOptions } from "@/lib/wattPilot.ts";
+import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
 import WattPillotGridDrawAllowance from "@/components/section/watt-pilot-and-car/WattPillotGridDrawAllowance.vue";
 import Enbw from "@/data/enbw.ts";
@@ -50,6 +51,7 @@ const statusCards = computed((): Array<{ title: string; active?: boolean; text: 
     { title: "Modus", text: modeLabel[wallboxJson.value.currentIndex] ?? `Index ${wallboxJson.value.currentIndex}` },
     { title: "Phasen", text: `${wallboxJson.value.phases ?? "–"}` },
     { title: "Stop-Gründe", text: wallboxJson.value.stopReasons.length ? wallboxJson.value.stopReasons.join(", ") : "–" },
+    { title: "Preis pro 100 km", text: `${pricePerHundertKm.value} €/100km` },
   ];
 });
 
@@ -142,6 +144,22 @@ const CHARGE_CURVE = {
   [ChargingStatusEnum["3P15A"]]: 10350,
   [ChargingStatusEnum["3P16A"]]: 11040,
 };
+
+const chargingModeItems = chargingModeOptions(ChargingStatusEnum, ["1P", "3P"], CHARGE_CURVE);
+
+const selectedChargingMode = computed((): string => {
+  const current = iobroker.wattPilot.chargingMode.value;
+  if (chargingModeItems.some((item) => item.value === current)) {
+    return current;
+  }
+  return "";
+});
+
+const setChargingMode = (value: string | undefined): void => {
+  if (value) {
+    iobroker.wattPilot.chargingMode.setState(value);
+  }
+};
 </script>
 
 <template>
@@ -155,6 +173,33 @@ const CHARGE_CURVE = {
         <p v-if="wallboxJson?.updatedAt" class="text-xs text-muted-foreground">Aktualisiert: <Date :date="wallboxJson.updatedAt" /></p>
       </div>
       <TabsContent value="daten" class="space-y-3">
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
+        <div class="flex items-center flex-wrap gap-2">
+          <ButtonStringIobroker
+            class="capitalize min-w-17.5"
+            active-border="success"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum.AUTO"
+            use-active
+            >{{ ChargingStatusEnum.AUTO }}</ButtonStringIobroker
+          >
+          <ButtonStringIobroker
+            class="capitalize min-w-17.5"
+            active-border="success"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum['3P16A']"
+            use-active
+            >Max ({{ CHARGE_CURVE[ChargingStatusEnum["3P16A"]] }} W)</ButtonStringIobroker
+          >
+          <ButtonStringIobroker
+            class="capitalize min-w-17.5"
+            active-border="danger"
+            :state="iobroker.wattPilot.chargingMode"
+            :value="ChargingStatusEnum.DISABLED"
+            use-active
+            >{{ ChargingStatusEnum.DISABLED }}</ButtonStringIobroker
+          >
+        </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Status</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <DataCard
@@ -204,52 +249,15 @@ const CHARGE_CURVE = {
 
         <WattPillotGridDrawAllowance :iobroker="iobroker" />
 
-        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Schalten</p>
-        <div class="flex items-center flex-wrap gap-2">
-          <ButtonStringIobroker
-            class="capitalize min-w-17.5"
-            active-border="success"
-            :state="iobroker.wattPilot.chargingMode"
-            :value="ChargingStatusEnum.AUTO"
-            use-active
-            >{{ ChargingStatusEnum.AUTO }}</ButtonStringIobroker
-          >
-          <ButtonStringIobroker
-            class="capitalize min-w-17.5"
-            active-border="danger"
-            :state="iobroker.wattPilot.chargingMode"
-            :value="ChargingStatusEnum.DISABLED"
-            use-active
-            >{{ ChargingStatusEnum.DISABLED }}</ButtonStringIobroker
-          >
-        </div>
-        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit einer Phase</p>
-        <div class="flex items-center flex-wrap gap-2">
-          <ButtonStringIobroker
-            v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['3P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
-            :key="i"
-            class="capitalize min-w-28"
-            active-border="success"
-            :state="iobroker.wattPilot.chargingMode"
-            :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
-            use-active
-            >{{ statusEnum.replace("1P", "") }} =>
-            {{ CHARGE_CURVE[ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum] as keyof typeof CHARGE_CURVE] }}</ButtonStringIobroker
-          >
-        </div>
-        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit Drei Phasen</p>
-        <div class="flex items-center flex-wrap gap-2">
-          <ButtonStringIobroker
-            v-for="(statusEnum, i) in filterEnum(ChargingStatusEnum, ['1P', ChargingStatusEnum.AUTO, ChargingStatusEnum.DISABLED])"
-            :key="i"
-            class="capitalize min-w-28"
-            active-border="success"
-            :state="iobroker.wattPilot.chargingMode"
-            :value="ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum]"
-            use-active
-            >{{ statusEnum.replace("3P", "") }} =>
-            {{ CHARGE_CURVE[ChargingStatusEnum[statusEnum as keyof typeof ChargingStatusEnum] as keyof typeof CHARGE_CURVE] }}</ButtonStringIobroker
-          >
+        <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit Stromstärke</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <SelectComponent
+            :model-value="selectedChargingMode"
+            :items="chargingModeItems"
+            placeholder="Stromstärke wählen"
+            :class="['w-full', !iobroker.wattPilot.chargingMode.ack ? 'border-red-500!' : selectedChargingMode ? 'border-orange-500!' : '']"
+            @update:model-value="setChargingMode($event)"
+          />
         </div>
       </TabsContent>
 
