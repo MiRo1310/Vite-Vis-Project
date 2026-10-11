@@ -37,7 +37,7 @@ const emits = defineEmits(["clickRoom"]);
     </CardHeader>
     <CardContent class="px-3 pt-1 pb-2">
       <div class="flex flex-wrap gap-3">
-        <div v-for="(w, i) in room.windows" :key="i" class="flex flex-col gap-0.5 text-xs min-w-15">
+        <div v-for="(w, i) in room.windows" :key="i" class="flex flex-col gap-0.5 text-xs min-w-20">
           <span v-if="w.name" class="text-muted-foreground font-medium">{{ w.name }}</span>
           <div class="flex items-center gap-1">
             <span :class="['h-1.5 w-1.5 rounded-full shrink-0', w.windowSensorReachable?.val ? 'bg-green-400' : 'bg-muted-foreground/30']" />
