@@ -38,7 +38,8 @@ onErrorCaptured((err) => {
 // Globale JS-Fehler / unhandled Rejections betreffen nicht zwingend den Vue-Baum
 // -> nur ein Toast, Details per Klick
 window.addEventListener("error", (event) => {
-  reportError(event.error ?? new Error(event.message), false);
+  // event.error ist null bei Cross-Origin-Scripts ("Script error.") -> Quelle mit ausgeben
+  reportError(event.error ?? new Error(`${event.message} (${event.filename || "unbekannte Quelle"}:${event.lineno}:${event.colno})`), false);
 });
 
 window.addEventListener("unhandledrejection", (event) => {
