@@ -30,7 +30,7 @@ onUnmounted(() => {
 <template>
   <Card
     :class="[
-      'py-0 gap-0 transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden xl:w-110 sm:w-80 sm:flex-0 flex-1',
+      'py-0 gap-0 rounded-md transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden xl:w-110 sm:w-80 sm:flex-0 flex-1',
       notification?.getNotificationClass,
     ]"
   >
