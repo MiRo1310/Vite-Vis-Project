@@ -32,26 +32,21 @@ const roomItems = computed((): SelectOption[] => {
   });
 });
 
-const selected = ref(iobroker.heatingControl.profile.value.toString());
-const room = ref(iobroker.heatingControl.room.value.toString());
+const selected = computed({
+  get: () => iobroker.heatingControl.profile.value.toString(),
+  set: (val: string | undefined) => iobroker.heatingControl.profile.setState(val ?? null),
+});
 
-function updateSelected(val: string | undefined) {
-  iobroker.heatingControl.profile.setState(val ?? null);
-}
+const room = ref(iobroker.heatingControl.room.value.toString());
 </script>
 
 <template>
   <div class="flex flex-wrap items-center gap-4 mr-2">
     <p class="text-sm font-semibold text-popover-foreground">Aktives Profil</p>
-    <SelectComponent
-      v-model:model-value="selected"
-      placeholder="Wähle ein Profil aus"
-      :items="profiles"
-      class="w-auto"
-      @update:model-value="updateSelected($event)"
-    />
+    <SelectComponent v-if="profiles.length" v-model:model-value="selected" placeholder="Wähle ein Profil aus" :items="profiles" class="w-auto" />
     <p class="header__label">Raum:</p>
     <SelectComponent
+      v-if="roomItems.length"
       v-model:model-value="room"
       placeholder="Wähle einen Raum"
       :items="roomItems"

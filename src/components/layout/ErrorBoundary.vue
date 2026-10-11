@@ -54,8 +54,8 @@ window.addEventListener("unhandledrejection", (event) => {
 });
 </script>
 <template>
-  <div v-if="showErrorPage" class="flex h-screen w-screen items-center justify-center p-4">
-    <Card class="w-full max-w-lg py-0 gap-0">
+  <div v-if="showErrorPage" class="error-boundary flex h-screen w-screen items-center justify-center p-4">
+    <Card class="w-full xl:max-w-3/4 py-0 gap-0">
       <CardHeader class="px-4 pt-3 pb-0">
         <CardTitle class="text-sm text-destructive">Ein Fehler ist aufgetreten</CardTitle>
       </CardHeader>
