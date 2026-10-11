@@ -78,3 +78,13 @@ export function formatError(err: unknown): FormattedError {
   const message = messageFromErrorLike(obj) || messageFromEvent(obj) || stringify(err) || UNKNOWN_ERROR;
   return { message, details };
 }
+
+/**
+ * Erkennt vom Browser "geschwärzte" Fehler: Stammt ein Fehler aus einem Cross-Origin-Script
+ * (z.B. socket.io.js vom ioBroker) oder aus Safari-internem Code (z.B. beim Öffnen des Teilen-Menüs),
+ * liefert der Browser nur "Script error." ohne Fehlerobjekt, Datei und Zeile. Diese Fehler sind
+ * nicht auswertbar und für die App nicht relevant.
+ */
+export function isOpaqueScriptError(message: string, error: unknown, filename?: string): boolean {
+  return !error && !filename && message.trim() === "Script error.";
+}

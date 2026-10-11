@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatError, UNKNOWN_ERROR } from "@/lib/error";
+import { formatError, isOpaqueScriptError, UNKNOWN_ERROR } from "@/lib/error";
 
 describe("formatError", () => {
   it("returns fallback for null/undefined", () => {
@@ -52,5 +52,18 @@ describe("formatError", () => {
     const circular: Record<string, unknown> = {};
     circular.self = circular;
     expect(formatError(circular).message).toBe(UNKNOWN_ERROR);
+  });
+});
+
+describe("isOpaqueScriptError", () => {
+  it("detects sanitized cross-origin script errors", () => {
+    expect(isOpaqueScriptError("Script error.", null, "")).toBe(true);
+    expect(isOpaqueScriptError("Script error.", undefined)).toBe(true);
+  });
+
+  it("does not match real errors", () => {
+    expect(isOpaqueScriptError("Script error.", new Error("x"), "")).toBe(false);
+    expect(isOpaqueScriptError("Script error.", null, "http://host/app.js")).toBe(false);
+    expect(isOpaqueScriptError("x is undefined", null, "")).toBe(false);
   });
 });

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DialogShared from "@/components/shared/dialog/DialogShared.vue";
 import ErrorToast from "@/components/layout/error/ErrorToast.vue";
 import ErrorDetails from "@/components/layout/error/ErrorDetails.vue";
+import { isOpaqueScriptError } from "@/lib/error";
 
 const { toast } = useToast();
 const error = ref<unknown>(null);
@@ -38,6 +39,12 @@ onErrorCaptured((err) => {
 // Globale JS-Fehler / unhandled Rejections betreffen nicht zwingend den Vue-Baum
 // -> nur ein Toast, Details per Klick
 window.addEventListener("error", (event) => {
+  // Geschwärzte Fehler (Cross-Origin-Script / Safari-intern, z.B. Teilen-Menü auf iOS) sind nicht auswertbar
+  if (isOpaqueScriptError(event.message, event.error, event.filename)) {
+    // eslint-disable-next-line no-console
+    console.warn("[ErrorBoundary] Ignoriere nicht auswertbaren 'Script error.'", event);
+    return;
+  }
   // event.error ist null bei Cross-Origin-Scripts ("Script error.") -> Quelle mit ausgeben
   reportError(event.error ?? new Error(`${event.message} (${event.filename || "unbekannte Quelle"}:${event.lineno}:${event.colno})`), false);
 });
