@@ -36,7 +36,7 @@ const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
 </script>
 
 <template>
-  <Card class="py-0 gap-0 cursor-pointer hover:bg-accent transition-colors" @click="router.push({ name: routes.calender.name })">
+  <Card class="py-0 gap-0 rounded-md cursor-pointer hover:bg-accent transition-colors" @click="router.push({ name: routes.calender.name })">
     <CardContent class="p-2 flex flex-col gap-2">
       <CalendarDay :data="today" title="Heute" />
       <CalendarDay :data="tomorrow" title="Morgen" />

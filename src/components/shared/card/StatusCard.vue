@@ -23,7 +23,7 @@ async function handleClick() {
 </script>
 
 <template>
-  <Card :class="['py-0 gap-0 transition-colors', props.class, route ? 'cursor-pointer hover:bg-accent' : '']" @click="handleClick">
+  <Card :class="['py-0 gap-0 rounded-md transition-colors', props.class, route ? 'cursor-pointer hover:bg-accent' : '']" @click="handleClick">
     <CardHeader class="px-3 pt-2 pb-0">
       <CardTitle class="text-xs text-muted-foreground">{{ title }}</CardTitle>
     </CardHeader>

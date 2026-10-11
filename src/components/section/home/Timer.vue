@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { useAppStore } from "@/store/app-store.js";
+import { useAppStore } from "@/store/app-store.ts";
 import { type Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { getNameByIndex } from "@/composables/timer.ts";
 import { DataCard } from "@/components/shared/card";
 
 const { iobroker } = useIobrokerStore();
+const appStore = useAppStore();
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-2" @click="useAppStore().toggleTimerVisibility()">
+  <div class="grid grid-cols-2 gap-2" @click="appStore.toggleTimerVisibility()">
     <DataCard
       v-for="i in 4"
       :key="i"

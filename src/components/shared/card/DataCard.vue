@@ -5,6 +5,8 @@ import type { HTMLAttributes } from "vue";
 defineProps<{
   title: string;
   contentClass?: HTMLAttributes["class"];
+  /** Titel bricht nicht um, Karte wird so breit wie der Titel */
+  nowrapTitle?: boolean;
   clickable?: boolean;
 }>();
 </script>
@@ -19,8 +21,9 @@ defineProps<{
       },
     ]"
   >
-    <CardHeader class="px-3 pt-2 pb-0">
-      <CardTitle class="text-xs text-muted-foreground">{{ title }}</CardTitle>
+    <!-- @container im shadcn-Header ignoriert die Inhaltsbreite, daher bei nowrapTitle zurücksetzen -->
+    <CardHeader :class="['px-3 pt-2 pb-0', { '[container-type:normal]!': nowrapTitle }]">
+      <CardTitle :class="['text-xs text-muted-foreground', { 'whitespace-nowrap': nowrapTitle }]">{{ title }}</CardTitle>
     </CardHeader>
     <CardContent :class="['px-3 pt-1 pb-2', contentClass]">
       <slot />
