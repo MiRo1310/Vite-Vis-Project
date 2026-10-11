@@ -585,12 +585,16 @@ export const iobrokerTree = {
   },
   lights: {
     Wohnzimmer: new BooleanValue("sonoff.0.Sonoff_Wohnzimmer.POWER"),
+    Wohnzimmer_Led: new BooleanValue("alias.0.Wohnzimmer.on"),
     Wohnzimmer_Ecklampe: new BooleanValue("s7.2.DBs.DB1.M6"),
     Weihnachtsbaum: new BooleanValue("zigbee.0.a4c138d35583a3d7.state"),
     Dachboden: new BooleanValue("sonoff.0.Sonoff_Dachboden.POWER"),
     Abstellraum_OG: new BooleanValue("sonoff.0.Sonoff_OG_Abstellraum.POWER"),
+    Kellerlicht: new BooleanValue("tapo.0.8023409AB730E571F3105266B2B9CCDB1DBE4305.remote.setPowerState"),
     Buero: new BooleanValue("sonoff.0.Sonoff_Keller_Michi.POWER"),
     Buero_Schreibtisch: new BooleanValue("tuya.0.bfec013e9034a47a12o5so.20"),
+    Buero_3d_Drucker: new BooleanValue("zigbee.0.7cb03eaa0a0a0f63.state"),
+    Buero_LED: new BooleanValue("alias.0.WledKeller.on"),
   },
   lightsAdditive: {
     Wohnzimmer_Ecklampe: new BooleanValue("s7.2.DBs.DB1.Q11"),
