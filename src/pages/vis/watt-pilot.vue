@@ -18,6 +18,7 @@ import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 import { filterEnum } from "@/lib/enum.ts";
 import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
 import WattPillotGridDrawAllowance from "@/components/section/watt-pilot-and-car/WattPillotGridDrawAllowance.vue";
+import Enbw from "@/data/enbw.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -65,27 +66,54 @@ const powerCards = computed((): Array<{ title: string; value: number | string; u
   ];
 });
 
+const pricePerHundertKm = computed((): string => {
+  const totalChargingEnergyStation = Enbw.totalPrice.price;
+  const priceGrid = parseFloat(wpElectricityGridPrice.value);
+
+  return ((totalChargingEnergyStation + priceGrid) / (iobroker.car.odometer.value / 100)).toFixed(2);
+});
+
 const valueRows = computed((): Array<{ title: string; description: string; metricProps: InstanceType<typeof MetricValue>["$props"] }> => {
   return [
     {
-      title: "Ladeleistung gesamt",
+      title: "Gefahrene Kilometer",
+      description: "",
+      metricProps: { numberValue: iobroker.car.odometer },
+    },
+    {
+      title: "Lademenge gesamt",
       description: "Insgesamt über die Wallbox geladene Energie.",
       metricProps: { numberValue: iobroker.wattPilot.totalCharging, math: (val: number) => val / 1000 },
     },
     {
-      title: "Ladeleistung aus Netz",
+      title: "Lademenge aus Netz",
       description: "Insgesamt über die Wallbox geladene Energie aus dem Netz.",
       metricProps: { numberValue: iobroker.wattPilot.totalChargingFromGrid, decimalPlaces: 3, valueClass: "text-orange-300" },
     },
     {
+      title: "Lademenge von Ladesäulen",
+      description: "Insgesamt über Ladesäulen geladene Energie.",
+      metricProps: { val: Enbw.totalKW.toString, decimalPlaces: 3, valueClass: "text-blue-200" },
+    },
+    {
       title: "Netzbezug Kosten",
-      description: `Kosten für den Bezug von Netzstrom, berechnet mit ${priceKW}€/KW.`,
+      description: `Kosten für den Bezug von Netzstrom, berechnet mit ${priceKW} €/KW.`,
       metricProps: { val: wpElectricityGridPrice.value, unit: "€", valueClass: "text-orange-300" },
     },
     {
+      title: "Kosten von Ladesäulen",
+      description: "Kosten gesamt über Ladesäulen geladene Energie.",
+      metricProps: { val: Enbw.totalPrice.toString, decimalPlaces: 3, valueClass: "text-blue-200" },
+    },
+    {
       title: "Überschussladen Einsparung",
-      description: `Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit ${priceKW}€/KW.`,
+      description: `Ersparnis durch das Laden mit PV-Überschuss statt Netzstrom, berechnet mit ${priceKW} €/KW.`,
       metricProps: { val: wpElectricityPrices.value, unit: "€", valueClass: "text-green-400" },
+    },
+    {
+      title: "Preis pro 100 km",
+      description: "Preis für 100 km mit dem Auto.",
+      metricProps: { val: pricePerHundertKm.value, unit: "€/100km", valueClass: "text-green-400" },
     },
   ];
 });

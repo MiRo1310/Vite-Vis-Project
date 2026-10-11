@@ -77,6 +77,7 @@ export const iobrokerTree = {
     batteryStandardTarget: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.ChargingInformation.TargetSoC.Standard", {
       unit: "%",
     }),
+    odometer: new NumberValue("bluelink.0.KNAFD81A7T6159455.odometer.value", { unit: "km" }),
   },
   batteries: {
     "Shelly Plus Smoke Flur OG": {
