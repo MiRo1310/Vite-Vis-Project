@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { type HTMLAttributes, watchEffect } from "vue";
+import { computed, type HTMLAttributes, watchEffect } from "vue";
 import { type SelectOption } from "@/types/types.ts";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
@@ -18,20 +18,22 @@ const props = defineProps<{
 
 const itemE2e = (item: SelectOption): string | undefined => (props.e2e ? `${props.e2e}-${item.label}` : undefined);
 
+const filteredItems = computed(() => props.items.filter((item) => item.value !== "" && item.label !== ""));
+
 const modelValue = defineModel<string>("modelValue", {
   get: (m) => {
     if (!m) {
       return "";
     }
     return (
-      props.items.find((v) => v.id === m)?.value ??
-      props.items.find((v) => v.label === m)?.value ??
-      props.items.find((v) => v.value === m)?.value ??
+      filteredItems.value.find((v) => v.id === m)?.value ??
+      filteredItems.value.find((v) => v.label === m)?.value ??
+      filteredItems.value.find((v) => v.value === m)?.value ??
       ""
     );
   },
   set: (v) => {
-    const found = props.items.find((i) => i.id === v || i.value === v || i.label === v);
+    const found = filteredItems.value.find((i) => i.id === v || i.value === v || i.label === v);
     if (found) {
       return found.id ?? found.value;
     } else {
@@ -43,7 +45,7 @@ const selectedObj = defineModel<SelectOption>("selectedObj");
 
 watchEffect(() => {
   if (modelValue.value) {
-    selectedObj.value = props.items.find((item) => item.value === modelValue.value);
+    selectedObj.value = filteredItems.value.find((item) => item.value === modelValue.value);
   }
 });
 
@@ -74,7 +76,7 @@ const variants = {
           {{ label }}
         </SelectLabel>
         <SelectItem
-          v-for="(item, index) in items"
+          v-for="(item, index) in filteredItems"
           :key="index"
           :value="item.value"
           v-e2e="itemE2e(item)"
