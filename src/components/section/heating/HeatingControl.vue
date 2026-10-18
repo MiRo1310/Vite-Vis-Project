@@ -18,7 +18,7 @@ import HeatingControlWindowStatus from "./HeatingControlWindowStatus.vue";
       <HeatingControlRoomStatus />
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <HeatingControlWindowStatus />
-        <HeatingControlRoom class="" />
+        <HeatingControlRoom />
       </div>
     </TabsContent>
 

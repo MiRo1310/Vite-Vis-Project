@@ -4,13 +4,16 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 const { iobroker } = useIobrokerStore();
 </script>
 <template>
-  <div class="w-full bg-cardSubcard/30 border p-2 container__table" v-html="iobroker.heatingControl?.visRoomStates?.val" />
+  <div class="w-full bg-cardSubcard/30 border p-2 container__table overflow-auto" v-html="iobroker.heatingControl?.visRoomStates?.val" />
 </template>
 
 <style lang="scss">
-.container__table table {
-  width: 100%;
-  font-size: 0.8rem;
+.container__table {
+  table {
+    width: 100%;
+    min-width: 800px;
+    font-size: 0.8rem;
+  }
 }
 
 .mdui-green-bg {

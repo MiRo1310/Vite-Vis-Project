@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { computed } from "vue";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 
-defineProps<{ class: string }>();
-
 const { iobroker } = useIobrokerStore();
 
 const heatingControl = computed(() => iobroker.heatingControl);
@@ -19,7 +17,7 @@ async function resetStatus() {
 }
 </script>
 <template>
-  <div :class="['bg-cardSubcard/30 border inline-block p-2 w-full relative', $props.class]">
+  <div :class="['bg-cardSubcard/30 border inline-block p-2 w-full relative']">
     <div>
       <p>{{ heatingControl?.room?.val }}</p>
       <p class="flex mt-2">
