@@ -7,7 +7,7 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 h-full">
     <div class="flex items-center gap-2 shrink-0">
       <span class="text-sm font-semibold">{{ title }}</span>
 
@@ -26,7 +26,7 @@ defineProps<{ title: string }>();
       </div>
     </div>
 
-    <div class="flex-1 overflow-auto">
+    <div class="flex-1 min-h-0 overflow-auto">
       <slot />
     </div>
   </div>
