@@ -356,6 +356,13 @@
   dependencies:
     "@babel/types" "^7.29.8"
 
+"@babel/parser@^7.29.9":
+  version "7.29.9"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.29.9.tgz#e7ee0a24f752c5296c6455855ccb72662e67ea96"
+  integrity sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA==
+  dependencies:
+    "@babel/types" "^7.29.8"
+
 "@babel/parser@^8.0.0":
   version "8.0.7"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-8.0.7.tgz#9230a40e3c9b3f2e72282f582f669ada4e645af2"
@@ -4354,6 +4361,17 @@
     estree-walker "^2.0.2"
     source-map-js "^1.2.1"
 
+"@vue/compiler-core@^3.5.43":
+  version "3.5.44"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.5.44.tgz#6e5b3b56ec7747390dd8d20ee31717fc58106bb4"
+  integrity sha512-k34nCytbK8PQ1gR2mGROYOw6Pnv/mumqIdrZ3x2tbyXZDWm7ViKGLTfdB+DRrWqEQsLgGJvn0WN9jBif5zCTLQ==
+  dependencies:
+    "@babel/parser" "^7.29.9"
+    "@vue/shared" "3.5.44"
+    entities "^7.0.1"
+    estree-walker "^2.0.2"
+    source-map-js "^1.2.2"
+
 "@vue/compiler-dom@3.5.33", "@vue/compiler-dom@^3.5.0":
   version "3.5.33"
   resolved "https://registry.yarnpkg.com/@vue/compiler-dom/-/compiler-dom-3.5.33.tgz#20ec1f3b4d9c455cc90957e13767cd3ee16c9790"
@@ -4639,6 +4657,11 @@
   version "3.5.43"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.43.tgz#22c11ecf1304bfc6f6b745f3b4ba54c410074338"
   integrity sha512-uksS7YGMR5NZyr4JNq0Rp+QyLns0ueaz20KwzIPW9R0LH1Vnt4E+XUM29PNseEbf1www2gOuhuDi5AKOIXag9Q==
+
+"@vue/shared@3.5.44":
+  version "3.5.44"
+  resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.44.tgz#eefe91aa2e17c617260c4ae4c21246be5d85642e"
+  integrity sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==
 
 "@vue/typescript-plugin@3.3.13":
   version "3.3.13"
