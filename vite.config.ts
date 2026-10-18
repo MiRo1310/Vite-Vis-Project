@@ -3,12 +3,35 @@ import vue from "@vitejs/plugin-vue";
 import svgLoader from "vite-svg-loader";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import path from "node:path";
+import { NodeTypes, type NodeTransform } from "@vue/compiler-core";
+
+// Dev only: marks the root element(s) of every component with data-component="<FileName>" for the browser's Elements panel
+const addComponentName: NodeTransform = (node, context) => {
+  if (node.type !== NodeTypes.ELEMENT || context.parent?.type !== NodeTypes.ROOT || !context.filename.endsWith(".vue")) {
+    return;
+  }
+  node.props.push({
+    type: NodeTypes.ATTRIBUTE,
+    name: "data-component",
+    value: { type: NodeTypes.TEXT, content: path.basename(context.filename, ".vue"), loc: node.loc },
+    nameLoc: node.loc,
+    loc: node.loc,
+  });
+};
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     tailwindcss(),
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          // serve wird bei yarn run dev gesetzt, hier wäre build bei yarn run build
+          nodeTransforms: command === "serve" && !process.env.VITEST ? [addComponentName] : [],
+        },
+      },
+    }),
     svgLoader(),
     !process.env.VITEST &&
       VitePWA({
@@ -63,4 +86,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
