@@ -7,7 +7,7 @@ defineProps<{ title: string }>();
 </script>
 
 <template>
-  <div class="flex flex-col gap-2" v-component="'Page'">
+  <div class="flex flex-col gap-2">
     <div class="flex items-center gap-2 shrink-0">
       <span class="text-sm font-semibold">{{ title }}</span>
 
