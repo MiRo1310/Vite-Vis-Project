@@ -27,49 +27,64 @@ import { getActiveLights } from "@/composables/lights.ts";
 import { routes } from "@/router/routes.ts";
 import { mainPages } from "@/config/mainPages.ts";
 
-const navigations = computed((): NavigationType[] => [
-  { ...mainPages.home },
-  {
-    icon: Blinds,
-    text: "Räume",
-    to: routes.window.path,
-    badges: [{ value: getOpenWindows.value, color: "yellow" }],
-  },
-  { ...mainPages.lists },
-  { icon: CalendarDays, text: "Kalendar", to: routes.calender.path },
-  {
-    icon: BatteryFull,
-    text: "Batterie",
-    to: routes.battery.path,
-    badges: [
-      { value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0), color: "orange" },
-      {
-        value: batteryList.value.reduce(
-          (prev, curr) => prev + (curr.timestamp && curr.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
-          0,
-        ),
-        color: "red",
-        class: "animate-pulse",
-      },
-    ],
-  },
-  { icon: LampCeiling, text: "Licht", to: routes.light.path, badges: [{ value: getActiveLights.value, color: "yellow" }] },
-  { icon: CircleDot, text: "Alexa", to: routes.alexa.path },
-  { icon: Heater, text: "Heizung", to: routes.heating.path },
-  { icon: SunSnow, text: "Heizkörper Steuerung", to: routes.heatingControl.path },
-  { icon: PlugZap, text: "PV", to: routes.pv.path },
-  { icon: Plug, text: "Wallbox", to: routes.wattPilot.path },
-  { icon: PlugZap, text: "Energy", to: routes.energy.path },
-  { icon: Navigation, text: "Karten", to: routes.maps.path },
-  { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
-  { icon: Logs, text: "Benachrichtigungen", to: routes.notifications.path },
-  { icon: Logs, text: "Logs", to: routes.logs.path },
-  { icon: Logs, text: "Wärmepumpe", to: routes.heatPump.path },
-  { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
-  { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
-  { icon: MonitorCog, text: "System", to: routes.system.path },
-  { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
-]);
+const navigations = computed((): NavigationType[] => {
+  const home: NavigationType = { ...mainPages.home };
+  const list: NavigationType[] = [
+    {
+      icon: Blinds,
+      text: "Räume",
+      to: routes.window.path,
+      badges: [{ value: getOpenWindows.value, color: "yellow" }],
+    },
+    { ...mainPages.lists },
+    { icon: CalendarDays, text: "Kalendar", to: routes.calender.path },
+    {
+      icon: BatteryFull,
+      text: "Batterie",
+      to: routes.battery.path,
+      badges: [
+        { value: batteryList.value.reduce((prev, curr) => prev + (curr.lowBat ? 1 : 0), 0), color: "orange" },
+        {
+          value: batteryList.value.reduce(
+            (prev, curr) => prev + (curr.timestamp && curr.timestamp < new Date().getTime() - 30 * 60 * 60 * 1000 ? 1 : 0),
+            0,
+          ),
+          color: "red",
+          class: "animate-pulse",
+        },
+      ],
+    },
+    { icon: LampCeiling, text: "Licht", to: routes.light.path, badges: [{ value: getActiveLights.value, color: "yellow" }] },
+    { icon: CircleDot, text: "Alexa", to: routes.alexa.path },
+    { icon: Heater, text: "Heizung", to: routes.heating.path },
+    { icon: SunSnow, text: "Heizkörper Steuerung", to: routes.heatingControl.path },
+    { icon: PlugZap, text: "PV", to: routes.pv.path },
+    { icon: Plug, text: "Wallbox", to: routes.wattPilot.path },
+    { icon: PlugZap, text: "Energy", to: routes.energy.path },
+    { icon: Navigation, text: "Karten", to: routes.maps.path },
+    { icon: Info, text: "Iobroker Info", to: routes.iobrokerInfo.path },
+    { icon: Logs, text: "Benachrichtigungen", to: routes.notifications.path },
+    { icon: Logs, text: "Logs", to: routes.logs.path },
+    { icon: Logs, text: "Wärmepumpe", to: routes.heatPump.path },
+    { icon: Fuel, text: "Tanken", to: routes.tanker_koenig.path },
+    { icon: ChartSpline, text: "Diagramme", to: routes.diagrams.path },
+    { icon: MonitorCog, text: "System", to: routes.system.path },
+    { icon: Utensils, text: "Rezepte", to: routes.recipes.path },
+  ];
+
+  list.sort((a, b) => {
+    if (a.text < b.text) {
+      return -1;
+    }
+    if (a.text > b.text) {
+      return 1;
+    }
+    return 0;
+  });
+
+  list.unshift(home);
+  return list;
+});
 </script>
 
 <template>
