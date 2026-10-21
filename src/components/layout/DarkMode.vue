@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useColorMode } from "@vueuse/core";
 import { Button } from "@/components/shared/button/button.variants";
-import { Moon, Sun } from "lucide-vue-next";
+import ThemeIcon from "@/components/layout/ThemeIcon.vue";
 
 defineProps<{ small?: boolean; tile?: boolean }>();
 
@@ -20,14 +20,10 @@ const toggleTheme = () => {
         <span>Erscheinungsbild</span>
         <span class="text-xs text-muted-foreground">{{ mode === "dark" ? "Dunkel" : "Hell" }}</span>
       </div>
-      <div class="relative size-10">
-        <Sun class="absolute size-10 text-yellow-500 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-        <Moon class="absolute size-10 text-blue-300 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      </div>
+      <ThemeIcon colored />
     </div>
   </Button>
   <Button v-else variant="outline" :size="small ? 'icon' : 'iconLg'" class="relative shrink-0" @click="toggleTheme">
-    <Sun :class="['rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0', small ? 'size-4' : 'size-10']" />
-    <Moon :class="['absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100', small ? 'size-4' : 'size-10']" />
+    <ThemeIcon :class="small ? 'size-4' : 'size-10'" />
   </Button>
 </template>
