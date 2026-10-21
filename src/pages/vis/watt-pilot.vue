@@ -247,7 +247,7 @@ const setChargingMode = (value: string | undefined): void => {
         </div>
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Einstellungen</p>
 
-        <WattPillotGridDrawAllowance :iobroker="iobroker" />
+        <WattPillotGridDrawAllowance />
 
         <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Laden mit Stromstärke</p>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">

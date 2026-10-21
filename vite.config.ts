@@ -4,11 +4,17 @@ import svgLoader from "vite-svg-loader";
 import tailwindcss from "@tailwindcss/vite";
 import { VitePWA } from "vite-plugin-pwa";
 import path from "node:path";
-import { NodeTypes, type NodeTransform } from "@vue/compiler-core";
+import { ElementTypes, NodeTypes, type NodeTransform } from "@vue/compiler-core";
 
 // Dev only: marks the root element(s) of every component with data-component="<FileName>" for the browser's Elements panel
+// Only plain HTML roots — on a component root the attribute would fall through and warn if that component renders a fragment/teleport
 const addComponentName: NodeTransform = (node, context) => {
-  if (node.type !== NodeTypes.ELEMENT || context.parent?.type !== NodeTypes.ROOT || !context.filename.endsWith(".vue")) {
+  if (
+    node.type !== NodeTypes.ELEMENT ||
+    node.tagType !== ElementTypes.ELEMENT ||
+    context.parent?.type !== NodeTypes.ROOT ||
+    !context.filename.endsWith(".vue")
+  ) {
     return;
   }
   node.props.push({

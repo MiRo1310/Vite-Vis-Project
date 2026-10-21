@@ -14,8 +14,8 @@ const { iobroker } = useIobrokerStore();
 
       <p class="text-xs text-muted-foreground truncate">{{ iobroker.tankerKoenig.cheapestName.value }}</p>
       <p class="text-xs text-muted-foreground truncate">{{ iobroker.tankerKoenig.cheapestFullStreet.value }}</p>
-      <p v-if="iobroker.tankerKoenig.cheapestPrice?.ts" class="text-xs text-muted-foreground">
-        {{ new Date(iobroker.tankerKoenig.cheapestPrice?.ts).toLocaleString() }}
+      <p v-if="iobroker.tankerKoenig.cheapestPrice.ts" class="text-xs text-muted-foreground">
+        {{ new Date(iobroker.tankerKoenig.cheapestPrice.ts).toLocaleString() }}
       </p>
     </DataCard>
   </RouterLink>

@@ -31,7 +31,7 @@ onUnmounted(() => {
   <Card
     :class="[
       'py-0 gap-0 rounded-md transition-colors cursor-pointer h-full hover:bg-accent relative overflow-hidden xl:w-110 sm:w-80 sm:flex-0 flex-1',
-      notification?.getNotificationClass,
+      notification.getNotificationClass,
     ]"
   >
     <CardHeader class="px-3 pt-2 pb-0">

@@ -15,7 +15,7 @@ const totoList = computed(() => {
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <HomeActionBtn title="Michis Todo" :badge="totoList?.length" class="flex-1">
+      <HomeActionBtn title="Michis Todo" :badge="totoList.length" class="flex-1">
         <Pickaxe class="size-4" />
       </HomeActionBtn>
     </template>

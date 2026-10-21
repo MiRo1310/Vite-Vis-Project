@@ -13,9 +13,9 @@ const lastCallDuration = computed(() => {
 
 <template>
   <DataCard title="Letzter Anruf" content-class="space-y-0.5">
-    <p class="text-sm font-semibold truncate">{{ iobroker.phone?.lastCallerName?.val || "–" }}</p>
-    <p class="text-xs text-muted-foreground">{{ iobroker.phone?.lastCaller?.val }}</p>
-    <p class="text-xs text-muted-foreground">{{ iobroker.phone?.lastCallTimestamp?.val }}</p>
+    <p class="text-sm font-semibold truncate">{{ iobroker.phone.lastCallerName.val ?? "–" }}</p>
+    <p class="text-xs text-muted-foreground">{{ iobroker.phone.lastCaller.val }}</p>
+    <p class="text-xs text-muted-foreground">{{ iobroker.phone.lastCallTimestamp.val }}</p>
     <p class="text-xs text-muted-foreground">{{ lastCallDuration }}</p>
   </DataCard>
 </template>

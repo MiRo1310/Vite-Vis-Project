@@ -19,10 +19,10 @@ const appStore = useAppStore();
       content-class="space-y-0.5"
     >
       <span class="text-sm font-semibold font-mono tabular-nums">
-        {{ iobroker.timers?.[i as keyof Timers]?.timeString?.value || "–" }}
+        {{ iobroker.timers[i as keyof Timers].timeString.value || "–" }}
       </span>
       <p class="text-xs text-muted-foreground truncate">
-        {{ iobroker.timers?.[i as keyof Timers]?.device?.value || "–" }}
+        {{ iobroker.timers[i as keyof Timers].device.value || "–" }}
       </p>
     </DataCard>
   </div>
