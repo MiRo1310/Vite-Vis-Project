@@ -2,16 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronLeftIcon } from "@radix-icons/vue";
-import { PaginationPrev, type PaginationPrevProps } from "radix-vue";
+import { PaginationPrev, type PaginationPrevProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
 
-const props = withDefaults(
-  defineProps<PaginationPrevProps & { class?: HTMLAttributes["class"] }>(),
-  {
-    asChild: true,
-    class: "",
-  },
-);
+const props = withDefaults(defineProps<PaginationPrevProps & { class?: HTMLAttributes["class"] }>(), {
+  asChild: true,
+  class: "",
+});
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

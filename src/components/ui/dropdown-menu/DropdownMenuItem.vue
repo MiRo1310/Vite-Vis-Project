@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from "vue";
-import {
-  DropdownMenuItem,
-  type DropdownMenuItemProps,
-  useForwardProps,
-} from "radix-vue";
+import { DropdownMenuItem, type DropdownMenuItemProps, useForwardProps } from "reka-ui";
 import { cn } from "@/lib/utils";
 
-const props = defineProps<
-  DropdownMenuItemProps & { class?: HTMLAttributes["class"]; inset?: boolean }
->();
+const props = defineProps<DropdownMenuItemProps & { class?: HTMLAttributes["class"]; inset?: boolean }>();
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

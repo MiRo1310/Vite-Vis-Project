@@ -6,13 +6,11 @@ import {
   type DropdownMenuCheckboxItemProps,
   DropdownMenuItemIndicator,
   useForwardPropsEmits,
-} from "radix-vue";
+} from "reka-ui";
 import { CheckIcon } from "@radix-icons/vue";
 import { cn } from "@/lib/utils";
 
-const props = defineProps<
-  DropdownMenuCheckboxItemProps & { class?: HTMLAttributes["class"] }
->();
+const props = defineProps<DropdownMenuCheckboxItemProps & { class?: HTMLAttributes["class"] }>();
 const emits = defineEmits<DropdownMenuCheckboxItemEmits>();
 
 const delegatedProps = computed(() => {
