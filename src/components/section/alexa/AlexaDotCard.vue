@@ -43,7 +43,7 @@ function updateVolume(source: string, val: string | number | undefined) {
   <DataCard :title="dot.name" content-class="space-y-2">
     <div class="flex items-center justify-between gap-2">
       <span class="text-xs text-foreground flex-1">Klingel</span>
-      <Switch v-model:checked="bell" @click="toggle('bell', bell)" />
+      <Switch v-model="bell" @click="toggle('bell', bell)" />
       <input
         v-model.number="bellVolume"
         type="number"
@@ -56,7 +56,7 @@ function updateVolume(source: string, val: string | number | undefined) {
     </div>
     <div class="flex items-center justify-between gap-2">
       <span class="text-xs text-foreground flex-1">Waschmaschine</span>
-      <Switch v-model:checked="washer" @click="toggle('washer', washer)" />
+      <Switch v-model="washer" @click="toggle('washer', washer)" />
       <input
         v-model.number="washerVolume"
         type="number"
@@ -69,7 +69,7 @@ function updateVolume(source: string, val: string | number | undefined) {
     </div>
     <div class="flex items-center justify-between gap-2">
       <span class="text-xs text-foreground flex-1">Telefon</span>
-      <Switch v-model:checked="tel" @click="toggle('tel', tel)" />
+      <Switch v-model="tel" @click="toggle('tel', tel)" />
       <input
         v-model.number="telVolume"
         type="number"

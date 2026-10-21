@@ -21,11 +21,11 @@ const { mutate } = useMutation(
   `),
 );
 
-const update = async (event: boolean) => {
-  await mutate({ id: props.row.original.id, hasInvoice: event });
+const update = async (event: boolean | "indeterminate") => {
+  await mutate({ id: props.row.original.id, hasInvoice: event === true });
 };
 </script>
 
 <template>
-  <Checkbox v-model:checked="checked" :aria-label="`Select row ${props.row.index + 1}`" class="translate-y-0.5 hasInvoice" @update:checked="update" />
+  <Checkbox v-model="checked" :aria-label="`Select row ${props.row.index + 1}`" class="translate-y-0.5 hasInvoice" @update:model-value="update" />
 </template>

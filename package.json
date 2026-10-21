@@ -28,7 +28,6 @@
     "@iobroker/socket-client": "^5.4.1",
     "@iobroker/types": "^7.2.5",
     "@michaelroling/ts-library": "^1.0.7",
-    "@radix-icons/vue": "^1.0.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/vue-table": "^9.2.8",

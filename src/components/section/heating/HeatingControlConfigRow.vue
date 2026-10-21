@@ -35,7 +35,7 @@ const updateData = async (val: string | number | boolean | undefined, id: string
 <template>
   <div class="flex justify-between w-[24rem]">
     <div class="flex items-center">
-      <Checkbox :checked="row.checkbox.val" @update:checked="updateData($event, row.checkbox?.id)" />
+      <Checkbox :model-value="row.checkbox.val" @update:model-value="updateData($event, row.checkbox?.id)" />
       <p class="ml-2 text-xs">{{ row.titleCheckbox }}</p>
     </div>
     <div class="flex items-center justify-end gap-2 flex-1">
