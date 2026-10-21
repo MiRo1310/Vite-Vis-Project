@@ -19,8 +19,8 @@ const windowTableHtml = computed(() =>
   <div class="p-2 pt-1 bg-color__default flex-1 bg-cardSubcard/30 border">
     <p>Fensterstatus</p>
     <div class="h-auto overflow-auto">
-      <span v-if="heatingControl?.openWindowCount?.val" :class="{ bg__animation: heatingControl?.openWindowCount?.val }">
-        {{ heatingControl?.openWindowCount?.val }} Fenster offen
+      <span v-if="heatingControl.openWindowCount.val" :class="{ bg__animation: heatingControl.openWindowCount.val }">
+        {{ heatingControl.openWindowCount.val }} Fenster offen
       </span>
       <div v-html="windowTableHtml" />
     </div>

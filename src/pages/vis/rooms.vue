@@ -392,7 +392,7 @@ const windowOpen = computed(() => iobroker.windowGlobal.fensterOffen.value);
           </span>
         </DataCard>
         <DataCard title="Sonnenuntergang">
-          <span class="text-sm font-semibold">{{ iobroker.time?.sonnenuntergang?.val }}</span>
+          <span class="text-sm font-semibold">{{ iobroker.time.sonnenuntergang.val }}</span>
         </DataCard>
       </div>
 

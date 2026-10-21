@@ -94,7 +94,7 @@ const getMode = (mode: number) => {
       <CardTitle>
         <div class="flex justify-between items-center">
           <span>Pool Wärmepumpe</span>
-          <OnlineOffline :status="iobroker.pool?.status?.val ?? false" />
+          <OnlineOffline :status="iobroker.pool.status.value" />
         </div>
       </CardTitle>
     </CardHeader>
@@ -103,7 +103,7 @@ const getMode = (mode: number) => {
         <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
         <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
         <div v-else-if="item.type === 'input'">
-          <InputIobroker :state="iobroker.pool?.tempSet" unit="°C" />
+          <InputIobroker :state="iobroker.pool.tempSet" unit="°C" />
         </div>
         <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold"
           >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}

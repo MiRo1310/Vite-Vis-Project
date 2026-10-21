@@ -108,10 +108,10 @@ const landroidStatusLabel = computed(() => {
       <RouterLink :to="routes.wattPilot.path">
         <DataCard title="Laden" class="h-full" clickable>
           <div class="flex items-center gap-1.5">
-            <StatusDot :active="wallboxJson?.charging ?? false" />
-            <span class="text-xs font-semibold">{{ wallboxJson?.charging ? "Aktiv" : "Inaktiv" }}</span>
+            <StatusDot :active="wallboxJson.charging ?? false" />
+            <span class="text-xs font-semibold">{{ wallboxJson.charging ? "Aktiv" : "Inaktiv" }}</span>
           </div>
-          <span v-if="wallboxJson?.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
+          <span v-if="wallboxJson.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
         </DataCard>
       </RouterLink>
       <RouterLink :to="routes.wattPilot.path">

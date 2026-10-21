@@ -14,53 +14,47 @@ const { iobroker } = useIobrokerStore();
       <!-- RAM -->
       <Card>
         <CardHeader class="pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">
-            RAM ioBroker
-          </CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground"> RAM ioBroker </CardTitle>
         </CardHeader>
         <CardContent class="space-y-3">
           <div class="flex items-end justify-between">
             <span class="text-3xl font-bold">
-              {{ iobroker.system?.ramIobrokerLevel?.val ?? 0 }}
+              {{ iobroker.system.ramIobrokerLevel.val ?? 0 }}
               <span class="text-lg font-normal text-muted-foreground">%</span>
             </span>
             <span class="text-sm text-muted-foreground">
-              {{ miBToGiB(iobroker.system?.ramIobrokerUsed?.val) }} /
-              {{ miBToGiB(iobroker.system?.ramIobrokerMax?.val) }}
+              {{ miBToGiB(iobroker.system.ramIobrokerUsed.val) }} /
+              {{ miBToGiB(iobroker.system.ramIobrokerMax.val) }}
             </span>
           </div>
-          <Progress :model-value="iobroker.system?.ramIobrokerLevel?.val ?? 0" />
+          <Progress :model-value="iobroker.system.ramIobrokerLevel.val ?? 0" />
         </CardContent>
       </Card>
 
       <!-- Disk -->
       <Card>
         <CardHeader class="pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">
-            Speicher ioBroker
-          </CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground"> Speicher ioBroker </CardTitle>
         </CardHeader>
         <CardContent class="space-y-3">
           <div class="flex items-end justify-between">
             <span class="text-3xl font-bold">
-              {{ iobroker.system?.diskIobrokerUsage?.val ?? 0 }}
+              {{ iobroker.system.diskIobrokerUsage.val ?? 0 }}
               <span class="text-lg font-normal text-muted-foreground">%</span>
             </span>
           </div>
-          <Progress :model-value="iobroker.system?.diskIobrokerUsage?.val ?? 0" />
+          <Progress :model-value="iobroker.system.diskIobrokerUsage.val ?? 0" />
         </CardContent>
       </Card>
 
       <!-- Uptime -->
       <Card>
         <CardHeader class="pb-2">
-          <CardTitle class="text-sm font-medium text-muted-foreground">
-            ioBroker Uptime
-          </CardTitle>
+          <CardTitle class="text-sm font-medium text-muted-foreground"> ioBroker Uptime </CardTitle>
         </CardHeader>
         <CardContent>
           <span class="text-3xl font-bold">
-            {{ formatUptime(iobroker.system?.iobrokerUptime?.val) }}
+            {{ formatUptime(iobroker.system.iobrokerUptime.val) }}
           </span>
         </CardContent>
       </Card>

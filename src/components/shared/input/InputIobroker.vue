@@ -2,7 +2,7 @@
 import { InputShadcn } from "@/components/ui/input";
 import { type IValueOf } from "@/store/valueClasses.ts";
 import { useDebounceFn } from "@vueuse/core";
-import { watch } from "vue";
+import { type HTMLAttributes, watch } from "vue";
 import { type InputType } from "@/components/ui/input/InputShadcn.vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
@@ -17,6 +17,7 @@ const props = withDefaults(
     step?: number;
     // eslint-disable-next-line vue/no-unused-properties
     color?: keyof typeof variants.color;
+    class?: HTMLAttributes["class"];
   }>(),
   { type: "number", unit: undefined, debounce: 1000, color: "default" },
 );
@@ -38,7 +39,8 @@ const setState = async () => {
   if (!modelValue.value || !id) {
     return;
   }
-  await ioBrokerService.connection?.setState(id, modelValue.value, props.ack);
+
+  await ioBrokerService.connection?.setState(id, modelValue.value, props.ack ?? false);
 };
 
 const variants = {
@@ -51,11 +53,11 @@ const variants = {
 </script>
 
 <template>
-  <div :class="['relative', { 'border-red-500': !state?.ack }]">
+  <div :class="['relative', props.class]">
     <InputShadcn
       :type
       :step
-      :class="[getVariantsClasses(variants, props)]"
+      :class="[getVariantsClasses(variants, props), { 'border-red-500': !state?.ack }]"
       v-model:model-value="modelValue"
       @update:model-value="debounceFn"
       border="none"

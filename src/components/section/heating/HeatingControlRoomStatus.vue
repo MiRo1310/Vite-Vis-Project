@@ -4,7 +4,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 const { iobroker } = useIobrokerStore();
 </script>
 <template>
-  <div class="w-full bg-cardSubcard/30 border p-2 container__table overflow-auto" v-html="iobroker.heatingControl?.visRoomStates?.val" />
+  <div class="w-full bg-cardSubcard/30 border p-2 container__table overflow-auto" v-html="iobroker.heatingControl.visRoomStates.value" />
 </template>
 
 <style lang="scss">

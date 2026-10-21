@@ -65,26 +65,26 @@ const timerLabel = computed(() => (i: number): string => {
             <div class="flex justify-between items-center w-1/2">
               <p>Startzeit:</p>
               <p class="">
-                {{ iobroker.timers?.[i as keyof Timers].timeStart?.value }}
+                {{ iobroker.timers[i as keyof Timers].timeStart.value }}
               </p>
             </div>
             <div class="flex justify-between items-center w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{ iobroker.timers?.[i as keyof Timers].timeEnd?.value }}
+                {{ iobroker.timers[i as keyof Timers].timeEnd.value }}
               </p>
             </div>
           </div>
           <div class="flex justify-between items-center">
             <p>Gerät:</p>
             <p>
-              {{ iobroker.timers?.[i as keyof Timers].device?.value }}
+              {{ iobroker.timers[i as keyof Timers].device.value }}
             </p>
           </div>
           <div class="flex justify-between items-center">
             <p>Länge:</p>
             <p>
-              {{ iobroker.timers?.[i as keyof Timers].initialTimer?.value }}
+              {{ iobroker.timers[i as keyof Timers].initialTimer.value }}
             </p>
           </div>
         </div>

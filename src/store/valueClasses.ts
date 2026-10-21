@@ -49,7 +49,7 @@ export interface INotificationOnChange<T> {
 export abstract class BaseValue<T> implements IValueOf<T> {
   public readonly id: string;
   protected readonly _valRef: Ref<T | undefined>;
-  protected _ack: boolean = false;
+  protected readonly _ackRef: Ref<boolean>;
   protected _ts?: number;
   protected _lc?: number;
   protected _from?: string;
@@ -72,7 +72,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     markRaw(this);
     this._valRef = ref(obj?.val) as Ref<T | undefined>;
     this.id = id;
-    this._ack = false;
+    this._ackRef = ref(false);
     this.onChange = obj?.onChange;
     if (obj?.notificationOnChange) {
       const { message, showMessageOn, statusBoolean, removeMessageOn, priority, type, route } = obj.notificationOnChange;
@@ -99,7 +99,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 
   public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
     this.val = val as T;
-    this._ack = ack;
+    this._ackRef.value = ack;
     this._ts = ts;
     this._lc = lc;
     this._from = from;
@@ -108,7 +108,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
   };
 
   public get ack() {
-    return this._ack;
+    return this._ackRef.value;
   }
 
   public get ts() {
@@ -150,7 +150,7 @@ export class NumberValue extends BaseValue<number> {
   }
 
   public get valueWithUnit(): string {
-    return this.val + " " + this._unit;
+    return this.value + " " + (this._unit ?? "");
   }
 
   public get valAndUnit() {
@@ -171,16 +171,6 @@ export class BooleanValue extends BaseValue<boolean> {
     this.invert = obj?.invert ?? false;
     this.mapping = obj?.mapping;
   }
-
-  public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
-    this.val = val as boolean;
-    this._ack = ack;
-    this._ts = ts;
-    this._lc = lc;
-    this._from = from;
-    this._q = q;
-    this.triggerHandlers();
-  };
 
   public get mapped(): string {
     if (!this.mapping) {
