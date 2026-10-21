@@ -7,7 +7,7 @@ import { computed, type HTMLAttributes, ref } from "vue";
 
 const props = defineProps<{ data: Array<IEnergyFlow<T>>; class?: HTMLAttributes["class"]; width: number; height: number }>();
 const animationRef = ref<null | SVGGElement>(null);
-const animationGroup = computed<SVGGElement | null>(() => animationRef.value as SVGGElement | null);
+const animationGroup = computed<SVGGElement | null>(() => animationRef.value);
 const positions = new Positions<T>();
 </script>
 
