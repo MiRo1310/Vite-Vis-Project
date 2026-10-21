@@ -109,7 +109,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
           <div class="flex items-center justify-between">
             <span class="text-xs text-muted-foreground">Klingel</span>
             <div class="flex items-center gap-2">
-              <Switch :checked="dot.bell ?? false" @update:checked="updateDot(dot, 'bell', $event)" />
+              <Switch :model-value="dot.bell ?? false" @update:model-value="updateDot(dot, 'bell', $event)" />
               <InputShadcn
                 type="number"
                 :model-value="dot.bellVolume ?? 40"
@@ -124,7 +124,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
           <div class="flex items-center justify-between">
             <span class="text-xs text-muted-foreground">Waschmaschine</span>
             <div class="flex items-center gap-2">
-              <Switch :checked="dot.washer ?? false" @update:checked="updateDot(dot, 'washer', $event)" />
+              <Switch :model-value="dot.washer ?? false" @update:model-value="updateDot(dot, 'washer', $event)" />
               <InputShadcn
                 type="number"
                 :model-value="dot.washerVolume ?? 40"
@@ -139,7 +139,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
           <div class="flex items-center justify-between">
             <span class="text-xs text-muted-foreground">Telefon</span>
             <div class="flex items-center gap-2">
-              <Switch :checked="dot.tel ?? false" @update:checked="updateDot(dot, 'tel', $event)" />
+              <Switch :model-value="dot.tel ?? false" @update:model-value="updateDot(dot, 'tel', $event)" />
               <InputShadcn
                 type="number"
                 :model-value="dot.telVolume ?? 40"

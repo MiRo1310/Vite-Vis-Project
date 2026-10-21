@@ -40,14 +40,14 @@ const updateHandler = async (value: number | string | boolean, iValue?: IValueOf
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <Switch :checked="w.shutterAutoDown?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoDown)" />
+                <Switch :model-value="w.shutterAutoDown?.val ?? false" @update:model-value="updateHandler($event, w.shutterAutoDown)" />
                 <span class="text-xs text-muted-foreground">Auto runter</span>
               </div>
               <InputIobroker :state="w.shutterAutoDownDelay" unit="min" :ack="true" />
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <Switch :checked="w.shutterAutoUp?.val ?? false" @update:checked="updateHandler($event, w.shutterAutoUp)" />
+                <Switch :model-value="w.shutterAutoUp?.val ?? false" @update:model-value="updateHandler($event, w.shutterAutoUp)" />
                 <span class="text-xs text-muted-foreground">Auto hoch</span>
               </div>
               <InputIobroker :id="w.shutterAutoUpTime?.id" :state="w.shutterAutoUpTime" type="time" :ack="true" />

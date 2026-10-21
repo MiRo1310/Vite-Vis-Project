@@ -38,7 +38,7 @@ watch(
       :step="100"
     />
     <div>
-      <Checkbox v-model:checked="checked" />
+      <Checkbox v-model="checked" />
       <span class="ml-2 text-sm">Erlauben</span>
     </div>
   </div>
