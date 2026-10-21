@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { type NavigationType } from "@/types/types.ts";
+import { type NavigationItem } from "@/types/types.ts";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { Button } from "@/components/shared/button/button.variants";
 
-defineProps<{ navigation: NavigationType; small?: boolean }>();
+defineProps<{ navigation: NavigationItem; small?: boolean }>();
 </script>
 
 <template>
