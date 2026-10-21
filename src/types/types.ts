@@ -145,16 +145,18 @@ export interface ITableColumn<Value, TRow extends RowData, CustomValue = null, F
   callback?: F | CallbackFunktion;
 }
 
-export interface NavigationType {
+export interface NavigationItem {
   icon: FunctionalComponent;
   text: string;
   to: string;
   externalLink?: boolean;
-  badges?: Array<{
-    value: number;
-    color: Badge["color"];
-    class?: HTMLAttributes["class"];
-  }>;
+  badges?: NavigationsBadge[];
+}
+
+export interface NavigationsBadge {
+  value: number;
+  color: Badge["color"];
+  class?: HTMLAttributes["class"];
 }
 
 export interface Log {

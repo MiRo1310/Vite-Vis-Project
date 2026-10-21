@@ -3,7 +3,7 @@ import { useColorMode } from "@vueuse/core";
 import { Button } from "@/components/shared/button/button.variants";
 import ThemeIcon from "@/components/layout/ThemeIcon.vue";
 
-defineProps<{ small?: boolean; tile?: boolean }>();
+defineProps<{ small?: boolean; title?: boolean }>();
 
 const mode = useColorMode();
 
@@ -14,7 +14,7 @@ const toggleTheme = () => {
 
 <template>
   <!-- Kachel-Variante im Stil der NavigationButtons (Navigationsseite) -->
-  <Button v-if="tile" variant="outline" size="fullXxl" @click="toggleTheme">
+  <Button v-if="title" variant="outline" size="fullXxl" @click="toggleTheme">
     <div class="flex justify-between items-center w-full gap-2">
       <div class="flex flex-col items-start">
         <span>Erscheinungsbild</span>
