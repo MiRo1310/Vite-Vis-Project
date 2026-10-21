@@ -46,7 +46,6 @@
     "lucide-vue-next": "^1.0.0",
     "pinia": "^4.0.3",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "radix-vue": "^1.9.17",
     "reka-ui": "^2.11.0",
     "tailwind-merge": "^3.7.0",
     "tailwindcss-animate": "^1.0.7",

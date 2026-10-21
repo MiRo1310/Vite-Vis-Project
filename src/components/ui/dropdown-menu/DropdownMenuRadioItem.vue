@@ -6,13 +6,11 @@ import {
   type DropdownMenuRadioItemEmits,
   type DropdownMenuRadioItemProps,
   useForwardPropsEmits,
-} from "radix-vue";
+} from "reka-ui";
 import { DotFilledIcon } from "@radix-icons/vue";
 import { cn } from "@/lib/utils";
 
-const props = defineProps<
-  DropdownMenuRadioItemProps & { class?: HTMLAttributes["class"] }
->();
+const props = defineProps<DropdownMenuRadioItemProps & { class?: HTMLAttributes["class"] }>();
 
 const emits = defineEmits<DropdownMenuRadioItemEmits>();
 

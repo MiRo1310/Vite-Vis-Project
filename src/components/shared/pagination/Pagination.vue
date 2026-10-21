@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Pagination, PaginationEllipsis, PaginationFirst, PaginationLast, PaginationNext, PaginationPrev } from "@/components/ui/pagination";
 
 import { computed } from "vue";
-import { PaginationList, PaginationListItem } from "radix-vue";
+import { PaginationList, PaginationListItem } from "reka-ui";
 
 interface PaginationProps {
   autoHidePagination: boolean;

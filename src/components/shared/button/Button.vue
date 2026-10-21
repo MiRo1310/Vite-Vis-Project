@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from "vue";
-import { Primitive, type PrimitiveProps } from "radix-vue";
+import { Primitive, type PrimitiveProps } from "reka-ui";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { buttonIcons, type ButtonVariantProps } from "@/components/shared/button/button.variants.js";
 

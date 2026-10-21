@@ -2,16 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DoubleArrowLeftIcon } from "@radix-icons/vue";
-import { PaginationFirst, type PaginationFirstProps } from "radix-vue";
+import { PaginationFirst, type PaginationFirstProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
 
-const props = withDefaults(
-  defineProps<PaginationFirstProps & { class?: HTMLAttributes["class"] }>(),
-  {
-    asChild: true,
-    class: "",
-  },
-);
+const props = withDefaults(defineProps<PaginationFirstProps & { class?: HTMLAttributes["class"] }>(), {
+  asChild: true,
+  class: "",
+});
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;

@@ -1,21 +1,12 @@
 <script setup lang="ts">
 import { type HTMLAttributes, computed } from "vue";
-import {
-  DropdownMenuContent,
-  type DropdownMenuContentEmits,
-  type DropdownMenuContentProps,
-  DropdownMenuPortal,
-  useForwardPropsEmits,
-} from "radix-vue";
+import { DropdownMenuContent, type DropdownMenuContentEmits, type DropdownMenuContentProps, DropdownMenuPortal, useForwardPropsEmits } from "reka-ui";
 import { cn } from "@/lib/utils";
 
-const props = withDefaults(
-  defineProps<DropdownMenuContentProps & { class?: HTMLAttributes["class"] }>(),
-  {
-    sideOffset: 4,
-    class: "",
-  },
-);
+const props = withDefaults(defineProps<DropdownMenuContentProps & { class?: HTMLAttributes["class"] }>(), {
+  sideOffset: 4,
+  class: "",
+});
 const emits = defineEmits<DropdownMenuContentEmits>();
 
 const delegatedProps = computed(() => {
