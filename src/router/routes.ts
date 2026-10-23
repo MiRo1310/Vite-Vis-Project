@@ -43,6 +43,7 @@ export const routes = {
   heating: { path: "/heating", name: "heating", text: "Heizung", icon: Heater, addToNavigation: true },
   heatingControl: { path: "/heizkoerper-steuerung", name: "heatingControl", text: "Heizkörper Steuerung", icon: SunSnow, addToNavigation: true },
   iobrokerInfo: { path: "/iobroker-info", name: "iobroker-info", text: "Iobroker Info", icon: Info, addToNavigation: true },
+  pageDetails: { path: "/page-info", name: "page-info", text: "Seiten Info", icon: Info, addToNavigation: true },
   calender: { path: "/kalender", name: "calender", text: "Kalendar", icon: CalendarDays, addToNavigation: true },
   light: { path: "/light", name: "light", text: "Licht", icon: LampCeiling, addToNavigation: true },
   logs: { path: "/logs", name: "logs", text: "Logs", icon: Logs, addToNavigation: true },
