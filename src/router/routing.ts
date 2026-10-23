@@ -27,6 +27,7 @@ export const routing = [
       { component: async () => await import("@/pages/vis/watt-pilot.vue"), ...routes.wattPilot },
       { component: async () => await import("@/pages/vis/notifications.vue"), ...routes.notifications },
       { component: async () => await import("@/pages/vis/air-conditioner.vue"), ...routes.airConditioner },
+      { component: async () => await import("@/pages/vis/page-details.vue"), ...routes.pageDetails },
     ],
   },
   {
