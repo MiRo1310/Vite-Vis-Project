@@ -1,12 +1,12 @@
-import { Logger } from "@/lib/logger.ts";
-
 interface StorageTypes {
   autoUpdate: boolean;
+  deviceId: string | null;
 }
 
 const typedLocalStorage = () => {
   const defaultValues: StorageTypes = {
     autoUpdate: true,
+    deviceId: null,
   };
 
   function getItem<K extends keyof StorageTypes>(key: K): StorageTypes[K] {
@@ -18,7 +18,8 @@ const typedLocalStorage = () => {
     try {
       return JSON.parse(value) as StorageTypes[K];
     } catch (e) {
-      Logger(`Error parsing for storage key "${key}"`, { type: "error", e });
+      // eslint-disable-next-line no-console
+      console.error("Error local storage parsing: ", e);
       return defaultValues[key];
     }
   }

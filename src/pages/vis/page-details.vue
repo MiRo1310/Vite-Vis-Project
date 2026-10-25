@@ -5,6 +5,13 @@ import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 import VisVersion from "@/components/section/iobroker/VisVersion.vue";
 import { ref } from "vue";
 import { typedStorage } from "@/lib/local-storage.ts";
+import { useQuery } from "@vue/apollo-composable";
+import { graphql } from "@/api/gql";
+import TableBasic from "@/components/shared/table/TableBasic.vue";
+import { type DatatableColumns, getColumns } from "@/lib/table.ts";
+import { type FrontendLogsQuery } from "@/api/gql/graphql.ts";
+
+type FrontendLogs = NonNullable<FrontendLogsQuery["frontedLogs"]>[number];
 
 const { applyUpdate, updateAvailable, updateTime } = usePwaUpdateSingleton;
 
@@ -14,6 +21,34 @@ function toggleAutoUpdate() {
   autoUpdate.value = !autoUpdate.value;
   typedStorage.setItem("autoUpdate", autoUpdate.value);
 }
+
+const { result, loading } = useQuery(
+  graphql(`
+    query FrontendLogs {
+      frontedLogs {
+        appVersion
+        createdAt
+        description
+        deviceId
+        deviceName
+        level
+        route
+        title
+      }
+    }
+  `),
+);
+
+const column: Array<DatatableColumns<FrontendLogs>> = [
+  { source: "title", labelKey: "Titel" },
+  { source: "description", labelKey: "Beschreibung" },
+  { source: "level", labelKey: "Level" },
+  { source: "route", labelKey: "Route" },
+  { source: "deviceName", labelKey: "Gerätename" },
+  { source: "deviceId", labelKey: "Geräte ID" },
+  { source: "appVersion", labelKey: "App Version" },
+  { source: "createdAt", labelKey: "Erstellt am", type: "datetime" },
+];
 </script>
 
 <template>
@@ -33,5 +68,7 @@ function toggleAutoUpdate() {
       <Button @click="applyUpdate()" class="h-20">Seite neu laden</Button>
       <VisVersion class="min-w-48" />
     </div>
+    <p>Logs</p>
+    <TableBasic :columns="getColumns(column)" :data="result?.frontedLogs ?? []" :loading />
   </Page>
 </template>

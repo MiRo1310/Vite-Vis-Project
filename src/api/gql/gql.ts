@@ -59,12 +59,15 @@ type Documents = {
     "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": typeof types.UnitsDocument,
+    "\n      mutation CreateLog($dto: FrontendLogCreateDtoInput!) {\n        createFrontendLog(dto: $dto) {\n          id\n        }\n      }\n    ": typeof types.CreateLogDocument,
+    "\n      mutation RemoveFrontendLogByID($id: UUID!) {\n        removeFrontendLog(id: $id)\n      }\n    ": typeof types.RemoveFrontendLogByIdDocument,
     "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": typeof types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": typeof types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      isValidated\n      hasInvoice\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": typeof types.TravelCostDocument,
     "\n    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {\n      productsGrouped(where: $where) {\n        key\n        value {\n          id\n          carbs\n          fat\n          kcal\n          name\n          protein\n          salt\n          sugar\n          unit\n          ean\n          amount\n          productUnits {\n            id\n            amount\n            unit\n          }\n        }\n      }\n    }\n  ": typeof types.GetProductsDocument,
     "\n  query getRecipeDetails($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      portions\n      totalKcal\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        groupPosition\n        unit\n        kcal\n        activeUnitId\n        productId\n        product {\n          name\n          category\n          carbs\n          fat\n          kcal\n          protein\n          salt\n          sugar\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        header\n      }\n      recipeHeaderProducts {\n        position\n        text\n      }\n    }\n  }\n": typeof types.GetRecipeDetailsDocument,
     "\n    query recipes {\n      recipes {\n        id\n        name\n        createdAt\n        totalTimeMin\n        preparationTimeMin\n        totalKcal\n        recipeCategory {\n          name\n          id\n        }\n      }\n    }\n  ": typeof types.RecipesDocument,
+    "\n    query FrontendLogs {\n      frontedLogs {\n        appVersion\n        createdAt\n        description\n        deviceId\n        deviceName\n        level\n        route\n        title\n      }\n    }\n  ": typeof types.FrontendLogsDocument,
 };
 const documents: Documents = {
     "\n    mutation AddAddress($name: String!, $street: String!, $city: String!) {\n      createAddress(dto: { name: $name, street: $street, city: $city }) {\n        name\n        street\n        city\n      }\n    }\n  ": types.AddAddressDocument,
@@ -112,12 +115,15 @@ const documents: Documents = {
     "\n      query ProductCategories {\n        productCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.ProductCategoriesDocument,
     "\n      query recipeCategories {\n        recipeCategories(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.RecipeCategoriesDocument,
     "\n      query Units {\n        units(order: { name: ASC }) {\n          id\n          name\n        }\n      }\n    ": types.UnitsDocument,
+    "\n      mutation CreateLog($dto: FrontendLogCreateDtoInput!) {\n        createFrontendLog(dto: $dto) {\n          id\n        }\n      }\n    ": types.CreateLogDocument,
+    "\n      mutation RemoveFrontendLogByID($id: UUID!) {\n        removeFrontendLog(id: $id)\n      }\n    ": types.RemoveFrontendLogByIdDocument,
     "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  ": types.AddressesDocument,
     "\n    query Descriptions {\n      description {\n        text\n        id\n      }\n    }\n  ": types.DescriptionsDocument,
     "\n  query TravelCost($where: TravelCostFilterInput, $order: [TravelCostSortInput!]) {\n    travelCost(where: $where, order: $order) {\n      id\n      addressId\n      date\n      description\n      isValidated\n      hasInvoice\n      price\n      address {\n        name\n        street\n        city\n      }\n    }\n  }\n": types.TravelCostDocument,
     "\n    query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {\n      productsGrouped(where: $where) {\n        key\n        value {\n          id\n          carbs\n          fat\n          kcal\n          name\n          protein\n          salt\n          sugar\n          unit\n          ean\n          amount\n          productUnits {\n            id\n            amount\n            unit\n          }\n        }\n      }\n    }\n  ": types.GetProductsDocument,
     "\n  query getRecipeDetails($id: UUID!) {\n    recipe(id: $id) {\n      id\n      name\n      portions\n      totalKcal\n      preparationTimeMin\n      totalTimeMin\n      recipeProducts {\n        amount\n        description\n        groupPosition\n        unit\n        kcal\n        activeUnitId\n        productId\n        product {\n          name\n          category\n          carbs\n          fat\n          kcal\n          protein\n          salt\n          sugar\n        }\n      }\n      recipeDescriptions {\n        position\n        text\n        header\n      }\n      recipeHeaderProducts {\n        position\n        text\n      }\n    }\n  }\n": types.GetRecipeDetailsDocument,
     "\n    query recipes {\n      recipes {\n        id\n        name\n        createdAt\n        totalTimeMin\n        preparationTimeMin\n        totalKcal\n        recipeCategory {\n          name\n          id\n        }\n      }\n    }\n  ": types.RecipesDocument,
+    "\n    query FrontendLogs {\n      frontedLogs {\n        appVersion\n        createdAt\n        description\n        deviceId\n        deviceName\n        level\n        route\n        title\n      }\n    }\n  ": types.FrontendLogsDocument,
 };
 
 /**
@@ -317,6 +323,14 @@ export function graphql(source: "\n      query Units {\n        units(order: { n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n      mutation CreateLog($dto: FrontendLogCreateDtoInput!) {\n        createFrontendLog(dto: $dto) {\n          id\n        }\n      }\n    "): (typeof documents)["\n      mutation CreateLog($dto: FrontendLogCreateDtoInput!) {\n        createFrontendLog(dto: $dto) {\n          id\n        }\n      }\n    "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n      mutation RemoveFrontendLogByID($id: UUID!) {\n        removeFrontendLog(id: $id)\n      }\n    "): (typeof documents)["\n      mutation RemoveFrontendLogByID($id: UUID!) {\n        removeFrontendLog(id: $id)\n      }\n    "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  "): (typeof documents)["\n    query Addresses {\n      addresses(order: { name: ASC }) {\n        name\n        city\n        street\n        id\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -338,6 +352,10 @@ export function graphql(source: "\n  query getRecipeDetails($id: UUID!) {\n    r
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n    query recipes {\n      recipes {\n        id\n        name\n        createdAt\n        totalTimeMin\n        preparationTimeMin\n        totalKcal\n        recipeCategory {\n          name\n          id\n        }\n      }\n    }\n  "): (typeof documents)["\n    query recipes {\n      recipes {\n        id\n        name\n        createdAt\n        totalTimeMin\n        preparationTimeMin\n        totalKcal\n        recipeCategory {\n          name\n          id\n        }\n      }\n    }\n  "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n    query FrontendLogs {\n      frontedLogs {\n        appVersion\n        createdAt\n        description\n        deviceId\n        deviceName\n        level\n        route\n        title\n      }\n    }\n  "): (typeof documents)["\n    query FrontendLogs {\n      frontedLogs {\n        appVersion\n        createdAt\n        description\n        deviceId\n        deviceName\n        level\n        route\n        title\n      }\n    }\n  "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
