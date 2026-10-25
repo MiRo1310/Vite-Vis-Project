@@ -13,6 +13,7 @@ import { chargingTime } from "@/composables/battery.ts";
 import SubscriptionProgress from "@/components/section/home/SubscriptionProgress.vue";
 import Surplus from "@/components/section/pv/Surplus.vue";
 import VisVersion from "@/components/section/iobroker/VisVersion.vue";
+import WallboxHome from "@/components/section/home/WallboxHome.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -73,7 +74,7 @@ const wpModus = computed(() => {
             :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
           />
         </DataCard>
-        <DataCard title="Ladezustand" content-class="flex items-center gap-1.5">
+        <DataCard title="Ladestatus Haus-Batterie" content-class="flex items-center gap-1.5">
           <MetricValue v-bind="pv.batteryCharging.valAndUnit" :decimal-places="0" />
         </DataCard>
         <DataCard :title="charging > 0 ? 'Geschätzte Restladedauer' : 'Geschätzte Restentladedauer'">
@@ -83,6 +84,10 @@ const wpModus = computed(() => {
             unit="Std"
           />
         </DataCard>
+
+        <div class="w-full col-span-2">
+          <WallboxHome />
+        </div>
       </div>
     </TabsContent>
 
