@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { cutString, removeMultipleSpaces } from "../../src/lib/string";
+import { truncateText, removeMultipleSpaces } from "../../src/lib/string";
 
 it("replace double spaces to one space and trim", () => {
   expect(removeMultipleSpaces("ab ")).toBe("ab");
@@ -8,6 +8,8 @@ it("replace double spaces to one space and trim", () => {
 });
 
 it("cuts a string for set length", () => {
-  expect(cutString("Das ist ein Test", 9)).toBe("Das ist e");
-  expect(cutString("Das ist ein Test", 8)).toBe("Das ist");
+  expect(truncateText(9, "Das ist ein Test")).toBe("Das ist e");
+  expect(truncateText(8, "Das ist ein Test")).toBe("Das ist");
+  expect(truncateText(8, undefined)).toBe(null);
+  expect(truncateText(8, "")).toBe("");
 });

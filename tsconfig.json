@@ -17,7 +17,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest"],
+    "types": ["vitest/globals"],
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -29,6 +29,7 @@
     "src/lib/iobroker.ts",
     "src/**/*.d.ts",
     "src/directives/*.d.ts",
+    "test/**/*.test.ts",
     "node_modules/cypress/types/cypress-global-vars.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

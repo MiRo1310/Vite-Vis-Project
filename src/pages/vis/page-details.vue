@@ -11,7 +11,7 @@ import TableBasic from "@/components/shared/table/TableBasic.vue";
 import { type DatatableColumns, getColumns } from "@/lib/table.ts";
 import { type FrontendLogsQuery } from "@/api/gql/graphql.ts";
 
-type FrontendLogs = NonNullable<FrontendLogsQuery["frontedLogs"]>[number];
+type FrontendLogs = NonNullable<FrontendLogsQuery["frontendLogs"]>[number];
 
 const { applyUpdate, updateAvailable, updateTime } = usePwaUpdateSingleton;
 
@@ -25,7 +25,7 @@ function toggleAutoUpdate() {
 const { result, loading } = useQuery(
   graphql(`
     query FrontendLogs {
-      frontedLogs {
+      frontendLogs {
         appVersion
         createdAt
         description
@@ -69,6 +69,6 @@ const column: Array<DatatableColumns<FrontendLogs>> = [
       <VisVersion class="min-w-48" />
     </div>
     <p>Logs</p>
-    <TableBasic :columns="getColumns(column)" :data="result?.frontedLogs ?? []" :loading />
+    <TableBasic :columns="getColumns(column)" :data="result?.frontendLogs ?? []" :loading />
   </Page>
 </template>
