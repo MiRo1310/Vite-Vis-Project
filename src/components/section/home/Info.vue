@@ -6,16 +6,12 @@ import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
-import { type WattPilotJson } from "@/types/types.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
-import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
 
 const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
-
-const wallboxJson = computed((): WattPilotJson => iobroker.wattPilot.jsonScriptChargeLevel.parsed({} as WattPilotJson));
 
 const landroidStatusMap: Record<number, string> = {
   0: "Leerlauf",
@@ -98,26 +94,6 @@ const landroidStatusLabel = computed(() => {
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
           <OnlineActiveRows :online="iobroker.pool.poolPumpSwitch.value" :active="iobroker.pool.poolPumpPower.value > 40" />
-        </DataCard>
-      </RouterLink>
-    </div>
-
-    <!-- Wallbox -->
-    <p class="text-xs text-muted-foreground uppercase tracking-wide">Wallbox</p>
-    <div class="grid grid-cols-2 gap-2">
-      <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Laden" class="h-full" clickable>
-          <div class="flex items-center gap-1.5">
-            <StatusDot :active="wallboxJson.charging ?? false" />
-            <span class="text-xs font-semibold">{{ wallboxJson.charging ? "Aktiv" : "Inaktiv" }}</span>
-          </div>
-          <span v-if="wallboxJson.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
-        </DataCard>
-      </RouterLink>
-      <RouterLink :to="routes.wattPilot.path">
-        <DataCard title="Ladestatus" clickable content-class="flex flex-col gap-1.5">
-          <MetricValue :number-value="iobroker.car.battery" />
-          <CarCharging :data="wallboxJson" />
         </DataCard>
       </RouterLink>
     </div>
