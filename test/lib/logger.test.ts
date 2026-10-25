@@ -24,7 +24,7 @@ describe("Logger", () => {
     const err = { message: "oops" };
     Logger("err", { e: err, type: "log" });
     // first call: initial log
-    expect(logSpy).toHaveBeenNthCalledWith(1, "err", " ", undefined);
+    expect(logSpy).toHaveBeenNthCalledWith(1, "err", " ", "");
     // second call: Error message
     expect(logSpy).toHaveBeenNthCalledWith(2, `Error message: ${err.message}`);
   });
@@ -33,7 +33,7 @@ describe("Logger", () => {
     const err = { stack: "stacktrace" } as any;
     Logger("err2", { e: err });
     // initial log uses console.log by default
-    expect(logSpy).toHaveBeenCalledWith("err2", " ", undefined);
+    expect(logSpy).toHaveBeenCalledWith("err2", " ", "");
     // stack should be logged via console.error
     expect(errorSpy).toHaveBeenCalledWith(`Error stack: ${err.stack}`);
   });
@@ -42,7 +42,7 @@ describe("Logger", () => {
     const err = "some error" as any;
     Logger("err3", { e: err, type: "error" });
     // initial call uses console.error because type === 'error'
-    expect(errorSpy).toHaveBeenNthCalledWith(1, "err3", " ", undefined);
+    expect(errorSpy).toHaveBeenNthCalledWith(1, "err3", " ", "");
     // then fallback to printing error object
     expect(errorSpy).toHaveBeenNthCalledWith(2, `Error object: ${err}`);
   });
