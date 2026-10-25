@@ -78,7 +78,7 @@ export abstract class BaseValue<T> implements IValueOf<T> {
       const { message, showMessageOn, statusBoolean, removeMessageOn, priority, type, route } = obj.notificationOnChange;
       this.NotificationOnChange = new NotificationOnChange<T>(
         this.id,
-        new NotificationMessage(this.id, message, type ?? "info", priority, new Date(), statusBoolean ?? false, route),
+        new NotificationMessage(this.id, message, type ?? "info", priority, { statusBoolean: statusBoolean ?? false, route }),
         showMessageOn ?? this.defaultShowMessageOn,
         removeMessageOn ?? this.defaultRemoveMessageOn,
       );
