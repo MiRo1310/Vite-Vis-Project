@@ -39,11 +39,18 @@ export const useNotificationStore = defineStore("notificationStore", {
       if (this.notifications.some((n) => notification.id === n.id)) {
         return;
       }
+      if (notification.hasDuration) {
+        debouncedRemove(notification.durationMS as number, () => this.removeNotification(notification.id));
+      }
       this.notifications.push(notification);
       this.sortByPriority();
     },
-    removeNotification(id: string) {
+    removeNotification(id: string): void {
       this.notifications = this.notifications.filter((notification) => notification.id !== id);
     },
   },
 });
+
+function debouncedRemove(ms: number, remove: () => void) {
+  setTimeout(remove, ms);
+}

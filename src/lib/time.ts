@@ -15,3 +15,5 @@ export const formatSecondsToTime = (seconds: number): string => {
     .padStart(2, "0");
   return `${hrs}:${mins}:${secs}`;
 };
+
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
