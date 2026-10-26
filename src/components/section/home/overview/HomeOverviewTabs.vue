@@ -6,14 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { routes } from "@/router/routes.ts";
 import { useRouter } from "vue-router";
-import { formatUptime, miBToGiB } from "@/lib/system";
+import { formatUptime, miBToGiB } from "@/lib/system.ts";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import DotWithValue from "@/components/shared/display/DotWithValue.vue";
 import { chargingTime } from "@/composables/battery.ts";
-import SubscriptionProgress from "@/components/section/home/SubscriptionProgress.vue";
+import SubscriptionProgress from "@/components/section/home/overview/SubscriptionProgress.vue";
 import Surplus from "@/components/section/pv/Surplus.vue";
 import VisVersion from "@/components/section/iobroker/VisVersion.vue";
-import WallboxHome from "@/components/section/home/WallboxHome.vue";
+import WallboxSummary from "@/components/section/home/overview/WallboxSummary.vue";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -86,7 +86,7 @@ const wpModus = computed(() => {
         </DataCard>
 
         <div class="w-full col-span-2">
-          <WallboxHome />
+          <WallboxSummary />
         </div>
       </div>
     </TabsContent>
