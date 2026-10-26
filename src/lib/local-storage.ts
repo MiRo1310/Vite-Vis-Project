@@ -1,12 +1,16 @@
+import { type RouterReloadRetry } from "@/types/types.ts";
+
 interface StorageTypes {
   autoUpdate: boolean;
   deviceId: string | null;
+  routerReload: RouterReloadRetry;
 }
 
 const typedLocalStorage = () => {
   const defaultValues: StorageTypes = {
     autoUpdate: true,
     deviceId: null,
+    routerReload: { to: null, attempt: 0 },
   };
 
   function getItem<K extends keyof StorageTypes>(key: K): StorageTypes[K] {
@@ -24,8 +28,9 @@ const typedLocalStorage = () => {
     }
   }
 
-  function setItem<K extends keyof StorageTypes>(key: K, value: StorageTypes[K]): void {
+  function setItem<K extends keyof StorageTypes>(key: K, value: StorageTypes[K]): StorageTypes[K] {
     localStorage.setItem(key, JSON.stringify(value));
+    return value;
   }
 
   return { getItem, setItem };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatError, isOpaqueScriptError, UNKNOWN_ERROR } from "@/lib/error";
+import { formatError, isChunkLoadError, isOpaqueScriptError, UNKNOWN_ERROR } from "@/lib/error";
 
 describe("formatError", () => {
   it("returns fallback for null/undefined", () => {
@@ -39,11 +39,14 @@ describe("formatError", () => {
 
   it("describes events without message", () => {
     const event = { type: "error", target: { tagName: "SCRIPT", src: "http://host/socket.io.js" } };
+    // eslint-disable-next-line
     expect(formatError(event).message).toBe('Event "error" (script: http://host/socket.io.js)');
+    // eslint-disable-next-line
     expect(formatError({ type: "error", target: null }).message).toBe('Event "error"');
   });
 
   it("stringifies plain objects", () => {
+    // eslint-disable-next-line
     expect(formatError({ code: 500, reason: "server" }).message).toBe('{"code":500,"reason":"server"}');
     expect(formatError({}).message).toBe(UNKNOWN_ERROR);
   });
@@ -65,5 +68,17 @@ describe("isOpaqueScriptError", () => {
     expect(isOpaqueScriptError("Script error.", new Error("x"), "")).toBe(false);
     expect(isOpaqueScriptError("Script error.", null, "http://host/app.js")).toBe(false);
     expect(isOpaqueScriptError("x is undefined", null, "")).toBe(false);
+  });
+});
+
+describe("handels chunk error", () => {
+  it("returns true on valid chunk error", () => {
+    expect(isChunkLoadError("From: /navigation to: /system, Message: 'text/html' is not a valid JavaScript MIME type., Stacktrace: -")).toBe(true);
+    expect(isChunkLoadError("'text/html' is not a valid JavaScript MIME type 123")).toBe(true);
+  });
+
+  it("returns false on non valid chunk error", () => {
+    expect(isChunkLoadError()).toBe(false);
+    expect(isChunkLoadError("Test 123")).toBe(false);
   });
 });

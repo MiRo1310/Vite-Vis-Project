@@ -88,3 +88,7 @@ export function formatError(err: unknown): FormattedError {
 export function isOpaqueScriptError(message: string, error: unknown, filename?: string): boolean {
   return !error && !filename && message.trim() === "Script error.";
 }
+
+export function isChunkLoadError(error?: string): boolean {
+  return ["'text/html' is not a valid JavaScript MIME type"].some((e) => error?.includes(e));
+}

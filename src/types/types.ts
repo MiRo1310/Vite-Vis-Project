@@ -261,3 +261,8 @@ export interface TankerkoenigStation {
   differenceDiesel: number;
   discount: string;
 }
+
+export interface RouterReloadRetry {
+  to: string | null;
+  attempt: number;
+}

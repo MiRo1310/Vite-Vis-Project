@@ -34,6 +34,7 @@ const { result, loading } = useQuery(
         level
         route
         title
+        ip
       }
     }
   `),
@@ -47,6 +48,7 @@ const column: Array<DatatableColumns<FrontendLogs>> = [
   { source: "deviceName", labelKey: "Gerätename" },
   { source: "deviceId", labelKey: "Geräte ID" },
   { source: "appVersion", labelKey: "App Version" },
+  { source: "ip", labelKey: "IP Adresse" },
   { source: "createdAt", labelKey: "Erstellt am", type: "datetime" },
 ];
 </script>
