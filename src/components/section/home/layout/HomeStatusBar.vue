@@ -6,7 +6,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { getOpenWindows } from "@/composables/windows.ts";
 import { DataCard, StatusCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
-import Notifications from "@/components/section/home/Notifications.vue";
+import NotificationTicker from "@/components/section/home/status-bar/NotificationTicker.vue";
 import { getActiveLights } from "@/composables/lights.ts";
 import { Blinds, Flame, Plane } from "lucide-vue-next";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
@@ -44,7 +44,7 @@ const navCardClass =
         <p class="text-xs text-muted-foreground leading-tight">{{ date }}</p>
       </DataCard>
       <RouterLink :to="routes.notifications.path" class="sm:flex-0 flex-1">
-        <Notifications />
+        <NotificationTicker />
       </RouterLink>
       <RouterLink :to="routes.window.path" class="shrink-0 min-w-28">
         <DataCard title="Fenster / Rolladen" nowrap-title clickable class="h-full" content-class="flex items-center gap-1.5">

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Calendar from "@/components/section/home/Calendar.vue";
-import Caller from "@/components/section/home/Caller.vue";
-import HomeCenteredTabs from "@/components/section/home/HomeCenteredTabs.vue";
-import Info from "@/components/section/home/Info.vue";
-import Lists from "@/components/section/home/Lists.vue";
-import Timer from "@/components/section/home/Timer.vue";
-import Trash from "@/components/section/home/Trash.vue";
+import CalendarPreview from "@/components/section/home/widget/CalendarPreview.vue";
+import LastCall from "@/components/section/home/widget/LastCall.vue";
+import HomeOverviewTabs from "@/components/section/home/overview/HomeOverviewTabs.vue";
+import HomeDeviceStatus from "@/components/section/home/widget/HomeDeviceStatus.vue";
+import HomeQuickActions from "@/components/section/home/widget/HomeQuickActions.vue";
+import TimerGrid from "@/components/section/home/widget/TimerGrid.vue";
+import TrashPickup from "@/components/section/home/widget/TrashPickup.vue";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 </script>
 
@@ -14,49 +14,49 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
     <AccordionItem value="info">
       <AccordionTrigger>Informationen</AccordionTrigger>
       <AccordionContent>
-        <HomeCenteredTabs />
+        <HomeOverviewTabs />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="info2">
       <AccordionTrigger>Weiter Informationen</AccordionTrigger>
       <AccordionContent>
-        <Info />
+        <HomeDeviceStatus />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="timer">
       <AccordionTrigger>Timer</AccordionTrigger>
       <AccordionContent>
-        <Timer />
+        <TimerGrid />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="calendar">
       <AccordionTrigger>Kalender</AccordionTrigger>
       <AccordionContent>
-        <Calendar />
+        <CalendarPreview />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="caller">
       <AccordionTrigger>Anrufer</AccordionTrigger>
       <AccordionContent>
-        <Caller />
+        <LastCall />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="trash">
       <AccordionTrigger>Müllabfuhr</AccordionTrigger>
       <AccordionContent>
-        <Trash />
+        <TrashPickup />
       </AccordionContent>
     </AccordionItem>
 
     <AccordionItem value="lists">
       <AccordionTrigger>Listen</AccordionTrigger>
       <AccordionContent>
-        <Lists />
+        <HomeQuickActions />
       </AccordionContent>
     </AccordionItem>
   </Accordion>

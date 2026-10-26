@@ -4,7 +4,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import { type CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
-import CalendarDay from "@/components/section/home/CalenderDay.vue";
+import CalendarDay from "@/components/section/home/widget/CalendarDay.vue";
 import { routes } from "@/router/routes.ts";
 
 const { iobroker } = useIobrokerStore();

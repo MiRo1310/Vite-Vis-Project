@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import NavigationRow from "@/components/section/home/NavigationRow.vue";
-import MobileHome from "../../components/section/home/MobileHome.vue";
-import TabletDesktopHome from "./TabletDesktopHome.vue";
+import HomeStatusBar from "@/components/section/home/layout/HomeStatusBar.vue";
+import HomeMobile from "../../components/section/home/layout/HomeMobile.vue";
+import HomeDesktop from "../../components/section/home/layout/HomeDesktop.vue";
 </script>
 
 <template>
   <div class="h-full flex flex-col gap-2 pb-0">
-    <NavigationRow />
+    <HomeStatusBar />
 
     <!-- Hauptgrid -->
-    <TabletDesktopHome />
+    <HomeDesktop />
 
     <div class="sm:hidden block">
-      <MobileHome />
+      <HomeMobile />
     </div>
   </div>
 </template>
