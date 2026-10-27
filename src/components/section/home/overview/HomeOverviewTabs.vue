@@ -14,6 +14,7 @@ import SubscriptionProgress from "@/components/section/home/overview/Subscriptio
 import Surplus from "@/components/section/pv/Surplus.vue";
 import VisVersion from "@/components/section/iobroker/VisVersion.vue";
 import WallboxSummary from "@/components/section/home/overview/WallboxSummary.vue";
+import { wpModus } from "@/composables/heat-pump.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -25,19 +26,6 @@ const pool = computed(() => iobroker.pool);
 const system = computed(() => iobroker.system);
 
 const charging = computed(() => pv.value.activeCharging.value);
-
-const wpModus = computed(() => {
-  switch (pool.value.mode.value) {
-    case 0:
-      return "Kühlen";
-    case 1:
-      return "Heizen";
-    case 2:
-      return "Auto";
-    default:
-      return "Inaktiv";
-  }
-});
 </script>
 
 <template>

@@ -6,7 +6,7 @@ import { computed } from "vue";
 
 const { iobroker } = useIobrokerStore();
 
-const modus = computed(() => {
+export const wpModus = computed(() => {
   switch (iobroker.pool.mode.value) {
     case 0:
       return "Kühlen";
@@ -25,7 +25,7 @@ export const heatPumpValues = computed((): InfoTypes => {
     listing: [
       { title: "Wärmepumpe", ...activeStatus.value(iobroker.pool.heaterState.value) },
       { title: "Wärmepumpe Silent", ...activeStatus.value(iobroker.pool.silent.value) },
-      { title: "Wärmepumpe Modus", value: modus.value },
+      { title: "Wärmepumpe Modus", value: wpModus.value },
       { title: "Wärmepumpe Bezug", value: iobroker.pool.consumption.value.toFixed(2), unit: "W" },
       { title: "Wärmepumpe In", value: iobroker.pool.tempIn.value, unit: "°C", valueClass: "text-blue-200" },
       { title: "Wärmepumpe Out", value: iobroker.pool.tempOut.value, unit: "°C", valueClass: "text-orange-200" },

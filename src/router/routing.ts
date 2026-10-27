@@ -28,6 +28,8 @@ export const routing = [
       { component: async () => await import("@/pages/vis/notifications.vue"), ...routes.notifications },
       { component: async () => await import("@/pages/vis/air-conditioner.vue"), ...routes.airConditioner },
       { component: async () => await import("@/pages/vis/page-details.vue"), ...routes.pageDetails },
+      { component: async () => await import("@/pages/vis/pool.vue"), ...routes.pool },
+      { component: async () => await import("@/pages/vis/lawn-mover.vue"), ...routes.lawnMover },
     ],
   },
   {
