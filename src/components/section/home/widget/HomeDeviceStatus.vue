@@ -8,31 +8,18 @@ import { routes } from "@/router/routes.ts";
 import OnlineActiveRows from "@/components/shared/display/OnlineActiveRows.vue";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
+import { landroidData } from "@/constants/landroid.ts";
 
 const ioBrokerStore = useIobrokerStore();
 const { iobroker } = ioBrokerStore;
 const { infos: infoStore } = ioBrokerStore.iobroker;
-
-const landroidStatusMap: Record<number, string> = {
-  0: "Leerlauf",
-  1: "Zuhause",
-  2: "Startet",
-  3: "Verlässt",
-  4: "Folgt",
-  5: "Sucht Heim",
-  7: "Mäht",
-  8: "Angehoben",
-  9: "Blockiert",
-  30: "Fährt heim",
-  34: "Pause",
-};
 
 const landroidStatusLabel = computed(() => {
   const code = iobroker.landroid.status.value;
   if (!iobroker.landroid.online.value) {
     return "Offline";
   }
-  return landroidStatusMap[code] ?? `Status ${code}`;
+  return landroidData.status(code);
 });
 </script>
 

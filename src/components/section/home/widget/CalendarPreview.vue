@@ -2,10 +2,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { type CalendarDayType } from "@/types/types.ts";
 import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/widget/CalendarDay.vue";
 import { routes } from "@/router/routes.ts";
+import { isInTimeRange } from "@/lib/calendar.ts";
 
 const { iobroker } = useIobrokerStore();
 const router = useRouter();
@@ -23,16 +23,6 @@ const tomorrow = computed(() => {
     return day.date.includes("Morgen") || isInTimeRange(day, 1);
   });
 });
-
-const isInTimeRange = (day: CalendarDayType, offsetDay = 0): boolean => {
-  const now = new Date();
-  if (offsetDay) {
-    now.setDate(now.getDate() + offsetDay);
-  }
-  const start = new Date(day._object.start);
-  const end = new Date(day._object.end);
-  return now >= start && now <= end;
-};
 </script>
 
 <template>
