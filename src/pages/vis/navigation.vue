@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavigationButton from "@/components/layout/NavigationButton.vue";
-import { type NavigationsBadge, type NavigationItem } from "@/types/types.ts";
+import { type NavigationItem, type NavigationsBadge } from "@/types/types.ts";
 import { batteryList } from "@/composables/battery.ts";
 import { computed } from "vue";
 import { getOpenWindows } from "@/composables/windows.ts";
@@ -11,7 +11,9 @@ import { routes, type TNavigationRoute } from "@/router/routes.ts";
 const navigations = computed((): NavigationItem[] => {
   const home: NavigationItem = { icon: routes.home.icon, text: routes.home.text, to: routes.home.path };
   const navigationItem: NavigationItem[] = Object.values(routes)
-    .filter((route): route is TNavigationRoute => route.addToNavigation)
+    .filter(
+      (route): route is TNavigationRoute => ("hideOnNavigation" in route ? !route.hideOnNavigation : true) && "icon" in route && "text" in route,
+    )
     .map((route) => ({ icon: route.icon, text: route.text, to: route.path }));
 
   addBadges(navigationItem, routes.window.path, [{ value: getOpenWindows.value, color: "yellow" }]);

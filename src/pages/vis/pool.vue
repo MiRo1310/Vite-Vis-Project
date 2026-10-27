@@ -3,9 +3,11 @@ import { Card, CardContent, CardHeader } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import BoolIcon from "@/components/shared/table-cell/BoolIcon.vue";
 import { computed } from "vue";
-import CardTitle from "@/components/shared/card/CardTitle.vue";
+import CardTitle from "../../components/shared/card/CardTitle.vue";
 import OnlineOffline from "@/components/shared/OnlineOffline.vue";
 import InputIobroker from "@/components/shared/input/InputIobroker.vue";
+import Page from "@/components/shared/page/Page.vue";
+import { wpModus } from "@/composables/heat-pump.ts";
 
 export type BoolText = "true" | "false";
 
@@ -36,7 +38,7 @@ const items = computed(() => {
     {
       title: "Modus",
       type: "text",
-      value: getMode(pool.mode.value),
+      value: wpModus.value,
     },
     {
       title: "Verbrauch",
@@ -71,45 +73,32 @@ const items = computed(() => {
   ];
   return i;
 });
-
-const getMode = (mode: number) => {
-  switch (mode) {
-    case -1:
-      return "Aus";
-    case 0:
-      return "Kühlen";
-    case 1:
-      return "Heizen";
-    case 2:
-      return "Auto";
-    default:
-      return "Unbekannt";
-  }
-};
 </script>
 
 <template>
-  <Card styling="info">
-    <CardHeader>
-      <CardTitle>
-        <div class="flex justify-between items-center">
-          <span>Pool Wärmepumpe</span>
-          <OnlineOffline :status="iobroker.pool.status.value" />
+  <Page title="Pool Wärmepumpe">
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <div class="flex justify-between items-center">
+            <span>Pool Wärmepumpe</span>
+            <OnlineOffline :status="iobroker.pool.status.value" />
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent class="p-2 shadow-lg mx-2 mb-2">
+        <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
+          <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
+          <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
+          <div v-else-if="item.type === 'input'">
+            <InputIobroker :state="iobroker.pool.tempSet" unit="°C" />
+          </div>
+          <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold"
+            >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
+          </span>
+          <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }} </span>
         </div>
-      </CardTitle>
-    </CardHeader>
-    <CardContent class="bg-cardCustom-info p-2 shadow-lg mx-2 mb-2">
-      <div v-for="(item, index) in items" :key="index" class="flex justify-between items-center">
-        <span :class="['mr-12 text-accent-foreground/50 font-bold text-xs', { 'mt-2': index > 0 }]">{{ item.title }}</span>
-        <BoolIcon v-if="item.type === 'bool'" :value="item.value as BoolText" />
-        <div v-else-if="item.type === 'input'">
-          <InputIobroker :state="iobroker.pool.tempSet" unit="°C" />
-        </div>
-        <span v-else-if="item.type === 'number'" class="text-accent-foreground/50 text-xs font-bold"
-          >{{ parseFloat(item.value?.toString()).toFixed(2) }} {{ item.unit }}
-        </span>
-        <span v-else class="text-accent-foreground/50 text-xs font-bold">{{ item.value }} {{ item.unit }} </span>
-      </div>
-    </CardContent>
-  </Card>
+      </CardContent>
+    </Card>
+  </Page>
 </template>

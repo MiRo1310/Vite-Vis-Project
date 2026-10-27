@@ -2485,10 +2485,10 @@
   resolved "https://registry.yarnpkg.com/@keyv/serialize/-/serialize-1.1.1.tgz#0c01dd3a3483882af7cf3878d4e71d505c81fc4a"
   integrity sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==
 
-"@lucide/vue@^1.61.0":
-  version "1.61.0"
-  resolved "https://registry.yarnpkg.com/@lucide/vue/-/vue-1.61.0.tgz#1f8b18b7d6e45032a7db47e645334577845ae891"
-  integrity sha512-XYclbwUQ6Mvf0UskBG9gJH91BdF3VK4Tt6Pv8PSntwPwNnf357PCQnma4TrzOEdwD49UYCtsTafpfytRIxm1cQ==
+"@lucide/vue@^1.62.0":
+  version "1.62.0"
+  resolved "https://registry.yarnpkg.com/@lucide/vue/-/vue-1.62.0.tgz#118ef6fa8561e9679e7a76d16baef46338c0c771"
+  integrity sha512-uuVefuSb79HC/XBRIL4AFlIOx4nezJ/DmyeiHQTejQ9odF265SksOKjXbBW6kyDDIJimBh+3LYR4wz/da0aqRA==
 
 "@mapbox/jsonlint-lines-primitives@^2.0.3":
   version "2.0.3"

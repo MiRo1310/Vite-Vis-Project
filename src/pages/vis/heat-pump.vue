@@ -5,7 +5,7 @@ import Page from "@/components/shared/page/Page.vue";
 import { DataCard, ToggleCard } from "@/components/shared/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { heatPumpValues } from "@/pages/vis/heat-pump.ts";
+import { heatPumpValues } from "@/composables/heat-pump.ts";
 import LogTable from "@/components/shared/table/LogTable.vue";
 import { computed } from "vue";
 import { formatUptime } from "@/lib/system";
