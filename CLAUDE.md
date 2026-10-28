@@ -152,8 +152,13 @@ Für alle reinen Anzeigewerte `DataCard` aus `@/components/shared/card` verwende
   <span class="text-sm font-semibold">An</span>
 </DataCard>
 
-<!-- Klickbar mit Button-Hover-Effekt: -->
-<DataCard title="Updates" clickable @click="navigate">
+<!-- Als Link (ganze Karte klickbar, kein RouterLink drumherum): -->
+<DataCard title="Updates" :to="routes.iobrokerInfo.path">
+  <span class="text-sm font-semibold">3</span>
+</DataCard>
+
+<!-- Klickbar ohne Navigation (z.B. Toggle): -->
+<DataCard title="Timer" clickable @click="toggle">
   <span class="text-sm font-semibold">3</span>
 </DataCard>
 ```
@@ -164,6 +169,8 @@ Props:
 - `title` — Kartenüberschrift (muted, xs)
 - `content-class` — zusätzliche Klassen für den Content-Bereich
 - `clickable` — aktiviert `hover:bg-accent hover:text-accent-foreground` + Fokus-Ring (identisch zu Button outline-Hover)
+- `to` — Route; legt einen Stretched Link über die Karte (impliziert `clickable`). Klassen von außen bleiben auf der Card. Nie `RouterLink > DataCard` bauen.
+- `title` ist optional (ohne Titel kein Header, z.B. `CalendarPreview`)
 
 ### Editierbare ioBroker-Werte (`InputIobroker`)
 Für schreibbare ioBroker-States **niemals** ein rohes Input oder `InputShadcn` mit eigenem Watcher/Debounce bauen — stattdessen `InputIobroker` aus `@/components/shared/input` nutzen:

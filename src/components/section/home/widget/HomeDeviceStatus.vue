@@ -33,20 +33,16 @@ const hasLogs = computed(() => logCounts.value.error > 0 || logCounts.value.warn
 <template>
   <div class="flex flex-col gap-2 text-xs">
     <div class="grid grid-cols-2 gap-2">
-      <RouterLink :to="routes.iobrokerInfo.path">
-        <DataCard title="Updates" clickable content-class="flex items-center gap-1.5">
-          <MetricValue :val="infoStore.updatesNumber.value + (usePwaUpdateSingleton.updateAvailable.value ? 1 : 0)" unit="verfügbar" />
-        </DataCard>
-      </RouterLink>
+      <DataCard title="Updates" :to="routes.iobrokerInfo.path" content-class="flex items-center gap-1.5">
+        <MetricValue :val="infoStore.updatesNumber.value + (usePwaUpdateSingleton.updateAvailable.value ? 1 : 0)" unit="verfügbar" />
+      </DataCard>
 
-      <RouterLink :to="routes.logs.path">
-        <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer" class="h-full">
-          <Badge v-if="logCounts.error" :value="logCounts.error" color="red" />
-          <Badge v-if="logCounts.warning" :value="logCounts.warning" color="orange" />
-          <Badge v-if="logCounts.info" :value="logCounts.info" color="blue" />
-          <span v-if="!hasLogs" class="text-xs text-muted-foreground">–</span>
-        </DataCard>
-      </RouterLink>
+      <DataCard title="Logs" :to="routes.logs.path" content-class="flex flex-wrap gap-1">
+        <Badge v-if="logCounts.error" :value="logCounts.error" color="red" />
+        <Badge v-if="logCounts.warning" :value="logCounts.warning" color="orange" />
+        <Badge v-if="logCounts.info" :value="logCounts.info" color="blue" />
+        <span v-if="!hasLogs" class="text-xs text-muted-foreground">–</span>
+      </DataCard>
     </div>
 
     <!-- Klima -->
@@ -73,16 +69,12 @@ const hasLogs = computed(() => logCounts.value.error > 0 || logCounts.value.warn
 
     <!-- Wärmepumpe & Pool -->
     <SectionGroup title="Pool">
-      <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="iobroker.pool.heaterOnline.value" :active="iobroker.pool.heaterState.value" />
-        </DataCard>
-      </RouterLink>
-      <RouterLink :to="routes.heatPump.path">
-        <DataCard title="Poolpumpe" clickable content-class="flex flex-col gap-1.5">
-          <OnlineActiveRows :online="iobroker.pool.poolPumpSwitch.value" :active="iobroker.pool.poolPumpPower.value > 40" />
-        </DataCard>
-      </RouterLink>
+      <DataCard title="Wärmepumpe" :to="routes.heatPump.path" content-class="flex flex-col gap-1.5">
+        <OnlineActiveRows :online="iobroker.pool.heaterOnline.value" :active="iobroker.pool.heaterState.value" />
+      </DataCard>
+      <DataCard title="Poolpumpe" :to="routes.heatPump.path" content-class="flex flex-col gap-1.5">
+        <OnlineActiveRows :online="iobroker.pool.poolPumpSwitch.value" :active="iobroker.pool.poolPumpPower.value > 40" />
+      </DataCard>
     </SectionGroup>
   </div>
 </template>

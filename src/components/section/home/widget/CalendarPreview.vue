@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { Card, CardContent } from "@/components/ui/card";
+import { DataCard } from "@/components/shared/card";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 import CalendarDay from "@/components/section/home/widget/CalendarDay.vue";
 import { routes } from "@/router/routes.ts";
 import { isInTimeRange } from "@/lib/calendar.ts";
 
 const { iobroker } = useIobrokerStore();
-const router = useRouter();
 
 const data = computed(() => iobroker.calendar.table.parsed([]));
 
@@ -26,10 +24,8 @@ const tomorrow = computed(() => {
 </script>
 
 <template>
-  <Card class="py-0 gap-0 rounded-md cursor-pointer hover:bg-accent transition-colors" @click="router.push({ name: routes.calender.name })">
-    <CardContent class="p-2 flex flex-col gap-2">
-      <CalendarDay :data="today" title="Heute" />
-      <CalendarDay :data="tomorrow" title="Morgen" />
-    </CardContent>
-  </Card>
+  <DataCard :to="routes.calender.path" content-class="p-2 flex flex-col gap-2">
+    <CalendarDay :data="today" title="Heute" />
+    <CalendarDay :data="tomorrow" title="Morgen" />
+  </DataCard>
 </template>

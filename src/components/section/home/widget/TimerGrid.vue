@@ -15,7 +15,7 @@ const appStore = useAppStore();
       v-for="i in 4"
       :key="i"
       :title="iobroker.timers ? getNameByIndex(iobroker.timers, i) : `Timer ${i}`"
-      class="cursor-pointer hover:bg-accent transition-colors"
+      clickable
       content-class="space-y-0.5"
     >
       <span class="text-sm font-semibold font-mono tabular-nums">
