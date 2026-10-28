@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { DataCard } from "@/components/shared/card";
+import { DataCard, SectionGroup } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import Badge from "@/components/shared/badge/Badge.vue";
 import { routes } from "@/router/routes.ts";
@@ -21,6 +21,13 @@ const landroidStatusLabel = computed(() => {
   }
   return landroidData.status(code);
 });
+
+const logCounts = computed(() => ({
+  error: iobroker.logs.error.parsed([]).length,
+  warning: iobroker.logs.warning.parsed([]).length,
+  info: iobroker.logs.info.parsed([]).length,
+}));
+const hasLogs = computed(() => logCounts.value.error > 0 || logCounts.value.warning > 0 || logCounts.value.info > 0);
 </script>
 
 <template>
@@ -34,32 +41,26 @@ const landroidStatusLabel = computed(() => {
 
       <RouterLink :to="routes.logs.path">
         <DataCard title="Logs" clickable content-class="flex flex-wrap gap-1 cursor-pointer" class="h-full">
-          <Badge v-if="iobroker.logs.error.parsed([]).length" :value="iobroker.logs.error.parsed([]).length" color="red" />
-          <Badge v-if="iobroker.logs.warning.parsed([]).length" :value="iobroker.logs.warning.parsed([]).length" color="orange" />
-          <Badge v-if="iobroker.logs.info.parsed([]).length" :value="iobroker.logs.info.parsed([]).length" color="blue" />
-          <span
-            v-if="!iobroker.logs.error.parsed([]).length && !iobroker.logs.warning.parsed([]).length && !iobroker.logs.info.parsed([]).length"
-            class="text-xs text-muted-foreground"
-            >–</span
-          >
+          <Badge v-if="logCounts.error" :value="logCounts.error" color="red" />
+          <Badge v-if="logCounts.warning" :value="logCounts.warning" color="orange" />
+          <Badge v-if="logCounts.info" :value="logCounts.info" color="blue" />
+          <span v-if="!hasLogs" class="text-xs text-muted-foreground">–</span>
         </DataCard>
       </RouterLink>
     </div>
 
     <!-- Klima -->
-    <p class="text-xs text-muted-foreground uppercase tracking-wide">Klima</p>
-    <div class="grid grid-cols-2 gap-2">
+    <SectionGroup title="Klima">
       <DataCard title="Schlafen" content-class="space-y-1">
         <OnlineActiveRows :online="iobroker.airConditioners.schlafenOnline.value" :active="iobroker.airConditioners.schlafenOnline.value" />
       </DataCard>
       <DataCard title="Kinderzimmer" content-class="space-y-1">
         <OnlineActiveRows :online="iobroker.airConditioners.childOnline.value" :active="iobroker.airConditioners.childPowerStatus.value" />
       </DataCard>
-    </div>
+    </SectionGroup>
 
     <!-- Rasenmäher -->
-    <p class="text-xs text-muted-foreground uppercase tracking-wide">Rasenmäher</p>
-    <div class="grid grid-cols-2 gap-2">
+    <SectionGroup title="Rasenmäher">
       <DataCard title="Status" content-class="flex items-center gap-1.5">
         <StatusDot :active="iobroker.landroid.online.value" />
         <span class="text-xs font-semibold truncate">{{ landroidStatusLabel }}</span>
@@ -68,11 +69,10 @@ const landroidStatusLabel = computed(() => {
         <MetricValue v-if="iobroker.landroid.online.value" :number-value="iobroker.landroid.battery" />
         <span v-else>-</span>
       </DataCard>
-    </div>
+    </SectionGroup>
 
     <!-- Wärmepumpe & Pool -->
-    <p class="text-xs text-muted-foreground uppercase tracking-wide">Pool</p>
-    <div class="grid grid-cols-2 gap-2">
+    <SectionGroup title="Pool">
       <RouterLink :to="routes.heatPump.path">
         <DataCard title="Wärmepumpe" clickable content-class="flex flex-col gap-1.5">
           <OnlineActiveRows :online="iobroker.pool.heaterOnline.value" :active="iobroker.pool.heaterState.value" />
@@ -83,6 +83,6 @@ const landroidStatusLabel = computed(() => {
           <OnlineActiveRows :online="iobroker.pool.poolPumpSwitch.value" :active="iobroker.pool.poolPumpPower.value > 40" />
         </DataCard>
       </RouterLink>
-    </div>
+    </SectionGroup>
   </div>
 </template>
