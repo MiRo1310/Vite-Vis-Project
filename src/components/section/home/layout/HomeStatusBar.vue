@@ -7,6 +7,7 @@ import { getOpenWindows } from "@/composables/windows.ts";
 import { DataCard, StatusCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import NotificationTicker from "@/components/section/home/status-bar/NotificationTicker.vue";
+import HomeNavTile from "@/components/section/home/status-bar/HomeNavTile.vue";
 import { getActiveLights } from "@/composables/lights.ts";
 import { Blinds, Flame, Plane } from "lucide-vue-next";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
@@ -17,9 +18,6 @@ const { iobroker } = useIobrokerStore();
 const shutterOpen = computed(() => iobroker.windowGlobal.fensterOffen.value);
 const heatingPeriodActive = computed(() => iobroker.heatingControl.periodActive.value);
 const heatingPeriodDialogOpen = ref(false);
-
-const navCardClass =
-  "flex flex-col items-center gap-1 rounded-md border bg-card shadow-xs px-3 pt-2 pb-2 cursor-pointer hover:bg-accent transition-colors shrink-0 min-w-20 flex-auto";
 </script>
 
 <template>
@@ -27,14 +25,12 @@ const navCardClass =
   <div class="flex flex-col sm:flex-row sm:items-stretch gap-2 shrink-0">
     <!--      Navigations-Cards (oben auf mobile, rechts auf desktop)-->
     <div class="flex gap-2 overflow-x-auto sm:order-last sm:ml-auto shrink-0">
-      <div :class="navCardClass" @click="heatingPeriodDialogOpen = true">
-        <span class="text-xs text-muted-foreground whitespace-nowrap w-full">Heizperiode</span>
+      <HomeNavTile title="Heizperiode" @click="heatingPeriodDialogOpen = true">
         <Flame class="size-6 mt-2" :class="heatingPeriodActive ? 'text-orange-400' : 'text-muted-foreground/50'" />
-      </div>
-      <RouterLink :to="routes.navigation.path" :class="navCardClass">
-        <span class="text-xs text-muted-foreground whitespace-nowrap w-full">Navigation</span>
+      </HomeNavTile>
+      <HomeNavTile title="Navigation" :to="routes.navigation.path">
         <Plane class="size-6 mt-2" />
-      </RouterLink>
+      </HomeNavTile>
     </div>
 
     <!-- Datenkarten (unten auf mobile, links auf desktop) -->

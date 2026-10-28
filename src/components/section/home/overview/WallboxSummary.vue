@@ -3,7 +3,7 @@ import { computed } from "vue";
 import type { WattPilotJson } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { routes } from "@/router/routes.ts";
-import { DataCard } from "@/components/shared/card";
+import { DataCard, SectionGroup } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import MetricValue from "@/components/shared/display/MetricValue.vue";
 import CarCharging from "@/components/section/watt-pilot-and-car/CarCharging.vue";
@@ -14,8 +14,7 @@ const wallboxJson = computed((): WattPilotJson => iobroker.wattPilot.jsonScriptC
 </script>
 
 <template>
-  <p class="text-xs text-muted-foreground uppercase tracking-wide">Wallbox</p>
-  <div class="grid grid-cols-2 gap-2">
+  <SectionGroup title="Wallbox">
     <RouterLink :to="routes.wattPilot.path">
       <DataCard title="Laden" class="h-full" clickable>
         <div class="flex items-center gap-1.5">
@@ -31,5 +30,5 @@ const wallboxJson = computed((): WattPilotJson => iobroker.wattPilot.jsonScriptC
         <CarCharging :data="wallboxJson" />
       </DataCard>
     </RouterLink>
-  </div>
+  </SectionGroup>
 </template>
