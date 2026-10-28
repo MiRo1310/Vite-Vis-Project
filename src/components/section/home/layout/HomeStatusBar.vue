@@ -42,19 +42,23 @@ const heatingPeriodDialogOpen = ref(false);
       <RouterLink :to="routes.notifications.path" class="sm:flex-0 flex-1">
         <NotificationTicker />
       </RouterLink>
-      <RouterLink :to="routes.window.path" class="shrink-0 min-w-28">
-        <DataCard title="Fenster / Rolladen" nowrap-title clickable class="h-full" content-class="flex items-center gap-1.5">
-          <StatusDot :active="(getOpenWindows ?? 0) === 0" inactive-color="yellow" />
-          <span class="text-sm font-semibold">{{ getOpenWindows ?? 0 }}</span>
-          <Blinds class="size-4 ml-auto" :class="shutterOpen ? 'text-yellow-500' : 'text-green-500'" />
-        </DataCard>
-      </RouterLink>
+      <DataCard
+        title="Fenster / Rolladen"
+        nowrap-title
+        :to="routes.window.path"
+        class="shrink-0 min-w-28"
+        content-class="flex items-center gap-1.5"
+      >
+        <StatusDot :active="(getOpenWindows ?? 0) === 0" inactive-color="yellow" />
+        <span class="text-sm font-semibold">{{ getOpenWindows ?? 0 }}</span>
+        <Blinds class="size-4 ml-auto" :class="shutterOpen ? 'text-yellow-500' : 'text-green-500'" />
+      </DataCard>
 
       <StatusCard
         title="Licht"
         :value="getActiveLights"
         :active="getActiveLights === 0"
-        :route="routes.light.path"
+        :to="routes.light.path"
         class="shrink-0 min-w-22 sm:block hidden"
       />
     </div>

@@ -15,20 +15,16 @@ const wallboxJson = computed((): WattPilotJson => iobroker.wattPilot.jsonScriptC
 
 <template>
   <SectionGroup title="Wallbox">
-    <RouterLink :to="routes.wattPilot.path">
-      <DataCard title="Laden" class="h-full" clickable>
-        <div class="flex items-center gap-1.5">
-          <StatusDot :active="wallboxJson.charging ?? false" />
-          <span class="text-xs font-semibold">{{ wallboxJson.charging ? "Aktiv" : "Inaktiv" }}</span>
-        </div>
-        <span v-if="wallboxJson.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
-      </DataCard>
-    </RouterLink>
-    <RouterLink :to="routes.wattPilot.path">
-      <DataCard title="Ladestatus Auto-Batterie" clickable content-class="flex flex-col gap-1.5">
-        <MetricValue :number-value="iobroker.car.battery" />
-        <CarCharging :data="wallboxJson" />
-      </DataCard>
-    </RouterLink>
+    <DataCard title="Laden" :to="routes.wattPilot.path">
+      <div class="flex items-center gap-1.5">
+        <StatusDot :active="wallboxJson.charging ?? false" />
+        <span class="text-xs font-semibold">{{ wallboxJson.charging ? "Aktiv" : "Inaktiv" }}</span>
+      </div>
+      <span v-if="wallboxJson.chargingPowerW" class="text-xs font-semibold"> {{ wallboxJson.chargingPowerW }} W</span>
+    </DataCard>
+    <DataCard title="Ladestatus Auto-Batterie" :to="routes.wattPilot.path" content-class="flex flex-col gap-1.5">
+      <MetricValue :number-value="iobroker.car.battery" />
+      <CarCharging :data="wallboxJson" />
+    </DataCard>
   </SectionGroup>
 </template>
