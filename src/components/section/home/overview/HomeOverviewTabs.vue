@@ -1,223 +1,26 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { DataCard } from "@/components/shared/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
-import { routes } from "@/router/routes.ts";
-import { useRouter } from "vue-router";
-import { formatUptime, miBToGiB } from "@/lib/system.ts";
-import MetricValue from "@/components/shared/display/MetricValue.vue";
-import DotWithValue from "@/components/shared/display/DotWithValue.vue";
-import { chargingTime } from "@/composables/battery.ts";
-import SubscriptionProgress from "@/components/section/home/overview/SubscriptionProgress.vue";
-import Surplus from "@/components/section/pv/Surplus.vue";
-import VisVersion from "@/components/section/iobroker/VisVersion.vue";
-import WallboxSummary from "@/components/section/home/overview/WallboxSummary.vue";
-import { wpModus } from "@/composables/heat-pump.ts";
-
-const { iobroker } = useIobrokerStore();
-const router = useRouter();
-
-const pv = computed(() => iobroker.pv);
-const energy = computed(() => iobroker.energy);
-const heating = computed(() => iobroker.heating);
-const pool = computed(() => iobroker.pool);
-const system = computed(() => iobroker.system);
-
-const charging = computed(() => pv.value.activeCharging.value);
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PvTab from "./PvTab.vue";
+import EnergyTab from "./EnergyTab.vue";
+import HeatingTab from "./HeatingTab.vue";
+import PoolTab from "./PoolTab.vue";
+import SystemTab from "./SystemTab.vue";
 </script>
 
 <template>
   <Tabs default-value="pv" class="h-full flex flex-col max-[600px]:h-auto">
     <TabsList class="shrink-0 w-full">
       <TabsTrigger value="pv" class="flex-1 text-[11px] px-1">PV</TabsTrigger>
-      <TabsTrigger value="energie" class="flex-1 text-[11px] px-1">Energie</TabsTrigger>
+      <TabsTrigger value="energy" class="flex-1 text-[11px] px-1">Energie</TabsTrigger>
       <TabsTrigger value="heizung" class="flex-1 text-[11px] px-1">Heizung</TabsTrigger>
       <TabsTrigger value="pool" class="flex-1 text-[11px] px-1">Pool</TabsTrigger>
       <TabsTrigger value="system" class="flex-1 text-[11px] px-1">System</TabsTrigger>
     </TabsList>
 
-    <!-- PV -->
-    <TabsContent value="pv" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
-      <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.pv.path)">→ PV Seite</button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <DataCard title="Grosse PV">
-          <MetricValue v-bind="pv.pvGross.valAndUnit" :decimal-places="0" />
-        </DataCard>
-        <DataCard title="Kleine PV">
-          <MetricValue v-bind="pv.smallPv.valAndUnit" :decimal-places="0" />
-        </DataCard>
-
-        <Surplus />
-
-        <DataCard :title="charging > 0 ? 'Batterie laden' : 'Batterie entladen'">
-          <MetricValue
-            :val="Math.abs(charging)"
-            unit="W"
-            :decimal-places="0"
-            :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
-          />
-        </DataCard>
-        <DataCard title="Ladestatus Haus-Batterie" content-class="flex items-center gap-1.5">
-          <MetricValue v-bind="pv.batteryCharging.valAndUnit" :decimal-places="0" />
-        </DataCard>
-        <DataCard :title="charging > 0 ? 'Geschätzte Restladedauer' : 'Geschätzte Restentladedauer'">
-          <MetricValue
-            :value-class="charging > 0 ? 'text-green-400' : charging < 0 ? 'text-orange-400' : ''"
-            :val="chargingTime({ batteryCapacity: 6.5, currentBatteryPercent: pv.batteryCharging.value, currentPowerW: charging })"
-            unit="Std"
-          />
-        </DataCard>
-
-        <div class="w-full col-span-2">
-          <WallboxSummary />
-        </div>
-      </div>
-    </TabsContent>
-
-    <!-- Energie -->
-    <TabsContent value="energie" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
-      <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.energy.path)">
-          → Energie Seite
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <DataCard title="Bezug heute">
-          <MetricValue v-bind="energy.energyReceived.valAndUnit" :decimal-places="2" />
-        </DataCard>
-        <DataCard title="Einspeisung heute">
-          <MetricValue v-bind="energy.energyReturned.valAndUnit" :decimal-places="2" value-class="text-green-400" />
-        </DataCard>
-        <DataCard title="Verkauft">
-          <MetricValue v-bind="pv.profit.valAndUnit" :decimal-places="2" value-class="text-green-400" />
-        </DataCard>
-        <DataCard title="Genutzt">
-          <MetricValue :val="pv.savedMoney.value - pv.profit.value" unit="€" :decimal-places="2" />
-        </DataCard>
-        <DataCard title="Ersparnis">
-          <MetricValue v-bind="pv.savedMoney.valAndUnit" :decimal-places="2" value-class="text-green-400" />
-        </DataCard>
-      </div>
-    </TabsContent>
-
-    <!-- Heizung -->
-    <TabsContent value="heizung" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
-      <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.heating.path)">
-          → Heizung Seite
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <DataCard title="Heizung" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="heating.active" />
-        </DataCard>
-        <DataCard title="Auto" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="heating.automatic" />
-        </DataCard>
-        <DataCard title="Temperatur">
-          <MetricValue v-bind="heating.heatingTemperature.valAndUnit" />
-        </DataCard>
-        <DataCard title="Solar Auto" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="heating.autoSolar" />
-        </DataCard>
-        <DataCard title="Solar Pumpe" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="heating.solarPump" />
-        </DataCard>
-        <DataCard title="Solar">
-          <MetricValue v-bind="heating.heatingSolar.valAndUnit" />
-        </DataCard>
-        <DataCard title="Puffer Oben">
-          <MetricValue v-bind="heating.heatingBufferTop.valAndUnit" value-class="text-orange-300" />
-        </DataCard>
-        <DataCard title="Puffer Mitte">
-          <MetricValue v-bind="heating.heatingBufferMiddle.valAndUnit" value-class="text-orange-300" />
-        </DataCard>
-        <DataCard title="Puffer Unten">
-          <MetricValue v-bind="heating.heatingBuffer.valAndUnit" value-class="text-blue-300" />
-        </DataCard>
-      </div>
-    </TabsContent>
-
-    <!-- Pool / WP -->
-    <TabsContent value="pool" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
-      <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.heatPump.path)">
-          → WP Seite
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <DataCard title="Wärmepumpe" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="pool.heaterState" />
-        </DataCard>
-        <DataCard title="Silent" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="pool.silent" />
-        </DataCard>
-        <DataCard title="Modus">
-          <MetricValue :val="wpModus" unit="" />
-        </DataCard>
-        <DataCard title="WP Bezug">
-          <MetricValue v-bind="pool.consumption.valAndUnit" :decimal-places="0" />
-        </DataCard>
-        <DataCard title="Eingang">
-          <MetricValue v-bind="pool.tempIn.valAndUnit" :decimal-places="1" value-class="text-blue-300" />
-        </DataCard>
-        <DataCard title="Ausgang">
-          <MetricValue v-bind="pool.tempOut.valAndUnit" :decimal-places="1" value-class="text-orange-300" />
-        </DataCard>
-        <DataCard title="Soll">
-          <MetricValue v-bind="pool.tempSet.valAndUnit" :decimal-places="1" />
-        </DataCard>
-        <DataCard title="Poolpumpe" content-class="flex items-center gap-1.5">
-          <DotWithValue :value="pool.poolPumpSwitch" />
-        </DataCard>
-        <DataCard title="Pumpe Bezug">
-          <MetricValue v-bind="pool.poolPumpPower.valAndUnit" :decimal-places="0" />
-        </DataCard>
-      </div>
-    </TabsContent>
-
-    <!-- System -->
-    <TabsContent value="system" class="flex-1 min-h-0 overflow-auto space-y-3 max-[600px]:flex-none max-[600px]:overflow-visible">
-      <div class="flex justify-end">
-        <button class="text-xs text-muted-foreground hover:text-foreground transition-colors" @click="router.push(routes.system.path)">
-          → System Seite
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <VisVersion />
-
-        <DataCard title="Uptime">
-          <MetricValue :val="formatUptime(system.iobrokerUptime.value)" />
-        </DataCard>
-
-        <DataCard title="RAM" content-class="space-y-1">
-          <MetricValue v-bind="system.ramIobrokerLevel.valAndUnit" :decimal-places="0" />
-          <p class="text-xs text-muted-foreground">{{ miBToGiB(system.ramIobrokerUsed.value) }} / {{ miBToGiB(system.ramIobrokerMax.value) }}</p>
-          <Progress :model-value="system.ramIobrokerLevel.value" class="h-1.5" />
-        </DataCard>
-
-        <DataCard title="CPU" content-class="space-y-1">
-          <MetricValue v-bind="system.cpuIobroker.valAndUnit" :decimal-places="0" />
-          <Progress :model-value="system.cpuIobroker.value" class="h-1.5" />
-        </DataCard>
-
-        <DataCard title="Disk" content-class="space-y-1">
-          <MetricValue v-bind="system.diskIobrokerUsage.valAndUnit" :decimal-places="0" />
-          <Progress :model-value="system.diskIobrokerUsage.value" class="h-1.5" />
-        </DataCard>
-      </div>
-      <div>
-        <SubscriptionProgress />
-      </div>
-    </TabsContent>
+    <PvTab value="pv" />
+    <EnergyTab value="energy" />
+    <HeatingTab value="heizung" />
+    <PoolTab value="pool" />
+    <SystemTab value="system" />
   </Tabs>
 </template>
