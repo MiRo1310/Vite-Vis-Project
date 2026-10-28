@@ -5,12 +5,12 @@ import QuickActionButton from "@/components/section/home/widget/QuickActionButto
 import Sheet from "@/components/shared/Sheet.vue";
 import { type FunctionalComponent } from "vue";
 
-defineProps<{ list: AlexaList[]; title: string; badge?: number; icon: FunctionalComponent }>();
+defineProps<{ list: AlexaList[]; title: string; icon: FunctionalComponent }>();
 </script>
 <template>
   <Sheet :show-footer="false">
     <template #trigger>
-      <QuickActionButton :title :badge>
+      <QuickActionButton :title :badge="list.length">
         <Component :is="icon" class="size-4" />
       </QuickActionButton>
     </template>
