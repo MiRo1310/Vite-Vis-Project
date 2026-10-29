@@ -10,7 +10,7 @@ export interface OptionalMessageParameter {
 }
 
 export class NotificationMessage {
-  private _date: Date;
+  private readonly _date: Date;
 
   constructor(
     private _id: string,

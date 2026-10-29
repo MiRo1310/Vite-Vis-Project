@@ -2,29 +2,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import { useNotificationStore } from "@/store/notification-store.ts";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted } from "vue";
 
 const store = useNotificationStore();
 
-const currentIndex = ref(0);
-const notification = computed(() => {
-  return store.getNotificationsFromHighestType[currentIndex.value];
-});
-
-let interval: null | number = null;
-
-onMounted(() => {
-  interval = setInterval(() => {
-    currentIndex.value = (currentIndex.value + 1) % store.getNotificationsFromHighestType.length;
-  }, 5000);
-});
-
-onUnmounted(() => {
-  if (!interval) {
-    return;
-  }
-  clearInterval(interval);
-});
+onMounted(() => store.startTicker());
+onUnmounted(() => store.stopTicker());
+const notification = computed(() => store.nextTickerNotification());
 </script>
 
 <template>
@@ -38,13 +22,13 @@ onUnmounted(() => {
       <CardTitle class="text-xs text-muted-foreground flex items-center justify-between w-full">
         <span>Benachrichtigungen</span>
         <div v-if="store.getNotificationsFromHighestType.length" class="flex items-center gap-1.5">
-          <span class="tabular-nums">{{ currentIndex + 1 }}/{{ store.getNotificationsFromHighestType.length }}</span>
+          <span class="tabular-nums">{{ store.getTickerLabel() }}</span>
         </div>
       </CardTitle>
     </CardHeader>
     <div class="relative overflow-hidden">
       <Transition name="slide">
-        <div v-if="notification" :key="currentIndex">
+        <div v-if="notification" :key="store.currentIndex">
           <CardContent class="pt-1 pb-2 flex gap-1.5 px-0">
             <div class="px-3 pt-1 pb-2 flex items-center gap-1.5">
               <StatusDot v-if="notification.hasStatus" :active="notification.status" />
