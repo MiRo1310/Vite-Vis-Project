@@ -2,6 +2,8 @@ import { execSync } from "child_process";
 import fs from "fs";
 import { loadEnv } from "vite";
 
+// scripts/utils.ts
+
 export function copyDataToRemote(version: string): void {
   const env = loadEnv("production", process.cwd(), "");
 
@@ -49,51 +51,6 @@ export function getVersionType(): string {
   // eslint-disable-next-line no-console
   console.log(`📦 Version bump: ${versionType}`);
   return versionType;
-}
-
-// scripts/utils.ts
-import { createInterface } from "readline/promises";
-import { stdin as input, stdout as output } from "process";
-
-export async function getVersionTypeInteractive(): Promise<string> {
-  const arg = process.argv[2];
-  const choices = ["patch", "minor", "major"];
-
-  // Arg vorhanden & gültig
-  if (arg && choices.includes(arg)) {
-    // eslint-disable-next-line no-console
-    console.log(`📦 Version bump (from arg): ${arg}`);
-    return arg;
-  }
-
-  // Non-interactive (CI) -> Default
-  if (!process.stdin.isTTY) {
-    // eslint-disable-next-line no-console
-    console.log("ℹ️ Non-interactive shell detected — using default 'patch'");
-    return "patch";
-  }
-
-  const rl = createInterface({ input, output });
-  try {
-    while (true) {
-      // eslint-disable-next-line no-console
-      console.log("Welche Version möchtest du bumpen?");
-      // eslint-disable-next-line no-console
-      choices.forEach((c, i) => console.log(`${i + 1}) ${c}`));
-      const ans = (await rl.question("Auswahl (1/2/3) [1]: ")).trim();
-      const idx = ans === "" ? 0 : parseInt(ans, 10) - 1;
-      if (!Number.isNaN(idx) && idx >= 0 && idx < choices.length) {
-        const chosen = choices[idx];
-        // eslint-disable-next-line no-console
-        console.log(`📦 Version bump: ${chosen}`);
-        return chosen;
-      }
-      // eslint-disable-next-line no-console
-      console.log("Ungültige Eingabe. Bitte 1, 2 oder 3 eingeben.");
-    }
-  } finally {
-    rl.close();
-  }
 }
 
 export function rollbackRelease(previousVersion: string): void {
