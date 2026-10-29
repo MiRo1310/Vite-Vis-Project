@@ -71,13 +71,13 @@ describe("isOpaqueScriptError", () => {
   });
 });
 
-describe("handels chunk error", () => {
-  it("returns true on valid chunk error", () => {
+describe("isChunkLoadError", () => {
+  it("returns true if the error contains the MIME-type message", () => {
     expect(isChunkLoadError("From: /navigation to: /system, Message: 'text/html' is not a valid JavaScript MIME type., Stacktrace: -")).toBe(true);
     expect(isChunkLoadError("'text/html' is not a valid JavaScript MIME type 123")).toBe(true);
   });
 
-  it("returns false on non valid chunk error", () => {
+  it("returns false if the error does not contain the MIME-type message", () => {
     expect(isChunkLoadError()).toBe(false);
     expect(isChunkLoadError("Test 123")).toBe(false);
   });
