@@ -75,6 +75,12 @@ describe("isChunkLoadError", () => {
   it("returns true if the error contains the MIME-type message", () => {
     expect(isChunkLoadError("From: /navigation to: /system, Message: 'text/html' is not a valid JavaScript MIME type., Stacktrace: -")).toBe(true);
     expect(isChunkLoadError("'text/html' is not a valid JavaScript MIME type 123")).toBe(true);
+    expect(isChunkLoadError("Failed to fetch dynamically imported module")).toBe(true);
+    expect(
+      isChunkLoadError(
+        "From: / to: /navigation, Message: Failed to fetch dynamically imported module: http://192.168.1.10/assets/navigation-DUgH0lak.js, Stacktrace: TypeError: Failed to fetch dynamically imported module: http://192.168.1.10/assets/navigation-DUgH0lak.js",
+      ),
+    ).toBe(true);
   });
 
   it("returns false if the error does not contain the MIME-type message", () => {

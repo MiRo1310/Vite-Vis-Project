@@ -265,4 +265,5 @@ export interface TankerkoenigStation {
 export interface RouterReloadRetry {
   to: string | null;
   attempt: number;
+  triedNavigateToHome: boolean;
 }
