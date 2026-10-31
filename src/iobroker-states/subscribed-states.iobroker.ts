@@ -20,6 +20,11 @@ const notificationWindow: Omit<INotificationOnChange<boolean>, "message"> = {
   route: routes.window,
 };
 
+const mapping = {
+  onOff: { mapping: { true: "An", false: "Aus" } },
+  activeInactive: { mapping: { true: "aktiv", false: "inaktive" } },
+};
+
 export const iobrokerTree = {
   alexa2: {
     connection: new BooleanValue("alexa2.0.info.connection", {
@@ -70,6 +75,8 @@ export const iobrokerTree = {
     gridDrawAllowanceWatt: new NumberValue("0_userdata.0.Wattpilot.gridDrawAllowanceWatt", { unit: "Watt" }),
     configuredGridDrawAllowanceWatt: new NumberValue("0_userdata.0.Wattpilot.configuredGridDrawAllowance", { unit: "Watt" }),
     gridDrawAllowance: new BooleanValue("0_userdata.0.Wattpilot.gridDrawAllowance"),
+    targetChargeActive: new BooleanValue("0_userdata.0.Wattpilot.targetChargingActive", { ...mapping.activeInactive }),
+    targetChargeSoc: new NumberValue("0_userdata.0.Wattpilot.targetChargeSoc", { max: 100, min: 0, step: 1, unit: "%" }),
   },
   car: {
     battery: new NumberValue("bluelink.0.KNAFD81A7T6159455.vehicleStatusRaw.Green.BatteryManagement.BatteryRemain.Ratio", { unit: "%" }),
@@ -78,6 +85,7 @@ export const iobrokerTree = {
       unit: "%",
     }),
     odometer: new NumberValue("bluelink.0.KNAFD81A7T6159455.odometer.value", { unit: "km" }),
+    priority: new BooleanValue("0_userdata.0.Wattpilot.batteryPriority"), // boolean: true = Batterie hat Vorrang, false = Wallbox
   },
   batteries: {
     "Shelly Plus Smoke Flur OG": {
@@ -556,7 +564,7 @@ export const iobrokerTree = {
     michaelCoordinates: new StringValue("life360ng.0.people.afa1605e-1339-4bbc-921e-37b7774a75ce.gps-coordinates"),
   },
   pool: {
-    heaterState: new BooleanValue("midas-aquatemp.0.state", { mapping: { true: "An", false: "Aus" } }),
+    heaterState: new BooleanValue("midas-aquatemp.0.state", { ...mapping.onOff }),
     heaterOnline: new BooleanValue("midas-aquatemp.0.online"),
     tempSet: new NumberValue("midas-aquatemp.0.tempSet", { unit: "°C" }),
     consumption: new NumberValue("midas-aquatemp.0.consumption", { unit: "W" }),
@@ -565,10 +573,10 @@ export const iobrokerTree = {
     rotor: new NumberValue("midas-aquatemp.0.rotor"),
     mode: new NumberValue("midas-aquatemp.0.mode"),
     status: new BooleanValue("midas-aquatemp.0.info.connection"),
-    silent: new BooleanValue("midas-aquatemp.0.silent", { mapping: { true: "An", false: "Aus" } }),
-    heaterPumpCronActive: new BooleanValue("0_userdata.0.Wärmepumpe.Wärmepumpe_Zeitsteuerung", { mapping: { true: "An", false: "Aus" } }),
+    silent: new BooleanValue("midas-aquatemp.0.silent", { ...mapping.onOff }),
+    heaterPumpCronActive: new BooleanValue("0_userdata.0.Wärmepumpe.Wärmepumpe_Zeitsteuerung", { ...mapping.onOff }),
     poolPumpPower: new NumberValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Power", { unit: "W" }),
-    poolPumpSwitch: new BooleanValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", { mapping: { true: "An", false: "Aus" } }),
+    poolPumpSwitch: new BooleanValue("shelly.0.SHPLG-S#4022D889A587#1.Relay0.Switch", { ...mapping.onOff }),
     heaterScriptActivateJSON: new JsonValue<HeatingPumpScriptJson>("0_userdata.0.Wärmepumpe.Wärmepumpe_schalten_script"),
     heaterSilentScriptJSON: new JsonValue<HeatingPumpSilentJSON>("0_userdata.0.Wärmepumpe.SilentModeScriptJson"),
     heaterTurnOnAt: new StringValue("0_userdata.0.Wärmepumpe.turnOnAt"),
@@ -640,7 +648,7 @@ export const iobrokerTree = {
   },
   heating: {
     automatic: new BooleanValue("s7.0.DBs.DB1.I6_-_NQ5", {
-      mapping: { true: "An", false: "Aus" },
+      ...mapping.onOff,
       notificationOnChange: {
         message: "Heizung Automatik ausgeschaltet",
         type: "warning",
@@ -650,9 +658,9 @@ export const iobrokerTree = {
       },
     }),
     level: new BooleanValue("s7.0.DBs.DB1.I5_-_NQ2"),
-    active: new BooleanValue("s7.0.DBs.DB1.NQ13", { mapping: { true: "An", false: "Aus" } }),
+    active: new BooleanValue("s7.0.DBs.DB1.NQ13", { ...mapping.onOff }),
     autoSolar: new BooleanValue("s7.0.DBs.DB1.NQ15", {
-      mapping: { true: "An", false: "Aus" },
+      ...mapping.onOff,
       notificationOnChange: {
         message: "Solar Automatik ausgeschaltet",
         type: "warning",
@@ -681,7 +689,7 @@ export const iobrokerTree = {
     diffSolarBuffer: new NumberValue("s7.0.DBs.DB1.B067"),
     minFillTemp: new NumberValue("s7.0.DBs.DB1.B069"),
     maxFillTemp: new NumberValue("s7.0.DBs.DB1.B056"),
-    solarPump: new BooleanValue("s7.0.DBs.DB1.Q3_-_NQ10", { mapping: { true: "An", false: "Aus" } }),
+    solarPump: new BooleanValue("s7.0.DBs.DB1.Q3_-_NQ10", { ...mapping.onOff }),
     heatingPump: new BooleanValue("s7.0.DBs.DB1.Q4_-_NQ11"),
   },
   energy: {

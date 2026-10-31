@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { ChevronDown, ChevronUp } from "lucide-vue-next";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
+import { clamp } from "@/lib/number.ts";
 
 export type InputType = "number" | "text" | "time";
 const props = withDefaults(
@@ -14,6 +15,8 @@ const props = withDefaults(
     placeholder?: string;
     border?: keyof typeof variants.border;
     step?: number;
+    max?: number;
+    min?: number;
   }>(),
   {
     defaultValue: 0,
@@ -25,8 +28,16 @@ const props = withDefaults(
 );
 
 const modelValue = defineModel<string | number>("modelValue");
-const countUp = () => (modelValue.value = parseInt(String(modelValue.value)) + (props.step ?? 1));
-const countDown = () => (modelValue.value = parseInt(String(modelValue.value)) - (props.step ?? 1));
+const currentValue = () => Number(modelValue.value) || 0;
+const countUp = () => (modelValue.value = clamp(currentValue() + (props.step ?? 1), props.min, props.max));
+const countDown = () => (modelValue.value = clamp(currentValue() - (props.step ?? 1), props.min, props.max));
+// Erst bei change (Blur/Enter) begrenzen, sonst springt z.B. "1" bei min 10 beim Tippen sofort auf 10
+const clampOnChange = () => {
+  if (props.type !== "number" || modelValue.value === "" || modelValue.value === undefined) {
+    return;
+  }
+  modelValue.value = clamp(Number(modelValue.value), props.min, props.max);
+};
 
 const variants = {
   border: {
@@ -43,10 +54,13 @@ const variants = {
       :type="type"
       :placeholder="placeholder"
       :step="step"
+      :max="max"
+      :min="min"
+      @change="clampOnChange"
       :class="
         twMerge(
           'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
-          'border border-input focus:outline-hidden focus:ring-0',
+          'border border-input focus:outline-hidden focus:ring-0 rounded-md',
           getVariantsClasses(variants, props) as string,
           props.class as string,
         )
