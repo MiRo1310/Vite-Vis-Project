@@ -15,11 +15,11 @@ defineProps<{ title: string }>();
         <slot name="header" />
 
         <div class="flex items-center rounded-lg border bg-card shadow-xs overflow-hidden">
+          <Button variant="ghost" size="default" class="rounded-none border-r min-w-24" as-child>
+            <RouterLink :to="routes.home.path">Home </RouterLink>
+          </Button>
           <Button variant="ghost" class="rounded-none border-r" as-child>
             <RouterLink :to="routes.navigation.path">Navigation</RouterLink>
-          </Button>
-          <Button variant="ghost" size="default" class="rounded-none border-r" as-child>
-            <RouterLink :to="routes.home.path">Home </RouterLink>
           </Button>
           <DarkMode small class="rounded-none w-24" />
         </div>

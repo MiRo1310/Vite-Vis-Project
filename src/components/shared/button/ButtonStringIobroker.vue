@@ -7,8 +7,8 @@ import { type IValueOf } from "@/store/valueClasses.ts";
 const props = defineProps<
   {
     label?: string;
-    state: IValueOf<string>;
-    value: string;
+    state: IValueOf<string | boolean>;
+    value: string | boolean;
     ack?: boolean;
     icon?: keyof ButtonVariants["icons"];
     useActive?: boolean;

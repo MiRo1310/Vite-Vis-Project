@@ -20,7 +20,7 @@ const charging = computed(() => pv.value.activeCharging.value);
 <template>
   <OverviewTabContent :value :to="routes.pv.path" label="PV">
     <div class="grid grid-cols-2 gap-2">
-      <DataCard title="Grosse PV">
+      <DataCard title="Große PV">
         <MetricValue v-bind="pv.pvGross.valAndUnit" :decimal-places="0" />
       </DataCard>
       <DataCard title="Kleine PV">

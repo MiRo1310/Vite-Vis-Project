@@ -140,13 +140,32 @@ export abstract class BaseValue<T> implements IValueOf<T> {
 
 export class NumberValue extends BaseValue<number> {
   private readonly _unit?: string;
-  constructor(id: string, obj?: BaseValueOptions<number> & { unit?: string }) {
+  private readonly _min?: number;
+  private readonly _max?: number;
+  private readonly _step?: number;
+
+  constructor(id: string, obj?: BaseValueOptions<number> & { unit?: string; max?: number; min?: number; step?: number }) {
     super(id, obj);
     this._unit = obj?.unit;
+    this._min = obj?.min;
+    this._max = obj?.max;
+    this._step = obj?.step;
+  }
+
+  public get min(): number | undefined {
+    return this._min;
+  }
+
+  public get max(): number | undefined {
+    return this._max;
   }
 
   public get value(): number {
     return this._valRef.value ?? 0;
+  }
+
+  public get step(): number | undefined {
+    return this._step;
   }
 
   public get valueWithUnit(): string {
