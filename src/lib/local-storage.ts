@@ -10,7 +10,7 @@ const typedLocalStorage = () => {
   const defaultValues: StorageTypes = {
     autoUpdate: true,
     deviceId: null,
-    routerReload: { to: null, attempt: 0 },
+    routerReload: { to: null, attempt: 0, triedNavigateToHome: false },
   };
 
   function getItem<K extends keyof StorageTypes>(key: K): StorageTypes[K] {

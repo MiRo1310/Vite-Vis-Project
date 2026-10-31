@@ -25,7 +25,7 @@ function toggleAutoUpdate() {
 const { result, loading } = useQuery(
   graphql(`
     query FrontendLogs {
-      frontendLogs {
+      frontendLogs(order: { createdAt: DESC }) {
         appVersion
         createdAt
         description
@@ -71,6 +71,8 @@ const column: Array<DatatableColumns<FrontendLogs>> = [
       <VisVersion class="min-w-48" />
     </div>
     <p>Logs</p>
-    <TableBasic :columns="getColumns(column)" :data="result?.frontendLogs ?? []" :loading />
+    <div class="w-full overflow-auto">
+      <TableBasic :columns="getColumns(column)" :data="result?.frontendLogs ?? []" :loading class="min-w-[1600px]" />
+    </div>
   </Page>
 </template>

@@ -7,8 +7,9 @@ import { NotificationMessage } from "@/lib/notificationMessage.ts";
 import { createId } from "@/lib/id.ts";
 import { isChunkLoadError } from "@/lib/error.ts";
 import { typedStorage } from "@/lib/local-storage.ts";
+import { routes } from "@/router/routes.ts";
 
-const MaximalRetries = 3;
+const MaxRetries = 3;
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -22,27 +23,43 @@ router.beforeEach((_, from) => {
 });
 
 function resetRetry() {
-  return typedStorage.setItem("routerReload", { attempt: 0, to: null });
+  return typedStorage.setItem("routerReload", { attempt: 0, to: null, triedNavigateToHome: false });
 }
 
-router.afterEach((_to, _from, failure) => {
-  if (!isNavigationFailure(failure)) {
-    resetRetry();
+router.afterEach((to, _from, failure) => {
+  if (isNavigationFailure(failure)) {
+    return;
   }
+  const retry = typedStorage.getItem("routerReload");
+  if (retry.attempt > 0 && retry.to === to.fullPath && !retry.triedNavigateToHome) {
+    Logger(`Router reload successful after ${retry.attempt} attempt(s)`, { type: "info", enableDbLogging: true, to });
+  }
+  if (retry.triedNavigateToHome) {
+    Logger("Router has opened home successful after router error, please fix error", { type: "warn", enableDbLogging: true, to });
+  }
+  resetRetry();
 });
 
-router.onError((e, to, from) => {
+router.onError(async (e, to, from) => {
   let retry = typedStorage.getItem("routerReload");
   if (retry.to !== to.fullPath) {
     retry = resetRetry();
   }
 
-  if (isChunkLoadError(e?.message) && retry.attempt < MaximalRetries) {
-    typedStorage.setItem("routerReload", { to: to.fullPath, attempt: retry.attempt + 1 });
+  if (isChunkLoadError(e?.message) && retry.attempt < MaxRetries) {
+    const attempt = retry.attempt + 1;
+    typedStorage.setItem("routerReload", { to: to.fullPath, attempt, triedNavigateToHome: false });
 
-    Logger(`Router error, try to reload, attempt: ${retry.attempt}`, { type: "error", e, enableDbLogging: true, to, from });
+    Logger(`Router error, try to reload, attempt: ${attempt}/${MaxRetries}`, { type: "error", e, enableDbLogging: true, to, from });
     window.location.assign(to.fullPath);
     return;
+  }
+  if (isChunkLoadError(e?.message) && retry.attempt >= MaxRetries && !retry.triedNavigateToHome) {
+    Logger(`Router error, after ${MaxRetries} attempts , try redirect to home`, { type: "error", e, enableDbLogging: true, to, from });
+    typedStorage.setItem("routerReload", { to: to.fullPath, attempt: MaxRetries, triedNavigateToHome: true });
+    await router.replace(routes.home.path).catch((error) => {
+      Logger("Router error, after redirect to home", { type: "error", e: error, enableDbLogging: true, to, from });
+    });
   }
 
   const notificationStore = useNotificationStore();

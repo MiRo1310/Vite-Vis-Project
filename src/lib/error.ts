@@ -90,5 +90,5 @@ export function isOpaqueScriptError(message: string, error: unknown, filename?: 
 }
 
 export function isChunkLoadError(error?: string): boolean {
-  return ["'text/html' is not a valid JavaScript MIME type"].some((e) => error?.includes(e));
+  return ["'text/html' is not a valid JavaScript MIME type", "Failed to fetch dynamically imported module"].some((e) => error?.includes(e));
 }
