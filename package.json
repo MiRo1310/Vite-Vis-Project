@@ -20,7 +20,8 @@
     "test:component:ci": "cypress run --component",
     "test:cypress:ci": "yarn run test:e2e:ci && yarn run test:component:ci",
     "release": "ts-node scripts/release.ts",
-    "copy:local": "ts-node scripts/copy.ts"
+    "copy:local": "ts-node scripts/copy.ts",
+    "update": "npx npm-check-updates --peer -u --target minor && yarn install"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
