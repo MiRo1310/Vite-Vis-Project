@@ -30,13 +30,21 @@ describe("typedStorage", () => {
 
       expect(typedStorage.getItem("autoUpdate")).toBe(false);
     });
+
+    it("returns the default boolean value when null is stored", () => {
+      localStorage.setItem("autoUpdate", "null");
+
+      expect(typedStorage.getItem("autoUpdate")).toBe(true);
+    });
+
+    it("returns the default object value when null is stored", () => {
+      localStorage.setItem("active-tab", "null");
+
+      expect(typedStorage.getItem("active-tab")).toStrictEqual({});
+    });
   });
 
   describe("setItem", () => {
-    beforeEach(() => {
-      localStorage.clear();
-    });
-
     it("stores the value as JSON and returns it", () => {
       const value = { to: "/home", attempt: 2, triedNavigateToHome: true };
 

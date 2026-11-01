@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { type IRecipeGroupToDelete, type IRecipeStore, type TRecipe } from "@/store/index.ts";
+import { typedStorage } from "@/lib/local-storage.ts";
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({
@@ -12,7 +13,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     productGroupsCount: 0,
     shouldValidate: false,
     directlyOpenNewProductModal: false,
-    lastRecipes: getRecipeFromLocalStorage(),
+    lastRecipes: typedStorage.getItem("lastRecipes"),
   }),
   getters: {
     getRecipeInProgress(state) {
@@ -91,9 +92,5 @@ export const useRecipeStore = defineStore("recipeStore", {
 });
 
 const saveToLocalStore = (lastRecipes: TRecipe[]) => {
-  localStorage.setItem("lastRecipes", JSON.stringify(lastRecipes));
-};
-
-const getRecipeFromLocalStorage = (): TRecipe[] => {
-  return JSON.parse(localStorage.getItem("lastRecipes") ?? "[]");
+  typedStorage.setItem("lastRecipes", lastRecipes);
 };

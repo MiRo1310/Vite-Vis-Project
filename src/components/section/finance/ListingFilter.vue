@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
+import { typedStorage } from "@/lib/local-storage.ts";
 
 const startYear = 2025;
 const countYearButtons = ref(1);
@@ -14,20 +15,17 @@ onMounted(() => {
   loadFromLocalStorage();
 });
 
-const saveToLocalStorage = () => {
-  localStorage.setItem("activeYear", String(activeYear.value));
-};
-
 const loadFromLocalStorage = () => {
-  const active = localStorage.getItem("activeYear");
-  if (active && active !== "") {
-    activeYear.value = parseInt(active, 10);
+  const active = typedStorage.getItem("activeYear");
+  const years = Array.from({ length: countYearButtons.value }, (_, i) => startYear + i);
+  if (active && years.some((y) => active === y)) {
+    activeYear.value = active;
   }
 };
 
 const updateYear = (year: number) => {
   activeYear.value = year;
-  saveToLocalStorage();
+  typedStorage.setItem("activeYear", year);
 };
 </script>
 
