@@ -123,8 +123,8 @@ describe("IoBrokerService", () => {
 
     it("processes queued subscriptions after init", async () => {
       const cb = vi.fn();
-      service.subscribe({ id: "queued.id.1", cb });
-      service.subscribe({ id: "queued.id.2", cb });
+      await service.subscribe({ id: "queued.id.1", cb });
+      await service.subscribe({ id: "queued.id.2", cb });
 
       await initService();
 
