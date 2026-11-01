@@ -22,3 +22,19 @@ export const chargingModeOptions = (
   }
   return options;
 };
+
+/**
+ * Savings from charging with PV surplus instead of grid power.
+ * `totalChargingWh` comes from the wallbox in Wh, `fromGridKWh` in kWh.
+ */
+export const calcSurplusSavings = (totalChargingWh: number, fromGridKWh: number, pricePerKWh: number): string =>
+  ((totalChargingWh / 1000 - fromGridKWh) * pricePerKWh).toFixed(2);
+
+export const calcGridCost = (fromGridKWh: number, pricePerKWh: number): string => (fromGridKWh * pricePerKWh).toFixed(2);
+
+export const calcPricePer100Km = (stationCost: number, gridCost: number, km: number): string => {
+  if (km <= 0) {
+    return "0";
+  }
+  return ((stationCost + gridCost) / (km / 100)).toFixed(2);
+};
