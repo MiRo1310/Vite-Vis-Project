@@ -2,6 +2,7 @@
 import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { type ITableColumn } from "@/types/types.ts";
 import { onMounted, ref, watch } from "vue";
+import { Logger } from "@/lib/logger.ts";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
@@ -14,9 +15,10 @@ function isAnyUnchecked(tr: any) {
 
 onMounted(() => {
   watch(
-    () => props.value,
-    (value) => {
+    () => props.row,
+    () => {
       if (!column.value) {
+        Logger("Column not found", { type: "error" });
         return;
       }
       const tr = column.value.closest("tr");
@@ -29,8 +31,10 @@ onMounted(() => {
         setColor(columns, tr, "text-red-300!");
         return;
       }
+      setColor(columns, tr, "text-red-300!", true);
+
       colorMapping.forEach(([keyword, color]) => {
-        if (value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())) {
+        if (props.value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())) {
           setColor(columns, tr, color);
           return;
         }
@@ -45,13 +49,17 @@ const colorMapping = [
   ["rechnung", "text-blue-400!"],
 ];
 
-const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, color: string) => {
+const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, color: string, remove?: boolean) => {
   columns?.forEach((col) => {
     if (!(col instanceof HTMLElement)) {
       return;
     }
 
-    col.classList.add(color);
+    if (remove) {
+      col.classList.remove(color);
+    } else {
+      col.classList.add(color);
+    }
   });
 };
 </script>

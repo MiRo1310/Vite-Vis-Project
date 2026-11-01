@@ -28,9 +28,9 @@ const update = async (event: boolean) => {
 
 <template>
   <Checkbox
-    v-model:checked="checked"
+    v-model="checked"
     :aria-label="`Select row ${props.row.index + 1}`"
     :class="['translate-y-0.5 isValid', { 'bg-green-600! border-green-300!': checked }]"
-    @update:checked="update"
+    @update:model-value="(value) => update(!!value)"
   />
 </template>
