@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { getFieldError, createIsValid, createIsValidComputed } from "../../src/lib/form";
+import { createIsValid, getFieldError } from "../../src/lib/form";
 
 const schema = z.object({
   name: z.string().min(3, { message: "too short" }),
@@ -26,15 +26,5 @@ describe("createIsValid", () => {
     const isValid = createIsValid(schema);
     expect(isValid({ name: "abc", qty: 1 })).toBe(true);
     expect(isValid({ name: "a", qty: 1 })).toBe(false);
-  });
-});
-
-describe("createIsValidComputed", () => {
-  it("returns a computed that yields a validator function", () => {
-    const computedValidator = createIsValidComputed(schema);
-    const validator = computedValidator.value;
-    expect(typeof validator).toBe("function");
-    expect(validator({ name: "abc", qty: 1 })).toBe(true);
-    expect(validator({ name: "a", qty: 1 })).toBe(false);
   });
 });

@@ -2,7 +2,7 @@
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useAppStore } from "@/store/app-store.ts";
 import { type Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
-import { getNameByIndex } from "@/composables/timer.ts";
+import { getNameByIndex } from "@/lib/timer.ts";
 import { DataCard } from "@/components/shared/card";
 
 const { iobroker } = useIobrokerStore();

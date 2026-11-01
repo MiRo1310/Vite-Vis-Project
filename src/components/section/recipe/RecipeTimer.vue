@@ -4,7 +4,7 @@ import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import { computed } from "vue";
 import { type Timer } from "@/iobroker-states/subscribed-states.iobroker.ts";
-import { getNameByIndex } from "@/composables/timer.ts";
+import { getNameByIndex } from "@/lib/timer.ts";
 
 const { iobroker } = useIobrokerStore();
 

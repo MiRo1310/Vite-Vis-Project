@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import type { ZodSchema } from "zod";
 
 /**
@@ -22,8 +21,3 @@ export const getFieldError = <T extends Record<string, unknown>>(schema: ZodSche
 export const createIsValid = <T>(schema: ZodSchema<T>) => {
   return (data: unknown) => schema.safeParse(data).success;
 };
-
-/**
- * Create a computed validator to produce the same reactive API shape as before
- */
-export const createIsValidComputed = <T>(schema: ZodSchema<T>) => computed(() => (data: unknown) => schema.safeParse(data).success);
