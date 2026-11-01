@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { tempArray } from "../../src/lib/object";
+import { tempArray } from "@/lib/object.ts";
 
 describe("tempArray", () => {
   it("returns an array starting with 'Aus' and then numbers 5..30", () => {

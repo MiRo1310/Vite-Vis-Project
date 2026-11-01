@@ -4,7 +4,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@vue/apollo-composable", () => {
   const load = vi.fn().mockResolvedValue(undefined);
   const refetch = vi.fn().mockResolvedValue(undefined);
-  const result = { value: { recipeCategories: [{ id: "id1", name: "Cat1" }, { id: "id2", name: "Cat2" }] } };
+  const result = {
+    value: {
+      recipeCategories: [
+        { id: "id1", name: "Cat1" },
+        { id: "id2", name: "Cat2" },
+      ],
+    },
+  };
   const loading = { value: false };
   return {
     useLazyQuery: () => ({ load, result, refetch, loading }),
@@ -28,7 +35,7 @@ vi.mock("../../src/composables/querys/utils.ts", () => {
 });
 
 // Import module under test AFTER mocks
-import { useRecipeCategories } from "../../src/composables/querys/recipeCategories";
+import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
 describe("useRecipeCategories", () => {
   beforeEach(() => {
@@ -67,4 +74,3 @@ describe("useRecipeCategories", () => {
     expect(__mocks.refetch).toHaveBeenCalled();
   });
 });
-

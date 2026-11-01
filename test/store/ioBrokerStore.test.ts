@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { useIobrokerStore } from "../../src/store/ioBrokerStore";
+import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 
 describe("useIobrokerStore", () => {
   beforeEach(() => {

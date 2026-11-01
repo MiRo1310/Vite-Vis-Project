@@ -1,10 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {ref} from "vue";
+import { ref } from "vue";
 
 // Mocks must be registered before importing the module under test.
 vi.mock("@vue/apollo-composable", () => {
-  
-  const result = ref({ units: [{ id: "u1", name: "kg" }, { id: "u2", name: "l" }] });
+  const result = ref({
+    units: [
+      { id: "u1", name: "kg" },
+      { id: "u2", name: "l" },
+    ],
+  });
   return {
     useLazyQuery: () => ({ load: vi.fn().mockResolvedValue(undefined), result, refetch: vi.fn().mockResolvedValue(undefined), loading: ref(false) }),
   };
@@ -20,7 +24,7 @@ vi.mock("@/components/section/recipe-form/utils", () => ({
 }));
 
 // Import module under test (use relative path from test folder)
-import { useUnits } from "../../src/composables/querys/units";
+import { useUnits } from "@/composables/querys/units.ts";
 
 describe("useUnits", () => {
   beforeEach(() => {
@@ -54,4 +58,3 @@ describe("useUnits", () => {
     expect(typeof u.refetch).toBe("function");
   });
 });
-

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatUptime, miBToGiB } from "../../src/lib/system";
+import { formatUptime, miBToGiB } from "@/lib/system.ts";
 
 describe("miBToGiB", () => {
   it("returns '0 GB' for undefined", () => {

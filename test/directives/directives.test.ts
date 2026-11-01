@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { vE2E } from "../../src/directives/directives";
+import { vE2E } from "@/directives/directives.ts";
 
 describe("directives", () => {
   it("vE2E sets data-e2e when value is defined", () => {

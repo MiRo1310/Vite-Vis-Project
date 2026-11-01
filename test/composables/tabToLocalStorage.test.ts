@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test } from "vitest";
-import { tabToLocalStorage } from "../../src/composables/tabToLocalStorage.ts";
+import { tabToLocalStorage } from "@/composables/tabToLocalStorage.ts";
 
 describe("tabToLocalStorage", () => {
   beforeEach(() => {

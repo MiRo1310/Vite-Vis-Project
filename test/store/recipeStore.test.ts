@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
-import { useRecipeStore } from "../../src/store/recipeStore";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 
 describe("recipeStore", () => {
   beforeEach(() => {
@@ -73,4 +73,3 @@ describe("recipeStore", () => {
     expect(saved[0].id).toBe(store.lastRecipes[0].id);
   });
 });
-

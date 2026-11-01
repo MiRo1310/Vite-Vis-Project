@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { IoBrokerService } from "../../src/lib/io-broker-service";
+import { IoBrokerService } from "@/lib/io-broker-service.ts";
 
 vi.mock("@iobroker/socket-client", () => {
   const mockSubscribeStateAsync = vi.fn(() => Promise.resolve());

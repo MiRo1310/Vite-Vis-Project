@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { createIsValid, getFieldError } from "../../src/lib/form";
+import { createIsValid, getFieldError } from "@/lib/form.ts";
 
 const schema = z.object({
   name: z.string().min(3, { message: "too short" }),

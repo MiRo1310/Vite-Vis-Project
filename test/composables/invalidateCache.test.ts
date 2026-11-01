@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { invalidateCache } from "@/composables/querys/utils.ts";
 
 // Mock apollo client at top-level (factory is hoisted) and expose internal spies via __mocks
 vi.mock("../../src/apolloClient.ts", () => {
@@ -8,8 +9,6 @@ vi.mock("../../src/apolloClient.ts", () => {
   const client = { cache: { evict, gc }, reFetchObservableQueries: reFetch };
   return { default: client, __mocks: { evict, gc, reFetch } };
 });
-
-import { invalidateCache } from "../../src/composables/querys/utils";
 
 describe("invalidateCache", () => {
   let apolloMocks: any;
