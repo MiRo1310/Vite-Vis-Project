@@ -142,8 +142,28 @@ jobs:
           cache: 'npm'
       - run: yarn install --frozen-lockfile
       - name: Audit dependencies
+        id: audit
         run: yarn audit
         continue-on-error: true
+      # GitHub kennt keinen gelben "allow failure"-Status -> gefundene Lücken als Warning-Annotation + Tabelle in der Run-Summary
+      - name: Report audit result
+        if: steps.audit.outcome == 'failure'
+        run: |
+          yarn audit --json | grep '"auditSummary"' > audit-summary.json || true
+          node -e '
+            const fs = require("fs");
+            const raw = fs.readFileSync("audit-summary.json", "utf8").trim();
+            if (!raw) {
+              console.log("::warning title=yarn audit::Audit fehlgeschlagen - Details im Schritt Audit dependencies");
+              process.exit(0);
+            }
+            const v = JSON.parse(raw).data.vulnerabilities;
+            const levels = ["critical", "high", "moderate", "low", "info"];
+            const found = levels.filter((l) => v[l] > 0).map((l) => `${v[l]} ${l}`).join(", ");
+            console.log(`::warning title=yarn audit::Sicherheitsluecken gefunden: ${found}`);
+            const rows = levels.map((l) => `| ${l} | ${v[l]} |`).join("\n");
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### yarn audit\n\n| Schweregrad | Anzahl |\n| --- | --- |\n${rows}\n`);
+          '
         
   vitest:
     runs-on: ubuntu-latest
