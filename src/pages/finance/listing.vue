@@ -90,9 +90,7 @@ const printPage = () => {
   window.print();
 };
 
-const total = computed(() => {
-  return getTotalByPrice(result.value?.travelCost);
-});
+const total = computed(() => getTotalByPrice(result.value?.travelCost));
 </script>
 
 <template>
