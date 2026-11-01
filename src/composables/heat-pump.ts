@@ -1,6 +1,5 @@
 import { type InfoTypes } from "@/components/shared/card/InfoCard.vue";
 import { routes } from "@/router/routes.ts";
-import { activeStatus } from "@/composables/status.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 
@@ -19,12 +18,16 @@ export const wpModus = computed(() => {
   }
 });
 
+export const status = (val: boolean) => {
+  return { value: val ? "An" : "Aus", valueClass: val ? "text-green-200" : "text-red-200" };
+};
+
 export const heatPumpValues = computed((): InfoTypes => {
   return {
     route: routes.heatPump.path,
     listing: [
-      { title: "Wärmepumpe", ...activeStatus.value(iobroker.pool.heaterState.value) },
-      { title: "Wärmepumpe Silent", ...activeStatus.value(iobroker.pool.silent.value) },
+      { title: "Wärmepumpe", ...status(iobroker.pool.heaterState.value) },
+      { title: "Wärmepumpe Silent", ...status(iobroker.pool.silent.value) },
       { title: "Wärmepumpe Modus", value: wpModus.value },
       { title: "Wärmepumpe Bezug", value: iobroker.pool.consumption.value.toFixed(2), unit: "W" },
       { title: "Wärmepumpe In", value: iobroker.pool.tempIn.value, unit: "°C", valueClass: "text-blue-200" },

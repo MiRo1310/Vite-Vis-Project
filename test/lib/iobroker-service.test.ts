@@ -66,93 +66,103 @@ describe("IoBrokerService", () => {
     }
   }
 
-  it("loadScript fügt ein Script-Tag zum Body hinzu", () => {
-    const appendChildSpy = vi.spyOn(document.body, "appendChild");
-    const script = document.createElement("script");
-    vi.spyOn(document, "createElement").mockReturnValue(script);
+  describe("loadScript", () => {
+    it("appends a script tag to the body", () => {
+      const appendChildSpy = vi.spyOn(document.body, "appendChild");
+      const script = document.createElement("script");
+      vi.spyOn(document, "createElement").mockReturnValue(script);
 
-    service.loadScript("/test.js");
+      service.loadScript("/test.js");
 
-    expect(appendChildSpy).toHaveBeenCalledWith(script);
-    expect(script.src).toContain("/test.js");
+      expect(appendChildSpy).toHaveBeenCalledWith(script);
+      expect(script.src).toContain("/test.js");
+    });
+
+    it("starts the socket connection on load", async () => {
+      await initService();
+
+      expect(socketMocks.mockStartSocket).toHaveBeenCalled();
+      expect(socketMocks.mockWaitForFirstConnection).toHaveBeenCalled();
+    });
   });
 
-  it("startet socket connection nach loadScript onload", async () => {
-    await initService();
-
-    expect(socketMocks.mockStartSocket).toHaveBeenCalled();
-    expect(socketMocks.mockWaitForFirstConnection).toHaveBeenCalled();
+  describe("connection", () => {
+    it("is undefined before init", () => {
+      expect(service.connection).toBeUndefined();
+    });
   });
 
-  it("subscribe queued wenn adminConnection noch nicht vorhanden", async () => {
-    const cb = vi.fn();
-    await service.subscribe({ id: "test.id.1", cb });
+  describe("isAdminConnected", () => {
+    it("is set via onProgress", async () => {
+      expect(service.isAdminConnected).toBe(false);
 
-    expect(socketMocks.mockSubscribeStateAsync).not.toHaveBeenCalled();
+      await initService();
+      const adminConnection = service.connection as any;
+      adminConnection.onProgress(4);
+
+      expect(service.isAdminConnected).toBe(true);
+    });
   });
 
-  it("subscribe ruft subscribeStateAsync nach init auf", async () => {
-    await initService();
+  describe("subscribe", () => {
+    it("queues the subscription while there is no admin connection", async () => {
+      const cb = vi.fn();
+      await service.subscribe({ id: "test.id.1", cb });
 
-    const cb = vi.fn();
-    await service.subscribe({ id: "test.id.1", cb });
+      expect(socketMocks.mockSubscribeStateAsync).not.toHaveBeenCalled();
+    });
 
-    expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledWith("test.id.1", expect.any(Function));
+    it("calls subscribeStateAsync after init", async () => {
+      await initService();
+
+      const cb = vi.fn();
+      await service.subscribe({ id: "test.id.1", cb });
+
+      expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledWith("test.id.1", expect.any(Function));
+    });
+
+    it("processes queued subscriptions after init", async () => {
+      const cb = vi.fn();
+      service.subscribe({ id: "queued.id.1", cb });
+      service.subscribe({ id: "queued.id.2", cb });
+
+      await initService();
+
+      expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledTimes(2);
+    });
+
+    it("increments subscribedIdsCount and subscribedDoneIdsCount", async () => {
+      await initService();
+
+      const cb = vi.fn();
+      await service.subscribe({ id: "test.id.1", cb });
+
+      expect(service.subscribedIdsCount.value).toBe(1);
+      expect(service.subscribedDoneIdsCount.value).toBe(0);
+
+      const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
+      stateHandler("test.id.1", { val: 1, ack: true });
+
+      expect(service.subscribedDoneIdsCount.value).toBe(1);
+
+      stateHandler("test.id.1", { val: 2, ack: true });
+      expect(service.subscribedDoneIdsCount.value).toBe(1);
+    });
   });
 
-  it("gequeuete subscriptions werden nach init verarbeitet", async () => {
-    const cb = vi.fn();
-    service.subscribe({ id: "queued.id.1", cb });
-    service.subscribe({ id: "queued.id.2", cb });
+  describe("resetSubscribedIds", () => {
+    it("resets both counters", async () => {
+      await initService();
 
-    await initService();
+      const cb = vi.fn();
+      await service.subscribe({ id: "test.id.1", cb });
+      const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
+      stateHandler("test.id.1", { val: 1, ack: true });
 
-    expect(socketMocks.mockSubscribeStateAsync).toHaveBeenCalledTimes(2);
-  });
+      service.resetSubscribedIds();
 
-  it("connection ist undefined vor init", () => {
-    expect(service.connection).toBeUndefined();
-  });
-
-  it("isAdminConnected wird über onProgress gesetzt", async () => {
-    expect(service.isAdminConnected).toBe(false);
-
-    await initService();
-    const adminConnection = service.connection as any;
-    adminConnection.onProgress(4);
-
-    expect(service.isAdminConnected).toBe(true);
-  });
-
-  it("subscribedIdsCount und subscribedDoneIdsCount werden beim Subscriben hochgezählt", async () => {
-    await initService();
-
-    const cb = vi.fn();
-    await service.subscribe({ id: "test.id.1", cb });
-
-    expect(service.subscribedIdsCount.value).toBe(1);
-    expect(service.subscribedDoneIdsCount.value).toBe(0);
-
-    const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
-    stateHandler("test.id.1", { val: 1, ack: true });
-
-    expect(service.subscribedDoneIdsCount.value).toBe(1);
-
-    stateHandler("test.id.1", { val: 2, ack: true });
-    expect(service.subscribedDoneIdsCount.value).toBe(1);
-  });
-
-  it("resetSubscribedIds setzt beide Zähler zurück", async () => {
-    await initService();
-
-    const cb = vi.fn();
-    await service.subscribe({ id: "test.id.1", cb });
-    const [, stateHandler] = socketMocks.mockSubscribeStateAsync.mock.calls[0];
-    stateHandler("test.id.1", { val: 1, ack: true });
-
-    service.resetSubscribedIds();
-
-    expect(service.subscribedIdsCount.value).toBe(0);
-    expect(service.subscribedDoneIdsCount.value).toBe(0);
+      expect(service.subscribedIdsCount.value).toBe(0);
+      expect(service.subscribedDoneIdsCount.value).toBe(0);
+    });
   });
 });

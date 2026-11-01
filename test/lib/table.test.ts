@@ -29,7 +29,7 @@ describe("getHtml", () => {
   });
 });
 
-describe("getColumns (structure)", () => {
+describe("getColumns", () => {
   it("builds columns with header and cell renderers and correct flags", () => {
     const columns = [
       { source: "name", labelKey: "Name", type: "text", className: "cls", sortable: true, hideable: true },
