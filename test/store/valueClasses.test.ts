@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+import { BooleanValue, JsonValue, NumberValue, StringValue } from "../../src/store/valueClasses";
+import { type IobrokerState } from "../../src/types/types";
 
 // Break circular dependency: valueClasses → io-broker-service → ioBrokerStore → subscribed-states → valueClasses
 vi.mock("../../src/lib/io-broker-service", () => ({
@@ -7,9 +9,6 @@ vi.mock("../../src/lib/io-broker-service", () => ({
     connection: undefined,
   },
 }));
-
-import { BooleanValue, JsonValue, NumberValue, StringValue } from "../../src/store/valueClasses";
-import { type IobrokerState } from "../../src/types/types";
 
 const id = "test.id";
 

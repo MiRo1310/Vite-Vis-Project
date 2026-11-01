@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ref } from "vue";
+import { useUnits } from "@/composables/querys/units.ts";
 
-// Mocks must be registered before importing the module under test.
 vi.mock("@vue/apollo-composable", () => {
   const result = ref({
     units: [
@@ -22,9 +22,6 @@ vi.mock("@/components/section/recipe-form/utils", () => ({
   getIdByName: (name: string, units: any) => units?.find((u: any) => u.name === name)?.id ?? "",
   getNameById: (id: string, units: any) => units?.find((u: any) => u.id === id)?.name ?? "",
 }));
-
-// Import module under test (use relative path from test folder)
-import { useUnits } from "@/composables/querys/units.ts";
 
 describe("useUnits", () => {
   beforeEach(() => {
