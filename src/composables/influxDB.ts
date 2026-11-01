@@ -62,7 +62,7 @@ export class InfluxDBClient {
     this.api.queryRows(this.getQuery(), {
       next: (row: string[], tableMeta: FluxTableMetaData) => {
         const o = tableMeta.toObject(row);
-        const value = this.valueType === "boolean" ? (o._value ? 1 : 0) : o.value;
+        const value = this.valueType === "boolean" ? (o._value ? 1 : 0) : o._value;
         this.resultTemp.push({ time: o._time, [o._measurement]: value });
       },
       error: (error: Error) => {
@@ -81,6 +81,7 @@ export class InfluxDBClient {
   private resetResult() {
     this.result.value = [];
     this.resultTemp = [];
+    this.isFetching = false;
   }
 
   private getQuery() {

@@ -16,7 +16,7 @@ const typedLocalStorage = () => {
   function getItem<K extends keyof StorageTypes>(key: K): StorageTypes[K] {
     const value = localStorage.getItem(key);
     if (!value) {
-      return defaultValues[key];
+      return JSON.parse(JSON.stringify(defaultValues[key])) as StorageTypes[K];
     }
 
     try {
@@ -24,7 +24,7 @@ const typedLocalStorage = () => {
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error("Error local storage parsing: ", e);
-      return defaultValues[key];
+      return JSON.parse(JSON.stringify(defaultValues[key])) as StorageTypes[K];
     }
   }
 
