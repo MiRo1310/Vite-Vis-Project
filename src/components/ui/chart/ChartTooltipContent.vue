@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "vue";
 import type { ChartConfig } from ".";
 import { computed } from "vue";
 import { cn } from "@/lib/utils";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 
 const props = withDefaults(
   defineProps<{

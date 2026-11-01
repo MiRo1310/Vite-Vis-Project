@@ -2,7 +2,7 @@
 import { Button } from "@/components/shared/button/button.variants";
 import { Logger } from "@/lib/logger.ts";
 import { type TForm } from "@/components/section/recipe-form/index.ts";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { computed } from "vue";
 import { fieldsRecipe, type TDescriptionSchema } from "@/components/section/recipe-form/schema.form.js";
 import { useRecipeStore } from "@/store/recipeStore.ts";

@@ -4,7 +4,7 @@ import { useLazyQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { Input } from "@/components/shared/input/input.variants";
 import { Button } from "@/components/shared/button/button.variants";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { Undo } from "lucide-vue-next";
 import { type TProduct } from "@/components/section/products/index.ts";
 

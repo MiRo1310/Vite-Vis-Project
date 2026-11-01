@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { InputShadcn } from "@/components/ui/input";
 import { type IValueOf, NumberValue } from "@/store/valueClasses.ts";
-import { isDefined, useDebounceFn } from "@vueuse/core";
+import { useDebounceFn } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type HTMLAttributes, watch } from "vue";
 import { type InputType } from "@/components/ui/input/InputShadcn.vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";

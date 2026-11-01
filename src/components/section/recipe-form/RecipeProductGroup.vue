@@ -10,7 +10,7 @@ import { useRecipeStore } from "@/store/recipeStore.ts";
 import ButtonGroupUpDown from "@/components/shared/button/ButtonGroupUpDown.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { fieldsRecipe, productSchema, type TProductHeaderSchema, type TProductSchema } from "@/components/section/recipe-form/schema.form.js";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { newIdPrefix, PrefixedIdGenerator } from "@/components/section/recipe-form/utils.ts";
 
 const props = defineProps<{ groupIndex: number; recipe?: GetRecipeByIdQuery["recipe"]; form: TForm }>();

@@ -8,7 +8,7 @@ import {
   type TReverse,
 } from "@/components/shared/energy-flow/index.ts";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { computed } from "vue";
 import { type Positions } from "@/components/shared/energy-flow/position.ts";
 

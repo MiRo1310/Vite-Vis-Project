@@ -9,7 +9,7 @@ import blinds70 from "@/public/blinds2_double_70.png";
 import blinds80 from "@/public/blinds2_double_80.png";
 import blinds90 from "@/public/blinds2_double_90.png";
 import blinds100 from "@/public/blinds2_double_100.png";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 
 const images = [blinds100, blinds90, blinds80, blinds70, blinds60, blinds50, blinds40, blinds30, blinds20, blinds10, blinds0];
 

@@ -1,5 +1,4 @@
 import { ref, markRaw, type Ref } from "vue";
-import { toJSON } from "@michaelroling/ts-library";
 import { type IobrokerState } from "@/types/types.ts";
 import { ioBrokerService, type IoBrokerService } from "@/lib/io-broker-service.ts";
 import { useNotificationStore } from "@/store/notification-store.ts";
@@ -7,6 +6,7 @@ import { type TRoute } from "@/router/routes.ts";
 import { NotificationMessage } from "@/lib/notificationMessage.ts";
 import { type TNotificationType } from "@/types/notification.ts";
 import { Logger } from "@/lib/logger.ts";
+import { toJSON } from "@/lib/json.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.

@@ -1,4 +1,4 @@
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 
 export const vE2E = {
   mounted(el: HTMLElement, binding: any) {

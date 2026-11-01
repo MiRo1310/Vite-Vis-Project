@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import Page from "@/components/shared/page/Page.vue";
-import { toJSON, toJsonString } from "@michaelroling/ts-library";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { InputShadcn } from "@/components/ui/input";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import { toJSON, toJsonString } from "@/lib/json.ts";
 
 const { iobroker } = useIobrokerStore();
 

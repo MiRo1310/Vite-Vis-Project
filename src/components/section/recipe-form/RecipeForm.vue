@@ -24,11 +24,11 @@ import { removeDescriptions } from "@/components/section/recipe-form/removeDescr
 import { removeRecipeProducts } from "@/components/section/recipe-form/removeRecipeProducts.ts";
 import { removeProductGroups } from "@/components/section/recipe-form/removeProductGroups.ts";
 import RecipeCategoryFormSelect from "@/components/section/recipe-form/RecipeCategoryFormSelect.vue";
-import { deepCopy } from "@michaelroling/ts-library";
 import { newIdPrefix } from "@/components/section/recipe-form/utils.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-vue-next";
 import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
+import { deepCopy } from "@/lib/utilities.ts";
 
 type TRecipeQuery = GetRecipeByIdQuery["recipe"];
 export type TFormValues = typeof form.values;
@@ -425,7 +425,6 @@ const goNext = () => {
 
 <template>
   <div class="max-h-full overflow-auto -mr-2 pb-2 pr-1">
-
     <!-- Hero Banner -->
     <div class="rounded-xl bg-gradient-to-br from-orange-500/10 via-amber-400/5 to-transparent border border-border/60 mb-4 p-4">
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1">
@@ -449,7 +448,11 @@ const goNext = () => {
           <Check v-if="currentStep > 1" class="h-3.5 w-3.5" />
           <span v-else class="text-xs font-bold">1</span>
         </div>
-        <span class="text-xs whitespace-nowrap" :class="currentStep >= 1 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Grunddaten</span>
+        <span
+          class="text-xs whitespace-nowrap"
+          :class="currentStep >= 1 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'"
+          >Grunddaten</span
+        >
       </button>
       <div class="flex-1 h-px mt-3.5 mx-2" :class="currentStep > 1 ? 'bg-orange-400/60' : 'bg-border'" />
       <button type="button" class="flex flex-col items-center gap-1 shrink-0" @click="currentStep = 2">
@@ -457,19 +460,26 @@ const goNext = () => {
           <Check v-if="currentStep > 2" class="h-3.5 w-3.5" />
           <span v-else class="text-xs font-bold">2</span>
         </div>
-        <span class="text-xs whitespace-nowrap" :class="currentStep >= 2 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Beschreibung</span>
+        <span
+          class="text-xs whitespace-nowrap"
+          :class="currentStep >= 2 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'"
+          >Beschreibung</span
+        >
       </button>
       <div class="flex-1 h-px mt-3.5 mx-2" :class="currentStep > 2 ? 'bg-orange-400/60' : 'bg-border'" />
       <button type="button" class="flex flex-col items-center gap-1 shrink-0" v-e2e="'recipe-step-ingredients'" @click="currentStep = 3">
         <div :class="stepCircle(3)">
           <span class="text-xs font-bold">3</span>
         </div>
-        <span class="text-xs whitespace-nowrap" :class="currentStep >= 3 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'">Zutaten</span>
+        <span
+          class="text-xs whitespace-nowrap"
+          :class="currentStep >= 3 ? 'text-orange-600 dark:text-orange-400 font-medium' : 'text-muted-foreground'"
+          >Zutaten</span
+        >
       </button>
     </div>
 
     <Form @keydown.enter.prevent="enterPress" @update:on-submit="onSubmit">
-
       <!-- Schritt 1: Grunddaten -->
       <div v-show="currentStep === 1" class="flex flex-col gap-3">
         <Card class="py-0 gap-0">
@@ -487,11 +497,7 @@ const goNext = () => {
 
       <!-- Schritt 2: Beschreibung -->
       <div v-show="currentStep === 2" class="flex flex-col gap-3">
-        <Card
-          v-for="(description, index) in formDescriptions"
-          :key="description.position ?? description.id ?? index"
-          class="py-0 gap-0"
-        >
+        <Card v-for="(description, index) in formDescriptions" :key="description.position ?? description.id ?? index" class="py-0 gap-0">
           <CardHeader class="px-4 pt-2 pb-0 flex flex-row items-center justify-between space-y-0">
             <CardTitle class="text-xs text-muted-foreground uppercase tracking-wide">Schritt {{ index + 1 }}</CardTitle>
             <RecipeRemoveDescription :description :form />
@@ -511,11 +517,7 @@ const goNext = () => {
 
       <!-- Schritt 3: Zutaten -->
       <div v-show="currentStep === 3" class="flex flex-col gap-3">
-        <Card
-          v-for="oneBasedIndex in recipeStore.getProductGroupsCount"
-          :key="oneBasedIndex"
-          class="py-0 gap-0"
-        >
+        <Card v-for="oneBasedIndex in recipeStore.getProductGroupsCount" :key="oneBasedIndex" class="py-0 gap-0">
           <CardContent class="px-3 pt-2 pb-3">
             <RecipeProductGroup :recipe :group-index="toZeroBasedIndex(oneBasedIndex)" :form />
           </CardContent>
@@ -525,9 +527,7 @@ const goNext = () => {
 
       <!-- Navigation -->
       <div class="flex items-center justify-between mt-4 pt-3 border-t border-border/50">
-        <Button v-if="currentStep > 1" type="button" variant="outline" size="sm" @click.prevent="currentStep--">
-          ← Zurück
-        </Button>
+        <Button v-if="currentStep > 1" type="button" variant="outline" size="sm" @click.prevent="currentStep--"> ← Zurück </Button>
         <div v-else />
         <div class="flex gap-2">
           <Button type="button" variant="default" size="sm" @click.stop="resetForm">Zurücksetzen</Button>
@@ -538,7 +538,6 @@ const goNext = () => {
           </template>
         </div>
       </div>
-
     </Form>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { type TRoute } from "@/router/routes.ts";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type TNotificationType } from "@/types/notification.ts";
 
 export interface OptionalMessageParameter {

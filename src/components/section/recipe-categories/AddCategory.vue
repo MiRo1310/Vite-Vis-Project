@@ -5,7 +5,7 @@ import { type RecipeCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
 const props = defineProps<{ result: RecipeCategoriesQuery["recipeCategories"] }>();
