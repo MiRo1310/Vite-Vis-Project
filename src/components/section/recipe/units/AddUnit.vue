@@ -4,7 +4,7 @@ import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { computed, ref } from "vue";
 import { graphql } from "@/api/gql";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { refetchQueryUnits, useUnits } from "@/composables/querys/units.ts";
 
 const { result } = useUnits();

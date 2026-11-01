@@ -159,7 +159,7 @@ Check for:
 - Delete/reset buttons must use `variant="destructive"`
 
 **ioBroker JSON values:**
-- Must use `toJSON<T>()` from `@michaelroling/ts-library`
+- Must use `toJSON<T>()` from `@/lib/json.ts`
 - ❌ `JSON.parse(iobroker.state.val)`
 - ✅ `const data = computed(() => toJSON<MyType>(iobroker.pool?.someJSON?.val ?? "").json)`
 

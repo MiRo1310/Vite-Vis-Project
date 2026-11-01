@@ -4,11 +4,13 @@ import "@/assets/css/style.css";
 import App from "@/App.vue";
 import apolloClient from "@/apolloClient.ts";
 import { DefaultApolloClient } from "@vue/apollo-composable";
-import "@michaelroling/ts-library";
 import { vE2E } from "@/directives/directives.ts";
 import { router } from "@/router/router.ts";
 import { registerSW } from "virtual:pwa-register";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
+import "@/lib/prototype/string";
+import "@/lib/prototype/number";
+import "@/lib/prototype/array";
 
 usePwaUpdateSingleton.setTime(new Date());
 

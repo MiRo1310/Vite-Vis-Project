@@ -5,7 +5,7 @@ import { type ProductCategoriesQuery } from "@/api/gql/graphql.ts";
 import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import Input from "../../ui/input/InputShadcn.vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
 
 const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] }>();

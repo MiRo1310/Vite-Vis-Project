@@ -2,7 +2,7 @@
 import { useQuery } from "@vue/apollo-composable";
 import { computed } from "vue";
 import { graphql } from "@/api/gql";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type InputOption } from "@/types/types.ts";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
 

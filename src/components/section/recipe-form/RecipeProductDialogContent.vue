@@ -11,7 +11,7 @@ import { graphql } from "@/api/gql";
 import { useForm } from "vee-validate";
 import { formSchemaProduct, type TProductSchema } from "@/components/section/recipe-form/schema.form.js";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { type GetRecipeByIdQuery } from "@/api/gql/graphql.ts";
 import FormFooter from "@/components/shared/form/FormFooter.vue";

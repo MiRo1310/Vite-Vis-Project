@@ -1,4 +1,4 @@
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 
 export function miBToGiB(val?: number): string {
   if (!isDefined(val)) {

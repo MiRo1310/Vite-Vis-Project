@@ -1,5 +1,7 @@
 import "./commands";
-import "@michaelroling/ts-library";
+import "@/lib/prototype/string";
+import "@/lib/prototype/number";
+import "@/lib/prototype/array";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { mount } from "cypress/vue";

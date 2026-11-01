@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shared/card";
 import { InfluxDBClient } from "@/composables/influxDB.ts";
 import { computed, ref } from "vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type AggregatedPerDay, aggregatePerDay } from "@/lib/charts.ts";
 import ChartStepAfter from "@/components/shared/chart/ChartStepAfter.vue";
 import { localDateStringToDate } from "@/lib/date.ts";

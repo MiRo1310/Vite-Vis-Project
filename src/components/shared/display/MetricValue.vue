@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type HTMLAttributes, type UnwrapRef } from "vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type NumberValue } from "@/store/valueClasses.ts";
 
 const props = withDefaults(

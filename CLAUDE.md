@@ -262,7 +262,7 @@ Immer `miBToGiB()` aus `@/lib/system` nutzen:
 - `undefined`/`null` → `"0 GB"`.
 
 ### JSON-Daten aus ioBroker
-`toJSON<T>()` aus `@michaelroling/ts-library` gibt `{ json: T | null, isValidJson: boolean }` zurück.
+`toJSON<T>()` aus `@/lib/json.ts` gibt `{ json: T | null, isValidJson: boolean }` zurück.
 Immer `.json` extrahieren:
 ```ts
 const data = computed(() => toJSON<MyType>(iobroker.pool?.someJSON?.val ?? "").json);

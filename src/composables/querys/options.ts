@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 import { type HasOptionalNameAndId, type SelectOption } from "@/types/types";
 
 function hasOptionalNameAndId<T>(item: T): item is T & HasOptionalNameAndId {

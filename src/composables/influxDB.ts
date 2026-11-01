@@ -1,7 +1,7 @@
 import { type FluxTableMetaData, InfluxDB, type QueryApi } from "@influxdata/influxdb-client";
 import { onBeforeUnmount, ref } from "vue";
 import { Logger } from "@/lib/logger.ts";
-import { isDefined } from "@vueuse/core";
+import { isDefined } from "@/lib/utilities.ts";
 
 // Insert this line (Flux) before your aggregateWindow call in `src/lib/influxDB.ts`
 
