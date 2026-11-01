@@ -3,6 +3,7 @@ import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
 import { type ITableColumn } from "@/types/types.ts";
 import { onMounted, ref, watch } from "vue";
 import { Logger } from "@/lib/logger.ts";
+import { descriptionColorMapping, descriptionUncheckedColor } from "@/constants/finance.ts";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, DescriptionsQuery["description"][number]>>();
@@ -28,26 +29,23 @@ onMounted(() => {
       const columns = tr.querySelectorAll(".listing__cell *");
 
       if (isAnyUnchecked(tr)) {
-        setColor(columns, tr, "text-red-300!");
+        descriptionColorMapping.forEach(([, color]) => setColor(columns, tr, color, true));
+        setColor(columns, tr, descriptionUncheckedColor);
         return;
       }
-      setColor(columns, tr, "text-red-300!", true);
+      setColor(columns, tr, descriptionUncheckedColor, true);
 
-      colorMapping.forEach(([keyword, color]) => {
+      descriptionColorMapping.forEach(([keyword, color]) => {
         if (props.value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())) {
           setColor(columns, tr, color);
           return;
         }
       });
     },
-    { immediate: true },
+    // post: erst nach dem Rendern ausführen, damit isAnyUnchecked den aktuellen Checkbox-Zustand im DOM liest
+    { immediate: true, flush: "post" },
   );
 });
-
-const colorMapping = [
-  ["fahrtkosten", "text-green-400!"],
-  ["rechnung", "text-blue-400!"],
-];
 
 const setColor = (columns: NodeListOf<Element> | undefined, _tr: HTMLElement, color: string, remove?: boolean) => {
   columns?.forEach((col) => {

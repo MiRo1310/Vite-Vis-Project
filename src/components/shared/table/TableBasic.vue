@@ -23,6 +23,11 @@ const table = useTable<AppTableFeatures, TData>({
   features: appTableFeatures,
   data: toRef(props, "data"),
   columns: toRef(props, "columns"),
+  // Stabiler Zeilen-Key über die id der Daten, sonst verwendet Vue Zeilen-Komponenten beim Einfügen/Sortieren für andere Daten wieder
+  getRowId: (row, index) => {
+    const id = (row as { id?: unknown }).id;
+    return typeof id === "string" || typeof id === "number" ? String(id) : String(index);
+  },
 });
 </script>
 <template>
