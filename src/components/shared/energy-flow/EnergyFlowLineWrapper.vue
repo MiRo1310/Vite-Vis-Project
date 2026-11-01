@@ -13,9 +13,7 @@ const props = defineProps<{
   animationRef: null | SVGGElement;
 }>();
 
-const l = computed(
-  () => new Line(props.animationRef, props.line.lineStart, props.line.lineEnd, sumNumbers.value(props.line.value), props.line.options),
-);
+const l = computed(() => new Line(props.animationRef, props.line.lineStart, props.line.lineEnd, sumNumbers(props.line.value), props.line.options));
 </script>
 
 <template>

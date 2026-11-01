@@ -9,7 +9,6 @@ import blinds70 from "@/public/blinds2_double_70.png";
 import blinds80 from "@/public/blinds2_double_80.png";
 import blinds90 from "@/public/blinds2_double_90.png";
 import blinds100 from "@/public/blinds2_double_100.png";
-import { computed } from "vue";
 import { isDefined } from "@vueuse/core";
 
 const images = [blinds100, blinds90, blinds80, blinds70, blinds60, blinds50, blinds40, blinds30, blinds20, blinds10, blinds0];
@@ -32,4 +31,4 @@ export const getShutterImageIndexByPosition = (position?: number): number => {
  * @param position - The position of the shutter (0-100).
  * @returns The corresponding shutter image.
  */
-export const getShutterImageByPosition = computed(() => (position: number | undefined) => images[getShutterImageIndexByPosition(position)]);
+export const getShutterImageByPosition = (position: number | undefined) => images[getShutterImageIndexByPosition(position)];

@@ -3,12 +3,11 @@ import { routes } from "@/router/routes.ts";
 import { computed, ref } from "vue";
 import { useTime } from "@/composables/time.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { getOpenWindows } from "@/composables/windows.ts";
+import { getActiveLights, getOpenWindows } from "@/composables/windowsAndLights.ts";
 import { DataCard, StatusCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import NotificationTicker from "@/components/section/home/status-bar/NotificationTicker.vue";
 import HomeNavTile from "@/components/section/home/status-bar/HomeNavTile.vue";
-import { getActiveLights } from "@/composables/lights.ts";
 import { Blinds, Flame, Plane } from "lucide-vue-next";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 
@@ -42,13 +41,7 @@ const heatingPeriodDialogOpen = ref(false);
       <RouterLink :to="routes.notifications.path" class="sm:flex-0 flex-1">
         <NotificationTicker />
       </RouterLink>
-      <DataCard
-        title="Fenster / Rolladen"
-        nowrap-title
-        :to="routes.window.path"
-        class="shrink-0 min-w-28"
-        content-class="flex items-center gap-1.5"
-      >
+      <DataCard title="Fenster / Rolladen" nowrap-title :to="routes.window.path" class="shrink-0 min-w-28" content-class="flex items-center gap-1.5">
         <StatusDot :active="(getOpenWindows ?? 0) === 0" inactive-color="yellow" />
         <span class="text-sm font-semibold">{{ getOpenWindows ?? 0 }}</span>
         <Blinds class="size-4 ml-auto" :class="shutterOpen ? 'text-yellow-500' : 'text-green-500'" />

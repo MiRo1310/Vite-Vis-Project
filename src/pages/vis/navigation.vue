@@ -3,9 +3,8 @@ import NavigationButton from "@/components/layout/NavigationButton.vue";
 import { type NavigationItem, type NavigationsBadge } from "@/types/types.ts";
 import { batteryList } from "@/composables/battery.ts";
 import { computed } from "vue";
-import { getOpenWindows } from "@/composables/windows.ts";
+import { getActiveLights, getOpenWindows } from "@/composables/windowsAndLights.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
-import { getActiveLights } from "@/composables/lights.ts";
 import { routes, type TNavigationRoute } from "@/router/routes.ts";
 
 const navigations = computed((): NavigationItem[] => {

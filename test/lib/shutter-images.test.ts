@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getShutterImageIndexByPosition } from "../../src/composables/shutter-images";
+import { getShutterImageIndexByPosition } from "@/lib/shutter-images.ts";
 
 describe("getShutterImageIndexByPosition", () => {
   it("maps positions to image indexes", () => {

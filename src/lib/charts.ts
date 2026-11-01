@@ -1,12 +1,10 @@
-import { computed } from "vue";
-
 export interface AggregatedPerDay {
   localeDateString: string;
   count: number;
   key: string;
 }
 
-export const xDomainSynchronized = computed(() => (dates: Array<Array<{ date: Date }>>): Date[] | undefined => {
+export const xDomainSynchronized = (dates: Array<Array<{ date: Date }>>): Date[] | undefined => {
   const all = dates.flat();
   if (!all.length) {
     return;
@@ -15,9 +13,9 @@ export const xDomainSynchronized = computed(() => (dates: Array<Array<{ date: Da
   const min = Math.min(...times);
   const max = Math.max(...times);
   return [new Date(min), new Date(max)];
-});
+};
 
-export const aggregatePerDay = computed(() => <T extends { date: Date; key: string }, K extends keyof T>(data: T[], key: K) => {
+export const aggregatePerDay = <T extends { date: Date; key: string }, K extends keyof T>(data: T[], key: K) => {
   return data.reduce((prev, curr) => {
     const newDate = new Date(curr.date).toLocaleDateString();
 
@@ -38,4 +36,4 @@ export const aggregatePerDay = computed(() => <T extends { date: Date; key: stri
     }
     return prev;
   }, [] as AggregatedPerDay[]);
-});
+};

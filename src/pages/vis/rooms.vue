@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { type RoomItems, type RoomType } from "@/types/types.ts";
-import { getOpenWindows } from "@/composables/windows.ts";
+import { getOpenWindows } from "@/composables/windowsAndLights.ts";
 import { notSubscribedIds } from "@/iobroker-states/action-states.iobroker";
 import { computed, ref } from "vue";
 import Page from "@/components/shared/page/Page.vue";

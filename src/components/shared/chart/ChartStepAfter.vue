@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { xDomainSynchronized } from "@/composables/charts.ts";
+import { xDomainSynchronized } from "@/lib/charts.ts";
 import { CurveType } from "@unovis/ts";
 import { type ChartConfig, ChartContainer, ChartCrosshair, ChartTooltip, componentToString } from "@/components/ui/chart";
 import ChartTooltipContent from "@/components/shared/chart/ChartTooltipContent.vue";

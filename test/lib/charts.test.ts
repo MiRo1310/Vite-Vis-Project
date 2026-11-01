@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { type AggregatedPerDay, aggregatePerDay, xDomainSynchronized } from "../../src/composables/charts";
+import { type AggregatedPerDay, aggregatePerDay, xDomainSynchronized } from "@/lib/charts.ts";
 
 describe("xDomainSynchronized", () => {
   it("returns undefined without dates", () => {
     const dates: Array<Array<{ date: Date }>> = [[]];
 
-    const xDomain = xDomainSynchronized.value(dates);
+    const xDomain = xDomainSynchronized(dates);
     expect(xDomain).toBeUndefined();
   });
 
@@ -13,7 +13,7 @@ describe("xDomainSynchronized", () => {
     const oldestDate = new Date("2020-01-01");
     const dates: Array<Array<{ date: Date }>> = [[{ date: oldestDate }]];
 
-    const xDomain = xDomainSynchronized.value(dates);
+    const xDomain = xDomainSynchronized(dates);
     expect(xDomain).toBeDefined();
     expect(xDomain?.[0]).toStrictEqual(oldestDate);
     expect(xDomain?.[1]).toStrictEqual(oldestDate);
@@ -27,7 +27,7 @@ describe("xDomainSynchronized", () => {
       [{ date: new Date("2023-02-03") }, { date: newestDate }],
     ];
 
-    const xDomain = xDomainSynchronized.value(dates);
+    const xDomain = xDomainSynchronized(dates);
     expect(xDomain).toBeDefined();
     expect(xDomain?.[0]).toStrictEqual(oldestDate);
     expect(xDomain?.[1]).toStrictEqual(newestDate);
@@ -36,7 +36,7 @@ describe("xDomainSynchronized", () => {
 
 describe("aggregatePerDay", () => {
   it("sums the values per day", () => {
-    const aggregated = aggregatePerDay.value(
+    const aggregated = aggregatePerDay(
       [
         { date: new Date("2020-01-01"), value: 1, key: "1" },
         { date: new Date("2020-01-01"), value: 2, key: "1" },
@@ -53,7 +53,7 @@ describe("aggregatePerDay", () => {
   });
 
   it("ignores non-numeric values", () => {
-    const aggregated = aggregatePerDay.value(
+    const aggregated = aggregatePerDay(
       [
         { date: new Date("2020-01-01"), value: "a", key: "1" },
         { date: new Date("2020-01-01"), value: 2, key: "1" },
