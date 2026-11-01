@@ -46,6 +46,10 @@ const createListing = (description: string, price: string) => {
   cy.wait("@AddTravelCost");
   cy.wait("@TravelCost");
   cy.contains("code", description).should("exist");
+
+  // Toast schließen, er liegt sonst über den unteren Zeilen und blockiert die Checkbox-Klicks
+  cy.contains("li", "Wurde zur Liste hinzugefügt").find("button").click();
+  cy.contains("Wurde zur Liste hinzugefügt").should("not.exist");
 };
 
 describe("Finance Listing (GraphQL Integration)", () => {
@@ -61,9 +65,9 @@ describe("Finance Listing (GraphQL Integration)", () => {
 
   it("adds a new travel cost row via the form", () => {
     const description = `Cypress Mutation Test ${Date.now()}`;
+    // createListing prüft auch den Toast "Wurde zur Liste hinzugefügt"
     createListing(description, "42.50");
 
-    cy.contains("Wurde zur Liste hinzugefügt").should("exist");
     cy.contains("td", description).should("exist");
     cy.contains("td", "42,50").should("exist");
   });
