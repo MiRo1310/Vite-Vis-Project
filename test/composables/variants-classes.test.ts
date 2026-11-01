@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getVariantsClasses } from "../../src/composables/variants-classes";
+import { getVariantsClasses } from "@/composables/variants-classes.ts";
 
 const variants = {
   size: { sm: "h-8", lg: "h-12" },

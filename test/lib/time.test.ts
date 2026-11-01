@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toLocaleTime, formatSecondsToTime } from "../../src/lib/time";
+import { toLocaleTime, formatSecondsToTime } from "@/lib/time.ts";
 
 describe("toLocaleTime", () => {
   it("returns same as Date.toLocaleString for a numeric timestamp", () => {
@@ -39,4 +39,3 @@ describe("formatSecondsToTime", () => {
     expect(formatSecondsToTime(10276.190476190475238)).toBe("02:51:16");
   });
 });
-

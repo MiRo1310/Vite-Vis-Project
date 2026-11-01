@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toZeroBasedIndex } from "../../src/lib/indexHandler";
+import { toZeroBasedIndex } from "@/lib/indexHandler.ts";
 
 describe("toZeroBasedIndex", () => {
   it("converts a 1-based index to 0-based (1 -> 0)", () => {
@@ -23,4 +23,3 @@ describe("toZeroBasedIndex", () => {
     expect(Number.isNaN(res)).toBe(true);
   });
 });
-

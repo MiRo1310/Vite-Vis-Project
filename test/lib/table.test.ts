@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getValueByPath, getHtml, getColumns } from "../../src/lib/table";
+import { getValueByPath, getHtml, getColumns } from "@/lib/table.ts";
 
 describe("getValueByPath", () => {
   it("resolves nested properties and numeric indices", () => {

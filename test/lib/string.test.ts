@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { truncateText, removeMultipleSpaces } from "../../src/lib/string";
+import { truncateText, removeMultipleSpaces } from "@/lib/string.ts";
 
 describe("removeMultipleSpaces", () => {
   it("collapses multiple spaces into one and trims", () => {

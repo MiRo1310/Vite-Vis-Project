@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { createId } from "../../src/lib/id";
-import { wait } from "../../src/lib/time";
+import { createId } from "@/lib/id.ts";
+import { wait } from "@/lib/time.ts";
 
 describe("createId", () => {
   afterEach(() => {

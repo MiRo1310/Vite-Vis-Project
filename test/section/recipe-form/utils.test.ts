@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getElementByPosition } from "../../../src/components/section/recipe-form/utils";
-import { type RecipeDescriptionCreateOrUpdateDtoInput } from "../../../src/api/gql/graphql";
+import { getElementByPosition } from "@/components/section/recipe-form/utils.ts";
+import { type RecipeDescriptionCreateOrUpdateDtoInput } from "@/api/gql/graphql.ts";
 
 const extraData = { header: "", text: "", id: "" };
 

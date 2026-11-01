@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { reactive } from "vue";
-import { heatPumpValues, status, wpModus } from "../../src/composables/heat-pump.ts";
-import { routes } from "../../src/router/routes.ts";
+import { heatPumpValues, status, wpModus } from "@/composables/heat-pump.ts";
+import { routes } from "@/router/routes.ts";
 
 const { iobroker } = vi.hoisted(() => {
   const mode: { value: number | undefined } = { value: 1 };
@@ -9,12 +9,12 @@ const { iobroker } = vi.hoisted(() => {
     iobroker: {
       pool: {
         mode,
-      heaterState: { value: true },
-      silent: { value: false },
-      consumption: { value: 1234.567 },
-      tempIn: { value: 24.5 },
-      tempOut: { value: 27.1 },
-      tempSet: { value: 28 },
+        heaterState: { value: true },
+        silent: { value: false },
+        consumption: { value: 1234.567 },
+        tempIn: { value: 24.5 },
+        tempOut: { value: 27.1 },
+        tempSet: { value: 28 },
       },
     },
   };

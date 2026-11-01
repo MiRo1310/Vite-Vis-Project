@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { typedStorage } from "../../src/lib/local-storage";
+import { typedStorage } from "@/lib/local-storage.ts";
 
 describe("typedStorage", () => {
   beforeEach(() => {

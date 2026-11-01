@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { chargingModeOptions } from "../../src/lib/wattPilot";
+import { chargingModeOptions } from "@/lib/wattPilot.ts";
 
 const testEnum = {
   AUTO: "auto",

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cn, valueUpdater } from "../../src/lib/utils";
+import { cn, valueUpdater } from "@/lib/utils.ts";
 
 describe("cn (class merge)", () => {
   it("combines simple class names into a string", () => {
@@ -31,4 +31,3 @@ describe("valueUpdater", () => {
     expect(ref.value).toBe(5);
   });
 });
-

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { filterEnum } from "../../src/lib/enum";
+import { filterEnum } from "@/lib/enum.ts";
 
 describe("filterEnum", () => {
   it("returns all keys when nothing is filtered", () => {

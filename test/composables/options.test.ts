@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getSelectableOptions } from "../../src/composables/querys/options";
+import { getSelectableOptions } from "@/composables/querys/options.ts";
 
 describe("getSelectableOptions", () => {
   it("returns empty array for undefined or null input", () => {
@@ -37,4 +37,3 @@ describe("getSelectableOptions", () => {
     expect(res.map((r) => r.label)).toEqual(["Aar", "Öl", "Zee"]);
   });
 });
-

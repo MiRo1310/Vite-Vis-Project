@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { reloadWhenHidden } from "../../src/lib/pwaUpdate";
+import { reloadWhenHidden } from "@/lib/pwaUpdate.ts";
 
 function setDocumentHidden(hidden: boolean) {
   Object.defineProperty(document, "hidden", { value: hidden, configurable: true });

@@ -1,5 +1,5 @@
 import { expect, it, describe } from "vitest";
-import { getLocalTimeString, localDateStringToDate } from "../../src/lib/date";
+import { getLocalTimeString, localDateStringToDate } from "@/lib/date.ts";
 
 describe("getLocalTimeString", () => {
   it("returns the local time of a date string", () => {
