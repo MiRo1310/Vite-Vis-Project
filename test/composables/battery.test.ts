@@ -34,7 +34,7 @@ vi.mock("@/store/ioBrokerStore.ts", () => {
   };
 });
 
-describe("battery composable", () => {
+describe("batteryList", () => {
   test("produces a table-friendly list from store batteries", () => {
     const list = batteryList.value;
 

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { tabToLocalStorage } from "../../src/composables/tabToLocalStorage.ts";
 
-describe("tabToLocalStorage composable", () => {
+describe("tabToLocalStorage", () => {
   beforeEach(() => {
     localStorage.clear();
   });

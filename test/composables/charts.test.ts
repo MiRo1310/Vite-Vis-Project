@@ -1,17 +1,17 @@
 import { describe, it, expect } from "vitest";
-import { AggregatedPerDay, aggregatePerDay, xDomainSynchronized } from "../../src/composables/charts";
+import { type AggregatedPerDay, aggregatePerDay, xDomainSynchronized } from "../../src/composables/charts";
 
-describe("charts -> xDomainSynchronized", () => {
-  it("xDomainSynchronized with none value", () => {
-    const dates: { date: Date }[][] = [[]];
+describe("xDomainSynchronized", () => {
+  it("returns undefined without dates", () => {
+    const dates: Array<Array<{ date: Date }>> = [[]];
 
     const xDomain = xDomainSynchronized.value(dates);
     expect(xDomain).toBeUndefined();
   });
 
-  it("xDomainSynchronized with one value", () => {
+  it("returns the same date as start and end for a single date", () => {
     const oldestDate = new Date("2020-01-01");
-    const dates: { date: Date }[][] = [[{ date: oldestDate }]];
+    const dates: Array<Array<{ date: Date }>> = [[{ date: oldestDate }]];
 
     const xDomain = xDomainSynchronized.value(dates);
     expect(xDomain).toBeDefined();
@@ -19,10 +19,10 @@ describe("charts -> xDomainSynchronized", () => {
     expect(xDomain?.[1]).toStrictEqual(oldestDate);
   });
 
-  it("xDomainSynchronized with multi value", () => {
+  it("returns the oldest and newest date across all series", () => {
     const oldestDate = new Date("2020-01-01");
     const newestDate = new Date("2026-01-01");
-    const dates: { date: Date }[][] = [
+    const dates: Array<Array<{ date: Date }>> = [
       [{ date: oldestDate }, { date: new Date("2023-10-03") }],
       [{ date: new Date("2023-02-03") }, { date: newestDate }],
     ];
@@ -34,8 +34,8 @@ describe("charts -> xDomainSynchronized", () => {
   });
 });
 
-describe("charts -> aggregate per day", () => {
-  it("should get aggregated values", () => {
+describe("aggregatePerDay", () => {
+  it("sums the values per day", () => {
     const aggregated = aggregatePerDay.value(
       [
         { date: new Date("2020-01-01"), value: 1, key: "1" },
@@ -52,7 +52,7 @@ describe("charts -> aggregate per day", () => {
     expect(aggregated[1]).toStrictEqual(expected2);
   });
 
-  it("aggregatedPerDay with one none number", () => {
+  it("ignores non-numeric values", () => {
     const aggregated = aggregatePerDay.value(
       [
         { date: new Date("2020-01-01"), value: "a", key: "1" },

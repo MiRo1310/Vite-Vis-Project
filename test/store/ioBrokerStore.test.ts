@@ -2,18 +2,20 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
 import { useIobrokerStore } from "../../src/store/ioBrokerStore";
 
-describe("iobroker store", () => {
+describe("useIobrokerStore", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
 
-  it("has sane defaults", () => {
+  it("starts with empty idsToControl", () => {
     const store = useIobrokerStore();
     expect(store.idsToControl).toEqual({});
   });
 
-  it("getIdsToControl returns the current idsToControl state", () => {
-    const store = useIobrokerStore();
-    expect(store.getIdsToControl).toBe(store.idsToControl);
+  describe("getIdsToControl", () => {
+    it("returns the current idsToControl", () => {
+      const store = useIobrokerStore();
+      expect(store.getIdsToControl).toBe(store.idsToControl);
+    });
   });
 });

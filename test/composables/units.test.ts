@@ -22,7 +22,7 @@ vi.mock("@/components/section/recipe-form/utils", () => ({
 // Import module under test (use relative path from test folder)
 import { useUnits } from "../../src/composables/querys/units";
 
-describe("useUnits composable", () => {
+describe("useUnits", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
   });
