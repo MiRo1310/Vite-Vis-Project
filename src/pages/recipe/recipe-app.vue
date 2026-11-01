@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Toaster from "../../components/ui/toast/Toaster.vue";
+import Toaster from "@/components/ui/toast/Toaster.vue";
 import { routes } from "@/router/routes.ts";
 import DarkMode from "@/components/layout/DarkMode.vue";
 import { githubNavigation } from "@/config/config.ts";

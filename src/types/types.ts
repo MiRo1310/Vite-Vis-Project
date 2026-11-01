@@ -2,7 +2,7 @@ import { type Row, type RowData } from "@tanstack/vue-table";
 import { type AppTableFeatures } from "@/lib/table-features";
 import { type ApolloQueryResult } from "@apollo/client";
 import { type FunctionalComponent, type HTMLAttributes } from "vue";
-import { type Badge } from "../components/shared/badge/badge.variants";
+import { type Badge } from "@/components/shared/badge/badge.variants";
 import { type IValueOf } from "@/store/valueClasses.ts";
 
 export interface AlexaList {
@@ -130,9 +130,9 @@ export interface FileData {
   url: string;
 }
 
-export type Pathes<T> = T extends object
+export type Paths<T> = T extends object
   ? {
-      [K in keyof T]-?: K extends string | number ? `${K}` | Join<K, Pathes<T[K]>> : never;
+      [K in keyof T]-?: K extends string | number ? `${K}` | Join<K, Paths<T[K]>> : never;
     }[keyof T]
   : "";
 type Join<K, P> = K extends string | number ? (P extends string | number ? `${K}.${P}` : never) : never;
