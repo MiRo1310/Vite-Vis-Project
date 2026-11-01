@@ -2,13 +2,17 @@
 import type { ITableColumn } from "@/types/types.js";
 import type { TravelCostQuery } from "@/api/gql/graphql.js";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<boolean, TravelCostQuery["travelCost"][number]>>();
 const checked = ref(props.value);
+watch(
+  () => props.value,
+  (value) => (checked.value = value),
+);
 
 const { mutate } = useMutation(
   graphql(`
