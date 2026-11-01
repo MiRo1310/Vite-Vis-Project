@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import CardListing from "../../shared/card/CardListing.vue";
+import CardListing from "@/components/shared/card/CardListing.vue";
 import { type Entries } from "@/types/types.ts";
 import { computed } from "vue";
 

@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import TableCell from "@/components/shared/table-cell/TableCell.vue";
 import { Checkbox } from "@/components/ui/checkbox";
 import { clsx } from "clsx";
-import { type Pathes } from "@/types/types.ts";
+import { type Paths } from "@/types/types.ts";
 import { cn } from "@/lib/utils.ts";
 
 export interface DatatableColumns<T> {
   accessorKey?: string;
   headerClass?: string;
-  source: Pathes<T>;
+  source: Paths<T>;
   labelKey: string;
   defaultVisibility?: boolean;
   unit?: string;
