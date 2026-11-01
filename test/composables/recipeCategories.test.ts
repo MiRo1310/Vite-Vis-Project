@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
-// Mock '@vue/apollo-composable' before importing the composable
 vi.mock("@vue/apollo-composable", () => {
   const load = vi.fn().mockResolvedValue(undefined);
   const refetch = vi.fn().mockResolvedValue(undefined);
@@ -33,9 +33,6 @@ vi.mock("../../src/composables/querys/utils.ts", () => {
   const invalidateMock = vi.fn().mockResolvedValue(undefined);
   return { invalidateCache: invalidateMock, __mocks: { invalidateMock } };
 });
-
-// Import module under test AFTER mocks
-import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 
 describe("useRecipeCategories", () => {
   beforeEach(() => {

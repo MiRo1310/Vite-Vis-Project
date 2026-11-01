@@ -1,8 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-// Import module under test AFTER mocks
 import { fieldNameProductCategories, refetchQueryProductCategories, useProductCategories } from "../../src/composables/querys/productCategories";
 
-// Mock '@vue/apollo-composable' before importing the composable
 vi.mock("@vue/apollo-composable", () => {
   const load = vi.fn().mockResolvedValue(undefined);
   const refetch = vi.fn().mockResolvedValue(undefined);
