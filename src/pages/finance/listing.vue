@@ -15,6 +15,8 @@ import { type TravelCostFilterInput, type TravelCostQuery, type TravelCostSortIn
 import { getTotalByPrice } from "@/pages/finance/utils.ts";
 import FinanceListingTableIsValid from "@/components/section/finance/FinanceListingTableIsValid.vue";
 import FinanceListingTableHasInvoice from "@/components/section/finance/FinanceListingTableHasInvoice.vue";
+import { typedStorage } from "@/lib/local-storage.ts";
+import { yearRange } from "@/lib/finance.ts";
 
 const filter = computed((): TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
@@ -43,12 +45,23 @@ const query = graphql(`
 const { result, load, loading } = useLazyQuery(query);
 
 onMounted(async () => {
+  loadFromLocalStorage();
   await load(query, { order: order, where: filter.value }, { fetchPolicy: "network-only" });
 });
 
 const year = ref(new Date().getFullYear());
+
+const loadFromLocalStorage = () => {
+  const active = typedStorage.getItem("activeYear");
+
+  if (active && yearRange().isValidYear(active)) {
+    year.value = active;
+  }
+};
+
 const updateYear = async (y: number) => {
   year.value = y;
+  typedStorage.setItem("activeYear", y);
   await load(query, { order, where: filter.value }, { fetchPolicy: "network-only" });
 };
 
@@ -100,7 +113,7 @@ const total = computed(() => getTotalByPrice(result.value?.travelCost));
         <Button @click="printPage" variant="default">Drucken</Button>
       </Navigation>
       <AddListing />
-      <ListingFilter @update:active-year="updateYear" />
+      <ListingFilter @update:active-year="updateYear" :active-year="year" />
     </div>
     <p class="font-semibold mb-4 mt-4">Außerordentliche Aufwendungen - Krankheitskosten {{ year }}</p>
     <TableBasic :columns="getColumns(columns)" :data="result?.travelCost ?? []" :loading />
