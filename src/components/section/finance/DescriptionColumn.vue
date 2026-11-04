@@ -35,12 +35,12 @@ onMounted(() => {
       }
       setColor(columns, tr, descriptionUncheckedColor, true);
 
-      descriptionColorMapping.forEach(([keyword, color]) => {
-        if (props.value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())) {
-          setColor(columns, tr, color);
-          return;
-        }
-      });
+      const match = descriptionColorMapping.find(([keyword]) => props.value.toLocaleLowerCase().includes(keyword.toLocaleLowerCase()));
+      if (!match) {
+        return;
+      }
+
+      setColor(columns, tr, match[1]);
     },
     // post: erst nach dem Rendern ausführen, damit isAnyUnchecked den aktuellen Checkbox-Zustand im DOM liest
     { immediate: true, flush: "post" },
