@@ -15,6 +15,7 @@ const props = defineProps<{
   type: TableCellType;
   unit?: string;
   reverse?: boolean;
+  decimals?: number;
 }>();
 </script>
 
@@ -24,7 +25,7 @@ const props = defineProps<{
     <DateTimeText v-else-if="type === 'datetime'" :value="value as string" />
     <DateText v-else-if="type === 'date'" :value="value as string" />
     <TimeText v-else-if="type === 'time'" :value="value as string" />
-    <NumberText v-else-if="type === 'number'" :unit="unit" :value="value as StringOrNumber" />
+    <NumberText v-else-if="type === 'number'" :unit="unit" :value="value as StringOrNumber" :decimals />
     <p v-else class="text-muted-foreground">
       {{ value }}
     </p>
