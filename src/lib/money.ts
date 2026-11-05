@@ -1,3 +1,10 @@
+import { formatNumber } from "@/lib/number.ts";
+
+export const formatMoney = (money?: number, unit = "€") => {
+  const formatedNumber = formatNumber(money, 2);
+  return formatedNumber ? `${formatedNumber} ${unit}` : "";
+};
+
 /**
  * Calculate the total price from an array of objects with a price property.
  *

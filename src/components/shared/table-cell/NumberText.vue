@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { isDefined } from "@/lib/utilities.ts";
+import { numberFormatter } from "@/lib/number.ts";
 
-const props = defineProps<{ value?: string | number; unit?: string }>();
-
-const val = computed(() => (isDefined(props.value) ? String(parseFloat(String(props.value)).toFixed(2)).replace(".", ",") : ""));
+defineProps<{ value?: string | number; unit?: string; decimals?: number }>();
 </script>
 
 <template>
-  <p class="text-muted-foreground">{{ val }} {{ value ? unit : "" }}</p>
+  <p class="text-muted-foreground">{{ numberFormatter({ number: value, unit, decimals }) }}</p>
 </template>

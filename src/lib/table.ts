@@ -17,6 +17,7 @@ export interface DatatableColumns<T> {
   hideable?: boolean;
   sortable?: boolean;
   component?: object;
+  decimals?: number;
   className?: HTMLAttributes["class"];
   type?: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
   reverse?: true;
@@ -50,6 +51,7 @@ export const getColumns = (columns: Array<DatatableColumns<any>>) => {
         callback: column.callback,
         customValue: column.customValue,
         reverse: column.reverse,
+        decimals: column.decimals,
       }),
       enableHiding: column.type === "checkbox" ? false : column.hideable,
       enableSorting: column.type !== "checkbox" && column.sortable,
@@ -90,7 +92,7 @@ interface DataTableCellCreator {
   monoFont?: boolean;
   replacementForZero?: string | null;
   unit?: string;
-  decimal?: boolean;
+  decimals?: number;
   unitAdditive?: string;
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
@@ -106,7 +108,7 @@ const getCell = (obj: DataTableCellCreator) => {
       type: obj.type,
       replacementForZero: obj.replacementForZero,
       unit: obj.unit,
-      decimal: obj.decimal,
+      decimals: obj.decimals,
       unitAdditive: obj.unitAdditive,
       reverse: obj.reverse,
     });
@@ -153,7 +155,7 @@ const getTableCell = ({
   type,
   replacementForZero,
   unit,
-  decimal,
+  decimals,
   unitAdditive,
   reverse,
 }: {
@@ -163,7 +165,7 @@ const getTableCell = ({
   type: string;
   replacementForZero?: string | null;
   unit?: string | undefined;
-  decimal?: boolean | undefined;
+  decimals?: number;
   unitAdditive?: string;
   reverse?: boolean;
 }) => {
@@ -181,7 +183,7 @@ const getTableCell = ({
         value,
         replacementForZero,
         unit,
-        decimal,
+        decimals,
         type,
         unitAdditive,
         reverse,
