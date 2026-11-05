@@ -8,7 +8,6 @@ import { appTableFeatures, type AppTableFeatures } from "@/lib/table-features";
 import { toRef } from "vue";
 
 type CustomColumnDef<TData extends RowData> = ColumnDef<AppTableFeatures, TData, any> & {
-  width?: string;
   headerClass?: string;
 };
 const props = defineProps<{
@@ -34,11 +33,7 @@ const table = useTable<AppTableFeatures, TData>({
   <Table :class="props.class" :wrapper-class="props.wrapperClass">
     <TableHeader class="sticky top-0 z-10 bg-card">
       <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-        <TableHead
-          v-for="(header, index) in headerGroup.headers"
-          :key="header.id"
-          :class="[columns[index].width ? `w-[${columns[index].width}]` : '', columns[index].headerClass]"
-        >
+        <TableHead v-for="(header, index) in headerGroup.headers" :key="header.id" :class="[columns[index].headerClass]">
           <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
         </TableHead>
       </TableRow>
