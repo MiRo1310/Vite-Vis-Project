@@ -48,8 +48,17 @@ Cypress.Commands.add("mountE2E", (component, options?: Parameters<typeof mount>[
   });
 });
 
-Cypress.Commands.add("getBySel", (sel: string) => {
-  return cy.get(`[data-e2e="${sel}"]`);
+Cypress.Commands.add("getBySel", { prevSubject: "optional" }, (subject: any, sel: string) => {
+  const selector = `[data-e2e="${sel}"]`;
+  if (subject) {
+    return cy.wrap(subject).find(selector);
+  }
+  return cy.get(selector);
+});
+
+Cypress.Commands.add("closeToast", (text: string) => {
+  cy.contains("li", text).find("button").click();
+  cy.contains(text).should("not.exist");
 });
 
 declare global {
@@ -58,6 +67,7 @@ declare global {
     interface Chainable {
       mountE2E: typeof mount;
       getBySel(sel: string): Chainable<JQuery<HTMLElement>>;
+      closeToast(text: string): Chainable<void>;
     }
   }
 }

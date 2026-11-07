@@ -20,7 +20,7 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     cy.getBySel("product-name").should("exist").type(productName);
     cy.getBySel("product-category").should("exist").click();
     cy.getBySel(`product-category-${categoryName}`).click();
-    cy.getBySel("product-submit").click();
+    cy.getBySel("btn-submit").click();
 
     cy.contains("Das Produkt wurde erfolgreich erstellt").should("exist");
     cy.contains("td", productName).should("exist");

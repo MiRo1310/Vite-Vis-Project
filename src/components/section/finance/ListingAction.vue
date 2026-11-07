@@ -15,6 +15,7 @@ import FormDate from "@/components/shared/form/FormDate.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
 import { type ITableColumn } from "@/types/types.ts";
+import { Logger } from "@/lib/logger.ts";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
@@ -30,7 +31,11 @@ const { mutate } = useMutation(
   },
 );
 
-const { mutate: updateMutation } = useMutation(
+const {
+  mutate: updateMutation,
+  onDone: updateDone,
+  onError: updateError,
+} = useMutation(
   graphql(`
     mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {
       updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {
@@ -46,22 +51,28 @@ const { mutate: updateMutation } = useMutation(
 const remove = async () => {
   await mutate({ id: props.value });
 };
+type TravelCostRow = TravelCostQuery["travelCost"][number];
+const toFormValues = (row: TravelCostRow) => ({
+  date: row.date ?? "",
+  description: row.description,
+  price: row.price ?? undefined,
+  addressId: row.addressId ?? undefined,
+});
 
 const form = useForm({
   validationSchema: formSchemaListing,
-  initialValues: {
-    date: props.row.original.date ?? "",
-    description: props.row.original.description,
-    price: props.row.original.price ?? undefined,
-    addressId: props.row.original.addressId ?? undefined,
-  },
+  initialValues: toFormValues(props.row.original),
 });
 
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
+const openUpdate = () => {
+  form.resetForm({ values: toFormValues(props.row.original) });
+  dialogUpdateOpen.value = true;
+};
+
 const onSubmit = form.handleSubmit(async (values) => {
-  dialogUpdateOpen.value = false;
   await updateMutation({
     id: props.value,
     date: values.date,
@@ -69,13 +80,20 @@ const onSubmit = form.handleSubmit(async (values) => {
     price: Number(String(values.price)),
     addressId: values.addressId,
   });
-  form.resetForm();
+});
+
+updateDone(() => {
+  dialogUpdateOpen.value = false;
+});
+
+updateError((error) => {
+  Logger("Error updating travel cost:", { e: error });
 });
 </script>
 
 <template>
   <div class="py-2 flex gap-2 justify-end print-none">
-    <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
+    <Button size="iconRow" icon="edit" variant="outline" v-e2e="'listing-edit'" @click="openUpdate" />
     <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />

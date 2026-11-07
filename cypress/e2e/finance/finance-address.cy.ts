@@ -1,4 +1,6 @@
 import { routes } from "@/router/routes.ts";
+import { aliasGraphqlOperations, clickESC, dataSel } from "../../support/utils.ts";
+import { faker } from "@faker-js/faker";
 
 describe("Finance Listing (GraphQL Integration)", () => {
   it("loads addresses from the real backend without a GraphQL error", () => {
@@ -28,3 +30,95 @@ describe("Finance Listing (GraphQL Integration)", () => {
     cy.getBySel("input-with-options").parent().contains("option", user);
   });
 });
+
+describe("Address Edit-Dialog", () => {
+  let name = "";
+  let street = "";
+  let city = "";
+
+  beforeEach(() => {
+    aliasGraphqlOperations();
+    name = faker.person.fullName();
+    street = getStreet();
+    city = getCity();
+    addAddress(name, street, city);
+    cy.wait("@Addresses");
+    openDialog(street).as("dialog");
+  });
+
+  it("dialog should have update and close buttons", () => {
+    const { close, update } = dialogButtons("@dialog");
+
+    close().should("exist");
+    update().should("exist");
+  });
+
+  it("shows the new values when reopening after save", () => {
+    const newName = faker.person.fullName();
+    let newStreet = "";
+    const newCity = getCity();
+
+    while (newStreet === street || newStreet === "") {
+      newStreet = getStreet();
+    }
+
+    setValues("@dialog", newName, newStreet, newCity);
+
+    dialogButtons("@dialog").update().click();
+
+    openDialog(newStreet).as("reopenedDialog");
+
+    validateValues("@reopenedDialog", newName, newStreet, newCity);
+  });
+
+  it("shows the saved values when reopening after closing with the close button", () => {
+    dialogButtons("@dialog").close().click();
+
+    openDialog(street).as("reopenedDialog");
+
+    validateValues("@reopenedDialog", name, street, city);
+  });
+
+  it("shows the saved values when reopening after closing with ESC", () => {
+    clickESC("@dialog");
+    openDialog(street).as("reopenedDialog");
+
+    validateValues("@reopenedDialog", name, street, city);
+  });
+});
+
+const addAddress = (name: string, street: string, city: string) => {
+  cy.visit(routes.addresses.path);
+  cy.getBySel("address-name").should("exist").type(name);
+  cy.getBySel("address-street").should("exist").type(street);
+  cy.getBySel("address-city").should("exist").type(city);
+  cy.getBySel("address-submit").should("exist").click();
+};
+
+const setValues = (alias: string, name: string, street: string, city: string) => {
+  cy.get(alias).find(dataSel("address-name")).should("exist").as("name");
+  cy.get(alias).find(dataSel("address-street")).should("exist").as("street");
+  cy.get(alias).find(dataSel("address-city")).should("exist").as("city");
+
+  cy.get("@name").clear().type(name);
+  cy.get("@street").clear().type(street);
+  cy.get("@city").clear().type(city);
+};
+
+const validateValues = (alias: string, name: string, street: string, city: string) => {
+  cy.get(alias).find(dataSel("address-name")).should("exist").should("have.value", name);
+  cy.get(alias).find(dataSel("address-street")).should("exist").should("have.value", street);
+  cy.get(alias).find(dataSel("address-city")).should("exist").should("have.value", city);
+};
+
+const openDialog = (search: string) => {
+  cy.get("table").contains("p", search).closest("tr").find("[data-e2e='address-edit']").click();
+  return cy.get("[role='dialog']");
+};
+
+const dialogButtons = (alias: string) => {
+  return { update: () => cy.get(alias).getBySel("address-update"), close: () => cy.get(alias).getBySel("address-close") };
+};
+
+const getStreet = () => `${faker.location.street()} ${faker.location.buildingNumber()}`;
+const getCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;

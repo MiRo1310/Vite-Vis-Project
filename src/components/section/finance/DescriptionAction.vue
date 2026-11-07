@@ -49,12 +49,11 @@ const remove = async () => {
 };
 
 const update = async () => {
-  dialogUpdateOpen.value = false;
   const id = props.value;
-
   if (!description.value || !id) {
     return;
   }
+  dialogUpdateOpen.value = false;
   await updateMutation(
     {
       id,
@@ -64,23 +63,23 @@ const update = async () => {
       refetchQueries: ["Descriptions"],
     },
   );
-  clear();
-};
-
-const clear = () => {
-  description.value = "";
 };
 
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
 const description = ref(props.row.original.text);
+
+const onOpen = () => {
+  dialogUpdateOpen.value = true;
+  description.value = props.row.original.text;
+};
 </script>
 
 <template>
   <div class="py-2 flex gap-2 justify-end print-none">
-    <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
-    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
+    <Button size="iconRow" icon="edit" variant="outline" @click="onOpen" v-e2e="'button-edit-description'" />
+    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" v-e2e="'button-remove-description'" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
   <Dialog v-model:open="dialogUpdateOpen">
@@ -90,8 +89,8 @@ const description = ref(props.row.original.text);
         <Textarea placeholder="Beschreibung" v-model:model-value="description" class="h-40" />
       </div>
       <div class="flex gap-4 justify-end">
-        <Button variant="outline" @click="update">Aktualisieren</Button>
-        <Button variant="default" @click="dialogUpdateOpen = false">Schließen</Button>
+        <Button variant="outline" @click="update" :disabled="!description" v-e2e="'button-update-description'">Aktualisieren</Button>
+        <Button variant="default" @click="dialogUpdateOpen = false" v-e2e="'button-close-description'">Schließen</Button>
       </div>
     </template>
   </Dialog>
