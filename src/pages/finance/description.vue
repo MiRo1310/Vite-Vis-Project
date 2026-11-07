@@ -7,7 +7,6 @@ import { useQuery } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import AddDescription from "@/components/section/finance/AddDescription.vue";
 import DescriptionAction from "@/components/section/finance/DescriptionAction.vue";
-import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import { type DescriptionsQuery } from "@/api/gql/graphql.ts";
 
 const { result, loading } = useQuery(
@@ -25,8 +24,7 @@ const columns: Array<DatatableColumns<DescriptionsQuery["description"][number]>>
   {
     source: "text",
     labelKey: "Beschreibung",
-    type: "component",
-    component: DescriptionColumn,
+    type: "preCode",
   },
   {
     source: "id",

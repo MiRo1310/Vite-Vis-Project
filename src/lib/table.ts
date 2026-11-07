@@ -7,6 +7,10 @@ import { clsx } from "clsx";
 import { type Paths } from "@/types/types.ts";
 import { cn } from "@/lib/utils.ts";
 
+export type TableCellClass<Original> = (original: Original) => string;
+
+export type TableCellType = "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox" | "preCode";
+
 export interface DatatableColumns<T> {
   accessorKey?: string;
   headerClass?: string;
@@ -19,10 +23,11 @@ export interface DatatableColumns<T> {
   component?: object;
   decimals?: number;
   className?: HTMLAttributes["class"];
-  type?: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  type?: TableCellType;
   reverse?: true;
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
+  cellClass?: TableCellClass<T>;
 }
 
 export type CustomValue = string | number | boolean | undefined | object;
@@ -52,6 +57,7 @@ export const getColumns = (columns: Array<DatatableColumns<any>>) => {
         customValue: column.customValue,
         reverse: column.reverse,
         decimals: column.decimals,
+        cellClass: column.cellClass,
       }),
       enableHiding: column.type === "checkbox" ? false : column.hideable,
       enableSorting: column.type !== "checkbox" && column.sortable,
@@ -64,7 +70,7 @@ const getHeader = (obj: {
   source: string;
   label: string | undefined;
   sortable: boolean | undefined;
-  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  type: TableCellType;
   reverse?: boolean | undefined;
 }) => {
   if (obj.sortable) {
@@ -87,7 +93,7 @@ const getHeader = (obj: {
 interface DataTableCellCreator {
   source: string;
   component?: object;
-  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  type: TableCellType;
   className?: string;
   monoFont?: boolean;
   replacementForZero?: string | null;
@@ -97,30 +103,45 @@ interface DataTableCellCreator {
   callback?: (params: Record<string, any>) => void;
   customValue?: CustomValue;
   reverse?: boolean | undefined;
+  cellClass?: TableCellClass<any>;
 }
 
-const getCell = (obj: DataTableCellCreator) => {
-  if (["text", "date", "bool", "datetime", "time", "number"].includes(obj.type)) {
+const getCell = ({
+                   type,
+                   source,
+                   className,
+                   unit,
+                   reverse,
+                   replacementForZero,
+                   decimals,
+                   unitAdditive,
+                   cellClass,
+                   component,
+                   customValue,
+                   callback,
+                 }: DataTableCellCreator) => {
+  const tableCellIncludedTypes: TableCellType[] = ["text", "date", "bool", "datetime", "time", "number", "preCode"];
+  if (tableCellIncludedTypes.includes(type)) {
     return getTableCell({
       component: TableCell,
-      source: obj.source,
-      className: obj.className,
-      type: obj.type,
-      replacementForZero: obj.replacementForZero,
-      unit: obj.unit,
-      decimals: obj.decimals,
-      unitAdditive: obj.unitAdditive,
-      reverse: obj.reverse,
+      source,
+      className,
+      type,
+      replacementForZero,
+      unit,
+      decimals,
+      unitAdditive,
+      reverse,
     });
   }
-  if (obj.type === "html") {
-    return getHtml(obj.source);
+  if (type === "html") {
+    return getHtml(source);
   }
-  if (obj.type === "component" && obj.component) {
-    return getComponent(obj.component, obj.source, obj.className, obj.customValue, obj.callback);
+  if (type === "component" && component) {
+    return getComponent(component, source, className, customValue, callback, cellClass);
   }
 
-  if (obj.type === "checkbox") {
+  if (type === "checkbox") {
     return checkbox();
   }
 };
@@ -148,6 +169,35 @@ export const getHtml = (source: string) => {
     return h("div", { innerHTML: val });
   };
 };
+const getComponent = (
+  component: object,
+  source: string,
+  className: string | undefined,
+  customValue: CustomValue | undefined,
+  callback?: (params: Record<string, any>) => void,
+  cellClass?: TableCellClass<any>,
+) => {
+  return ({ row }: any) => {
+    const value = getValueByPath(row.original, source);
+    return h(
+      "div",
+      {
+        class: clsx({
+          "font-medium": true,
+          [className ?? ""]: true,
+        }),
+      },
+      h(component, {
+        value,
+        row,
+        source,
+        customValue,
+        cellClass,
+        ...(callback ? { callback: callback } : {}),
+      }),
+    );
+  };
+};
 const getTableCell = ({
   component,
   source,
@@ -158,6 +208,7 @@ const getTableCell = ({
   decimals,
   unitAdditive,
   reverse,
+  cellClass,
 }: {
   component: object;
   source: string;
@@ -168,6 +219,7 @@ const getTableCell = ({
   decimals?: number;
   unitAdditive?: string;
   reverse?: boolean;
+  cellClass?: TableCellClass<any>;
 }) => {
   return ({ row }: any) => {
     const value = getValueByPath(row.original, source);
@@ -187,33 +239,8 @@ const getTableCell = ({
         type,
         unitAdditive,
         reverse,
-      }),
-    );
-  };
-};
-const getComponent = (
-  component: object,
-  source: string,
-  className: string | undefined,
-  customValue: CustomValue | undefined,
-  callback?: (params: Record<string, any>) => void,
-) => {
-  return ({ row }: any) => {
-    const value = getValueByPath(row.original, source);
-    return h(
-      "div",
-      {
-        class: clsx({
-          "font-medium": true,
-          [className ?? ""]: true,
-        }),
-      },
-      h(component, {
-        value,
-        row,
-        source,
-        customValue,
-        ...(callback ? { callback: callback } : {}),
+        cellClass,
+        original: row.original,
       }),
     );
   };
@@ -231,7 +258,7 @@ interface DataTableHeaderCreator {
   source: string;
   sortable: boolean | undefined;
   className: string | undefined;
-  type: "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox";
+  type: TableCellType;
 }
 
 const buttonSorting = (column: any, obj: DataTableHeaderCreator) => {

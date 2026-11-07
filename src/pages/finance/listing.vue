@@ -9,13 +9,12 @@ import ListingAction from "@/components/section/finance/ListingAction.vue";
 import { computed, onMounted, ref } from "vue";
 import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
-import DescriptionColumn from "@/components/section/finance/DescriptionColumn.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
-import { type TravelCostFilterInput, type TravelCostQuery, type TravelCostSortInput } from "@/api/gql/graphql.ts";
+import { type TravelCostFilterInput, type TravelCostSortInput } from "@/api/gql/graphql.ts";
 import FinanceListingTableIsValid from "@/components/section/finance/FinanceListingTableIsValid.vue";
 import FinanceListingTableHasInvoice from "@/components/section/finance/FinanceListingTableHasInvoice.vue";
 import { typedStorage } from "@/lib/local-storage.ts";
-import { yearRange } from "@/lib/finance.ts";
+import { getCellClasses, type TravelCostRow, yearRange } from "@/lib/finance.ts";
 import { formatMoney, getTotalByPrice } from "@/lib/money.ts";
 
 const filter = computed((): TravelCostFilterInput => {
@@ -65,16 +64,28 @@ const updateYear = async (y: number) => {
   await load(query, { order, where: filter.value }, { fetchPolicy: "network-only" });
 };
 
-const columns: Array<DatatableColumns<TravelCostQuery["travelCost"][number]>> = [
-  { source: "date", labelKey: "Datum", type: "date", className: "listing__cell" },
-  { source: "address.city", labelKey: "Adresse", type: "component", component: ListingAddress, className: "listing__cell" },
-  { source: "description", labelKey: "Beschreibung", type: "component", component: DescriptionColumn, className: "listing__cell" },
+const columns: Array<DatatableColumns<TravelCostRow>> = [
+  { source: "date", labelKey: "Datum", type: "date", cellClass: getCellClasses },
+  {
+    source: "address.city",
+    labelKey: "Adresse",
+    type: "component",
+    component: ListingAddress,
+    cellClass: getCellClasses,
+  },
+  {
+    source: "description",
+    labelKey: "Beschreibung",
+    type: "preCode",
+    cellClass: getCellClasses,
+  },
   {
     source: "price",
     labelKey: "Betrag",
     type: "number",
     unit: "€",
-    className: "text-right listing__cell",
+    className: "text-right",
+    cellClass: getCellClasses,
   },
   {
     source: "isValidated",
