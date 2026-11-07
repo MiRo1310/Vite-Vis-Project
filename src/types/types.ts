@@ -4,6 +4,7 @@ import { type ApolloQueryResult } from "@apollo/client";
 import { type FunctionalComponent, type HTMLAttributes } from "vue";
 import { type Badge } from "@/components/shared/badge/badge.variants";
 import { type IValueOf } from "@/store/valueClasses.ts";
+import { type TableCellClass } from "@/lib/table.ts";
 
 export interface AlexaList {
   name: string;
@@ -143,6 +144,7 @@ export interface ITableColumn<Value, TRow extends RowData, CustomValue = null, F
   source: string;
   customValue?: CustomValue | null;
   callback?: F | CallbackFunktion;
+  cellClass?: TableCellClass<TRow>;
 }
 
 export interface NavigationItem {

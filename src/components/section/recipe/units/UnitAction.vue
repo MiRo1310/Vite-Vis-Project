@@ -7,7 +7,6 @@ import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
 import { Input } from "@/components/shared/input/input.variants";
 import { type UnitsQuery } from "@/api/gql/graphql.ts";
-import description from "@/pages/finance/description.vue";
 import { type ITableColumn } from "@/types/types.ts";
 import { refetchQueryUnits } from "@/composables/querys/units.ts";
 
@@ -67,7 +66,6 @@ const update = async () => {
 
 const clear = () => {
   name.value = "";
-  description.value = "";
 };
 
 const dialogOpen = ref(false);
@@ -95,5 +93,3 @@ const name = ref(props.row.original.name);
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss"></style>

@@ -1,5 +1,5 @@
 import { routes } from "@/router/routes.ts";
-import { descriptionColorMapping, descriptionUncheckedColor as unchecked } from "@/constants/finance.ts";
+import { financeListTextColorMapping, descriptionUncheckedColor as unchecked } from "@/constants/finance.ts";
 
 // Vergibt für GraphQL-Requests einen Alias nach operationName, damit die Tests mit cy.wait("@<operationName>") darauf warten können
 const aliasGraphqlOperations = () => {
@@ -96,7 +96,7 @@ describe("Finance Listing (GraphQL Integration)", () => {
   });
 
   // Ein Test je Eintrag im Mapping, neue Keywords werden automatisch mitgetestet
-  descriptionColorMapping.forEach(([keyword, color]) => {
+  financeListTextColorMapping.forEach(([keyword, color]) => {
     it(`uses ${color} for "${keyword}" when both checkboxes are checked`, () => {
       // Großschreibung prüft gleichzeitig, dass das Keyword case-insensitive erkannt wird
       const description = `Cypress ${keyword.toUpperCase()} ${Date.now()}`;

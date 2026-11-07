@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { numberFormatter } from "@/lib/number.ts";
 
-defineProps<{ value?: string | number; unit?: string; decimals?: number }>();
+defineProps<{ value?: string | number; unit?: string; decimals?: number, cellClass: string }>();
 </script>
 
 <template>
-  <p class="text-muted-foreground">{{ numberFormatter({ number: value, unit, decimals }) }}</p>
+  <p :class="cellClass">{{ numberFormatter({ number: value, unit, decimals }) }}</p>
 </template>

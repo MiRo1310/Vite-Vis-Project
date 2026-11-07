@@ -7,7 +7,7 @@ defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
 </script>
 
 <template>
-  <div class="text-muted-foreground">
+  <div :class="['text-muted-foreground', cellClass?.(row.original) ?? '']">
     <p>{{ row.original.address?.name }}</p>
     <p>{{ row.original.address?.street }} , {{ row.original.address?.city }}</p>
   </div>
