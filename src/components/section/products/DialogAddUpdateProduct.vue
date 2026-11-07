@@ -277,7 +277,7 @@ const addAllValuesToForm = ref(false);
         />
       </div>
       <template #footer>
-        <FormFooter @update:close="closeDialog" e2e="product-submit" />
+        <FormFooter @update:close="closeDialog" />
       </template>
     </Form>
   </DialogShared>

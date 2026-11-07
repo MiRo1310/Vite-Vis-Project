@@ -5,6 +5,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";
 import { Textarea } from "@/components/ui/textarea";
+import { texts } from "@/text/de.ts";
 
 const { toast } = useToast();
 
@@ -34,7 +35,7 @@ const addDescriptionHandler = async () => {
     text: text.value,
   });
   toast({
-    title: "Die Beschreibung wurde hinzugefügt",
+    title: texts.finance.description.addNewDescriptionToastMessage,
   });
   clearInputs();
 };
@@ -42,7 +43,7 @@ const addDescriptionHandler = async () => {
 
 <template>
   <div class="my-4 flex gap-4 flex-wrap">
-    <Textarea placeholder="Beschreibung" v-model:model-value="text" class="h-24" />
-    <Button icon="add" variant="outline" size="icon" @click="addDescriptionHandler" />
+    <Textarea placeholder="Beschreibung" v-model:model-value="text" class="h-24" v-e2e="'textarea-description'" />
+    <Button icon="add" variant="outline" size="icon" @click="addDescriptionHandler" v-e2e="'button-add-description'" />
   </div>
 </template>

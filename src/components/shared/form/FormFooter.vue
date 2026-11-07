@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
-defineProps<{ abortLabel?: string; disabled?: boolean; saveLabel?: string; e2e?: string }>();
+defineProps<{ abortLabel?: string; disabled?: boolean; saveLabel?: string }>();
 const emits = defineEmits(["update:close"]);
 </script>
 
 <template>
   <div class="flex justify-end space-x-2">
-    <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')">{{ abortLabel ?? "Abbrechen" }}</Button>
-    <Button type="submit" variant="default" :disabled v-e2e="e2e">{{ saveLabel ?? "Speichern" }}</Button>
+    <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')" v-e2e="'btn-abort'">{{ abortLabel ?? "Abbrechen" }}</Button>
+    <Button type="submit" variant="default" :disabled v-e2e="'btn-submit'">{{ saveLabel ?? "Speichern" }}</Button>
   </div>
 </template>

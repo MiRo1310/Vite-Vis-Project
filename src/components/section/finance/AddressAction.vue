@@ -59,11 +59,18 @@ const dialogUpdateOpen = ref(false);
 const name = ref(props.row.original.name ?? "");
 const street = ref(props.row.original.street ?? "");
 const city = ref(props.row.original.city ?? "");
+
+const onOpen = () => {
+  dialogUpdateOpen.value = true;
+  name.value = props.row.original.name ?? "";
+  street.value = props.row.original.street ?? "";
+  city.value = props.row.original.city ?? "";
+};
 </script>
 
 <template>
   <div class="py-2 flex gap-2 justify-end print-none">
-    <Button size="iconRow" icon="edit" variant="outline" @click="dialogUpdateOpen = true" />
+    <Button size="iconRow" icon="edit" variant="outline" @click="onOpen" v-e2e="'address-edit'" />
     <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
@@ -71,16 +78,14 @@ const city = ref(props.row.original.city ?? "");
     <template #title>Aktualisieren</template>
     <template #content>
       <div class="mt-4 flex flex-col gap-4">
-        <Input type="text" placeholder="Name" v-model:model-value="name" />
-        <Input type="text" placeholder="Straße" v-model:model-value="street" />
-        <Input type="text" placeholder="Stadt" v-model:model-value="city" />
+        <Input type="text" placeholder="Name" v-model:model-value="name" e2e="address-name" />
+        <Input type="text" placeholder="Straße" v-model:model-value="street" e2e="address-street" />
+        <Input type="text" placeholder="Stadt" v-model:model-value="city" e2e="address-city" />
       </div>
       <div class="flex gap-4 justify-end">
-        <Button variant="outline" @click="update">Aktualisieren</Button>
-        <Button variant="default" @click="dialogUpdateOpen = false">Schließen</Button>
+        <Button variant="outline" @click="update" v-e2e="'address-update'">Aktualisieren</Button>
+        <Button variant="default" @click="dialogUpdateOpen = false" v-e2e="'address-close'">Schließen</Button>
       </div>
     </template>
   </Dialog>
 </template>
-
-<style scoped lang="scss"></style>
