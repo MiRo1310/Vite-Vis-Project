@@ -3,7 +3,6 @@ import { type HTMLAttributes } from "vue";
 import CardSubcard from "@/components/shared/card/CardSubcard.vue";
 import ValueWithUnit from "@/components/shared/ValueWithUnit.vue";
 import { type RoutePath } from "@/router/routes.ts";
-import type Listing from "@/pages/finance/listing.vue";
 
 export interface InfoTypes {
   route?: RoutePath;
@@ -23,9 +22,13 @@ defineProps<{ class?: HTMLAttributes["class"]; infos: InfoTypes }>();
 <template>
   <CardSubcard :class="$props.class">
     <RouterLink v-if="infos.route" :to="infos.route">
-      <div v-for="(info, index) in infos.listing" :key="index" :class="['flex justify-between items-center text-xs', info.class]">
-        <p>{{ info.title }}</p>
-        <ValueWithUnit :value="info.value" :unit="info.unit" :class="info.valueClass" />
+      <div
+        v-for="({ title, value, unit, class: _class, valueClass }, index) in infos.listing"
+        :key="index"
+        :class="['flex justify-between items-center text-xs', _class]"
+      >
+        <p>{{ title }}</p>
+        <ValueWithUnit :value="value" :unit="unit" :class="valueClass" />
       </div>
     </RouterLink>
     <template v-else>

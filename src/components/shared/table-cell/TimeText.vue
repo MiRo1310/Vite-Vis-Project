@@ -1,9 +1,9 @@
 <script setup lang="ts">
-defineProps<{ value: string }>();
+defineProps<{ value: string; cellClass: string }>();
 </script>
 
 <template>
-  <span class="text-muted-foreground">
+  <span :class="cellClass">
     {{ value ? new Date(value.toString()) : "-" }}
   </span>
 </template>
