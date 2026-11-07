@@ -10,12 +10,12 @@ import { computed, onMounted, ref } from "vue";
 import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
-import { type TravelCostFilterInput, type TravelCostQuery, type TravelCostSortInput } from "@/api/gql/graphql.ts";
+import { type TravelCostFilterInput, type TravelCostSortInput } from "@/api/gql/graphql.ts";
 import FinanceListingTableIsValid from "@/components/section/finance/FinanceListingTableIsValid.vue";
 import FinanceListingTableHasInvoice from "@/components/section/finance/FinanceListingTableHasInvoice.vue";
 import { typedStorage } from "@/lib/local-storage.ts";
-import { yearRange } from "@/lib/finance.ts";
-import { getTotalByPrice } from "@/lib/money.ts";
+import { getCellClasses, type TravelCostRow, yearRange } from "@/lib/finance.ts";
+import { formatMoney, getTotalByPrice } from "@/lib/money.ts";
 
 const filter = computed((): TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
