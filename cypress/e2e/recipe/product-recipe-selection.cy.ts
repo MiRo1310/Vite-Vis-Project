@@ -1,6 +1,11 @@
 import { routes } from "@/router/routes.ts";
+import { aliasGraphqlOperations } from "../../support/utils.ts";
 
 describe("Product creation and recipe ingredient selection (GraphQL Integration)", () => {
+  beforeEach(()=>{
+    aliasGraphqlOperations()
+  })
+  
   it("creates a product, verifies it is listed, and confirms it is selectable while creating a new recipe", () => {
     const uniqueSuffix = Date.now();
     const categoryName = `Cypress Kategorie ${uniqueSuffix}`;
@@ -9,8 +14,9 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
 
     // Kategorie anlegen, wird für das Produkt benötigt
     cy.visit(routes.productCategories.path);
-    cy.getBySel("add-category-input").find("input").type(categoryName);
-    cy.getBySel("add-category-submit").click();
+    cy.wait("@ProductCategories");
+    cy.getBySel("add-category-input").scrollIntoView().type(categoryName);
+    cy.getBySel("add-category-submit").scrollIntoView().should("exist").click();
     cy.contains("td", categoryName).should("exist");
 
     // Produkt anlegen

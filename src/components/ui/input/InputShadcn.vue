@@ -17,6 +17,7 @@ const props = withDefaults(
     step?: number;
     max?: number;
     min?: number;
+    e2e?: string;
   }>(),
   {
     defaultValue: 0,
@@ -56,6 +57,7 @@ const variants = {
       :step="step"
       :max="max"
       :min="min"
+      v-e2e="e2e"
       @change="clampOnChange"
       :class="
         twMerge(

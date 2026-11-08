@@ -23,14 +23,16 @@ const updateByPressEnter = ref(false);
 </script>
 
 <template>
-  <Header title="Produkt Kategorien"
-    ><RouterLink :to="{ name: routes.products.name }">
-      <Button as="div" variant="outline">Zu den Produkten</Button>
-    </RouterLink>
-  </Header>
-  <div class="flex items-center gap-2">
-    <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
-  </div>
+  <div class="h-full flex flex-col">
+    <Header title="Produkt Kategorien">
+      <Button variant="outline" as-child>
+        <RouterLink :to="{ name: routes.products.name }">Zu den Produkten</RouterLink>
+      </Button>
+    </Header>
+    <div class="flex items-center gap-2 mb-2">
+      <AddCategory :update="updateByPressEnter" :result="result?.productCategories ?? []" />
+    </div>
 
-  <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" :loading />
+    <TableBasic :columns="getColumns(columns)" :data="result?.productCategories ?? []" :loading wrapper-class="flex-1 min-h-0" />
+  </div>
 </template>
