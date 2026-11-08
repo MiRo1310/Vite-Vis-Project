@@ -1,5 +1,5 @@
 import { routes } from "@/router/routes.ts";
-import { aliasGraphqlOperations, clickESC, dataSel } from "../../support/utils.ts";
+import { aliasGraphqlOperations, clickESC, dataSel, getFakerCity, getFakerStreet } from "../../support/utils.ts";
 import { faker } from "@faker-js/faker";
 
 describe("Finance Listing (GraphQL Integration)", () => {
@@ -39,8 +39,8 @@ describe("Address Edit-Dialog", () => {
   beforeEach(() => {
     aliasGraphqlOperations();
     name = faker.person.fullName();
-    street = getStreet();
-    city = getCity();
+    street = getFakerStreet();
+    city = getFakerCity();
     addAddress(name, street, city);
     cy.wait("@Addresses");
     openDialog(street).as("dialog");
@@ -56,10 +56,10 @@ describe("Address Edit-Dialog", () => {
   it("shows the new values when reopening after save", () => {
     const newName = faker.person.fullName();
     let newStreet = "";
-    const newCity = getCity();
+    const newCity = getFakerCity();
 
     while (newStreet === street || newStreet === "") {
-      newStreet = getStreet();
+      newStreet = getFakerStreet();
     }
 
     setValues("@dialog", newName, newStreet, newCity);
@@ -87,7 +87,7 @@ describe("Address Edit-Dialog", () => {
   });
 });
 
-const addAddress = (name: string, street: string, city: string) => {
+export const addAddress = (name: string, street: string, city: string) => {
   cy.visit(routes.addresses.path);
   cy.getBySel("address-name").should("exist").type(name);
   cy.getBySel("address-street").should("exist").type(street);
@@ -119,6 +119,3 @@ const openDialog = (search: string) => {
 const dialogButtons = (alias: string) => {
   return { update: () => cy.get(alias).getBySel("address-update"), close: () => cy.get(alias).getBySel("address-close") };
 };
-
-const getStreet = () => `${faker.location.street()} ${faker.location.buildingNumber()}`;
-const getCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;
