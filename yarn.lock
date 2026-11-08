@@ -1509,6 +1509,11 @@
   resolved "https://registry.yarnpkg.com/@exodus/bytes/-/bytes-1.16.0.tgz#954c9d9dd7eec15b966b2e8f2d883c04295b720c"
   integrity sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==
 
+"@faker-js/faker@^10.6.0":
+  version "10.6.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-10.6.0.tgz#b6b0248f0f59e0ac69ad6803167d58bb824f929d"
+  integrity sha512-3RQHgEtvL1Frl/d1cSreo7qhJ3Gk1OdNUai/CtZ8G+wYeRQnJih3s9xJ9/kgYekPQRdwgh0HXRPqMlzWGwivIQ==
+
 "@fastify/busboy@^3.1.1":
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-3.2.3.tgz#4a21ff2fbdf8b199cfac7230c1721adc9f5cba1f"
