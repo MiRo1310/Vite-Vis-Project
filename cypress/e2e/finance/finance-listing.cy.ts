@@ -72,9 +72,10 @@ describe("Finance Listing (GraphQL Integration)", () => {
     cy.contains("td", "42,50").should("exist");
   });
 
-  it("removes the red color only while both checkboxes are checked", () => {
+  it.only("removes the red color only while both checkboxes are checked", () => {
     // Beschreibung ohne "Rechnung"/"Fahrtkosten", sonst greift das colorMapping
-    const description = `Cypress Farbe Test ${Date.now()}`;
+    const description = `Cypress Farbe Rechnung ${Date.now()}`;
+    expect(description).to.include("Rechnung");
     createListing(description, "12.34");
 
     const cell = () => cy.contains("code", description);

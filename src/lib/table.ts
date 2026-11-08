@@ -107,19 +107,19 @@ interface DataTableCellCreator {
 }
 
 const getCell = ({
-                   type,
-                   source,
-                   className,
-                   unit,
-                   reverse,
-                   replacementForZero,
-                   decimals,
-                   unitAdditive,
-                   cellClass,
-                   component,
-                   customValue,
-                   callback,
-                 }: DataTableCellCreator) => {
+  type,
+  source,
+  className,
+  unit,
+  reverse,
+  replacementForZero,
+  decimals,
+  unitAdditive,
+  cellClass,
+  component,
+  customValue,
+  callback,
+}: DataTableCellCreator) => {
   const tableCellIncludedTypes: TableCellType[] = ["text", "date", "bool", "datetime", "time", "number", "preCode"];
   if (tableCellIncludedTypes.includes(type)) {
     return getTableCell({
@@ -132,6 +132,7 @@ const getCell = ({
       decimals,
       unitAdditive,
       reverse,
+      cellClass,
     });
   }
   if (type === "html") {
