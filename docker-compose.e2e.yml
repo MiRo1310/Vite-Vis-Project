@@ -1,0 +1,24 @@
+services:
+  mysql-e2e:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+    tmpfs:
+      - /var/lib/mysql # Daten nur im RAM, nach "down" komplett weg
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "--silent" ]
+      interval: 5s
+      retries: 15
+
+  backend-e2e:
+    image: ghcr.io/miro1310/recipe:latest
+    environment:
+      ConnectionStrings__AppDbConnectionString: "Server=mysql-e2e;Database=app;User=root;Password=root;"
+      ConnectionStrings__FinanceDbConnectionString: "Server=mysql-e2e;Database=app;User=root;Password=root;"
+    ports:
+      - "5096:5095"
+    depends_on:
+      mysql-e2e:
+        condition: service_healthy
+    restart: on-failure:10
