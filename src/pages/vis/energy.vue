@@ -3,21 +3,7 @@ import Page from "@/components/shared/page/Page.vue";
 import EnergyFlow from "@/components/shared/energy-flow/EnergyFlow.vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Battery,
-  BatteryFull,
-  BatteryLow,
-  BatteryMedium,
-  Car,
-  Check,
-  Heater,
-  House,
-  SolarPanel,
-  Torus,
-  X,
-} from "lucide-vue-next";
+import { ArrowLeft, ArrowRight, Battery, BatteryFull, BatteryLow, BatteryMedium, Car, Check, Heater, House, SolarPanel, Torus, X } from "@lucide/vue";
 import { type TEnergyFlowArray } from "@/components/shared/energy-flow";
 import { HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 

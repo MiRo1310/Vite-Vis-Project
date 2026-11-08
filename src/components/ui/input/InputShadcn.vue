@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "vue";
 import { twMerge } from "tailwind-merge";
 
-import { ChevronDown, ChevronUp } from "lucide-vue-next";
+import { ChevronDown, ChevronUp } from "@lucide/vue";
 import { getVariantsClasses } from "@/composables/variants-classes.ts";
 import { clamp } from "@/lib/number.ts";
 

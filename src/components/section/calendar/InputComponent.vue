@@ -3,7 +3,7 @@ import { InputShadcn } from "@/components/ui/input";
 import SelectComponent from "@/components/shared/select/SelectComponent.vue";
 import { colors } from "@/config/colors";
 import { Button } from "@/components/shared/button/button.variants";
-import { Trash2 } from "lucide-vue-next";
+import { Trash2 } from "@lucide/vue";
 import { type SelectOption } from "@/types/types.ts";
 
 const props = defineProps<{

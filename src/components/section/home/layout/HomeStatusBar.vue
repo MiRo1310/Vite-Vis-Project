@@ -8,7 +8,7 @@ import { DataCard, StatusCard } from "@/components/shared/card";
 import StatusDot from "@/components/shared/display/StatusDot.vue";
 import NotificationTicker from "@/components/section/home/status-bar/NotificationTicker.vue";
 import HomeNavTile from "@/components/section/home/status-bar/HomeNavTile.vue";
-import { Blinds, Flame, Plane } from "lucide-vue-next";
+import { Blinds, Flame, Plane } from "@lucide/vue";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 
 const { time, date } = useTime();

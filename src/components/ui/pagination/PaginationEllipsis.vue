@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from "@/lib/utils";
-import { Ellipsis } from "lucide-vue-next";
+import { Ellipsis } from "@lucide/vue";
 import { PaginationEllipsis, type PaginationEllipsisProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
 

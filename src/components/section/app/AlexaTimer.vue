@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader } from "@/components/shared/card";
-import { X } from "lucide-vue-next";
+import { X } from "@lucide/vue";
 import Button from "@/components/ui/button/Button.vue";
 import { useAppStore } from "@/store/app-store.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";

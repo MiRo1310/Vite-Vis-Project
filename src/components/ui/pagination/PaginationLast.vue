@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChevronsRight } from "lucide-vue-next";
+import { ChevronsRight } from "@lucide/vue";
 import { PaginationLast, type PaginationLastProps } from "reka-ui";
 import { computed, type HTMLAttributes } from "vue";
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Check, X } from "lucide-vue-next";
+import { Check, X } from "@lucide/vue";
 import { type HTMLAttributes } from "vue";
 
 defineProps<{
@@ -9,9 +9,6 @@ defineProps<{
 </script>
 
 <template>
-  <Check
-    v-if="value == 'true' || value === true"
-    :class="['text-green-500 -mr-1 h-4 w-4', $props.classIcon]"
-  />
+  <Check v-if="value == 'true' || value === true" :class="['text-green-500 -mr-1 h-4 w-4', $props.classIcon]" />
   <X v-else :class="['text-destructive -mr-1 h-4 w-4 p-0', $props.classIcon]" />
 </template>

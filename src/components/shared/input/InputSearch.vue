@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import Input from "@/components/shared/input/Input.vue";
 import { useDebounceFn } from "@vueuse/core";
-import { X } from "lucide-vue-next";
+import { X } from "@lucide/vue";
 
 const props = withDefaults(
   defineProps<{

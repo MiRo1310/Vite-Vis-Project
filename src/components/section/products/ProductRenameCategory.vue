@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
-import { Pencil } from "lucide-vue-next";
+import { Pencil } from "@lucide/vue";
 import { useMutation } from "@vue/apollo-composable";
 import { computed } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";

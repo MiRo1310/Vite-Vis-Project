@@ -2490,10 +2490,10 @@
   resolved "https://registry.yarnpkg.com/@keyv/serialize/-/serialize-1.1.1.tgz#0c01dd3a3483882af7cf3878d4e71d505c81fc4a"
   integrity sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==
 
-"@lucide/vue@^1.66.0":
-  version "1.66.0"
-  resolved "https://registry.yarnpkg.com/@lucide/vue/-/vue-1.66.0.tgz#2642a4465b2274df9288b6b520a6c243f9e38a28"
-  integrity sha512-cyALYgAzCD2uZ557pM5I/dmFAyTKqtwY7PrdU67gzITkTH+V635u7Uv7VBpQ5hqvmlGqRtbqSDx08LCJHU+GAw==
+"@lucide/vue@^1.70.0":
+  version "1.70.0"
+  resolved "https://registry.yarnpkg.com/@lucide/vue/-/vue-1.70.0.tgz#e1c89392dfd0513fa58209659e23b3d5e5f3e711"
+  integrity sha512-kutUu3oEtfQnyaP6hh76ShG2dxa8PiL6uY3rk3DqclQe0Vd2FtPlnclezR0XMQtlFMPiEaCOXDSuhehFHW5ErQ==
 
 "@mapbox/jsonlint-lines-primitives@^2.0.3":
   version "2.0.3"
@@ -7412,11 +7412,6 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
-
-lucide-vue-next@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/lucide-vue-next/-/lucide-vue-next-1.0.0.tgz#663ad26b7bfa327c7662b75bb0b843ebe749a31b"
-  integrity sha512-V6SPvx1IHTj/UY+FrIYWV5faISsPSb8BnWSFDxAtezWKvWc9ZZ40PDrdu1/Qb5vg4lHWr1hs1BAMGVGm6V1Xdg==
 
 magic-string-ast@^1.0.2:
   version "1.0.3"
