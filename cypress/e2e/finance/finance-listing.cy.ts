@@ -1,15 +1,9 @@
 import { routes } from "@/router/routes.ts";
 import { descriptionUncheckedColor as unchecked, financeListTextColorMapping } from "@/constants/finance.ts";
-import { aliasGraphqlOperations, clickESC, getFakerCity, getFakerStreet } from "../../support/utils.ts";
-import { addAddress } from "./finance-address.cy.ts";
+import { addAddress, aliasGraphqlOperations, clickESC, getFakerCity, getFakerStreet } from "../../support/utils.ts";
 import { faker } from "@faker-js/faker";
 
 describe("Finance Listing (GraphQL Integration)", () => {
-  const name = faker.person.fullName();
-  before(() => {
-    addAddress(name, getFakerStreet(), getFakerCity());
-  });
-
   it("loads travel costs from the real backend without a GraphQL error", () => {
     cy.visit(routes.finance.path);
 
@@ -30,7 +24,6 @@ describe("Finance Listing (GraphQL Integration)", () => {
   });
 
   it("removes the red color only while both checkboxes are checked", () => {
-    // Beschreibung ohne "Rechnung"/"Fahrtkosten", sonst greift das colorMapping
     const description = `Cypress Farbe Rechnung ${Date.now()}`;
     expect(description).to.include("Rechnung");
     createListing(description, "12.34");
@@ -53,12 +46,11 @@ describe("Finance Listing (GraphQL Integration)", () => {
     cell().should("have.class", unchecked);
   });
 
-  // Ein Test je Eintrag im Mapping, neue Keywords werden automatisch mitgetestet
   financeListTextColorMapping.forEach(([keyword, color]) => {
     it(`uses ${color} for "${keyword}" when both checkboxes are checked`, () => {
       // Großschreibung prüft gleichzeitig, dass das Keyword case-insensitive erkannt wird
       const description = `Cypress ${keyword.toUpperCase()} ${Date.now()}`;
-      createListing(description, "5.00", name);
+      createListing(description, "5.00");
 
       const cell = () => cy.contains("code", description);
 
@@ -86,7 +78,7 @@ describe("Dialog", () => {
   it("dialog should have footer buttons", () => {
     const description = `Cypress Test ${Date.now()}`;
     cy.visit(routes.finance.path);
-    createListing(description, "12.34");
+    createListing(description, "12.34", name);
 
     openEdit(description).should("exist").should("be.visible").as("dialog");
     const { abort, submit } = footerButtons("@dialog");
@@ -173,7 +165,10 @@ const toggleCheckbox = (description: string, checkbox: "isValid" | "hasInvoice",
 // Legt eine Adresse und eine Position im Finance-Listing an (beide Checkboxen sind danach unchecked)
 const createListing = (description: string, price: string, name?: string) => {
   aliasGraphqlOperations();
-  const addressName = name ?? "Michael Roling";
+  const addressName = faker.person.fullName();
+
+  addAddress(addressName, getFakerStreet(), getFakerCity());
+
   const today = new Date().toISOString().slice(0, 10);
 
   // Adresse anlegen, wird für die Auswahl im Listing-Formular benötigt
