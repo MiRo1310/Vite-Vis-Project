@@ -19,6 +19,10 @@
     "test:e2e:ci": "cypress run",
     "test:component:ci": "cypress run --component",
     "test:cypress:ci": "yarn run test:e2e:ci && yarn run test:component:ci",
+    "e2e:db:up": "docker compose -f docker-compose.e2e.yml up -d",
+    "e2e:db:down": "docker compose -f docker-compose.e2e.yml down",
+    "dev:e2e": "vite --mode e2e --port 5174",
+    "test:e2e:local": "cypress open --config baseUrl=http://localhost:5174",
     "release": "ts-node scripts/release.ts",
     "copy:local": "ts-node scripts/copy.ts",
     "update": "npx npm-check-updates --peer -u --target minor && yarn install"
