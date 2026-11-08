@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Pickaxe } from "lucide-vue-next";
+import { Pickaxe } from "@lucide/vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
 import AlexaListTableSheet from "@/components/shared/alexa-list/AlexaListTableSheet.vue";

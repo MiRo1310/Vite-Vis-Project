@@ -1,5 +1,5 @@
 import { type FunctionalComponent } from "vue";
-import { type LucideProps } from "lucide-vue-next";
+import { type LucideProps } from "@lucide/vue";
 import { type HexColors } from "@/components/shared/energy-flow/color-enum.ts";
 
 export interface Point {

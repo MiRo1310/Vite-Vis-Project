@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { type AlexaList } from "@/types/types.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import Button from "@/components/shared/button/Button.vue";
-import { X } from "lucide-vue-next";
+import { X } from "@lucide/vue";
 
 defineProps<{ list: AlexaList[] }>();
 

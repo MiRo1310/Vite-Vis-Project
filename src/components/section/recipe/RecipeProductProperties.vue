@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { type GetRecipeDetailsQuery } from "@/api/gql/graphql.ts";
-import { ChevronDown, ChevronRight } from "lucide-vue-next";
+import { ChevronDown, ChevronRight } from "@lucide/vue";
 
 type ProductType = NonNullable<GetRecipeDetailsQuery["recipe"]>["recipeProducts"][number]["product"];
 const props = defineProps<{ product: ProductType }>();
@@ -39,11 +39,7 @@ const nutrients = computed(() => {
   <div v-show="isOpen" class="mt-2 pl-5 pb-2">
     <p class="text-xs text-muted-foreground mb-1.5">Nährwerte (pro 100 g)</p>
     <div class="flex flex-wrap gap-1.5">
-      <div
-        v-for="n in nutrients"
-        :key="n.name"
-        class="flex items-center gap-1 rounded-md bg-muted/50 dark:bg-muted/30 px-2 py-1"
-      >
+      <div v-for="n in nutrients" :key="n.name" class="flex items-center gap-1 rounded-md bg-muted/50 dark:bg-muted/30 px-2 py-1">
         <span class="text-xs text-muted-foreground">{{ n.name }}:</span>
         <span class="text-xs font-semibold">{{ n.value }} {{ n.unit }}</span>
       </div>

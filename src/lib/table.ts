@@ -1,5 +1,5 @@
 import { h, type HTMLAttributes } from "vue";
-import { ArrowUpDown } from "lucide-vue-next";
+import { ArrowUpDown } from "@lucide/vue";
 import { Button } from "@/components/ui/button";
 import TableCell from "@/components/shared/table-cell/TableCell.vue";
 import { Checkbox } from "@/components/ui/checkbox";

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Blinds } from "lucide-vue-next";
+import { Blinds } from "@lucide/vue";
 import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { useRouter } from "vue-router";

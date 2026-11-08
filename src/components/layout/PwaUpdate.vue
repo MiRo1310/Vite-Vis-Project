@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from "@/components/shared/button/Button.vue";
-import { X } from "lucide-vue-next";
+import { X } from "@lucide/vue";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 import { ref } from "vue";
 

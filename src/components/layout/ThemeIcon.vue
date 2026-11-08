@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type HTMLAttributes } from "vue";
-import { Moon, Sun } from "lucide-vue-next";
+import { Moon, Sun } from "@lucide/vue";
 import { cn } from "@/lib/utils";
 
 // Sonne/Mond mit Dreh-Animation beim Wechsel Hell/Dunkel. Größe über `class` (Standard size-10).

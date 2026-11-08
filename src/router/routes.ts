@@ -22,7 +22,7 @@ import {
   type LucideIcon,
   Tractor,
   WavesLadder,
-} from "lucide-vue-next";
+} from "@lucide/vue";
 
 export type RoutePath = (typeof routes)[keyof typeof routes]["path"];
 export type TRoute = (typeof routes)[keyof typeof routes];

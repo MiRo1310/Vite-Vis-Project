@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/shared/button/button.variants";
-import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { ChevronLeft, ChevronRight } from "@lucide/vue";
 import { computed, onMounted, ref } from "vue";
 import { months } from "@/constants/constants.js";
 

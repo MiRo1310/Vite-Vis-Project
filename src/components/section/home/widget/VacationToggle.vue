@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import Button from "@/components/shared/button/Button.vue";
-import { UserRoundSearch } from "lucide-vue-next";
+import { UserRoundSearch } from "@lucide/vue";
 
 const { iobroker } = useIobrokerStore();
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDown, ChevronUp } from "lucide-vue-next";
+import { ChevronDown, ChevronUp } from "@lucide/vue";
 import Button from "@/components/shared/button/Button.vue";
 
 defineProps<{ disabledUp?: boolean; disabledDown?: boolean }>();

@@ -1,5 +1,5 @@
 import { type ButtonVariants } from "@/components/shared/button/Button.vue";
-import { Power, PowerOff, Plus, ChevronDown, ChevronRight, Pencil, Trash } from "lucide-vue-next";
+import { Power, PowerOff, Plus, ChevronDown, ChevronRight, Pencil, Trash } from "@lucide/vue";
 import type { FunctionalComponent } from "vue";
 
 export { default as Button } from "./Button.vue";

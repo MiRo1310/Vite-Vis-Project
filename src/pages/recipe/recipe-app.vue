@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/shared/button/button.variants";
-import { ArrowLeft, BookOpen, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "lucide-vue-next";
+import { ArrowLeft, BookOpen, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "@lucide/vue";
 import GithubIcon from "@/components/shared/icons/GithubIcon.vue";
 
 const recipeStore = useRecipeStore();

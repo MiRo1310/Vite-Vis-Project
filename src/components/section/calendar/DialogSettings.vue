@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { Button } from "@/components/shared/button/button.variants";
-import { Plus } from "lucide-vue-next";
+import { Plus } from "@lucide/vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import InputComponent from "@/components/section/calendar/InputComponent.vue";
 import { computed, ref } from "vue";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useMutation } from "@vue/apollo-composable";
-import { Trash } from "lucide-vue-next";
+import { Trash } from "@lucide/vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { useProductCategories } from "@/composables/querys/productCategories";
 import { graphql } from "@/api/gql";

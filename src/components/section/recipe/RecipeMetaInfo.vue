@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Clock, Flame, Timer, Users2 } from "lucide-vue-next";
+import { Clock, Flame, Timer, Users2 } from "@lucide/vue";
 
 defineProps<{
   preparationTimeMin?: number | null;

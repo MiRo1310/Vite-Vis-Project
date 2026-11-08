@@ -26,7 +26,7 @@ import { removeProductGroups } from "@/components/section/recipe-form/removeProd
 import RecipeCategoryFormSelect from "@/components/section/recipe-form/RecipeCategoryFormSelect.vue";
 import { newIdPrefix } from "@/components/section/recipe-form/utils.ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-vue-next";
+import { Check } from "@lucide/vue";
 import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
 import { deepCopy } from "@/lib/utilities.ts";
 

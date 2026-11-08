@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { computed } from "vue";
-import { Trash2 } from "lucide-vue-next";
+import { Trash2 } from "@lucide/vue";
 import { DataCard } from "@/components/shared/card";
 import { type Days, days } from "@/constants/constants.ts";
 import { trashData } from "@/constants/trash.ts";
