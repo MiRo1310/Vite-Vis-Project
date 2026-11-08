@@ -1,5 +1,5 @@
 import { financeYearBtns, getCellClasses, type TravelCostRow, yearRange } from "@/lib/finance.ts";
-import { financeListTextColorMapping } from "@/constants/finance.ts";
+import { descriptionUncheckedColor, financeListTextColorMapping } from "@/constants/finance.ts";
 
 describe("financeYearBtns", () => {
   it("should return count of years", () => {
@@ -53,22 +53,28 @@ describe("getCellClass", () => {
   });
 
   it("Should get empty string if text is empty", () => {
-    expect(getCellClasses({ hasInvoice: true, isValidated: true, description: "" } as TravelCostRow)).toBe("");
+    expect(getCellClasses({ hasInvoice: true, isValidated: true, description: "" } as TravelCostRow)).toBe(descriptionUncheckedColor);
   });
 
   it("Should get empty string if text is null", () => {
-    expect(getCellClasses({ hasInvoice: true, isValidated: true, description: null } as TravelCostRow)).toBe("");
+    expect(getCellClasses({ hasInvoice: true, isValidated: true, description: null } as TravelCostRow)).toBe(descriptionUncheckedColor);
   });
 
   it("Should get empty string if hasInvoice is false", () => {
-    expect(getCellClasses({ hasInvoice: false, isValidated: true, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe("");
+    expect(getCellClasses({ hasInvoice: false, isValidated: true, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe(
+      descriptionUncheckedColor,
+    );
   });
 
   it("Should get empty string if isValidated is false", () => {
-    expect(getCellClasses({ hasInvoice: true, isValidated: false, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe("");
+    expect(getCellClasses({ hasInvoice: true, isValidated: false, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe(
+      descriptionUncheckedColor,
+    );
   });
 
   it("Should get empty string if both are false", () => {
-    expect(getCellClasses({ hasInvoice: false, isValidated: false, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe("");
+    expect(getCellClasses({ hasInvoice: false, isValidated: false, description: "Das sind meine RECHNUNGEN" } as TravelCostRow)).toBe(
+      descriptionUncheckedColor,
+    );
   });
 });
