@@ -3,5 +3,8 @@ export const texts = {
     description: {
       addNewDescriptionToastMessage: "Die Beschreibung wurde hinzugefügt",
     },
+    listing: {
+      addNewRowToastMessage: "Wurde zur Liste hinzugefügt",
+    },
   },
 };

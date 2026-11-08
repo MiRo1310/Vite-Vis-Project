@@ -11,6 +11,7 @@ import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";
 import Form from "@/components/shared/form/Form.vue";
+import { texts } from "@/text/de.ts";
 
 const { toast } = useToast();
 
@@ -39,7 +40,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   });
 
   toast({
-    title: "Wurde zur Liste hinzugefügt",
+    title: texts.finance.listing.addNewRowToastMessage,
   });
 
   form.resetForm();
