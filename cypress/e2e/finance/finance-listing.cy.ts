@@ -1,57 +1,8 @@
 import { routes } from "@/router/routes.ts";
-import {descriptionColorMapping, financeListTextColorMapping, descriptionUncheckedColor as unchecked } from "@/constants/finance.ts";
-import { aliasGraphqlOperations, clickESC } from "../../support/utils.ts";
-
-// Vergibt für GraphQL-Requests einen Alias nach operationName, damit die Tests mit cy.wait("@<operationName>") darauf warten können
-const aliasGraphqlOperations = () => {
-  cy.intercept("POST", "**", (req) => {
-    const operationName = (req.body as { operationName?: string } | undefined)?.operationName;
-    if (operationName) {
-      req.alias = operationName;
-    }
-  });
-};
-
-// Klickt eine Checkbox der Zeile und wartet, bis die Mutation durch ist
-const toggleCheckbox = (description: string, checkbox: "isValid" | "hasInvoice", state: "checked" | "unchecked") => {
-  const operation = checkbox === "isValid" ? "UpdateTravelCostIsValidated" : "UpdateTravelCostHasInvoice";
-  cy.contains("code", description).closest("tr").find(`.${checkbox}`).click();
-  cy.wait(`@${operation}`);
-  cy.contains("code", description).closest("tr").find(`.${checkbox}`).should("have.attr", "data-state", state);
-};
-
-// Legt eine Adresse und eine Position im Finance-Listing an (beide Checkboxen sind danach unchecked)
-const createListing = (description: string, price: string) => {
-  aliasGraphqlOperations();
-  const addressName = `Cypress Adresse ${Date.now()}`;
-  const today = new Date().toISOString().slice(0, 10);
-
-  // Adresse anlegen, wird für die Auswahl im Listing-Formular benötigt
-  cy.visit(routes.addresses.path);
-  cy.getBySel("address-name").type(addressName);
-  cy.getBySel("address-street").type("Teststraße 1");
-  cy.getBySel("address-city").type("Teststadt");
-  cy.getBySel("address-submit").click();
-  cy.contains("td", addressName).should("exist");
-
-  // Neue Position im Finance-Listing anlegen
-  cy.visit(routes.finance.path);
-  cy.wait("@TravelCost");
-  cy.getBySel("listing-date").type(today);
-  cy.getBySel("listing-price").type(price);
-  cy.getBySel("input-with-options").type(addressName);
-  cy.get("textarea").type(description);
-  cy.getBySel("listing-submit").click();
-
-  // Erst weiter, wenn die Tabelle nach dem Anlegen neu geladen ist, sonst wird die Zeile während der Klicks neu gerendert
-  cy.wait("@AddTravelCost");
-  cy.wait("@TravelCost");
-  cy.contains("code", description).should("exist");
-
-  // Toast schließen, er liegt sonst über den unteren Zeilen und blockiert die Checkbox-Klicks
-  cy.contains("li", "Wurde zur Liste hinzugefügt").find("button").click();
-  cy.contains("Wurde zur Liste hinzugefügt").should("not.exist");
-};
+import { descriptionUncheckedColor as unchecked, financeListTextColorMapping } from "@/constants/finance.ts";
+import { aliasGraphqlOperations, clickESC, getFakerCity, getFakerStreet } from "../../support/utils.ts";
+import { addAddress } from "./finance-address.cy.ts";
+import { faker } from "@faker-js/faker";
 
 describe("Finance Listing (GraphQL Integration)", () => {
   it("loads travel costs from the real backend without a GraphQL error", () => {
@@ -73,7 +24,7 @@ describe("Finance Listing (GraphQL Integration)", () => {
     cy.contains("td", "42,50").should("exist");
   });
 
-  it.only("removes the red color only while both checkboxes are checked", () => {
+  it("removes the red color only while both checkboxes are checked", () => {
     // Beschreibung ohne "Rechnung"/"Fahrtkosten", sonst greift das colorMapping
     const description = `Cypress Farbe Rechnung ${Date.now()}`;
     expect(description).to.include("Rechnung");
@@ -122,6 +73,11 @@ describe("Finance Listing (GraphQL Integration)", () => {
 });
 
 describe("Dialog", () => {
+  const name = faker.person.fullName();
+  before(() => {
+    addAddress(name, getFakerStreet(), getFakerCity());
+  });
+
   it("dialog should have footer buttons", () => {
     const description = `Cypress Test ${Date.now()}`;
     cy.visit(routes.finance.path);
@@ -149,7 +105,7 @@ describe("Dialog", () => {
     const newDate = "2026-11-07";
     const newDescription = `Cypress Rechange Description ${Date.now()}`;
     const newPrice = "1111";
-    const newAddress = "test";
+    const newAddress = name;
 
     setValues("@dialog", newDate, newDescription, newPrice, newAddress);
 

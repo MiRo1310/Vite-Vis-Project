@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 export const dataSel = (sel: string) => {
   return `[data-e2e='${sel}']`;
 };
@@ -18,3 +20,6 @@ export const aliasGraphqlOperations = () => {
 export const clickESC = (alias: string) => {
   cy.get(alias).trigger("keydown", { key: "Escape" });
 };
+
+export const getFakerStreet = () => `${faker.location.street()} ${faker.location.buildingNumber()}`;
+export const getFakerCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;
