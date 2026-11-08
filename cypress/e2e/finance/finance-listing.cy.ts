@@ -73,7 +73,6 @@ describe("Finance Listing (GraphQL Integration)", () => {
   });
 
   it.only("removes the red color only while both checkboxes are checked", () => {
-    // Beschreibung ohne "Rechnung"/"Fahrtkosten", sonst greift das colorMapping
     const description = `Cypress Farbe Rechnung ${Date.now()}`;
     expect(description).to.include("Rechnung");
     createListing(description, "12.34");
