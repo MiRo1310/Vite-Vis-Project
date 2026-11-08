@@ -5,6 +5,11 @@ import { addAddress } from "./finance-address.cy.ts";
 import { faker } from "@faker-js/faker";
 
 describe("Finance Listing (GraphQL Integration)", () => {
+  const name = faker.person.fullName();
+  before(() => {
+    addAddress(name, getFakerStreet(), getFakerCity());
+  });
+
   it("loads travel costs from the real backend without a GraphQL error", () => {
     cy.visit(routes.finance.path);
 
@@ -53,7 +58,7 @@ describe("Finance Listing (GraphQL Integration)", () => {
     it(`uses ${color} for "${keyword}" when both checkboxes are checked`, () => {
       // Großschreibung prüft gleichzeitig, dass das Keyword case-insensitive erkannt wird
       const description = `Cypress ${keyword.toUpperCase()} ${Date.now()}`;
-      createListing(description, "5.00");
+      createListing(description, "5.00", name);
 
       const cell = () => cy.contains("code", description);
 
@@ -98,7 +103,7 @@ describe("Dialog", () => {
 
   it("shows the new values when reopening after save", () => {
     const description = `Cypress Test ${Date.now()}`;
-    cy.visit(routes.finance.path);
+
     createListing(description, "12.34");
 
     openEdit(description).should("exist").should("be.visible").as("dialog");
@@ -106,11 +111,12 @@ describe("Dialog", () => {
     const newDescription = `Cypress Rechange Description ${Date.now()}`;
     const newPrice = "1111";
     const newAddress = name;
-
     setValues("@dialog", newDate, newDescription, newPrice, newAddress);
 
     const { submit } = footerButtons("@dialog");
+
     submit().should("not.be.disabled").should("exist").click();
+
     cy.get("@dialog").should("not.exist");
 
     openEdit(newDescription).should("exist").should("be.visible").as("dialogReopen");
@@ -165,9 +171,9 @@ const toggleCheckbox = (description: string, checkbox: "isValid" | "hasInvoice",
 };
 
 // Legt eine Adresse und eine Position im Finance-Listing an (beide Checkboxen sind danach unchecked)
-const createListing = (description: string, price: string) => {
+const createListing = (description: string, price: string, name?: string) => {
   aliasGraphqlOperations();
-  const addressName = "Michael Roling";
+  const addressName = name ?? "Michael Roling";
   const today = new Date().toISOString().slice(0, 10);
 
   // Adresse anlegen, wird für die Auswahl im Listing-Formular benötigt

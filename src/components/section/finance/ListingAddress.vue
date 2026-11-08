@@ -3,7 +3,7 @@ import { type TravelCostQuery } from "@/api/gql/graphql.ts";
 import { type ITableColumn } from "@/types/types.ts";
 
 // eslint-disable-next-line vue/no-unused-properties
-defineProps<ITableColumn<string, TravelCostQuery["travelCost"][number]>>();
+defineProps<ITableColumn<string | undefined, TravelCostQuery["travelCost"][number]>>();
 </script>
 
 <template>
