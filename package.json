@@ -12,7 +12,7 @@
     "build-production": "vue-tsc && vite build --mode production",
     "codegen": "graphql-codegen --config codegen.ts",
     "preview": "vite preview",
-    "lint": "eslint --ext .ts,.vue src --fix",
+    "lint": "eslint --ext .ts,.vue --fix",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "test:e2e:open": "cypress open",
