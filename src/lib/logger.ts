@@ -7,7 +7,6 @@ import { truncateText } from "@/lib/string.ts";
 import { type RouteLocationNormalizedGeneric, type RouteLocationNormalizedLoadedGeneric } from "vue-router";
 
 type ConsoleType = "info" | "warn" | "error" | "debug" | "log";
-const debugMode = false;
 
 const level: Record<ConsoleType, LoggingLevel> = {
   error: "ERROR",
@@ -17,73 +16,83 @@ const level: Record<ConsoleType, LoggingLevel> = {
   log: "INFO",
 };
 
-export const Logger = (
-  t: string,
-  options?: {
-    value?: unknown;
-    e?: any;
-    type?: ConsoleType;
-    useDebugMode?: boolean;
-    enableDbLogging?: boolean;
-    onlyDbLogging?: boolean;
-    to?: RouteLocationNormalizedGeneric;
-    from?: RouteLocationNormalizedLoadedGeneric;
-  },
-  // eslint-disable-next-line complexity
-): void => {
-  const optionalDebug = options?.useDebugMode;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!optionalDebug || (optionalDebug && debugMode)) {
-    const type = options?.type ?? "log";
-    if (!options?.onlyDbLogging) {
-      // eslint-disable-next-line no-console
-      console[type](t, " ", options?.value ?? "");
-    }
+interface LoggerOptions {
+  value?: unknown;
+  useDebugMode?: boolean;
+  enableDbLogging?: boolean;
+  onlyDbLogging?: boolean;
+  to?: RouteLocationNormalizedGeneric;
+  from?: RouteLocationNormalizedLoadedGeneric;
+}
 
-    if (!options) {
-      return;
-    }
+export const Logger = {
+  info: (message: string, e: any = null, options?: LoggerOptions) => logging(message, e, "info", options),
+  log: (message: string, e: any = null, options?: LoggerOptions) => logging(message, e, "log", options),
+  warn: (message: string, e: any = null, options?: LoggerOptions) => logging(message, e, "warn", options),
+  error: (message: string, e: any = null, options?: LoggerOptions) => logging(message, e, "error", options),
+  debug: (message: string, e: any = null, options?: LoggerOptions) => logging(message, e, "debug", options),
+};
 
-    if (options.enableDbLogging) {
-      try {
-        const descriptionRoute = `From: ${options.from?.fullPath ?? "-"} to: ${options.to?.fullPath ?? "-"}, `;
+const logging = (message: string, e: any = null, type: ConsoleType, options: LoggerOptions = {}) => {
+  if (options.useDebugMode === false) {
+    return;
+  }
+  if (!options.onlyDbLogging) {
+    // eslint-disable-next-line no-console
+    console[type](message, " ", options.value ?? "");
+  }
 
-        void dbLoggingHandler
-          .create({
-            deviceId: getOrCreateDeviceId(),
-            deviceName: truncateText(512, navigator.userAgent),
-            level: options.type ? level[options.type] : "INFO",
-            title: truncateText(100, t),
-            appVersion: truncateText(20, import.meta.env.VITE_APP_VERSION ?? "development"),
-            description: (
-              descriptionRoute + (options.e ? `Message: ${options.e?.message ?? "-"}, ` + `Stacktrace: ${options.e?.stack ?? "-"}` : "No errors")
-            ).trim(),
-            route: truncateText(255, options.to?.fullPath),
-          })
-          .catch((e) => {
-            // eslint-disable-next-line no-console
-            console.error("Error DB Logging ", e);
-          });
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error("Error DB Logging ", e);
-      }
-    }
-    if (!options.e || options.onlyDbLogging) {
-      return;
-    }
-    if (options.e.message) {
-      // eslint-disable-next-line no-console
-      console[type](`Error message: ${options.e.message}`);
-    }
-    if (options.e.stack) {
-      // eslint-disable-next-line no-console
-      console.error(`Error stack: ${options.e.stack}`);
-    }
-    if (!options.e.message && !options.e.stack) {
-      // eslint-disable-next-line no-console
-      console.error(`Error object: ${options.e}`);
-    }
+  dbLogging(message, type, e, options);
+
+  if (!e || options.onlyDbLogging) {
+    return;
+  }
+
+  errorLog("Error message:", e.message);
+  errorLog("Error stack:", e.stack);
+  if (!e.message && !e.stack) {
+    errorLog("Error object:", e);
+  }
+};
+
+const errorLog = (message: string, error: any) => {
+  if (!error) {
+    return;
+  }
+  // eslint-disable-next-line no-console
+  console.error(message, error);
+};
+
+function getDescription(descriptionRoute: string, e: any) {
+  return (descriptionRoute + (e ? `Message: ${e?.message ?? "-"}, ` + `Stacktrace: ${e?.stack ?? "-"}` : "No errors")).trim();
+}
+
+function getAppVersion() {
+  return truncateText(20, import.meta.env.VITE_APP_VERSION ?? "development");
+}
+
+const dbLogging = (message: string, type: ConsoleType, e: any = null, options?: LoggerOptions): void => {
+  if (!options?.enableDbLogging) {
+    return;
+  }
+  try {
+    const descriptionRoute = `From: ${options.from?.fullPath ?? "-"} to: ${options.to?.fullPath ?? "-"}, `;
+
+    void getDbLoggingHandler()
+      .create({
+        deviceId: getOrCreateDeviceId(),
+        deviceName: truncateText(512, navigator.userAgent),
+        level: level[type],
+        title: truncateText(100, message),
+        appVersion: getAppVersion(),
+        description: getDescription(descriptionRoute, e),
+        route: truncateText(255, options.to?.fullPath),
+      })
+      .catch((error) => {
+        errorLog("Error DB Logging", error);
+      });
+  } catch (error) {
+    errorLog("Error DB Logging", error);
   }
 };
 
@@ -118,4 +127,10 @@ function dbLogger() {
   return { create, remove };
 }
 
-const dbLoggingHandler = dbLogger();
+// Lazy, damit apolloClient.ts den Logger importieren kann, ohne dass der zirkuläre Import beim Modul-Laden knallt
+let dbLoggingHandler: ReturnType<typeof dbLogger> | null = null;
+
+function getDbLoggingHandler() {
+  dbLoggingHandler ??= dbLogger();
+  return dbLoggingHandler;
+}

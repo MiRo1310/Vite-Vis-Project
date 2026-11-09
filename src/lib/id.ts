@@ -1,4 +1,5 @@
 import { typedStorage } from "@/lib/local-storage.ts";
+import { Logger } from "@/lib/logger.ts";
 
 export function createId(): string {
   const id = "randomUUID" in crypto ? crypto.randomUUID() : undefined;
@@ -8,8 +9,7 @@ export function createId(): string {
 function randomString(length: number): string {
   const isValidInput = !!length && length > 0;
   if (!isValidInput) {
-    // eslint-disable-next-line no-console
-    console.error(`No valid input for randomString, should be greater than 0, Value: ${length}`);
+    Logger.error(`No valid input for randomString, should be greater than 0, Value: ${length}`);
     return "0";
   }
 

@@ -193,7 +193,7 @@ export class BooleanValue extends BaseValue<boolean> {
 
   public get mapped(): string {
     if (!this.mapping) {
-      Logger("Please provide a mapping for the boolean value", { type: "warn" });
+      Logger.warn("Please provide a mapping for the boolean value");
       return this.value.toString();
     }
     return this.value ? this.mapping["true"] : this.mapping["false"];
@@ -265,7 +265,7 @@ export class NotificationOnChange<T> implements IOnChange<T> {
         store.removeNotification(this.id);
       }
     } catch (e) {
-      Logger(`[NotificationOnChange] error for: ${this.id},  ${e}`, { type: "error" });
+      Logger.error(`[NotificationOnChange] error for: ${this.id},  ${e}`, e);
     }
   }
 }

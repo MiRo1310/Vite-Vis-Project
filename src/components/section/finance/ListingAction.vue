@@ -87,7 +87,7 @@ updateDone(() => {
 });
 
 updateError((error) => {
-  Logger("Error updating travel cost:", { e: error });
+  Logger.error("Error updating travel cost:", error);
 });
 </script>
 

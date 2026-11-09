@@ -17,7 +17,7 @@ export const removeDescriptions = (ids: string[]) => {
     `),
   );
   ids.forEach((id, index) => {
-    Logger("Remove description with id from Db:", { value: id });
+    Logger.log("Remove description with id from Db:", null, { value: id });
     if (index === ids.length - 1) {
       void mutate({ id }, { refetchQueries: ["getRecipeById"] });
       return;

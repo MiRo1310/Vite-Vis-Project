@@ -12,6 +12,6 @@ export const invalidateCache = async (fieldName: string) => {
       await apolloClient.reFetchObservableQueries();
     }
   } catch (e) {
-    Logger(`Failed to invalidate ${fieldName} cache`, { e, type: "error" });
+    Logger.error(`Failed to invalidate ${fieldName} cache`, e);
   }
 };

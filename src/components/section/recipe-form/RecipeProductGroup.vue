@@ -39,7 +39,7 @@ const removeProductGroup = async () => {
   }
 
   const groupToDelete = props.groupIndex;
-  Logger(`Remove group with index: ${groupToDelete}`);
+  Logger.log(`Remove group with index: ${groupToDelete}`);
   saveProductsToForm(filterByTargetAndDecrement(formProducts.value, "groupPosition", groupToDelete));
   saveHeadersToForm(filterByTargetAndDecrement(formProductHeaders.value, "position", groupToDelete));
 };
@@ -88,7 +88,7 @@ const addNewProduct = () => {
   };
   newProductIdToOpenModal.value = newRecipeProduct.id;
 
-  Logger("Adding new product:", { value: newRecipeProduct, useDebugMode: false });
+  Logger.log("Adding new product:", null, { value: newRecipeProduct, useDebugMode: false });
   saveProductsToForm([...formProducts.value, newRecipeProduct]);
 };
 

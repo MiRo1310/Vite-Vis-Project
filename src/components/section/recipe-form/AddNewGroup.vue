@@ -23,7 +23,7 @@ const saveToFormProductHeaders = (headers: TProductHeaderSchema[]) => {
 
 const addNewProductGroup = () => {
   const productGroupLength = store.getProductGroupsCount;
-  Logger("Adding new product group with position:", { value: productGroupLength });
+  Logger.log("Adding new product group with position:", null, { value: productGroupLength });
   const newProduct = {
     productId: "",
     description: "",
@@ -35,7 +35,7 @@ const addNewProductGroup = () => {
     position: formProducts.value.length,
     sortOrder: 0,
   };
-  Logger("Adding new product group:", { value: newProduct, useDebugMode: true });
+  Logger.log("Adding new product group:", null, { value: newProduct, useDebugMode: true });
   saveToFormProducts([...formProducts.value, newProduct]);
 
   saveToFormProductHeaders([

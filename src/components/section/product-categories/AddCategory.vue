@@ -7,6 +7,7 @@ import { graphql } from "@/api/gql";
 import Input from "@/components/ui/input/InputShadcn.vue";
 import { isDefined } from "@/lib/utilities.ts";
 import { refetchQueryProductCategories } from "@/composables/querys/productCategories.ts";
+import { Logger } from "@/lib/logger.ts";
 
 const props = defineProps<{ result: ProductCategoriesQuery["productCategories"] }>();
 
@@ -59,8 +60,7 @@ async function addNewCategory(): Promise<void> {
 }
 
 onError((error) => {
-  //eslint-disable-next-line
-  console.log(error);
+  Logger.error("Error adding product category", error);
 });
 
 const disabled = computed((): boolean => newCategory.value === "" || categoryExists.value);

@@ -21,7 +21,7 @@ const removeDescription = () => {
     return;
   }
   if (id) {
-    Logger("Removing description with id:", { value: id, useDebugMode: false });
+    Logger.log("Removing description with id:", null, { value: id, useDebugMode: false });
     recipeStore.addRecipeDescriptionIdToDelete(id);
   }
 

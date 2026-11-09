@@ -6,6 +6,7 @@ import DialogShared from "@/components/shared/dialog/DialogShared.vue";
 import ErrorToast from "@/components/layout/error/ErrorToast.vue";
 import ErrorDetails from "@/components/layout/error/ErrorDetails.vue";
 import { isOpaqueScriptError } from "@/lib/error";
+import { Logger } from "@/lib/logger.ts";
 
 const { toast } = useToast();
 const error = ref<unknown>(null);
@@ -14,8 +15,7 @@ const showErrorPage = ref(false);
 
 function reportError(err: unknown, openPageDirectly: boolean) {
   error.value = err;
-  // eslint-disable-next-line no-console
-  console.error("[ErrorBoundary]", err);
+  Logger.error("[ErrorBoundary]", err);
 
   if (openPageDirectly) {
     showErrorPage.value = true;
@@ -41,8 +41,7 @@ onErrorCaptured((err) => {
 window.addEventListener("error", (event) => {
   // Geschwärzte Fehler (Cross-Origin-Script / Safari-intern, z.B. Teilen-Menü auf iOS) sind nicht auswertbar
   if (isOpaqueScriptError(event.message, event.error, event.filename)) {
-    // eslint-disable-next-line no-console
-    console.warn("[ErrorBoundary] Ignoriere nicht auswertbaren 'Script error.'", event);
+    Logger.warn("[ErrorBoundary] Ignoriere nicht auswertbaren 'Script error.'", null, { value: event });
     return;
   }
   // event.error ist null bei Cross-Origin-Scripts ("Script error.") -> Quelle mit ausgeben
