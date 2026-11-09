@@ -213,15 +213,17 @@ describe("<InputWithOptions />", () => {
         optionId: "test-id",
         exactOptionRequired: true,
         e2e: "input-with-options",
-        modelValue: "",
+        modelValue: options[0].value,
         "onUpdate:modelValue": onUpdate,
       },
     }).then(({ wrapper }) => {
-      cy.getBySel("input-with-options").as("input");
-
-      cy.wrap(wrapper.setProps({ modelValue: "" }));
-      cy.get("@input").should("have.value", "");
+      cy.getBySel("input-with-options").should("exist").as("input");
+      cy.get("@input").should("have.value", options[0].name);
       cy.get("@input").should("have.class", variantsInputWithOptions.success);
+
+      cy.then(() => wrapper.setProps({ modelValue: "" }));
+      cy.get("@input").should("have.value", "");
+      cy.get("@input").should("not.have.class", variantsInputWithOptions.success);
     });
   });
 
