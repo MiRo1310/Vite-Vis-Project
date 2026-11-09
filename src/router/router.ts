@@ -32,10 +32,10 @@ router.afterEach((to, _from, failure) => {
   }
   const retry = typedStorage.getItem("routerReload");
   if (retry.attempt > 0 && retry.to === to.fullPath && !retry.triedNavigateToHome) {
-    Logger(`Router reload successful after ${retry.attempt} attempt(s)`, { type: "info", enableDbLogging: true, to });
+    Logger.log(`Router reload successful after ${retry.attempt} attempt(s)`, null, { enableDbLogging: true, to });
   }
   if (retry.triedNavigateToHome) {
-    Logger("Router has opened home successful after router error, please fix error", { type: "warn", enableDbLogging: true, to });
+    Logger.warn("Router has opened home successful after router error, please fix error", null, { enableDbLogging: true, to });
   }
   resetRetry();
 });
@@ -50,20 +50,20 @@ router.onError(async (e, to, from) => {
     const attempt = retry.attempt + 1;
     typedStorage.setItem("routerReload", { to: to.fullPath, attempt, triedNavigateToHome: false });
 
-    Logger(`Router error, try to reload, attempt: ${attempt}/${MaxRetries}`, { type: "error", e, enableDbLogging: true, to, from });
+    Logger.error(`Router error, try to reload, attempt: ${attempt}/${MaxRetries}`, e, { enableDbLogging: true, to, from });
     window.location.assign(to.fullPath);
     return;
   }
   if (isChunkLoadError(e?.message) && retry.attempt >= MaxRetries && !retry.triedNavigateToHome) {
-    Logger(`Router error, after ${MaxRetries} attempts , try redirect to home`, { type: "error", e, enableDbLogging: true, to, from });
+    Logger.error(`Router error, after ${MaxRetries} attempts , try redirect to home`, e, { enableDbLogging: true, to, from });
     typedStorage.setItem("routerReload", { to: to.fullPath, attempt: MaxRetries, triedNavigateToHome: true });
     await router.replace(routes.home.path).catch((error) => {
-      Logger("Router error, after redirect to home", { type: "error", e: error, enableDbLogging: true, to, from });
+      Logger.error("Router error, after redirect to home", error, { enableDbLogging: true, to, from });
     });
   }
 
   const notificationStore = useNotificationStore();
-  Logger("Router error", { type: "error", e, enableDbLogging: true, to, from });
+  Logger.error("Router error", e, { enableDbLogging: true, to, from });
 
   const notificationMessage = new NotificationMessage(createId(), `Router error ${e}`, "error", 100, { durationMS: 5 * 60 * 1000 });
   notificationStore.addNotification(notificationMessage);

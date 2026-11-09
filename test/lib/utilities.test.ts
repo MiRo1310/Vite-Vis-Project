@@ -93,7 +93,7 @@ describe("deepCopy", () => {
 
     const copy = deepCopy(circular);
     expect(copy).toBeUndefined();
-    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledTimes(3);
     errorSpy.mockRestore();
   });
 });

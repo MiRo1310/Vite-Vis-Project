@@ -22,7 +22,7 @@ describe("typedStorage", () => {
       localStorage.setItem("routerReload", "{kaputt");
 
       expect(typedStorage.getItem("routerReload")).toEqual({ to: null, attempt: 0, triedNavigateToHome: false });
-      expect(errorSpy).toHaveBeenCalledOnce();
+      expect(errorSpy).toHaveBeenCalledWith("Error local storage parsing", " ", "");
     });
 
     it("returns a stored false instead of the default true", () => {

@@ -294,10 +294,10 @@ const onSubmit = form.handleSubmit(async (values) => {
     recipeHeaderProducts: values.headersProductArray,
     recipeProducts: cleanUpFormProducts(removeNewIdForMutate(values.productArray)),
   };
-  Logger("Submit dto", { value: dto });
+  Logger.log("Submit dto", null, { value: dto });
 
   if (!recipeId.value) {
-    Logger("Creating new recipe");
+    Logger.log("Creating new recipe");
     const result = await mutate({ dto });
 
     const id = result?.data?.createRecipe.id;
@@ -372,7 +372,7 @@ const updateValue = ref(false);
 const textareaFocus = ref(false);
 
 const enterPress = async () => {
-  Logger("Submit values by enter press");
+  Logger.log("Submit values by enter press");
   if (!textareaFocus.value) {
     await onSubmit();
   }

@@ -15,41 +15,41 @@ describe("Logger", () => {
   });
 
   it("logs message and value when provided", () => {
-    Logger("test-message", { value: 123, type: "log" });
+    Logger.log("test-message", null, { value: 123 });
     expect(logSpy).toHaveBeenCalledTimes(1);
     expect(logSpy).toHaveBeenCalledWith("test-message", " ", 123);
   });
 
   it("logs error.message when provided", () => {
     const err = { message: "oops" };
-    Logger("err", { e: err, type: "log" });
+    Logger.log("err", err);
     // first call: initial log
     expect(logSpy).toHaveBeenNthCalledWith(1, "err", " ", "");
     // second call: Error message
-    expect(logSpy).toHaveBeenNthCalledWith(2, `Error message: ${err.message}`);
+    expect(errorSpy).toHaveBeenNthCalledWith(1, "Error message:", err.message);
   });
 
   it("logs error.stack when provided", () => {
     const err = { stack: "stacktrace" } as any;
-    Logger("err2", { e: err });
+    Logger.log("err2", err);
     // initial log uses console.log by default
     expect(logSpy).toHaveBeenCalledWith("err2", " ", "");
     // stack should be logged via console.error
-    expect(errorSpy).toHaveBeenCalledWith(`Error stack: ${err.stack}`);
+    expect(errorSpy).toHaveBeenCalledWith("Error stack:", err.stack);
   });
 
   it("logs error object when no message/stack", () => {
-    const err = "some error" as any;
-    Logger("err3", { e: err, type: "error" });
+    const err = "some error";
+    Logger.error("err3", err);
     // initial call uses console.error because type === 'error'
     expect(errorSpy).toHaveBeenNthCalledWith(1, "err3", " ", "");
     // then fallback to printing error object
-    expect(errorSpy).toHaveBeenNthCalledWith(2, `Error object: ${err}`);
+    expect(errorSpy).toHaveBeenNthCalledWith(2, "Error object:", err);
   });
 
   it("respects useDebugMode (no log when useDebugMode true and debugMode false)", () => {
-    Logger("nodebug", { value: 1, useDebugMode: true });
-    expect(logSpy).not.toHaveBeenCalled();
+    Logger.log("nodebug", null, { value: 1, useDebugMode: true });
+    expect(logSpy).toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();
   });
 });

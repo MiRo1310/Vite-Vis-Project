@@ -82,7 +82,7 @@ export class IoBrokerService {
         }
       });
     } catch (e) {
-      Logger("Error refreshing states after visibility change", { e });
+      Logger.error("Error refreshing states after visibility change", e);
     }
   }
   public get connection() {
@@ -122,7 +122,7 @@ export class IoBrokerService {
         cb(state);
       })
       .catch((e) => {
-        Logger(`Error subscribing to ${id}`, { e });
+        Logger.error(`Error subscribing to ${id}`, e);
       });
   }
 

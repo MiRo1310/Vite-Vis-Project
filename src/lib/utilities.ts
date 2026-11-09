@@ -1,3 +1,5 @@
+import { Logger } from "@/lib/logger.ts";
+
 export const isTruthy = (value: any): boolean => isDefined(value) && ["1", 1, true, "true"].includes(value);
 
 export const isFalsy = (value: any): boolean => ["0", 0, false, "false", undefined, null].includes(value);
@@ -12,8 +14,8 @@ export const deepCopy = <T>(value: T, errorHandler?: (e: any) => void): T | unde
       errorHandler(err);
       return;
     }
-    // eslint-disable-next-line no-console
-    console.error(err);
+
+    Logger.error("Error deepCopy", err);
   }
 };
 

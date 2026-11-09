@@ -1,6 +1,7 @@
 import { type RouterReloadRetry } from "@/types/types.ts";
 import { deepCopy, isDefined } from "@/lib/utilities.ts";
 import type { TRecipe } from "@/store";
+import { Logger } from "@/lib/logger.ts";
 
 interface StorageTypes {
   autoUpdate: boolean;
@@ -31,8 +32,7 @@ const typedLocalStorage = () => {
       const parsedValue = JSON.parse(value);
       return (isDefined(parsedValue) ? parsedValue : deepCopy(defaultValues[key])) as StorageTypes[K];
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error("Error local storage parsing: ", e);
+      Logger.error("Error local storage parsing", e);
       return deepCopy(defaultValues[key]) as StorageTypes[K];
     }
   }

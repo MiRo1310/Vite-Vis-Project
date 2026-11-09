@@ -66,11 +66,11 @@ export class InfluxDBClient {
         this.resultTemp.push({ time: o._time, [o._measurement]: value });
       },
       error: (error: Error) => {
-        Logger("QueryRows ERROR", { e: error, type: "error" });
+        Logger.error("QueryRows ERROR", error);
         this.resetResult();
       },
       complete: () => {
-        Logger("QueryRows SUCCESS");
+        Logger.log("QueryRows SUCCESS");
         this.result.value = this.resultTemp;
         this.resultTemp = [];
         this.isFetching = false;
@@ -122,7 +122,7 @@ export class InfluxDBClient {
       if (this.intervall) {
         clearInterval(this.intervall);
         this.intervall = null;
-        Logger("InfluxDBClient interval cleared");
+        Logger.log("InfluxDBClient interval cleared");
       }
     });
     return this.result;
@@ -131,7 +131,7 @@ export class InfluxDBClient {
   private startInterval() {
     this.intervall = setInterval(() => {
       if (this.isFetching) {
-        Logger("Previous InfluxDB query still running, skipping this interval");
+        Logger.log("Previous InfluxDB query still running, skipping this interval");
         return;
       }
       this.queryRows();
