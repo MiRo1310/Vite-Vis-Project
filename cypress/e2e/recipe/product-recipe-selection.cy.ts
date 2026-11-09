@@ -3,8 +3,8 @@ import { aliasGraphqlOperations } from "../../support/utils.ts";
 
 describe("Product creation and recipe ingredient selection (GraphQL Integration)", () => {
   beforeEach(()=>{
-    aliasGraphqlOperations()
-  })
+    aliasGraphqlOperations();
+  });
   
   it("creates a product, verifies it is listed, and confirms it is selectable while creating a new recipe", () => {
     const uniqueSuffix = Date.now();

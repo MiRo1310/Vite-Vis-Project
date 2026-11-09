@@ -78,7 +78,7 @@ describe("Dialog", () => {
   it("dialog should have footer buttons", () => {
     const description = `Cypress Test ${Date.now()}`;
     cy.visit(routes.finance.path);
-    createListing(description, "12.34", name);
+    createListing(description, "12.34");
 
     openEdit(description).should("exist").should("be.visible").as("dialog");
     const { abort, submit } = footerButtons("@dialog");
@@ -163,7 +163,7 @@ const toggleCheckbox = (description: string, checkbox: "isValid" | "hasInvoice",
 };
 
 // Legt eine Adresse und eine Position im Finance-Listing an (beide Checkboxen sind danach unchecked)
-const createListing = (description: string, price: string, name?: string) => {
+const createListing = (description: string, price: string) => {
   aliasGraphqlOperations();
   const addressName = faker.person.fullName();
 

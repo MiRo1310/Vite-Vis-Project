@@ -1,6 +1,6 @@
-import { InputOption } from "../../../../src/types/types";
-import InputWithOptions from "../../../../src/components/shared/input/InputWithOptions.vue";
-import { variantsInputWithOptions } from "../../../../src/components/shared/input/input.variants";
+import { type InputOption } from "@/types/types.ts";
+import InputWithOptions from "@/../src/components/shared/input/InputWithOptions.vue";
+import { variantsInputWithOptions } from "@/components/shared/input/input.variants.ts";
 
 const options: InputOption[] = [
   { value: 111, name: "Option 1" },
@@ -219,10 +219,9 @@ describe("<InputWithOptions />", () => {
     }).then(({ wrapper }) => {
       cy.getBySel("input-with-options").as("input");
 
-      wrapper.setProps({ modelValue: "" }).then(() => {
-        cy.get("@input").should("have.value", "");
-        cy.get("@input").should("have.class", variantsInputWithOptions.success);
-      });
+      cy.wrap(wrapper.setProps({ modelValue: "" }));
+      cy.get("@input").should("have.value", "");
+      cy.get("@input").should("have.class", variantsInputWithOptions.success);
     });
   });
 

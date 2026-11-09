@@ -18,8 +18,9 @@ export default defineConfig([
       "tailwind.config.js",
       "vite.config.*",
       "codegen.ts",
-      "eslint.config.mjs ",
+      "eslint.config.js",
       "CLAUDE.md",
+      "**/coverage/",
     ],
   },
   {
@@ -53,7 +54,6 @@ export default defineConfig([
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports", fixStyle: "inline-type-imports" }],
-      "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
 
       // Vue
@@ -90,7 +90,7 @@ export default defineConfig([
       // Unnötige Optional-Chains / Conditions
       "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unnecessary-type-assertion": "error",
-
+      "@typescript-eslint/prefer-optional-chain": "error",
       // Async-Fehler abfangen
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }],
