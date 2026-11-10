@@ -11,8 +11,7 @@ import Navigation from "@/components/section/finance/Navigation.vue";
 import ListingAddress from "@/components/section/finance/ListingAddress.vue";
 import ListingFilter from "@/components/section/finance/ListingFilter.vue";
 import { type TravelCostFilterInput, type TravelCostSortInput } from "@/api/gql/graphql.ts";
-import FinanceListingTableIsValid from "@/components/section/finance/FinanceListingTableIsValid.vue";
-import FinanceListingTableHasInvoice from "@/components/section/finance/FinanceListingTableHasInvoice.vue";
+import FinanceListingCheckbox from "@/components/section/finance/FinanceListingCheckbox.vue";
 import { typedStorage } from "@/lib/local-storage.ts";
 import { getCellClasses, type TravelCostRow, yearRange } from "@/lib/finance.ts";
 import { formatMoney, getTotalByPrice } from "@/lib/money.ts";
@@ -92,14 +91,14 @@ const columns: Array<DatatableColumns<TravelCostRow>> = [
     labelKey: "Geprüft",
     type: "component",
     className: "text-right",
-    component: FinanceListingTableIsValid,
+    component: FinanceListingCheckbox,
   },
   {
     source: "hasInvoice",
     labelKey: "Rechnung",
     type: "component",
     className: "text-right",
-    component: FinanceListingTableHasInvoice,
+    component: FinanceListingCheckbox,
   },
   {
     source: "id",
