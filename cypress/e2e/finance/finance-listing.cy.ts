@@ -34,7 +34,7 @@ describe("Finance Listing (GraphQL Integration)", () => {
     cell().should("have.class", unchecked);
 
     // Nur eine Checkbox -> weiterhin rot
-    toggleCheckbox(description, "isValid", "checked");
+    toggleCheckbox(description, "isValidated", "checked");
     cell().should("have.class", unchecked);
 
     // Beide Checkboxen -> nicht mehr rot
@@ -58,12 +58,12 @@ describe("Finance Listing (GraphQL Integration)", () => {
       cell().should("have.class", unchecked).and("not.have.class", color);
 
       // Beide Checkboxen -> Mapping-Farbe statt rot
-      toggleCheckbox(description, "isValid", "checked");
+      toggleCheckbox(description, "isValidated", "checked");
       toggleCheckbox(description, "hasInvoice", "checked");
       cell().should("have.class", color).and("not.have.class", unchecked);
 
       // Eine wieder unchecked -> rot statt Mapping-Farbe
-      toggleCheckbox(description, "isValid", "unchecked");
+      toggleCheckbox(description, "isValidated", "unchecked");
       cell().should("have.class", unchecked).and("not.have.class", color);
     });
   });
@@ -155,10 +155,9 @@ const footerButtons = (alias: string) => {
 };
 
 // Klickt eine Checkbox der Zeile und wartet, bis die Mutation durch ist
-const toggleCheckbox = (description: string, checkbox: "isValid" | "hasInvoice", state: "checked" | "unchecked") => {
-  const operation = checkbox === "isValid" ? "UpdateTravelCostIsValidated" : "UpdateTravelCostHasInvoice";
+const toggleCheckbox = (description: string, checkbox: "isValidated" | "hasInvoice", state: "checked" | "unchecked") => {
   cy.contains("code", description).closest("tr").find(`.${checkbox}`).click();
-  cy.wait(`@${operation}`);
+  cy.wait("@UpdateTravelCostCheckboxes");
   cy.contains("code", description).closest("tr").find(`.${checkbox}`).should("have.attr", "data-state", state);
 };
 

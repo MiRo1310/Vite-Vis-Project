@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type CustomValue } from "@/lib/table.ts";
+import { type CustomValueFallback } from "@/lib/table.ts";
 import { type Row } from "@tanstack/vue-table";
 import { type AppTableFeatures } from "@/lib/table-features";
 import { type AlexaDotAction } from "@/pages/vis/alexa.vue";
@@ -11,7 +11,7 @@ defineProps<{
   // eslint-disable-next-line vue/no-unused-properties
   source: string;
   // eslint-disable-next-line vue/no-unused-properties
-  customValue: CustomValue;
+  customValue: CustomValueFallback;
   // eslint-disable-next-line vue/no-unused-properties
   callback?: () => void;
 }>();

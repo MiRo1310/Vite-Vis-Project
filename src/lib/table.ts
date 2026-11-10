@@ -11,7 +11,7 @@ export type TableCellClass<Original> = (original: Original) => string;
 
 export type TableCellType = "text" | "date" | "bool" | "datetime" | "time" | "number" | "component" | "html" | "checkbox" | "preCode";
 
-export interface DatatableColumns<T> {
+export interface DatatableColumns<T, CustomValue = CustomValueFallback> {
   accessorKey?: string;
   headerClass?: string;
   source: Paths<T>;
@@ -30,7 +30,7 @@ export interface DatatableColumns<T> {
   cellClass?: TableCellClass<T>;
 }
 
-export type CustomValue = string | number | boolean | undefined | object;
+export type CustomValueFallback = string | number | boolean | undefined | object;
 
 export const getColumns = (columns: Array<DatatableColumns<any>>) => {
   return columns.map((column: DatatableColumns<any>) => {
@@ -101,7 +101,7 @@ interface DataTableCellCreator {
   decimals?: number;
   unitAdditive?: string;
   callback?: (params: Record<string, any>) => void;
-  customValue?: CustomValue;
+  customValue?: CustomValueFallback;
   reverse?: boolean | undefined;
   cellClass?: TableCellClass<any>;
 }
@@ -174,7 +174,7 @@ const getComponent = (
   component: object,
   source: string,
   className: string | undefined,
-  customValue: CustomValue | undefined,
+  customValue: CustomValueFallback | undefined,
   callback?: (params: Record<string, any>) => void,
   cellClass?: TableCellClass<any>,
 ) => {

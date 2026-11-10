@@ -23,8 +23,7 @@ type Documents = {
     "\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  ": typeof types.RemoveDescriptionDocument,
     "\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  ": typeof types.UpdateDescriptionDocument,
     "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": typeof types.DescriptionsListingDocument,
-    "\n    mutation UpdateTravelCostHasInvoice($id: UUID!, $hasInvoice: Boolean!) {\n      updateTravelCost(dto: { id: $id, hasInvoice: $hasInvoice }) {\n        id\n        hasInvoice\n      }\n    }\n  ": typeof types.UpdateTravelCostHasInvoiceDocument,
-    "\n    mutation UpdateTravelCostIsValidated($id: UUID!, $isValidated: Boolean!) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated }) {\n        id\n        isValidated\n      }\n    }\n  ": typeof types.UpdateTravelCostIsValidatedDocument,
+    "\n    mutation UpdateTravelCostCheckboxes($id: UUID!, $isValidated: Boolean, $hasInvoice: Boolean) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated, hasInvoice: $hasInvoice }) {\n        id\n        isValidated\n        hasInvoice\n      }\n    }\n  ": typeof types.UpdateTravelCostCheckboxesDocument,
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": typeof types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": typeof types.UpdateTravelCostDocument,
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        id\n        name\n      }\n    }\n  ": typeof types.AddCategoryDocument,
@@ -79,8 +78,7 @@ const documents: Documents = {
     "\n    mutation RemoveDescription($id: UUID!) {\n      removeDescription(id: $id)\n    }\n  ": types.RemoveDescriptionDocument,
     "\n    mutation UpdateDescription($text: String!, $id: UUID!) {\n      updateDescription(text: $text, id: $id) {\n        text\n      }\n    }\n  ": types.UpdateDescriptionDocument,
     "\n    query DescriptionsListing {\n      description {\n        id\n        text\n      }\n    }\n  ": types.DescriptionsListingDocument,
-    "\n    mutation UpdateTravelCostHasInvoice($id: UUID!, $hasInvoice: Boolean!) {\n      updateTravelCost(dto: { id: $id, hasInvoice: $hasInvoice }) {\n        id\n        hasInvoice\n      }\n    }\n  ": types.UpdateTravelCostHasInvoiceDocument,
-    "\n    mutation UpdateTravelCostIsValidated($id: UUID!, $isValidated: Boolean!) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated }) {\n        id\n        isValidated\n      }\n    }\n  ": types.UpdateTravelCostIsValidatedDocument,
+    "\n    mutation UpdateTravelCostCheckboxes($id: UUID!, $isValidated: Boolean, $hasInvoice: Boolean) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated, hasInvoice: $hasInvoice }) {\n        id\n        isValidated\n        hasInvoice\n      }\n    }\n  ": types.UpdateTravelCostCheckboxesDocument,
     "\n    mutation RemoveTravelCost($id: UUID!) {\n      removeTravelCost(id: $id)\n    }\n  ": types.RemoveTravelCostDocument,
     "\n    mutation UpdateTravelCost($id: UUID!, $price: Decimal, $addressId: UUID!, $date: LocalDate, $description: String) {\n      updateTravelCost(dto: { price: $price, addressId: $addressId, date: $date, description: $description, id: $id }) {\n        id\n      }\n    }\n  ": types.UpdateTravelCostDocument,
     "\n    mutation addCategory($name: String!) {\n      createProductCategory(dto: { name: $name }) {\n        id\n        name\n      }\n    }\n  ": types.AddCategoryDocument,
@@ -179,11 +177,7 @@ export function graphql(source: "\n    query DescriptionsListing {\n      descri
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n    mutation UpdateTravelCostHasInvoice($id: UUID!, $hasInvoice: Boolean!) {\n      updateTravelCost(dto: { id: $id, hasInvoice: $hasInvoice }) {\n        id\n        hasInvoice\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateTravelCostHasInvoice($id: UUID!, $hasInvoice: Boolean!) {\n      updateTravelCost(dto: { id: $id, hasInvoice: $hasInvoice }) {\n        id\n        hasInvoice\n      }\n    }\n  "];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n    mutation UpdateTravelCostIsValidated($id: UUID!, $isValidated: Boolean!) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated }) {\n        id\n        isValidated\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateTravelCostIsValidated($id: UUID!, $isValidated: Boolean!) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated }) {\n        id\n        isValidated\n      }\n    }\n  "];
+export function graphql(source: "\n    mutation UpdateTravelCostCheckboxes($id: UUID!, $isValidated: Boolean, $hasInvoice: Boolean) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated, hasInvoice: $hasInvoice }) {\n        id\n        isValidated\n        hasInvoice\n      }\n    }\n  "): (typeof documents)["\n    mutation UpdateTravelCostCheckboxes($id: UUID!, $isValidated: Boolean, $hasInvoice: Boolean) {\n      updateTravelCost(dto: { id: $id, isValidated: $isValidated, hasInvoice: $hasInvoice }) {\n        id\n        isValidated\n        hasInvoice\n      }\n    }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
