@@ -1,5 +1,6 @@
 import { descriptionUncheckedColor, financeListTextColorMapping, startYear } from "@/constants/finance.ts";
 import type { TravelCostQuery } from "@/api/gql/graphql.ts";
+import { type TravelCostListingAddress } from "@/types/types.ts";
 
 export const financeYearBtns = (start: number = startYear, current: number = new Date().getFullYear()): number => {
   return current - start + 1;
@@ -27,3 +28,15 @@ export function getCellClasses(original: TravelCostRow): string {
 
   return descriptionUncheckedColor;
 }
+
+export const listingAddress = (address: TravelCostListingAddress): string => {
+  const street = address?.street;
+  const city = address?.city;
+  if (street && city) {
+    return `${street}, ${city}`;
+  }
+  if (street) {
+    return street;
+  }
+  return city ?? "";
+};
