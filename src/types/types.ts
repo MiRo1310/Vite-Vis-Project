@@ -5,6 +5,7 @@ import { type FunctionalComponent, type HTMLAttributes } from "vue";
 import { type Badge } from "@/components/shared/badge/badge.variants";
 import { type IValueOf } from "@/store/valueClasses.ts";
 import { type TableCellClass } from "@/lib/table.ts";
+import type { TravelCostQuery } from "@/api/gql/graphql.ts";
 
 export interface AlexaList {
   name: string;
@@ -269,3 +270,5 @@ export interface RouterReloadRetry {
   attempt: number;
   triedNavigateToHome: boolean;
 }
+
+export type TravelCostListingAddress = TravelCostQuery["travelCost"][number]["address"];
