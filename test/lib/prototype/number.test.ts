@@ -1,28 +1,28 @@
 import { describe, it, expect } from "vitest";
 import "@/lib/prototype/number";
 
-describe("pad", () => {
-  it("should pad a number with leading zeros to the default length of 2", () => {
+describe("mrPad", () => {
+  it("pads with leading zeros to the default length of 2", () => {
     expect((5).mrPad()).to.equal("05");
   });
 
-  it("should pad a number with leading zeros to a specified length", () => {
+  it("pads with leading zeros to the given length", () => {
     expect((5).mrPad(4)).to.equal("0005");
   });
 
-  it("should not pad a number if it already meets the specified length", () => {
+  it("does not pad a number that already has the given length", () => {
     expect((123).mrPad(2)).to.equal("123");
   });
 
-  it("should handle zero correctly", () => {
+  it("pads zero", () => {
     expect((0).mrPad(3)).to.equal("000");
   });
 
-  it("should convert negative numbers to strings without additional padding", () => {
+  it("counts the minus sign toward the length", () => {
     expect((-5).mrPad(3)).to.equal("-05");
   });
 
-  it("should handle a length of 0 by returning the number as a string", () => {
+  it("returns the number as a string for a length of 0", () => {
     expect((5).mrPad(0)).to.equal("5");
   });
 });

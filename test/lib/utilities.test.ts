@@ -2,14 +2,14 @@ import { describe, it, expect, vi } from "vitest";
 import { deepCopy, isDefined, isFalsy, isString, isTruthy } from "@/lib/utilities.ts";
 
 describe("isTruthy", () => {
-  it("should return true for truthy values", () => {
+  it("returns true for truthy values", () => {
     expect(isTruthy(1)).toBeTruthy();
     expect(isTruthy("1")).toBeTruthy();
     expect(isTruthy(true)).toBeTruthy();
     expect(isTruthy("true")).toBeTruthy();
   });
 
-  it("should return false for falsy values", () => {
+  it("returns false for falsy values", () => {
     expect(isTruthy(0)).toBeFalsy();
     expect(isTruthy("0")).toBeFalsy();
     expect(isTruthy(false)).toBeFalsy();
@@ -20,7 +20,7 @@ describe("isTruthy", () => {
 });
 
 describe("isFalsy", () => {
-  it("should return true for falsy values", () => {
+  it("returns true for falsy values", () => {
     expect(isFalsy(0)).toBeTruthy();
     expect(isFalsy("0")).toBeTruthy();
     expect(isFalsy(false)).toBeTruthy();
@@ -29,7 +29,7 @@ describe("isFalsy", () => {
     expect(isFalsy(null)).toBeTruthy();
   });
 
-  it("should return false for truthy values", () => {
+  it("returns false for truthy values", () => {
     expect(isFalsy(1)).toBeFalsy();
     expect(isFalsy("1")).toBeFalsy();
     expect(isFalsy(true)).toBeFalsy();
@@ -38,7 +38,7 @@ describe("isFalsy", () => {
 });
 
 describe("isDefined", () => {
-  it("should return true for defined values", () => {
+  it("returns true for defined values", () => {
     expect(isDefined(123)).toBeTruthy();
     expect(isDefined("test")).toBeTruthy();
     expect(isDefined(true)).toBeTruthy();
@@ -46,14 +46,14 @@ describe("isDefined", () => {
     expect(isDefined([])).toBeTruthy();
   });
 
-  it("should return false for undefined or null values", () => {
+  it("returns false for undefined or null", () => {
     expect(isDefined(undefined)).toBeFalsy();
     expect(isDefined(null)).toBeFalsy();
   });
 });
 
 describe("deepCopy", () => {
-  it("should create a deep copy of an object", () => {
+  it("creates a deep copy of an object", () => {
     const original = { a: 1, b: { c: 2 } };
     const copy = deepCopy(original);
 
@@ -61,12 +61,12 @@ describe("deepCopy", () => {
     expect(copy).to.not.equal(original); // Ensure it's not the same reference
   });
 
-  it("should return undefined for undefined or null input", () => {
+  it("returns the input for undefined or null", () => {
     expect(deepCopy(undefined)).toBeUndefined();
     expect(deepCopy(null)).toBeNull();
   });
 
-  it("should handle arrays correctly", () => {
+  it("creates a deep copy of an array", () => {
     const original = [1, 2, { a: 3 }];
     const copy = deepCopy(original);
 
@@ -74,7 +74,7 @@ describe("deepCopy", () => {
     expect(copy).to.not.equal(original);
   });
 
-  it("should return undefined for circular references, with callback", () => {
+  it("returns undefined for circular references and calls the callback", () => {
     const circular: any = {};
     circular.self = circular;
     let e: any = null;
@@ -85,7 +85,7 @@ describe("deepCopy", () => {
     expect(e).toBeDefined();
   });
 
-  it("should return undefined for circular references", () => {
+  it("returns undefined for circular references and logs the error", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const circular: any = {};
@@ -99,12 +99,12 @@ describe("deepCopy", () => {
 });
 
 describe("isString", () => {
-  it("should return true for string values", () => {
+  it("returns true for strings", () => {
     expect(isString("hello")).toBeTruthy();
     expect(isString("")).toBeTruthy();
   });
 
-  it("should return false for non-string values", () => {
+  it("returns false for non-strings", () => {
     expect(isString(123)).toBeFalsy();
     expect(isString(true)).toBeFalsy();
     expect(isString(null)).toBeFalsy();
