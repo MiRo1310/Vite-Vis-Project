@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { type StringReplacerObj } from "@/types/string";
 import "@/lib/prototype/string";
 
-describe("replaceAll", () => {
-  it("Replace all", () => {
+describe("mrReplaceAll", () => {
+  it("replaces all occurrences", () => {
     const texts = [
       { val: "Test", expect: "Test" },
       {
@@ -19,13 +19,13 @@ describe("replaceAll", () => {
   });
 });
 
-describe("StringReplacer", () => {
-  it("should remove all matching strings from the substring", () => {
+describe("mrStringReplacer", () => {
+  it("removes all matches without newValue", () => {
     const valueToReplace: StringReplacerObj[] = [{ val: "Hello" }, { val: "World" }];
     expect("Hello World!".mrStringReplacer(valueToReplace)).to.equal(" !");
   });
 
-  it("should replace all matching objects in the substring", () => {
+  it("replaces all matches with newValue", () => {
     const valueToReplace = [
       { val: "Hello", newValue: "Hi" },
       { val: "World", newValue: "Earth" },
@@ -33,57 +33,57 @@ describe("StringReplacer", () => {
     expect("Hello World!".mrStringReplacer(valueToReplace)).to.equal("Hi Earth!");
   });
 
-  it("should return the original substring if no matches are found", () => {
+  it("returns the original string if nothing matches", () => {
     const valueToReplace = [{ val: "Test" }];
     const result = "Hello World!".mrStringReplacer(valueToReplace);
     expect(result).to.equal("Hello World!");
   });
 
-  it("should handle an empty array for valueToReplace", () => {
+  it("returns the original string for an empty replacement list", () => {
     const valueToReplace: StringReplacerObj[] = [];
     const result = "Hello World!".mrStringReplacer(valueToReplace);
     expect(result).to.equal("Hello World!");
   });
 
-  it("should handle an empty substring", () => {
+  it("returns an empty string for an empty string", () => {
     const valueToReplace: StringReplacerObj[] = [{ val: "Hello" }, { val: "World" }];
     const result = "".mrStringReplacer(valueToReplace);
     expect(result).to.equal("");
   });
 });
 
-describe("isBooleanString", () => {
-  it("should return true for 'true'", () => {
+describe("mrIsBooleanString", () => {
+  it("returns true for 'true'", () => {
     expect("true".mrIsBooleanString()).toBeTruthy();
   });
 
-  it("should return true for 'false'", () => {
+  it("returns true for 'false'", () => {
     expect("false".mrIsBooleanString()).toBeTruthy();
   });
 
-  it("should return false for non-boolean strings", () => {
+  it("returns false for non-boolean strings", () => {
     expect("yes".mrIsBooleanString()).toBeFalsy();
     expect("no".mrIsBooleanString()).toBeFalsy();
     expect("".mrIsBooleanString()).toBeFalsy();
   });
 });
 
-describe("isEmptyString", () => {
-  it("should return true for an empty string", () => {
+describe("mrIsEmptyString", () => {
+  it("returns true for an empty string", () => {
     expect("".mrIsEmptyString()).toBeTruthy();
   });
 
-  it("should return true for a string with only spaces", () => {
+  it("returns true for a string with only spaces", () => {
     expect("   ".mrIsEmptyString()).toBeTruthy();
   });
 
-  it("should return false for a non-empty string", () => {
+  it("returns false for a non-empty string", () => {
     expect("hello".mrIsEmptyString()).toBeFalsy();
   });
 });
 
-describe("decomposeText", () => {
-  it("Decompose text check values", () => {
+describe("mrDecomposeText", () => {
+  it("splits the text at the start and end markers", () => {
     const result = "Das ist ein __Test. Das ist ein Test2".mrDecomposeText("__", ".");
     expect(result).to.deep.equal({
       startIndex: 12,
@@ -113,49 +113,51 @@ describe("decomposeText", () => {
   });
 });
 
-it("should check fistLetterToUpperCase", () => {
-  expect("hello world".mrFirstLetterToUpperCase()).to.equal("Hello world");
-  expect("Hello world".mrFirstLetterToUpperCase()).to.equal("Hello world");
-  expect("h".mrFirstLetterToUpperCase()).to.equal("H");
-  expect("".mrFirstLetterToUpperCase()).to.equal("");
+describe("mrFirstLetterToUpperCase", () => {
+  it("capitalizes the first letter", () => {
+    expect("hello world".mrFirstLetterToUpperCase()).to.equal("Hello world");
+    expect("Hello world".mrFirstLetterToUpperCase()).to.equal("Hello world");
+    expect("h".mrFirstLetterToUpperCase()).to.equal("H");
+    expect("".mrFirstLetterToUpperCase()).to.equal("");
+  });
 });
 
-describe("remove duplicated spaces", () => {
-  it("should do nothing if there are no duplicate spaces", () => {
+describe("mrRemoveDuplicatedSpaces", () => {
+  it("keeps a string without duplicate spaces unchanged", () => {
     expect("Test".mrRemoveDuplicatedSpaces()).to.be.equal("Test");
   });
 
-  it("should trim and remove duplicated spaces", () => {
+  it("trims and removes duplicate spaces", () => {
     expect(" Test  Test   ".mrRemoveDuplicatedSpaces()).to.be.equal("Test Test");
   });
 
-  it("should trim and remove duplicated spaces with only one word", () => {
+  it("trims a single word", () => {
     expect("  Test   ".mrRemoveDuplicatedSpaces()).to.be.equal("Test");
   });
 });
 
-describe("single quotes to double quotes", () => {
-  it("should do nothing when there are no single quotes", () => {
+describe("mrSingleQuotesToDoubleQuotes", () => {
+  it("keeps a string without single quotes unchanged", () => {
     expect("Test".mrSingleQuotesToDoubleQuotes()).to.be.equal("Test");
   });
 
-  it("should replace all single quotes", () => {
+  it("replaces all single quotes", () => {
     // prettier-ignore
     expect("'Test':''Test'".mrSingleQuotesToDoubleQuotes()).to.be.equal("\"Test\":\"\"Test\"");
   });
 
-  it("should replace all single quotes", () => {
+  it("keeps existing double quotes", () => {
     // prettier-ignore
     expect("'Test':''Test' \"test\"".mrSingleQuotesToDoubleQuotes()).to.be.equal("\"Test\":\"\"Test\" \"test\"");
   });
 });
 
-describe("remove quotes", () => {
-  it("should do nothing when there are no quotes", () => {
+describe("mrRemoveQuotes", () => {
+  it("keeps a string without quotes unchanged", () => {
     expect("Test".mrRemoveQuotes()).to.be.equal("Test");
   });
 
-  it("should replace all quotes", () => {
+  it("removes all single and double quotes", () => {
     expect("'Test'\":'\"'Test'".mrRemoveQuotes()).to.be.equal("Test:Test");
   });
 });

@@ -6,7 +6,7 @@ import { type TRoute } from "@/router/routes.ts";
 import { NotificationMessage } from "@/lib/notificationMessage.ts";
 import { type TNotificationType } from "@/types/notification.ts";
 import { Logger } from "@/lib/logger.ts";
-import { toJSON } from "@/lib/json.ts";
+import { parseJson } from "@/lib/json.ts";
 
 // Erlaubt das Anlegen einer "leeren" Instanz (nur id, val: undefined) im Skeleton
 // sowie das vollständige Befüllen beim Eintreffen einer echten ioBroker-Nachricht.
@@ -231,7 +231,7 @@ export class JsonValue<T> extends BaseValue<string> {
 
   public parsed(fallback: T): T {
     if (!this.#cache || this.#cache.raw !== this.val) {
-      this.#cache = { raw: this.val, parsed: this.val === undefined ? null : toJSON<T>(this.val).json };
+      this.#cache = { raw: this.val, parsed: this.val === undefined ? null : parseJson<T>(this.val).json };
     }
     return this.#cache.parsed ?? fallback;
   }

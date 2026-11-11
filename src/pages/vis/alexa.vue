@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { InputShadcn } from "@/components/ui/input";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
-import { toJSON, toJsonString } from "@/lib/json.ts";
+import { parseJson, stringifyJson } from "@/lib/json.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -56,7 +56,7 @@ async function loadAlexaObject() {
 const actions = ref();
 
 function getMoreInfos(name: string) {
-  const jsonResponse = toJSON(iobroker.alexaAction.alexaSpeak.val ?? null);
+  const jsonResponse = parseJson(iobroker.alexaAction.alexaSpeak.val ?? null);
   const json = jsonResponse.json;
   if (!jsonResponse.isValidJson || !json) {
     return;
@@ -90,7 +90,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
   if (dotInData) {
     (dotInData as Record<string, any>)[source] = value;
   }
-  iobroker.alexaAction.alexaSpeak.setState(toJsonString(actions.value), true);
+  iobroker.alexaAction.alexaSpeak.setState(stringifyJson(actions.value), true);
 }
 </script>
 
