@@ -1,7 +1,7 @@
 import "./commands";
 import "@/lib/prototype/string";
 import "@/lib/prototype/number";
-import "@/lib/prototype/array";
+import "@/lib/array.ts";
 import { vE2E } from "@/directives/directives.ts";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
