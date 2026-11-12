@@ -272,3 +272,11 @@ export interface RouterReloadRetry {
 }
 
 export type TravelCostListingAddress = TravelCostQuery["travelCost"][number]["address"];
+
+export interface DecomposeTextReturnType {
+  startIndex: number;
+  endIndex: number;
+  substring: string;
+  textExcludeSubstring: string;
+  substringExcludeSearch: string;
+}

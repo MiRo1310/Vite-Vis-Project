@@ -8,9 +8,6 @@ import { vE2E } from "@/directives/directives.ts";
 import { router } from "@/router/router.ts";
 import { registerSW } from "virtual:pwa-register";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
-import "@/lib/prototype/string";
-import "@/lib/prototype/number";
-import "@/lib/array.ts";
 
 usePwaUpdateSingleton.setTime(new Date());
 

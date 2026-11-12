@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Level } from "@/types/types.ts";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
-import { computed, onMounted, ref } from "vue";
+import { capitalize, computed, onMounted, ref } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
 import Badge from "@/components/shared/badge/Badge.vue";
 import Page from "@/components/shared/page/Page.vue";
@@ -26,15 +26,15 @@ onMounted(() => {
   }
 });
 
-async function reset() {
-  await iobroker.logReset[selected.value].setState(true);
+function reset() {
+  iobroker.logReset[selected.value].setState(true);
 }
 </script>
 
 <template>
   <Page title="Logs">
     <div class="flex justify-between items-center flex-wrap gap-2 relative">
-      <p class="text-cardCustom-text">{{ selected.mrFirstLetterToUpperCase() }} Logs</p>
+      <p class="text-cardCustom-text">{{ capitalize(selected) }} Logs</p>
       <div class="flex gap-2 flex-wrap">
         <Button variant="outline" size="sm" class="mr-5" @click="reset"> Zurücksetzen </Button>
         <Button variant="outline" size="sm" class="w-24 relative" @click="selected = 'info'">
