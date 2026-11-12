@@ -3,6 +3,7 @@ import { type IdsToControl } from "@/types/types.ts";
 import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
 import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { type Collection } from "@/lib/array.ts";
 
 export interface AppStore {
   showTimer: boolean;
@@ -39,7 +40,7 @@ export interface IRecipeStore {
   productGroupsCount: number;
   shouldValidate: boolean;
   directlyOpenNewProductModal: boolean;
-  lastRecipes: TRecipe[];
+  lastRecipes: Collection<TRecipe>;
 }
 
 export type TRecipe = TGroupedRecipesByCategory[number][number];

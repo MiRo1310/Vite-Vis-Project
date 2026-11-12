@@ -3,6 +3,7 @@ import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vu
 import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
 import { type IRecipeGroupToDelete, type IRecipeStore, type TRecipe } from "@/store/index.ts";
 import { typedStorage } from "@/lib/local-storage.ts";
+import { Collection } from "@/lib/array.ts";
 
 export const useRecipeStore = defineStore("recipeStore", {
   state: (): IRecipeStore => ({
@@ -13,7 +14,7 @@ export const useRecipeStore = defineStore("recipeStore", {
     productGroupsCount: 0,
     shouldValidate: false,
     directlyOpenNewProductModal: false,
-    lastRecipes: typedStorage.getItem("lastRecipes"),
+    lastRecipes: new Collection(typedStorage.getItem("lastRecipes")),
   }),
   getters: {
     getRecipeInProgress(state) {
@@ -38,7 +39,7 @@ export const useRecipeStore = defineStore("recipeStore", {
       return state.directlyOpenNewProductModal;
     },
     getLastRecipe(state) {
-      return state.lastRecipes.mrFirst();
+      return state.lastRecipes.first;
     },
     getLastRecipes(state) {
       return state.lastRecipes;
@@ -80,11 +81,11 @@ export const useRecipeStore = defineStore("recipeStore", {
     },
     addNewOpenedRecipeToLastRecipes(recipe: TRecipe) {
       const filteredRecipes = this.lastRecipes.filter((r) => r.id !== recipe.id);
-      this.lastRecipes = [recipe, ...filteredRecipes].slice(0, 3);
+      this.lastRecipes = new Collection([recipe, ...filteredRecipes].slice(0, 3));
       saveToLocalStore(this.lastRecipes);
     },
     getFilterLastRecipes(groups: TGroupedRecipesByCategory) {
-      this.lastRecipes = this.lastRecipes.filter((r) => Object.values(groups).some((g) => g.some((p) => p.id === r.id)));
+      this.lastRecipes.filter((r) => Object.values(groups).some((g) => g.some((p) => p.id === r.id)));
       saveToLocalStore(this.lastRecipes);
       return this.lastRecipes;
     },

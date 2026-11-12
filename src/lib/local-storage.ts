@@ -17,7 +17,7 @@ const typedLocalStorage = () => {
     autoUpdate: true,
     deviceId: null,
     routerReload: { to: null, attempt: 0, triedNavigateToHome: false },
-    lastRecipes: [],
+    lastRecipes: [] as TRecipe[],
     "active-tab": {},
     activeYear: undefined,
   };

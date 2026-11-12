@@ -10,7 +10,7 @@ import { registerSW } from "virtual:pwa-register";
 import { usePwaUpdateSingleton } from "@/composables/pwaUpdate.ts";
 import "@/lib/prototype/string";
 import "@/lib/prototype/number";
-import "@/lib/prototype/array";
+import "@/lib/array.ts";
 
 usePwaUpdateSingleton.setTime(new Date());
 

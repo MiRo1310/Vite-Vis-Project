@@ -51,7 +51,7 @@ describe("recipeStore", () => {
   it("adds new opened recipe to lastRecipes and persists to localStorage", () => {
     const store = useRecipeStore();
     // start with empty
-    expect(store.lastRecipes).toEqual([]);
+    expect(store.lastRecipes.toArray).toEqual([]);
 
     const r1 = { id: "r1", title: "one" } as any;
     const r2 = { id: "r2", title: "two" } as any;
@@ -59,10 +59,10 @@ describe("recipeStore", () => {
     const r4 = { id: "r4", title: "four" } as any;
 
     store.addNewOpenedRecipeToLastRecipes(r1);
-    expect(store.lastRecipes[0].id).toBe("r1");
+    expect(store.lastRecipes.first.id).toBe("r1");
     // add another
     store.addNewOpenedRecipeToLastRecipes(r2);
-    expect(store.lastRecipes[0].id).toBe("r2");
+    expect(store.lastRecipes.first.id).toBe("r2");
     // add three and four to ensure slicing to 3
     store.addNewOpenedRecipeToLastRecipes(r3);
     store.addNewOpenedRecipeToLastRecipes(r4);
