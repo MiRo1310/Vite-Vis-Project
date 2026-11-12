@@ -6,7 +6,7 @@ const emits = defineEmits(["update:close"]);
 
 <template>
   <div class="flex justify-end space-x-2">
-    <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')" v-e2e="'btn-abort'">{{ abortLabel ?? "Abbrechen" }}</Button>
+    <Button variant="outline" type="button" @click.prevent.stop="emits('update:close')" v-e2e="'btn-close'">{{ abortLabel ?? "Abbrechen" }}</Button>
     <Button type="submit" variant="default" :disabled v-e2e="'btn-submit'">{{ saveLabel ?? "Speichern" }}</Button>
   </div>
 </template>

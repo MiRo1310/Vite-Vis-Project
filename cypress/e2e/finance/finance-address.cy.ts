@@ -109,5 +109,5 @@ const openDialog = (search: string) => {
 };
 
 const dialogButtons = (alias: string) => {
-  return { update: () => cy.get(alias).getBySel("address-update"), close: () => cy.get(alias).getBySel("address-close") };
+  return { update: () => cy.get(alias).getBySel("btn-submit"), close: () => cy.get(alias).getBySel("btn-close") };
 };
