@@ -1,7 +1,4 @@
 import "./commands";
-import "@/lib/prototype/string";
-import "@/lib/prototype/number";
-import "@/lib/array.ts";
 import { vE2E } from "@/directives/directives.ts";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -50,6 +47,3 @@ Cypress.Commands.add("mountE2E", (component, options?: Parameters<typeof mount>[
     ...options,
   });
 });
-
-// Example use:
-// cy.mount(MyComponent)
