@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@vue/apollo-composable";
-import { computed, ref, watch } from "vue";
+import { computed } from "vue";
 import { graphql } from "@/api/gql";
 import { type SelectOption } from "@/types/types.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
@@ -28,13 +28,6 @@ const selectOptions = computed((): SelectOption[] => {
 });
 
 const modelValue = defineModel<string>();
-
-watch(modelValue, () => {
-  if (modelValue.value === "") {
-    selected.value = "";
-  }
-});
-const selected = ref("");
 </script>
 
 <template>

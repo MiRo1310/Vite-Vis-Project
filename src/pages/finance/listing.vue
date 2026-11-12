@@ -90,20 +90,23 @@ const columns: Array<DatatableColumns<TravelCostRow>> = [
     source: "isValidated",
     labelKey: "Geprüft",
     type: "component",
-    className: "text-right",
+    className: "text-right print-none",
+    headerClass: "print-none",
     component: FinanceListingCheckbox,
   },
   {
     source: "hasInvoice",
     labelKey: "Rechnung",
     type: "component",
-    className: "text-right",
+    className: "text-right print-none",
+    headerClass: "print-none",
     component: FinanceListingCheckbox,
   },
   {
     source: "id",
     labelKey: "Aktionen",
-    className: "text-right",
+    className: "text-right print-none",
+    headerClass: "print-none",
     type: "component",
     component: ListingAction,
   },
@@ -133,16 +136,8 @@ const total = computed(() => formatMoney(getTotalByPrice(result.value?.travelCos
 
 <style lang="scss">
 @media print {
-  .print-none {
-    display: none;
-  }
-
-  td:nth-child(5),
-  th:nth-child(5),
-  td:nth-child(6),
-  th:nth-child(6),
-  td:last-child,
-  th:last-child {
+  .print-none,
+  td:has(.print-none) {
     display: none;
   }
 }
