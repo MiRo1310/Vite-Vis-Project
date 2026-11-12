@@ -5,10 +5,13 @@ import { useMutation } from "@vue/apollo-composable";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import Dialog from "@/components/shared/dialog/Dialog.vue";
 import { ref } from "vue";
-import { Input } from "@/components/shared/input/input.variants";
 import { type AddressesQuery } from "@/api/gql/graphql.ts";
 import { type ITableColumn } from "@/types/types.ts";
-import { removeMultipleSpaces } from "@/lib/string.ts";
+import FormInput from "@/components/shared/form/FormInput.vue";
+import Form from "@/components/shared/form/Form.vue";
+import { useForm } from "vee-validate";
+import { formSchemaAddress } from "@/components/section/finance/schema.form.ts";
+import FormFooter from "@/components/shared/form/FormFooter.vue";
 
 // eslint-disable-next-line vue/no-unused-properties
 const props = defineProps<ITableColumn<string, AddressesQuery["addresses"][number]>>();
@@ -39,32 +42,39 @@ const { mutate: updateMutation } = useMutation(
   },
 );
 
+const initialValues = () => ({
+  name: props.row.original.name ?? "",
+  street: props.row.original.street ?? "",
+  city: props.row.original.city ?? "",
+});
+
+const form = useForm({
+  validationSchema: formSchemaAddress,
+  initialValues: initialValues(),
+});
+
 const remove = async () => {
   await mutate({ id: props.value });
 };
 
-const update = async () => {
+const onSubmit = form.handleSubmit(async (values) => {
   dialogUpdateOpen.value = false;
   await updateMutation({
     id: props.value,
-    name: removeMultipleSpaces(name.value),
-    street: removeMultipleSpaces(street.value),
-    city: removeMultipleSpaces(city.value),
+    name: values.name,
+    street: values.street,
+    city: values.city,
   });
-};
+});
 
 const dialogOpen = ref(false);
 const dialogUpdateOpen = ref(false);
 
-const name = ref(props.row.original.name ?? "");
-const street = ref(props.row.original.street ?? "");
-const city = ref(props.row.original.city ?? "");
-
 const onOpen = () => {
   dialogUpdateOpen.value = true;
-  name.value = props.row.original.name ?? "";
-  street.value = props.row.original.street ?? "";
-  city.value = props.row.original.city ?? "";
+  form.resetForm({
+    values: initialValues(),
+  });
 };
 </script>
 
@@ -77,15 +87,15 @@ const onOpen = () => {
   <Dialog v-model:open="dialogUpdateOpen">
     <template #title>Aktualisieren</template>
     <template #content>
-      <div class="mt-4 flex flex-col gap-4">
-        <Input type="text" placeholder="Name" v-model:model-value="name" e2e="address-name" />
-        <Input type="text" placeholder="Straße" v-model:model-value="street" e2e="address-street" />
-        <Input type="text" placeholder="Stadt" v-model:model-value="city" e2e="address-city" />
-      </div>
-      <div class="flex gap-4 justify-end">
-        <Button variant="outline" @click="update" v-e2e="'address-update'">Aktualisieren</Button>
-        <Button variant="default" @click="dialogUpdateOpen = false" v-e2e="'address-close'">Schließen</Button>
-      </div>
+      <Form @update:on-submit="onSubmit">
+        <div class="my-4 flex flex-col gap-4 flex-wrap">
+          <FormInput name="name" type="text" placeholder="Name" e2e="address-name" />
+          <FormInput name="street" type="text" placeholder="Straße" e2e="address-street" />
+          <FormInput name="city" type="text" placeholder="Stadt" e2e="address-city" />
+        </div>
+
+        <FormFooter @update:close="dialogUpdateOpen = false" save-label="Übernehmen" />
+      </Form>
     </template>
   </Dialog>
 </template>

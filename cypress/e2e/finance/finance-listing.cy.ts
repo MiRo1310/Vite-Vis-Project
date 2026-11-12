@@ -151,7 +151,7 @@ const openEdit = (description: string) => {
 };
 
 const footerButtons = (alias: string) => {
-  return { submit: () => cy.get(alias).getBySel("btn-submit"), abort: () => cy.get(alias).getBySel("btn-abort") };
+  return { submit: () => cy.get(alias).getBySel("btn-submit"), abort: () => cy.get(alias).getBySel("btn-close") };
 };
 
 // Klickt eine Checkbox der Zeile und wartet, bis die Mutation durch ist

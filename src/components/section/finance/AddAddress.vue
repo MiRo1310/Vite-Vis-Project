@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Input } from "@/components/shared/input/input.variants";
-import { ref } from "vue";
 import { Button } from "@/components/shared/button/button.variants";
 import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";
-import { removeMultipleSpaces } from "@/lib/string.ts";
+import { useForm } from "vee-validate";
+import { formSchemaAddress } from "@/components/section/finance/schema.form.ts";
+import Form from "@/components/shared/form/Form.vue";
+import FormInput from "@/components/shared/form/FormInput.vue";
 
 const { toast } = useToast();
 
@@ -22,36 +23,32 @@ const { mutate } = useMutation(
   { refetchQueries: ["Addresses", "AddressListing"] },
 );
 
-const name = ref<string>();
-const street = ref<string>();
-const city = ref<string>();
+const form = useForm({
+  validationSchema: formSchemaAddress,
+  initialValues: { name: "", street: "", city: "" },
+});
 
-const clearInputs = () => {
-  name.value = "";
-  street.value = "";
-  city.value = "";
-};
-const addAddressHandler = async () => {
-  if (!name.value && !street.value && !city.value) {
-    return;
-  }
+const onSubmit = form.handleSubmit(async (values) => {
   await mutate({
-    name: name.value ? removeMultipleSpaces(name.value) : "",
-    street: street.value ? removeMultipleSpaces(street.value) : "",
-    city: city.value ? removeMultipleSpaces(city.value) : "",
+    name: values.name,
+    street: values.street,
+    city: values.city,
   });
   toast({
     title: "Die Adresse wurde zur Liste hinzugefügt",
   });
-  clearInputs();
-};
+  form.resetForm();
+});
 </script>
 
 <template>
-  <div class="my-4 flex gap-4 flex-wrap">
-    <Input type="text" placeholder="Name" v-model:model-value="name" class="w-120" e2e="address-name" />
-    <Input type="text" placeholder="Straße" v-model:model-value="street" class="w-120" e2e="address-street" />
-    <Input type="text" placeholder="City" v-model:model-value="city" class="w-120" e2e="address-city" />
-    <Button icon="add" variant="outline" size="icon" @click="addAddressHandler" data-e2e="address-submit" />
-  </div>
+  <Form @update:on-submit="onSubmit">
+    <div class="my-4 flex gap-4 flex-wrap">
+      <FormInput name="name" type="text" placeholder="Name" class="w-120" e2e="address-name" />
+      <FormInput name="street" type="text" placeholder="Straße" class="w-120" e2e="address-street" />
+      <FormInput name="city" type="text" placeholder="Stadt" class="w-120" e2e="address-city" />
+
+      <Button type="submit" icon="add" variant="outline" size="icon" data-e2e="address-submit" />
+    </div>
+  </Form>
 </template>
