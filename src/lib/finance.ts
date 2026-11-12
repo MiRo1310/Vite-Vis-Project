@@ -29,7 +29,7 @@ export function getCellClasses(original: TravelCostRow): string {
   return descriptionUncheckedColor;
 }
 
-export const listingAddress = (address: TravelCostListingAddress): string => {
+export const formatAddress = (address: TravelCostListingAddress): string => {
   const street = address?.street;
   const city = address?.city;
   if (street && city) {

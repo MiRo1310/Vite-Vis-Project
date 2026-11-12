@@ -33,7 +33,7 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   await mutate({
-    date: new Date(values.date).toISOString().slice(0, 10),
+    date: values.date,
     description: values.description ?? "",
     price: parseFloat(String(values.price)),
     addressId: values.addressId,

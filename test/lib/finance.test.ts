@@ -1,4 +1,4 @@
-import { financeYearBtns, getCellClasses, listingAddress, type TravelCostRow, yearRange } from "@/lib/finance.ts";
+import { financeYearBtns, getCellClasses, formatAddress, type TravelCostRow, yearRange } from "@/lib/finance.ts";
 import { descriptionUncheckedColor, financeListTextColorMapping } from "@/constants/finance.ts";
 import { type TravelCostListingAddress } from "@/types/types.ts";
 
@@ -83,40 +83,40 @@ describe("getCellClass", () => {
 describe("listingAddress", () => {
   it("returns street and city separated by comma", () => {
     const address: TravelCostListingAddress = { city: "Musterstadt", name: "Max Mustermann", street: "Musterstraße 1" };
-    expect(listingAddress(address)).toBe("Musterstraße 1, Musterstadt");
+    expect(formatAddress(address)).toBe("Musterstraße 1, Musterstadt");
   });
 
   it("returns street if city is null", () => {
     const address: TravelCostListingAddress = { city: null, name: "Max Mustermann", street: "Musterstraße 1" };
-    expect(listingAddress(address)).toBe("Musterstraße 1");
+    expect(formatAddress(address)).toBe("Musterstraße 1");
   });
 
   it("returns street if city is empty String", () => {
     const address: TravelCostListingAddress = { city: "", name: "Max Mustermann", street: "Musterstraße 1" };
-    expect(listingAddress(address)).toBe("Musterstraße 1");
+    expect(formatAddress(address)).toBe("Musterstraße 1");
   });
 
   it("returns city if street is null", () => {
     const address: TravelCostListingAddress = { city: "Musterstadt", name: "Max Mustermann", street: null };
-    expect(listingAddress(address)).toBe("Musterstadt");
+    expect(formatAddress(address)).toBe("Musterstadt");
   });
 
   it("returns city if street is empty string", () => {
     const address: TravelCostListingAddress = { city: "Musterstadt", name: "Max Mustermann", street: "" };
-    expect(listingAddress(address)).toBe("Musterstadt");
+    expect(formatAddress(address)).toBe("Musterstadt");
   });
 
   it("returns empty string if city and street are null", () => {
     const address: TravelCostListingAddress = { city: null, name: "Max Mustermann", street: null };
-    expect(listingAddress(address)).toBe("");
+    expect(formatAddress(address)).toBe("");
   });
 
   it("returns empty string if city and street are empty string", () => {
     const address: TravelCostListingAddress = { city: "", name: "Max Mustermann", street: "" };
-    expect(listingAddress(address)).toBe("");
+    expect(formatAddress(address)).toBe("");
   });
 
   it("returns empty string if address is null", () => {
-    expect(listingAddress(null)).toBe("");
+    expect(formatAddress(null)).toBe("");
   });
 });
