@@ -1,6 +1,7 @@
 import { descriptionUncheckedColor, financeListTextColorMapping, startYear } from "@/constants/finance.ts";
-import type { TravelCostQuery } from "@/api/gql/graphql.ts";
-import { type TravelCostListingAddress } from "@/types/types.ts";
+import type { AddressListingQuery, DescriptionsListingQuery, TravelCostQuery } from "@/api/gql/graphql.ts";
+import { type InputOption, type SelectOption, type TravelCostListingAddress } from "@/types/types.ts";
+import { isDefined } from "@/lib/utilities.ts";
 
 export const financeYearBtns = (start: number = startYear, current: number = new Date().getFullYear()): number => {
   return current - start + 1;
@@ -40,3 +41,29 @@ export const formatAddress = (address: TravelCostListingAddress): string => {
   }
   return city ?? "";
 };
+
+export const getYearFilter = (year: string | number) => ({
+  and: [{ date: { lte: `${year}-12-31` } }, { date: { gte: `${year}-01-01` } }],
+});
+
+export function getAddressOptions(addresses?: AddressListingQuery["addresses"]): InputOption[] {
+  const mappingAddress = (addresses ?? []).map((address) => {
+    return {
+      name: address.name,
+      id: address.id,
+    };
+  });
+
+  return mappingAddress
+    .filter((address) => isDefined(address.name) && isDefined(address.id))
+    .map(({ id, name }): InputOption => ({ value: id, name: name as string }));
+}
+
+export function getDescriptionOptions(descriptions?: DescriptionsListingQuery["description"]): SelectOption[] {
+  return (descriptions ?? []).map((d) => {
+    return {
+      label: d.text,
+      value: d.text,
+    };
+  });
+}

@@ -4,6 +4,7 @@ import { computed } from "vue";
 import { graphql } from "@/api/gql";
 import { type SelectOption } from "@/types/types.ts";
 import FormSelect from "@/components/shared/form/FormSelect.vue";
+import { getDescriptionOptions } from "@/lib/finance.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -16,20 +17,11 @@ const { result } = useQuery(
   `),
 );
 
-const selectOptions = computed((): SelectOption[] => {
-  const descriptions = result.value?.description ?? [];
-
-  return descriptions.map((d) => {
-    return {
-      label: d.text,
-      value: d.text,
-    };
-  });
-});
+const descriptionOptions = computed((): SelectOption[] => getDescriptionOptions(result.value?.description));
 
 const modelValue = defineModel<string>();
 </script>
 
 <template>
-  <FormSelect label="Wähle eine Beschreibung" name="descriptionHelper" :select-options="selectOptions" v-model="modelValue" class="w-48" />
+  <FormSelect label="Wähle eine Beschreibung" name="descriptionHelper" :select-options="descriptionOptions" v-model="modelValue" class="w-48" />
 </template>

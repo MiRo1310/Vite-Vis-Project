@@ -10,7 +10,7 @@ import { type ITableColumn } from "@/types/types.ts";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import Form from "@/components/shared/form/Form.vue";
 import { useForm } from "vee-validate";
-import { formSchemaAddress } from "@/components/section/finance/schema.form.ts";
+import { formSchemaAddress } from "@/lib/schema/schema.form.ts";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 
 // eslint-disable-next-line vue/no-unused-properties

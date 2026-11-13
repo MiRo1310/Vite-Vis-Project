@@ -2,9 +2,9 @@
 import { useQuery } from "@vue/apollo-composable";
 import { computed } from "vue";
 import { graphql } from "@/api/gql";
-import { isDefined } from "@/lib/utilities.ts";
 import { type InputOption } from "@/types/types.ts";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
+import { getAddressOptions } from "@/lib/finance.ts";
 
 const { result } = useQuery(
   graphql(`
@@ -17,20 +17,7 @@ const { result } = useQuery(
   `),
 );
 
-const options = computed((): InputOption[] => {
-  const addresses = result.value?.addresses ?? [];
-
-  const mappingAddress = addresses.map((address) => {
-    return {
-      name: address.name,
-      id: address.id,
-    };
-  });
-
-  return mappingAddress
-    .filter((address) => isDefined(address.name) && isDefined(address.id))
-    .map(({ id, name }): InputOption => ({ value: id, name: name as string }));
-});
+const options = computed((): InputOption[] => getAddressOptions(result.value?.addresses));
 </script>
 
 <template>
