@@ -14,7 +14,7 @@ import { type TravelCostFilterInput, type TravelCostSortInput } from "@/api/gql/
 import FinanceListingCheckbox from "@/components/section/finance/FinanceListingCheckbox.vue";
 import { typedStorage } from "@/lib/local-storage.ts";
 import { getCellClasses, type TravelCostRow, yearRange } from "@/lib/finance.ts";
-import { formatMoney, getTotalByPrice } from "@/lib/money.ts";
+import { getTotalByPrice, Money } from "@/lib/money.ts";
 
 const filter = computed((): TravelCostFilterInput => {
   return { and: [{ date: { lte: `${year.value}-12-31` } }, { date: { gte: `${year.value}-01-01` } }] };
@@ -116,7 +116,7 @@ const printPage = () => {
   window.print();
 };
 
-const total = computed(() => formatMoney(getTotalByPrice(result.value?.travelCost)));
+const total = computed(() => getTotalByPrice(result.value?.travelCost.map((cost) => new Money(cost.price ?? 0)) ?? []).formated);
 </script>
 
 <template>
