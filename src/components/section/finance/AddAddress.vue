@@ -4,7 +4,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useToast } from "@/components/ui/toast";
 import { useForm } from "vee-validate";
-import { formSchemaAddress } from "@/components/section/finance/schema.form.ts";
+import { formSchemaAddress } from "@/lib/schema/schema.form.ts";
 import Form from "@/components/shared/form/Form.vue";
 import FormInput from "@/components/shared/form/FormInput.vue";
 

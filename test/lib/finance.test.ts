@@ -1,4 +1,4 @@
-import { financeYearBtns, getCellClasses, formatAddress, type TravelCostRow, yearRange } from "@/lib/finance.ts";
+import { financeYearBtns, getCellClasses, formatAddress, getYearFilter, getAddressOptions, getDescriptionOptions, type TravelCostRow, yearRange } from "@/lib/finance.ts";
 import { descriptionUncheckedColor, financeListTextColorMapping } from "@/constants/finance.ts";
 import { type TravelCostListingAddress } from "@/types/types.ts";
 
@@ -32,7 +32,7 @@ describe("yearRange", () => {
   });
 });
 
-describe("getCellClass", () => {
+describe("getCellClasses", () => {
   it("Should get color for text with key", () => {
     financeListTextColorMapping.forEach(([key, value]) => {
       expect(getCellClasses({ hasInvoice: true, isValidated: true, description: `Das sind meine ${key}` } as TravelCostRow)).toBe(value);
@@ -80,7 +80,7 @@ describe("getCellClass", () => {
   });
 });
 
-describe("listingAddress", () => {
+describe("formatAddress", () => {
   it("returns street and city separated by comma", () => {
     const address: TravelCostListingAddress = { city: "Musterstadt", name: "Max Mustermann", street: "Musterstraße 1" };
     expect(formatAddress(address)).toBe("Musterstraße 1, Musterstadt");
@@ -118,5 +118,65 @@ describe("listingAddress", () => {
 
   it("returns empty string if address is null", () => {
     expect(formatAddress(null)).toBe("");
+  });
+});
+
+describe("getYearFilter", () => {
+  it("filters from the first to the last day of the year", () => {
+    expect(getYearFilter(2026)).toEqual({
+      and: [{ date: { lte: "2026-12-31" } }, { date: { gte: "2026-01-01" } }],
+    });
+  });
+
+  it("accepts the year as string", () => {
+    expect(getYearFilter("2025")).toEqual(getYearFilter(2025));
+  });
+});
+
+describe("getAddressOptions", () => {
+  it("maps addresses to input options", () => {
+    const addresses = [
+      { id: "a1", name: "Firma" },
+      { id: "a2", name: "Kunde" },
+    ];
+    expect(getAddressOptions(addresses)).toEqual([
+      { value: "a1", name: "Firma" },
+      { value: "a2", name: "Kunde" },
+    ]);
+  });
+
+  it("filters out addresses without a name", () => {
+    const addresses = [
+      { id: "a1", name: null },
+      { id: "a2", name: "Kunde" },
+    ];
+    expect(getAddressOptions(addresses)).toEqual([{ value: "a2", name: "Kunde" }]);
+  });
+
+  it("keeps addresses with an empty name", () => {
+    expect(getAddressOptions([{ id: "a1", name: "" }])).toEqual([{ value: "a1", name: "" }]);
+  });
+
+  it("returns an empty array for undefined or an empty list", () => {
+    expect(getAddressOptions()).toEqual([]);
+    expect(getAddressOptions([])).toEqual([]);
+  });
+});
+
+describe("getDescriptionOptions", () => {
+  it("maps descriptions to select options with text as label and value", () => {
+    const descriptions = [
+      { id: "d1", text: "Fahrt" },
+      { id: "d2", text: "Material" },
+    ];
+    expect(getDescriptionOptions(descriptions)).toEqual([
+      { label: "Fahrt", value: "Fahrt" },
+      { label: "Material", value: "Material" },
+    ]);
+  });
+
+  it("returns an empty array for undefined or an empty list", () => {
+    expect(getDescriptionOptions()).toEqual([]);
+    expect(getDescriptionOptions([])).toEqual([]);
   });
 });

@@ -6,7 +6,7 @@ import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import DescriptionOptions from "@/components/section/finance/DescriptionOptions.vue";
 import { useToast } from "@/components/ui/toast/use-toast";
 import { useForm } from "vee-validate";
-import { formSchemaListing } from "@/components/section/finance/schema.form.js";
+import { formSchemaListing } from "@/lib/schema/schema.form.ts";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormTextarea from "@/components/shared/form/FormTextarea.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";

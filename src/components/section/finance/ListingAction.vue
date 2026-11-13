@@ -8,7 +8,7 @@ import { ref } from "vue";
 import { type TravelCostQuery } from "@/api/gql/graphql.ts";
 import AddressOptions from "@/components/section/finance/AddressOptions.vue";
 import { useForm } from "vee-validate";
-import { formSchemaListing } from "@/components/section/finance/schema.form.js";
+import { formSchemaListing } from "@/lib/schema/schema.form.ts";
 import Form from "@/components/shared/form/Form.vue";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
 import FormDate from "@/components/shared/form/FormDate.vue";
