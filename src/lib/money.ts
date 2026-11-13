@@ -1,18 +1,46 @@
-import { formatNumber } from "@/lib/number.ts";
+/**
+ * Sums a list of money values. Each value is rounded to whole cents before summing to avoid floating point errors.
+ *
+ * @param list The money values to sum.
+ * @returns The sum as a new `Money` in Euro. Returns `0` for an empty list.
+ */
+export function getTotalByPrice(list: Money[]): Money {
+  const cents = list.reduce((acc, item) => acc + Math.round(item.money * 100), 0);
 
-export const formatMoney = (money?: number, unit = "€") => {
-  const formatedNumber = formatNumber(money, 2);
-  return formatedNumber ? `${formatedNumber} ${unit}` : "";
-};
+  return new Money(cents / 100);
+}
 
 /**
- * Calculate the total price from an array of objects with a price property.
- *
- * @param obj An array of objects, each containing a price property that is a number or null.Price only should have 2 decimal places
- * @returns The total price calculated by summing the price properties of the objects in the array. If the input is undefined, it returns 0.
+ * An amount of money with its unit.
  */
-export function getTotalByPrice<T extends { price?: number | null }>(obj?: T[]): number {
-  const cents = obj?.reduce((acc, item) => acc + Math.round((item.price ?? 0) * 100), 0) ?? 0;
+export class Money {
+  /**
+   * @param _money The amount. Defaults to `0`.
+   * @param _unit The currency unit. Defaults to `€`.
+   */
+  constructor(
+    private _money: number = 0,
+    private _unit: string = "€",
+  ) {}
 
-  return cents / 100;
+  /**
+   * The currency unit, e.g. `€`.
+   */
+  public get unit() {
+    return this._unit;
+  }
+
+  /**
+   * The raw, unrounded amount.
+   */
+  public get money() {
+    return this._money;
+  }
+
+  /**
+   * The amount rounded to two decimals with a decimal comma and the unit, e.g. `12,50 €`.
+   */
+  public get formated() {
+    return `${this.money.toFixed(2).replace(".", ",")} ${this.unit}`;
+  }
 }

@@ -1,6 +1,6 @@
 import { type TValue } from "@/components/shared/energy-flow";
-import { formatMoney } from "@/lib/money.ts";
 import { isDefined } from "@/lib/utilities.ts";
+import { Money } from "@/lib/money.ts";
 
 export const sumNumbers = (val: TValue) => {
   if (Array.isArray(val)) {
@@ -42,7 +42,7 @@ export const numberFormatter = ({ number, decimals, unit }: { number?: number | 
   }
 
   if (isMoneyUnit(unit)) {
-    return formatMoney(floatNumber, unit);
+    return new Money(floatNumber, unit).formated;
   }
 
   let string = formatNumber(floatNumber, decimals);
