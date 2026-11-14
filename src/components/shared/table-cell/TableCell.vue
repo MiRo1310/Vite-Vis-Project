@@ -17,8 +17,8 @@ const props = defineProps<{
   unit?: string;
   reverse?: boolean;
   decimals?: number;
-  cellClass?: TableCellClass<any>;
-  original: any;
+  cellClass?: TableCellClass<unknown>;
+  original: unknown;
 }>();
 
 const cellClass = computed(() => `text-muted-foreground ${props.cellClass?.(props.original) ?? ""}`);

@@ -24,7 +24,7 @@ export interface AlexaDotAction {
 const loading = ref(false);
 const alexaData = ref<AlexaDotAction[]>([]);
 
-async function getAlexaEnum(): Promise<any[]> {
+async function getAlexaEnum(): Promise<string[]> {
   const res = await ioBrokerService.connection?.getObject("enum.functions.alexa");
   return res ? (res.common.members as string[]) : [];
 }
