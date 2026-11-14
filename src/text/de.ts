@@ -5,6 +5,7 @@ export const texts = {
     },
     listing: {
       addNewRowToastMessage: "Wurde zur Liste hinzugefügt",
+      errorUpdateCheckbox: "Fehler beim Aktualisieren der Checkbox",
     },
   },
 };

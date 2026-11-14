@@ -5,11 +5,11 @@ import { CheckboxIndicator, CheckboxRoot, useForwardPropsEmits } from "reka-ui";
 import { Check } from "@lucide/vue";
 import { cn } from "@/lib/utils.ts";
 
-const props = defineProps<CheckboxRootProps & { class?: HTMLAttributes["class"] }>();
+const props = defineProps<CheckboxRootProps & { class?: HTMLAttributes["class"]; e2e?: string }>();
 const emits = defineEmits<CheckboxRootEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
+  const { class: _, e2e: __, ...delegated } = props;
 
   return delegated;
 });
@@ -20,6 +20,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 <template>
   <CheckboxRoot
     v-bind="forwarded"
+    :data-e2e="e2e"
     :class="
       cn(
         'peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
