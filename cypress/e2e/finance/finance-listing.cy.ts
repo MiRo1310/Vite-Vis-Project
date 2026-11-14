@@ -1,7 +1,8 @@
 import { routes } from "@/router/routes.ts";
 import { descriptionUncheckedColor as unchecked, financeListTextColorMapping } from "@/constants/finance.ts";
-import { addAddress, aliasGraphqlOperations, clickESC, getFakerCity, getFakerStreet } from "../../support/utils.ts";
+import { addAddress, aliasGraphqlOperations, clickESC, dataSel, getFakerCity, getFakerStreet, provokeGraphQlError } from "../../support/utils.ts";
 import { faker } from "@faker-js/faker";
+import { texts } from "@/text/de.ts";
 
 describe("Finance Listing (GraphQL Integration)", () => {
   it("loads travel costs from the real backend without a GraphQL error", () => {
@@ -142,6 +143,39 @@ describe("Dialog", () => {
     cy.get("@dialog").should("not.exist");
     openEdit(description).should("exist").should("be.visible").as("dialogReopen");
     validateValues("@dialogReopen", date, description, price, addressName);
+  });
+});
+
+describe("Graphql Error", () => {
+  it("resets the validated checkbox after graphql error", () => {
+    const description = `Cypress Test GraphQl Error ${Date.now()}`;
+
+    createListing(description, "100");
+
+    cy.get("table").contains("code", description).closest("tr").find(dataSel("isValidated-checkbox")).as("validatedCheckbox");
+
+    provokeGraphQlError("UpdateTravelCostCheckboxes");
+
+    cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked").click();
+    cy.wait("@UpdateTravelCostCheckboxesFailed");
+
+    cy.contains(texts.finance.listing.errorUpdateCheckbox).should("be.visible");
+    cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked");
+  });
+
+  it("resets the has Invoice checkbox after graphql error", () => {
+    const description = `Cypress Test GraphQl Error ${Date.now()}`;
+
+    createListing(description, "100");
+
+    cy.get("table").contains("code", description).closest("tr").find(dataSel("hasInvoice-checkbox")).as("validatedCheckbox");
+
+    provokeGraphQlError("UpdateTravelCostCheckboxes");
+    cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked").click();
+    cy.wait("@UpdateTravelCostCheckboxesFailed");
+
+    cy.contains(texts.finance.listing.errorUpdateCheckbox).should("be.visible");
+    cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked");
   });
 });
 
