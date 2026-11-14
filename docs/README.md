@@ -4,6 +4,7 @@ Hier liegen kurze Projekt-Anleitungen und Workflows.
 
 ## Inhalte
 
+- [`dependencies.md`](./dependencies.md) – alle Dependencies und wofür sie da sind
 - [`npm-check-updates.md`](./npm-check-updates.md) – sichere Dependency-Updates mit `ncu`
 - [`web-types.md`](./web-types.md) – JetBrains-Unterstützung für Vue-Directives und Test-Attribute
 - [`git-rebase.md`](./git-rebase.md) – `git rebase` und `git rebase -i` erklärt
