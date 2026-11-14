@@ -44,7 +44,7 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
 
   props.form.setFieldValue(
     "productUnits",
-    props.form.values.productUnits.filter((_: any, i: number) => i !== index),
+    props.form.values.productUnits.filter((_: unknown, i: number) => i !== index),
   );
   variants.value.splice(index, 1);
 };
