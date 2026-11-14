@@ -25,7 +25,9 @@
     "test:e2e:local": "cypress open --config baseUrl=http://localhost:5174",
     "release": "ts-node scripts/release.ts",
     "copy:local": "ts-node scripts/copy.ts",
-    "update": "npx npm-check-updates --peer -u --target minor && yarn install"
+    "update": "npx npm-check-updates --peer -u --target minor && yarn install",
+    "installFrozen": "yarn install --frozen-lockfile",
+    "rebuildNodeModules": "npx rimraf node_modules && yarn run installFrozen"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
