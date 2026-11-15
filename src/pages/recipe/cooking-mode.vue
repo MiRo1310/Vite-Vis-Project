@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import EmptyState from "@/components/shared/recipe/EmptyState.vue";
-import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
+import AlexaTimerStrip from "@/components/section/recipe/AlexaTimerStrip.vue";
 import RecipeIngredientList from "@/components/section/recipe/RecipeIngredientList.vue";
 import { useRecipeDetails } from "@/composables/querys/recipeDetails.ts";
 import { sortSteps } from "@/lib/recipe.ts";
@@ -184,8 +184,9 @@ watch(
       </button>
     </div>
 
-    <div class="shrink-0 px-3 pt-2 empty:hidden">
-      <RecipeTimer />
+    <!-- Alexa-Timer: groß, damit man sie vom Herd aus lesen kann -->
+    <div class="shrink-0 px-3 pt-3">
+      <AlexaTimerStrip size="lg" show-empty />
     </div>
 
     <!-- Schritt -->

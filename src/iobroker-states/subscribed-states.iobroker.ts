@@ -353,6 +353,7 @@ export const iobrokerTree = {
     badFensterPosition: new NumberValue("s7.2.DBs.DB1.B078"),
     gaestezimmerFensterPosition: new NumberValue("s7.2.DBs.DB1.B150"),
   },
+  // Feste Slots von alexa-timer-vis (timer1 … timer6), siehe ALEXA_TIMER_SLOTS in constants/timer.ts
   timers: {
     timerAlive: new BooleanValue("alexa-timer-vis.0.all_Timer.alive"),
     1: {
@@ -386,6 +387,22 @@ export const iobrokerTree = {
       device: new StringValue("alexa-timer-vis.0.timer4.InputDeviceName"),
       name: new StringValue("alexa-timer-vis.0.timer4.name"),
       initialTimer: new StringValue("alexa-timer-vis.0.timer4.initialTimer"),
+    },
+    5: {
+      timeString: new StringValue("alexa-timer-vis.0.timer5.string_2"),
+      timeEnd: new StringValue("alexa-timer-vis.0.timer5.TimeEnd"),
+      timeStart: new StringValue("alexa-timer-vis.0.timer5.TimeStart"),
+      device: new StringValue("alexa-timer-vis.0.timer5.InputDeviceName"),
+      name: new StringValue("alexa-timer-vis.0.timer5.name"),
+      initialTimer: new StringValue("alexa-timer-vis.0.timer5.initialTimer"),
+    },
+    6: {
+      timeString: new StringValue("alexa-timer-vis.0.timer6.string_2"),
+      timeEnd: new StringValue("alexa-timer-vis.0.timer6.TimeEnd"),
+      timeStart: new StringValue("alexa-timer-vis.0.timer6.TimeStart"),
+      device: new StringValue("alexa-timer-vis.0.timer6.InputDeviceName"),
+      name: new StringValue("alexa-timer-vis.0.timer6.name"),
+      initialTimer: new StringValue("alexa-timer-vis.0.timer6.initialTimer"),
     },
   },
   tankerKoenig: {

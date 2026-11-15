@@ -6,7 +6,7 @@ import { useAppStore } from "@/store/app-store.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { computed } from "vue";
-import { type Timers } from "@/iobroker-states/subscribed-states.iobroker.ts";
+import { ALEXA_TIMER_SLOTS, type AlexaTimerSlot } from "@/constants/timer.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const appStore = useAppStore();
@@ -23,8 +23,8 @@ const stopTimer = async (index: number) => {
   }
 };
 
-const timerLabel = computed(() => (i: number): string => {
-  const timerName = iobroker.timers[i as keyof Timers].name.value;
+const timerLabel = computed(() => (i: AlexaTimerSlot): string => {
+  const timerName = iobroker.timers[i].name.value;
   if (!timerName || timerName === "timer") {
     return `Timer ${i}`;
   }
@@ -44,16 +44,13 @@ const timerLabel = computed(() => (i: number): string => {
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-6">
-      <div v-for="i of 4" :key="i" class="col-span-2 lg:col-span-1 relative bg-background/70 p-2 shadow-lg rounded-md">
+      <div v-for="i of ALEXA_TIMER_SLOTS" :key="i" class="col-span-2 lg:col-span-1 relative bg-background/70 p-2 shadow-lg rounded-md">
         <div class="w-full">
           <div class="flex justify-between items-center mb-2">
             <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
               <span class="text-cardCustom-foreground">{{ timerLabel(i) }} </span>
               <span>
-                <span v-if="i === 1"> {{ iobroker.timers[1].timeString.value }} </span>
-                <span v-else-if="i === 2"> {{ iobroker.timers[2].timeString.value }} </span>
-                <span v-else-if="i === 3"> {{ iobroker.timers[3].timeString.value }} </span>
-                <span v-else> {{ iobroker.timers[4].timeString.value }} </span>
+                {{ iobroker.timers[i].timeString.value }}
               </span>
             </h1>
             <Button variant="outline" size="icon" @click="stopTimer(i)">
@@ -65,26 +62,26 @@ const timerLabel = computed(() => (i: number): string => {
             <div class="flex justify-between items-center w-1/2">
               <p>Startzeit:</p>
               <p class="">
-                {{ iobroker.timers[i as keyof Timers].timeStart.value }}
+                {{ iobroker.timers[i].timeStart.value }}
               </p>
             </div>
             <div class="flex justify-between items-center w-1/2">
               <p>Endzeit:</p>
               <p>
-                {{ iobroker.timers[i as keyof Timers].timeEnd.value }}
+                {{ iobroker.timers[i].timeEnd.value }}
               </p>
             </div>
           </div>
           <div class="flex justify-between items-center">
             <p>Gerät:</p>
             <p>
-              {{ iobroker.timers[i as keyof Timers].device.value }}
+              {{ iobroker.timers[i].device.value }}
             </p>
           </div>
           <div class="flex justify-between items-center">
             <p>Länge:</p>
             <p>
-              {{ iobroker.timers[i as keyof Timers].initialTimer.value }}
+              {{ iobroker.timers[i].initialTimer.value }}
             </p>
           </div>
         </div>
