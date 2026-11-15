@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import EmptyState from "@/components/shared/recipe/EmptyState.vue";
 import RecipePageHeader from "@/components/shared/recipe/RecipePageHeader.vue";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
-import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
+import AlexaTimerStrip from "@/components/section/recipe/AlexaTimerStrip.vue";
 import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
 import RecipeServings from "@/components/section/recipe/RecipeServings.vue";
 import RecipeIngredientList from "@/components/section/recipe/RecipeIngredientList.vue";
@@ -69,7 +69,7 @@ const cookingRoute = computed(() => ({
 <template>
   <div class="h-full overflow-y-auto pb-6">
     <div class="flex flex-col gap-4 max-w-6xl mx-auto">
-      <RecipeTimer />
+      <AlexaTimerStrip />
 
       <!-- Laden -->
       <template v-if="!recipe && loading">
