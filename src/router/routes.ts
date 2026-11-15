@@ -64,6 +64,8 @@ export const routes = {
   productCategories: { path: "/produkt-kategorien", name: "product-categories", hideOnNavigation: true },
   newRecipe: { path: "/neues_rezepte", name: "new-recipe", hideOnNavigation: true },
   editRecipe: { path: "/rezepte_bearbeiten/:id?", name: "edit-recipe", hideOnNavigation: true },
+  recipeManage: { path: "/rezepte-verwaltung", name: "recipe-manage", hideOnNavigation: true },
+  shoppingList: { path: "/einkaufsliste", name: "shopping-list", hideOnNavigation: true },
   finance: { path: "/finance", name: "finance", hideOnNavigation: true },
   addresses: { path: "/adressen", name: "addresses", hideOnNavigation: true },
   description: { path: "/beschreibung", name: "descriptions", hideOnNavigation: true },

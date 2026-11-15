@@ -6,122 +6,92 @@ import { githubNavigation } from "@/config/config.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/shared/button/button.variants";
-import { ArrowLeft, BookOpen, LayoutGrid, MoreHorizontal, Package, Pencil, Plus, Ruler, Tag, UtensilsCrossed } from "@lucide/vue";
+import { ArrowLeft, LayoutGrid, MoreHorizontal, Pencil, UtensilsCrossed } from "@lucide/vue";
 import GithubIcon from "@/components/shared/icons/GithubIcon.vue";
+import RecipeBottomNav from "@/components/shared/recipe/RecipeBottomNav.vue";
+import { recipeAccentClasses, type RecipeNavItem, recipeNavItems } from "@/constants/recipe.ts";
 
 const recipeStore = useRecipeStore();
 const route = useRoute();
 
 const lastRecipe = computed(() => recipeStore.getLastRecipe);
 
-const navClass = (routeName: string): string =>
-  route.name === routeName
-    ? "bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-500/15 hover:text-orange-600 dark:hover:text-orange-400"
-    : "";
+const isActive = (item: RecipeNavItem): boolean => {
+  const name = String(route.name ?? "");
+  return name === item.routeName || item.activeFor.includes(name);
+};
 </script>
 
 <template>
   <Suspense>
-    <div class="relative w-full h-screen">
-      <!-- Navigation Header -->
-      <header class="fixed top-0 z-50 w-full h-12 border-b border-border/60 bg-background/95 backdrop-blur-sm">
+    <div class="relative w-full h-dvh">
+      <!-- Kopfzeile -->
+      <header class="fixed top-0 z-50 w-full h-14 border-b border-border/60 bg-background/95 backdrop-blur-sm">
         <div class="flex items-center gap-1 px-3 h-full">
-          <!-- Brand -->
-          <div class="flex items-center gap-2 mr-3 shrink-0">
-            <div class="h-7 w-7 rounded-lg bg-linear-to-br from-orange-500 to-amber-400 flex items-center justify-center shrink-0">
-              <UtensilsCrossed class="h-3.5 w-3.5 text-white" />
+          <!-- Marke -->
+          <RouterLink :to="{ name: routes.recipes.name }" class="flex items-center gap-2 mr-3 shrink-0">
+            <div
+              class="h-8 w-8 rounded-xl bg-linear-to-br from-recipe-tomato via-recipe-primary to-recipe-mango flex items-center justify-center shrink-0 shadow-sm"
+            >
+              <UtensilsCrossed class="h-4 w-4 text-white" />
             </div>
-            <span class="font-semibold text-sm hidden sm:block">Kochbuch</span>
-          </div>
+            <span class="font-bold tracking-tight">Kochbuch</span>
+          </RouterLink>
 
-          <!-- Main Navigation -->
-          <nav class="flex items-center gap-0.5 flex-1 min-w-0">
-            <Button variant="ghost" size="sm" as-child :class="navClass(routes.recipes.name)">
-              <RouterLink :to="{ name: routes.recipes.name }" class="flex items-center">
-                <BookOpen class="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                <span class="hidden sm:inline">Rezepte</span>
-              </RouterLink>
-            </Button>
-            <Button variant="ghost" size="sm" as-child :class="navClass(routes.newRecipe.name)">
-              <RouterLink :to="{ name: routes.newRecipe.name }" class="flex items-center">
-                <Plus class="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                <span class="hidden sm:inline">Neu</span>
-              </RouterLink>
-            </Button>
-            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child :class="navClass(routes.editRecipe.name)">
-              <RouterLink :to="{ name: routes.editRecipe.name, params: { id: lastRecipe.id } }" class="flex items-center min-w-0">
-                <Pencil class="h-3.5 w-3.5 mr-1.5 shrink-0" />
-                <span class="hidden sm:inline truncate max-w-36">{{ lastRecipe.name }}</span>
-              </RouterLink>
-            </Button>
+          <!-- Hauptnavigation (Desktop) -->
+          <nav class="hidden md:flex items-center gap-1 flex-1 min-w-0">
+            <RouterLink
+              v-for="item in recipeNavItems"
+              :key="item.routeName"
+              :to="{ name: item.routeName }"
+              class="flex items-center gap-1.5 rounded-full px-3 h-9 text-sm font-medium transition-colors"
+              :class="isActive(item) ? recipeAccentClasses[item.accent].soft : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'"
+            >
+              <Component :is="item.icon" class="h-4 w-4 shrink-0" />
+              {{ item.label }}
+            </RouterLink>
           </nav>
+          <div class="flex-1 md:hidden" />
 
-          <!-- Right Side -->
+          <!-- Rechte Seite -->
           <div class="flex items-center gap-1 shrink-0">
-            <!-- Back to last recipe detail -->
-            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child class="hidden md:flex" :class="navClass(routes.recipeDetails.name)">
+            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child class="hidden lg:flex">
               <RouterLink :to="{ name: routes.recipeDetails.name, params: { recipeId: lastRecipe.id } }" class="flex items-center">
-                <ArrowLeft class="h-3.5 w-3.5 mr-1.5 shrink-0" />
+                <ArrowLeft class="h-4 w-4 mr-1.5 shrink-0" />
                 Zurück
               </RouterLink>
             </Button>
+            <Button v-if="lastRecipe" variant="ghost" size="sm" as-child>
+              <RouterLink :to="{ name: routes.editRecipe.name, params: { id: lastRecipe.id } }" class="flex items-center min-w-0">
+                <Pencil class="h-4 w-4 sm:mr-1.5 shrink-0 text-recipe-primary-fg" />
+                <span class="hidden sm:inline truncate max-w-36">{{ lastRecipe.name }}</span>
+              </RouterLink>
+            </Button>
 
-            <!-- Management Dropdown -->
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" aria-label="Mehr">
                   <MoreHorizontal class="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" class="w-52">
-                <DropdownMenuLabel class="text-xs font-normal text-muted-foreground">Verwaltung</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <RouterLink :to="{ name: routes.products.name }" class="flex items-center gap-2 w-full">
-                    <Package class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    Produkte
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <RouterLink :to="{ name: routes.recipeUnits.name }" class="flex items-center gap-2 w-full">
-                    <Ruler class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    Einheiten
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <RouterLink :to="{ name: routes.productCategories.name }" class="flex items-center gap-2 w-full">
-                    <Tag class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    Produkt Kategorien
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <RouterLink :to="{ name: routes.recipeCategories.name }" class="flex items-center gap-2 w-full">
-                    <Tag class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    Rezept Kategorien
-                  </RouterLink>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem as-child>
                   <RouterLink :to="{ name: routes.home.name }" class="flex items-center gap-2 w-full">
-                    <LayoutGrid class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <LayoutGrid class="h-4 w-4 text-muted-foreground shrink-0" />
                     VIS Dashboard
                   </RouterLink>
                 </DropdownMenuItem>
-                <DropdownMenuItem v-if="githubNavigation.href">
-                  <a :href="githubNavigation.href" target="_blank" class="flex items-center gap-2 w-full">
-                    <GithubIcon class="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                    GitHub
-                  </a>
-                </DropdownMenuItem>
+                <template v-if="githubNavigation.href">
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem as-child>
+                    <a :href="githubNavigation.href" target="_blank" class="flex items-center gap-2 w-full">
+                      <GithubIcon class="h-4 w-4 text-muted-foreground shrink-0" />
+                      GitHub
+                    </a>
+                  </DropdownMenuItem>
+                </template>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -130,10 +100,12 @@ const navClass = (routeName: string): string =>
         </div>
       </header>
 
-      <!-- Content -->
-      <div class="pt-12 h-[calc(100vh-10px)] overflow-hidden px-3">
+      <!-- Inhalt: Seiten scrollen selbst (h-full + overflow-y-auto) -->
+      <main class="h-dvh pt-16 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-2 overflow-hidden px-3 md:px-5">
         <router-view />
-      </div>
+      </main>
+
+      <RecipeBottomNav />
     </div>
   </Suspense>
   <Toaster />

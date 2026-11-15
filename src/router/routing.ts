@@ -1,4 +1,11 @@
 import { routes } from "@/router/routes.ts";
+import { type RouteLocationGeneric } from "vue-router";
+import { type RecipeManageTab } from "@/constants/recipe.ts";
+
+const manageRedirect = (tab: RecipeManageTab) => (to: RouteLocationGeneric) => ({
+  name: routes.recipeManage.name,
+  query: { ...to.query, tab },
+});
 
 export const routing = [
   {
@@ -37,13 +44,13 @@ export const routing = [
     component: async () => await import("@/pages/recipe/recipe-app.vue"),
     ...routes.recipeApp,
     children: [
-      {
-        component: () => import("@/pages/recipe/products.vue"),
-        ...routes.products,
-      },
-      { component: () => import("@/pages/recipe/units.vue"), ...routes.recipeUnits },
-      { component: () => import("@/pages/recipe/product-categories.vue"), ...routes.productCategories },
-      { component: () => import("@/pages/recipe/recipe-categories.vue"), ...routes.recipeCategories },
+      { component: () => import("@/pages/recipe/recipe-manage.vue"), ...routes.recipeManage },
+      // Alte Stammdaten-Routen leiten auf den passenden Tab der Verwaltung um (Query wie ?productId= bleibt erhalten)
+      { redirect: manageRedirect("products"), ...routes.products },
+      { redirect: manageRedirect("units"), ...routes.recipeUnits },
+      { redirect: manageRedirect("productCategories"), ...routes.productCategories },
+      { redirect: manageRedirect("recipeCategories"), ...routes.recipeCategories },
+      { component: () => import("@/pages/recipe/shopping-list.vue"), ...routes.shoppingList },
       { component: () => import("@/pages/recipe/recipes.vue"), ...routes.recipes },
       { component: () => import("@/pages/recipe/recipe-details.vue"), props: true, ...routes.recipeDetails },
       { props: true, component: () => import("@/pages/recipe/new-recipe.vue"), ...routes.newRecipe },

@@ -236,6 +236,20 @@ Wenn eine Klasse wie `hidden sm:block` auf einem Element ein Grid-Layout übersc
 
 ---
 
+## Rezept-App (`/recipe-app`)
+
+Die Rezept-App hat ein **eigenes Layout** (`pages/recipe/recipe-app.vue`) und folgt **nicht** dem kompakten Dashboard-Stil oben. Sie soll Spaß beim Eintragen machen und mobil gut bedienbar sein:
+
+- **Mobile-first**, luftig: Touch-Ziele ≥ 40px, mehr Weißraum, `rounded-xl`/`rounded-2xl`. Das Card-Padding-Override (`py-0 gap-0`) ist hier nicht Pflicht.
+- **Navigation:** Desktop-Top-Bar und mobile Bottom-Tab-Bar (`RecipeBottomNav`) aus derselben Liste `recipeNavItems` (`@/constants/recipe.ts`). Seiten scrollen selbst (`h-full overflow-y-auto`).
+- **Farben nur über Tokens:** `bg-recipe-<farbe>`, `bg-recipe-<farbe>-soft`, `text-recipe-<farbe>-fg` mit den Farben `primary`, `tomato`, `mango`, `basil`, `teal`, `berry` und `lavender`. Werte für hell und dunkel stehen in `assets/css/style.css`. Im Code die fertigen Klassen-Sets aus `recipeAccentClasses` nutzen (`solid`, `soft`, `text`, `border`, `gradient`), keine `orange-500` o. Ä. hart codieren.
+- **Kategorien** bekommen ihre Farbe über `getCategoryColor(name)` aus `@/lib/recipe.ts`, überall dieselbe Farbe pro Kategorie. **Nährwerte** über `nutrientAccent`.
+- **Bausteine** in `components/shared/recipe/`: `RecipePageHeader` (Titel, Icon, Gradient, Slots `actions`/`meta`) und `EmptyState`.
+- Stammdaten (Produkte, Einheiten, Kategorien) liegen gesammelt unter `recipeManage` (Tabs über `?tab=`). Die alten Routen (`products`, `recipeUnits`, …) leiten dorthin um.
+- shadcn-Komponenten bleiben Pflicht.
+
+---
+
 ## Tabellen mit fixem Header
 
 `TableBasic` unterstützt sticky Header und scrollbare Höhe via `wrapperClass`:
