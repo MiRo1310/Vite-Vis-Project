@@ -251,7 +251,7 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
           <div :class="['border-l-4 pl-2', nutrientBorder('sugar')]">
             <OpenFoodFactsValueUpdater label="davon Zucker"
               name="sugar"
-              :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.addedSugars100g"
+              :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.sugars100g"
               :form
               unit="g"
               v-model:add-all="addAllValuesToForm"

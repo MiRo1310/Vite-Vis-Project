@@ -29,7 +29,7 @@ const props = withDefaults(
       <Component :is="icon" class="h-5 w-5" />
     </div>
     <div class="min-w-0 flex-1">
-      <h1 class="text-xl md:text-2xl font-bold tracking-tight leading-tight truncate">{{ title }}</h1>
+      <h1 class="text-xl md:text-2xl font-bold tracking-tight leading-tight wrap-break-word">{{ title }}</h1>
       <p v-if="subtitle" class="text-sm text-muted-foreground mt-0.5">{{ subtitle }}</p>
       <slot name="meta" />
     </div>

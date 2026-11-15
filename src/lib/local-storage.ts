@@ -1,13 +1,13 @@
 import { type RouterReloadRetry } from "@/types/types.ts";
 import { deepCopy, isDefined } from "@/lib/utilities.ts";
-import type { TRecipe } from "@/store";
+import type { RecentRecipe } from "@/store";
 import { Logger } from "@/lib/logger.ts";
 
 interface StorageTypes {
   autoUpdate: boolean;
   deviceId: string | null;
   routerReload: RouterReloadRetry;
-  lastRecipes: TRecipe[];
+  lastRecipes: RecentRecipe[];
   "active-tab": Record<string, string>;
   activeYear: number | undefined;
 }
@@ -17,7 +17,7 @@ const typedLocalStorage = () => {
     autoUpdate: true,
     deviceId: null,
     routerReload: { to: null, attempt: 0, triedNavigateToHome: false },
-    lastRecipes: [] as TRecipe[],
+    lastRecipes: [] as RecentRecipe[],
     "active-tab": {},
     activeYear: undefined,
   };

@@ -1,7 +1,7 @@
 import { type StoreDefinition } from "pinia";
 import { type IdsToControl } from "@/types/types.ts";
 import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
-import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
+import { type RecipesQuery } from "@/api/gql/graphql.ts";
 import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { type Collection } from "@/lib/array.ts";
 
@@ -40,7 +40,13 @@ export interface IRecipeStore {
   productGroupsCount: number;
   shouldValidate: boolean;
   directlyOpenNewProductModal: boolean;
-  lastRecipes: Collection<TRecipe>;
+  lastRecipes: Collection<RecentRecipe>;
 }
 
-export type TRecipe = TGroupedRecipesByCategory[number][number];
+export type TRecipe = RecipesQuery["recipes"][number];
+
+/** Gemerkter Eintrag für „Zuletzt geöffnet“ – nur das Nötigste, der Rest kommt frisch vom Server. */
+export interface RecentRecipe {
+  id: string;
+  name: string;
+}

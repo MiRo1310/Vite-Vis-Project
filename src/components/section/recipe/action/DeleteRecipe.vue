@@ -5,6 +5,7 @@ import { useMutation } from "@vue/apollo-composable";
 import { graphql } from "@/api/gql";
 import { useRouter } from "vue-router";
 import { routes } from "@/router/routes.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 
 const open = ref(false);
 
@@ -18,6 +19,7 @@ const { mutate } = useMutation(
   `),
 );
 const router = useRouter();
+const recipeStore = useRecipeStore();
 
 const removeRecipe = async () => {
   if (!props.recipeId) {
@@ -25,6 +27,7 @@ const removeRecipe = async () => {
   }
   const result = await mutate({ id: props.recipeId });
   if (result) {
+    recipeStore.removeFromLastRecipes(props.recipeId);
     await router.push({ name: routes.recipes.name });
   }
 };

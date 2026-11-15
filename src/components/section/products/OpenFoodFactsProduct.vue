@@ -29,7 +29,7 @@ const localProductsByCodeQuery = graphql(`
         }
         nutriments {
           carbohydrates100g
-          addedSugars100g
+          sugars100g
           energy100g
           fat100g
           energyKcal100g

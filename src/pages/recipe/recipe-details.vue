@@ -1,102 +1,161 @@
 <script setup lang="ts">
-import EditRecipe from "@/components/section/recipe/EditRecipe.vue";
-import RecipeContent from "@/components/section/recipe/RecipeContent.vue";
-import { onMounted, watch } from "vue";
-import { useLazyQuery } from "@vue/apollo-composable";
-import { graphql } from "@/api/gql";
+import { computed, ref, watch } from "vue";
+import { ArrowLeft, ChefHat, ListChecks, Pencil, RotateCcw, SearchX, ShoppingBasket, Trash2, UtensilsCrossed } from "@lucide/vue";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import EmptyState from "@/components/shared/recipe/EmptyState.vue";
+import RecipePageHeader from "@/components/shared/recipe/RecipePageHeader.vue";
 import DeleteRecipe from "@/components/section/recipe/action/DeleteRecipe.vue";
-import { Button } from "@/components/shared/button/button.variants";
 import RecipeTimer from "@/components/section/recipe/RecipeTimer.vue";
 import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
+import RecipeServings from "@/components/section/recipe/RecipeServings.vue";
+import RecipeIngredientList from "@/components/section/recipe/RecipeIngredientList.vue";
+import RecipeSteps from "@/components/section/recipe/RecipeSteps.vue";
+import { useRecipeDetails } from "@/composables/querys/recipeDetails.ts";
+import { useRecipeStore } from "@/store/recipeStore.ts";
+import { getCategoryColor, kcalPerPortion, scaleAmount } from "@/lib/recipe.ts";
+import { recipeAccentClasses } from "@/constants/recipe.ts";
+import { routes } from "@/router/routes.ts";
 
 const props = defineProps<{ recipeId?: string }>();
 
-const recipeDetailsQuery = graphql(`
-  query getRecipeDetails($id: UUID!) {
-    recipe(id: $id) {
-      id
-      name
-      portions
-      totalKcal
-      preparationTimeMin
-      totalTimeMin
-      recipeProducts {
-        amount
-        description
-        groupPosition
-        unit
-        kcal
-        activeUnitId
-        productId
-        product {
-          name
-          category
-          carbs
-          fat
-          kcal
-          protein
-          salt
-          sugar
-        }
-      }
-      recipeDescriptions {
-        position
-        text
-        header
-      }
-      recipeHeaderProducts {
-        position
-        text
-      }
-    }
-  }
-`);
+const { recipe, loading } = useRecipeDetails(() => props.recipeId);
+const recipeStore = useRecipeStore();
 
-const { load, result, refetch } = useLazyQuery(recipeDetailsQuery);
+const basePortions = computed(() => Math.max(recipe.value?.portions ?? 1, 1));
+const portions = ref(1);
+const checked = ref<string[]>([]);
 
-const loadRecipeFromServer = async (): Promise<void> => {
-  const recipeId = props.recipeId;
-  if (!recipeId) {
-    return;
-  }
-
-  await load(recipeDetailsQuery, { id: recipeId });
-  await refetch({ id: recipeId });
-};
-
+// Neues Rezept geladen: Portionen zurücksetzen, Häkchen leeren, in „Zuletzt geöffnet“ merken
 watch(
-  () => props.recipeId,
-  () => loadRecipeFromServer(),
+  () => recipe.value?.id,
+  (id) => {
+    if (!id || !recipe.value) {
+      return;
+    }
+    portions.value = basePortions.value;
+    checked.value = [];
+    recipeStore.addNewOpenedRecipeToLastRecipes({ id, name: recipe.value.name });
+  },
+  { immediate: true },
 );
 
-onMounted(async () => {
-  await loadRecipeFromServer();
-});
+const accent = computed(() => getCategoryColor(recipe.value?.recipeCategory?.name));
+const kcalPortion = computed(() => kcalPerPortion(recipe.value?.totalKcal, recipe.value?.portions));
+const totalKcalScaled = computed(() => Math.round(scaleAmount(recipe.value?.totalKcal ?? 0, basePortions.value, portions.value) ?? 0));
+const ingredientCount = computed(() => recipe.value?.recipeProducts.length ?? 0);
+const stepCount = computed(() => recipe.value?.recipeDescriptions.length ?? 0);
+
+const cookingRoute = computed(() => ({
+  name: routes.cookingMode.name,
+  params: { recipeId: props.recipeId },
+  query: portions.value === basePortions.value ? {} : { portionen: String(portions.value) },
+}));
 </script>
 
 <template>
-  <div class="overflow-y-auto h-full pb-4">
-    <RecipeTimer />
-    <div class="rounded-xl bg-gradient-to-br from-orange-500/10 via-amber-400/5 to-transparent border border-border/60 mb-4 p-4">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0">
-          <h1 class="text-2xl font-bold leading-tight tracking-tight mb-2.5">{{ result?.recipe?.name }}</h1>
-          <RecipeMetaInfo
-            :preparation-time-min="result?.recipe?.preparationTimeMin"
-            :total-time-min="result?.recipe?.totalTimeMin"
-            :portions="result?.recipe?.portions"
-            :kcal="result?.recipe?.totalKcal"
-          />
-        </div>
-        <div class="flex items-center gap-2 shrink-0">
-          <EditRecipe v-if="result?.recipe" :recipe="result.recipe" />
-          <DeleteRecipe :recipe-id="recipeId">
-            <Button variant="destructive" size="icon" icon="remove" />
-          </DeleteRecipe>
-        </div>
-      </div>
-    </div>
+  <div class="h-full overflow-y-auto pb-6">
+    <div class="flex flex-col gap-4 max-w-6xl mx-auto">
+      <RecipeTimer />
 
-    <RecipeContent :recipe="result?.recipe" />
+      <!-- Laden -->
+      <template v-if="!recipe && loading">
+        <Skeleton class="h-32 rounded-2xl" />
+        <div class="grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4">
+          <Skeleton class="h-72 rounded-2xl" />
+          <Skeleton class="h-72 rounded-2xl" />
+        </div>
+      </template>
+
+      <!-- Nicht gefunden -->
+      <EmptyState v-else-if="!recipe" :icon="SearchX" title="Rezept nicht gefunden" description="Vielleicht wurde es gelöscht.">
+        <Button as-child variant="outline" class="rounded-full">
+          <RouterLink :to="{ name: routes.recipes.name }"><ArrowLeft class="h-4 w-4" /> Zu den Rezepten</RouterLink>
+        </Button>
+      </EmptyState>
+
+      <template v-else>
+        <!-- Hero -->
+        <RecipePageHeader :title="recipe.name" :icon="UtensilsCrossed" :accent>
+          <template #meta>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2">
+              <span
+                v-if="recipe.recipeCategory"
+                :class="['rounded-full px-2.5 h-6 inline-flex items-center text-xs font-semibold', recipeAccentClasses[accent].soft]"
+              >
+                {{ recipe.recipeCategory.name }}
+              </span>
+              <RecipeMetaInfo
+                size="md"
+                :preparation-time-min="recipe.preparationTimeMin"
+                :total-time-min="recipe.totalTimeMin"
+                :portions="recipe.portions"
+                :kcal="kcalPortion"
+              />
+            </div>
+          </template>
+          <template #actions>
+            <Button as-child class="h-11 rounded-full px-5 shadow-sm" :class="recipeAccentClasses.primary.solid" v-e2e="'recipe-start-cooking'">
+              <RouterLink :to="cookingRoute"><ChefHat class="h-5 w-5" /> Kochen</RouterLink>
+            </Button>
+            <Button as-child variant="outline" size="icon-lg" class="rounded-full" title="Bearbeiten">
+              <RouterLink :to="{ name: routes.editRecipe.name, params: { id: recipe.id } }" aria-label="Bearbeiten"><Pencil class="h-4 w-4" /></RouterLink>
+            </Button>
+            <!-- Einkaufsliste kommt in Phase 5 -->
+            <Button variant="outline" size="icon-lg" class="rounded-full" disabled title="Auf die Einkaufsliste (bald verfügbar)" aria-label="Auf die Einkaufsliste">
+              <ShoppingBasket class="h-4 w-4" />
+            </Button>
+            <DeleteRecipe :recipe-id="recipe.id">
+              <Button variant="outline" size="icon-lg" class="rounded-full text-destructive hover:text-destructive" title="Löschen" aria-label="Rezept löschen">
+                <Trash2 class="h-4 w-4" />
+              </Button>
+            </DeleteRecipe>
+          </template>
+        </RecipePageHeader>
+
+        <div class="grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-4 items-start">
+          <!-- Zutaten (Desktop: bleibt beim Scrollen stehen) -->
+          <Card class="py-0 gap-0 rounded-2xl border-border/60 lg:sticky lg:top-0">
+            <div class="p-4 flex flex-col gap-3">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 class="text-lg font-bold">Zutaten</h2>
+                  <p class="text-xs text-muted-foreground">
+                    {{ ingredientCount }} Zutaten<template v-if="totalKcalScaled"> · {{ totalKcalScaled }} kcal gesamt</template>
+                  </p>
+                </div>
+                <RecipeServings v-model="portions" :base-portions="basePortions" />
+              </div>
+
+              <RecipeIngredientList v-if="ingredientCount" v-model:checked="checked" :recipe :portions />
+              <p v-else class="text-sm text-muted-foreground py-4 text-center">Noch keine Zutaten eingetragen.</p>
+
+              <div v-if="checked.length" class="flex items-center justify-between gap-2 text-xs text-muted-foreground border-t border-border/60 pt-3">
+                <span class="inline-flex items-center gap-1.5"><ListChecks class="h-4 w-4" /> {{ checked.length }} von {{ ingredientCount }} bereit</span>
+                <Button variant="ghost" size="sm" class="rounded-full" @click="checked = []"><RotateCcw class="h-3.5 w-3.5" /> Zurücksetzen</Button>
+              </div>
+            </div>
+          </Card>
+
+          <!-- Zubereitung -->
+          <Card class="py-0 gap-0 rounded-2xl border-border/60">
+            <div class="p-4 flex flex-col gap-4">
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <h2 class="text-lg font-bold">Zubereitung</h2>
+                  <p class="text-xs text-muted-foreground">{{ stepCount }} {{ stepCount === 1 ? "Schritt" : "Schritte" }}</p>
+                </div>
+                <Button v-if="stepCount" as-child variant="outline" class="rounded-full">
+                  <RouterLink :to="cookingRoute"><ChefHat class="h-4 w-4" /> Schritt für Schritt</RouterLink>
+                </Button>
+              </div>
+              <RecipeSteps v-if="stepCount" :steps="recipe.recipeDescriptions" />
+              <p v-else class="text-sm text-muted-foreground py-4 text-center">Noch keine Schritte eingetragen.</p>
+            </div>
+          </Card>
+        </div>
+      </template>
+    </div>
   </div>
 </template>
