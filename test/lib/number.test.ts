@@ -1,5 +1,29 @@
 import { describe, expect, it } from "vitest";
-import { clamp, formatNumber, numberFormatter } from "@/lib/number.ts";
+import { clamp, formatNumber, numberFormatter, parseDecimal } from "@/lib/number.ts";
+
+describe("parseDecimal", () => {
+  it("accepts comma and dot as decimal separator", () => {
+    expect(parseDecimal("1,5")).toBe(1.5);
+    expect(parseDecimal(" 2.25 ")).toBe(2.25);
+    expect(parseDecimal("250")).toBe(250);
+    expect(parseDecimal(",5")).toBe(0.5);
+    expect(parseDecimal("3,")).toBe(3);
+  });
+
+  it("returns null for empty or invalid input", () => {
+    expect(parseDecimal("")).toBeNull();
+    expect(parseDecimal("  ")).toBeNull();
+    expect(parseDecimal(null)).toBeNull();
+    expect(parseDecimal("1,5,2")).toBeNull();
+    expect(parseDecimal("abc")).toBeNull();
+    expect(parseDecimal("1.000,5")).toBeNull();
+  });
+
+  it("passes numbers through and rejects NaN", () => {
+    expect(parseDecimal(4)).toBe(4);
+    expect(parseDecimal(Number.NaN)).toBeNull();
+  });
+});
 
 describe("formatNumber", () => {
   it("formats a number with a comma and two decimals by default", () => {

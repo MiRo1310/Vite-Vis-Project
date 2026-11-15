@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterProductGroups, getMacroShares, isValidEan, normalizeEan } from "@/lib/product.ts";
+import { filterProductGroups, getMacroShares, isValidEan, normalizeEan, searchProducts } from "@/lib/product.ts";
 
 describe("normalizeEan", () => {
   it("keeps only digits", () => {
@@ -90,5 +90,36 @@ describe("getMacroShares", () => {
 
   it("ignores negative values", () => {
     expect(getMacroShares({ carbs: -5, fat: 10 })).toEqual({ carbs: 0, fat: 100, protein: 0 });
+  });
+});
+
+describe("searchProducts", () => {
+  const products = [
+    { id: "1", name: "Weizenmehl" },
+    { id: "2", name: "Mehl" },
+    { id: "3", name: "Zucker" },
+    { id: "4", name: "Ei" },
+  ];
+
+  it("shows recent products first without search and the rest alphabetically", () => {
+    const result = searchProducts(products, "", ["3", "x", "1"]);
+    expect(result.recent.map((p) => p.name)).toEqual(["Zucker", "Weizenmehl"]);
+    expect(result.matches.map((p) => p.name)).toEqual(["Ei", "Mehl"]);
+    expect(result.hasExactMatch).toBe(false);
+  });
+
+  it("finds names containing the term, names starting with it first", () => {
+    const result = searchProducts(products, " MEHL ", ["1"]);
+    expect(result.recent).toEqual([]);
+    expect(result.matches.map((p) => p.name)).toEqual(["Mehl", "Weizenmehl"]);
+  });
+
+  it("detects an exact name match", () => {
+    expect(searchProducts(products, "mehl").hasExactMatch).toBe(true);
+    expect(searchProducts(products, "meh").hasExactMatch).toBe(false);
+  });
+
+  it("limits the matches", () => {
+    expect(searchProducts(products, "", [], 2).matches).toHaveLength(2);
   });
 });

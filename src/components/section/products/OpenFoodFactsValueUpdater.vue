@@ -2,7 +2,7 @@
 import { computed, watch } from "vue";
 import { ArrowDownToLine } from "@lucide/vue";
 import { Button } from "@/components/ui/button";
-import { type TForm } from "@/components/section/recipe-form";
+import { type TForm } from "@/components/section/products/index.ts";
 
 const props = defineProps<{ name: string; label: string; value?: string | number | boolean | null; unit?: string; form: TForm }>();
 

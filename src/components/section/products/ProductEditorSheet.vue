@@ -5,8 +5,8 @@ import { graphql } from "@/api/gql";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import ProductForm from "@/components/section/products/ProductForm.vue";
 
-/** `null` = neues Produkt anlegen */
-const props = defineProps<{ productId: string | null }>();
+/** `productId: null` = neues Produkt anlegen, optional mit vorbelegtem Namen */
+const props = defineProps<{ productId: string | null; initialName?: string }>();
 const open = defineModel<boolean>("open", { default: false });
 const emits = defineEmits<{ saved: [productId: string | null] }>();
 
@@ -66,9 +66,10 @@ const isReady = computed(() => !props.productId || !!product.value);
       <div class="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 pt-4">
         <ProductForm
           v-if="isReady"
-          :key="productId ?? 'new'"
+          :key="productId ?? `new-${initialName ?? ''}`"
           v-model:dialog-open="open"
           :data="product"
+          :initial-name="initialName"
           @saved="emits('saved', $event)"
         />
         <p v-else-if="loading" class="text-sm text-muted-foreground py-8 text-center">Lade Produkt …</p>

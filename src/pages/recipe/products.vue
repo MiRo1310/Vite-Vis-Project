@@ -9,7 +9,6 @@ import { InputShadcn } from "@/components/ui/input";
 import EmptyState from "@/components/shared/recipe/EmptyState.vue";
 import ProductCard from "@/components/section/products/ProductCard.vue";
 import ProductEditorSheet from "@/components/section/products/ProductEditorSheet.vue";
-import { useRecipeStore } from "@/store/recipeStore.ts";
 import { useUnits } from "@/composables/querys/units.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
 import { filterProductGroups } from "@/lib/product.ts";
@@ -19,7 +18,6 @@ import { recipeAccentClasses } from "@/constants/recipe.ts";
 useUnits();
 useProductCategories();
 
-const recipeStore = useRecipeStore();
 const productIdQuery = useRouteQuery<string | null>("productId", null);
 
 const { result, loading } = useQuery(
@@ -90,12 +88,6 @@ onMounted(() => {
   if (productIdQuery.value) {
     openEditor(productIdQuery.value);
     productIdQuery.value = null;
-    return;
-  }
-  // Aus dem Rezept-Editor: „Neues Produkt anlegen“
-  if (recipeStore.getDirectlyOpenNewProductModal) {
-    recipeStore.setDirectlyOpenNewProductModal(false);
-    openEditor(null);
   }
 });
 </script>

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { type InputOption } from "@/types/types.ts";
 import FormInput from "@/components/shared/form/FormInput.vue";
 import FormInputOptions from "@/components/shared/form/FormInputOptions.vue";
-import { type TForm } from "@/components/section/recipe-form";
+import { type TForm } from "@/components/section/products/index.ts";
 
 type TUnit = ProductUnitCreateOrUpdateDtoInput & { index: number; isDefault?: boolean };
 

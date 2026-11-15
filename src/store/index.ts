@@ -1,6 +1,6 @@
 import { type StoreDefinition } from "pinia";
 import { type IdsToControl } from "@/types/types.ts";
-import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
+import { type RecipeDraft } from "@/lib/recipe-editor.ts";
 import { type RecipesQuery } from "@/api/gql/graphql.ts";
 import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { type Collection } from "@/lib/array.ts";
@@ -27,20 +27,17 @@ interface IoBrokerStoreGetters {
 
 export type StoreType = StoreDefinition<"iobrokerStore", IoBrokerStoreState, IoBrokerStoreGetters, IoBrokerStoreActions>;
 
-export interface IRecipeGroupToDelete {
-  groupPosition: number;
-  recipeId: string;
+/** Ungespeicherter Editor-Entwurf; `recipeId` fehlt bei einem neuen Rezept. */
+export interface RecipeDraftInProgress {
+  recipeId?: string;
+  draft: RecipeDraft;
 }
 
 export interface IRecipeStore {
-  recipeInProgress: (TFormValues & { recipeId?: string }) | null;
-  recipeGroupIdsToDelete: IRecipeGroupToDelete[];
-  recipeProductIdsToDelete: string[];
-  recipeDescriptionIdsToDelete: string[];
-  productGroupsCount: number;
-  shouldValidate: boolean;
-  directlyOpenNewProductModal: boolean;
+  recipeInProgress: RecipeDraftInProgress | null;
   lastRecipes: Collection<RecentRecipe>;
+  /** Zuletzt im Editor gewählte Produkt-IDs, neueste zuerst */
+  recentProductIds: string[];
 }
 
 export type TRecipe = RecipesQuery["recipes"][number];

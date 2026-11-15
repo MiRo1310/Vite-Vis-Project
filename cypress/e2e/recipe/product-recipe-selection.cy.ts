@@ -6,7 +6,7 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     gql.aliasGraphqlOperations();
   });
 
-  it("creates a product, verifies it is listed, and confirms it is selectable while creating a new recipe", () => {
+  it("creates a product, verifies it is listed, and uses it as ingredient in a new recipe", () => {
     const uniqueSuffix = Date.now();
     const categoryName = `Cypress Kategorie ${uniqueSuffix}`;
     const productName = `Cypress Produkt ${uniqueSuffix}`;
@@ -31,13 +31,35 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     cy.contains("Das Produkt wurde erfolgreich erstellt").should("exist");
     cy.contains(dataSel("product-card"), productName).should("exist");
 
+    // Rezept anlegen: Produkt über die Suche wählen, Menge eintragen (Einheit wird vorbelegt)
     cy.visit(routes.newRecipe.path);
     cy.getBySel("recipe-name").type(recipeName);
 
-    cy.getBySel("recipe-step-ingredients").click();
-    cy.getBySel("recipe-add-product-group").click();
-    cy.getBySel("recipe-product-trigger").click();
+    cy.getBySel("recipe-ingredient-product").first().click();
+    cy.getBySel("recipe-ingredient-product").first().type(productName);
+    cy.contains(dataSel("recipe-ingredient-option"), productName).click();
+    cy.getBySel("recipe-ingredient-product").first().should("have.value", productName);
 
-    cy.getBySel("input-with-options").parent().contains("option", productName);
+    cy.getBySel("recipe-ingredient-amount").first().type("250");
+    cy.getBySel("recipe-step-text").first().type("Alles verrühren");
+
+    cy.getBySel("recipe-save-back").click();
+    cy.wait("@addRecipe");
+
+    // Detailseite zeigt Zutat und Schritt
+    cy.contains("h1", recipeName).should("exist");
+    cy.contains(dataSel("recipe-ingredient"), productName).should("contain.text", "250");
+    cy.contains(dataSel("recipe-step"), "Alles verrühren").should("exist");
+  });
+
+  it("shows validation errors instead of saving an incomplete recipe", () => {
+    cy.visit(routes.newRecipe.path);
+    cy.getBySel("recipe-ingredient-amount").first().type("100");
+
+    cy.getBySel("recipe-save").click();
+
+    cy.contains("Gib dem Rezept einen Namen").should("exist");
+    cy.contains("Wähle ein Produkt").should("exist");
+    cy.location("pathname").should("eq", routes.newRecipe.path);
   });
 });

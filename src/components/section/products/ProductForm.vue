@@ -22,7 +22,8 @@ import { type TProduct } from "@/components/section/products/index.ts";
 import { Barcode, Layers, Salad } from "@lucide/vue";
 import { nutrientAccent, recipeAccentClasses } from "@/constants/recipe.ts";
 
-const props = defineProps<{ data?: GetProductByIdQuery["product"] }>();
+/** `initialName`: Vorbelegung beim Anlegen, z. B. aus der Produktsuche im Rezept-Editor */
+const props = defineProps<{ data?: GetProductByIdQuery["product"]; initialName?: string }>();
 
 const { getOptions } = useUnits();
 const { toast } = useToast();
@@ -74,7 +75,7 @@ const defaultUnitVariant = computed(() => {
 const form = useForm({
   validationSchema: formSchemaProduct,
   initialValues: {
-    name: props.data?.name ?? "",
+    name: props.data?.name ?? props.initialName ?? "",
     category: props.data?.category ?? "",
     amount: defaultUnitVariant.value.amount,
     unit: defaultUnitVariant.value.unit,

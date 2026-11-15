@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import { useRecipeStore } from "@/store/recipeStore.ts";
-import { MAX_RECENT_RECIPES } from "@/constants/recipe.ts";
+import { MAX_RECENT_PRODUCTS, MAX_RECENT_RECIPES } from "@/constants/recipe.ts";
+import { emptyDraft } from "@/lib/recipe-editor.ts";
 
 describe("recipeStore", () => {
   beforeEach(() => {
@@ -9,44 +10,35 @@ describe("recipeStore", () => {
     localStorage.clear();
   });
 
-  it("saves and resets recipe in progress", () => {
+  it("saves a copy of the draft and resets it", () => {
     const store = useRecipeStore();
     expect(store.recipeInProgress).toBeNull();
 
-    store.saveRecipeInProgress({ name: "Test" } as any, "rid");
-    expect(store.recipeInProgress).not.toBeNull();
+    const draft = { ...emptyDraft(), name: "Test" };
+    store.saveRecipeInProgress(draft, "rid");
+    draft.name = "geändert";
+
     expect(store.recipeInProgress?.recipeId).toBe("rid");
+    expect(store.recipeInProgress?.draft.name).toBe("Test");
 
     store.resetRecipeInProgress();
     expect(store.recipeInProgress).toBeNull();
   });
 
-  it("manages ids to delete and toggles flags", () => {
+  it("remembers recently used products, newest first, without duplicates", () => {
     const store = useRecipeStore();
+    store.addRecentProduct("a");
+    store.addRecentProduct("b");
+    store.addRecentProduct("a");
+    store.addRecentProduct("");
 
-    store.addRecipeGroupToDelete({ groupPosition: 1, recipeId: "r1" });
-    expect(store.recipeGroupIdsToDelete).toHaveLength(1);
-    store.clearRecipeGroupIdsToDelete();
-    expect(store.recipeGroupIdsToDelete).toHaveLength(0);
+    expect(store.getRecentProductIds).toEqual(["a", "b"]);
+    expect(JSON.parse(localStorage.getItem("recentProductIds") ?? "[]")).toEqual(["a", "b"]);
 
-    store.addRecipeProductIdToDelete("p1");
-    expect(store.recipeProductIdsToDelete).toContain("p1");
-    store.clearRecipeProductIdsToDelete();
-    expect(store.recipeProductIdsToDelete).toHaveLength(0);
-
-    store.addRecipeDescriptionIdToDelete("d1");
-    expect(store.recipeDescriptionIdsToDelete).toContain("d1");
-    store.clearRecipeDescriptionIdsToDelete();
-    expect(store.recipeDescriptionIdsToDelete).toHaveLength(0);
-
-    store.setProductGroupCount(5);
-    expect(store.productGroupsCount).toBe(5);
-
-    store.setShouldValidate(true);
-    expect(store.shouldValidate).toBe(true);
-
-    store.setDirectlyOpenNewProductModal(true);
-    expect(store.directlyOpenNewProductModal).toBe(true);
+    for (let i = 0; i < MAX_RECENT_PRODUCTS + 2; i++) {
+      store.addRecentProduct("p" + i);
+    }
+    expect(store.getRecentProductIds).toHaveLength(MAX_RECENT_PRODUCTS);
   });
 
   it("adds new opened recipe to lastRecipes and persists to localStorage", () => {
