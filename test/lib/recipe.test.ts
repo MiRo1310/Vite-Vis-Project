@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   filterNewNames,
   filterRecipes,
+  flattenIngredientGroups,
+  formatScaledAmount,
   formatAmount,
   getCategoryColor,
   getRecipeCategoryName,
   getRecipeTime,
   groupIngredientsByGroupPosition,
   groupRecipesByCategory,
+  ingredientKey,
   kcalPerPortion,
   parseNameList,
   pickRecentRecipes,
@@ -252,5 +255,44 @@ describe("sortSteps", () => {
 
   it("returns an empty list for missing steps", () => {
     expect(sortSteps(null)).toEqual([]);
+  });
+});
+
+describe("ingredientKey", () => {
+  it("combines group position and index", () => {
+    expect(ingredientKey(0, 2)).toBe("0-2");
+  });
+});
+
+describe("formatScaledAmount", () => {
+  it("scales and appends the unit", () => {
+    expect(formatScaledAmount(250, "g", 4, 2)).toBe("125 g");
+    expect(formatScaledAmount(1, " Prise ", 1, 1)).toBe("1 Prise");
+  });
+
+  it("drops missing parts", () => {
+    expect(formatScaledAmount(null, "g", 1, 1)).toBe("g");
+    expect(formatScaledAmount(null, null, 1, 1)).toBe("");
+  });
+});
+
+describe("flattenIngredientGroups", () => {
+  it("keeps the order and builds the same keys as the ingredient list", () => {
+    const groups = groupIngredientsByGroupPosition(
+      [
+        { name: "Mehl", groupPosition: 0 },
+        { name: "Zucker", groupPosition: 0 },
+        { name: "Äpfel", groupPosition: 1 },
+      ],
+      [
+        { position: 0, text: "Teig" },
+        { position: 1, text: "Belag" },
+      ],
+    );
+    expect(flattenIngredientGroups(groups)).toEqual([
+      { key: "0-0", groupTitle: "Teig", item: { name: "Mehl", groupPosition: 0 } },
+      { key: "0-1", groupTitle: "Teig", item: { name: "Zucker", groupPosition: 0 } },
+      { key: "1-0", groupTitle: "Belag", item: { name: "Äpfel", groupPosition: 1 } },
+    ]);
   });
 });

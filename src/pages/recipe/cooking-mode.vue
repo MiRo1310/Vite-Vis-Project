@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import EmptyState from "@/components/shared/recipe/EmptyState.vue";
 import AlexaTimerStrip from "@/components/section/recipe/AlexaTimerStrip.vue";
 import RecipeIngredientList from "@/components/section/recipe/RecipeIngredientList.vue";
+import StepIngredients from "@/components/section/recipe/StepIngredients.vue";
 import { useRecipeDetails } from "@/composables/querys/recipeDetails.ts";
 import { sortSteps } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
@@ -190,7 +191,8 @@ watch(
     </div>
 
     <!-- Schritt -->
-    <main ref="stepArea" class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-5 md:px-10 py-6 touch-pan-y">
+    <main ref="stepArea" class="flex-1 min-h-0 flex touch-pan-y">
+      <div class="flex-1 min-w-0 overflow-y-auto overflow-x-hidden px-5 md:px-10 py-6">
       <div class="max-w-3xl mx-auto w-full min-h-full flex flex-col justify-center">
         <Skeleton v-if="!recipe && loading" class="h-48 rounded-2xl" />
 
@@ -217,10 +219,22 @@ watch(
               {{ stepIndex + 1 }}
             </span>
             <h1 v-if="currentStep.header" class="text-2xl md:text-4xl font-bold tracking-tight leading-tight">{{ currentStep.header }}</h1>
+            <!-- Mobil im Schritt, ab md in der Seitenspalte. Bis #427: alle Zutaten des Rezepts -->
+            <StepIngredients v-if="recipe" v-model:checked="checked" :recipe :portions class="md:hidden" />
             <p class="whitespace-pre-wrap text-xl md:text-2xl leading-relaxed">{{ currentStep.text }}</p>
           </article>
         </Transition>
       </div>
+      </div>
+
+      <!-- Zutaten an der Seite (Desktop/Tablet quer) -->
+      <aside
+        v-if="recipe && steps.length && recipe.recipeProducts.length"
+        class="hidden md:block w-80 lg:w-96 shrink-0 border-l border-border/60 overflow-y-auto px-5 py-6"
+        v-e2e="'cooking-side-ingredients'"
+      >
+        <StepIngredients v-model:checked="checked" :recipe :portions layout="list" />
+      </aside>
     </main>
 
     <!-- Navigation -->

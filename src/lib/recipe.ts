@@ -269,3 +269,42 @@ export function groupIngredientsByGroupPosition<T extends { groupPosition: numbe
 export function sortSteps<T extends { position: number }>(steps: readonly T[] | null | undefined): T[] {
   return [...(steps ?? [])].sort((a, b) => a.position - b.position);
 }
+
+/**
+ * Schlüssel einer Zutat für „abgehakt“ – gleich in Zutatenliste, Zutaten-Panel und Schritt-Anzeige.
+ *
+ * @param groupPosition - Position der Gruppe.
+ * @param index - Index der Zutat innerhalb der Gruppe.
+ * @returns z. B. `"0-2"`.
+ */
+export function ingredientKey(groupPosition: number, index: number): string {
+  return `${groupPosition}-${index}`;
+}
+
+/**
+ * Menge mit Einheit, umgerechnet auf die gewünschten Portionen.
+ *
+ * @param amount - Menge im Rezept.
+ * @param unit - Einheit.
+ * @param basePortions - Portionen des Rezepts.
+ * @param targetPortions - Gewünschte Portionen.
+ * @returns z. B. `"125 g"`, nur die Einheit oder `""`.
+ */
+export function formatScaledAmount(
+  amount: number | null | undefined,
+  unit: string | null | undefined,
+  basePortions: number | null | undefined,
+  targetPortions: number,
+): string {
+  return [formatAmount(scaleAmount(amount, basePortions, targetPortions)), unit?.trim()].filter(Boolean).join(" ");
+}
+
+/**
+ * Macht aus gruppierten Zutaten eine flache Liste mit Häkchen-Schlüssel und Gruppentitel.
+ *
+ * @param groups - Ergebnis von `groupIngredientsByGroupPosition`.
+ * @returns Zutaten in Anzeige-Reihenfolge.
+ */
+export function flattenIngredientGroups<T>(groups: ReadonlyArray<IngredientGroup<T>>): Array<{ key: string; groupTitle: string; item: T }> {
+  return groups.flatMap((group) => group.items.map((item, index) => ({ key: ingredientKey(group.position, index), groupTitle: group.title, item })));
+}

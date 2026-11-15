@@ -4,7 +4,7 @@ import { ChevronDown, ShoppingBasket } from "@lucide/vue";
 import { Checkbox } from "@/components/ui/checkbox";
 import RecipeIngredientNutrients from "@/components/section/recipe/RecipeIngredientNutrients.vue";
 import { type RecipeDetails, type RecipeIngredient } from "@/composables/querys/recipeDetails.ts";
-import { formatAmount, groupIngredientsByGroupPosition, scaleAmount } from "@/lib/recipe.ts";
+import { formatScaledAmount, groupIngredientsByGroupPosition, ingredientKey, scaleAmount } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
 
 const props = withDefaults(
@@ -25,7 +25,7 @@ const checked = defineModel<string[]>("checked", { default: () => [] });
 
 const groups = computed(() => groupIngredientsByGroupPosition(props.recipe.recipeProducts, props.recipe.recipeHeaderProducts));
 
-const keyOf = (position: number, index: number) => `${position}-${index}`;
+const keyOf = ingredientKey;
 const isChecked = (key: string) => checked.value.includes(key);
 
 const toggle = (key: string) => {
@@ -41,10 +41,7 @@ const toggleExpanded = (key: string) => {
   expanded.value = expanded.value === key ? null : key;
 };
 
-const amountText = (ingredient: RecipeIngredient) => {
-  const amount = formatAmount(scaleAmount(ingredient.amount, props.recipe.portions, props.portions));
-  return [amount, ingredient.unit].filter(Boolean).join(" ");
-};
+const amountText = (ingredient: RecipeIngredient) => formatScaledAmount(ingredient.amount, ingredient.unit, props.recipe.portions, props.portions);
 
 const kcalText = (ingredient: RecipeIngredient) => {
   const kcal = scaleAmount(ingredient.kcal, props.recipe.portions, props.portions);
