@@ -25,8 +25,7 @@ const filteredTimers = computed(() => {
         <div class="w-full">
           <div class="flex justify-between">
             <p>Gerät:</p>
-            <p v-if="timer && 'device' in timer">
-              class="flex-1 text-right">
+            <p v-if="timer && 'device' in timer" class="flex-1 text-right">
               {{ timer.device?.value }}
             </p>
           </div>

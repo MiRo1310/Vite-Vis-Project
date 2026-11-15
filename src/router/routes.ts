@@ -58,6 +58,7 @@ export const routes = {
   recipeApp: { path: "/recipe-app", name: "recipe-app", hideOnNavigation: true },
   recipes: { path: "/rezepte", name: "recipes", text: "Rezepte", icon: Utensils },
   recipeDetails: { path: "/rezepte/:recipeId", name: "recipe-details", hideOnNavigation: true },
+  cookingMode: { path: "/rezepte/:recipeId/kochen", name: "cooking-mode", hideOnNavigation: true },
   products: { path: "/produkte", name: "products", hideOnNavigation: true },
   recipeUnits: { path: "/einheiten", name: "units", hideOnNavigation: true },
   recipeCategories: { path: "/rezept-kategorien", name: "recipe-categories", hideOnNavigation: true },

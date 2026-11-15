@@ -57,6 +57,8 @@ export const routing = [
       { props: true, component: () => import("@/pages/recipe/edit-recipe.vue"), ...routes.editRecipe },
     ],
   },
+  // Kochmodus bewusst ohne Rezept-Layout: Vollbild ohne Kopfzeile und Bottom-Nav
+  { props: true, component: () => import("@/pages/recipe/cooking-mode.vue"), ...routes.cookingMode },
   { component: async () => await import("@/pages/finance/listing.vue"), ...routes.finance },
   { component: async () => await import("@/pages/finance/addresses.vue"), ...routes.addresses },
   { component: async () => await import("@/pages/finance/description.vue"), ...routes.description },

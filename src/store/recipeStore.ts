@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { type TFormValues } from "@/components/section/recipe-form/RecipeForm.vue";
-import { type TGroupedRecipesByCategory } from "@/pages/recipe/recipes.vue";
-import { type IRecipeGroupToDelete, type IRecipeStore, type TRecipe } from "@/store/index.ts";
+import { type IRecipeGroupToDelete, type IRecipeStore, type RecentRecipe } from "@/store/index.ts";
+import { MAX_RECENT_RECIPES } from "@/constants/recipe.ts";
 import { typedStorage } from "@/lib/local-storage.ts";
 import { Collection } from "@/lib/array.ts";
 
@@ -79,19 +79,18 @@ export const useRecipeStore = defineStore("recipeStore", {
     setDirectlyOpenNewProductModal(setOpen: boolean) {
       this.directlyOpenNewProductModal = setOpen;
     },
-    addNewOpenedRecipeToLastRecipes(recipe: TRecipe) {
-      const filteredRecipes = this.lastRecipes.filter((r) => r.id !== recipe.id);
-      this.lastRecipes = new Collection([recipe, ...filteredRecipes].slice(0, 3));
+    addNewOpenedRecipeToLastRecipes({ id, name }: RecentRecipe) {
+      const others = this.lastRecipes.filter((r) => r.id !== id);
+      this.lastRecipes = new Collection([{ id, name }, ...others].slice(0, MAX_RECENT_RECIPES));
       saveToLocalStore(this.lastRecipes);
     },
-    getFilterLastRecipes(groups: TGroupedRecipesByCategory) {
-      this.lastRecipes.filter((r) => Object.values(groups).some((g) => g.some((p) => p.id === r.id)));
+    removeFromLastRecipes(id: string) {
+      this.lastRecipes = new Collection(this.lastRecipes.filter((r) => r.id !== id));
       saveToLocalStore(this.lastRecipes);
-      return this.lastRecipes;
     },
   },
 });
 
-const saveToLocalStore = (lastRecipes: TRecipe[]) => {
+const saveToLocalStore = (lastRecipes: RecentRecipe[]) => {
   typedStorage.setItem("lastRecipes", lastRecipes);
 };
