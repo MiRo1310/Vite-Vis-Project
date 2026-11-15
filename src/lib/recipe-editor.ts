@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { type RecipeCreateDtoInput } from "@/api/gql/graphql.ts";
+import { createId } from "@/lib/id.ts";
 
 /*
  * Entwurfs-Modell des Rezept-Editors.
@@ -64,8 +65,8 @@ export interface RecipeSource {
   recipeDescriptions: ReadonlyArray<{ id: string; position: number; header?: string | null; text: string }>;
 }
 
-/** Erzeugt einen eindeutigen Schlüssel für neue Einträge. */
-export const newDraftKey = (): string => crypto.randomUUID();
+/** Erzeugt einen eindeutigen Schlüssel für neue Einträge (funktioniert auch über http, siehe `createId`). */
+export const newDraftKey = (): string => createId();
 
 export const emptyIngredient = (): DraftIngredient => ({ key: newDraftKey(), productId: "", amount: null, activeUnitId: "", description: "" });
 
