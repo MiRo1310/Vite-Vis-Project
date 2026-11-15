@@ -1,6 +1,7 @@
 import { routes } from "@/router/routes.ts";
 import { texts } from "@/text/de.ts";
-import { aliasGraphqlOperations, clickESC, dataSel } from "../../support/utils.ts";
+import { aliasGraphqlOperations, clickESC } from "../../support/utils.ts";
+import { finance } from "../../support/finance-helper";
 
 describe("Finance Description (GraphQL Integration)", () => {
   it("loads descriptions from the real backend without a GraphQL error", () => {
@@ -24,82 +25,51 @@ describe("Description Edit-Dialog", () => {
 
   it("shows the new text when reopening after save", () => {
     const newDescription = "New Description 123456";
-    addDescription(description);
+    finance.description.addDescription(description);
 
     cy.closeToast(texts.finance.description.addNewDescriptionToastMessage);
-    openEdit(description).as("dialog");
-    updateDescription("@dialog", newDescription);
-    dialogButtons("@dialog").clickUpdate();
+    finance.description.openEdit(description).as("dialog");
+    finance.description.updateDescription("@dialog", newDescription);
+    finance.description.getDialogButtons("@dialog").clickUpdate();
 
-    openEdit(newDescription).as("reopenedDialog");
+    finance.description.openEdit(newDescription).as("reopenedDialog");
 
-    validateDescription("@reopenedDialog", newDescription);
+    finance.description.validateDescription("@reopenedDialog", newDescription);
   });
 
   it("shows the saved text when reopening after closing with the close button", () => {
-    addDescription(description);
+    finance.description.addDescription(description);
 
     cy.closeToast(texts.finance.description.addNewDescriptionToastMessage);
-    openEdit(description).as("dialog");
+    finance.description.openEdit(description).as("dialog");
 
-    dialogButtons("@dialog").clickClose();
+    finance.description.getDialogButtons("@dialog").clickClose();
 
-    openEdit(description).as("reopenedDialog");
+    finance.description.openEdit(description).as("reopenedDialog");
 
-    validateDescription("@reopenedDialog", description);
+    finance.description.validateDescription("@reopenedDialog", description);
   });
 
   it("shows the saved text when reopening after closing with ESC", () => {
-    addDescription(description);
+    finance.description.addDescription(description);
 
     cy.closeToast(texts.finance.description.addNewDescriptionToastMessage);
-    openEdit(description).as("dialog");
+    finance.description.openEdit(description).as("dialog");
 
     clickESC("@dialog");
 
-    openEdit(description).as("reopenedDialog");
+    finance.description.openEdit(description).as("reopenedDialog");
 
-    validateDescription("@reopenedDialog", description);
+    finance.description.validateDescription("@reopenedDialog", description);
   });
 
   it("disables the update button when the text is empty", () => {
-    addDescription(description);
+    finance.description.addDescription(description);
 
     cy.closeToast(texts.finance.description.addNewDescriptionToastMessage);
-    openEdit(description).as("dialog");
-    updateDescription("@dialog", "");
+    finance.description.openEdit(description).as("dialog");
+    finance.description.updateDescription("@dialog", "");
 
-    dialogButtons("@dialog").updateBtn().should("be.disabled");
+    finance.description.getDialogButtons("@dialog").updateBtn().should("be.disabled");
   });
 });
-
-const addDescription = (description: string) => {
-  cy.visit(routes.description.path);
-  cy.getBySel("textarea-description").should("exist").type(description);
-  cy.getBySel("button-add-description").should("exist").click();
-};
-
-const openEdit = (description: string) => {
-  cy.get("table").contains("code", description).closest("tr").find(dataSel("button-edit-description")).click();
-  return cy.get("[role='dialog']");
-};
-
-const updateDescription = (alias: string, description: string) => {
-  cy.get(alias).find("textarea").should("exist").as("descriptionInput");
-  cy.get("@descriptionInput").clear();
-  if (description) {
-    cy.get("@descriptionInput").type(description);
-  }
-};
-
-const validateDescription = (alias: string, description: string) => {
-  cy.get(alias).find("textarea").should("exist").as("descriptionInput").should("have.value", description);
-};
-
-const dialogButtons = (alias: string) => {
-  return {
-    clickUpdate: () => cy.get(alias).find(dataSel("button-update-description")).click(),
-    updateBtn: () => cy.get(alias).find(dataSel("button-update-description")),
-    clickClose: () => cy.get(alias).find(dataSel("button-close-description")).click(),
-  };
-};
