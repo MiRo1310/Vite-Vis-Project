@@ -134,3 +134,34 @@ export function searchProducts<T extends { id: string; name: string }>(
 
   return { recent: [], matches, hasExactMatch: products.some((product) => product.name.trim().toLowerCase() === term) };
 }
+
+/**
+ * Wählt aus erkannten Barcodes den ersten gültigen EAN/UPC.
+ *
+ * @param rawValues - Rohwerte des Scanners (können Leerzeichen o. Ä. enthalten).
+ * @returns Normalisierte EAN oder `null`, wenn keiner gültig ist.
+ */
+export function pickValidEan(rawValues: readonly string[]): string | null {
+  for (const raw of rawValues) {
+    const ean = normalizeEan(raw);
+    if (isValidEan(ean)) {
+      return ean;
+    }
+  }
+  return null;
+}
+
+/**
+ * Sucht ein Produkt mit dieser EAN in nach Kategorie gruppierten Produkten.
+ *
+ * @param groups - Gruppen aus `productsGrouped`.
+ * @param ean - Gesuchte EAN (wird normalisiert).
+ * @returns Das Produkt oder `undefined`.
+ */
+export function findProductByEan<T extends ProductLike>(groups: ReadonlyArray<ProductGroupLike<T>>, ean: string): T | undefined {
+  const code = normalizeEan(ean);
+  if (!code) {
+    return undefined;
+  }
+  return groups.flatMap((group) => group.value).find((product) => normalizeEan(product.ean) === code);
+}

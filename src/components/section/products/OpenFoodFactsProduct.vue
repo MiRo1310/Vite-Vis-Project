@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
 import apolloClient, { type ApolloOperationContext } from "@/apolloClient.ts";
 import { Button } from "@/components/ui/button";
@@ -7,9 +7,11 @@ import { InputShadcn } from "@/components/ui/input";
 import { CircleAlert, CircleCheck, CircleHelp, LoaderCircle, Search, Undo } from "@lucide/vue";
 import { type TProduct } from "@/components/section/products/index.ts";
 import { isValidEan, normalizeEan } from "@/lib/product.ts";
+import BarcodeScanButton from "@/components/shared/barcode/BarcodeScanButton.vue";
 import { Logger } from "@/lib/logger.ts";
 
-const props = defineProps<{ ean?: string | null }>();
+/** `autoLookup`: EAN beim Öffnen sofort abfragen (z. B. direkt nach dem Scannen) */
+const props = defineProps<{ ean?: string | null; autoLookup?: boolean }>();
 
 const product = defineModel<TProduct>("modelValue");
 
@@ -94,6 +96,18 @@ const lookup = async () => {
     status.value = "error";
   }
 };
+
+/** Gescannte EAN übernehmen und gleich bei OpenFoodFacts nachschlagen */
+const onScanned = async (ean: string) => {
+  code.value = ean;
+  await lookup();
+};
+
+onMounted(async () => {
+  if (props.autoLookup && code.value) {
+    await lookup();
+  }
+});
 </script>
 
 <template>
@@ -113,6 +127,7 @@ const lookup = async () => {
       >
         <Undo class="h-4 w-4" />
       </Button>
+      <BarcodeScanButton icon-only label="Barcode scannen" class="h-10 w-10" @detected="onScanned" />
       <Button type="button" class="h-10 shrink-0" :disabled="!code || status === 'loading'" v-e2e="'off-lookup'" @click.prevent="lookup">
         <LoaderCircle v-if="status === 'loading'" class="h-4 w-4 animate-spin" />
         <Search v-else class="h-4 w-4" />

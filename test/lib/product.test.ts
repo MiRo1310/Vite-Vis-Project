@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterProductGroups, getMacroShares, isValidEan, normalizeEan, searchProducts } from "@/lib/product.ts";
+import { filterProductGroups, findProductByEan, getMacroShares, isValidEan, normalizeEan, pickValidEan, searchProducts } from "@/lib/product.ts";
 
 describe("normalizeEan", () => {
   it("keeps only digits", () => {
@@ -121,5 +121,32 @@ describe("searchProducts", () => {
 
   it("limits the matches", () => {
     expect(searchProducts(products, "", [], 2).matches).toHaveLength(2);
+  });
+});
+
+describe("pickValidEan", () => {
+  it("returns the first valid code, normalized", () => {
+    expect(pickValidEan(["123", " 4000417-025005 ", "3017620422003"])).toBe("4000417025005");
+  });
+
+  it("returns null without a valid code", () => {
+    expect(pickValidEan(["4000417025006", "abc"])).toBeNull();
+    expect(pickValidEan([])).toBeNull();
+  });
+});
+
+describe("findProductByEan", () => {
+  const productGroups: Array<{ key: string; value: Array<{ name: string; ean: string | null }> }> = [
+    { key: "Süßes", value: [{ name: "Nutella", ean: "3017620422003" }] },
+    { key: "Obst", value: [{ name: "Apfel", ean: null }] },
+  ];
+
+  it("finds the product with the same code", () => {
+    expect(findProductByEan(productGroups, " 3017620422003 ")?.name).toBe("Nutella");
+  });
+
+  it("returns undefined for unknown or empty codes", () => {
+    expect(findProductByEan(productGroups, "4000417025005")).toBeUndefined();
+    expect(findProductByEan(productGroups, "")).toBeUndefined();
   });
 });
