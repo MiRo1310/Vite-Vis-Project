@@ -6,6 +6,7 @@ export { default as DropdownMenuContent } from "./DropdownMenuContent.vue";
 export { default as DropdownMenuGroup } from "./DropdownMenuGroup.vue";
 export { default as DropdownMenuRadioGroup } from "./DropdownMenuRadioGroup.vue";
 export { default as DropdownMenuItem } from "./DropdownMenuItem.vue";
+export { default as DropdownMenuIconItem } from "./DropdownMenuIconItem.vue";
 export { default as DropdownMenuCheckboxItem } from "./DropdownMenuCheckboxItem.vue";
 export { default as DropdownMenuRadioItem } from "./DropdownMenuRadioItem.vue";
 export { default as DropdownMenuShortcut } from "./DropdownMenuShortcut.vue";

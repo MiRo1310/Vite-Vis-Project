@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { ArrowDown, ArrowUp, FolderInput, GripVertical, MoreVertical, StickyNote, Trash2 } from "@lucide/vue";
+import { ArrowDown, ArrowUp, FolderInput, GripVertical, MoreVertical, StickyNote, Trash2, X } from "@lucide/vue";
 import { Button } from "@/components/ui/button";
 import { InputShadcn } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuIconItem,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuSub,
@@ -36,6 +37,12 @@ const editor = useRecipeEditor();
 const product = computed(() => props.products.find((p) => p.id === props.ingredient.productId));
 const units = computed(() => product.value?.productUnits ?? []);
 const noteOpen = ref(!!props.ingredient.description);
+
+/** Notiz leeren und Feld ausblenden */
+const removeNote = () => {
+  update({ description: "" });
+  noteOpen.value = false;
+};
 
 const errorOf = (field: keyof DraftIngredient) => editor.visibleErrors.value[`ingredient.${props.ingredient.key}.${field}`];
 const productError = computed(() => errorOf("productId"));
@@ -91,8 +98,17 @@ const amount = computed({
       </div>
 
       <div>
-        <Select :model-value="ingredient.activeUnitId || undefined" :disabled="!units.length" @update:model-value="update({ activeUnitId: String($event ?? '') })">
-          <SelectTrigger class="w-full h-11! rounded-xl" :aria-invalid="!!unitError || undefined" aria-label="Einheit" v-e2e="'recipe-ingredient-unit'">
+        <Select
+          :model-value="ingredient.activeUnitId || undefined"
+          :disabled="!units.length"
+          @update:model-value="update({ activeUnitId: String($event ?? '') })"
+        >
+          <SelectTrigger
+            class="w-full h-11! rounded-xl"
+            :aria-invalid="!!unitError || undefined"
+            aria-label="Einheit"
+            v-e2e="'recipe-ingredient-unit'"
+          >
             <SelectValue :placeholder="product ? 'Einheit' : '–'" />
           </SelectTrigger>
           <SelectContent>
@@ -102,15 +118,26 @@ const amount = computed({
         <p v-if="unitError" class="text-xs text-destructive mt-1">{{ unitError }}</p>
       </div>
 
-      <div v-if="noteOpen" class="col-span-2 md:col-span-3">
+      <div v-if="noteOpen" class="col-span-2 md:col-span-3 relative">
         <InputShadcn
           :model-value="ingredient.description"
           type="text"
           placeholder="Notiz, z. B. „fein gehackt“"
           aria-label="Notiz"
-          class="h-10 rounded-xl"
+          class="h-10 rounded-xl pr-10"
+          e2e="recipe-ingredient-note"
           @update:model-value="update({ description: String($event ?? '') })"
         />
+        <button
+          type="button"
+          class="absolute right-1 top-1/2 -translate-y-1/2 z-10 h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-foreground"
+          aria-label="Notiz entfernen"
+          title="Notiz entfernen"
+          v-e2e="'recipe-ingredient-note-remove'"
+          @click="removeNote"
+        >
+          <X class="h-4 w-4" />
+        </button>
       </div>
     </div>
 
@@ -122,25 +149,26 @@ const amount = computed({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" class="w-56">
-        <DropdownMenuItem :disabled="index === 0" @select="editor.moveIngredient(groupKey, index, index - 1)">
-          <ArrowUp class="h-4 w-4" /> Nach oben
-        </DropdownMenuItem>
-        <DropdownMenuItem :disabled="index >= count - 1" @select="editor.moveIngredient(groupKey, index, index + 1)">
-          <ArrowDown class="h-4 w-4" /> Nach unten
-        </DropdownMenuItem>
-        <DropdownMenuItem v-if="!noteOpen" @select="noteOpen = true"><StickyNote class="h-4 w-4" /> Notiz hinzufügen</DropdownMenuItem>
+        <DropdownMenuIconItem :icon="ArrowUp" :disabled="index === 0" @select="editor.moveIngredient(groupKey, index, index - 1)">Nach oben</DropdownMenuIconItem>
+        <DropdownMenuIconItem :icon="ArrowDown" :disabled="index >= count - 1" @select="editor.moveIngredient(groupKey, index, index + 1)">
+          Nach unten
+        </DropdownMenuIconItem>
+        <DropdownMenuIconItem v-if="!noteOpen" :icon="StickyNote" @select="noteOpen = true">Notiz hinzufügen</DropdownMenuIconItem>
+        <DropdownMenuIconItem v-else :icon="StickyNote" @select="removeNote">Notiz entfernen</DropdownMenuIconItem>
         <DropdownMenuSub v-if="otherGroups.length">
-          <DropdownMenuSubTrigger><FolderInput class="h-4 w-4 mr-2" /> In Gruppe verschieben</DropdownMenuSubTrigger>
+          <DropdownMenuSubTrigger><FolderInput class="h-4 w-4 shrink-0" /> In Gruppe verschieben</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuItem v-for="group in otherGroups" :key="group.key" @select="editor.moveIngredientToGroup(groupKey, ingredient.key, group.key)">
+            <DropdownMenuItem
+              v-for="group in otherGroups"
+              :key="group.key"
+              @select="editor.moveIngredientToGroup(groupKey, ingredient.key, group.key)"
+            >
               {{ group.label }}
             </DropdownMenuItem>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem class="text-destructive focus:text-destructive" @select="editor.removeIngredient(groupKey, ingredient.key)">
-          <Trash2 class="h-4 w-4" /> Entfernen
-        </DropdownMenuItem>
+        <DropdownMenuIconItem :icon="Trash2" variant="destructive" @select="editor.removeIngredient(groupKey, ingredient.key)">Entfernen</DropdownMenuIconItem>
       </DropdownMenuContent>
     </DropdownMenu>
   </div>

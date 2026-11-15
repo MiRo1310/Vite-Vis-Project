@@ -49,6 +49,7 @@ src/
 - **Ausschließlich shadcn-Komponenten** aus `@/components/ui/` verwenden — kein rohes HTML für UI-Elemente wenn eine shadcn-Komponente existiert.
 - Verfügbare shadcn-Komponenten: `Card`, `CardHeader`, `CardTitle`, `CardContent`, `CardFooter`, `CardDescription`, `Progress`, `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `Dialog`, `Sheet`, `Switch`, `Checkbox`, `Select`, `Table`, `Collapsible`, `Toast`, `Input`, `Label`, `Textarea`, `DropdownMenu`, `Pagination`.
 - Neue shadcn-Wrapper werden in `src/components/ui/<name>/` angelegt (Vorbild: `Collapsible` mit `reka-ui`, nicht `radix-vue`).
+- Menüeinträge mit Icon immer als `DropdownMenuIconItem` (`:icon="Trash2"`, optional `variant="destructive"`) statt Icon + Text von Hand in `DropdownMenuItem`. So sind Icon-Größe und Abstand überall gleich.
 - Wiederverwendbare App-Komponenten (mit Business-Logik) kommen in `src/components/shared/`.
 
 ### Utility-Funktionen
