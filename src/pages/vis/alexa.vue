@@ -97,7 +97,7 @@ function updateDot(dot: AlexaDotAction, source: keyof AlexaDotAction, value: boo
 <template>
   <Page title="Alexa Dots">
     <p v-if="loading" class="text-sm text-muted-foreground">Lade...</p>
-    <div v-else class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
       <Card v-for="dot in alexaData" :key="dot.name" class="py-0 gap-0">
         <CardHeader class="px-3 pt-2 pb-0">
           <div class="flex items-center gap-2">

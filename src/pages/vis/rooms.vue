@@ -406,14 +406,15 @@ const windowOpen = computed(() => iobroker.windowGlobal.fensterOffen.value);
   </Page>
 
   <Page v-if="selectedRoom" :title="selectedRoom.name">
-    <template #header>
-      <Button variant="outline" @click="selectedName = null">Zurück</Button>
-    </template>
+    <template #header> </template>
     <Tabs default-value="fenster">
-      <TabsList class="mb-3">
-        <TabsTrigger value="fenster">Fenster / Rolladen</TabsTrigger>
-        <TabsTrigger value="heizung">Heizung</TabsTrigger>
-      </TabsList>
+      <div class="flex justify-between flex-wrap">
+        <TabsList class="mb-3">
+          <TabsTrigger value="fenster">Fenster / Rolladen</TabsTrigger>
+          <TabsTrigger value="heizung">Heizung</TabsTrigger>
+        </TabsList>
+        <Button variant="outline" @click="selectedName = null">Zurück</Button>
+      </div>
       <TabsContent value="fenster" class="space-y-3">
         <WindowCard :window="selectedRoom" />
       </TabsContent>
