@@ -1,11 +1,11 @@
 import { routes } from "@/router/routes.ts";
-import { aliasGraphqlOperations } from "../../support/utils.ts";
+import { gql } from "../../support/utils.ts";
 
 describe("Product creation and recipe ingredient selection (GraphQL Integration)", () => {
-  beforeEach(()=>{
-    aliasGraphqlOperations();
+  beforeEach(() => {
+    gql.aliasGraphqlOperations();
   });
-  
+
   it("creates a product, verifies it is listed, and confirms it is selectable while creating a new recipe", () => {
     const uniqueSuffix = Date.now();
     const categoryName = `Cypress Kategorie ${uniqueSuffix}`;
@@ -31,7 +31,6 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     cy.contains("Das Produkt wurde erfolgreich erstellt").should("exist");
     cy.contains("td", productName).should("exist");
 
-    // Neues Rezept anlegen und prüfen, ob das Produkt bei den Zutaten auswählbar ist
     cy.visit(routes.newRecipe.path);
     cy.getBySel("recipe-name").type(recipeName);
 

@@ -81,7 +81,7 @@ const onOpen = () => {
 <template>
   <div class="py-2 flex gap-2 justify-end print-none">
     <Button size="iconRow" icon="edit" variant="outline" @click="onOpen" v-e2e="'address-edit'" />
-    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" />
+    <Button size="iconRow" icon="remove" variant="outline" @click="dialogOpen = true" v-e2e="'address-remove'" />
   </div>
   <DialogConfirm description="Möchtest du die Zeile wirklich löschen?" v-model:dialog-open="dialogOpen" @update:confirm="remove" />
   <Dialog v-model:open="dialogUpdateOpen">
