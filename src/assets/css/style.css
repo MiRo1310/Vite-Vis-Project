@@ -92,6 +92,29 @@
     --color-card-title: var(--cardTitle);
     
     --color-success: var(--success);
+
+    /* Rezept-App: farbenfrohe Akzente (Werte in :root / .dark) */
+    --color-recipe-primary: var(--recipe-primary);
+    --color-recipe-primary-soft: var(--recipe-primary-soft);
+    --color-recipe-primary-fg: var(--recipe-primary-fg);
+    --color-recipe-tomato: var(--recipe-tomato);
+    --color-recipe-tomato-soft: var(--recipe-tomato-soft);
+    --color-recipe-tomato-fg: var(--recipe-tomato-fg);
+    --color-recipe-mango: var(--recipe-mango);
+    --color-recipe-mango-soft: var(--recipe-mango-soft);
+    --color-recipe-mango-fg: var(--recipe-mango-fg);
+    --color-recipe-basil: var(--recipe-basil);
+    --color-recipe-basil-soft: var(--recipe-basil-soft);
+    --color-recipe-basil-fg: var(--recipe-basil-fg);
+    --color-recipe-teal: var(--recipe-teal);
+    --color-recipe-teal-soft: var(--recipe-teal-soft);
+    --color-recipe-teal-fg: var(--recipe-teal-fg);
+    --color-recipe-berry: var(--recipe-berry);
+    --color-recipe-berry-soft: var(--recipe-berry-soft);
+    --color-recipe-berry-fg: var(--recipe-berry-fg);
+    --color-recipe-lavender: var(--recipe-lavender);
+    --color-recipe-lavender-soft: var(--recipe-lavender-soft);
+    --color-recipe-lavender-fg: var(--recipe-lavender-fg);
 }
 
 :root {
@@ -153,6 +176,29 @@
     --code-number: oklch(0.56 0 0);
     --selection: oklch(0.145 0 0);
     --selection-foreground: oklch(1 0 0);
+
+    /* Rezept-App – hell: kräftige Grundfarbe, Pastell-Fläche, dunkler Text auf Fläche */
+    --recipe-primary: oklch(0.7 0.19 47);
+    --recipe-primary-soft: oklch(0.95 0.045 60);
+    --recipe-primary-fg: oklch(0.5 0.15 45);
+    --recipe-tomato: oklch(0.63 0.22 28);
+    --recipe-tomato-soft: oklch(0.95 0.035 25);
+    --recipe-tomato-fg: oklch(0.47 0.17 28);
+    --recipe-mango: oklch(0.8 0.16 80);
+    --recipe-mango-soft: oklch(0.96 0.055 90);
+    --recipe-mango-fg: oklch(0.5 0.12 65);
+    --recipe-basil: oklch(0.66 0.17 145);
+    --recipe-basil-soft: oklch(0.95 0.05 145);
+    --recipe-basil-fg: oklch(0.43 0.12 145);
+    --recipe-teal: oklch(0.68 0.12 195);
+    --recipe-teal-soft: oklch(0.95 0.035 195);
+    --recipe-teal-fg: oklch(0.44 0.09 200);
+    --recipe-berry: oklch(0.6 0.21 350);
+    --recipe-berry-soft: oklch(0.95 0.035 350);
+    --recipe-berry-fg: oklch(0.46 0.17 350);
+    --recipe-lavender: oklch(0.63 0.17 290);
+    --recipe-lavender-soft: oklch(0.95 0.035 290);
+    --recipe-lavender-fg: oklch(0.46 0.15 290);
 }
 
 .dark {
@@ -198,6 +244,29 @@
 
     --color-cardSubcard: var(--input);
     --color-cardSubcard-foreground: var(--cardSubcard-foreground);
+
+    /* Rezept-App – dunkel: etwas hellere Grundfarbe, transparente Fläche, heller Text auf Fläche */
+    --recipe-primary: oklch(0.74 0.17 50);
+    --recipe-primary-soft: oklch(0.74 0.17 50 / 16%);
+    --recipe-primary-fg: oklch(0.84 0.12 60);
+    --recipe-tomato: oklch(0.7 0.19 28);
+    --recipe-tomato-soft: oklch(0.7 0.19 28 / 16%);
+    --recipe-tomato-fg: oklch(0.82 0.11 28);
+    --recipe-mango: oklch(0.83 0.15 82);
+    --recipe-mango-soft: oklch(0.83 0.15 82 / 14%);
+    --recipe-mango-fg: oklch(0.88 0.11 88);
+    --recipe-basil: oklch(0.74 0.16 145);
+    --recipe-basil-soft: oklch(0.74 0.16 145 / 15%);
+    --recipe-basil-fg: oklch(0.85 0.11 145);
+    --recipe-teal: oklch(0.76 0.11 195);
+    --recipe-teal-soft: oklch(0.76 0.11 195 / 15%);
+    --recipe-teal-fg: oklch(0.86 0.08 195);
+    --recipe-berry: oklch(0.7 0.18 350);
+    --recipe-berry-soft: oklch(0.7 0.18 350 / 16%);
+    --recipe-berry-fg: oklch(0.84 0.1 350);
+    --recipe-lavender: oklch(0.72 0.14 290);
+    --recipe-lavender-soft: oklch(0.72 0.14 290 / 16%);
+    --recipe-lavender-fg: oklch(0.85 0.09 290);
 }
 
 @layer base {
