@@ -18,6 +18,7 @@ const props = withDefaults(
     max?: number;
     min?: number;
     e2e?: string;
+    inputmode?: "text" | "numeric" | "decimal" | "search";
   }>(),
   {
     defaultValue: 0,
@@ -57,6 +58,7 @@ const variants = {
       :step="step"
       :max="max"
       :min="min"
+      :inputmode="inputmode"
       v-e2e="e2e"
       @change="clampOnChange"
       :class="

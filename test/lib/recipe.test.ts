@@ -1,6 +1,39 @@
 import { describe, expect, it } from "vitest";
-import { getCategoryColor } from "@/lib/recipe.ts";
+import { filterNewNames, getCategoryColor, parseNameList } from "@/lib/recipe.ts";
 import { recipeAccents } from "@/constants/recipe.ts";
+
+describe("parseNameList", () => {
+  it("splits by comma and trims each name", () => {
+    expect(parseNameList("Gramm, Liter,Prise ")).toEqual(["Gramm", "Liter", "Prise"]);
+  });
+
+  it("normalizes multiple spaces inside a name", () => {
+    expect(parseNameList("Große   Dose")).toEqual(["Große Dose"]);
+  });
+
+  it("drops empty entries", () => {
+    expect(parseNameList(" , Gramm,, ")).toEqual(["Gramm"]);
+    expect(parseNameList("")).toEqual([]);
+  });
+
+  it("removes duplicates ignoring case and keeps the first spelling", () => {
+    expect(parseNameList("Gramm, gramm, GRAMM, Liter")).toEqual(["Gramm", "Liter"]);
+  });
+});
+
+describe("filterNewNames", () => {
+  it("keeps only names that do not exist yet", () => {
+    expect(filterNewNames(["Gramm", "Liter"], ["Liter"])).toEqual(["Gramm"]);
+  });
+
+  it("compares case-insensitive and ignores surrounding whitespace", () => {
+    expect(filterNewNames(["gramm", "Prise"], [" Gramm "])).toEqual(["Prise"]);
+  });
+
+  it("returns all names when nothing exists", () => {
+    expect(filterNewNames(["Gramm"], [])).toEqual(["Gramm"]);
+  });
+});
 
 describe("getCategoryColor", () => {
   it("returns primary when no category is set", () => {

@@ -1,49 +1,28 @@
 <script setup lang="ts">
-import TableBasic from "@/components/shared/table/TableBasic.vue";
-import { type DatatableColumns, getColumns } from "@/lib/table.ts";
-import PageSection from "@/components/shared/page-section/PageSection.vue";
 import { computed, onMounted, ref } from "vue";
-import Header from "@/components/section/header/Header.vue";
-import Button from "@/components/shared/button/Button.vue";
 import { useQuery } from "@vue/apollo-composable";
-import { graphql } from "@/api/gql";
-import { type GetProductsQuery } from "@/api/gql/graphql.ts";
-import { useProductCategories } from "@/composables/querys/productCategories.ts";
-import { useRecipeStore } from "@/store/recipeStore.ts";
-import ProductAddUpdate from "@/components/section/products/ProductAddUpdate.vue";
 import { useRouteQuery } from "@vueuse/router";
-import InputSearch from "@/components/shared/input/InputSearch.vue";
-import { routes } from "@/router/routes.ts";
+import { PackageSearch, Plus, Search, X } from "@lucide/vue";
+import { graphql } from "@/api/gql";
+import { Button } from "@/components/ui/button";
+import { InputShadcn } from "@/components/ui/input";
+import EmptyState from "@/components/shared/recipe/EmptyState.vue";
+import ProductCard from "@/components/section/products/ProductCard.vue";
+import ProductEditorSheet from "@/components/section/products/ProductEditorSheet.vue";
+import { useRecipeStore } from "@/store/recipeStore.ts";
 import { useUnits } from "@/composables/querys/units.ts";
+import { useProductCategories } from "@/composables/querys/productCategories.ts";
+import { filterProductGroups } from "@/lib/product.ts";
+import { getCategoryColor } from "@/lib/recipe.ts";
+import { recipeAccentClasses } from "@/constants/recipe.ts";
 
 useUnits();
-const productId = useRouteQuery<string | null>("productId", null);
-
-const { refetch } = useProductCategories();
+useProductCategories();
 
 const recipeStore = useRecipeStore();
+const productIdQuery = useRouteQuery<string | null>("productId", null);
 
-const dialogOpen = ref(false);
-
-onMounted(async () => {
-  await refetch();
-  if (productId.value) {
-    dialogOpen.value = true;
-  }
-  const directlyOpenNewProductModal = recipeStore.getDirectlyOpenNewProductModal;
-  if (directlyOpenNewProductModal) {
-    dialogOpen.value = directlyOpenNewProductModal;
-    recipeStore.setDirectlyOpenNewProductModal(false);
-    return;
-  }
-});
-
-const {
-  onResult,
-  result,
-  refetch: refetchProductsGrouped,
-  loading,
-} = useQuery(
+const { result, loading } = useQuery(
   graphql(`
     query GetProducts($where: KeyValuePairOfStringAndListOfProductFilterInput) {
       productsGrouped(where: $where) {
@@ -73,120 +52,121 @@ const {
   { fetchPolicy: "network-only" },
 );
 
-const columns: Array<DatatableColumns<GetProductsQuery["productsGrouped"][number]["value"][number]>> = [
-  { source: "name", labelKey: "Name", type: "component", component: ProductAddUpdate },
-  { source: "ean", labelKey: "Ean" },
-  { source: "kcal", labelKey: "Kalorien", type: "number", unit: "kcal" },
-  { source: "amount", labelKey: "Menge" },
-  { source: "unit", labelKey: "Einheit" },
-  { source: "carbs", labelKey: "Kohlenhydrate", type: "number", unit: "g" },
-  { source: "fat", labelKey: "Fett", type: "number", unit: "g" },
-  { source: "protein", labelKey: "Protein", type: "number", unit: "g" },
-  { source: "salt", labelKey: "Salz", type: "number", unit: "g" },
-  { source: "sugar", labelKey: "Zucker", type: "number", unit: "g" },
-];
+// --- Filter ---
+const search = ref("");
+const selectedCategories = ref<string[]>([]);
 
-const selectedFilter = ref<string[]>([]);
-onResult(() => {
-  result.value?.productsGrouped.forEach((group) => {
-    if (!selectedFilterHasKey(group.key)) {
-      selectedFilter.value.push(group.key);
-    }
-  });
-});
+const allGroups = computed(() => result.value?.productsGrouped ?? []);
+const categories = computed(() =>
+  allGroups.value
+    .map((group) => ({ name: group.key, count: group.value.length }))
+    .sort((a, b) => a.name.localeCompare(b.name, "de")),
+);
+const filteredGroups = computed(() => filterProductGroups(allGroups.value, search.value, selectedCategories.value));
+const totalCount = computed(() => allGroups.value.reduce((sum, group) => sum + group.value.length, 0));
+const filteredCount = computed(() => filteredGroups.value.reduce((sum, group) => sum + group.value.length, 0));
 
-const selectedFilterHasKey = (key: string) => {
-  return selectedFilter.value.some((f) => f === key);
+const toggleCategory = (name: string) => {
+  selectedCategories.value = selectedCategories.value.includes(name)
+    ? selectedCategories.value.filter((category) => category !== name)
+    : [...selectedCategories.value, name];
 };
 
-const toggleFilter = (key: string) => {
-  if (!selectedFilterHasKey(key)) {
-    selectedFilter.value.push(key);
+const resetFilter = () => {
+  search.value = "";
+  selectedCategories.value = [];
+};
+
+// --- Bearbeiten / Anlegen ---
+const editorOpen = ref(false);
+const editProductId = ref<string | null>(null);
+
+const openEditor = (productId: string | null) => {
+  editProductId.value = productId;
+  editorOpen.value = true;
+};
+
+onMounted(() => {
+  if (productIdQuery.value) {
+    openEditor(productIdQuery.value);
+    productIdQuery.value = null;
     return;
   }
-  selectedFilter.value = selectedFilter.value.filter((f) => f !== key);
-};
-
-const refetchHandler = async (search: string) => {
-  await refetchProductsGrouped({ where: { value: { some: { name: { contains: search } } } } });
-};
-
-type TGroupedProducts = GetProductsQuery["productsGrouped"];
-interface IProducts {
-  group1: TGroupedProducts;
-  group2: TGroupedProducts;
-}
-
-const groupedProducts = computed((): IProducts => {
-  const length = {
-    group1: 0,
-    group2: 0,
-  };
-  return (
-    result.value?.productsGrouped
-      .map((g) => ({ key: g.key, value: [...g.value].sort((a, b) => a.name.localeCompare(b.name)) }))
-      .reduce(
-        (acc, curr) => {
-          if (length.group1 <= length.group2) {
-            length.group1 += curr.value.length;
-            acc.group1.push(curr);
-            return acc;
-          }
-          length.group2 += curr.value.length;
-          acc.group2.push(curr);
-          return acc;
-        },
-        { group1: [] as TGroupedProducts, group2: [] as TGroupedProducts },
-      ) ?? { group1: [], group2: [] }
-  );
+  // Aus dem Rezept-Editor: „Neues Produkt anlegen“
+  if (recipeStore.getDirectlyOpenNewProductModal) {
+    recipeStore.setDirectlyOpenNewProductModal(false);
+    openEditor(null);
+  }
 });
 </script>
 
 <template>
-  <div class="max-h-full flex flex-col">
-    <Header title="Produkte">
-      <div class="flex gap-2 flex-wrap">
-        <RouterLink :to="{ name: routes.productCategories.name }">
-          <Button as="div" variant="outline">Zu den Produktkategorien</Button>
-        </RouterLink>
-
-        <Button variant="outline" icon="add" size="icon" v-e2e="'products-add'" @click="dialogOpen = !dialogOpen" />
+  <div class="h-full flex flex-col gap-3">
+    <!-- Suche + Neu -->
+    <div class="flex gap-2 shrink-0">
+      <div class="relative flex-1 min-w-0">
+        <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
+        <InputShadcn v-model="search" type="text" placeholder="Produkt oder EAN suchen" class="h-11 rounded-full pl-10 text-base md:text-sm" e2e="products-search" />
       </div>
-    </Header>
-
-    <div class="flex flex-wrap gap-2">
-      <InputSearch class="w-48" placeholder="Nach Produkten Filtern" @update:modelValue="refetchHandler(String($event))" />
-      <Button
-        v-for="(button, i) in result?.productsGrouped"
-        :variant="selectedFilterHasKey(button.key) ? 'outline' : 'secondary'"
-        @click="toggleFilter(button.key)"
-        :key="i"
-        >{{ button.key }}</Button
-      >
+      <Button class="h-11 rounded-full px-4 shrink-0" :class="recipeAccentClasses.basil.solid" v-e2e="'products-add'" @click="openEditor(null)">
+        <Plus class="h-4 w-4" />
+        <span class="hidden sm:inline">Neues Produkt</span>
+      </Button>
     </div>
-    <PageSection class="grid lg:grid-cols-2 grid-cols-1 gap-4 rounded-lg flex-1 overflow-auto">
-      <div>
-        <template v-for="product in groupedProducts.group1" :key="product.key">
-          <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
-            {{ product.key }}
-            <div class="rounded-md pb-2 mt-1">
-              <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
-            </div>
-          </div>
-        </template>
+
+    <!-- Kategorie-Chips -->
+    <div v-if="categories.length" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 shrink-0">
+      <button
+        type="button"
+        class="h-9 px-3.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors"
+        :class="selectedCategories.length === 0 ? 'bg-foreground text-background border-foreground' : 'border-border text-muted-foreground hover:bg-accent'"
+        @click="selectedCategories = []"
+      >
+        Alle · {{ totalCount }}
+      </button>
+      <button
+        v-for="category in categories"
+        :key="category.name"
+        type="button"
+        class="h-9 px-3.5 rounded-full text-sm font-medium whitespace-nowrap border inline-flex items-center gap-1.5 transition-all"
+        :class="
+          selectedCategories.includes(category.name)
+            ? [recipeAccentClasses[getCategoryColor(category.name)].soft, recipeAccentClasses[getCategoryColor(category.name)].border]
+            : 'border-border text-muted-foreground hover:bg-accent'
+        "
+        @click="toggleCategory(category.name)"
+      >
+        <span :class="['h-2 w-2 rounded-full', recipeAccentClasses[getCategoryColor(category.name)].solid]" />
+        {{ category.name }}
+        <span class="opacity-60">{{ category.count }}</span>
+      </button>
+    </div>
+
+    <!-- Liste -->
+    <div class="flex-1 min-h-0 overflow-y-auto pb-4">
+      <div v-for="group in filteredGroups" :key="group.key" class="mb-5">
+        <div class="flex items-center gap-2 mb-2">
+          <span :class="['h-2.5 w-2.5 rounded-full', recipeAccentClasses[getCategoryColor(group.key)].solid]" />
+          <p :class="['text-sm font-semibold', recipeAccentClasses[getCategoryColor(group.key)].text]">{{ group.key }}</p>
+          <span class="text-xs text-muted-foreground">{{ group.value.length }}</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+          <ProductCard v-for="product in group.value" :key="product.id" :product :accent="getCategoryColor(group.key)" @open="openEditor(product.id)" />
+        </div>
       </div>
-      <div>
-        <template v-for="product in groupedProducts.group2" :key="product.key">
-          <div v-if="selectedFilterHasKey(product.key) || selectedFilter.length === 0" class="rounded-md">
-            {{ product.key }}
-            <div class="rounded-md pb-2 mt-1">
-              <TableBasic :data="product.value || []" :columns="getColumns(columns)" :loading />
-            </div>
-          </div>
-        </template>
-      </div>
-      <p v-if="!result?.productsGrouped || !result.productsGrouped.length" class="mt-10 text-center text-xl">Es wurden keine Daten gefunden</p>
-      <ProductAddUpdate v-if="dialogOpen" v-model:dialog-open="dialogOpen" :row="{} as any" source="''" :custom-value="productId" value="" />
-    </PageSection>
+
+      <EmptyState
+        v-if="!loading && filteredCount === 0"
+        :icon="PackageSearch"
+        accent="basil"
+        :title="totalCount ? 'Nichts gefunden' : 'Noch keine Produkte'"
+        :description="totalCount ? 'Probier einen anderen Suchbegriff oder eine andere Kategorie.' : 'Leg dein erstes Lebensmittel an – mit Barcode geht das ganz schnell.'"
+      >
+        <Button v-if="totalCount" variant="outline" class="rounded-full" @click="resetFilter"><X class="h-4 w-4" /> Filter zurücksetzen</Button>
+        <Button v-else class="rounded-full" :class="recipeAccentClasses.basil.solid" @click="openEditor(null)"><Plus class="h-4 w-4" /> Produkt anlegen</Button>
+      </EmptyState>
+    </div>
+
+    <ProductEditorSheet v-model:open="editorOpen" :product-id="editProductId" />
   </div>
 </template>
