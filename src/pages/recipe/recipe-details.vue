@@ -12,6 +12,9 @@ import RecipeMetaInfo from "@/components/section/recipe/RecipeMetaInfo.vue";
 import RecipeServings from "@/components/section/recipe/RecipeServings.vue";
 import RecipeIngredientList from "@/components/section/recipe/RecipeIngredientList.vue";
 import RecipeSteps from "@/components/section/recipe/RecipeSteps.vue";
+import AddToShoppingListSheet from "@/components/section/recipe/AddToShoppingListSheet.vue";
+import { useShoppingListEntries } from "@/composables/shoppingList.ts";
+import { matchIngredientsWithShoppingList } from "@/lib/shopping-list.ts";
 import { useRecipeDetails } from "@/composables/querys/recipeDetails.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { getCategoryColor, kcalPerPortion, scaleAmount } from "@/lib/recipe.ts";
@@ -46,6 +49,15 @@ const kcalPortion = computed(() => kcalPerPortion(recipe.value?.totalKcal, recip
 const totalKcalScaled = computed(() => Math.round(scaleAmount(recipe.value?.totalKcal ?? 0, basePortions.value, portions.value) ?? 0));
 const ingredientCount = computed(() => recipe.value?.recipeProducts.length ?? 0);
 const stepCount = computed(() => recipe.value?.recipeDescriptions.length ?? 0);
+
+const shoppingOpen = ref(false);
+const { names: shoppingListNames } = useShoppingListEntries();
+const onShoppingList = computed(() =>
+  matchIngredientsWithShoppingList(
+    (recipe.value?.recipeProducts ?? []).map((ingredient) => ingredient.product?.name ?? ""),
+    shoppingListNames.value,
+  ),
+);
 
 const cookingRoute = computed(() => ({
   name: routes.cookingMode.name,
@@ -102,8 +114,16 @@ const cookingRoute = computed(() => ({
             <Button as-child variant="outline" size="icon-lg" class="rounded-full" title="Bearbeiten">
               <RouterLink :to="{ name: routes.editRecipe.name, params: { id: recipe.id } }" aria-label="Bearbeiten"><Pencil class="h-4 w-4" /></RouterLink>
             </Button>
-            <!-- Einkaufsliste kommt in Phase 5 -->
-            <Button variant="outline" size="icon-lg" class="rounded-full" disabled title="Auf die Einkaufsliste (bald verfügbar)" aria-label="Auf die Einkaufsliste">
+            <Button
+              variant="outline"
+              size="icon-lg"
+              class="rounded-full"
+              :disabled="!ingredientCount"
+              title="Auf die Einkaufsliste"
+              aria-label="Auf die Einkaufsliste"
+              v-e2e="'recipe-add-to-shopping-list'"
+              @click="shoppingOpen = true"
+            >
               <ShoppingBasket class="h-4 w-4" />
             </Button>
             <DeleteRecipe :recipe-id="recipe.id">
@@ -128,7 +148,7 @@ const cookingRoute = computed(() => ({
                 <RecipeServings v-model="portions" :base-portions="basePortions" />
               </div>
 
-              <RecipeIngredientList v-if="ingredientCount" v-model:checked="checked" :recipe :portions />
+              <RecipeIngredientList v-if="ingredientCount" v-model:checked="checked" :recipe :portions :on-shopping-list="onShoppingList" />
               <p v-else class="text-sm text-muted-foreground py-4 text-center">Noch keine Zutaten eingetragen.</p>
 
               <div v-if="checked.length" class="flex items-center justify-between gap-2 text-xs text-muted-foreground border-t border-border/60 pt-3">
@@ -155,6 +175,8 @@ const cookingRoute = computed(() => ({
             </div>
           </Card>
         </div>
+
+        <AddToShoppingListSheet v-model:open="shoppingOpen" :recipe :portions />
       </template>
     </div>
   </div>
