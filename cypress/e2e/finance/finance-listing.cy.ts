@@ -1,6 +1,6 @@
 import { routes } from "@/router/routes.ts";
 import { descriptionUncheckedColor as unchecked, financeListTextColorMapping } from "@/constants/finance.ts";
-import { clickESC, dataSel, getFakerCity, getFakerStreet, provokeGraphQlError } from "../../support/utils.ts";
+import { clickESC, dataSel, fake, gql } from "../../support/utils.ts";
 import { faker } from "@faker-js/faker";
 import { texts } from "@/text/de.ts";
 import { finance } from "../../support/finance-helper";
@@ -74,7 +74,7 @@ describe("Finance Listing (GraphQL Integration)", () => {
 describe("Dialog", () => {
   const name = faker.person.fullName();
   before(() => {
-    finance.address.add(name, getFakerStreet(), getFakerCity());
+    finance.address.add(name, fake.street(), fake.city());
   });
 
   it("dialog should have footer buttons", () => {
@@ -83,15 +83,13 @@ describe("Dialog", () => {
     finance.listing.createListing(description, "12.34");
 
     finance.listing.edit(description).should("exist").should("be.visible").as("dialog");
-    const { abort, submit } = finance.listing.getDialogButtons("@dialog");
+    finance.listing.getDialogButtons("@dialog").clickSubmit();
 
-    abort().should("exist");
-    submit().should("exist").click();
     cy.get("@dialog").should("not.exist");
 
     finance.listing.edit(description).should("exist").should("be.visible").as("dialogReopen");
-    const { abort: abortReopen } = finance.listing.getDialogButtons("@dialogReopen");
-    abortReopen().should("exist").click();
+    finance.listing.getDialogButtons("@dialogReopen").clickAbort();
+
     cy.get("@dialogReopen").should("not.exist");
   });
 
@@ -107,9 +105,7 @@ describe("Dialog", () => {
     const newAddress = name;
     finance.listing.setValues("@dialog", newDate, newDescription, newPrice, newAddress);
 
-    const { submit } = finance.listing.getDialogButtons("@dialog");
-
-    submit().should("not.be.disabled").should("exist").click();
+    finance.listing.getDialogButtons("@dialog").clickSubmit();
 
     cy.get("@dialog").should("not.exist");
 
@@ -125,8 +121,7 @@ describe("Dialog", () => {
 
     finance.listing.edit(description).should("exist").should("be.visible").as("dialog");
 
-    const { abort } = finance.listing.getDialogButtons("@dialog");
-    abort().should("exist").click();
+    finance.listing.getDialogButtons("@dialog").clickAbort();
 
     finance.listing.edit(description).should("exist").should("be.visible").as("dialogReopen");
     finance.listing.validateValues("@dialogReopen", date, description, price, addressName);
@@ -155,7 +150,7 @@ describe("Graphql Error", () => {
 
     cy.get("table").contains("code", description).closest("tr").find(dataSel("isValidated-checkbox")).as("validatedCheckbox");
 
-    provokeGraphQlError("UpdateTravelCostCheckboxes");
+    gql.provokeGraphQlError("UpdateTravelCostCheckboxes");
 
     cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked").click();
     cy.wait("@UpdateTravelCostCheckboxesFailed");
@@ -171,7 +166,7 @@ describe("Graphql Error", () => {
 
     cy.get("table").contains("code", description).closest("tr").find(dataSel("hasInvoice-checkbox")).as("validatedCheckbox");
 
-    provokeGraphQlError("UpdateTravelCostCheckboxes");
+    gql.provokeGraphQlError("UpdateTravelCostCheckboxes");
     cy.get("@validatedCheckbox").should("have.attr", "data-state", "unchecked").click();
     cy.wait("@UpdateTravelCostCheckboxesFailed");
 

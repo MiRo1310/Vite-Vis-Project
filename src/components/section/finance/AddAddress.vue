@@ -39,6 +39,9 @@ const onSubmit = form.handleSubmit(async (values) => {
   });
   form.resetForm();
 });
+const isAddressEmpty = (values: Partial<{ name: string; street: string; city: string }>) => {
+  return !values.name || !values.street || !values.city;
+};
 </script>
 
 <template>
@@ -48,7 +51,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       <FormInput name="street" type="text" placeholder="Straße" class="w-120" e2e="address-street" />
       <FormInput name="city" type="text" placeholder="Stadt" class="w-120" e2e="address-city" />
 
-      <Button type="submit" icon="add" variant="outline" size="icon" data-e2e="address-submit" />
+      <Button type="submit" icon="add" variant="outline" size="icon" data-e2e="address-submit" :disabled="isAddressEmpty(form.values)" />
     </div>
   </Form>
 </template>

@@ -1,6 +1,6 @@
 import { routes } from "@/router/routes.ts";
 import { texts } from "@/text/de.ts";
-import { aliasGraphqlOperations, clickESC } from "../../support/utils.ts";
+import { clickESC, gql } from "../../support/utils.ts";
 import { finance } from "../../support/finance-helper";
 
 describe("Finance Description (GraphQL Integration)", () => {
@@ -68,7 +68,7 @@ describe("Description Edit-Dialog", () => {
   let description = "";
 
   beforeEach(() => {
-    aliasGraphqlOperations();
+    gql.aliasGraphqlOperations();
     description = `Description ${Date.now()}`;
   });
 

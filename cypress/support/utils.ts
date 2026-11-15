@@ -7,26 +7,7 @@ import { faker } from "@faker-js/faker";
  * @returns Selector like `[data-e2e='listing-edit']`, usable with `cy.get()` or `.find()`.
  * @example cy.get("tr").find(dataSel("isValidated-checkbox"));
  */
-export const dataSel = (sel: string) => {
-  return `[data-e2e='${sel}']`;
-};
-
-/**
- * Assigns an alias to each GraphQL request based on its `operationName`,
- * so tests can wait for it with `cy.wait("@<operationName>")`.
- *
- * @example
- * aliasGraphqlOperations();
- * cy.wait("@Addresses");
- */
-export const aliasGraphqlOperations = () => {
-  cy.intercept("POST", "**", (req) => {
-    const operationName = (req.body as { operationName?: string } | undefined)?.operationName;
-    if (operationName) {
-      req.alias = operationName;
-    }
-  });
-};
+export const dataSel = (sel: string) => `[data-e2e='${sel}']`;
 
 /**
  * Sends an Escape keydown to the aliased element, e.g. to close a dialog.
@@ -42,14 +23,31 @@ export const clickESC = (alias: string) => {
  *
  * @returns Street like `"Hauptstraße 12"`.
  */
-export const getFakerStreet = () => `${faker.location.street()} ${faker.location.buildingNumber()}`;
+const getFakerStreet = () => `${faker.location.street()} ${faker.location.buildingNumber()}`;
 
 /**
  * Generates a random zip code with city.
  *
  * @returns City like `"12345 Berlin"`.
  */
-export const getFakerCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;
+const getFakerCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;
+
+/**
+ * Assigns an alias to each GraphQL request based on its `operationName`,
+ * so tests can wait for it with `cy.wait("@<operationName>")`.
+ *
+ * @example
+ * aliasGraphqlOperations();
+ * cy.wait("@Addresses");
+ */
+const aliasGraphqlOperations = () => {
+  cy.intercept("POST", "**", (req) => {
+    const operationName = (req.body as { operationName?: string } | undefined)?.operationName;
+    if (operationName) {
+      req.alias = operationName;
+    }
+  });
+};
 
 /**
  * Stubs the response of a GraphQL operation with a GraphQL error, so the request never reaches the backend.
@@ -64,7 +62,7 @@ export const getFakerCity = () => `${faker.location.zipCode()} ${faker.location.
  * cy.get("@checkbox").click();
  * cy.wait("@UpdateTravelCostCheckboxesFailed");
  */
-export const provokeGraphQlError = (operationName: string) => {
+const provokeGraphQlError = (operationName: string) => {
   cy.intercept("POST", "**", (req) => {
     if (req.body?.operationName === operationName) {
       req.alias = `${operationName}Failed`;
@@ -74,3 +72,6 @@ export const provokeGraphQlError = (operationName: string) => {
     }
   });
 };
+
+export const gql = { provokeGraphQlError, aliasGraphqlOperations };
+export const fake = { city: getFakerCity, street: getFakerStreet };

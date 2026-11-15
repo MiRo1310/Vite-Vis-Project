@@ -18,8 +18,16 @@ const add = (name: string, street: string, city: string) => {
   cy.contains("td", name).should("exist");
 };
 
+const remove = (name: string) => {
+  cy.get("table").contains("p", name).closest("tr").find(dataSel("address-remove")).click();
+  return cy.get("[role='dialog']");
+};
+
 const getDialogButtons = (alias: string) => {
-  return { update: () => cy.get(alias).getBySel("btn-submit"), close: () => cy.get(alias).getBySel("btn-close") };
+  return {
+    clickUpdate: () => cy.get(alias).getBySel("btn-submit").click(),
+    clickClose: () => cy.get(alias).getBySel("btn-close").click(),
+  };
 };
 
 const openDialog = (search: string) => {
@@ -43,4 +51,4 @@ const setValues = (alias: string, name: string, street: string, city: string) =>
   cy.get("@city").clear().type(city);
 };
 
-export const addressHelper = { add, getDialogButtons, openDialog, validateValuesInDialog, setValues };
+export const addressHelper = { add, getDialogButtons, openDialog, validateValuesInDialog, setValues, remove };

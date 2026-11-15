@@ -1,8 +1,8 @@
 import { routes } from "@/router/routes.ts";
-import { aliasGraphqlOperations, getFakerCity, getFakerStreet } from "../utils.ts";
 
 import { addressHelper } from "./address.ts";
 import { faker } from "@faker-js/faker";
+import { fake, gql } from "../utils.ts";
 
 const edit = (description: string) => {
   cy.get("table").contains("code", description).closest("tr").find("[data-e2e='listing-edit']").click();
@@ -10,7 +10,7 @@ const edit = (description: string) => {
 };
 
 const getDialogButtons = (alias: string) => {
-  return { submit: () => cy.get(alias).getBySel("btn-submit"), abort: () => cy.get(alias).getBySel("btn-close") };
+  return { clickSubmit: () => cy.get(alias).getBySel("btn-submit").click(), clickAbort: () => cy.get(alias).getBySel("btn-close").click() };
 };
 
 // Klickt eine Checkbox der Zeile und wartet, bis die Mutation durch ist
@@ -22,10 +22,10 @@ const toggleCheckbox = (description: string, checkbox: "isValidated" | "hasInvoi
 
 // Legt eine Adresse und eine Position im Finance-Listing an (beide Checkboxen sind danach unchecked)
 const createListing = (description: string, price: string) => {
-  aliasGraphqlOperations();
+  gql.aliasGraphqlOperations();
   const addressName = faker.person.fullName();
 
-  addressHelper.add(addressName, getFakerStreet(), getFakerCity());
+  addressHelper.add(addressName, fake.street(), fake.city());
 
   const today = new Date().toISOString().slice(0, 10);
 
