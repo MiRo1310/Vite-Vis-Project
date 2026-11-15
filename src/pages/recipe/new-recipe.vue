@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import RecipeForm from "@/components/section/recipe-form/RecipeForm.vue";
+import RecipeEditor from "@/components/section/recipe-editor/RecipeEditor.vue";
 </script>
 
 <template>
-  <RecipeForm />
+  <RecipeEditor />
 </template>

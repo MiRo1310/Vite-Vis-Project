@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import RecipeForm from "@/components/section/recipe-form/RecipeForm.vue";
-import { useRoute } from "vue-router";
+import RecipeEditor from "@/components/section/recipe-editor/RecipeEditor.vue";
 
-const route = useRoute();
-
-const recipeId = route.params.id as string | undefined;
+defineProps<{ id?: string }>();
 </script>
 
 <template>
-  <RecipeForm :id="recipeId" />
+  <!-- key: anderes Rezept → Editor neu aufbauen (lädt und merkt Entwurf je Rezept) -->
+  <RecipeEditor :id :key="id" />
 </template>

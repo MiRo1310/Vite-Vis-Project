@@ -19,6 +19,24 @@ export function clamp(value: number, min?: number, max?: number): number {
   return value;
 }
 
+/**
+ * Liest eine Zahl aus einer Texteingabe; Komma und Punkt gelten als Dezimaltrenner.
+ *
+ * @param input - Eingabe wie `"1,5"`, `" 2.25 "` oder `""`.
+ * @returns Zahl, bzw. `null` bei leerer oder ungültiger Eingabe.
+ * @example parseDecimal("1,5"); // 1.5
+ */
+export function parseDecimal(input: string | number | null | undefined): number | null {
+  if (typeof input === "number") {
+    return Number.isFinite(input) ? input : null;
+  }
+  const normalized = (input ?? "").trim().replace(",", ".");
+  if (!/^-?(\d+\.?\d*|\.\d+)$/.test(normalized)) {
+    return null;
+  }
+  return Number(normalized);
+}
+
 export const formatNumber = (number?: number, decimals?: number): string => {
   // toFixed rounds the value
   if (!isDefined(number)) {

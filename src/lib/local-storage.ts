@@ -8,6 +8,7 @@ interface StorageTypes {
   deviceId: string | null;
   routerReload: RouterReloadRetry;
   lastRecipes: RecentRecipe[];
+  recentProductIds: string[];
   "active-tab": Record<string, string>;
   activeYear: number | undefined;
 }
@@ -18,6 +19,7 @@ const typedLocalStorage = () => {
     deviceId: null,
     routerReload: { to: null, attempt: 0, triedNavigateToHome: false },
     lastRecipes: [] as RecentRecipe[],
+    recentProductIds: [],
     "active-tab": {},
     activeYear: undefined,
   };

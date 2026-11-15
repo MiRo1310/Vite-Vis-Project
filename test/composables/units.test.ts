@@ -18,7 +18,7 @@ vi.mock("@/composables/querys/options", () => ({
   getSelectableOptions: (units: any) => (units ? units.map((u: any) => ({ value: u.id, label: u.name })) : []),
 }));
 
-vi.mock("@/components/section/recipe-form/utils", () => ({
+vi.mock("@/lib/name-id.ts", () => ({
   getIdByName: (name: string, units: any) => units?.find((u: any) => u.name === name)?.id ?? "",
   getNameById: (id: string, units: any) => units?.find((u: any) => u.id === id)?.name ?? "",
 }));

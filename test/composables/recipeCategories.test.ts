@@ -24,7 +24,7 @@ vi.mock("../../src/composables/querys/options", () => ({
   getSelectableOptions: (arr: any) => (arr ? arr.map((a: any) => ({ value: a.id, label: a.name })) : []),
 }));
 
-vi.mock("../../src/components/section/recipe-form/utils", () => ({
+vi.mock("../../src/lib/name-id.ts", () => ({
   getIdByName: (name: string, arr: any) => arr?.find((a: any) => a.name === name)?.id ?? "",
   getNameById: (id: string, arr: any) => arr?.find((a: any) => a.id === id)?.name ?? "",
 }));

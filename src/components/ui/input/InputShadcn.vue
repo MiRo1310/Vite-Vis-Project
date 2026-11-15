@@ -19,6 +19,9 @@ const props = withDefaults(
     min?: number;
     e2e?: string;
     inputmode?: "text" | "numeric" | "decimal" | "search";
+    id?: string;
+    ariaLabel?: string;
+    invalid?: boolean;
   }>(),
   {
     defaultValue: 0,
@@ -59,12 +62,15 @@ const variants = {
       :max="max"
       :min="min"
       :inputmode="inputmode"
+      :id="id"
+      :aria-label="ariaLabel"
+      :aria-invalid="invalid || undefined"
       v-e2e="e2e"
       @change="clampOnChange"
       :class="
         twMerge(
           'flex h-9 w-full dark:bg-input/30 px-3 py-1 text-sm shadow-xs transition-colors file:border-0 file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
-          'border border-input focus:outline-hidden focus:ring-0 rounded-md',
+          'border border-input focus:outline-hidden focus:ring-0 rounded-md aria-invalid:border-destructive',
           getVariantsClasses(variants, props) as string,
           props.class as string,
         )

@@ -88,3 +88,49 @@ export function getMacroShares(macros: { carbs?: number | null; fat?: number | n
 
   return { carbs: (carbs / total) * 100, fat: (fat / total) * 100, protein: (protein / total) * 100 };
 }
+
+export interface ProductSearchResult<T> {
+  /** Zuletzt verwendete Produkte – nur ohne Suchtext */
+  recent: T[];
+  /** Treffer (mit Suchtext) bzw. alle übrigen Produkte (ohne Suchtext), höchstens `limit` */
+  matches: T[];
+  /** Es gibt ein Produkt mit genau diesem Namen (ohne Groß-/Kleinschreibung) */
+  hasExactMatch: boolean;
+}
+
+/**
+ * Sucht Produkte für die Zutaten-Auswahl.
+ * Ohne Suchtext stehen die zuletzt verwendeten Produkte oben, danach alle anderen alphabetisch.
+ * Mit Suchtext zählen Namen, die den Text enthalten; Namen, die damit beginnen, stehen vorne.
+ *
+ * @param products - Alle Produkte.
+ * @param search - Suchtext.
+ * @param recentIds - Zuletzt verwendete Produkt-IDs, neueste zuerst.
+ * @param limit - Maximale Anzahl Treffer.
+ * @returns Zuletzt verwendet, Treffer und ob der Name exakt existiert.
+ */
+export function searchProducts<T extends { id: string; name: string }>(
+  products: readonly T[],
+  search: string,
+  recentIds: readonly string[] = [],
+  limit = 50,
+): ProductSearchResult<T> {
+  const term = search.trim().toLowerCase();
+  const byName = (a: T, b: T) => a.name.localeCompare(b.name, "de");
+
+  if (!term) {
+    const byId = new Map(products.map((product) => [product.id, product]));
+    const recent = recentIds.map((id) => byId.get(id)).filter((product): product is T => product !== undefined);
+    const recentSet = new Set(recent.map((product) => product.id));
+    const matches = products.filter((product) => !recentSet.has(product.id)).sort(byName).slice(0, limit);
+    return { recent, matches, hasExactMatch: false };
+  }
+
+  const startsWith = (product: T) => product.name.toLowerCase().startsWith(term);
+  const matches = products
+    .filter((product) => product.name.toLowerCase().includes(term))
+    .sort((a, b) => Number(startsWith(b)) - Number(startsWith(a)) || byName(a, b))
+    .slice(0, limit);
+
+  return { recent: [], matches, hasExactMatch: products.some((product) => product.name.trim().toLowerCase() === term) };
+}

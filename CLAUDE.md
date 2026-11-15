@@ -246,6 +246,8 @@ Die Rezept-App hat ein **eigenes Layout** (`pages/recipe/recipe-app.vue`) und fo
 - **Kategorien** bekommen ihre Farbe über `getCategoryColor(name)` aus `@/lib/recipe.ts`, überall dieselbe Farbe pro Kategorie. **Nährwerte** über `nutrientAccent`.
 - **Bausteine** in `components/shared/recipe/`: `RecipePageHeader` (Titel, Icon, Gradient, Slots `actions`/`meta`) und `EmptyState`.
 - Stammdaten (Produkte, Einheiten, Kategorien) liegen gesammelt unter `recipeManage` (Tabs über `?tab=`). Die alten Routen (`products`, `recipeUnits`, …) leiten dorthin um.
+- **Rezept-Editor** (`components/section/recipe-editor/`): Der Entwurf ist ein eigenes Modell (`RecipeDraft` in `lib/recipe-editor.ts`, Gruppen enthalten ihre Zutaten). Positionen entstehen erst in `draftToDto`. Was vor dem Speichern gelöscht werden muss, ergibt `getDraftDeletions` aus dem Vergleich mit dem geladenen Stand, nicht aus Listen im Store. Zustand und Aktionen liegen in `composables/recipeEditor.ts` und werden per `provideRecipeEditor`/`useRecipeEditor` an Gruppen, Zutaten und Schritte gereicht. Kein vee-validate, die Prüfung macht `validateDraft`.
+- Zahlenfelder in der Rezept-App über `NumberField` (`components/shared/recipe/`): Texteingabe mit Dezimal-Tastatur, Komma erlaubt, leer = `null`.
 - shadcn-Komponenten bleiben Pflicht.
 
 ---

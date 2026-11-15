@@ -135,6 +135,9 @@ export const RECIPE_UNCATEGORIZED = "Ohne Kategorie";
 /** Wie viele zuletzt geöffnete Rezepte gemerkt und in der Leiste gezeigt werden. */
 export const MAX_RECENT_RECIPES = 8;
 
+/** Wie viele zuletzt im Editor gewählte Produkte oben in der Produktsuche stehen. */
+export const MAX_RECENT_PRODUCTS = 6;
+
 /** Schnellfilter in der Rezeptliste: maximale Gesamtzeit in Minuten. */
 export const recipeTimeFilters = [15, 30, 60] as const;
 
