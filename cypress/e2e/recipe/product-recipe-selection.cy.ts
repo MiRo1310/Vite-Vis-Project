@@ -1,5 +1,5 @@
 import { routes } from "@/router/routes.ts";
-import { gql } from "../../support/utils.ts";
+import { dataSel, gql } from "../../support/utils.ts";
 
 describe("Product creation and recipe ingredient selection (GraphQL Integration)", () => {
   beforeEach(() => {
@@ -15,9 +15,9 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     // Kategorie anlegen, wird für das Produkt benötigt
     cy.visit(routes.productCategories.path);
     cy.wait("@ProductCategories");
-    cy.getBySel("add-category-input").scrollIntoView().type(categoryName);
-    cy.getBySel("add-category-submit").scrollIntoView().should("exist").click();
-    cy.contains("td", categoryName).should("exist");
+    cy.getBySel("product-categories-input").type(categoryName);
+    cy.getBySel("product-categories-add").click();
+    cy.contains(dataSel("product-categories-item"), categoryName).should("exist");
 
     // Produkt anlegen
     cy.visit(routes.products.path);
@@ -29,7 +29,7 @@ describe("Product creation and recipe ingredient selection (GraphQL Integration)
     cy.getBySel("btn-submit").click();
 
     cy.contains("Das Produkt wurde erfolgreich erstellt").should("exist");
-    cy.contains("td", productName).should("exist");
+    cy.contains(dataSel("product-card"), productName).should("exist");
 
     cy.visit(routes.newRecipe.path);
     cy.getBySel("recipe-name").type(recipeName);

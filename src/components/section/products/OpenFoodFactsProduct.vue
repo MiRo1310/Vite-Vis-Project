@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useLazyQuery } from "@vue/apollo-composable";
+import { computed, ref, watch } from "vue";
 import { graphql } from "@/api/gql";
-import { Input } from "@/components/shared/input/input.variants";
-import { Button } from "@/components/shared/button/button.variants";
-import { isDefined } from "@/lib/utilities.ts";
-import { Undo } from "@lucide/vue";
+import apolloClient, { type ApolloOperationContext } from "@/apolloClient.ts";
+import { Button } from "@/components/ui/button";
+import { InputShadcn } from "@/components/ui/input";
+import { CircleAlert, CircleCheck, CircleHelp, LoaderCircle, Search, Undo } from "@lucide/vue";
 import { type TProduct } from "@/components/section/products/index.ts";
+import { isValidEan, normalizeEan } from "@/lib/product.ts";
+import { Logger } from "@/lib/logger.ts";
 
-const props = defineProps<{ ean: string }>();
+const props = defineProps<{ ean?: string | null }>();
 
 const product = defineModel<TProduct>("modelValue");
 
@@ -40,39 +41,98 @@ const localProductsByCodeQuery = graphql(`
   }
 `);
 
-const { load: loadByCode, refetch } = useLazyQuery(localProductsByCodeQuery);
+type LookupStatus = "idle" | "loading" | "found" | "notFound" | "invalid" | "error";
 
-let init = false;
+const code = ref(normalizeEan(props.ean));
+const status = ref<LookupStatus>("idle");
 
-const loadDataByCode = async () => {
-  if (!isDefined(modelValue.value) && modelValue.value === "") {
-    return;
-  }
-  if (!init) {
-    const result = await loadByCode(localProductsByCodeQuery, { code: String(modelValue.value) });
-    if (typeof result === "boolean") {
-      return;
+// Gespeicherte EAN kommt evtl. erst nach dem Mounten – übernehmen, solange noch nichts eingetippt wurde
+watch(
+  () => props.ean,
+  (ean) => {
+    if (!code.value) {
+      code.value = normalizeEan(ean);
     }
-    product.value = result.foodFactsProductByCode;
-    init = true;
+  },
+);
+
+const savedEan = computed(() => normalizeEan(props.ean));
+
+/**
+ * Fragt OpenFoodFacts über das Backend ab. Bewusst ohne useLazyQuery: `load()` liefert nach dem ersten
+ * (fehlgeschlagenen) Aufruf nur noch `false`, dadurch ging früher nach einem „nicht gefunden“ keine Suche mehr.
+ */
+const lookup = async () => {
+  const ean = normalizeEan(code.value);
+  code.value = ean;
+  if (!ean) {
+    return;
+  }
+  if (!isValidEan(ean)) {
+    status.value = "invalid";
+    product.value = undefined;
     return;
   }
 
-  const result = await refetch({ code: String(modelValue.value) });
-  product.value = result?.data.foodFactsProductByCode;
+  status.value = "loading";
+  try {
+    const context: ApolloOperationContext = { silentErrors: true };
+    const { data } = await apolloClient.query({
+      query: localProductsByCodeQuery,
+      variables: { code: ean },
+      fetchPolicy: "network-only",
+      errorPolicy: "all",
+      context,
+    });
+    // Mit errorPolicy "all" ist data bei „nicht gefunden“ zur Laufzeit leer, obwohl der Typ es nicht sagt
+    const found = (data as typeof data | undefined)?.foodFactsProductByCode;
+    product.value = found ?? undefined;
+    status.value = product.value ? "found" : "notFound";
+  } catch (error) {
+    Logger.error("OpenFoodFacts Abfrage fehlgeschlagen", error);
+    product.value = undefined;
+    status.value = "error";
+  }
 };
-
-const modelValue = ref(props.ean);
 </script>
 
 <template>
-  <div class="flex gap-2 mb-2">
-    <Input v-model:model-value="modelValue" type="number" placeholder="Ean nummer" />
-    <Button variant="ghost" size="icon" @click.prevent="modelValue = ean" :disabled="modelValue === ean">
-      <Undo />
-    </Button>
-    <Button @click.prevent="loadDataByCode">Abrufen </Button>
+  <div class="flex flex-col gap-2">
+    <div class="flex gap-2" @keydown.enter.stop.prevent="lookup">
+      <div class="flex-1 min-w-0">
+        <InputShadcn v-model="code" type="text" inputmode="numeric" placeholder="Barcode (EAN)" class="h-10" e2e="off-ean" />
+      </div>
+      <Button
+        v-if="savedEan && code !== savedEan"
+        type="button"
+        variant="ghost"
+        size="icon"
+        class="h-10 w-10 shrink-0"
+        title="Gespeicherte EAN wiederherstellen"
+        @click.prevent="code = savedEan"
+      >
+        <Undo class="h-4 w-4" />
+      </Button>
+      <Button type="button" class="h-10 shrink-0" :disabled="!code || status === 'loading'" v-e2e="'off-lookup'" @click.prevent="lookup">
+        <LoaderCircle v-if="status === 'loading'" class="h-4 w-4 animate-spin" />
+        <Search v-else class="h-4 w-4" />
+        Abrufen
+      </Button>
+    </div>
 
-    <slot />
+    <!-- Rückmeldung direkt am Feld statt globalem Fehler-Toast -->
+    <div v-if="status === 'found'" class="flex flex-wrap items-center justify-between gap-2 rounded-xl px-3 py-2 bg-recipe-basil-soft text-recipe-basil-fg text-sm">
+      <span class="inline-flex items-center gap-1.5"><CircleCheck class="h-4 w-4" /> Gefunden{{ product?.openFoodFactProduct?.brands ? `: ${product.openFoodFactProduct.brands}` : "" }}</span>
+      <slot />
+    </div>
+    <p v-else-if="status === 'notFound'" class="flex items-center gap-1.5 rounded-xl px-3 py-2 bg-recipe-mango-soft text-recipe-mango-fg text-sm">
+      <CircleHelp class="h-4 w-4 shrink-0" /> Nicht in OpenFoodFacts – Werte bitte selbst eintragen.
+    </p>
+    <p v-else-if="status === 'invalid'" class="flex items-center gap-1.5 rounded-xl px-3 py-2 bg-recipe-tomato-soft text-recipe-tomato-fg text-sm">
+      <CircleAlert class="h-4 w-4 shrink-0" /> Kein gültiger Barcode – bitte Ziffern prüfen (8, 12, 13 oder 14 Stellen).
+    </p>
+    <p v-else-if="status === 'error'" class="flex items-center gap-1.5 rounded-xl px-3 py-2 bg-recipe-tomato-soft text-recipe-tomato-fg text-sm">
+      <CircleAlert class="h-4 w-4 shrink-0" /> Abruf fehlgeschlagen – ist das Backend erreichbar?
+    </p>
   </div>
 </template>

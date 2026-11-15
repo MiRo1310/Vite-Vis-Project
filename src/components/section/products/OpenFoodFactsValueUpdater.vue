@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button } from "@/components/shared/button/button.variants";
-
 import { computed, watch } from "vue";
+import { ArrowDownToLine } from "@lucide/vue";
+import { Button } from "@/components/ui/button";
 import { type TForm } from "@/components/section/recipe-form";
 
-const props = defineProps<{ name: string; value?: string | number | boolean | null; unit?: string; form: TForm }>();
+const props = defineProps<{ name: string; label: string; value?: string | number | boolean | null; unit?: string; form: TForm }>();
 
 const addAll = defineModel<boolean>("addAll", { default: false });
 
@@ -27,12 +27,28 @@ const disabled = computed(() => {
 </script>
 
 <template>
-  <div class="flex gap-2">
-    <slot />
-
-    <div class="mt-3 flex items-center gap-2">
-      <Button @click.prevent="setValue" :disabled> Übernehmen </Button>
-      <div v-if="value" class="text-blue-400 whitespace-nowrap">{{ value }} {{ unit }}</div>
+  <div class="flex flex-col gap-2">
+    <!-- Überschrift gilt für Eingabe + Übernehmen-Button gemeinsam, damit alle Eingaben gleich breit sind -->
+    <div class="flex items-baseline justify-between gap-2 min-h-5">
+      <span class="text-sm font-medium leading-none">{{ label }}</span>
+      <span v-if="value" class="text-xs text-recipe-teal-fg whitespace-nowrap truncate" title="Wert von OpenFoodFacts">{{ value }} {{ unit }}</span>
+    </div>
+    <div class="flex items-start gap-1.5">
+      <div class="flex-1 min-w-0">
+        <slot />
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        class="shrink-0"
+        :disabled
+        :title="value ? `${value} ${unit ?? ''} übernehmen` : 'Kein Wert von OpenFoodFacts'"
+        aria-label="Wert übernehmen"
+        @click.prevent="setValue"
+      >
+        <ArrowDownToLine class="h-4 w-4" />
+      </Button>
     </div>
   </div>
 </template>
