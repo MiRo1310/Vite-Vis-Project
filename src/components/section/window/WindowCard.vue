@@ -27,7 +27,7 @@ const updateHandler = async (value: number | string | boolean, iValue?: IValueOf
 
     <div v-if="window.shutter">
       <p class="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">Rolladen</p>
-      <div :class="['grid gap-3', window.windows.length > 2 ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-2']">
+      <div :class="['grid gap-3 grid-cols-1 sm:grid-cols-2']">
         <div v-for="(w, i) in window.windows" :key="i" class="space-y-2 border rounded-md p-2">
           <p v-if="w.name" class="text-xs font-medium text-muted-foreground">{{ w.name }}</p>
           <div class="grid grid-cols-2 gap-2">
@@ -43,14 +43,14 @@ const updateHandler = async (value: number | string | boolean, iValue?: IValueOf
                 <Switch :model-value="w.shutterAutoDown?.val ?? false" @update:model-value="updateHandler($event, w.shutterAutoDown)" />
                 <span class="text-xs text-muted-foreground">Auto runter</span>
               </div>
-              <InputIobroker :state="w.shutterAutoDownDelay" unit="min" :ack="true" />
+              <InputIobroker :state="w.shutterAutoDownDelay" unit="min" :ack="true" class="w-24" />
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <Switch :model-value="w.shutterAutoUp?.val ?? false" @update:model-value="updateHandler($event, w.shutterAutoUp)" />
                 <span class="text-xs text-muted-foreground">Auto hoch</span>
               </div>
-              <InputIobroker :id="w.shutterAutoUpTime?.id" :state="w.shutterAutoUpTime" type="time" :ack="true" />
+              <InputIobroker :id="w.shutterAutoUpTime?.id" :state="w.shutterAutoUpTime" type="time" class="w-24" :ack="true" />
             </div>
           </div>
         </div>

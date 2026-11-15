@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import HeatingControlPeriodFirst from "./HeatingControlPeriodFirst.vue";
 import HeatingControlPeriodDay from "./HeatingControlPeriodDay.vue";
+import { screen } from "@/composables/screen.ts";
+
+const { isDesktop } = screen.value;
 
 const days = [
   { val: "Mon", label: "Montag", index: 0 },
@@ -13,8 +15,7 @@ const days = [
 ];
 </script>
 <template>
-  <div class="flex justify-between w-full gap-1 bg-cardSubcard/30 border mt-2">
-    <HeatingControlPeriodFirst />
-    <HeatingControlPeriodDay v-for="(day, index) in days" :key="index" :day="day" />
+  <div class="grid xl:grid-cols-7 md:grid-cols-4 grid-cols-1 w-full gap-2">
+    <HeatingControlPeriodDay v-for="(day, index) in days" :key="index" :day :showPeriod="isDesktop && index === 0 ? true : !isDesktop" />
   </div>
 </template>

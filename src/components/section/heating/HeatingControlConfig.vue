@@ -116,9 +116,7 @@ const rows = computed((): RowHeatingConfig[] => {
 });
 </script>
 <template>
-  <div class="bg-cardSubcard/30 border p-2">
-    <div v-for="(row, index) in rows" :key="index" class="flex items-center space-x-4">
-      <HeatingControlConfigRow :row="row" />
-    </div>
+  <div class="bg-cardSubcard/30 border p-2 flex flex-col gap-1">
+    <HeatingControlConfigRow v-for="(row, index) in rows" :key="index" :row="row" />
   </div>
 </template>

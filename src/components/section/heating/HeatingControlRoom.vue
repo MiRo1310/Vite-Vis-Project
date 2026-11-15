@@ -3,6 +3,7 @@ import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { Button } from "@/components/ui/button";
 import { computed } from "vue";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
+import { formatNumber } from "@/lib/number.ts";
 
 const { iobroker } = useIobrokerStore();
 
@@ -30,8 +31,8 @@ async function resetStatus() {
       <p class="flex">
         <span class="inline-block w-40"> Ventilstellung </span>
         <span class="flex flex-1 justify-between ml-4">
-          <span>{{ heatingControl.ventil1.val }} %</span>
-          <span v-if="heatingControl.ventil2.val !== -1">{{ heatingControl.ventil2.val }} %</span>
+          <span>{{ formatNumber(heatingControl.ventil1.val, 2) }} %</span>
+          <span v-if="heatingControl.ventil2.val !== -1">{{ formatNumber(heatingControl.ventil2.val, 2) }} %</span>
         </span>
       </p>
     </div>
