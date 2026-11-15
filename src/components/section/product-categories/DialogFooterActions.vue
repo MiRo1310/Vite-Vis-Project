@@ -20,7 +20,7 @@ const buttons = {
 
 <template>
   <div class="flex gap-4 justify-end">
-    <Button :variant @click="emit('update')" class="w-24">{{ buttons[namingButtons].action }}</Button>
-    <Button variant="default" @click="emit('close')" class="w-24">{{ buttons[namingButtons].close }}</Button>
+    <Button :variant @click="emit('update')" class="w-24" v-e2e="'btn-action'">{{ buttons[namingButtons].action }}</Button>
+    <Button variant="default" @click="emit('close')" class="w-24" v-e2e="'btn-close'">{{ buttons[namingButtons].close }}</Button>
   </div>
 </template>

@@ -23,5 +23,12 @@ const modelValue = defineModel<string>();
 </script>
 
 <template>
-  <FormSelect label="Wähle eine Beschreibung" name="descriptionHelper" :select-options="descriptionOptions" v-model="modelValue" class="w-48" />
+  <FormSelect
+    label="Wähle eine Beschreibung"
+    name="descriptionHelper"
+    e2e="description-select"
+    :select-options="descriptionOptions"
+    v-model="modelValue"
+    class="w-48"
+  />
 </template>

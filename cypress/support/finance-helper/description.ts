@@ -1,14 +1,19 @@
 import { dataSel } from "../utils.ts";
 import { routes } from "@/router/routes.ts";
 
-const addDescription = (description: string) => {
+const add = (description: string) => {
   cy.visit(routes.description.path);
   cy.getBySel("textarea-description").should("exist").type(description);
   cy.getBySel("button-add-description").should("exist").click();
 };
 
-const openEdit = (description: string) => {
+const edit = (description: string) => {
   cy.get("table").contains("code", description).closest("tr").find(dataSel("button-edit-description")).click();
+  return cy.get("[role='dialog']");
+};
+
+const remove = (description: string) => {
+  cy.get("table").contains("code", description).closest("tr").find(dataSel("button-remove-description")).click();
   return cy.get("[role='dialog']");
 };
 
@@ -32,4 +37,4 @@ const getDialogButtons = (alias: string) => {
   };
 };
 
-export const description = { getDialogButtons, validateDescription, updateDescription, openEdit, addDescription };
+export const description = { getDialogButtons, validateDescription, updateDescription, edit, add, remove };
