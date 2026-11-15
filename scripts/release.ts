@@ -1,5 +1,5 @@
 import fs from "fs";
-import { copyDataToRemote, ensureCleanWorktree, rollbackRelease, run } from "./utils";
+import { copyDataToRemote, ensureCleanWorktree, rollbackRelease, run } from "./utils.ts";
 
 ensureCleanWorktree();
 
