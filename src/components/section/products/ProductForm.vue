@@ -22,8 +22,11 @@ import { type TProduct } from "@/components/section/products/index.ts";
 import { Barcode, Layers, Salad } from "@lucide/vue";
 import { nutrientAccent, recipeAccentClasses } from "@/constants/recipe.ts";
 
-/** `initialName`: Vorbelegung beim Anlegen, z. B. aus der Produktsuche im Rezept-Editor */
-const props = defineProps<{ data?: GetProductByIdQuery["product"]; initialName?: string }>();
+/**
+ * `initialName`: Vorbelegung beim Anlegen, z. B. aus der Produktsuche im Rezept-Editor.
+ * `initialEan`: gescannte EAN – wird eingetragen und sofort bei OpenFoodFacts nachgeschlagen.
+ */
+const props = defineProps<{ data?: GetProductByIdQuery["product"]; initialName?: string; initialEan?: string }>();
 
 const { getOptions } = useUnits();
 const { toast } = useToast();
@@ -85,7 +88,7 @@ const form = useForm({
     salt: props.data?.salt,
     protein: props.data?.protein,
     sugar: props.data?.sugar,
-    ean: props.data?.ean,
+    ean: props.data?.ean ?? props.initialEan,
     productUnits:
       props.data?.productUnits.map((u) => ({
         amount: u.amount ?? 0,
@@ -208,7 +211,7 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             <p class="text-xs text-muted-foreground">Nährwerte automatisch von OpenFoodFacts holen</p>
           </div>
         </div>
-        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean="data?.ean">
+        <OpenFoodFactsProduct v-model:model-value="openFoodFactsProduct" :ean="data?.ean ?? initialEan" :auto-lookup="!data && !!initialEan">
           <Button @click.prevent="addAllValuesToForm = true">Alles übernehmen</Button>
         </OpenFoodFactsProduct>
         <OpenFoodFactsValueUpdater label="EAN" :value="openFoodFactsProduct?.code" name="ean" :form v-model:add-all="addAllValuesToForm">

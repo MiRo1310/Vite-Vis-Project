@@ -9,9 +9,11 @@ import { InputShadcn } from "@/components/ui/input";
 import EmptyState from "@/components/shared/recipe/EmptyState.vue";
 import ProductCard from "@/components/section/products/ProductCard.vue";
 import ProductEditorSheet from "@/components/section/products/ProductEditorSheet.vue";
+import BarcodeScanButton from "@/components/shared/barcode/BarcodeScanButton.vue";
+import { useToast } from "@/components/ui/toast/use-toast";
 import { useUnits } from "@/composables/querys/units.ts";
 import { useProductCategories } from "@/composables/querys/productCategories.ts";
-import { filterProductGroups } from "@/lib/product.ts";
+import { filterProductGroups, findProductByEan } from "@/lib/product.ts";
 import { getCategoryColor } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
 
@@ -78,10 +80,25 @@ const resetFilter = () => {
 // --- Bearbeiten / Anlegen ---
 const editorOpen = ref(false);
 const editProductId = ref<string | null>(null);
+const newProductEan = ref<string | undefined>(undefined);
 
-const openEditor = (productId: string | null) => {
+const openEditor = (productId: string | null, ean?: string) => {
   editProductId.value = productId;
+  newProductEan.value = ean;
   editorOpen.value = true;
+};
+
+const { toast } = useToast();
+
+/** Gescannt: vorhandenes Produkt öffnen statt doppelt anlegen, sonst neues Produkt mit dieser EAN */
+const onScanned = (ean: string) => {
+  const existing = findProductByEan(allGroups.value, ean);
+  if (existing) {
+    toast({ title: "Schon vorhanden", description: existing.name });
+    openEditor(existing.id);
+    return;
+  }
+  openEditor(null, ean);
 };
 
 onMounted(() => {
@@ -100,6 +117,7 @@ onMounted(() => {
         <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
         <InputShadcn v-model="search" type="text" placeholder="Produkt oder EAN suchen" class="h-11 rounded-full pl-10 text-base md:text-sm" e2e="products-search" />
       </div>
+      <BarcodeScanButton class="h-11 rounded-full px-4" @detected="onScanned" />
       <Button class="h-11 rounded-full px-4 shrink-0" :class="recipeAccentClasses.basil.solid" v-e2e="'products-add'" @click="openEditor(null)">
         <Plus class="h-4 w-4" />
         <span class="hidden sm:inline">Neues Produkt</span>
@@ -159,6 +177,6 @@ onMounted(() => {
       </EmptyState>
     </div>
 
-    <ProductEditorSheet v-model:open="editorOpen" :product-id="editProductId" />
+    <ProductEditorSheet v-model:open="editorOpen" :product-id="editProductId" :initial-ean="newProductEan" />
   </div>
 </template>
