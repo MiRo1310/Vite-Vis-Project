@@ -3,7 +3,7 @@ import { computed, ref, useTemplateRef } from "vue";
 import { ArrowDown, ArrowUp, MoreVertical, Plus, Trash2 } from "@lucide/vue";
 import { Button } from "@/components/ui/button";
 import { InputShadcn } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuIconItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import DialogConfirm from "@/components/shared/dialog/DialogConfirm.vue";
 import IngredientRow from "@/components/section/recipe-editor/IngredientRow.vue";
 import { type EditorProduct, useRecipeEditor } from "@/composables/recipeEditor.ts";
@@ -63,12 +63,10 @@ const setTitle = (value: string | number | undefined) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" class="w-52">
-          <DropdownMenuItem :disabled="index === 0" @select="editor.moveGroup(index, index - 1)"><ArrowUp class="h-4 w-4" /> Gruppe nach oben</DropdownMenuItem>
-          <DropdownMenuItem :disabled="index >= groupCount - 1" @select="editor.moveGroup(index, index + 1)">
-            <ArrowDown class="h-4 w-4" /> Gruppe nach unten
-          </DropdownMenuItem>
+          <DropdownMenuIconItem :icon="ArrowUp" :disabled="index === 0" @select="editor.moveGroup(index, index - 1)">Gruppe nach oben</DropdownMenuIconItem>
+          <DropdownMenuIconItem :icon="ArrowDown" :disabled="index >= groupCount - 1" @select="editor.moveGroup(index, index + 1)">Gruppe nach unten</DropdownMenuIconItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem class="text-destructive focus:text-destructive" @select="requestRemove"><Trash2 class="h-4 w-4" /> Gruppe löschen</DropdownMenuItem>
+          <DropdownMenuIconItem :icon="Trash2" variant="destructive" @select="requestRemove">Gruppe löschen</DropdownMenuIconItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
