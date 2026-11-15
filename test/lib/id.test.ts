@@ -17,7 +17,15 @@ describe("createId", () => {
     expect(firstId).not.toBe(secondId);
   });
 
-  it("returns a unique fallback id outside a secure context", async () => {
+  it("builds a uuid v4 from getRandomValues outside a secure context (http://<IP>)", () => {
+    const realCrypto = globalThis.crypto;
+    vi.stubGlobal("crypto", { getRandomValues: (array: Uint8Array<ArrayBuffer>) => realCrypto.getRandomValues(array) });
+    const ids = Array.from({ length: 50 }, () => createId());
+    ids.forEach((id) => expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("returns a unique fallback id without any crypto functions", async () => {
     vi.stubGlobal("crypto", {});
     const firstId = createId();
     await wait(1);
