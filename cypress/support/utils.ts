@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { routes } from "@/router/routes.ts";
 
 /**
  * Builds a CSS selector for elements tagged with a `data-e2e` attribute.
@@ -51,23 +50,6 @@ export const getFakerStreet = () => `${faker.location.street()} ${faker.location
  * @returns City like `"12345 Berlin"`.
  */
 export const getFakerCity = () => `${faker.location.zipCode()} ${faker.location.city()}`;
-
-/**
- * Creates a new address via the address form and waits until it appears in the table.
- * Navigates to the addresses page, so call `cy.visit()` afterwards to return to the page under test.
- *
- * @param name - Name of the address entry (should be unique, e.g. via faker).
- * @param street - Street with house number.
- * @param city - Zip code with city.
- */
-export const addAddress = (name: string, street: string, city: string) => {
-  cy.visit(routes.addresses.path);
-  cy.getBySel("address-name").should("exist").type(name);
-  cy.getBySel("address-street").should("exist").type(street);
-  cy.getBySel("address-city").should("exist").type(city);
-  cy.getBySel("address-submit").should("exist").click();
-  cy.contains("td", name).should("exist");
-};
 
 /**
  * Stubs the response of a GraphQL operation with a GraphQL error, so the request never reaches the backend.
