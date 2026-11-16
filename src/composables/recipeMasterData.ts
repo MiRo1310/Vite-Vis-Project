@@ -5,6 +5,10 @@ import { refetchQueryUnits, useUnits } from "@/composables/querys/units.ts";
 import { refetchQueryProductCategories, useProductCategories } from "@/composables/querys/productCategories.ts";
 import { useRecipeCategories } from "@/composables/querys/recipeCategories.ts";
 import { filterNewNames } from "@/lib/recipe.ts";
+import { type ApolloOperationContext } from "@/apolloClient.ts";
+
+/** Fehler zeigt `InlineEditList` selbst an (z. B. „Kategorie wird schon genutzt“), daher kein globaler Toast */
+const silentContext: ApolloOperationContext = { silentErrors: true };
 
 export interface MasterDataItem {
   id: string;
@@ -15,7 +19,7 @@ export interface MasterDataItem {
 export interface MasterDataCrud {
   items: ComputedRef<MasterDataItem[]>;
   loading: Ref<boolean>;
-  /** Legt alle Namen an, die es noch nicht gibt (Groß-/Kleinschreibung egal). */
+  /** Legt alle Namen an, die es noch nicht gibt (Groß-/Kleinschreibung egal). Alle Methoden werfen bei Serverfehlern. */
   add: (names: string[]) => Promise<void>;
   rename: (id: string, name: string) => Promise<void>;
   remove: (id: string) => Promise<void>;
@@ -115,7 +119,7 @@ const removeProductCategoryMutation = graphql(`
 
 export const useUnitsCrud = (): MasterDataCrud => {
   const { result, loading } = useUnits();
-  const options = { refetchQueries: [refetchQueryUnits], awaitRefetchQueries: true };
+  const options = { refetchQueries: [refetchQueryUnits], awaitRefetchQueries: true, context: silentContext };
   const { mutate: create } = useMutation(createUnitMutation, options);
   const { mutate: update } = useMutation(updateUnitMutation, options);
   const { mutate: remove } = useMutation(deleteUnitMutation, options);
@@ -133,7 +137,7 @@ export const useUnitsCrud = (): MasterDataCrud => {
 
 export const useRecipeCategoriesCrud = (): MasterDataCrud => {
   const { result, loading } = useRecipeCategories();
-  const options = { refetchQueries: ["recipeCategories"], awaitRefetchQueries: true };
+  const options = { refetchQueries: ["recipeCategories"], awaitRefetchQueries: true, context: silentContext };
   const { mutate: create } = useMutation(createRecipeCategoryMutation, options);
   const { mutate: update } = useMutation(updateRecipeCategoryMutation, options);
   const { mutate: remove } = useMutation(removeRecipeCategoryMutation, options);
@@ -151,7 +155,7 @@ export const useRecipeCategoriesCrud = (): MasterDataCrud => {
 
 export const useProductCategoriesCrud = (): MasterDataCrud => {
   const { result, loading } = useProductCategories();
-  const options = { refetchQueries: [refetchQueryProductCategories], awaitRefetchQueries: true };
+  const options = { refetchQueries: [refetchQueryProductCategories], awaitRefetchQueries: true, context: silentContext };
   const { mutate: create } = useMutation(createProductCategoryMutation, options);
   const { mutate: update } = useMutation(updateProductCategoryMutation, options);
   const { mutate: remove } = useMutation(removeProductCategoryMutation, options);

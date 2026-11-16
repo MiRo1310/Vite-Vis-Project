@@ -8,6 +8,9 @@ import EmptyState from "@/components/shared/recipe/EmptyState.vue";
 import { type MasterDataCrud, type MasterDataItem } from "@/composables/recipeMasterData.ts";
 import { filterNewNames, getCategoryColor, parseNameList } from "@/lib/recipe.ts";
 import { removeMultipleSpaces } from "@/lib/string.ts";
+import { getUserErrorMessage } from "@/lib/error.ts";
+import { useToast } from "@/components/ui/toast/use-toast";
+import { Logger } from "@/lib/logger.ts";
 import { recipeAccentClasses, type RecipeAccentKey } from "@/constants/recipe.ts";
 
 const props = withDefaults(
@@ -28,6 +31,14 @@ const props = withDefaults(
 );
 
 const items = computed(() => props.crud.items.value);
+
+const { toast } = useToast();
+
+/** Serverfehler (z. B. „Kategorie wird schon genutzt“) als Hinweis zeigen statt die Seite abstürzen zu lassen */
+const showError = (title: string, error: unknown) => {
+  Logger.error(title, error);
+  toast({ title, description: getUserErrorMessage(error, "Bitte versuch es noch einmal."), variant: "destructive" });
+};
 
 // --- Anlegen ---
 const newInput = ref("");
@@ -56,6 +67,8 @@ const add = async () => {
     setTimeout(() => {
       recentlyAdded.value = new Set();
     }, 1800);
+  } catch (error) {
+    showError(`${props.itemsLabel} konnten nicht angelegt werden`, error);
   } finally {
     saving.value = false;
   }
@@ -91,8 +104,12 @@ const saveEdit = async (item: MasterDataItem) => {
     cancelEdit();
     return;
   }
-  await props.crud.rename(item.id, name);
-  cancelEdit();
+  try {
+    await props.crud.rename(item.id, name);
+    cancelEdit();
+  } catch (error) {
+    showError(`„${item.name}“ konnte nicht umbenannt werden`, error);
+  }
 };
 
 // --- Löschen ---
@@ -111,7 +128,11 @@ const confirmDelete = async () => {
   if (!target) {
     return;
   }
-  await props.crud.remove(target.id);
+  try {
+    await props.crud.remove(target.id);
+  } catch (error) {
+    showError(`„${target.name}“ kann nicht gelöscht werden`, error);
+  }
 };
 
 const colorOf = (item: MasterDataItem): RecipeAccentKey => (props.colorByName ? getCategoryColor(item.name) : props.accent);

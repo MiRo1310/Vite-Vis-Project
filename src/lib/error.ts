@@ -92,3 +92,36 @@ export function isOpaqueScriptError(message: string, error: unknown, filename?: 
 export function isChunkLoadError(error?: string): boolean {
   return ["'text/html' is not a valid JavaScript MIME type", "Failed to fetch dynamically imported module"].some((e) => error?.includes(e));
 }
+
+type GraphQlErrorLike = { graphQLErrors?: unknown; networkError?: unknown; message?: unknown };
+
+/**
+ * Lesbare Meldung für Nutzer aus einem Fehler einer GraphQL-Operation (ApolloError) oder einem beliebigen Fehler.
+ * Bevorzugt die Meldung des Servers (z. B. „Kategorie wird schon genutzt …“), ohne Präfix wie „ApolloError:“.
+ *
+ * @param err - Geworfener Wert.
+ * @param fallback - Text, wenn sich nichts Sinnvolles ableiten lässt.
+ * @returns Meldung für Toast oder Hinweis.
+ */
+export function getUserErrorMessage(err: unknown, fallback: string): string {
+  if (!err || typeof err !== "object") {
+    return nonEmptyText(err) ?? fallback;
+  }
+  const obj = err as GraphQlErrorLike;
+  const serverMessage = Array.isArray(obj.graphQLErrors) ? nonEmptyText((obj.graphQLErrors[0] as { message?: unknown } | null)?.message) : null;
+  if (serverMessage) {
+    return serverMessage;
+  }
+  if (obj.networkError) {
+    return "Der Server ist gerade nicht erreichbar.";
+  }
+  return nonEmptyText(obj.message) ?? fallback;
+}
+
+/** Getrimmter Text, `null` bei leerem Text oder Nicht-Strings. */
+const nonEmptyText = (value: unknown): string | null => {
+  if (typeof value !== "string" || !value.trim()) {
+    return null;
+  }
+  return value.trim();
+};
