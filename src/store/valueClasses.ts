@@ -97,7 +97,11 @@ export abstract class BaseValue<T> implements IValueOf<T> {
     this.NotificationOnChange?.update(this.val);
   }
 
-  public update = ({ val, ack, ts, lc, q, from }: IobrokerState): void => {
+  public update = (obj?: IobrokerState): void => {
+    if (!obj) {
+      return;
+    }
+    const { val, ack, ts, lc, q, from } = obj;
     this.val = val as T;
     this._ackRef.value = ack;
     this._ts = ts;

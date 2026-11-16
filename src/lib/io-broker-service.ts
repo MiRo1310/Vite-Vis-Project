@@ -6,7 +6,7 @@ import { Logger } from "@/lib/logger.ts";
 
 interface SubscriberValue {
   id: string;
-  cb: (state: IobrokerState) => void;
+  cb: (state?: IobrokerState) => void;
   done?: boolean;
 }
 
