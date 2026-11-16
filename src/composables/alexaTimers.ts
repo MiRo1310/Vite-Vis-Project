@@ -6,7 +6,7 @@ import { ALEXA_TIMER_SLOTS } from "@/constants/timer.ts";
 
 /**
  * Laufende Alexa-Timer aus alexa-timer-vis (reaktiv) und Stoppen per `timerN.Reset`.
- * Feste Slots: `ALEXA_TIMER_SLOTS` (1–6).
+ * Alle Slots `ALEXA_TIMER_SLOTS` (1–6), angezeigt werden nur laufende. Die Startseite nutzt nur 1–4 (`ALEXA_TIMER_DASHBOARD_SLOTS`).
  */
 export const useAlexaTimers = () => {
   const { iobroker } = useIobrokerStore();
