@@ -6,6 +6,7 @@ import RecipeIngredientNutrients from "@/components/section/recipe/RecipeIngredi
 import { type RecipeDetails, type RecipeIngredient } from "@/composables/querys/recipeDetails.ts";
 import { formatScaledAmount, groupIngredientsByGroupPosition, ingredientKey, scaleAmount } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
+import { shoppingListMatchKey } from "@/lib/shopping-list.ts";
 
 const props = withDefaults(
   defineProps<{
@@ -14,7 +15,7 @@ const props = withDefaults(
     portions: number;
     /** Nährwerte je Zutat aufklappbar (im Kochmodus aus) */
     showNutrients?: boolean;
-    /** Produktnamen, die schon auf der Einkaufsliste stehen */
+    /** Suchtexte (`shoppingListMatchKey`) der Zutaten, die schon auf der Einkaufsliste stehen */
     onShoppingList?: ReadonlySet<string>;
   }>(),
   { showNutrients: true, onShoppingList: () => new Set<string>() },
@@ -73,7 +74,7 @@ const kcalText = (ingredient: RecipeIngredient) => {
               <span v-if="amountText(ingredient)" :class="['font-semibold mr-1.5 tabular-nums', recipeAccentClasses.primary.text]">{{ amountText(ingredient) }}</span>
               <span class="font-medium">{{ ingredient.product?.name }}</span>
               <ShoppingBasket
-                v-if="ingredient.product && onShoppingList.has(ingredient.product.name)"
+                v-if="ingredient.product && onShoppingList.has(shoppingListMatchKey(ingredient.product.name, ingredient.unit))"
                 class="inline h-3.5 w-3.5 ml-1.5 -mt-0.5 text-recipe-teal-fg"
                 aria-label="steht auf der Einkaufsliste"
               />

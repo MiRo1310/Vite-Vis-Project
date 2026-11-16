@@ -54,7 +54,7 @@ const shoppingOpen = ref(false);
 const { names: shoppingListNames } = useShoppingListEntries();
 const onShoppingList = computed(() =>
   matchIngredientsWithShoppingList(
-    (recipe.value?.recipeProducts ?? []).map((ingredient) => ingredient.product?.name ?? ""),
+    (recipe.value?.recipeProducts ?? []).map((ingredient) => ({ name: ingredient.product?.name ?? "", unit: ingredient.unit })),
     shoppingListNames.value,
   ),
 );

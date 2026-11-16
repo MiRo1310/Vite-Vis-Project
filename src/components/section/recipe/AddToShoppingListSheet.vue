@@ -8,7 +8,13 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { useToast } from "@/components/ui/toast/use-toast";
 import { type RecipeDetails } from "@/composables/querys/recipeDetails.ts";
 import { useShoppingListEntries, useShoppingListSink } from "@/composables/shoppingList.ts";
-import { formatShoppingItem, ingredientsToShoppingItems, matchIngredientsWithShoppingList, ShoppingListNotConnectedError } from "@/lib/shopping-list.ts";
+import {
+  formatShoppingItem,
+  ingredientsToShoppingItems,
+  matchIngredientsWithShoppingList,
+  type ShoppingListItem,
+  shoppingListMatchKey,
+} from "@/lib/shopping-list.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
 import { Logger } from "@/lib/logger.ts";
 
@@ -21,12 +27,9 @@ const { names: listNames } = useShoppingListEntries();
 const isDesktop = useMediaQuery("(min-width: 768px)");
 
 const items = computed(() => ingredientsToShoppingItems(props.recipe.recipeProducts, props.recipe.portions, props.portions, props.recipe.id));
-const onList = computed(() =>
-  matchIngredientsWithShoppingList(
-    items.value.map((item) => item.name),
-    listNames.value,
-  ),
-);
+const onList = computed(() => matchIngredientsWithShoppingList(items.value, listNames.value));
+
+const isOnList = (item: ShoppingListItem) => onList.value.has(shoppingListMatchKey(item.name, item.unit));
 
 const selected = ref<Set<number>>(new Set());
 const sending = ref(false);
@@ -36,7 +39,7 @@ watch(open, (isOpen) => {
   if (!isOpen) {
     return;
   }
-  selected.value = new Set(items.value.map((_, index) => index).filter((index) => !onList.value.has(items.value[index].name)));
+  selected.value = new Set(items.value.map((_, index) => index).filter((index) => !isOnList(items.value[index])));
 });
 
 const toggle = (index: number) => {
@@ -62,13 +65,12 @@ const submit = async () => {
   sending.value = true;
   try {
     await sink.add(chosen);
-    toast({ title: "Auf die Einkaufsliste gesetzt", description: `${chosen.length} ${chosen.length === 1 ? "Zutat" : "Zutaten"} aus „${props.recipe.name}“` });
+    toast({
+      title: "Auf die Einkaufsliste gesetzt",
+      description: `${chosen.length} ${chosen.length === 1 ? "Zutat" : "Zutaten"} aus „${props.recipe.name}“`,
+    });
     open.value = false;
   } catch (e) {
-    if (e instanceof ShoppingListNotConnectedError) {
-      toast({ title: "Noch nicht angebunden", description: "Die Einkaufsliste ist noch nicht mit Alexa verbunden." });
-      return;
-    }
     Logger.error("Einkaufsliste: Hinzufügen fehlgeschlagen", e);
     toast({ title: "Hat nicht geklappt", description: "Die Zutaten konnten nicht übertragen werden.", variant: "destructive" });
   } finally {
@@ -107,7 +109,10 @@ const submit = async () => {
               @update:model-value="toggle(index)"
             />
             <label :for="`shopping-${index}`" class="flex-1 min-w-0 cursor-pointer select-none py-2">{{ formatShoppingItem(item) }}</label>
-            <span v-if="onList.has(item.name)" :class="['rounded-full px-2 h-6 inline-flex items-center text-xs font-medium shrink-0', recipeAccentClasses.teal.soft]">
+            <span
+              v-if="isOnList(item)"
+              :class="['rounded-full px-2 h-6 inline-flex items-center text-xs font-medium shrink-0', recipeAccentClasses.teal.soft]"
+            >
               schon drauf
             </span>
           </li>

@@ -749,6 +749,9 @@ export const iobrokerTree = {
     shoppingListActive: new JsonValue<AlexaList[]>("alexa-shoppinglist.0.list_activ"),
     michaelsTodoList: new JsonValue<AlexaList[]>("alexa-shoppinglist.1.list_activ"),
   },
+  alexa: {
+    addNewShoppingListItem: new StringValue("alexa2.0.Lists.SHOP.#New"),
+  },
   time: {
     sonnenuntergang: new BooleanValue("0_userdata.0.Rolladen.Zeit_Rollade_auto_herunter"),
   },
