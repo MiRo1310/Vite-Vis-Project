@@ -5,3 +5,6 @@
 export const ALEXA_TIMER_SLOTS = [1, 2, 3, 4, 5, 6] as const;
 
 export type AlexaTimerSlot = (typeof ALEXA_TIMER_SLOTS)[number];
+
+/** Slots auf der allgemeinen Startseite (Timer-Kacheln + Timer-Overlay). Die Rezept-App nutzt alle `ALEXA_TIMER_SLOTS`. */
+export const ALEXA_TIMER_DASHBOARD_SLOTS = [1, 2, 3, 4] as const satisfies readonly AlexaTimerSlot[];

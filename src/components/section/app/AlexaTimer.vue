@@ -6,7 +6,7 @@ import { useAppStore } from "@/store/app-store.js";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { computed } from "vue";
-import { ALEXA_TIMER_SLOTS, type AlexaTimerSlot } from "@/constants/timer.ts";
+import { ALEXA_TIMER_DASHBOARD_SLOTS, type AlexaTimerSlot } from "@/constants/timer.ts";
 import TextSeparator from "@/components/shared/text/TextSeparator.vue";
 
 const appStore = useAppStore();
@@ -44,7 +44,7 @@ const timerLabel = computed(() => (i: AlexaTimerSlot): string => {
       <p>Alexa Timer</p>
     </CardHeader>
     <CardContent class="grid grid-cols-2 gap-6">
-      <div v-for="i of ALEXA_TIMER_SLOTS" :key="i" class="col-span-2 lg:col-span-1 relative bg-background/70 p-2 shadow-lg rounded-md">
+      <div v-for="i of ALEXA_TIMER_DASHBOARD_SLOTS" :key="i" class="col-span-2 lg:col-span-1 relative bg-background/70 p-2 shadow-lg rounded-md">
         <div class="w-full">
           <div class="flex justify-between items-center mb-2">
             <h1 class="text-xl text-gray-500 flex justify-between mr-10 flex-wrap gap-x-4">
