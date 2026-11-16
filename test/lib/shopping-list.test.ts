@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatShoppingItem, ingredientsToShoppingItems, matchIngredientsWithShoppingList, ShoppingListNotConnectedError } from "@/lib/shopping-list.ts";
+import { formatShoppingItem, ingredientsToShoppingItems, matchIngredientsWithShoppingList, shoppingListMatchKey } from "@/lib/shopping-list.ts";
 
 describe("ingredientsToShoppingItems", () => {
   const ingredients = [
@@ -55,33 +55,52 @@ describe("formatShoppingItem", () => {
   });
 });
 
-describe("matchIngredientsWithShoppingList", () => {
-  it("matches case-insensitive and ignores extra whitespace", () => {
-    expect([...matchIngredientsWithShoppingList(["Mehl", "Ei"], ["  MEHL "])]).toEqual(["Mehl"]);
+describe("shoppingListMatchKey", () => {
+  it("returns the normalized name for measure units", () => {
+    expect(shoppingListMatchKey(" Mehl ", "g")).toBe("mehl");
+    expect(shoppingListMatchKey("Salz", null)).toBe("salz");
   });
 
-  it("matches list entries that contain the name as a whole word", () => {
-    expect([...matchIngredientsWithShoppingList(["Mehl", "Ei"], ["250 g Mehl", "Eier"])]).toEqual(["Mehl"]);
+  it("puts package units in front of the name", () => {
+    expect(shoppingListMatchKey("Ketchup", "Flasche")).toBe("flasche ketchup");
+    expect(shoppingListMatchKey("Tomaten", " Dosen ")).toBe("dosen tomaten");
   });
 
-  it("does not match parts of other words", () => {
-    expect(matchIngredientsWithShoppingList(["Mehl"], ["Mehlschwitze"]).size).toBe(0);
-  });
-
-  it("handles umlauts and special characters in names", () => {
-    expect(matchIngredientsWithShoppingList(["Möhre", "Salz (grob)"], ["2 Möhre", "salz (grob)"]).size).toBe(2);
-    expect(matchIngredientsWithShoppingList(["Möhre"], ["Möhren"]).size).toBe(0);
-  });
-
-  it("returns nothing for an empty list", () => {
-    expect(matchIngredientsWithShoppingList(["Mehl"], []).size).toBe(0);
+  it("returns an empty key without a name", () => {
+    expect(shoppingListMatchKey("  ", "Flasche")).toBe("");
   });
 });
 
-describe("ShoppingListNotConnectedError", () => {
-  it("has a readable name and message", () => {
-    const error = new ShoppingListNotConnectedError();
-    expect(error).toBeInstanceOf(Error);
-    expect(error.name).toBe("ShoppingListNotConnectedError");
+describe("matchIngredientsWithShoppingList", () => {
+  const names = (...list: string[]) => list.map((name) => ({ name }));
+
+  it("matches case-insensitive and ignores extra whitespace", () => {
+    expect([...matchIngredientsWithShoppingList(names("Mehl", "Ei"), ["  MEHL "])]).toEqual(["mehl"]);
+  });
+
+  it("matches list entries that contain the whole name", () => {
+    expect([...matchIngredientsWithShoppingList(names("Mehl", "Ei"), ["250 g Mehl", "Eier"])]).toEqual(["mehl", "ei"]);
+  });
+
+  it("does not match when the list entry contains only part of the name", () => {
+    expect(matchIngredientsWithShoppingList(names("Mehl", "Möhren"), ["Meh", "Möhre"]).size).toBe(0);
+  });
+
+  it("handles umlauts and special characters in names", () => {
+    expect(matchIngredientsWithShoppingList(names("Möhre", "Salz (grob)"), ["2 Möhre", "salz (grob)"]).size).toBe(2);
+  });
+
+  it("ignores measure units", () => {
+    expect([...matchIngredientsWithShoppingList([{ name: "Mehl", unit: "g" }], ["Mehl"])]).toEqual(["mehl"]);
+  });
+
+  it("requires package units on the list", () => {
+    const ingredients = [{ name: "Ketchup" }, { name: "Ketchup", unit: "Flasche" }];
+    expect([...matchIngredientsWithShoppingList(ingredients, ["Ketchup"])]).toEqual(["ketchup"]);
+    expect([...matchIngredientsWithShoppingList(ingredients, ["1 Flasche Ketchup"])]).toEqual(["ketchup", "flasche ketchup"]);
+  });
+
+  it("returns nothing for an empty list", () => {
+    expect(matchIngredientsWithShoppingList(names("Mehl"), []).size).toBe(0);
   });
 });

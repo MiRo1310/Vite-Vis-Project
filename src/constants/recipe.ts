@@ -143,3 +143,36 @@ export const recipeTimeFilters = [15, 30, 60] as const;
 
 /** Schnellfilter in der Rezeptliste: maximale Kalorien pro Portion. */
 export const recipeKcalFilters = [300, 500, 800] as const;
+
+/**
+ * Verpackungs-Einheiten (kleingeschrieben, Einzahl und Mehrzahl). Bei ihnen gehört die Einheit
+ * zum Einkaufslisten-Abgleich dazu: „1 Flasche Ketchup“ ist nicht dasselbe wie „Ketchup“.
+ * Maßeinheiten wie g, ml oder EL zählen nicht.
+ */
+export const packageUnits: ReadonlySet<string> = new Set([
+  "becher",
+  "beutel",
+  "dose",
+  "dosen",
+  "flasche",
+  "flaschen",
+  "glas",
+  "gläser",
+  "kasten",
+  "kästen",
+  "netz",
+  "netze",
+  "packung",
+  "packungen",
+  "pck",
+  "pck.",
+  "päckchen",
+  "schale",
+  "schalen",
+  "tafel",
+  "tafeln",
+  "tube",
+  "tuben",
+  "tüte",
+  "tüten",
+]);

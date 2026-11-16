@@ -2,24 +2,25 @@ import { computed } from "vue";
 import { useIobrokerStore } from "@/store/ioBrokerStore.ts";
 import { ioBrokerService } from "@/lib/io-broker-service.ts";
 import { type AlexaList } from "@/types/types.ts";
-import { type ShoppingListItem, type ShoppingListSink, ShoppingListNotConnectedError } from "@/lib/shopping-list.ts";
+import { formatShoppingItem, type ShoppingListItem, type ShoppingListSink } from "@/lib/shopping-list.ts";
+import { wait } from "@/lib/time.ts";
 
 /**
  * Einkaufsliste über ioBroker (alexa-shoppinglist).
- *
- * TODO(Nutzer): Anbindung einrichten.
- * 1. `isConnected` auf `true` setzen – dann zeigt die App keinen „Noch nicht angebunden“-Hinweis mehr.
- * 2. `add` umsetzen: Einträge an ioBroker schreiben. Den Text pro Eintrag liefert `formatShoppingItem(item)`
- *    aus `@/lib/shopping-list.ts` (z. B. „250 g Mehl“). Die Verbindung gibt es über
- *    `ioBrokerService.connection` (`@/lib/io-broker-service.ts`), geschrieben wird mit
- *    `await connection.setState("<State-ID>", text)`.
- *    State-ID und Format (ein Eintrag pro Schreibvorgang?) bitte im ioBroker-Admin prüfen.
- *    Achtung: Schreiben auf nicht vorhandene States schlägt still fehl.
- * 3. Bei Fehlern werfen – die Oberfläche zeigt dann einen Fehler-Toast.
  */
 const ioBrokerShoppingListSink: ShoppingListSink = {
-  isConnected: false,
-  add: (_items: ShoppingListItem[]): Promise<void> => Promise.reject(new ShoppingListNotConnectedError()),
+  isConnected: true,
+  add: async (items: ShoppingListItem[]): Promise<void> => {
+    const { iobroker } = useIobrokerStore();
+    const state = iobroker.alexa.addNewShoppingListItem;
+    for (const [index, item] of items.entries()) {
+      state.setState(formatShoppingItem(item), false);
+
+      if (index !== items.length - 1) {
+        await wait(500);
+      }
+    }
+  },
 };
 
 /** Ziel für neue Einkaufslisten-Einträge. */

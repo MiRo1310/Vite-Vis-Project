@@ -1,4 +1,5 @@
 import { formatAmount, scaleAmount } from "@/lib/recipe.ts";
+import { packageUnits } from "@/constants/recipe.ts";
 
 /** Ein Eintrag, der auf die Einkaufsliste soll. */
 export interface ShoppingListItem {
@@ -16,13 +17,6 @@ export interface ShoppingListSink {
   /** `false`, solange die Anbindung noch nicht eingerichtet ist */
   readonly isConnected: boolean;
   add(items: ShoppingListItem[]): Promise<void>;
-}
-
-export class ShoppingListNotConnectedError extends Error {
-  constructor() {
-    super("Die Einkaufsliste ist noch nicht angebunden");
-    this.name = "ShoppingListNotConnectedError";
-  }
 }
 
 interface IngredientLike {
@@ -97,31 +91,52 @@ export function formatShoppingItem(item: ShoppingListItem): string {
 
 const normalizeName = (name: string): string => name.trim().toLowerCase().replace(/\s+/g, " ");
 
-const escapeRegExp = (text: string): string => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/**
+ * Text, nach dem eine Zutat auf der Einkaufsliste gesucht wird: der Produktname, bei
+ * Verpackungs-Einheiten (`packageUnits`) mit der Einheit davor. Kleingeschrieben.
+ *
+ * @param name - Produktname.
+ * @param unit - Einheit der Zutat.
+ * @returns z. B. `"flasche ketchup"` für Flasche/Ketchup, `"mehl"` für g/Mehl, `""` ohne Namen.
+ */
+export function shoppingListMatchKey(name: string, unit?: string | null): string {
+  const normalized = normalizeName(name);
+  if (!normalized) {
+    return "";
+  }
+  const normalizedUnit = normalizeName(unit ?? "");
+  if (packageUnits.has(normalizedUnit)) {
+    return `${normalizedUnit} ${normalized}`;
+  }
+  return normalized;
+}
 
 /**
- * Prüft, welche Produktnamen schon auf der Einkaufsliste stehen.
- * Ohne Groß-/Kleinschreibung; ein Listeneintrag passt, wenn er dem Namen entspricht oder ihn
- * als ganzes Wort enthält („250 g Mehl“ passt zu „Mehl“, „Mehlschwitze“ nicht).
+ * Prüft, welche Zutaten schon auf der Einkaufsliste stehen.
+ * Ohne Groß-/Kleinschreibung; ein Listeneintrag passt, wenn er den Suchtext der Zutat
+ * (`shoppingListMatchKey`) vollständig enthält: „250 g Mehl“ passt zu Mehl, „Ketchup“ passt
+ * zu Ketchup, aber nicht zu einer Flasche Ketchup.
  *
- * @param productNames - Namen der Zutaten.
+ * @param ingredients - Zutaten mit Name und Einheit.
  * @param listNames - Einträge der Einkaufsliste.
- * @returns Die Produktnamen (Originalschreibweise), die auf der Liste stehen.
+ * @returns Die Suchtexte (`shoppingListMatchKey`) der Zutaten, die auf der Liste stehen.
  */
-export function matchIngredientsWithShoppingList(productNames: readonly string[], listNames: readonly string[]): Set<string> {
+export function matchIngredientsWithShoppingList(ingredients: readonly ShoppingListMatchInput[], listNames: readonly string[]): Set<string> {
   const entries = listNames.map(normalizeName).filter(Boolean);
   const matches = new Set<string>();
 
-  for (const productName of productNames) {
-    const name = normalizeName(productName);
-    if (!name) {
-      continue;
-    }
-    const wholeWord = new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRegExp(name)}($|[^\\p{L}\\p{N}])`, "u");
-    if (entries.some((entry) => entry === name || wholeWord.test(entry))) {
-      matches.add(productName);
+  for (const ingredient of ingredients) {
+    const key = shoppingListMatchKey(ingredient.name, ingredient.unit);
+    if (key && entries.some((entry) => entry.includes(key))) {
+      matches.add(key);
     }
   }
 
   return matches;
+}
+
+/** Was `matchIngredientsWithShoppingList` von einer Zutat braucht. */
+export interface ShoppingListMatchInput {
+  name: string;
+  unit?: string | null;
 }
