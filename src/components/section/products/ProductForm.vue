@@ -2,6 +2,7 @@
 import FormInput from "@/components/shared/form/FormInput.vue";
 import { useForm } from "vee-validate";
 import FormFooter from "@/components/shared/form/FormFooter.vue";
+import ProductDeleteButton from "@/components/section/products/ProductDeleteButton.vue";
 import Form from "@/components/shared/form/Form.vue";
 import { useMutation } from "@vue/apollo-composable";
 import { useProductCategories } from "@/composables/querys/productCategories";
@@ -68,7 +69,7 @@ const clearProductUnitsToRemove = () => {
 };
 
 const dialogOpen = defineModel<boolean>("dialogOpen");
-const emits = defineEmits<{ saved: [productId: string | null] }>();
+const emits = defineEmits<{ saved: [productId: string | null]; deleted: [] }>();
 
 const defaultUnitVariant = computed(() => {
   const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
@@ -165,6 +166,11 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
 
 const isSuccess = (type: "aktualisiert" | "erstellt"): void => {
   toast({ title: `Das Produkt wurde erfolgreich ${type}` });
+};
+
+const onDeleted = () => {
+  closeDialog();
+  emits("deleted");
 };
 
 const closeDialog = () => {
@@ -318,8 +324,10 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
       </section>
     </div>
     <template #footer>
-      <div class="sticky bottom-0 -mx-4 md:-mx-6 px-4 md:px-6 py-3 border-t border-border/60 bg-background/95 backdrop-blur-sm">
-        <FormFooter @update:close="closeDialog" />
+      <div class="sticky bottom-0 -mx-4 md:-mx-6 px-4 md:px-6 py-3 border-t border-border/60 bg-background/95 backdrop-blur-sm flex items-center gap-2">
+        <!-- Löschen nur bei bestehenden Produkten, bewusst links und abgesetzt von Speichern -->
+        <ProductDeleteButton v-if="data" :product-id="data.id" :product-name="data.name" @deleted="onDeleted" />
+        <FormFooter class="ml-auto" @update:close="closeDialog" />
       </div>
     </template>
   </Form>

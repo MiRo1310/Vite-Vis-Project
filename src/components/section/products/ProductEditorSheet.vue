@@ -8,7 +8,7 @@ import ProductForm from "@/components/section/products/ProductForm.vue";
 /** `productId: null` = neues Produkt anlegen, optional mit vorbelegtem Namen */
 const props = defineProps<{ productId: string | null; initialName?: string; initialEan?: string }>();
 const open = defineModel<boolean>("open", { default: false });
-const emits = defineEmits<{ saved: [productId: string | null] }>();
+const emits = defineEmits<{ saved: [productId: string | null]; deleted: [] }>();
 
 const getProductByIdQuery = graphql(`
   query getProductById($id: UUID!) {
@@ -72,6 +72,7 @@ const isReady = computed(() => !props.productId || !!product.value);
           :initial-name="initialName"
           :initial-ean="initialEan"
           @saved="emits('saved', $event)"
+          @deleted="emits('deleted')"
         />
         <p v-else-if="loading" class="text-sm text-muted-foreground py-8 text-center">Lade Produkt …</p>
       </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { filterProductGroups, findProductByEan, getMacroShares, isValidEan, normalizeEan, pickValidEan, searchProducts } from "@/lib/product.ts";
+import { filterProductGroups, findProductByEan, findRecipesUsingProduct, getMacroShares, isValidEan, normalizeEan, pickValidEan, searchProducts } from "@/lib/product.ts";
 
 describe("normalizeEan", () => {
   it("keeps only digits", () => {
@@ -148,5 +148,21 @@ describe("findProductByEan", () => {
   it("returns undefined for unknown or empty codes", () => {
     expect(findProductByEan(productGroups, "4000417025005")).toBeUndefined();
     expect(findProductByEan(productGroups, "")).toBeUndefined();
+  });
+});
+
+describe("findRecipesUsingProduct", () => {
+  const recipes = [
+    { name: "Pfannkuchen", recipeProducts: [{ productId: "mehl" }, { productId: "ei" }] },
+    { name: "Apfelkuchen", recipeProducts: [{ productId: "mehl" }, { productId: "mehl" }] },
+    { name: "Salat", recipeProducts: [{ productId: "gurke" }] },
+  ];
+
+  it("lists each recipe once, alphabetically", () => {
+    expect(findRecipesUsingProduct(recipes, "mehl")).toEqual(["Apfelkuchen", "Pfannkuchen"]);
+  });
+
+  it("returns an empty list for unused products", () => {
+    expect(findRecipesUsingProduct(recipes, "zucker")).toEqual([]);
   });
 });
