@@ -11,7 +11,13 @@ import { Logger } from "@/lib/logger.ts";
  * Barcode scannen: über HTTPS live mit der Kamera, sonst (z. B. `http://<IP>`) per Foto.
  * Liefert nur gültige EAN/UPC (Prüfziffer geprüft).
  */
-withDefaults(defineProps<{ label?: string; class?: string; iconOnly?: boolean }>(), { label: "Scannen", class: "", iconOnly: false });
+/** `iconOnlyOnMobile`: Text erst ab sm zeigen (spart auf dem Handy Platz) */
+withDefaults(defineProps<{ label?: string; class?: string; iconOnly?: boolean; iconOnlyOnMobile?: boolean }>(), {
+  label: "Scannen",
+  class: "",
+  iconOnly: false,
+  iconOnlyOnMobile: false,
+});
 const emits = defineEmits<{ detected: [ean: string] }>();
 
 const { toast } = useToast();
@@ -70,7 +76,7 @@ const onFile = async (event: Event) => {
   >
     <LoaderCircle v-if="decoding" class="h-4 w-4 animate-spin" />
     <ScanBarcode v-else class="h-4 w-4" />
-    <span v-if="!iconOnly">{{ decoding ? "Lese Barcode …" : label }}</span>
+    <span v-if="!iconOnly" :class="iconOnlyOnMobile ? 'hidden sm:inline' : ''">{{ decoding ? "Lese Barcode …" : label }}</span>
   </Button>
 
   <!-- Foto: öffnet auf dem Handy direkt die Rückkamera, funktioniert auch ohne HTTPS -->

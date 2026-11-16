@@ -60,7 +60,8 @@ const categoryAccent = (name: string) => {
       </div>
       <Button
         variant="outline"
-        class="h-11 rounded-full px-4 shrink-0 relative"
+        class="h-11 rounded-full px-4 shrink-0 relative max-sm:w-11! max-sm:px-0!"
+        aria-label="Filter"
         :aria-expanded="filtersOpen"
         v-e2e="'recipes-filter-toggle'"
         @click="filtersOpen = !filtersOpen"

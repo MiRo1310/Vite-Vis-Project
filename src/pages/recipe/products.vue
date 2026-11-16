@@ -117,8 +117,9 @@ onMounted(() => {
         <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
         <InputShadcn v-model="search" type="text" placeholder="Produkt oder EAN suchen" class="h-11 rounded-full pl-10 text-base md:text-sm" e2e="products-search" />
       </div>
-      <BarcodeScanButton class="h-11 rounded-full px-4" @detected="onScanned" />
-      <Button class="h-11 rounded-full px-4 shrink-0" :class="recipeAccentClasses.basil.solid" v-e2e="'products-add'" @click="openEditor(null)">
+      <!-- Mobil nur Icon: Breite = Höhe, sonst staucht has-[>svg]:px-3 den Kreis -->
+      <BarcodeScanButton icon-only-on-mobile class="h-11 rounded-full px-4 max-sm:w-11! max-sm:px-0!" @detected="onScanned" />
+      <Button class="h-11 rounded-full px-4 shrink-0 max-sm:w-11! max-sm:px-0!" :class="recipeAccentClasses.basil.solid" aria-label="Neues Produkt" v-e2e="'products-add'" @click="openEditor(null)">
         <Plus class="h-4 w-4" />
         <span class="hidden sm:inline">Neues Produkt</span>
       </Button>
@@ -154,13 +155,16 @@ onMounted(() => {
 
     <!-- Liste -->
     <div class="flex-1 min-h-0 overflow-y-auto pb-4">
-      <div v-for="group in filteredGroups" :key="group.key" class="mb-5">
-        <div class="flex items-center gap-2 mb-2">
+      <div v-for="group in filteredGroups" :key="group.key" class="mb-4 sm:mb-5">
+        <div class="flex items-center gap-2 mb-1.5 sm:mb-2">
           <span :class="['h-2.5 w-2.5 rounded-full', recipeAccentClasses[getCategoryColor(group.key)].solid]" />
           <p :class="['text-sm font-semibold', recipeAccentClasses[getCategoryColor(group.key)].text]">{{ group.key }}</p>
           <span class="text-xs text-muted-foreground">{{ group.value.length }}</span>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+        <!-- Mobil eine Liste mit Trennlinien, ab sm ein Kachel-Raster -->
+        <div
+          class="grid grid-cols-1 max-sm:divide-y max-sm:divide-border/60 max-sm:rounded-2xl max-sm:border max-sm:border-border/60 max-sm:overflow-hidden max-sm:bg-card sm:grid-cols-2 sm:gap-3 xl:grid-cols-3 2xl:grid-cols-4"
+        >
           <ProductCard v-for="product in group.value" :key="product.id" :product :accent="getCategoryColor(group.key)" @open="openEditor(product.id)" />
         </div>
       </div>

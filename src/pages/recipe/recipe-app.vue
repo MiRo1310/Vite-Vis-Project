@@ -95,7 +95,8 @@ const isActive = (item: RecipeNavItem): boolean => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <DarkMode small />
+            <!-- Etwas Luft zum Mehr-Menü, der Hell/Dunkel-Button hat als einziger einen Rahmen -->
+            <DarkMode small class="ml-2" />
           </div>
         </div>
       </header>
