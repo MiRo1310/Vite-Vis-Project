@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatError, isChunkLoadError, isOpaqueScriptError, UNKNOWN_ERROR } from "@/lib/error";
+import { formatError, getUserErrorMessage, isChunkLoadError, isOpaqueScriptError, UNKNOWN_ERROR } from "@/lib/error";
 
 describe("formatError", () => {
   it("returns fallback for null/undefined", () => {
@@ -86,5 +86,35 @@ describe("isChunkLoadError", () => {
   it("returns false if the error does not contain the MIME-type message", () => {
     expect(isChunkLoadError()).toBe(false);
     expect(isChunkLoadError("Test 123")).toBe(false);
+  });
+});
+
+describe("getUserErrorMessage", () => {
+  const fallback = "Etwas ist schiefgelaufen";
+
+  it("uses the first GraphQL error message from the server", () => {
+    const apolloError = Object.assign(new Error("Kategorie wird schon genutzt, und kann daher nicht gelöscht werden"), {
+      name: "ApolloError",
+      graphQLErrors: [{ message: "Kategorie wird schon genutzt, und kann daher nicht gelöscht werden" }],
+      networkError: null,
+    });
+    expect(getUserErrorMessage(apolloError, fallback)).toBe("Kategorie wird schon genutzt, und kann daher nicht gelöscht werden");
+  });
+
+  it("reports an unreachable server for network errors", () => {
+    expect(getUserErrorMessage({ graphQLErrors: [], networkError: new Error("Failed to fetch"), message: "Failed to fetch" }, fallback)).toBe(
+      "Der Server ist gerade nicht erreichbar.",
+    );
+  });
+
+  it("falls back to the error message without a type prefix", () => {
+    expect(getUserErrorMessage(new TypeError("kaputt"), fallback)).toBe("kaputt");
+    expect(getUserErrorMessage(" Text ", fallback)).toBe("Text");
+  });
+
+  it("uses the fallback when nothing usable is there", () => {
+    expect(getUserErrorMessage(null, fallback)).toBe(fallback);
+    expect(getUserErrorMessage({ graphQLErrors: [{ message: " " }] }, fallback)).toBe(fallback);
+    expect(getUserErrorMessage(42, fallback)).toBe(fallback);
   });
 });
