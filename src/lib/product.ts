@@ -165,3 +165,18 @@ export function findProductByEan<T extends ProductLike>(groups: ReadonlyArray<Pr
   }
   return groups.flatMap((group) => group.value).find((product) => normalizeEan(product.ean) === code);
 }
+
+/**
+ * Namen der Rezepte, in denen ein Produkt als Zutat vorkommt (z. B. als Warnung vor dem Löschen).
+ *
+ * @param recipes - Rezepte mit ihren Zutaten.
+ * @param productId - Gesuchtes Produkt.
+ * @returns Rezeptnamen ohne Doppelte, alphabetisch.
+ */
+export function findRecipesUsingProduct(
+  recipes: ReadonlyArray<{ name: string; recipeProducts: ReadonlyArray<{ productId: string }> }>,
+  productId: string,
+): string[] {
+  const names = recipes.filter((recipe) => recipe.recipeProducts.some((ingredient) => ingredient.productId === productId)).map((recipe) => recipe.name);
+  return [...new Set(names)].sort((a, b) => a.localeCompare(b, "de"));
+}
