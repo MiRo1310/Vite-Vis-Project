@@ -112,7 +112,7 @@ const amount = computed({
             <SelectValue :placeholder="product ? 'Einheit' : '–'" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.unit }}</SelectItem>
+            <SelectItem v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.unit?.name }}</SelectItem>
           </SelectContent>
         </Select>
         <p v-if="unitError" class="text-xs text-destructive mt-1">{{ unitError }}</p>

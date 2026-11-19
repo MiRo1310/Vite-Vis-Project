@@ -1,7 +1,6 @@
 import { type StoreDefinition } from "pinia";
 import { type IdsToControl } from "@/types/types.ts";
 import { type RecipeDraft } from "@/lib/recipe-editor.ts";
-import { type RecipesQuery } from "@/api/gql/graphql.ts";
 import { type iobrokerTree } from "@/iobroker-states/subscribed-states.iobroker.ts";
 import { type Collection } from "@/lib/array.ts";
 
@@ -39,8 +38,6 @@ export interface IRecipeStore {
   /** Zuletzt im Editor gewählte Produkt-IDs, neueste zuerst */
   recentProductIds: string[];
 }
-
-export type TRecipe = RecipesQuery["recipes"][number];
 
 /** Gemerkter Eintrag für „Zuletzt geöffnet“ – nur das Nötigste, der Rest kommt frisch vom Server. */
 export interface RecentRecipe {

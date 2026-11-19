@@ -36,13 +36,17 @@ const { result, loading } = useQuery(
           protein
           salt
           sugar
-          unit
+          unit {
+            name
+          }
           ean
           amount
           productUnits {
             id
             amount
-            unit
+            unit {
+              name
+            }
           }
         }
       }
@@ -58,9 +62,7 @@ const selectedCategories = ref<string[]>([]);
 
 const allGroups = computed(() => result.value?.productsGrouped ?? []);
 const categories = computed(() =>
-  allGroups.value
-    .map((group) => ({ name: group.key, count: group.value.length }))
-    .sort((a, b) => a.name.localeCompare(b.name, "de")),
+  allGroups.value.map((group) => ({ name: group.key, count: group.value.length })).sort((a, b) => a.name.localeCompare(b.name, "de")),
 );
 const filteredGroups = computed(() => filterProductGroups(allGroups.value, search.value, selectedCategories.value));
 const totalCount = computed(() => allGroups.value.reduce((sum, group) => sum + group.value.length, 0));
@@ -115,7 +117,13 @@ onMounted(() => {
     <div class="flex gap-2 shrink-0">
       <div class="relative flex-1 min-w-0">
         <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10 pointer-events-none" />
-        <InputShadcn v-model="search" type="text" placeholder="Produkt oder EAN suchen" class="h-11 rounded-full pl-10 text-base md:text-sm" e2e="products-search" />
+        <InputShadcn
+          v-model="search"
+          type="text"
+          placeholder="Produkt oder EAN suchen"
+          class="h-11 rounded-full pl-10 text-base md:text-sm"
+          e2e="products-search"
+        />
       </div>
       <!-- Mobil nur Icon: Breite = Höhe, sonst staucht has-[>svg]:px-3 den Kreis -->
       <BarcodeScanButton icon-only-on-mobile class="h-11 rounded-full px-4 max-sm:w-11! max-sm:px-0!" @detected="onScanned" />
@@ -130,7 +138,9 @@ onMounted(() => {
       <button
         type="button"
         class="h-9 px-3.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors"
-        :class="selectedCategories.length === 0 ? 'bg-foreground text-background border-foreground' : 'border-border text-muted-foreground hover:bg-accent'"
+        :class="
+          selectedCategories.length === 0 ? 'bg-foreground text-background border-foreground' : 'border-border text-muted-foreground hover:bg-accent'
+        "
         @click="selectedCategories = []"
       >
         Alle · {{ totalCount }}
@@ -174,10 +184,16 @@ onMounted(() => {
         :icon="PackageSearch"
         accent="basil"
         :title="totalCount ? 'Nichts gefunden' : 'Noch keine Produkte'"
-        :description="totalCount ? 'Probier einen anderen Suchbegriff oder eine andere Kategorie.' : 'Leg dein erstes Lebensmittel an – mit Barcode geht das ganz schnell.'"
+        :description="
+          totalCount
+            ? 'Probier einen anderen Suchbegriff oder eine andere Kategorie.'
+            : 'Leg dein erstes Lebensmittel an – mit Barcode geht das ganz schnell.'
+        "
       >
         <Button v-if="totalCount" variant="outline" class="rounded-full" @click="resetFilter"><X class="h-4 w-4" /> Filter zurücksetzen</Button>
-        <Button v-else class="rounded-full" :class="recipeAccentClasses.basil.solid" @click="openEditor(null)"><Plus class="h-4 w-4" /> Produkt anlegen</Button>
+        <Button v-else class="rounded-full" :class="recipeAccentClasses.basil.solid" @click="openEditor(null)"
+          ><Plus class="h-4 w-4" /> Produkt anlegen</Button
+        >
       </EmptyState>
     </div>
 

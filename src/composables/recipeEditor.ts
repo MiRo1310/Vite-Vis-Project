@@ -72,24 +72,6 @@ const updateRecipeMutation = graphql(`
   }
 `);
 
-const removeStepMutation = graphql(`
-  mutation RemoveTextArea($id: UUID!) {
-    removeTextArea(id: $id)
-  }
-`);
-
-const removeIngredientMutation = graphql(`
-  mutation removeRecipeProduct($id: UUID!) {
-    removeRecipeProduct(id: $id)
-  }
-`);
-
-const removeGroupMutation = graphql(`
-  mutation RemoveRecipeGroup($dto: RecipeGroupRemoveDtoInput!) {
-    removeProductGroup(dto: $dto)
-  }
-`);
-
 const editorProductsQuery = graphql(`
   query recipeEditorProducts {
     products {
@@ -100,7 +82,9 @@ const editorProductsQuery = graphql(`
       }
       productUnits {
         id
-        unit
+        unit {
+          name
+        }
         isDefault
       }
     }
@@ -232,19 +216,17 @@ export const createRecipeEditor = (recipeId: string | undefined) => {
     const deletions = getDraftDeletions(original.value, draft.value);
     Logger.log("Rezept speichern, Löschungen:", null, { value: deletions });
 
-    for (const stepId of deletions.stepIds) {
-      await apolloClient.mutate({ mutation: removeStepMutation, variables: { id: stepId } });
-    }
-    for (const ingredientId of deletions.ingredientIds) {
-      await apolloClient.mutate({ mutation: removeIngredientMutation, variables: { id: ingredientId } });
-    }
-    for (const position of deletions.groupPositions) {
-      await apolloClient.mutate({ mutation: removeGroupMutation, variables: { dto: { position, recipeId: id } } });
-    }
-
     await apolloClient.mutate({
       mutation: updateRecipeMutation,
-      variables: { dto: { id, ...draftToDto(draft.value, deletions.recreateIngredientIds) } },
+      variables: {
+        dto: {
+          id,
+          ...draftToDto(draft.value, deletions.recreateIngredientIds),
+          removedStepIds: deletions.stepIds,
+          removedGroupPositions: deletions.groupPositions,
+          removedRecipeProductIds: deletions.ingredientIds,
+        },
+      },
       refetchQueries: REFETCH_AFTER_SAVE,
     });
 

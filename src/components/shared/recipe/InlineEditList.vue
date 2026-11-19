@@ -164,7 +164,10 @@ const colorOf = (item: MasterDataItem): RecipeAccentKey => (props.colorByName ? 
         <span
           v-for="name in newNames"
           :key="`new-${name}`"
-          :class="['inline-flex items-center gap-1 rounded-full px-2.5 h-7 text-xs font-medium', recipeAccentClasses[colorByName ? getCategoryColor(name) : accent].soft]"
+          :class="[
+            'inline-flex items-center gap-1 rounded-full px-2.5 h-7 text-xs font-medium',
+            recipeAccentClasses[colorByName ? getCategoryColor(name) : accent].soft,
+          ]"
         >
           <Plus class="h-3 w-3" />{{ name }}
         </span>
@@ -208,7 +211,10 @@ const colorOf = (item: MasterDataItem): RecipeAccentKey => (props.colorByName ? 
           <div
             v-else
             class="group inline-flex items-center gap-1 rounded-full h-11 pl-1.5 pr-1 transition-all duration-300"
-            :class="[recipeAccentClasses[colorOf(item)].soft, isRecentlyAdded(item) ? 'ring-2 ring-offset-2 ring-offset-background ring-current scale-105' : '']"
+            :class="[
+              recipeAccentClasses[colorOf(item)].soft,
+              isRecentlyAdded(item) ? 'ring-2 ring-offset-2 ring-offset-background ring-current scale-105' : '',
+            ]"
             v-e2e="`${e2e}-item`"
           >
             <button
@@ -236,7 +242,13 @@ const colorOf = (item: MasterDataItem): RecipeAccentKey => (props.colorByName ? 
         </template>
       </div>
 
-      <EmptyState v-else-if="!crud.loading.value" :icon :accent :title="`Noch keine ${itemsLabel}`" :description="`Leg oben deine erste ${itemLabel} an.`" />
+      <EmptyState
+        v-else-if="!crud.loading.value"
+        :icon
+        :accent
+        :title="`Noch keine ${itemsLabel}`"
+        :description="`Leg oben deine erste ${itemLabel} an.`"
+      />
     </div>
 
     <DialogConfirm
