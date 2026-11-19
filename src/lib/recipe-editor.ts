@@ -191,11 +191,11 @@ export function draftToDto(fullDraft: RecipeDraft, recreateIngredientIds: Readon
 }
 
 export interface DraftDeletions {
-  /** Schritte, die gelöscht wurden (`removeTextArea`) */
+  /** Schritte, die gelöscht wurden (→ `removedStepIds`) */
   stepIds: string[];
-  /** Zutaten, die gelöscht wurden und nicht schon mit ihrer Gruppe verschwinden (`removeRecipeProduct`) */
+  /** Zutaten, die gelöscht wurden und nicht schon mit ihrer Gruppe verschwinden (→ `removedRecipeProductIds`) */
   ingredientIds: string[];
-  /** Ursprüngliche Positionen gelöschter Gruppen, absteigend (`removeProductGroup`) */
+  /** Ursprüngliche Positionen gelöschter Gruppen, absteigend (→ `removedGroupPositions`) */
   groupPositions: number[];
   /** Zutaten, die aus einer gelöschten Gruppe verschoben wurden – der Server löscht sie mit der Gruppe, also neu anlegen */
   recreateIngredientIds: Set<string>;

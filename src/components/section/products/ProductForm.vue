@@ -29,7 +29,7 @@ import { nutrientAccent, recipeAccentClasses } from "@/constants/recipe.ts";
  */
 const props = defineProps<{ data?: GetProductByIdQuery["product"]; initialName?: string; initialEan?: string }>();
 
-const { getOptions } = useUnits();
+const { getOptions, getUnitNameById } = useUnits();
 const { toast } = useToast();
 
 const { selectableOptions } = useProductCategories();
@@ -73,7 +73,8 @@ const emits = defineEmits<{ saved: [productId: string | null]; deleted: [] }>();
 
 const defaultUnitVariant = computed(() => {
   const defaultItem = props.data?.productUnits.find((variant) => variant.isDefault);
-  return { amount: defaultItem?.amount ?? 100, unit: defaultItem?.unit ?? "g" };
+
+  return { amount: defaultItem?.amount ?? 100, unitId: defaultItem?.unitId ?? "", unitName: defaultItem?.unit?.name ?? "" };
 });
 
 const form = useForm({
@@ -82,7 +83,7 @@ const form = useForm({
     name: props.data?.name ?? props.initialName ?? "",
     category: props.data?.category ?? "",
     amount: defaultUnitVariant.value.amount,
-    unit: defaultUnitVariant.value.unit,
+    unitId: defaultUnitVariant.value.unitId,
     fat: props.data?.fat,
     carbs: props.data?.carbs,
     kcal: props.data?.kcal,
@@ -94,7 +95,7 @@ const form = useForm({
       props.data?.productUnits.map((u) => ({
         amount: u.amount ?? 0,
         id: u.id,
-        unit: u.unit,
+        unitId: u.unitId,
         isDefault: u.isDefault,
       })) ?? [],
   },
@@ -114,7 +115,7 @@ watch(
 );
 const updateValue = ref(false);
 
-const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name, protein, salt, sugar, category, productUnits, ean }) => {
+const onSubmit = form.handleSubmit(async ({ unitId, fat, carbs, amount, kcal, name, protein, salt, sugar, category, productUnits, ean }) => {
   const dto: ProductCreateDtoInput = {
     name,
     category,
@@ -125,7 +126,7 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
     salt,
     sugar,
     amount,
-    unit,
+    unitId,
     productUnits,
     ean,
   };
@@ -154,8 +155,8 @@ const onSubmit = form.handleSubmit(async ({ unit, fat, carbs, amount, kcal, name
   }
 
   // Früher wurde nach dem Erfolgs-Toast direkt returned – entfernte Varianten wurden so nie gelöscht und der Dialog blieb offen
-  for (const unitId of productUnitsToRemove.value) {
-    await removeProductUnitMutate({ id: unitId });
+  for (const productUnitId of productUnitsToRemove.value) {
+    await removeProductUnitMutate({ id: productUnitId });
   }
   productUnitsToRemove.value = [];
 
@@ -192,7 +193,6 @@ const addAllValuesToForm = ref(false);
 const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipeAccentClasses[nutrientAccent[nutrient]].border;
 </script>
 
-
 <template>
   <Form @update:on-submit="onSubmit" @keydown.enter="onSubmit">
     <div class="flex flex-col gap-5 pb-4">
@@ -204,7 +204,13 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
           <FormInput label="Name" name="name" e2e="product-name" />
-          <FormSelect label="Kategorie" placeholder="Wähle eine Kategorie" name="category" :select-options="selectableOptions" e2e="product-category" />
+          <FormSelect
+            label="Kategorie"
+            placeholder="Wähle eine Kategorie"
+            name="category"
+            :select-options="selectableOptions"
+            e2e="product-category"
+          />
         </div>
       </section>
 
@@ -231,13 +237,14 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
           <span :class="['h-8 w-8 rounded-lg flex items-center justify-center', recipeAccentClasses.primary.soft]"><Layers class="h-4 w-4" /></span>
           <h3 class="font-semibold">Nährwerte</h3>
         </div>
-        <div class="grid grid-cols-2 gap-3 rounded-2xl p-3" :class="recipeAccentClasses.primary.soft">
+        <div class="grid grid-cols-2 gap-3 rounded-2xl p-3" :class="recipeAccentClasses.primary.soft" v-e2e="'product-nutrients'">
           <FormInput label="Bezogen auf Menge" name="amount" type="number" :step="0.1" />
-          <FormInputOptions label="Einheit" name="unit" type="text" :options="getOptions" options-id="units" always-return-name />
+          <FormInputOptions label="Einheit" name="unitId" type="text" :options="getOptions" options-id="units" exact-option-required />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
           <div :class="['border-l-4 pl-2', nutrientBorder('kcal')]">
-            <OpenFoodFactsValueUpdater label="Kalorien"
+            <OpenFoodFactsValueUpdater
+              label="Kalorien"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.energyKcal100g"
               unit="kcal"
               name="kcal"
@@ -248,7 +255,8 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             </OpenFoodFactsValueUpdater>
           </div>
           <div :class="['border-l-4 pl-2', nutrientBorder('carbs')]">
-            <OpenFoodFactsValueUpdater label="Kohlenhydrate"
+            <OpenFoodFactsValueUpdater
+              label="Kohlenhydrate"
               name="carbs"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.carbohydrates100g"
               unit="g"
@@ -259,7 +267,8 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             </OpenFoodFactsValueUpdater>
           </div>
           <div :class="['border-l-4 pl-2', nutrientBorder('sugar')]">
-            <OpenFoodFactsValueUpdater label="davon Zucker"
+            <OpenFoodFactsValueUpdater
+              label="davon Zucker"
               name="sugar"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.sugars100g"
               :form
@@ -270,7 +279,8 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             </OpenFoodFactsValueUpdater>
           </div>
           <div :class="['border-l-4 pl-2', nutrientBorder('fat')]">
-            <OpenFoodFactsValueUpdater label="Fett"
+            <OpenFoodFactsValueUpdater
+              label="Fett"
               name="fat"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.fat100g"
               unit="g"
@@ -281,7 +291,8 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             </OpenFoodFactsValueUpdater>
           </div>
           <div :class="['border-l-4 pl-2', nutrientBorder('protein')]">
-            <OpenFoodFactsValueUpdater label="Protein"
+            <OpenFoodFactsValueUpdater
+              label="Protein"
               name="protein"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.proteins100g"
               unit="g"
@@ -292,7 +303,8 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
             </OpenFoodFactsValueUpdater>
           </div>
           <div :class="['border-l-4 pl-2', nutrientBorder('salt')]">
-            <OpenFoodFactsValueUpdater label="Salz"
+            <OpenFoodFactsValueUpdater
+              label="Salz"
               name="salt"
               :value="openFoodFactsProduct?.openFoodFactProduct?.nutriments?.salt100g"
               unit="g"
@@ -306,7 +318,7 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
       </section>
 
       <!-- Weitere Einheiten -->
-      <section v-if="defaultUnitVariant.amount && defaultUnitVariant.unit" class="flex flex-col gap-3">
+      <section v-if="defaultUnitVariant.amount && defaultUnitVariant.unitId" class="flex flex-col gap-3">
         <div class="flex items-center gap-2">
           <span :class="['h-8 w-8 rounded-lg flex items-center justify-center', recipeAccentClasses.lavender.soft]"><Layers class="h-4 w-4" /></span>
           <div>
@@ -317,14 +329,16 @@ const nutrientBorder = (nutrient: keyof typeof nutrientAccent): string => recipe
         <AddVariantUnits
           :unitOptions="getOptions"
           :productUnits="data?.productUnits ?? []"
-          :default-unit="defaultUnitVariant.unit ?? form.values.unit"
+          :default-unit="defaultUnitVariant.unitName || getUnitNameById(form.values.unitId ?? '')"
           :form
           v-model:product-units-to-remove="productUnitsToRemove"
         />
       </section>
     </div>
     <template #footer>
-      <div class="sticky bottom-0 -mx-4 md:-mx-6 px-4 md:px-6 py-3 border-t border-border/60 bg-background/95 backdrop-blur-sm flex items-center gap-2">
+      <div
+        class="sticky bottom-0 -mx-4 md:-mx-6 px-4 md:px-6 py-3 border-t border-border/60 bg-background/95 backdrop-blur-sm flex items-center gap-2"
+      >
         <!-- Löschen nur bei bestehenden Produkten, bewusst links und abgesetzt von Speichern -->
         <ProductDeleteButton v-if="data" :product-id="data.id" :product-name="data.name" @deleted="onDeleted" />
         <FormFooter class="ml-auto" @update:close="closeDialog" />

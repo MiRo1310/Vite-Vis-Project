@@ -37,6 +37,18 @@ watch(modelValue, (newValue) => {
   internalValue.value = handleModelValueChange(newValue);
 });
 
+// Optionen kommen oft erst nach dem Mount (Lazy-Query) – dann den Namen zur gespeicherten ID nachträglich anzeigen
+watch(
+  () => props.options,
+  () => {
+    if (internalValue.value && internalValue.value !== modelValue.value) {
+      return;
+    }
+    internalValue.value = handleModelValueChange(modelValue.value);
+    previousExactName.value = getNameByValue(modelValue.value) ?? "";
+  },
+);
+
 function handleModelValueChange(value: string | number): string | number {
   if (props.exactOptionRequired) {
     const name = getNameByValue(modelValue.value);

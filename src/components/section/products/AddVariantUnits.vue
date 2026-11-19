@@ -26,7 +26,7 @@ const variants = ref<Units>([]);
 onMounted(() => {
   variants.value = props.productUnits.map((variant, index) => ({
     id: variant.id,
-    unit: variant.unit,
+    unitId: variant.unitId,
     amount: variant.amount ?? 0,
     isDefault: variant.isDefault,
     index,
@@ -34,7 +34,7 @@ onMounted(() => {
 });
 
 const addVariant = () => {
-  variants.value.push({ unit: "", amount: 0, index: props.productUnits.length });
+  variants.value.push({ unitId: "", amount: 0, index: props.productUnits.length });
 };
 
 const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index: number }) => {
@@ -71,7 +71,7 @@ const deleteVariant = async ({ unitVariant, index }: { unitVariant: TUnit; index
 
         <Label class="flex flex-col gap-2">
           <span>Einheit</span>
-          <FormInputOptions :name="`productUnits.${index}.unit`" :options="unitOptions" options-id="units" always-return-name />
+          <FormInputOptions :name="`productUnits.${index}.unitId`" :options="unitOptions" options-id="units" exact-option-required />
         </Label>
 
         <Button icon="remove" size="icon" variant="outline" class="mt-5 shrink-0" @click.prevent="deleteVariant({ unitVariant, index })" />

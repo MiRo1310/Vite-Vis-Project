@@ -17,16 +17,18 @@ const { result, loading } = useQuery(
   graphql(`
     query recipes {
       recipes {
-        id
-        name
-        createdAt
-        portions
-        totalTimeMin
-        preparationTimeMin
-        totalKcal
-        recipeCategory {
-          name
+        nodes {
           id
+          name
+          createdAt
+          portions
+          totalTimeMin
+          preparationTimeMin
+          totalKcal
+          recipeCategory {
+            name
+            id
+          }
         }
       }
     }
@@ -37,7 +39,7 @@ const { result, loading } = useQuery(
 
 const recipeStore = useRecipeStore();
 
-const allRecipes = computed(() => result.value?.recipes ?? []);
+const allRecipes = computed(() => result.value?.recipes?.nodes ?? []);
 
 // --- Filter ---
 const search = ref("");
@@ -141,10 +143,14 @@ const subtitle = computed(() => {
         :icon="allRecipes.length ? SearchX : BookOpen"
         :title="allRecipes.length ? 'Nichts gefunden' : 'Noch keine Rezepte'"
         :description="
-          allRecipes.length ? 'Probier einen anderen Suchbegriff oder lockere die Filter.' : 'Schreib dein erstes Lieblingsrezept auf – Zutaten, Schritte, fertig.'
+          allRecipes.length
+            ? 'Probier einen anderen Suchbegriff oder lockere die Filter.'
+            : 'Schreib dein erstes Lieblingsrezept auf – Zutaten, Schritte, fertig.'
         "
       >
-        <Button v-if="allRecipes.length" variant="outline" class="rounded-full" @click="resetFilter"><X class="h-4 w-4" /> Filter zurücksetzen</Button>
+        <Button v-if="allRecipes.length" variant="outline" class="rounded-full" @click="resetFilter"
+          ><X class="h-4 w-4" /> Filter zurücksetzen</Button
+        >
         <Button v-else as-child class="rounded-full" :class="recipeAccentClasses.basil.solid">
           <RouterLink :to="{ name: routes.newRecipe.name }"><Plus class="h-4 w-4" /> Rezept anlegen</RouterLink>
         </Button>

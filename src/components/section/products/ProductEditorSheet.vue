@@ -29,7 +29,10 @@ const getProductByIdQuery = graphql(`
         id
         productId
         amount
-        unit
+        unitId
+        unit {
+          name
+        }
         isDefault
       }
     }

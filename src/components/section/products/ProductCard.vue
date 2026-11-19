@@ -12,7 +12,7 @@ interface ProductCardData {
   fat?: number | null;
   protein?: number | null;
   amount?: number | null;
-  unit?: string | null;
+  unit?: { name: string } | null;
   ean?: string | null;
 }
 
@@ -51,9 +51,14 @@ const formatGrams = (value: number): string => (Number.isInteger(value) ? String
       <div class="flex items-center sm:items-start justify-between gap-2">
         <div class="min-w-0">
           <p class="font-medium sm:font-semibold leading-tight truncate">{{ product.name }}</p>
-          <p class="text-xs text-muted-foreground mt-0.5 max-sm:hidden">pro {{ product.amount ?? 100 }} {{ product.unit ?? "g" }}</p>
+          <p class="text-xs text-muted-foreground mt-0.5 max-sm:hidden">pro {{ product.amount ?? 100 }} {{ product.unit?.name ?? "g" }}</p>
         </div>
-        <span :class="['inline-flex items-center gap-1 rounded-full px-2 h-6 text-xs font-semibold shrink-0', recipeAccentClasses[nutrientAccent.kcal].soft]">
+        <span
+          :class="[
+            'inline-flex items-center gap-1 rounded-full px-2 h-6 text-xs font-semibold shrink-0',
+            recipeAccentClasses[nutrientAccent.kcal].soft,
+          ]"
+        >
           <Flame class="h-3 w-3" />{{ Math.round(product.kcal ?? 0) }} kcal
         </span>
       </div>
