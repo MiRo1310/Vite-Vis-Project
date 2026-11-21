@@ -208,7 +208,7 @@ export class BooleanValue extends BaseValue<boolean> {
   }
 
   public get value(): boolean {
-    return (this.invert ? !this.val : this.val) ?? this.invert;
+    return (this.invert ? !this.val : this.val) ?? false;
   }
 }
 
