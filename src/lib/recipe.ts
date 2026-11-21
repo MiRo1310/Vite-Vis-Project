@@ -308,3 +308,58 @@ export function formatScaledAmount(
 export function flattenIngredientGroups<T>(groups: ReadonlyArray<IngredientGroup<T>>): Array<{ key: string; groupTitle: string; item: T }> {
   return groups.flatMap((group) => group.items.map((item, index) => ({ key: ingredientKey(group.position, index), groupTitle: group.title, item })));
 }
+
+const MS_PER_DAY = 86_400_000;
+const relativeTime = new Intl.RelativeTimeFormat("de", { numeric: "auto" });
+
+/** Beginn des Kalendertags in lokaler Zeit, damit „gestern“ am Datum hängt und nicht an 24 Stunden. */
+const startOfDay = (date: Date): number => new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+/**
+ * Beschreibt, wann ein Rezept zuletzt gekocht wurde, relativ zu `now`.
+ * Gezählt wird in Kalendertagen; ab 7 Tagen in Wochen, ab 30 in Monaten, ab 365 in Jahren.
+ *
+ * @param lastCookedAt - ISO-Zeitpunkt vom Server oder `null`, wenn noch nie gekocht.
+ * @param now - Bezugszeitpunkt, z. B. `new Date()`.
+ * @returns z. B. `"heute"`, `"gestern"`, `"vor 3 Tagen"`, `"vor 2 Wochen"` oder `null` ohne (gültiges) Datum.
+ */
+export function formatLastCooked(lastCookedAt: string | null | undefined, now: Date): string | null {
+  if (!lastCookedAt) {
+    return null;
+  }
+  const cooked = new Date(lastCookedAt);
+  if (Number.isNaN(cooked.getTime())) {
+    return null;
+  }
+
+  const days = Math.max(Math.round((startOfDay(now) - startOfDay(cooked)) / MS_PER_DAY), 0);
+  if (days < 7) {
+    return relativeTime.format(-days, "day");
+  }
+  if (days < 30) {
+    return relativeTime.format(-Math.floor(days / 7), "week");
+  }
+  if (days < 365) {
+    return relativeTime.format(-Math.floor(days / 30), "month");
+  }
+  return relativeTime.format(-Math.floor(days / 365), "year");
+}
+
+/**
+ * Kurzinfo zum Kochverlauf für die Detailseite.
+ *
+ * @param cookedCount - Wie oft das Rezept als gekocht gemeldet wurde.
+ * @param lastCookedAt - Zeitpunkt der letzten Meldung.
+ * @param now - Bezugszeitpunkt, z. B. `new Date()`.
+ * @returns z. B. `"3× gekocht · zuletzt vor 2 Tagen"` oder `null`, wenn noch nie gekocht.
+ */
+export function describeCookHistory(cookedCount: number | null | undefined, lastCookedAt: string | null | undefined, now: Date): string | null {
+  if (!cookedCount || cookedCount < 1) {
+    return null;
+  }
+  const last = formatLastCooked(lastCookedAt, now);
+  if (!last) {
+    return `${cookedCount}× gekocht`;
+  }
+  return `${cookedCount}× gekocht · zuletzt ${last}`;
+}

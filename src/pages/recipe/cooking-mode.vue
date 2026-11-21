@@ -16,6 +16,10 @@ import { sortSteps } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
 import { routes } from "@/router/routes.ts";
 import { Logger } from "@/lib/logger.ts";
+import { getUserErrorMessage } from "@/lib/error.ts";
+import { graphql } from "@/api/gql";
+import apolloClient, { type ApolloOperationContext } from "@/apolloClient.ts";
+import { useToast } from "@/components/ui/toast/use-toast";
 
 const props = defineProps<{ recipeId?: string }>();
 
@@ -78,6 +82,63 @@ const next = async () => {
 
 const prev = () => {
   goTo(stepIndex.value - 1);
+};
+
+// --- Fertig: als gekocht melden ---
+const markRecipeCookedMutation = graphql(`
+  mutation markRecipeCooked($recipeId: UUID!) {
+    markRecipeCooked(recipeId: $recipeId) {
+      id
+      cookedCount
+      lastCookedAt
+    }
+  }
+`);
+
+/** Fehler zeigt der Kochmodus selbst an */
+const silentContext: ApolloOperationContext = { silentErrors: true };
+const { toast } = useToast();
+const finishing = ref(false);
+
+/**
+ * Nur der „Fertig“-Button meldet das Rezept als gekocht. Wischen oder Pfeiltaste im letzten Schritt
+ * verlassen den Kochmodus weiterhin ohne Meldung, damit ein versehentliches Wischen nicht mitzählt.
+ * Schlägt die Meldung fehl, geht es trotzdem zurück zur Detailseite – gekocht ist ja schon.
+ */
+const finish = async () => {
+  if (!props.recipeId || finishing.value) {
+    return;
+  }
+  finishing.value = true;
+  try {
+    // Die Antwort aktualisiert den Rezept-Eintrag im Cache (Detailseite); die Leiste „Oft gekocht“ wird neu geladen
+    const { data } = await apolloClient.mutate({
+      mutation: markRecipeCookedMutation,
+      variables: { recipeId: props.recipeId },
+      context: silentContext,
+      refetchQueries: ["mostCookedRecipes"],
+    });
+    const count = data?.markRecipeCooked?.cookedCount;
+    toast({ title: "Guten Appetit!", description: count ? `${count}× gekocht` : undefined });
+  } catch (error) {
+    Logger.error("Rezept als gekocht melden fehlgeschlagen", error);
+    toast({
+      title: "Konnte nicht als gekocht gemerkt werden",
+      description: getUserErrorMessage(error, "Bitte versuch es später noch einmal."),
+      variant: "destructive",
+    });
+  } finally {
+    finishing.value = false;
+  }
+  await exit();
+};
+
+const onNextButton = async () => {
+  if (isLast.value) {
+    await finish();
+    return;
+  }
+  goTo(stepIndex.value + 1);
 };
 
 // --- Zutaten ---
@@ -245,8 +306,9 @@ watch(
       <Button
         class="h-14 rounded-2xl text-base shadow-sm"
         :class="isLast ? recipeAccentClasses.basil.solid : recipeAccentClasses.primary.solid"
+        :disabled="finishing"
         v-e2e="'cooking-next'"
-        @click="next"
+        @click="onNextButton"
       >
         <template v-if="isLast"><Check class="h-5 w-5" /> Fertig</template>
         <template v-else>Weiter <ArrowRight class="h-5 w-5" /></template>

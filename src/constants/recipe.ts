@@ -135,6 +135,9 @@ export const RECIPE_UNCATEGORIZED = "Ohne Kategorie";
 /** Wie viele zuletzt geöffnete Rezepte gemerkt und in der Leiste gezeigt werden. */
 export const MAX_RECENT_RECIPES = 8;
 
+/** Wie viele Rezepte die Leiste „Oft gekocht“ in der Rezeptliste zeigt. */
+export const MAX_MOST_COOKED_RECIPES = 8;
+
 /** Wie viele zuletzt im Editor gewählte Produkte oben in der Produktsuche stehen. */
 export const MAX_RECENT_PRODUCTS = 6;
 
