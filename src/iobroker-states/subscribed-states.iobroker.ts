@@ -955,4 +955,3 @@ export const iobrokerTree = {
 };
 
 export type Timer = (typeof iobrokerTree)["timers"][1];
-export type Timers = Omit<(typeof iobrokerTree)["timers"], "timerAlive">;
