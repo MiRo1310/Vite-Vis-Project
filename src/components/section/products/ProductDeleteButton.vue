@@ -20,12 +20,15 @@ const emits = defineEmits<{ deleted: [] }>();
 const { toast } = useToast();
 
 const usageQuery = graphql(`
-  query productUsageInRecipes {
-    recipes {
-      id
-      name
-      recipeProducts {
-        productId
+  query productUsageInRecipes($productId: UUID!) {
+    # Filter im Backend: die Liste ist paginiert (Standard 10), ungefiltert würden Rezepte fehlen
+    recipes(first: 50, where: { recipeProducts: { some: { productId: { eq: $productId } } } }) {
+      nodes {
+        id
+        name
+        recipeProducts {
+          productId
+        }
       }
     }
   }
@@ -61,8 +64,8 @@ const askToDelete = async () => {
   checking.value = true;
   usedIn.value = null;
   try {
-    const { data } = await apolloClient.query({ query: usageQuery, fetchPolicy: "network-only", context });
-    usedIn.value = findRecipesUsingProduct(data.recipes, props.productId);
+    const { data } = await apolloClient.query({ query: usageQuery, variables: { productId: props.productId }, fetchPolicy: "network-only", context });
+    usedIn.value = findRecipesUsingProduct(data.recipes?.nodes ?? [], props.productId);
   } catch (error) {
     Logger.error("Produkt: Verwendung in Rezepten nicht ermittelbar", error);
   } finally {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { ArrowLeft, ChefHat, ListChecks, Pencil, RotateCcw, SearchX, ShoppingBasket, Trash2, UtensilsCrossed } from "@lucide/vue";
+import { ArrowLeft, ChefHat, History, ListChecks, Pencil, RotateCcw, SearchX, ShoppingBasket, Trash2, UtensilsCrossed } from "@lucide/vue";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,7 +17,7 @@ import { useShoppingListEntries } from "@/composables/shoppingList.ts";
 import { matchIngredientsWithShoppingList } from "@/lib/shopping-list.ts";
 import { useRecipeDetails } from "@/composables/querys/recipeDetails.ts";
 import { useRecipeStore } from "@/store/recipeStore.ts";
-import { getCategoryColor, kcalPerPortion, scaleAmount } from "@/lib/recipe.ts";
+import { describeCookHistory, getCategoryColor, kcalPerPortion, scaleAmount } from "@/lib/recipe.ts";
 import { recipeAccentClasses } from "@/constants/recipe.ts";
 import { routes } from "@/router/routes.ts";
 
@@ -49,6 +49,7 @@ const kcalPortion = computed(() => kcalPerPortion(recipe.value?.totalKcal, recip
 const totalKcalScaled = computed(() => Math.round(scaleAmount(recipe.value?.totalKcal ?? 0, basePortions.value, portions.value) ?? 0));
 const ingredientCount = computed(() => recipe.value?.recipeProducts.length ?? 0);
 const stepCount = computed(() => recipe.value?.recipeDescriptions.length ?? 0);
+const cookHistory = computed(() => describeCookHistory(recipe.value?.cookedCount, recipe.value?.lastCookedAt, new Date()));
 
 const shoppingOpen = ref(false);
 const { names: shoppingListNames } = useShoppingListEntries();
@@ -105,6 +106,10 @@ const cookingRoute = computed(() => ({
                 :portions="recipe.portions"
                 :kcal="kcalPortion"
               />
+              <span v-if="cookHistory" class="flex items-center gap-1 text-sm text-muted-foreground" v-e2e="'recipe-cook-history'">
+                <History :class="['h-4 w-4 shrink-0', recipeAccentClasses.mango.text]" />
+                {{ cookHistory }}
+              </span>
             </div>
           </template>
           <template #actions>

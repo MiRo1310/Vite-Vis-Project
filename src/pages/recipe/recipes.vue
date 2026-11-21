@@ -10,13 +10,14 @@ import RecipeCard from "@/components/section/recipe/RecipeCard.vue";
 import RecipeListFilters from "@/components/section/recipe/RecipeListFilters.vue";
 import { useRecipeStore } from "@/store/recipeStore.ts";
 import { filterRecipes, getCategoryColor, groupRecipesByCategory, pickRecentRecipes } from "@/lib/recipe.ts";
-import { RECIPE_UNCATEGORIZED, recipeAccentClasses } from "@/constants/recipe.ts";
+import { MAX_MOST_COOKED_RECIPES, RECIPE_UNCATEGORIZED, recipeAccentClasses } from "@/constants/recipe.ts";
 import { routes } from "@/router/routes.ts";
 
 const { result, loading } = useQuery(
   graphql(`
     query recipes {
-      recipes {
+      # Backend paginiert (Standard 10, max. 50) – bis es eine Liste ohne Pagination gibt, die größte Seite laden
+      recipes(first: 50) {
         nodes {
           id
           name
@@ -37,9 +38,34 @@ const { result, loading } = useQuery(
   { fetchPolicy: "cache-and-network" },
 );
 
+// „Oft gekocht“: sortiert und begrenzt das Backend, unabhängig von der paginierten Gesamtliste
+const { result: mostCookedResult } = useQuery(
+  graphql(`
+    query mostCookedRecipes($first: Int!) {
+      recipes(first: $first, where: { cookedCount: { gt: 0 } }, order: [{ cookedCount: DESC }, { lastCookedAt: DESC }]) {
+        nodes {
+          id
+          name
+          portions
+          totalTimeMin
+          preparationTimeMin
+          totalKcal
+          recipeCategory {
+            name
+            id
+          }
+        }
+      }
+    }
+  `),
+  { first: MAX_MOST_COOKED_RECIPES },
+  { fetchPolicy: "cache-and-network" },
+);
+
 const recipeStore = useRecipeStore();
 
 const allRecipes = computed(() => result.value?.recipes?.nodes ?? []);
+const mostCookedRecipes = computed(() => mostCookedResult.value?.recipes?.nodes ?? []);
 
 // --- Filter ---
 const search = ref("");
@@ -121,6 +147,16 @@ const subtitle = computed(() => {
         <p class="text-sm font-semibold mb-2">Zuletzt geöffnet</p>
         <div class="flex gap-3 overflow-x-auto pb-2 -mx-3 px-3 md:mx-0 md:px-0 snap-x">
           <div v-for="recipe in recentRecipes" :key="recipe.id" class="w-40 sm:w-48 shrink-0 snap-start">
+            <RecipeCard :recipe compact @open="onOpen" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Oft gekocht -->
+      <section v-if="mostCookedRecipes.length && !isFiltered" v-e2e="'recipes-most-cooked'">
+        <p class="text-sm font-semibold mb-2">Oft gekocht</p>
+        <div class="flex gap-3 overflow-x-auto pb-2 -mx-3 px-3 md:mx-0 md:px-0 snap-x">
+          <div v-for="recipe in mostCookedRecipes" :key="recipe.id" class="w-40 sm:w-48 shrink-0 snap-start">
             <RecipeCard :recipe compact @open="onOpen" />
           </div>
         </div>

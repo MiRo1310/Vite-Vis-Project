@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  describeCookHistory,
+  formatLastCooked,
   filterNewNames,
   filterRecipes,
   flattenIngredientGroups,
@@ -294,5 +296,56 @@ describe("flattenIngredientGroups", () => {
       { key: "0-1", groupTitle: "Teig", item: { name: "Zucker", groupPosition: 0 } },
       { key: "1-0", groupTitle: "Belag", item: { name: "Äpfel", groupPosition: 1 } },
     ]);
+  });
+});
+
+describe("formatLastCooked", () => {
+  // Lokale Zeit, damit die Kalendertage unabhängig von der Zeitzone der Testumgebung stimmen
+  const now = new Date(2026, 10, 21, 9, 0);
+  const daysAgo = (days: number, hour = 12) => new Date(2026, 10, 21 - days, hour, 0).toISOString();
+
+  it("returns null without a valid date", () => {
+    expect(formatLastCooked(null, now)).toBeNull();
+    expect(formatLastCooked(undefined, now)).toBeNull();
+    expect(formatLastCooked("", now)).toBeNull();
+    expect(formatLastCooked("kein Datum", now)).toBeNull();
+  });
+
+  it("counts calendar days, not 24-hour spans", () => {
+    expect(formatLastCooked(daysAgo(0, 8), now)).toBe("heute");
+    expect(formatLastCooked(daysAgo(1, 23), now)).toBe("gestern");
+    expect(formatLastCooked(daysAgo(2), now)).toBe("vorgestern");
+    expect(formatLastCooked(daysAgo(6), now)).toBe("vor 6 Tagen");
+  });
+
+  it("switches to weeks, months and years", () => {
+    expect(formatLastCooked(daysAgo(7), now)).toBe("letzte Woche");
+    expect(formatLastCooked(daysAgo(20), now)).toBe("vor 2 Wochen");
+    expect(formatLastCooked(daysAgo(30), now)).toBe("letzten Monat");
+    expect(formatLastCooked(daysAgo(100), now)).toBe("vor 3 Monaten");
+    expect(formatLastCooked(daysAgo(400), now)).toBe("letztes Jahr");
+    expect(formatLastCooked(daysAgo(800), now)).toBe("vor 2 Jahren");
+  });
+
+  it("treats a timestamp in the future as today", () => {
+    expect(formatLastCooked(daysAgo(-1), now)).toBe("heute");
+  });
+});
+
+describe("describeCookHistory", () => {
+  const now = new Date(2026, 10, 21, 9, 0);
+
+  it("returns null when the recipe was never cooked", () => {
+    expect(describeCookHistory(0, null, now)).toBeNull();
+    expect(describeCookHistory(null, null, now)).toBeNull();
+    expect(describeCookHistory(undefined, undefined, now)).toBeNull();
+  });
+
+  it("combines count and last cooked date", () => {
+    expect(describeCookHistory(3, new Date(2026, 10, 19, 18, 0).toISOString(), now)).toBe("3× gekocht · zuletzt vorgestern");
+  });
+
+  it("shows only the count when the date is missing", () => {
+    expect(describeCookHistory(1, null, now)).toBe("1× gekocht");
   });
 });

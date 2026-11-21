@@ -16,6 +16,8 @@ const recipeDetailsQuery = graphql(`
       totalKcal
       preparationTimeMin
       totalTimeMin
+      cookedCount
+      lastCookedAt
       recipeCategory {
         id
         name
